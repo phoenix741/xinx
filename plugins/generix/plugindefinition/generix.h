@@ -30,7 +30,15 @@ class Gce150FileResolver;
 
 /* GenerixPlugin */
 
-class GenerixPlugin : public QObject, public IXinxInputOutputPlugin, public IDockPlugin, public IResolverPlugin, public IXinxPluginConfiguration, public IXinxPluginProjectConfiguration, public IXinxXsltParser {
+class GenerixPlugin :	public QObject,
+						public IXinxInputOutputPlugin,
+						public IDockPlugin,
+						public IResolverPlugin,
+						public IXinxPluginConfiguration,
+						public IXinxPluginProjectConfiguration,
+						public IXinxXsltParser,
+						public IContentViewParserPlugin
+{
 	Q_OBJECT
 	Q_INTERFACES(IXinxPlugin)
 	Q_INTERFACES(IXinxInputOutputPlugin)
@@ -38,30 +46,32 @@ class GenerixPlugin : public QObject, public IXinxInputOutputPlugin, public IDoc
 	Q_INTERFACES(IResolverPlugin)
 	Q_INTERFACES(IXinxPluginConfiguration)
 	Q_INTERFACES(IXinxPluginProjectConfiguration)
-	Q_INTERFACES(IXinxXsltParser);
+	Q_INTERFACES(IXinxXsltParser)
+	Q_INTERFACES(IContentViewParserPlugin)
 public:
 	GenerixPlugin();
 	virtual ~GenerixPlugin();
 
-	virtual bool initializePlugin( const QString & lang );
-	virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr );
+	virtual bool initializePlugin(const QString & lang);
+	virtual QVariant getPluginAttribute(const enum IXinxPlugin::PluginAttribute & attr);
 
-	virtual XsltParser * createParser();
+	ContentView2::Parser * createParser( const QString & type );
+	virtual XsltParser * createXsltParser();
 
-	virtual bool loadProject( XinxProject * project );
-	virtual bool closeProject( XinxProject * project );
+	virtual bool loadProject(XinxProject * project);
+	virtual bool closeProject(XinxProject * project);
 
-	virtual QIODevice * loadFile( const QString & filename );
-	virtual QIODevice * saveFile( const QString & filename, const QString & oldfilename );
-	virtual QString getFilename( const QString & filename, const QString & filter, bool saveAs, bool & accept, QWidget * widget = 0 );
+	virtual QIODevice * loadFile(const QString & filename);
+	virtual QIODevice * saveFile(const QString & filename, const QString & oldfilename);
+	virtual QString getFilename(const QString & filename, const QString & filter, bool saveAs, bool & accept, QWidget * widget = 0);
 
-	virtual QList<QDockWidget*> createDocksWidget( QWidget * parent );
+	virtual QList<QDockWidget*> createDocksWidget(QWidget * parent);
 
-	virtual QList<IXinxPluginConfigurationPage*> createSettingsDialog( QWidget * parent );
+	virtual QList<IXinxPluginConfigurationPage*> createSettingsDialog(QWidget * parent);
 
 	virtual QList<IFileResolverPlugin*> fileResolvers();
 
-	virtual QList<IXinxPluginProjectConfigurationPage*> createProjectSettingsPage( QWidget * parent );
+	virtual QList<IXinxPluginProjectConfigurationPage*> createProjectSettingsPage(QWidget * parent);
 	virtual QList<IXinxPluginNewProjectConfigurationPage*> createNewProjectSettingsPages();
 private:
 	GenerixProjectDockImpl * m_gnxDock;

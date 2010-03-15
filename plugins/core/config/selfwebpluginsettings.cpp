@@ -27,25 +27,31 @@
 
 SelfWebPluginSettings * SelfWebPluginSettings::s_self = 0;
 
-SelfWebPluginSettings::SelfWebPluginSettings() : WebPluginSettings() {
+SelfWebPluginSettings::SelfWebPluginSettings() : WebPluginSettings()
+{
 	load();
 }
 
-SelfWebPluginSettings::~SelfWebPluginSettings() {
-	if( s_self == this ) {
+SelfWebPluginSettings::~SelfWebPluginSettings()
+{
+	if (s_self == this)
+	{
 		s_self = 0;
 	}
 }
 
-SelfWebPluginSettings * SelfWebPluginSettings::self() {
-	if( ! s_self ) {
+SelfWebPluginSettings * SelfWebPluginSettings::self()
+{
+	if (! s_self)
+	{
 		s_self = new SelfWebPluginSettings();
-		XINXStaticDeleter::self()->add( s_self );
+		XINXStaticDeleter::self()->add(s_self);
 	}
 	return s_self;
 }
 
-void SelfWebPluginSettings::save() {
+void SelfWebPluginSettings::save()
+{
 	WebPluginSettings::save();
 	emit changed();
 }

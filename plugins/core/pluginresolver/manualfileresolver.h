@@ -29,8 +29,9 @@
 
 /* ManualFileResolver */
 
-class ManualFileResolver : public IFileResolverPlugin {
-	Q_DECLARE_TR_FUNCTIONS( ManualFileResolver )
+class ManualFileResolver : public IFileResolverPlugin
+{
+	Q_DECLARE_TR_FUNCTIONS(ManualFileResolver)
 public:
 	ManualFileResolver();
 	virtual ~ManualFileResolver();
@@ -41,7 +42,7 @@ public:
 	virtual QString id();
 	virtual QString name();
 	virtual bool isActivated();
-	virtual QString resolveFileName( const QString & nameToResolve, const QString & currentPath = QString() );
+	virtual QString resolveFileName(const QString & nameToResolve, const QString & currentPath = QString());
 };
 
 #endif // MANUALFILERESOLVER_H

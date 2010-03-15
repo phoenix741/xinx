@@ -24,21 +24,22 @@
 // Xinx header
 #include <plugins/plugininterfaces.h>
 
-class SVNPlugin : public QObject, public IRCSPlugin {
+class SVNPlugin : public QObject, public IRCSPlugin
+{
 	Q_OBJECT
 	Q_INTERFACES(IXinxPlugin)
 	Q_INTERFACES(IRCSPlugin)
 public:
 	SVNPlugin();
 
-	virtual bool initializePlugin( const QString & lang );
-	virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr );
+	virtual bool initializePlugin(const QString & lang);
+	virtual QVariant getPluginAttribute(const enum IXinxPlugin::PluginAttribute & attr);
 
 	virtual QList< QPair<QString,QString> > pluginTools();
 
 	virtual QStringList rcs();
-	virtual QString descriptionOfRCS( const QString & rcs );
-	virtual RCS * createRCS( const QString & rcs, const QString & basePath );
+	virtual QString descriptionOfRCS(const QString & rcs);
+	virtual RCS * createRCS(const QString & rcs, const QString & basePath);
 };
 
 #endif /* SVNPLUGIN_H_*/

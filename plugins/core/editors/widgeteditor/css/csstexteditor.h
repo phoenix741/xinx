@@ -24,24 +24,26 @@
 // Xinx header
 #include <editors/xinxcodeedit.h>
 
-class CSSTextEditor : public XinxCodeEdit {
+class CSSTextEditor : public XinxCodeEdit
+{
 	Q_OBJECT
 public:
-	CSSTextEditor( QWidget * parent = 0 );
+	CSSTextEditor(QWidget * parent = 0);
 	virtual ~CSSTextEditor();
 
 	virtual bool isCommentAvailable();
 public slots:
-	virtual void commentSelectedText( bool uncomment = false );
+	virtual void commentSelectedText(bool uncomment = false);
 protected:
-	enum cursorPosition {
+	enum cursorPosition
+	{
 		cpEditComment, // in /* ... */
 		cpEditTag, // ... { ... }
 		cpEditGlobal
 	};
 
-	static cursorPosition editPosition( const XinxCodeEdit * textEdit, const QDocumentCursor & cursor );
-	cursorPosition editPosition( const QDocumentCursor & cursor );
+	static cursorPosition editPosition(const XinxCodeEdit * textEdit, const QDocumentCursor & cursor);
+	cursorPosition editPosition(const QDocumentCursor & cursor);
 };
 
 #endif /*CSSTEXTEDITOR_H_*/

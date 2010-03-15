@@ -36,7 +36,8 @@
 // Std header
 #include <time.h>
 
-class TestSnipets : public QObject {
+class TestSnipets : public QObject
+{
 	Q_OBJECT
 private slots:
 	void initTestCase();
@@ -72,215 +73,235 @@ private:
 	QTreeView * m_treeCategory, * m_treeSnipet, * m_treeDock;
 };
 
-void TestSnipets::initTestCase() {
-	qsrand( time(NULL) );
-	QDir::addSearchPath( "datas", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../datas" ) );
-	QDir::addSearchPath( "datas", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../../datas" ) );
-	QDir::addSearchPath( "datas", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../share/xinx/datas" ) );
+void TestSnipets::initTestCase()
+{
+	qsrand(time(NULL));
+	QDir::addSearchPath("datas", QDir(QApplication::applicationDirPath()).absoluteFilePath("../datas"));
+	QDir::addSearchPath("datas", QDir(QApplication::applicationDirPath()).absoluteFilePath("../../datas"));
+	QDir::addSearchPath("datas", QDir(QApplication::applicationDirPath()).absoluteFilePath("../share/xinx/datas"));
 
 	SnipetManager::self()->database().transaction();
-	m_categoryModel = SnipetManager::self()->createCategoryItemModel( this );
-	m_snipetModel = SnipetManager::self()->createSnipetItemModel( this );
-	m_snipetDockModel = SnipetManager::self()->createSnipetDockItemModel( this );
+	m_categoryModel = SnipetManager::self()->createCategoryItemModel(this);
+	m_snipetModel = SnipetManager::self()->createSnipetItemModel(this);
+	m_snipetDockModel = SnipetManager::self()->createSnipetDockItemModel(this);
 
 	m_treeCategory = new QTreeView;
-	m_treeCategory->setModel( m_categoryModel );
+	m_treeCategory->setModel(m_categoryModel);
 
-	m_treeCategory->setWindowTitle( QTreeView::tr("Category View") );
+	m_treeCategory->setWindowTitle(QTreeView::tr("Category View"));
 	m_treeCategory->resize(640, 480);
 	m_treeCategory->show();
 
 	m_treeSnipet = new QTreeView;
-	m_treeSnipet->setModel( m_snipetModel );
+	m_treeSnipet->setModel(m_snipetModel);
 
-	m_treeSnipet->setWindowTitle( QTreeView::tr("Snipet View") );
+	m_treeSnipet->setWindowTitle(QTreeView::tr("Snipet View"));
 	m_treeSnipet->resize(640, 480);
 	m_treeSnipet->show();
 
 	m_treeDock = new QTreeView;
-	m_treeDock->setModel( m_snipetDockModel );
+	m_treeDock->setModel(m_snipetDockModel);
 
-	m_treeDock->setWindowTitle( QTreeView::tr("Dock View") );
+	m_treeDock->setWindowTitle(QTreeView::tr("Dock View"));
 	m_treeDock->resize(640, 480);
 	m_treeDock->show();
 }
 
-void TestSnipets::testConnection() {
+void TestSnipets::testConnection()
+{
 	SnipetManager::self();
-	QVERIFY( SnipetManager::self()->database().isValid() );
-	QVERIFY( SnipetManager::self()->database().isOpen() );
+	QVERIFY(SnipetManager::self()->database().isValid());
+	QVERIFY(SnipetManager::self()->database().isOpen());
 }
 
-void TestSnipets::testEmptyCategoryItemModel() {
-	new ModelTest( m_categoryModel );
+void TestSnipets::testEmptyCategoryItemModel()
+{
+	new ModelTest(m_categoryModel);
 }
 
-void TestSnipets::testSelectCategoryItemModel() {
+void TestSnipets::testSelectCategoryItemModel()
+{
 	m_categoryModel->select();
 	m_treeCategory->expandAll();
 	qApp->processEvents();
 }
 
-void TestSnipets::testCategoryView() {
+void TestSnipets::testCategoryView()
+{
 	CategoryTreeView view;
-	view.setModel( m_categoryModel );
+	view.setModel(m_categoryModel);
 	view.show();
-	view.setCategoryId( 1 );
+	view.setCategoryId(1);
 
-	int row = ( qrand() % m_categoryModel->sourceModel()->rowCount() );
-	int testId = m_categoryModel->sourceModel()->index( row, 0 ).data().toInt();
+	int row = (qrand() % m_categoryModel->sourceModel()->rowCount());
+	int testId = m_categoryModel->sourceModel()->index(row, 0).data().toInt();
 
-	view.setCategoryId( testId );
+	view.setCategoryId(testId);
 
-	QCOMPARE( view.categoryId(), testId );
+	QCOMPARE(view.categoryId(), testId);
 }
 
-void TestSnipets::testAddCategoryItemModel() {
-	int row = ( qrand() % m_categoryModel->sourceModel()->rowCount() );
-	int testId = m_categoryModel->sourceModel()->index( row, 0 ).data().toInt();
+void TestSnipets::testAddCategoryItemModel()
+{
+	int row = (qrand() % m_categoryModel->sourceModel()->rowCount());
+	int testId = m_categoryModel->sourceModel()->index(row, 0).data().toInt();
 
-	QSqlQuery query( "INSERT INTO categories(parent_id, name) VALUES(:parentCategory, :name)", SnipetManager::self()->database() );
-	query.bindValue( ":parent_id", testId );
-	query.bindValue( ":name", QString("testDoubleSelectCategoryItemModel(%1)").arg( testId ) );
+	QSqlQuery query("INSERT INTO categories(parent_id, name) VALUES(:parentCategory, :name)", SnipetManager::self()->database());
+	query.bindValue(":parent_id", testId);
+	query.bindValue(":name", QString("testDoubleSelectCategoryItemModel(%1)").arg(testId));
 
 	bool result = query.exec();
-	QVERIFY( result );
+	QVERIFY(result);
 
 	m_categoryModel->select();
 	m_treeCategory->expandAll();
 	qApp->processEvents();
 }
 
-void TestSnipets::testRemoveCategoryItemModel() {
-	QSqlQuery query( "DELETE FROM categories WHERE id not in (select distinct parent_id from categories) and id not in (select distinct category_id from snipets)", SnipetManager::self()->database() );
+void TestSnipets::testRemoveCategoryItemModel()
+{
+	QSqlQuery query("DELETE FROM categories WHERE id not in (select distinct parent_id from categories) and id not in (select distinct category_id from snipets)", SnipetManager::self()->database());
 
 	m_categoryModel->select();
 	m_treeCategory->expandAll();
 	qApp->processEvents();
 }
 
-void TestSnipets::testSearchCategoryId() {
-	QModelIndex rootIndex = m_categoryModel->index( 0 );
-	QVERIFY( ! rootIndex.isValid() );
+void TestSnipets::testSearchCategoryId()
+{
+	QModelIndex rootIndex = m_categoryModel->index(0);
+	QVERIFY(! rootIndex.isValid());
 
-	if( m_categoryModel->sourceModel()->rowCount() == 0 ) {
-		QSKIP( "Empty base", SkipSingle );
+	if (m_categoryModel->sourceModel()->rowCount() == 0)
+	{
+		QSKIP("Empty base", SkipSingle);
 		return;
 	}
 
-	int row = ( qrand() % m_categoryModel->sourceModel()->rowCount() );
-	int testId = m_categoryModel->sourceModel()->index( row, 0 ).data().toInt();
-	QModelIndex index = m_categoryModel->index( testId );
-	QVERIFY( index.isValid() );
+	int row = (qrand() % m_categoryModel->sourceModel()->rowCount());
+	int testId = m_categoryModel->sourceModel()->index(row, 0).data().toInt();
+	QModelIndex index = m_categoryModel->index(testId);
+	QVERIFY(index.isValid());
 
-	int id = index.data( CategoryItemModel::CategoryIdRole ).toInt();
+	int id = index.data(CategoryItemModel::CategoryIdRole).toInt();
 
-	QCOMPARE( id, testId );
+	QCOMPARE(id, testId);
 }
 
-void TestSnipets::testEmptySnipetItemModel() {
-	new ModelTest( m_snipetModel );
+void TestSnipets::testEmptySnipetItemModel()
+{
+	new ModelTest(m_snipetModel);
 }
 
-void TestSnipets::testSelectSnipetItemModel() {
+void TestSnipets::testSelectSnipetItemModel()
+{
 	m_snipetModel->select();
 	m_treeSnipet->expandAll();
 	qApp->processEvents();
 }
 
-void TestSnipets::testSearchSnipetId() {
-	QModelIndex rootIndex = m_snipetModel->index( true, 0 );
-	QVERIFY( ! rootIndex.isValid() );
+void TestSnipets::testSearchSnipetId()
+{
+	QModelIndex rootIndex = m_snipetModel->index(true, 0);
+	QVERIFY(! rootIndex.isValid());
 
-	if( m_snipetModel->sourceModel()->rowCount() == 0 ) {
-		QSKIP( "Empty base", SkipSingle );
+	if (m_snipetModel->sourceModel()->rowCount() == 0)
+	{
+		QSKIP("Empty base", SkipSingle);
 		return;
 	}
 
-	int row = ( qrand() % m_snipetModel->sourceModel()->rowCount() );
-	bool isCategory = m_snipetModel->sourceModel()->index( row, 6 ).data().toString() == "CATEGORY";
-	int testId = m_snipetModel->sourceModel()->index( row, 0 ).data().toInt();
-	QModelIndex index = m_snipetModel->index( isCategory, testId );
-	QVERIFY( index.isValid() );
+	int row = (qrand() % m_snipetModel->sourceModel()->rowCount());
+	bool isCategory = m_snipetModel->sourceModel()->index(row, 6).data().toString() == "CATEGORY";
+	int testId = m_snipetModel->sourceModel()->index(row, 0).data().toInt();
+	QModelIndex index = m_snipetModel->index(isCategory, testId);
+	QVERIFY(index.isValid());
 
-	int id = index.data( SnipetItemModel::SnipetIdRole ).toInt();
+	int id = index.data(SnipetItemModel::SnipetIdRole).toInt();
 
-	QCOMPARE( id, testId );
+	QCOMPARE(id, testId);
 }
 
-void TestSnipets::testEmptySnipetDockItemModel() {
-	new ModelTest( m_snipetDockModel );
+void TestSnipets::testEmptySnipetDockItemModel()
+{
+	new ModelTest(m_snipetDockModel);
 }
 
-void TestSnipets::testSelectSnipetDockItemModel() {
+void TestSnipets::testSelectSnipetDockItemModel()
+{
 	m_snipetDockModel->select();
 	m_treeDock->expandAll();
 	qApp->processEvents();
 }
 
-void TestSnipets::testExport() {
-	QString filename = QDir::temp().absoluteFilePath( "testImportExport.xml" );
+void TestSnipets::testExport()
+{
+	QString filename = QDir::temp().absoluteFilePath("testImportExport.xml");
 
 	QList<int> ids = SnipetManager::self()->snipets();
 
 	SnipetList list;
-	QVERIFY( SnipetManager::self()->exportSnipetList( ids, &list ) );
-	list.saveToFile( filename );
+	QVERIFY(SnipetManager::self()->exportSnipetList(ids, &list));
+	list.saveToFile(filename);
 
 	m_snipetModel->select();
 	m_treeSnipet->expandAll();
 	qApp->processEvents();
 }
 
-void TestSnipets::testImport() {
-	QString filename = QDir::temp().absoluteFilePath( "testImportExport.xml" );
+void TestSnipets::testImport()
+{
+	QString filename = QDir::temp().absoluteFilePath("testImportExport.xml");
 
 	SnipetList list;
-	list.loadFromFile( filename );
-	QVERIFY( SnipetManager::self()->importSnipetList( list ) );
+	list.loadFromFile(filename);
+	QVERIFY(SnipetManager::self()->importSnipetList(list));
 
 	m_snipetModel->select();
 	m_treeSnipet->expandAll();
 	qApp->processEvents();
 }
 
-void TestSnipets::testCategoryDeletion() {
+void TestSnipets::testCategoryDeletion()
+{
 	int firstCat, secondCat;
-	QSqlQuery insertQuery( "INSERT INTO categories(parent_id, name) VALUES(:parentCategory, :name)", SnipetManager::self()->database() );
-	insertQuery.bindValue( ":parentCategory", 1 );
-	insertQuery.bindValue( ":name", "A" );
+	QSqlQuery insertQuery("INSERT INTO categories(parent_id, name) VALUES(:parentCategory, :name)", SnipetManager::self()->database());
+	insertQuery.bindValue(":parentCategory", 1);
+	insertQuery.bindValue(":name", "A");
 
 	bool result = insertQuery.exec();
-	QVERIFY( result );
+	QVERIFY(result);
 
 	firstCat = insertQuery.lastInsertId().toInt();
 
-	insertQuery.bindValue( ":parentCategory", firstCat );
-	insertQuery.bindValue( ":name", "B" );
+	insertQuery.bindValue(":parentCategory", firstCat);
+	insertQuery.bindValue(":name", "B");
 
 	result = insertQuery.exec();
-	QVERIFY( result );
+	QVERIFY(result);
 
 	secondCat = insertQuery.lastInsertId().toInt();
 
 	m_snipetModel->select();
 
-	QSqlQuery removeQuery( "DELETE FROM categories WHERE id=:id", SnipetManager::self()->database() );
-	removeQuery.bindValue( ":id", secondCat );
+	QSqlQuery removeQuery("DELETE FROM categories WHERE id=:id", SnipetManager::self()->database());
+	removeQuery.bindValue(":id", secondCat);
 	result = removeQuery.exec();
-	QVERIFY( result );
-	removeQuery.bindValue( ":id", firstCat );
+	QVERIFY(result);
+	removeQuery.bindValue(":id", firstCat);
 	result = removeQuery.exec();
-	QVERIFY( result );
+	QVERIFY(result);
 
 	m_snipetModel->select();
 }
 
-void TestSnipets::testDeleteAll() {
+void TestSnipets::testDeleteAll()
+{
 	QList<int> ids = SnipetManager::self()->snipets();
 
-	foreach( int id, ids ) {
-		SnipetManager::self()->removeSnipet( id );
+	foreach(int id, ids)
+	{
+		SnipetManager::self()->removeSnipet(id);
 		m_snipetModel->select();
 		m_treeSnipet->expandAll();
 		qApp->processEvents();
@@ -288,10 +309,11 @@ void TestSnipets::testDeleteAll() {
 
 	ids = SnipetManager::self()->snipets();
 
-	QCOMPARE( ids.size(), 0 );
+	QCOMPARE(ids.size(), 0);
 }
 
-void TestSnipets::cleanupTestCase() {
+void TestSnipets::cleanupTestCase()
+{
 	SnipetManager::self()->database().rollback();
 }
 

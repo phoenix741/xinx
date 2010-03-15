@@ -31,24 +31,26 @@
 
 class PrivateXsltParser;
 
-class LIBEXPORT XsltParser {
+class LIBEXPORT XsltParser
+{
 	Q_DECLARE_TR_FUNCTIONS(XsltParser)
 public:
-	class ErrorMessage {
+	class ErrorMessage
+	{
 	public:
 		bool isWarning;
 		QString message;
 		int line;
 	};
 
-    XsltParser();
+	XsltParser();
 	virtual ~XsltParser();
 
 	//bool loadStylesheet( const QByteArray & data );
-	bool loadStylesheet( const QString & filename );
+	bool loadStylesheet(const QString & filename);
 
-	bool loadXmlFile( const QByteArray & data );
-	bool loadXmlFile( const QString & filename );
+	bool loadXmlFile(const QByteArray & data);
+	bool loadXmlFile(const QString & filename);
 
 	QString getOutput() const;
 
@@ -56,7 +58,7 @@ public:
 
 	const QList<XsltParser::ErrorMessage> & errors() const;
 protected:
-	virtual void registerPlugin( void* ctxt );
+	virtual void registerPlugin(void* ctxt);
 private:
 	PrivateXsltParser * d;
 	friend class PrivateXsltParser;

@@ -25,10 +25,11 @@
 #include "ui_customsyntax.h"
 #include <plugins/plugininterfaces.h>
 
-class CustomSyntaxImpl : public QWidget, public Ui::CustomSyntax, public IXinxPluginConfigurationPage {
+class CustomSyntaxImpl : public QWidget, public Ui::CustomSyntax, public IXinxPluginConfigurationPage
+{
 	Q_OBJECT
 public:
-	CustomSyntaxImpl( QWidget * parent = 0 );
+	CustomSyntaxImpl(QWidget * parent = 0);
 	~CustomSyntaxImpl();
 
 	virtual QPixmap image();
@@ -41,7 +42,7 @@ public:
 	virtual bool isSettingsValid();
 	virtual bool isVisible();
 private slots:
-	void on_m_highlighterComboBox_activated( QString text );
+	void on_m_highlighterComboBox_activated(QString text);
 
 private:
 	QHash<QString,XinxFormatScheme*> m_formatScheme;

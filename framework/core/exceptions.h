@@ -37,9 +37,10 @@ class XinxErrorMessage;
  * Base class for exceptions in XINX. This base class include a message in the exception, and save
  * the stack.
  */
-class LIBEXPORT XinxException {
+class LIBEXPORT XinxException
+{
 public:
-	XinxException( QString message );
+	XinxException(QString message);
 	/*!
 	 * Return the message.
 	 * \return The message of the error.
@@ -60,7 +61,8 @@ private:
  * use qWarning, qCritical, qError, qDebug. When an fatal error occure, the signal \e errorTriggered
  * is emited.
  */
-class LIBEXPORT ExceptionManager : public QObject {
+class LIBEXPORT ExceptionManager : public QObject
+{
 	Q_OBJECT
 public:
 	virtual ~ExceptionManager();
@@ -98,7 +100,7 @@ public:
 	 * \param error Message to store in the file
 	 * \param stack Stack to store when the error occure.
 	 */
-	void notifyError( QString error, QString plainError, QtMsgType t = QtWarningMsg );
+	void notifyError(QString error, QString plainError, QtMsgType t = QtWarningMsg);
 signals:
 	/*!
 	 * Signal emited when \e notifyError is called and the exception manager is set to be fatal.

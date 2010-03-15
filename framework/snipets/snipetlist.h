@@ -34,13 +34,14 @@
  * \class SnipetListException
  * The snipet list exception, is throw when Snipet list load or save file.
  */
-class LIBEXPORT SnipetListException : public XinxException {
+class LIBEXPORT SnipetListException : public XinxException
+{
 public:
 	/*!
 	 * Exception throw by the Snipet list.
 	 * \param message Message of the error.
 	 */
-	SnipetListException( const QString & message );
+	SnipetListException(const QString & message);
 };
 
 
@@ -48,25 +49,26 @@ public:
  * The snipet list contains all snipet defined in XINX. This snipet is stored in a
  * file in XML format.
  */
-class LIBEXPORT SnipetList : public QList<Snipet> {
+class LIBEXPORT SnipetList : public QList<Snipet>
+{
 public:
 	SnipetList();
 	virtual ~SnipetList();
 
-	int indexOf( const QString & key, int from = 0 ) const;
+	int indexOf(const QString & key, int from = 0) const;
 
 	/*!
 	 * Save the snipet list into a file.
 	 * \param filename The filename where we want save snipet.
 	 * \throw SnipetListException
 	 */
-	void saveToFile( const QString & filename );
+	void saveToFile(const QString & filename);
 	/*!
 	 * Load the snipet from a file.
 	 * \param filename The filename used to load snipet.
 	 * \throw SnipetListException
 	 */
-	void loadFromFile( const QString & filename );
+	void loadFromFile(const QString & filename);
 
 	/*!
 	 * List of categories used by templates
@@ -77,7 +79,7 @@ public:
 	/*!
 	 * List all the snipet of a the category \e category
 	 */
-	SnipetList categorie( const QString & category );
+	SnipetList categorie(const QString & category);
 private:
 };
 

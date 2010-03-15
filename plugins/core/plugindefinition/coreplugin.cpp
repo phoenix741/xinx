@@ -35,6 +35,12 @@
 
 #include "pluginresolver/manualfileresolver.h"
 
+#include <contentview2/contentview2manager.h>
+#include "editors/models/xsl/xmlcompletionparser.h"
+#include "editors/models/xsl/xslcontentviewparser.h"
+#include "editors/models/js/jscontentviewparser.h"
+#include <snipets/snipetcompletionparser.h>
+
 // Qt header
 #include <QStringList>
 #include <QHash>
@@ -47,15 +53,16 @@
 
 /* CorePlugin */
 
-CorePlugin::CorePlugin() : m_dock( 0 ) {
+CorePlugin::CorePlugin() : m_dock(0)
+{
 	Q_INIT_RESOURCE(coreplugin);
 
-	qRegisterMetaType<StyleSheetEditor>( "StyleSheetEditor" );
-	qRegisterMetaType<XmlFileEditor>( "XmlFileEditor" );
-	qRegisterMetaType<HtmlFileEditor>( "HtmlFileEditor" );
-	qRegisterMetaType<JSFileEditor>( "JSFileEditor" );
-	qRegisterMetaType<CSSFileEditor>( "CSSFileEditor" );
-	qRegisterMetaType<XQFileEditor>( "XQFileEditor" );
+	qRegisterMetaType<StyleSheetEditor>("StyleSheetEditor");
+	qRegisterMetaType<XmlFileEditor>("XmlFileEditor");
+	qRegisterMetaType<HtmlFileEditor>("HtmlFileEditor");
+	qRegisterMetaType<JSFileEditor>("JSFileEditor");
+	qRegisterMetaType<CSSFileEditor>("CSSFileEditor");
+	qRegisterMetaType<XQFileEditor>("XQFileEditor");
 
 	m_fileTypes << new XSLStyleSheetFileType;
 	m_fileTypes << new XMLFileType;
@@ -66,29 +73,36 @@ CorePlugin::CorePlugin() : m_dock( 0 ) {
 	m_fileTypes << new TextFileType;
 }
 
-CorePlugin::~CorePlugin() {
-	qDeleteAll( m_fileTypes );
+CorePlugin::~CorePlugin()
+{
+	qDeleteAll(m_fileTypes);
 	delete SelfWebPluginSettings::self();
 }
 
-bool CorePlugin::initializePlugin( const QString & lang ) {
-	QTranslator * tranlator = new QTranslator( this );
-	tranlator->load( QString(":/translations/coreplugin_%1").arg( lang ) );
+bool CorePlugin::initializePlugin(const QString & lang)
+{
+	QTranslator * tranlator = new QTranslator(this);
+	tranlator->load(QString(":/translations/coreplugin_%1").arg(lang));
 	qApp->installTranslator(tranlator);
 
 	m_resolver = new ManualFileResolver();
 
+	ContentView2::Manager::self()->addInitializationParser(true, "Snipet", "Snipet", "*");
+	ContentView2::Manager::self()->addInitializationParser(true, "XmlCompletion", "XmlCompletion", "*");
+
 	return true;
 }
 
-QVariant CorePlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr ) {
-	switch( attr ) {
+QVariant CorePlugin::getPluginAttribute(const enum IXinxPlugin::PluginAttribute & attr)
+{
+	switch (attr)
+	{
 	case PLG_NAME:
 		return tr("Core Plugin");
 	case PLG_DESCRIPTION:
 		return tr("Necessary editor, actions, and dock used by XINX.");
 	case PLG_ICON:
-		return QPixmap( ":/images/coreplugin.png" );
+		return QPixmap(":/images/coreplugin.png");
 	case PLG_AUTHOR:
 		return "Ulrich Van Den Hekke";
 	case PLG_EMAIL:
@@ -103,85 +117,125 @@ QVariant CorePlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute
 	return QVariant();
 }
 
-QList<IFileTypePlugin*> CorePlugin::fileTypes() {
+QList<IFileTypePlugin*> CorePlugin::fileTypes()
+{
 	return m_fileTypes;
 }
 
-XinxAction::MenuList CorePlugin::actions() {
-	if( m_menus.size() == 0 ) {
-		XinxAction::Action * commentAction = new CommentAction( tr("&Comment"), QString( "Ctrl+Shift+C" ), this );
-		XinxAction::Action * uncommentAction = new UncommentAction( tr("&Uncomment"), QString( "Ctrl+Shift+D" ), this );
+ContentView2::Parser * CorePlugin::createParser( const QString & type )
+{
+	if( type == "XSL" )
+	{
+		return new XslContentView2Parser();
+	}
+	else if( type == "JS" )
+	{
+		return new JsContentViewParser();
+	}
+	else if( type == "CSS" )
+	{
+		return new CSSFileContentParser();
+	}
+	else if( type == "Snipet" )
+	{
+		return new SnipetCompletionParser();
+	}
+	else if( type == "XmlCompletion" )
+	{
+		return XmlCompletionParser::self()->clone();
+	}
+	else
+	{
+		return 0;
+	}
+}
 
-		commentAction->action()->setStatusTip(tr( "Comment the selected text"));
-		commentAction->action()->setWhatsThis(tr( "Comment the selected text with the specifique guidelines of the language. <ul><li>In <b>XML</b> like format <i>&lt;!-- comment --&gt;</i></li> <li>In <b>Javascript</b> : <i>/* comment */</i> </li></ul>"));
+XinxAction::MenuList CorePlugin::actions()
+{
+	if (m_menus.size() == 0)
+	{
+		XinxAction::Action * commentAction = new CommentAction(tr("&Comment"), QString("Ctrl+Shift+C"), this);
+		XinxAction::Action * uncommentAction = new UncommentAction(tr("&Uncomment"), QString("Ctrl+Shift+D"), this);
 
-		uncommentAction->action()->setStatusTip(tr( "Uncomment the selected text if commented"));
-		uncommentAction->action()->setWhatsThis(tr( "See the comment helper function"));
+		commentAction->action()->setStatusTip(tr("Comment the selected text"));
+		commentAction->action()->setWhatsThis(tr("Comment the selected text with the specifique guidelines of the language. <ul><li>In <b>XML</b> like format <i>&lt;!-- comment --&gt;</i></li> <li>In <b>Javascript</b> : <i>/* comment */</i> </li></ul>"));
 
-		XinxAction::Action * runAction = new StyleSheetAction( QIcon( ":/images/run.png" ), tr("Process stylesheet"), QString( "F9" ), this );
+		uncommentAction->action()->setStatusTip(tr("Uncomment the selected text if commented"));
+		uncommentAction->action()->setWhatsThis(tr("See the comment helper function"));
 
-		XinxAction::ActionList editMenu( tr("&Edit"), "edit" );
-		XinxAction::ActionList runMenu( tr("&Execute"), "execute" );
+		XinxAction::Action * runAction = new StyleSheetAction(QIcon(":/images/run.png"), tr("Process stylesheet"), QString("F9"), this);
 
-		editMenu.append( commentAction );
-		editMenu.append( uncommentAction );
-		runMenu.append( runAction );
+		XinxAction::ActionList editMenu(tr("&Edit"), "edit");
+		XinxAction::ActionList runMenu(tr("&Execute"), "execute");
 
-		m_menus.append( editMenu );
-		m_menus.append( runMenu );
+		editMenu.append(commentAction);
+		editMenu.append(uncommentAction);
+		runMenu.append(runAction);
+
+		m_menus.append(editMenu);
+		m_menus.append(runMenu);
 	}
 	return m_menus;
 }
 
-QList< QPair<QString,QString> > CorePlugin::pluginTools() {
+QList< QPair<QString,QString> > CorePlugin::pluginTools()
+{
 	QList< QPair<QString,QString> > tools;
 #ifdef Q_WS_WIN
-	tools.append( qMakePair( QString("diff"), QString("%1/Winmerge/WinmergeU.exe").arg( "C:/Program Files" ) ) );
+	tools.append(qMakePair(QString("diff"), QString("%1/Winmerge/WinmergeU.exe").arg("C:/Program Files")));
 #else
-	tools.append( qMakePair( QString("diff"), QString("/usr/bin/kompare") ) );
+	tools.append(qMakePair(QString("diff"), QString("/usr/bin/kompare")));
 #endif // Q_WS_WIN
 	return tools;
 }
 
-QList<IXinxPluginConfigurationPage*> CorePlugin::createSettingsDialog( QWidget * parent ) {
+QList<IXinxPluginConfigurationPage*> CorePlugin::createSettingsDialog(QWidget * parent)
+{
 	QList<IXinxPluginConfigurationPage*> pages;
-	pages << new EditorsConfigFormImpl( parent );
-	pages << new XmlPresConfigFormImpl( parent );
+	pages << new EditorsConfigFormImpl(parent);
+	pages << new XmlPresConfigFormImpl(parent);
 	return pages;
 }
 
-QList<IXinxPluginProjectConfigurationPage*> CorePlugin::createProjectSettingsPage( QWidget * parent ) {
+QList<IXinxPluginProjectConfigurationPage*> CorePlugin::createProjectSettingsPage(QWidget * parent)
+{
 	QList<IXinxPluginProjectConfigurationPage*> list;
-	list << new ParserProjectPropertyImpl( parent );
-	list << new SearchPathListFormImpl( parent );
+	list << new ParserProjectPropertyImpl(parent);
+	list << new SearchPathListFormImpl(parent);
 	return list;
 }
 
-QList<IXinxPluginNewProjectConfigurationPage*> CorePlugin::createNewProjectSettingsPages() {
+QList<IXinxPluginNewProjectConfigurationPage*> CorePlugin::createNewProjectSettingsPages()
+{
 	QList<IXinxPluginNewProjectConfigurationPage*> pages;
 	pages << new WebPluginProjectPropertyWizard();
 	return pages;
 }
 
-QList<QDockWidget*> CorePlugin::createDocksWidget( QWidget * parent ) {
+QList<QDockWidget*> CorePlugin::createDocksWidget(QWidget * parent)
+{
 	QList<QDockWidget*> docks;
-    if( ! m_dock ) {
-        m_dock = new XmlPresentationDockWidget( parent );
-        m_dock->setObjectName( QString::fromUtf8( "m_xmlPresDock" ) );
-    }
-    if( ( m_dock->parent() != parent ) && ( parent != 0 ) ) {
-        m_dock->setParent( parent );
-    }
+	if (! m_dock)
+	{
+		m_dock = new XmlPresentationDockWidget(parent);
+		m_dock->setObjectName(QString::fromUtf8("m_xmlPresDock"));
+	}
+	if ((m_dock->parent() != parent) && (parent != 0))
+	{
+		m_dock->setParent(parent);
+	}
 
 	docks << m_dock;
 	return docks;
 }
 
-XmlPresentationDockWidget * CorePlugin::dock() {
+XmlPresentationDockWidget * CorePlugin::dock()
+{
 	return m_dock;
 }
 
-QList<IFileResolverPlugin*> CorePlugin::fileResolvers() {
+QList<IFileResolverPlugin*> CorePlugin::fileResolvers()
+{
 	return QList<IFileResolverPlugin*>() << m_resolver;
 }
 

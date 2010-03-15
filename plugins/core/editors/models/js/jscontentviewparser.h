@@ -22,32 +22,32 @@
 #pragma once
 
 // Xinx header
-#include <contentview/contentviewparser.h>
+#include <contentview2/contentview2parser.h>
 
 // Qt header
 #include <QApplication>
 
 class QIODevice;
 
-class JsContentViewParser : public ContentViewParser {
+class JsContentViewParser : public ContentView2::Parser
+{
 	Q_DECLARE_TR_FUNCTIONS(JsContentViewParser)
 public:
-	JsContentViewParser( bool autoDelete = false );
+	JsContentViewParser();
 	virtual ~JsContentViewParser();
 
-protected:
-	virtual void loadFromDeviceImpl();
+	virtual void load();
 private:
 	enum JAVASCRIPT_TOKEN { TOKEN_UNKNOWN, TOKEN_IDENTIFIER, TOKEN_STRING, TOKEN_NUMBER, TOKEN_PONCTUATION, TOKEN_EOF };
 
-	void nextIdentifier( QIODevice * device, enum JAVASCRIPT_TOKEN & symbType, QString & symbName );
-	void loadVariables( ContentViewNode * parent, QIODevice * device );
-	ContentViewNode * loadFunction( ContentViewNode * parent, QIODevice * device );
-	void loadInstruction( QIODevice * buffer, QString & name, JAVASCRIPT_TOKEN & type );
+	void nextIdentifier(QIODevice * device, enum JAVASCRIPT_TOKEN & symbType, QString & symbName);
+	void loadVariables(ContentView2::Node parent, QIODevice * device);
+	ContentView2::Node loadFunction(ContentView2::Node parent, QIODevice * device);
+	void loadInstruction(QIODevice * buffer, QString & name, JAVASCRIPT_TOKEN & type);
 
-	ContentViewNode * attacheNewParamNode( ContentViewNode * parent, const QString & name, int line );
-	ContentViewNode * attacheNewVariableNode( ContentViewNode * parent, const QString & name, int line );
-	ContentViewNode * attacheNewFunctionNode( ContentViewNode * parent, const QString & name, int line );
+	void attacheNewParamNode(ContentView2::Node parent, const QString & name, int line);
+	void attacheNewVariableNode(ContentView2::Node parent, const QString & name, int line);
+	ContentView2::Node attacheNewFunctionNode(ContentView2::Node parent, const QString & name, int line);
 
 	int m_line;
 };

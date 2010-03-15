@@ -28,46 +28,54 @@
 
 /* NewGenerixDerivation2Page */
 
-NewGenerixDerivation2Page::NewGenerixDerivation2Page() {
-	setupUi( this );
+NewGenerixDerivation2Page::NewGenerixDerivation2Page()
+{
+	setupUi(this);
 
-	registerField( "generix.derivationPath", m_derivationPath );
-	registerField( "generix.sourcePath",     m_sourcePath );
+	registerField("generix.derivationPath", m_derivationPath);
+	registerField("generix.sourcePath",     m_sourcePath);
 
-	m_derivationLabel->setBuddy( m_derivationPath );
-	m_sourceLabel->setBuddy( m_sourcePath );
+	m_derivationLabel->setBuddy(m_derivationPath);
+	m_sourceLabel->setBuddy(m_sourcePath);
 }
 
-void NewGenerixDerivation2Page::initializePage() {
-	ConfigurationVersion version = field( "generix.version" ).value<ConfigurationVersion>();
-	ConfigurationVersion version140( 6, 1, 40 );
+void NewGenerixDerivation2Page::initializePage()
+{
+	ConfigurationVersion version = field("generix.version").value<ConfigurationVersion>();
+	ConfigurationVersion version140(6, 1, 40);
 
 	QString projet = SelfGenerixSettings::self()->config().defaultProjectPathName;
 
 	QString destPath, srcPath;
-	destPath = srcPath = field( "generix.webmodule" ).toString();
-	if( version <= version140 ) {
-		srcPath = QDir( srcPath ).absoluteFilePath( "langue/fra/nav/" );
-		destPath = QDir( srcPath ).absoluteFilePath( projet );
-	} else {
-		srcPath = QDir( srcPath ).absoluteFilePath( "presentation/.*" );
-		destPath = QDir( destPath ).absoluteFilePath( "presentation/" + projet );
+	destPath = srcPath = field("generix.webmodule").toString();
+	if (version <= version140)
+	{
+		srcPath = QDir(srcPath).absoluteFilePath("langue/fra/nav/");
+		destPath = QDir(srcPath).absoluteFilePath(projet);
 	}
-	m_derivationPath->lineEdit()->setText( destPath );
-	m_sourcePath->lineEdit()->setText( srcPath );
+	else
+	{
+		srcPath = QDir(srcPath).absoluteFilePath("presentation/.*");
+		destPath = QDir(destPath).absoluteFilePath("presentation/" + projet);
+	}
+	m_derivationPath->lineEdit()->setText(destPath);
+	m_sourcePath->lineEdit()->setText(srcPath);
 }
 
-QString NewGenerixDerivation2Page::pagePluginId() const {
+QString NewGenerixDerivation2Page::pagePluginId() const
+{
 	return "GenerixDerivation2";
 }
 
-bool NewGenerixDerivation2Page::pageIsVisible() const {
-	return field( "generix.derivation" ).toBool();
+bool NewGenerixDerivation2Page::pageIsVisible() const
+{
+	return field("generix.derivation").toBool();
 }
 
-bool NewGenerixDerivation2Page::saveSettingsDialog( XinxProject * project ) {
+bool NewGenerixDerivation2Page::saveSettingsDialog(XinxProject * project)
+{
 	QDir path;
-	path.mkpath( m_derivationPath->lineEdit()->text() );
+	path.mkpath(m_derivationPath->lineEdit()->text());
 	//static_cast<GenerixProject*>( project )->setDerivationPath( m_derivationPath->lineEdit()->text() );
 	return true;
 }

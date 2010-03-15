@@ -25,7 +25,8 @@
 #include <plugins/plugininterfaces.h>
 #include <actions/actioninterface.h>
 
-class ServicesPlugin : public QObject, public IFilePlugin, public IXinxPluginProjectConfiguration {
+class ServicesPlugin : public QObject, public IFilePlugin, public IXinxPluginProjectConfiguration
+{
 	Q_OBJECT
 	Q_INTERFACES(IXinxPlugin)
 	Q_INTERFACES(IFilePlugin)
@@ -34,14 +35,14 @@ public:
 	ServicesPlugin();
 	virtual ~ServicesPlugin();
 
-	virtual bool initializePlugin( const QString & lang );
-	virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr );
+	virtual bool initializePlugin(const QString & lang);
+	virtual QVariant getPluginAttribute(const enum IXinxPlugin::PluginAttribute & attr);
 
 	virtual QList<IFileTypePlugin*> fileTypes();
 
 	virtual XinxAction::MenuList actions();
 
-	virtual QList<IXinxPluginProjectConfigurationPage*> createProjectSettingsPage( QWidget * parent );
+	virtual QList<IXinxPluginProjectConfigurationPage*> createProjectSettingsPage(QWidget * parent);
 
 	virtual QList<IXinxPluginNewProjectConfigurationPage*> createNewProjectSettingsPages();
 private:

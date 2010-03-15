@@ -31,59 +31,73 @@ EditorFactory * EditorFactory::s_self = 0;
 
 /* EditorFactory */
 
-EditorFactory::EditorFactory() {
+EditorFactory::EditorFactory()
+{
 }
 
-EditorFactory::~EditorFactory() {
-	if( s_self == this )
+EditorFactory::~EditorFactory()
+{
+	if (s_self == this)
 		s_self = NULL;
 }
 
-EditorFactory * EditorFactory::self() {
-	if( s_self == 0 ) {
+EditorFactory * EditorFactory::self()
+{
+	if (s_self == 0)
+	{
 		s_self = new EditorFactory();
-		XINXStaticDeleter::self()->addObject( s_self );
+		XINXStaticDeleter::self()->addObject(s_self);
 	}
 	return s_self;
 }
 
-AbstractEditor * EditorFactory::createEditor( IFileTypePlugin * interface ) {
-	AbstractEditor * editor = interface ? interface->createEditor() : new TextFileEditor( new XinxCodeEdit() );
+AbstractEditor * EditorFactory::createEditor(IFileTypePlugin * interface)
+{
+	AbstractEditor * editor = interface ? interface->createEditor() : new TextFileEditor(new XinxCodeEdit());
 
 	editor->initLayout();
 
-	Q_ASSERT_X( editor, "EditorFactory::createEditor", "The interface can't create editor" );
+	Q_ASSERT_X(editor, "EditorFactory::createEditor", "The interface can't create editor");
 
 	return editor;
 }
 
-AbstractEditor * EditorFactory::createEditor( const QString & filename ) {
-	Q_ASSERT( ! filename.isEmpty() );
+AbstractEditor * EditorFactory::createEditor(const QString & filename)
+{
+	Q_ASSERT(! filename.isEmpty());
 
 	AbstractEditor * editor = 0;
-	IFileTypePlugin * interface = XinxPluginsLoader::self()->matchedFileType( filename );
-	if( interface ) {
-		editor = interface->createEditor( filename );
-	} else {
-		editor = new TextFileEditor( new XinxCodeEdit() );
-		editor->loadFromFile( filename );
+	IFileTypePlugin * interface = XinxPluginsLoader::self()->matchedFileType(filename);
+	if (interface)
+	{
+		editor = interface->createEditor(filename);
+	}
+	else
+	{
+		editor = new TextFileEditor(new XinxCodeEdit());
+		editor->loadFromFile(filename);
 	}
 
-	Q_ASSERT_X( editor, "EditorFactory::createEditor", "The factory can't create editor" );
+	Q_ASSERT_X(editor, "EditorFactory::createEditor", "The factory can't create editor");
 
 	editor->initLayout();
+	if (qobject_cast<TextFileEditor*>(editor))
+		qobject_cast<TextFileEditor*>(editor)->initCompleter();
 
 	return editor;
 }
 
-AbstractEditor * EditorFactory::createEditor( XinxProjectSessionEditor * session ) {
-	Q_ASSERT( session );
+AbstractEditor * EditorFactory::createEditor(XinxProjectSessionEditor * session)
+{
+	Q_ASSERT(session);
 
-	AbstractEditor * editor = AbstractEditor::deserializeEditor( session );
+	AbstractEditor * editor = AbstractEditor::deserializeEditor(session);
 
-	Q_ASSERT_X( editor, "EditorFactory::createEditor", "The factory can't deserialize the editor" );
+	Q_ASSERT_X(editor, "EditorFactory::createEditor", "The factory can't deserialize the editor");
 
 	editor->initLayout();
+	if (qobject_cast<TextFileEditor*>(editor))
+		qobject_cast<TextFileEditor*>(editor)->initCompleter();
 
 	return editor;
 }

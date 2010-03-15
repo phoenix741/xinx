@@ -26,7 +26,12 @@
 #include "project/xinxproject.h"
 #include "core/xinxconfig.h"
 #include "borderlayout.h"
-#include "snipets/snipetcompletionnodemodel.h"
+#include "contentview2/contentview2completionmodel.h"
+#include "contentview2/contentview2manager.h"
+#include "contentview2/contentview2cache.h"
+#include "contentview2/contentview2node.h"
+#include "contentview2/contentview2parser.h"
+#include "contentview2/contentview2treemodel.h"
 
 // Qt header
 #include <QScrollBar>
@@ -46,6 +51,8 @@
 #include <QCompleter>
 #include <QAbstractItemView>
 #include <QTextCodec>
+#include <QUuid>
+#include <QBuffer>
 
 /* TextFileEditor */
 
@@ -59,97 +66,141 @@
 #endif
 #endif
 
-TextFileEditor::TextFileEditor( XinxCodeEdit * editor, QWidget *parent ) : AbstractEditor( parent ), m_view( editor ), m_eol( DEFAULT_EOL ) {
+TextFileEditor::TextFileEditor(XinxCodeEdit * editor, QWidget *parent) : AbstractEditor(parent), m_codec(0), m_view(editor), m_eol(DEFAULT_EOL), m_completionModel(0)
+{
 	initObjects();
 }
 
-TextFileEditor::~TextFileEditor() {
-
+TextFileEditor::~TextFileEditor()
+{
+	ContentView2::Manager::self()->cache()->unregisterPath(m_uuid);
+	ContentView2::Manager::self()->cache()->wait();
+	delete m_model;
 }
 
-void TextFileEditor::initObjects() {
-	// Set filter event layout.
-	if( ! m_view )
-		m_view = new XinxCodeEdit( this );
-	else
-		m_view->setParent( this );
+void TextFileEditor::initObjects()
+{
+	m_buffer = new QBuffer(this);
+	m_uuid   = QUuid::createUuid().toString();
+	m_file   = ContentView2::FileContainer(XINXProjectManager::self()->project(), m_uuid, false);
+	ContentView2::Manager::self()->cache()->registerPath(m_uuid);
 
-	setContextMenuPolicy( Qt::DefaultContextMenu );
-	m_view->setContextMenuPolicy( Qt::NoContextMenu );
-	m_view->editor()->setContextMenuPolicy( Qt::NoContextMenu );
+	m_keyTimer = new QTimer();
+	m_keyTimer->setSingleShot(true);
+	m_keyTimer->setInterval(XINXConfig::self()->config().editor.automaticModelRefreshTimeout);
+	connect(m_keyTimer, SIGNAL(timeout()), this, SLOT(updateModel()));
+
+	// Set filter event layout.
+	if (! m_view)
+		m_view = new XinxCodeEdit(this);
+	else
+		m_view->setParent(this);
+
+	setContextMenuPolicy(Qt::DefaultContextMenu);
+	m_view->setContextMenuPolicy(Qt::NoContextMenu);
+	m_view->editor()->setContextMenuPolicy(Qt::NoContextMenu);
 	//installEventFilter( this );
 	//m_view->installEventFilter( this );
 
-	SnipetCompletionNodeModel * completionModel = new SnipetCompletionNodeModel( 0, this );
+	m_bookmarkInterface = new BookmarkTextEditorInterface(this);
+	m_bookmarkInterface->setTextEditor(m_view);
 
-	QCompleter * completer = new QCompleter( textEdit() );
-	completer->setModel( completionModel );
-	textEdit()->setCompleter( completer );
+	connect(m_view, SIGNAL(copyAvailable(bool)), this, SIGNAL(copyAvailable(bool)));
+	connect(m_view, SIGNAL(copyAvailable(bool)), this, SIGNAL(selectionAvailable(bool)));
+	connect(m_view, SIGNAL(undoAvailable(bool)), this, SIGNAL(undoAvailable(bool)));
+	connect(m_view, SIGNAL(redoAvailable(bool)), this, SIGNAL(redoAvailable(bool)));
 
-	m_bookmarkInterface = new BookmarkTextEditorInterface( this );
-	m_bookmarkInterface->setTextEditor( m_view );
+	connect(m_view->editor(), SIGNAL(contentModified(bool)), this, SLOT(setModified(bool)));
+	connect(textEdit()->document(), SIGNAL(contentsChanged()), this, SLOT(textChanged()));
 
-	connect( m_view, SIGNAL(copyAvailable(bool)), this, SIGNAL(copyAvailable(bool)) );
-	connect( m_view, SIGNAL(copyAvailable(bool)), this, SIGNAL(selectionAvailable(bool)) );
-	connect( m_view, SIGNAL(undoAvailable(bool)), this, SIGNAL(undoAvailable(bool)) );
-	connect( m_view, SIGNAL(redoAvailable(bool)), this, SIGNAL(redoAvailable(bool)) );
+	connect(m_view, SIGNAL(searchWord(QString)), this, SLOT(searchWord(QString)));
 
-	connect( m_view->editor(), SIGNAL(contentModified(bool)), this, SLOT(setModified(bool)) );
-	connect( m_view->document(), SIGNAL(contentsChanged()), this, SIGNAL(contentChanged()) );
+	m_model = new ContentView2::TreeModel(ContentView2::Manager::self()->database(), m_file, this);
 
-	connect( m_view, SIGNAL( searchWord(QString) ), this, SLOT( searchWord(QString) ) );
+	connect(ContentView2::Manager::self()->cache(), SIGNAL(cacheLoaded(ContentView2::File)), this, SLOT(updateImports(ContentView2::File)));
 }
 
-void TextFileEditor::initLayout() {
+ContentView2::CompletionModel * TextFileEditor::createModel(QSqlDatabase db, QObject * parent)
+{
+	return new ContentView2::CompletionModel(db, m_file, parent);
+}
+
+void TextFileEditor::initCompleter()
+{
+	m_completionModel = createModel(ContentView2::Manager::self()->database(), this);
+	connect(ContentView2::Manager::self()->cache(), SIGNAL(cacheLoaded()), m_completionModel, SLOT(select()));
+
+	QCompleter * completer = new QCompleter(textEdit());
+	completer->setModel(m_completionModel);
+	textEdit()->setCompleter(completer);
+}
+
+void TextFileEditor::initLayout()
+{
 	QHBoxLayout * hbox = new QHBoxLayout;
-	hbox->addWidget( m_view );
+	hbox->addWidget(m_view);
 
-	hbox->setMargin( 0 );
+	hbox->setMargin(0);
 
-	setLayout( hbox );
+	setLayout(hbox);
 }
 
-BookmarkEditorInterface * TextFileEditor::bookmarkInterface() {
+BookmarkEditorInterface * TextFileEditor::bookmarkInterface()
+{
 	return m_bookmarkInterface;
 }
 
-BookmarkTextEditorInterface * TextFileEditor::bookmarkTextInterface() {
+BookmarkTextEditorInterface * TextFileEditor::bookmarkTextInterface()
+{
 	return m_bookmarkInterface;
 }
 
-XinxCodeEdit * TextFileEditor::textEdit() const {
+XinxCodeEdit * TextFileEditor::textEdit() const
+{
 	return m_view;
 }
 
-QString TextFileEditor::defaultFileName() const {
-	return tr( "noname.txt" );
+QString TextFileEditor::defaultFileName() const
+{
+	return tr("noname.txt");
 }
 
-void TextFileEditor::selectAll() {
+void TextFileEditor::selectAll()
+{
 	textEdit()->editor()->selectAll();
 }
 
-void TextFileEditor::loadFromFile( const QString & fileName ) {
-	AbstractEditor::loadFromFile( fileName );
-	textEdit()->setFilename( fileName );
+void TextFileEditor::loadFromFile(const QString & fileName)
+{
+	AbstractEditor::loadFromFile(fileName);
+	textEdit()->setFilename(fileName);
 }
 
-void TextFileEditor::saveToFile( const QString & fileName ) {
-	AbstractEditor::saveToFile( fileName );
-	textEdit()->setFilename( fileName );
+void TextFileEditor::saveToFile(const QString & fileName)
+{
+	AbstractEditor::saveToFile(fileName);
+	textEdit()->setFilename(fileName);
 }
 
-void TextFileEditor::loadFromDevice( QIODevice & d ) {
+void TextFileEditor::loadFromDevice(QIODevice & d)
+{
+	m_keyTimer->stop();
+
 	// Get the EOL of the file.
 	char c;
-	while( d.getChar( &c ) ) {
-		if( c == '\r' ) {
+	while (d.getChar(&c))
+	{
+		if (c == '\r')
+		{
 			m_eol = MacEndOfLine;
-			if( d.getChar( &c ) && ( c == '\n' ) ) {
+			if (d.getChar(&c) && (c == '\n'))
+			{
 				m_eol = WindowsEndOfLine;
 			}
 			break;
-		} else if( c == '\n' ) {
+		}
+		else if (c == '\n')
+		{
 			m_eol = UnixEndOfLine;
 			break;
 		}
@@ -157,184 +208,291 @@ void TextFileEditor::loadFromDevice( QIODevice & d ) {
 
 	d.reset();
 
-	QTextStream text( &d );
-	text.setCodec( codec() );
+	QTextStream text(&d);
+	text.setCodec(codec());
 
 	QString textBuffer = text.readAll();
-	if( m_eol == MacEndOfLine ) {
-		textBuffer.replace( "\r", "\n" );
+	if (m_eol == MacEndOfLine)
+	{
+		textBuffer.replace("\r", "\n");
 	}
-	m_view->setPlainText( textBuffer );
+	m_view->setPlainText(textBuffer);
+
+	updateModel();
 }
 
-void TextFileEditor::saveToDevice( QIODevice & d ) {
-	if( XINXConfig::self()->config().editor.autoindentOnSaving ) autoIndent();
+void TextFileEditor::saveToDevice(QIODevice & d)
+{
+	if (XINXConfig::self()->config().editor.autoindentOnSaving) autoIndent();
 	m_eol = DEFAULT_EOL; // Don't conserve the EOL
-	d.setTextModeEnabled( true );
-	QTextStream text( &d );
-	text.setCodec( codec() ); // Use the real codec on save
+	d.setTextModeEnabled(true);
+	QTextStream text(&d);
+	text.setCodec(codec());   // Use the real codec on save
 	text << m_view->toPlainText();
 }
 
-void TextFileEditor::setModified( bool isModified ) {
-	m_view->setModified( isModified );
-	AbstractEditor::setModified( isModified );
+void TextFileEditor::setModified(bool isModified)
+{
+	m_view->setModified(isModified);
+	AbstractEditor::setModified(isModified);
 }
 
-QAbstractItemModel * TextFileEditor::model()  const {
-	return 0;
+QAbstractItemModel * TextFileEditor::model()  const
+{
+	return contentViewModel();
 }
 
-void TextFileEditor::initSearch( SearchOptions & options ) {
+ContentView2::TreeModel * TextFileEditor::contentViewModel() const
+{
+	return m_model;
+}
+
+void TextFileEditor::initSearch(SearchOptions & options)
+{
 	m_cursorStart = textEdit()->textCursor();
 	m_cursorEnd   = QDocumentCursor();
 
 	QDocumentCursor selectionStart = m_cursorStart.selectionStart(),
-	    		selectionEnd   = m_cursorStart.selectionEnd();
+	                                 selectionEnd   = m_cursorStart.selectionEnd();
 
-	if( options.testFlag( SEARCH_FROM_START ) ) {
-		if( ! options.testFlag( BACKWARD ) )
-			m_cursorStart.movePosition( 1, QDocumentCursor::Start, QDocumentCursor::MoveAnchor );
+	if (options.testFlag(SEARCH_FROM_START))
+	{
+		if (! options.testFlag(BACKWARD))
+			m_cursorStart.movePosition(1, QDocumentCursor::Start, QDocumentCursor::MoveAnchor);
 		else
-			m_cursorStart.movePosition( 1, QDocumentCursor::End, QDocumentCursor::MoveAnchor );
-		options &= ~ SearchOptions( SEARCH_FROM_START );
-	} else if( options.testFlag( ONLY_SELECTION ) && ! options.testFlag( BACKWARD ) ) {
-		m_cursorStart.moveTo( selectionStart );
+			m_cursorStart.movePosition(1, QDocumentCursor::End, QDocumentCursor::MoveAnchor);
+		options &= ~ SearchOptions(SEARCH_FROM_START);
+	}
+	else if (options.testFlag(ONLY_SELECTION) && ! options.testFlag(BACKWARD))
+	{
+		m_cursorStart.moveTo(selectionStart);
 		m_cursorEnd   = m_cursorStart;
-		m_cursorEnd.movePosition( selectionEnd.position() - selectionStart.position(), QDocumentCursor::Right, QDocumentCursor::MoveAnchor );
-	} else if( options.testFlag( ONLY_SELECTION ) && options.testFlag( BACKWARD ) ) {
-		m_cursorStart.moveTo( selectionEnd );
+		m_cursorEnd.movePosition(selectionEnd.position() - selectionStart.position(), QDocumentCursor::Right, QDocumentCursor::MoveAnchor);
+	}
+	else if (options.testFlag(ONLY_SELECTION) && options.testFlag(BACKWARD))
+	{
+		m_cursorStart.moveTo(selectionEnd);
 		m_cursorEnd   = m_cursorStart;
-		m_cursorEnd.movePosition( selectionEnd.position() - selectionStart.position(), QDocumentCursor::Left, QDocumentCursor::MoveAnchor );
-	} else if( options.testFlag( BACKWARD ) ) {
-		m_cursorStart.moveTo( selectionStart );
+		m_cursorEnd.movePosition(selectionEnd.position() - selectionStart.position(), QDocumentCursor::Left, QDocumentCursor::MoveAnchor);
+	}
+	else if (options.testFlag(BACKWARD))
+	{
+		m_cursorStart.moveTo(selectionStart);
 	}
 
-	textEdit()->setTextCursor( m_cursorStart );
+	textEdit()->setTextCursor(m_cursorStart);
 }
 
-bool TextFileEditor::find( const QString & text, SearchOptions options ) {
+bool TextFileEditor::find(const QString & text, SearchOptions options)
+{
 	QDocumentCursor finded, tc = m_cursorStart;
 
-	if( options.testFlag( BACKWARD ) )
-		tc.moveTo( tc.selectionStart() );
+	if (options.testFlag(BACKWARD))
+		tc.moveTo(tc.selectionStart());
 	else
-		tc.moveTo( tc.selectionEnd() );
+		tc.moveTo(tc.selectionEnd());
 
 	XinxCodeEdit::FindFlags flags;
-	if( options.testFlag( BACKWARD ) ) flags ^= XinxCodeEdit::FindBackward;
-	if( options.testFlag( MATCH_CASE ) ) flags ^= XinxCodeEdit::FindCaseSensitively;
-	if( options.testFlag( WHOLE_WORDS ) ) flags ^= XinxCodeEdit::FindWholeWords;
+	if (options.testFlag(BACKWARD)) flags ^= XinxCodeEdit::FindBackward;
+	if (options.testFlag(MATCH_CASE)) flags ^= XinxCodeEdit::FindCaseSensitively;
+	if (options.testFlag(WHOLE_WORDS)) flags ^= XinxCodeEdit::FindWholeWords;
 
-	if( options.testFlag( REGULAR_EXPRESSION ) ) {
-		finded = textEdit()->find( QRegExp( text ), tc, flags );
-	} else {
-		finded = textEdit()->find( text, tc, flags );
+	if (options.testFlag(REGULAR_EXPRESSION))
+	{
+		finded = textEdit()->find(QRegExp(text), tc, flags);
+	}
+	else
+	{
+		finded = textEdit()->find(text, tc, flags);
 	}
 
-	if( ! finded.isNull() ) {
-		if( options.testFlag( ONLY_SELECTION  ) ) {
-			if( (! options.testFlag( BACKWARD )) && ( m_cursorEnd < finded ) ) {
+	if (! finded.isNull())
+	{
+		if (options.testFlag(ONLY_SELECTION))
+		{
+			if ((! options.testFlag(BACKWARD)) && (m_cursorEnd < finded))
+			{
 				return false;
-			} else if( options.testFlag( BACKWARD ) && ( finded < m_cursorEnd ) ) {
+			}
+			else if (options.testFlag(BACKWARD) && (finded < m_cursorEnd))
+			{
 				return false;
 			}
 		}
 
 		m_cursorStart = finded;
-		textEdit()->setTextCursor( finded );
+		textEdit()->setTextCursor(finded);
 	}
 
 	return !finded.isNull();
 }
 
-void TextFileEditor::replace( const QString & from, const QString & to, SearchOptions options ) {
-	Q_ASSERT( ! m_cursorStart.isNull() );
+void TextFileEditor::replace(const QString & from, const QString & to, SearchOptions options)
+{
+	Q_ASSERT(! m_cursorStart.isNull());
 
-	if( ! options.testFlag( REGULAR_EXPRESSION ) ) {
+	if (! options.testFlag(REGULAR_EXPRESSION))
+	{
 		m_cursorStart.removeSelectedText();
-		m_cursorStart.insertText( to );
+		m_cursorStart.insertText(to);
 		return;
 	}
 
-	QRegExp	expression( from );
-	expression.indexIn( m_cursorStart.selectedText() );
+	QRegExp	expression(from);
+	expression.indexIn(m_cursorStart.selectedText());
 	QStringList list = expression.capturedTexts();
-	QString result( to );
+	QString result(to);
 	int index = 1;
 
 	QStringList::iterator it = list.begin();
-	while (it != list.end()) {
+	while (it != list.end())
+	{
 		result = result.replace(QString("\\%1").arg(index), *it);
-		it++; index++;
+		it++;
+		index++;
 	}
 
 	m_cursorStart.removeSelectedText();
-	m_cursorStart.insertText( result );
+	m_cursorStart.insertText(result);
 
 }
 
-void TextFileEditor::updateModel() {
-	// Do nothing
+ContentView2::Parser * TextFileEditor::createParser()
+{
+	return 0;
 }
 
-QTextCodec * TextFileEditor::codec() const {
-	QTextCodec * c = QTextCodec::codecForName( XINXConfig::self()->config().editor.defaultTextCodec.toAscii() );
-	if( c ) return c;
-	return QTextCodec::codecForLocale();
+void TextFileEditor::updateModel()
+{
+	ContentView2::Parser * parser = createParser();
+	if (! parser) return ;
+
+	m_buffer->close();
+	if (codec())
+	{
+		m_buffer->setData(codec()->fromUnicode(textEdit()->toPlainText()));
+	}
+	else
+	{
+		m_buffer->setData(qPrintable(textEdit()->toPlainText()));
+	}
+	m_buffer->open(QBuffer::ReadOnly);
+
+	parser->setInputDevice(m_buffer);
+
+	ContentView2::Manager::self()->cache()->addToCache(XINXProjectManager::self()->project(), m_uuid, QString(), "M", parser);
+
+	emit contentChanged();
 }
 
-TextFileEditor::EndOfLineType TextFileEditor::eol() const {
-	return m_eol;
+void TextFileEditor::textChanged()
+{
+	m_keyTimer->start();
 }
 
-bool TextFileEditor::autoIndent() {
-	addNewErrorMessages( -1, tr("Can't indent this type of document"), WARNING_MESSAGE );
-	return false;
-}
-
-void TextFileEditor::complete() {
-	QDocumentCursor cursor = textEdit()->textCursor();
-
-	QString completionPrefix = textEdit()->textUnderCursor(cursor);
-
-	QCompleter * c = textEdit()->completer();
-
-	if( c ) {
-		if( completionPrefix != c->completionPrefix() ) {
-		    c->setCompletionPrefix( completionPrefix );
-			c->popup()->setCurrentIndex( c->completionModel()->index(0, 0) );
-		}
-
-		int x, y, h, w;
-		QPoint pos = textEdit()->editor()->mapFromContents( textEdit()->textCursor().documentPosition() );
-		textEdit()->editor()->getPanelMargins( &x, &y, &h, &w );
-		QRect cr( pos.x() + x, pos.y() + textEdit()->document()->fontMetrics().height(), 1, 1 );
-
-		cr.setWidth( c->popup()->sizeHintForColumn(0) + c->popup()->verticalScrollBar()->sizeHint().width() );
-		c->complete( cr );
+void TextFileEditor::updateImports(const ContentView2::File & file)
+{
+	if ((file.path() == m_uuid) && (!file.isCached()))
+	{
+		m_file.reload(ContentView2::Manager::self()->database());
+		m_model->select();
 	}
 }
 
-void TextFileEditor::contextMenuEvent( QContextMenuEvent * contextMenuEvent ) {
-	QMenu * menu = new QMenu( m_view );
+ContentView2::FileContainer TextFileEditor::fileContainer() const
+{
+	return m_file;
+}
 
-	foreach( XinxPluginElement * e, XinxPluginsLoader::self()->plugins() ) {
+QTextCodec * TextFileEditor::codec() const
+{
+	if (m_codec)
+	{
+		return m_codec;
+	}
+	else
+	{
+		QTextCodec * c = QTextCodec::codecForName(XINXConfig::self()->config().editor.defaultTextCodec.toAscii());
+		if (c) return c;
+		return QTextCodec::codecForLocale();
+	}
+}
+
+TextFileEditor::EndOfLineType TextFileEditor::eol() const
+{
+	return m_eol;
+}
+
+bool TextFileEditor::autoIndent()
+{
+	addNewErrorMessages(-1, tr("Can't indent this type of document"), WARNING_MESSAGE);
+	return false;
+}
+
+ContentView2::Node TextFileEditor::rootNode() const
+{
+	if(m_file.isValid(ContentView2::Manager::self()->database()))
+	{
+		int rootId = m_file.file(ContentView2::Manager::self()->database()).rootId();
+		return ContentView2::Node(ContentView2::Manager::self()->database(), rootId);
+	}
+	else
+	{
+		return ContentView2::Node();
+	}
+}
+
+void TextFileEditor::complete()
+{
+	QDocumentCursor cursor = textEdit()->textCursor();
+
+	QString completionPrefix = textEdit()->textUnderCursor(cursor);
+	QCompleter * c = textEdit()->completer();
+
+	if (c)
+	{
+		if (completionPrefix != c->completionPrefix())
+		{
+			m_completionModel->setPrefix(completionPrefix);
+			c->setCompletionPrefix(completionPrefix);
+			c->popup()->setCurrentIndex(c->completionModel()->index(0, 0));
+		}
+
+		int x, y, h, w;
+		QPoint pos = textEdit()->editor()->mapFromContents(textEdit()->textCursor().documentPosition());
+		textEdit()->editor()->getPanelMargins(&x, &y, &h, &w);
+		QRect cr(pos.x() + x, pos.y() + textEdit()->document()->fontMetrics().height(), 1, 1);
+
+		cr.setWidth(c->popup()->sizeHintForColumn(0) + c->popup()->verticalScrollBar()->sizeHint().width());
+		c->complete(cr);
+	}
+}
+
+void TextFileEditor::contextMenuEvent(QContextMenuEvent * contextMenuEvent)
+{
+	QMenu * menu = new QMenu(m_view);
+
+	foreach(XinxPluginElement * e, XinxPluginsLoader::self()->plugins())
+	{
 
 		// Si le plugin est activé
-		if( e->isActivated() && qobject_cast<IXinxPlugin*>( e->plugin() ) ) {
-			XinxAction::MenuList menuList = qobject_cast<IXinxPlugin*>( e->plugin() )->actions();
+		if (e->isActivated() && qobject_cast<IXinxPlugin*>(e->plugin()))
+		{
+			XinxAction::MenuList menuList = qobject_cast<IXinxPlugin*>(e->plugin())->actions();
 
 			// Pour chaque menu
-			foreach( const XinxAction::ActionList & aMenu, menuList ) {
+			foreach(const XinxAction::ActionList & aMenu, menuList)
+			{
 
 				// Pour chaque élemént du menu
-				foreach( XinxAction::MenuItem * item, aMenu ) {
-					XinxAction::Action* xinxAction = dynamic_cast<XinxAction::Action*>( item );
-					if( xinxAction && xinxAction->isInPopupMenu() ) {
+				foreach(XinxAction::MenuItem * item, aMenu)
+				{
+					XinxAction::Action* xinxAction = dynamic_cast<XinxAction::Action*>(item);
+					if (xinxAction && xinxAction->isInPopupMenu())
+					{
 						xinxAction->updateActionState();
 
-						menu->addAction( xinxAction->action() );
+						menu->addAction(xinxAction->action());
 					}
 				}
 
@@ -342,99 +500,117 @@ void TextFileEditor::contextMenuEvent( QContextMenuEvent * contextMenuEvent ) {
 			}
 		}
 	}
-	
-	menu->addAction( undoAction() );
-	menu->addAction( redoAction() );
-	menu->addSeparator();
-	menu->addAction( cutAction() );
-	menu->addAction( copyAction() );
-	menu->addAction( pasteAction() );
 
-	menu->exec( contextMenuEvent->globalPos() );
+	menu->addAction(undoAction());
+	menu->addAction(redoAction());
+	menu->addSeparator();
+	menu->addAction(cutAction());
+	menu->addAction(copyAction());
+	menu->addAction(pasteAction());
+
+	menu->exec(contextMenuEvent->globalPos());
 	delete menu;
 }
 
-void TextFileEditor::searchWord( const QString & ) {
-	addNewErrorMessages( -1, tr("Not implemented"), WARNING_MESSAGE );
+void TextFileEditor::searchWord(const QString &)
+{
+	addNewErrorMessages(-1, tr("Not implemented"), WARNING_MESSAGE);
 }
 
-void TextFileEditor::serialize( XinxProjectSessionEditor * data, bool content ) {
-	AbstractEditor::serialize( data, content );
+void TextFileEditor::serialize(XinxProjectSessionEditor * data, bool content)
+{
+	AbstractEditor::serialize(data, content);
 
-	data->writeProperty( "Position", QVariant( m_view->textCursor().position() ) );
+	data->writeProperty("Position", QVariant(m_view->textCursor().position()));
 
-	if( content && isModified() ) {
-		data->writeProperty( "Content", QVariant( m_view->toPlainText() ) );
+	if (content && isModified())
+	{
+		data->writeProperty("Content", QVariant(m_view->toPlainText()));
 	}
 
 	int i = 0;
-	foreach( int line, m_view->listOfBookmark() ) {
-		data->writeProperty( QString( "Bookmark_%1" ).arg( i++ ), QVariant( line ) );
+	foreach(int line, m_view->listOfBookmark())
+	{
+		data->writeProperty(QString("Bookmark_%1").arg(i++), QVariant(line));
 	}
-	data->writeProperty( "BookmarkCount", QVariant( i ) );
+	data->writeProperty("BookmarkCount", QVariant(i));
 }
 
-void TextFileEditor::deserialize( XinxProjectSessionEditor * data ) {
+void TextFileEditor::deserialize(XinxProjectSessionEditor * data)
+{
 	int position = 0;
 	QString text;
 
-	position  = data->readProperty( "Position" ) .toInt();
-	text = data->readProperty( "Content" ).toString();
+	position  = data->readProperty("Position") .toInt();
+	text = data->readProperty("Content").toString();
 
-	if( ! text.isEmpty() ) {
-		m_view->setPlainText( text );
+	if (! text.isEmpty())
+	{
+		m_view->setPlainText(text);
 
-		AbstractEditor::deserialize( data );
-	} else {
-		AbstractEditor::deserialize( data );
-
-		if( ! lastFileName().isEmpty() )
-			loadFromFile( lastFileName() );
+		AbstractEditor::deserialize(data);
 	}
-	m_view->setFilename( lastFileName() );
+	else
+	{
+		AbstractEditor::deserialize(data);
 
-	int bc = data->readProperty( "BookmarkCount" ).toInt();
-	for( int i = 0 ; i < bc; i++ ) {
-		m_bookmarkInterface->setBookmark( data->readProperty( QString( "Bookmark_%1" ).arg( i ) ).toInt(), true );
+		if (! lastFileName().isEmpty())
+			loadFromFile(lastFileName());
+	}
+	m_view->setFilename(lastFileName());
+
+	int bc = data->readProperty("BookmarkCount").toInt();
+	for (int i = 0 ; i < bc; i++)
+	{
+		m_bookmarkInterface->setBookmark(data->readProperty(QString("Bookmark_%1").arg(i)).toInt(), true);
 	}
 
-	QDocumentCursor tc( textEdit()->editor()->document() );
-	tc.movePosition( position, QDocumentCursor::Right );
-	m_view->setTextCursor( tc );
+	QDocumentCursor tc(textEdit()->editor()->document());
+	tc.movePosition(position, QDocumentCursor::Right);
+	m_view->setTextCursor(tc);
 }
 
-bool TextFileEditor::canCopy() {
+bool TextFileEditor::canCopy()
+{
 	return textEdit()->textCursor().hasSelection();
 }
 
-bool TextFileEditor::canPaste() {
+bool TextFileEditor::canPaste()
+{
 	return textEdit()->canPaste();
 }
 
-bool TextFileEditor::canUndo() {
+bool TextFileEditor::canUndo()
+{
 	return textEdit()->editor()->canUndo();
 }
 
-bool TextFileEditor::canRedo() {
+bool TextFileEditor::canRedo()
+{
 	return textEdit()->editor()->canRedo();
 }
 
-void TextFileEditor::undo() {
+void TextFileEditor::undo()
+{
 	textEdit()->editor()->undo();
 }
 
-void TextFileEditor::redo() {
+void TextFileEditor::redo()
+{
 	textEdit()->editor()->redo();
 }
 
-void TextFileEditor::cut() {
+void TextFileEditor::cut()
+{
 	textEdit()->editor()->cut();
 }
 
-void TextFileEditor::copy() {
+void TextFileEditor::copy()
+{
 	textEdit()->editor()->copy();
 }
 
-void TextFileEditor::paste() {
+void TextFileEditor::paste()
+{
 	textEdit()->editor()->paste();
 }

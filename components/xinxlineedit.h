@@ -38,81 +38,83 @@
 #include <QPainter>
 #include <QPaintEvent>
 
-class XinxLineEditButton : public QWidget {
+class XinxLineEditButton : public QWidget
+{
 	Q_OBJECT
 public:
-	XinxLineEditButton( QWidget *parent );
+	XinxLineEditButton(QWidget *parent);
 
 	QSize sizeHint() const;
 
-	void setPixmap( const QPixmap & p );
+	void setPixmap(const QPixmap & p);
 	QPixmap pixmap();
 
 protected:
-	void paintEvent( QPaintEvent *event );
+	void paintEvent(QPaintEvent *event);
 
 private:
 	QPixmap m_pixmap;
 };
 
-class XinxLineEdit : public QLineEdit {
+class XinxLineEdit : public QLineEdit
+{
 	Q_OBJECT
 public:
 
-    /**
+	/**
 	 * Constructs a XinxLineEdit object with a default text, a parent,
-     * and a name.
-     *
-     * @param string Text to be shown in the edit widget.
-     * @param parent The parent widget of the line edit.
-     */
-	explicit XinxLineEdit( const QString &string, QWidget *parent = 0 );
+	 * and a name.
+	 *
+	 * @param string Text to be shown in the edit widget.
+	 * @param parent The parent widget of the line edit.
+	 */
+	explicit XinxLineEdit(const QString &string, QWidget *parent = 0);
 
-    /**
-     * Constructs a line edit
-     * @param parent The parent widget of the line edit.
-     */
-	explicit XinxLineEdit( QWidget *parent = 0 );
+	/**
+	 * Constructs a line edit
+	 * @param parent The parent widget of the line edit.
+	 */
+	explicit XinxLineEdit(QWidget *parent = 0);
 
-    /**
-     *  Destructor.
-     */
-	virtual ~XinxLineEdit ();
+	/**
+	 *  Destructor.
+	 */
+	virtual ~XinxLineEdit();
 
 
 Q_SIGNALS:
-    /**
-     * Emitted when the user clicked on the clear button
-     */
-    void clearButtonClicked();
+	/**
+	 * Emitted when the user clicked on the clear button
+	 */
+	void clearButtonClicked();
 protected:
-    /**
-    * Re-implemented for internal reasons.  API not affected.
-    *
-    * See QLineEdit::resizeEvent().
-    */
-    virtual void resizeEvent( QResizeEvent * );
+	/**
+	* Re-implemented for internal reasons.  API not affected.
+	*
+	* See QLineEdit::resizeEvent().
+	*/
+	virtual void resizeEvent(QResizeEvent *);
 
-    /**
-    * Re-implemented for internal reasons.  API not affected.
-    *
-    * See QLineEdit::mousePressEvent().
-    */
-    virtual void mousePressEvent( QMouseEvent * );
+	/**
+	* Re-implemented for internal reasons.  API not affected.
+	*
+	* See QLineEdit::mousePressEvent().
+	*/
+	virtual void mousePressEvent(QMouseEvent *);
 
-    /**
-    * Re-implemented for internal reasons.  API not affected.
-    *
-    * See QLineEdit::mouseReleaseEvent().
-    */
-    virtual void mouseReleaseEvent( QMouseEvent * );
+	/**
+	* Re-implemented for internal reasons.  API not affected.
+	*
+	* See QLineEdit::mouseReleaseEvent().
+	*/
+	virtual void mouseReleaseEvent(QMouseEvent *);
 
 private Q_SLOTS:
-    void updateClearButtonIcon(const QString&);
+	void updateClearButtonIcon(const QString&);
 
 private:
-    void init();
-    void updateClearButton();
+	void init();
+	void updateClearButton();
 
 	bool clickInClear;
 	bool wideEnoughForClear;

@@ -21,23 +21,27 @@
 #include "snipets/categorytreeview.h"
 #include "snipets/categoryitemmodel.h"
 
-CategoryTreeView::CategoryTreeView( QWidget * parent ) : QTreeView( parent ) {
+CategoryTreeView::CategoryTreeView(QWidget * parent) : QTreeView(parent)
+{
 }
 
-CategoryTreeView::~CategoryTreeView() {
+CategoryTreeView::~CategoryTreeView()
+{
 }
 
-int CategoryTreeView::categoryId() {
+int CategoryTreeView::categoryId()
+{
 	QModelIndexList indexes = selectedIndexes();
-	if( indexes.count() == 0 ) return -1;
+	if (indexes.count() == 0) return -1;
 
-	return indexes.at( 0 ).data( CategoryItemModel::CategoryIdRole ).toInt();
+	return indexes.at(0).data(CategoryItemModel::CategoryIdRole).toInt();
 }
 
-void CategoryTreeView::setCategoryId( int id ) {
-	CategoryItemModel * categoryModel = qobject_cast<CategoryItemModel*>( model() );
-	Q_ASSERT( categoryModel );
-	selectionModel()->select( QModelIndex(), QItemSelectionModel::Clear );
-	selectionModel()->select( categoryModel->index( id ), QItemSelectionModel::Select );
+void CategoryTreeView::setCategoryId(int id)
+{
+	CategoryItemModel * categoryModel = qobject_cast<CategoryItemModel*>(model());
+	Q_ASSERT(categoryModel);
+	selectionModel()->select(QModelIndex(), QItemSelectionModel::Clear);
+	selectionModel()->select(categoryModel->index(id), QItemSelectionModel::Select);
 }
 

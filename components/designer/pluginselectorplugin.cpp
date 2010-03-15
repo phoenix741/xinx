@@ -26,54 +26,66 @@
 
 /* PluginSelectorPlugin */
 
-PluginSelectorPlugin::PluginSelectorPlugin( QObject *parent ) : QObject( parent ) {
+PluginSelectorPlugin::PluginSelectorPlugin(QObject *parent) : QObject(parent)
+{
 	m_initialized = false;
 }
 
-void PluginSelectorPlugin::initialize( QDesignerFormEditorInterface *core ) {
-	if( m_initialized )
+void PluginSelectorPlugin::initialize(QDesignerFormEditorInterface *core)
+{
+	if (m_initialized)
 		return;
 
 	m_initialized = true;
 }
 
-bool PluginSelectorPlugin::isInitialized() const {
+bool PluginSelectorPlugin::isInitialized() const
+{
 	return m_initialized;
 }
 
-bool PluginSelectorPlugin::isContainer() const {
+bool PluginSelectorPlugin::isContainer() const
+{
 	return false;
 }
 
-QIcon PluginSelectorPlugin::icon() const {
+QIcon PluginSelectorPlugin::icon() const
+{
 	return QIcon();
 }
 
-QString PluginSelectorPlugin::toolTip() const {
+QString PluginSelectorPlugin::toolTip() const
+{
 	return "";
 }
 
-QString PluginSelectorPlugin::whatsThis() const {
+QString PluginSelectorPlugin::whatsThis() const
+{
 	return "";
 }
 
-QString PluginSelectorPlugin::group() const {
+QString PluginSelectorPlugin::group() const
+{
 	return "XINX Widget";
 }
 
-QString PluginSelectorPlugin::name() const {
+QString PluginSelectorPlugin::name() const
+{
 	return "PluginSelector";
 }
 
-QString PluginSelectorPlugin::includeFile() const {
+QString PluginSelectorPlugin::includeFile() const
+{
 	return "pluginselector.h";
 }
 
-QString PluginSelectorPlugin::domXml() const {
+QString PluginSelectorPlugin::domXml() const
+{
 	return  "<widget class=\"PluginSelector\" name=\"pluginSelector\"/>";
 }
 
-QWidget * PluginSelectorPlugin::createWidget( QWidget *parent ) {
-	return new PluginSelector( parent );
+QWidget * PluginSelectorPlugin::createWidget(QWidget *parent)
+{
+	return new PluginSelector(parent);
 }
 

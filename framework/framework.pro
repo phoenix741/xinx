@@ -46,16 +46,11 @@ HEADERS = rcs/rcs.h \
     editors/abstracteditor.h \
     editors/xinxcodeedit.h \
     editors/xinxcodeedit_p.h \
-    editors/contentviewtexteditor.h \
-    contentview/contentviewcache.h \
-    contentview/contentviewnode.h \
-    contentview/contentviewmodel.h \
-    contentview/contentviewparser.h \
-    contentview/completionnodemodel.h \
-    contentview/abstractcontentviewmodel.h \
     contentview2/contentview2cache.h \
     contentview2/contentview2node.h \
     contentview2/contentview2parser.h \
+    contentview2/contentview2treemodel.h \
+    contentview2/contentview2completionmodel.h \
     actions/actioninterface.h \
     editors/editormanager.h \
     snipets/snipet.h \
@@ -82,9 +77,10 @@ HEADERS = rcs/rcs.h \
     rcs/commitmessagedialogimpl.h \
     project/newprojecttemplate.h \
     snipets/snipetcompletionparser.h \
-    snipets/snipetcompletionnodemodel.h \
-    contentview2/contentview2treemodel.h \
-    contentview2/contentview2completionmodel.h
+    contentview2/contentview2manager.h \
+    contentview2/contentview2parserfactory.h \
+    contentview2/contentview2file.h \
+    contentview2/contentview2project.h
 SOURCES = rcs/rcs.cpp \
     plugins/xinxpluginsloader.cpp \
     plugins/xinxpluginelement.cpp \
@@ -104,16 +100,11 @@ SOURCES = rcs/rcs.cpp \
     editors/abstracteditor.cpp \
     editors/textfileeditor.cpp \
     editors/xinxcodeedit.cpp \
-    contentview/contentviewmodel.cpp \
-    contentview/contentviewnode.cpp \
-    contentview/contentviewparser.cpp \
-    contentview/contentviewcache.cpp \
-    contentview/abstractcontentviewmodel.cpp \
-    contentview/completionnodemodel.cpp \
     contentview2/contentview2cache.cpp \
     contentview2/contentview2node.cpp \
     contentview2/contentview2parser.cpp \
-    editors/contentviewtexteditor.cpp \
+    contentview2/contentview2treemodel.cpp \
+    contentview2/contentview2completionmodel.cpp \
     actions/actioninterface.cpp \
     editors/editormanager.cpp \
     snipets/snipet.cpp \
@@ -140,9 +131,10 @@ SOURCES = rcs/rcs.cpp \
     rcs/commitmessagedialogimpl.cpp \
     project/newprojecttemplate.cpp \
     snipets/snipetcompletionparser.cpp \
-    snipets/snipetcompletionnodemodel.cpp \
-    contentview2/contentview2treemodel.cpp \
-    contentview2/contentview2completionmodel.cpp
+    contentview2/contentview2manager.cpp \
+    contentview2/contentview2parserfactory.cpp \
+    contentview2/contentview2file.cpp \
+    contentview2/contentview2project.cpp
 FORMS = snipets/callsnipetdlg.ui \
     snipets/snipetpropertydlg.ui \
     snipets/categorypropertydlg.ui \

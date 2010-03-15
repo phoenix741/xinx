@@ -27,47 +27,55 @@
 
 /* DirectoryEditDelegate */
 
-DirectoryEditDelegate::DirectoryEditDelegate( QObject *parent ) : QItemDelegate( parent ) {
+DirectoryEditDelegate::DirectoryEditDelegate(QObject *parent) : QItemDelegate(parent)
+{
 }
 
-QWidget * DirectoryEditDelegate::createEditor( QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index ) const {
-	Q_UNUSED( option );
-	Q_UNUSED( index );
-	DirectoryEditWidget * editor = new DirectoryEditWidget( parent );
-	editor->setDirectory( false );
+QWidget * DirectoryEditDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+	Q_UNUSED(option);
+	Q_UNUSED(index);
+	DirectoryEditWidget * editor = new DirectoryEditWidget(parent);
+	editor->setDirectory(false);
 	editor->layout()->setSpacing(0);
-    return editor;
+	return editor;
 }
 
-void DirectoryEditDelegate::setEditorData( QWidget *editor, const QModelIndex &index ) const {
-    QString value = index.model()->data( index, Qt::EditRole ).toString();
-    DirectoryEdit * directoryEdit = qobject_cast<DirectoryEditWidget*>( editor )->lineEdit();
-    directoryEdit->setText( QDir::toNativeSeparators( value ) );
-    directoryEdit->setFocus();
+void DirectoryEditDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
+{
+	QString value = index.model()->data(index, Qt::EditRole).toString();
+	DirectoryEdit * directoryEdit = qobject_cast<DirectoryEditWidget*>(editor)->lineEdit();
+	directoryEdit->setText(QDir::toNativeSeparators(value));
+	directoryEdit->setFocus();
 }
 
-void DirectoryEditDelegate::setModelData( QWidget *editor, QAbstractItemModel *model, const QModelIndex &index ) const {
-    DirectoryEdit * directoryEdit = qobject_cast<DirectoryEditWidget*>( editor )->lineEdit();
-    QString value = directoryEdit->text();
+void DirectoryEditDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
+{
+	DirectoryEdit * directoryEdit = qobject_cast<DirectoryEditWidget*>(editor)->lineEdit();
+	QString value = directoryEdit->text();
 
-    model->setData( index, QDir::fromNativeSeparators( value ), Qt::EditRole );
+	model->setData(index, QDir::fromNativeSeparators(value), Qt::EditRole);
 }
 
-void DirectoryEditDelegate::updateEditorGeometry( QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index ) const {
-	Q_UNUSED( index );
-	editor->setGeometry( option.rect );
+void DirectoryEditDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+	Q_UNUSED(index);
+	editor->setGeometry(option.rect);
 }
 
-void DirectoryEditDelegate::paint( QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index ) const {
-	if( index.column() == 1 ) {
-		QString value = index.model()->data( index, Qt::DisplayRole ).toString();
+void DirectoryEditDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+	if (index.column() == 1)
+	{
+		QString value = index.model()->data(index, Qt::DisplayRole).toString();
 
 		painter->save();
 		QStyleOptionViewItem o = option;
-		if( ! QFile( value ).exists() )
-			o.palette.setColor( QPalette::Text, Qt::red );
-		drawDisplay( painter, o, option.rect, value );
+		if (! QFile(value).exists())
+			o.palette.setColor(QPalette::Text, Qt::red);
+		drawDisplay(painter, o, option.rect, value);
 		painter->restore();
-	} else
-		QItemDelegate::paint( painter, option, index );
+	}
+	else
+		QItemDelegate::paint(painter, option, index);
 }

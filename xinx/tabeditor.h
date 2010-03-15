@@ -33,40 +33,41 @@ class QAbstractItemModel;
 class IFileTypePlugin;
 class QModelIndex;
 
-class TabEditor : public QTabWidget, public EditorManager {
+class TabEditor : public QTabWidget, public EditorManager
+{
 	Q_OBJECT
 public:
-	TabEditor( QWidget * parent = 0 );
+	TabEditor(QWidget * parent = 0);
 	virtual ~TabEditor();
 
-	void newEditor( IFileTypePlugin * interface = 0 );
-	void openFilename( const QString & filename );
+	void newEditor(IFileTypePlugin * interface = 0);
+	void openFilename(const QString & filename);
 
 	virtual AbstractEditor * currentEditor() const;
-	virtual AbstractEditor * editor( int index ) const;
-	virtual AbstractEditor * editor( const QString & filename ) const;
+	virtual AbstractEditor * editor(int index) const;
+	virtual AbstractEditor * editor(const QString & filename) const;
 	virtual QList<AbstractEditor*> editors() const;
 
 	virtual int editorsCount() const;
 
 	virtual void changeToNextEditor();
 	virtual void changeToPreviousEditor();
-	virtual void changeToEditor( int index );
+	virtual void changeToEditor(int index);
 
-	static bool isTextFileEditor( AbstractEditor * editor );
+	static bool isTextFileEditor(AbstractEditor * editor);
 
 	int getClickedTab();
 
-	void setRefreshAction( QAction * action );
-	void setSaveAction( QAction * action );
-	void setSaveAsAction( QAction * action );
-	void setCloseAction( QAction * action );
-	void setCopyFileNameAction( QAction * action );
-	void setCopyPathAction( QAction * action );
+	void setRefreshAction(QAction * action);
+	void setSaveAction(QAction * action);
+	void setSaveAsAction(QAction * action);
+	void setCloseAction(QAction * action);
+	void setCopyFileNameAction(QAction * action);
+	void setCopyPathAction(QAction * action);
 
-	void updateTabWidget( AbstractEditor * editor );
+	void updateTabWidget(AbstractEditor * editor);
 
-	void addTab( AbstractEditor * editor );
+	void addTab(AbstractEditor * editor);
 public slots:
 	void bookmark();
 	void nextBookmark();
@@ -97,41 +98,41 @@ public slots:
 	void complete();
 	void highlightWord();
 signals:
-	void undoAvailable( bool available );
-	void redoAvailable( bool available );
-	void copyAvailable( bool available );
-	void pasteAvailable( bool available );
+	void undoAvailable(bool available);
+	void redoAvailable(bool available);
+	void copyAvailable(bool available);
+	void pasteAvailable(bool available);
 
-	void textAvailable( bool available ); // For move, duplicate line, complete and select all
-	void hasTextSelection( bool selection ); // For Upper/Lower Case ; Comment/Uncomment
+	void textAvailable(bool available);   // For move, duplicate line, complete and select all
+	void hasTextSelection(bool selection);   // For Upper/Lower Case ; Comment/Uncomment
 
-	void modelChanged( QAbstractItemModel * model );
-	void positionChanged( const QModelIndex & index );
+	void modelChanged(QAbstractItemModel * model);
+	void positionChanged(const QModelIndex & index);
 
-	void fileOpened( const QString & filename );
-	void setEditorPosition( int, int );
+	void fileOpened(const QString & filename);
+	void setEditorPosition(int, int);
 	void contentChanged();
 
-	void messageTranslation( const QString & filename, int line, const QString & message, AbstractEditor::LevelMessage level );
-	void clearMessagesTranslation( const QString & filename );
+	void messageTranslation(const QString & filename, int line, const QString & message, AbstractEditor::LevelMessage level);
+	void clearMessagesTranslation(const QString & filename);
 protected:
-	bool eventFilter( QObject *obj, QEvent *event );
-	virtual void dragEnterEvent( QDragEnterEvent *event );
-	virtual void dropEvent( QDropEvent *event );
-	virtual void tabRemoved ( int index );
+	bool eventFilter(QObject *obj, QEvent *event);
+	virtual void dragEnterEvent(QDragEnterEvent *event);
+	virtual void dropEvent(QDropEvent *event);
+	virtual void tabRemoved(int index);
 private slots:
-	void slotTabCloseRequested( int index );
-	void slotCurrentTabChanged( int index );
+	void slotTabCloseRequested(int index);
+	void slotCurrentTabChanged(int index);
 	void slotModifiedChange();
 
 	void slotCursorPositionChanged();
 
-	void fileEditorOpen( const QString & name, int line );
+	void fileEditorOpen(const QString & name, int line);
 private:
-	void connectEditor( AbstractEditor * editor );
+	void connectEditor(AbstractEditor * editor);
 
-	int tabPositionIcon( QPoint point );
-	int tabPosition( QPoint point );
+	int tabPositionIcon(QPoint point);
+	int tabPosition(QPoint point);
 
 	QAction * m_refreshAction;
 	QAction * m_saveAction;

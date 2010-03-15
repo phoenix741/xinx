@@ -23,77 +23,92 @@
 
 /* GenerixProject */
 
-bool GenerixProject::isGenerixActivated() const {
-	return activatedPlugin().contains( "GenerixPlugin" );
+bool GenerixProject::isGenerixActivated() const
+{
+	return activatedPlugin().contains("GenerixPlugin");
 }
 
-void GenerixProject::setWebModuleLocation( const QString & value ) {
-	writeProperty( "generix.webModule", value );
+void GenerixProject::setWebModuleLocation(const QString & value)
+{
+	writeProperty("generix.webModule", value);
 }
 
-QString GenerixProject::webModuleLocation() const {
-	return readProperty( "generix.webModule" ).toString();
+QString GenerixProject::webModuleLocation() const
+{
+	return readProperty("generix.webModule").toString();
 }
 
-void GenerixProject::setDerivationsPath( const QList<GenerixProject::DerivationPath> & value ) {
-	writeProperty( "generix.derivationPath.count", value.count() );
+void GenerixProject::setDerivationsPath(const QList<GenerixProject::DerivationPath> & value)
+{
+	writeProperty("generix.derivationPath.count", value.count());
 	int i = 1;
-	foreach( const DerivationPath & dp, value ) {
-		writeProperty( QString("generix.derivationPath.%1.name").arg(i), dp.name );
-		writeProperty( QString("generix.derivationPath.%1.path").arg(i), dp.path );
-		writeProperty( QString("generix.derivationPath.%1.derivation").arg(i), dp.derivation );
-		writeProperty( QString("generix.derivationPath.%1.visible").arg(i), dp.visible );
+	foreach(const DerivationPath & dp, value)
+	{
+		writeProperty(QString("generix.derivationPath.%1.name").arg(i), dp.name);
+		writeProperty(QString("generix.derivationPath.%1.path").arg(i), dp.path);
+		writeProperty(QString("generix.derivationPath.%1.derivation").arg(i), dp.derivation);
+		writeProperty(QString("generix.derivationPath.%1.visible").arg(i), dp.visible);
 
 		i++;
 	}
 }
 
-QList<GenerixProject::DerivationPath> GenerixProject::derivationsPath() const {
+QList<GenerixProject::DerivationPath> GenerixProject::derivationsPath() const
+{
 	QList<GenerixProject::DerivationPath> derivationPaths;
 
-	int count = readProperty( "generix.derivationPath.count" ).toInt();
-	for( int i = 1; i <= count ; i++ ) {
+	int count = readProperty("generix.derivationPath.count").toInt();
+	for (int i = 1; i <= count ; i++)
+	{
 		DerivationPath dp;
-		dp.name       = readProperty( QString("generix.derivationPath.%1.name").arg(i) ).toString();
-		dp.path       = readProperty( QString("generix.derivationPath.%1.path").arg(i) ).toString();
-		dp.derivation = readProperty( QString("generix.derivationPath.%1.derivation").arg(i) ).toBool();
-		dp.visible    = readProperty( QString("generix.derivationPath.%1.visible").arg(i) ).toBool();
+		dp.name       = readProperty(QString("generix.derivationPath.%1.name").arg(i)).toString();
+		dp.path       = readProperty(QString("generix.derivationPath.%1.path").arg(i)).toString();
+		dp.derivation = readProperty(QString("generix.derivationPath.%1.derivation").arg(i)).toBool();
+		dp.visible    = readProperty(QString("generix.derivationPath.%1.visible").arg(i)).toBool();
 
 		derivationPaths << dp;
 	}
 	return derivationPaths;
 }
 
-bool GenerixProject::createMissingDirectory() const {
-	return readProperty( "generix.createMissingDirectory" ).toBool();
+bool GenerixProject::createMissingDirectory() const
+{
+	return readProperty("generix.createMissingDirectory").toBool();
 }
 
-void GenerixProject::setCreateMissingDirectory( bool value ) {
-	writeProperty( "generix.createMissingDirectory", value );
+void GenerixProject::setCreateMissingDirectory(bool value)
+{
+	writeProperty("generix.createMissingDirectory", value);
 }
 
-QStringList GenerixProject::prefixes() const {
-	return readProperty( "generix.prefixes" ).toStringList();
+QStringList GenerixProject::prefixes() const
+{
+	return readProperty("generix.prefixes").toStringList();
 }
 
-void GenerixProject::setPrefixes( const QStringList & value ) {
-	writeProperty( "generix.prefixes", value );
+void GenerixProject::setPrefixes(const QStringList & value)
+{
+	writeProperty("generix.prefixes", value);
 }
 
-QString GenerixProject::defaultPrefix() const {
-	return readProperty( "generix.defaultPrefix" ).toString();
+QString GenerixProject::defaultPrefix() const
+{
+	return readProperty("generix.defaultPrefix").toString();
 }
 
-void GenerixProject::setDefaultPrefix( const QString & value ) {
-	writeProperty( "generix.defaultPrefix", value );
+void GenerixProject::setDefaultPrefix(const QString & value)
+{
+	writeProperty("generix.defaultPrefix", value);
 }
 
-bool GenerixProject::copySourceFileInDerivationPath() const {
-	return readProperty( "generix.copySourceFileInDerivationPath" ).toBool();
+bool GenerixProject::copySourceFileInDerivationPath() const
+{
+	return readProperty("generix.copySourceFileInDerivationPath").toBool();
 }
 
-void GenerixProject::setCopySourceFileInDerivationPath( bool value ) {
-	writeProperty( "generix.copySourceFileInDerivationPath", value );
+void GenerixProject::setCopySourceFileInDerivationPath(bool value)
+{
+	writeProperty("generix.copySourceFileInDerivationPath", value);
 }
 
 

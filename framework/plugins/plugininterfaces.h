@@ -43,11 +43,11 @@ class AbstractEditor;
 class QWizardPage;
 class XinxProject;
 class XinxFormatScheme;
-class ContentViewParser;
 class QDockWidget;
 class XsltParser;
-namespace ContentView2 {
-	class Parser;
+namespace ContentView2
+{
+class Parser;
 }
 
 /*!
@@ -60,10 +60,12 @@ namespace ContentView2 {
  * A plugin can return a list of tools (with a default value). This tool will be show in the
  * customize dialog of XINX.
  */
-class IXinxPlugin {
+class IXinxPlugin
+{
 public:
 	/*! Information that can be asked to plugin */
-	enum PluginAttribute {
+	enum PluginAttribute
+	{
 		PLG_NAME        = 1001, //!< Name of the plugin
 		PLG_DESCRIPTION = 1002, //!< Long description of the plugin
 		PLG_ICON        = 1003, //!< An icon that represent the plugin
@@ -81,21 +83,41 @@ public:
 	 * Called when the plugin is loaded.
 	 * \param lang The lang in which the plugin must be load.
 	 */
-	virtual bool initializePlugin( const QString & lang ) = 0;
+	virtual bool initializePlugin(const QString & lang) = 0;
 	/*! Get an information from the attribute. List of informations can be found in the \e PluginAttribute enum. */
-	virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr ) = 0;
+	virtual QVariant getPluginAttribute(const enum IXinxPlugin::PluginAttribute & attr) = 0;
 
 	/*! List of tools with the default value where find the tool */
-	virtual QList< QPair<QString,QString> > pluginTools() { return QList< QPair<QString,QString> >(); }
+	virtual QList< QPair<QString,QString> > pluginTools()
+	{
+		return QList< QPair<QString,QString> >();
+	}
 
 	//! Return a list of action (order in menu) used for dynamic action
-	virtual XinxAction::MenuList actions() { return XinxAction::MenuList(); }
+	virtual XinxAction::MenuList actions()
+	{
+		return XinxAction::MenuList();
+	}
+};
+
+class IContentViewParserPlugin : public virtual IXinxPlugin
+{
+public:
+	//! Destroy the plugin
+	virtual ~IContentViewParserPlugin() {}
+
+	/*!
+	 * Create a content view parser, this content view parser will any file (of the correct type of course)
+	 * If the parser is null, no content view will be load.
+	 */
+	virtual ContentView2::Parser * createParser( const QString & type ) = 0;
 };
 
 /*!
  * This interface is used to create new XsltParser for XINX if necessary.
  */
-class IXinxXsltParser : public virtual IXinxPlugin {
+class IXinxXsltParser : public virtual IXinxPlugin
+{
 public:
 	//! Destroy the plugin
 	virtual ~IXinxXsltParser() {}
@@ -103,39 +125,41 @@ public:
 	/*!
 	 * Create a parser of Xslt Stylesheet.
 	 */
-	virtual XsltParser * createParser() = 0;
+	virtual XsltParser * createXsltParser() = 0;
 };
 
 /*!
  * This interface is used to change the input/output of XINX
  */
-class IXinxInputOutputPlugin : public virtual IXinxPlugin {
+class IXinxInputOutputPlugin : public virtual IXinxPlugin
+{
 public:
 	//! Destroy a Input/Output plugin
-	virtual ~IXinxInputOutputPlugin() {};
+	virtual ~IXinxInputOutputPlugin() {}
 
 	//! Call when a new project is created or opened
-	virtual bool loadProject( XinxProject * project ) = 0;
+	virtual bool loadProject(XinxProject * project) = 0;
 	//! Call before the project is closed
-	virtual bool closeProject( XinxProject * project ) = 0;
+	virtual bool closeProject(XinxProject * project) = 0;
 
 	//! Call when a file is loaded
-	virtual QIODevice * loadFile( const QString & filename ) = 0;
+	virtual QIODevice * loadFile(const QString & filename) = 0;
 	/*!
 	 * For the given \e filename, get a a dialog box to save the file. If the
 	 * the accept boolean is true, XINX don't call other plugin. If the file
 	 * return false, the save is cancelled, else, the save is called.
 	 */
-	virtual QString getFilename( const QString & filename, const QString & filter, bool saveAs, bool & accept, QWidget * widget = 0 ) = 0;
+	virtual QString getFilename(const QString & filename, const QString & filter, bool saveAs, bool & accept, QWidget * widget = 0) = 0;
 	//! Call when a file is saved
-	virtual QIODevice * saveFile( const QString & filename, const QString & oldfilename ) = 0;
+	virtual QIODevice * saveFile(const QString & filename, const QString & oldfilename) = 0;
 };
 
 /*!
  * This interface is used to propose one page of configuration. For each page, the program
  * can modify settings and save or restore value.
  */
-class IXinxPluginConfigurationPage {
+class IXinxPluginConfigurationPage
+{
 public:
 	virtual ~IXinxPluginConfigurationPage() {}
 
@@ -161,12 +185,13 @@ public:
 /*!
  * This class contains necessary method to use in a project property page.
  */
-class IXinxPluginProjectConfigurationPage : public IXinxPluginConfigurationPage {
+class IXinxPluginProjectConfigurationPage : public IXinxPluginConfigurationPage
+{
 public:
 	virtual ~IXinxPluginProjectConfigurationPage() {}
 
 	//! Set the project to use in the dialog to load and save settings.
-	virtual void setProject( XinxProject * project ) = 0;
+	virtual void setProject(XinxProject * project) = 0;
 };
 
 /*!
@@ -178,26 +203,28 @@ public:
  *
  * Xinx integrate the widget in the configuration dialog.
  */
-class IXinxPluginConfiguration : virtual public IXinxPlugin {
+class IXinxPluginConfiguration : virtual public IXinxPlugin
+{
 public:
 	//! Destroy the interface
 	virtual ~IXinxPluginConfiguration() {}
 
 	//! Create a widget used in a wrapper for the configuration dialog box.
-	virtual QList<IXinxPluginConfigurationPage*> createSettingsDialog( QWidget * parent ) = 0;
+	virtual QList<IXinxPluginConfigurationPage*> createSettingsDialog(QWidget * parent) = 0;
 };
 
 /*!
  * New WizardPage to use in XINX.
  */
-class IXinxPluginNewProjectConfigurationPage : public QWizardPage {
+class IXinxPluginNewProjectConfigurationPage : public QWizardPage
+{
 public:
 	//! Return the page id used in project template
 	virtual QString pagePluginId() const = 0;
 	//! Return true if this page can be the next page
 	virtual bool pageIsVisible() const = 0;
 	//! Save the wizard settings page in the project
-	virtual bool saveSettingsDialog( XinxProject * project ) = 0;
+	virtual bool saveSettingsDialog(XinxProject * project) = 0;
 private:
 };
 
@@ -205,19 +232,21 @@ private:
  * This class is used to permit to read and save some property in the project file. To do this the plugin can
  * also propose an user interface and a list of wizard pages.
  */
-class IXinxPluginProjectConfiguration : virtual public IXinxPlugin {
+class IXinxPluginProjectConfiguration : virtual public IXinxPlugin
+{
 public:
 	//! Destroy the interface
 	virtual ~IXinxPluginProjectConfiguration() {}
 
 	//! Create a widget used in the project dialog
-	virtual QList<IXinxPluginProjectConfigurationPage*> createProjectSettingsPage( QWidget * parent ) = 0;
+	virtual QList<IXinxPluginProjectConfigurationPage*> createProjectSettingsPage(QWidget * parent) = 0;
 
 	//! Create some page used in the wizard page
 	virtual QList<IXinxPluginNewProjectConfigurationPage*> createNewProjectSettingsPages() = 0;
 };
 
-class IDockPlugin : virtual public IXinxPlugin {
+class IDockPlugin : virtual public IXinxPlugin
+{
 public:
 	//! Destroy the interface
 	virtual ~IDockPlugin() {}
@@ -226,7 +255,7 @@ public:
 	 * This method is call when the main form is created to create new
 	 * dock widget. A number (for quick access) is associate if free.
 	 */
-	virtual QList<QDockWidget*> createDocksWidget( QWidget * parent ) = 0;
+	virtual QList<QDockWidget*> createDocksWidget(QWidget * parent) = 0;
 };
 
 /*!
@@ -239,7 +268,8 @@ public:
  * The method will create a derivated object of RCS with the required implementation for the
  * revision control system.
  */
-class IRCSPlugin : virtual public IXinxPlugin {
+class IRCSPlugin : virtual public IXinxPlugin
+{
 public:
 	/// Destroy the plugin
 	virtual ~IRCSPlugin() {}
@@ -247,18 +277,19 @@ public:
 	/// List of revision control system proposed by the plugin
 	virtual QStringList rcs() = 0;
 	/// Description of each revision control system
-	virtual QString descriptionOfRCS( const QString & rcs ) = 0;
+	virtual QString descriptionOfRCS(const QString & rcs) = 0;
 	/*!
 	 * Create a revision control system for the revision control system \e rcs
 	 * and the path \e basePath.
 	 */
-	virtual RCS * createRCS( const QString & rcs, const QString & basePath = QString() ) = 0;
+	virtual RCS * createRCS(const QString & rcs, const QString & basePath = QString()) = 0;
 };
 
 /*!
  * This interface is used to create an editor for an associated file type.
  */
-class IFileTypePlugin {
+class IFileTypePlugin
+{
 public:
 	//! Destroy a file type
 	virtual ~IFileTypePlugin() {}
@@ -270,32 +301,24 @@ public:
 	//! Return the icon for the filte type.
 	virtual QString icon() = 0;
 
-	/*!
-	 * Create a content view parser, this content view parser will any file (of the correct type of course)
-	 * If the parser is null, no content view will be load.
-	 */
-	virtual ContentViewParser * createParser() = 0;
-	/*!
-	 * Create a content view parser (version 2).
-	 * If the parser is null, no content view will be load.
-	 */
-	virtual ContentView2::Parser * createParser2() { return 0; }
-protected:
+	virtual QString parserType() = 0;
+
 	//! Create an editor with the given filename
-	virtual AbstractEditor * createEditor( const QString & filename = QString() ) = 0;
+	virtual AbstractEditor * createEditor(const QString & filename = QString()) = 0;
 	friend class EditorFactory;
 };
 
 /*!
  * This interface is used to create an editor for text file type.
  */
-class IFileTextPlugin : public IFileTypePlugin {
+class IFileTextPlugin : public IFileTypePlugin
+{
 public:
 	//! Identifier used to find the correct file type
 	virtual QString highlighterId() const = 0;
 
 	//! Return the format scheme used to draw the text.
-	virtual XinxFormatScheme * createFormatScheme( XINXConfig * config ) const = 0;
+	virtual XinxFormatScheme * createFormatScheme(XINXConfig * config) const = 0;
 
 	//! Create a language description that can be used with QCodeEdit.
 	virtual QString createLanguageDescription() const = 0;
@@ -307,7 +330,8 @@ public:
 /*!
  * This interface represents a plugins used for show manage an extention
  */
-class IFilePlugin : virtual public IXinxPlugin {
+class IFilePlugin : virtual public IXinxPlugin
+{
 public:
 	//! Destroy the interface. Used to hide warning when using the interface.
 	virtual ~IFilePlugin() {}
@@ -316,10 +340,11 @@ public:
 	virtual QList<IFileTypePlugin*> fileTypes() = 0;
 };
 
-/*! 
+/*!
   * Define a filename resolver  object used to find the import, and find file in parsing of stylesheet
   */
-class IFileResolverPlugin {
+class IFileResolverPlugin
+{
 public:
 	//! Destroy the interface. Used to hide warning when using the interface
 	virtual ~IFileResolverPlugin() {}
@@ -331,14 +356,15 @@ public:
 	//! Return true if the resolver can be called, else return false.
 	virtual bool isActivated() = 0;
 	//! Resolve the file \e nameToResolve. The \e currentPath, can be used to find the file relatively of the current open editor.
-	virtual QString resolveFileName( const QString & nameToResolve, const QString & currentPath = QString() ) = 0;
+	virtual QString resolveFileName(const QString & nameToResolve, const QString & currentPath = QString()) = 0;
 };
 
 /*!
- * Return the list of resolver than can be used in the application. 
+ * Return the list of resolver than can be used in the application.
  * Actually, only resolver of imported file exists.
  */
-class IResolverPlugin : virtual public IXinxPlugin {
+class IResolverPlugin : virtual public IXinxPlugin
+{
 public:
 	//! Destroy the interface. Used to hide warning when using the interface
 	virtual ~IResolverPlugin() {}
@@ -354,7 +380,8 @@ Q_DECLARE_INTERFACE(IXinxPluginConfiguration, "org.shadoware.xinx.IXinxPluginCon
 Q_DECLARE_INTERFACE(IXinxPluginProjectConfiguration, "org.shadoware.xinx.IXinxPluginProjectConfiguration/1.0");
 Q_DECLARE_INTERFACE(IDockPlugin, "org.shadoware.xinx.IDockPlugin/1.0");
 Q_DECLARE_INTERFACE(IRCSPlugin, "org.shadoware.xinx.IRCSPlugin/1.0");
-Q_DECLARE_INTERFACE(IFilePlugin, "org.shadoware.xinx.IFilePlugin/1.2");
+Q_DECLARE_INTERFACE(IFilePlugin, "org.shadoware.xinx.IFilePlugin/1.0");
 Q_DECLARE_INTERFACE(IResolverPlugin, "org.shadoware.xinx.IResolverPlugin/1.0");
+Q_DECLARE_INTERFACE(IContentViewParserPlugin, "org.shadoware.xinx.IContentViewParserPlugin/1.0")
 
 #endif /*INTERFACES_H_*/

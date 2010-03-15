@@ -26,10 +26,11 @@
 #include <plugins/plugininterfaces.h>
 #include <config/selfgenerixsettings.h>
 
-class CustomGenerixImpl : public QWidget, public Ui::CustomGenerix, public IXinxPluginConfigurationPage {
+class CustomGenerixImpl : public QWidget, public Ui::CustomGenerix, public IXinxPluginConfigurationPage
+{
 	Q_OBJECT
 public:
-	CustomGenerixImpl( QWidget * parent = 0 );
+	CustomGenerixImpl(QWidget * parent = 0);
 	~CustomGenerixImpl();
 
 	virtual QPixmap image();

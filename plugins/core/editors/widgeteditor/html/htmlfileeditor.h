@@ -23,7 +23,6 @@
 
 // Xinx header
 #include <editors/textfileeditor.h>
-#include <editors/contentviewtexteditor.h>
 
 // Qt header
 #include <QProcess>
@@ -37,10 +36,11 @@ class XslTextEditor;
 
 /* HtmlFileEditor */
 
-class HtmlFileEditor : public TextFileEditor {
+class HtmlFileEditor : public TextFileEditor
+{
 	Q_OBJECT
 public:
-	HtmlFileEditor( QWidget *parent = 0 );
+	HtmlFileEditor(QWidget *parent = 0);
 	virtual ~HtmlFileEditor();
 
 	virtual QString defaultFileName() const;
@@ -55,6 +55,8 @@ public:
 	XslCompletionNodeModel * completionModel() const;
 protected:
 	virtual void initLayout();
+	virtual ContentView2::CompletionModel * createModel(QSqlDatabase db, QObject * parent = 0);
+
 private slots:
 	void tabIndexChange(int);
 private:

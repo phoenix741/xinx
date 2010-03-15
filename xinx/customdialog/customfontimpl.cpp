@@ -23,51 +23,58 @@
 
 /* CustomFontImpl */
 
-CustomFontImpl::CustomFontImpl( QWidget * parent ) : QWidget( parent ) {
-	setupUi( this );
+CustomFontImpl::CustomFontImpl(QWidget * parent) : QWidget(parent)
+{
+	setupUi(this);
 }
 
-CustomFontImpl::~CustomFontImpl() {
+CustomFontImpl::~CustomFontImpl()
+{
 }
 
-QPixmap CustomFontImpl::image() {
-	return QPixmap( ":/images/preferences-font.png" );
+QPixmap CustomFontImpl::image()
+{
+	return QPixmap(":/images/preferences-font.png");
 }
 
-QString CustomFontImpl::name() {
+QString CustomFontImpl::name()
+{
 	return windowTitle();
 }
 
-QWidget * CustomFontImpl::settingsDialog() {
+QWidget * CustomFontImpl::settingsDialog()
+{
 	return this;
 }
 
-bool CustomFontImpl::loadSettingsDialog() {
+bool CustomFontImpl::loadSettingsDialog()
+{
 	// Auto highlight text
-	m_autoHighlightCheckBox->setChecked( XINXConfig::self()->config().editor.autoHighlight );
+	m_autoHighlightCheckBox->setChecked(XINXConfig::self()->config().editor.autoHighlight);
 
 	// Color of highlighted text
-	m_highlightTextColorComboBox->setColor( XINXConfig::self()->config().editor.highlightWord );
+	m_highlightTextColorComboBox->setColor(XINXConfig::self()->config().editor.highlightWord);
 
 	// Show tabulation and space in the editor
-	m_showTabulationCheckBox->setChecked( XINXConfig::self()->config().editor.showTabulationAndSpace );
+	m_showTabulationCheckBox->setChecked(XINXConfig::self()->config().editor.showTabulationAndSpace);
 
 	// Show current line
-	m_showCurrentLineCheckBox->setChecked( XINXConfig::self()->config().editor.highlightCurrentLine );
+	m_showCurrentLineCheckBox->setChecked(XINXConfig::self()->config().editor.highlightCurrentLine);
 
 	// Size of tabulation
-	m_sizeOfTabSpinBox->setValue( XINXConfig::self()->config().editor.tabulationSize );
+	m_sizeOfTabSpinBox->setValue(XINXConfig::self()->config().editor.tabulationSize);
 
 	// Font size
-	m_fontSizeSpinBox->setValue( XINXConfig::self()->config().editor.defaultFormat.pointSize() );
+	m_fontSizeSpinBox->setValue(XINXConfig::self()->config().editor.defaultFormat.pointSize());
 
 	// Font name
-	m_fontComboBox->setCurrentFont( XINXConfig::self()->config().editor.defaultFormat );
+	m_fontComboBox->setCurrentFont(XINXConfig::self()->config().editor.defaultFormat);
 
 	return true;
 }
 
-bool CustomFontImpl::saveSettingsDialog() {
+bool CustomFontImpl::saveSettingsDialog()
+{
 	// Auto highlight text
 	XINXConfig::self()->config().editor.autoHighlight = m_autoHighlightCheckBox->isChecked();
 
@@ -87,20 +94,23 @@ bool CustomFontImpl::saveSettingsDialog() {
 	XINXConfig::self()->config().editor.defaultFormat = m_fontComboBox->currentFont();
 
 	// Font size
-	XINXConfig::self()->config().editor.defaultFormat.setPointSize( m_fontSizeSpinBox->value() );
+	XINXConfig::self()->config().editor.defaultFormat.setPointSize(m_fontSizeSpinBox->value());
 
 	return true;
 }
 
-bool CustomFontImpl::cancelSettingsDialog() {
+bool CustomFontImpl::cancelSettingsDialog()
+{
 	return true;
 }
 
-bool CustomFontImpl::isSettingsValid() {
+bool CustomFontImpl::isSettingsValid()
+{
 	return true;
 }
 
-bool CustomFontImpl::isVisible() {
+bool CustomFontImpl::isVisible()
+{
 	return true;
 }
 

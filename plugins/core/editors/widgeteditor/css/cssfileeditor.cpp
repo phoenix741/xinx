@@ -24,19 +24,26 @@
 
 /* StyleSheetContainer */
 
-CSSFileEditor::CSSFileEditor( QWidget *parent ) : ContentViewTextEditor( new CSSFileContentParser(), new CSSTextEditor(), parent ) {
+CSSFileEditor::CSSFileEditor(QWidget *parent) : TextFileEditor(new CSSTextEditor(), parent)
+{
 }
 
-CSSFileEditor::~CSSFileEditor() {
-	ContentViewParser * p = parser();
-	setParser( 0 );
-	delete p;
+CSSFileEditor::~CSSFileEditor()
+{
+
 }
 
-QString CSSFileEditor::defaultFileName() const {
-	return tr( "noname.css" );
+ContentView2::Parser * CSSFileEditor::createParser()
+{
+	return new CSSFileContentParser();
 }
 
-QIcon CSSFileEditor::icon() const {
-	return QIcon( ":/images/typecss.png" );
+QString CSSFileEditor::defaultFileName() const
+{
+	return tr("noname.css");
+}
+
+QIcon CSSFileEditor::icon() const
+{
+	return QIcon(":/images/typecss.png");
 }

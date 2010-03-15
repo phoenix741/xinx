@@ -44,18 +44,19 @@ class RCSCachedElement;
  * repository.
  * A tool tip show some information that the information manager supporte.
  */
-class LIBEXPORT DirRCSModel : public QDirModel {
+class LIBEXPORT DirRCSModel : public QDirModel
+{
 	Q_OBJECT
 public:
-	DirRCSModel( const QStringList & nameFilters, QDir::Filters filters, QDir::SortFlags sort, QObject * parent = 0 );
-	DirRCSModel( QObject *parent = 0 );
+	DirRCSModel(const QStringList & nameFilters, QDir::Filters filters, QDir::SortFlags sort, QObject * parent = 0);
+	DirRCSModel(QObject *parent = 0);
 	virtual ~DirRCSModel();
-	QVariant data( const QModelIndex &index, int role = Qt::DisplayRole ) const;
+	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
 public slots:
-	void refresh( const QString & path );
+	void refresh(const QString & path);
 private:
-	RCSCachedElement cachedValue( const QString & key ) const;
+	RCSCachedElement cachedValue(const QString & key) const;
 
 	mutable QCache<QString,RCSCachedElement> m_cache;
 };

@@ -25,10 +25,11 @@
 #include "ui_editorsconfigform.h"
 #include <plugins/plugininterfaces.h>
 
-class EditorsConfigFormImpl : public QWidget, public Ui::EditorsConfigForm, public IXinxPluginConfigurationPage {
+class EditorsConfigFormImpl : public QWidget, public Ui::EditorsConfigForm, public IXinxPluginConfigurationPage
+{
 	Q_OBJECT
 public:
-	EditorsConfigFormImpl( QWidget * parent = 0 );
+	EditorsConfigFormImpl(QWidget * parent = 0);
 	virtual ~EditorsConfigFormImpl();
 
 	virtual QPixmap image();
@@ -41,7 +42,7 @@ public:
 	virtual bool isSettingsValid();
 	virtual bool isVisible();
 private:
-	
+
 };
 
 #endif /*EDITORSCONFIGFORMIMPL_H_*/

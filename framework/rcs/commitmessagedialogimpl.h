@@ -31,7 +31,8 @@ class PrivateCommitMessageDialogImpl;
  * Implementation of the commit dialog. This dialog is used to choose file to be commited
  * and message to be assigned at the operations.
  */
-class CommitMessageDialogImpl : public QDialog, public Ui::CommitMessageDialog {
+class CommitMessageDialogImpl : public QDialog, public Ui::CommitMessageDialog
+{
 	Q_OBJECT
 public:
 	/*!
@@ -40,7 +41,7 @@ public:
 	 * \param parent Parent of the dialog
 	 * \param f Flags to use on Windows. By default, the dialog have a fixed size.
 	 */
-	CommitMessageDialogImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
+	CommitMessageDialogImpl(QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint);
 	/*!
 	 * Destructor of commit dialog.
 	 */
@@ -51,7 +52,7 @@ public:
 	 * The user can change the message.
 	 * \param message Message to be stocked when commit is called.
 	 */
-	void setMessages( const QString & message );
+	void setMessages(const QString & message);
 	/*!
 	 * Return the message define by the user.
 	 * \return The message to be sent to CVS.
@@ -64,7 +65,7 @@ public:
 	 * the file is checked.
 	 * \param files List of files who ca be add/remove and commited
 	 */
-	void setFilesOperation( RCS::FilesOperation files );
+	void setFilesOperation(RCS::FilesOperation files);
 	/*!
 	 * Return the file list.
 	 * If file is unchecked then the mode RCS::Nothing is set.

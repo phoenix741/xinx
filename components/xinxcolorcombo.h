@@ -43,20 +43,21 @@ class XinxColorComboInternal;
  *
  * This component is originally written for KDE3. He was adapt to turn on Qt4.
  */
-class XinxColorCombo : public QComboBox {
+class XinxColorCombo : public QComboBox
+{
 	Q_OBJECT
 	Q_CLASSINFO("Author", "Martin Jones")
 	Q_CLASSINFO("Author", "Mario Weilguni")
 	Q_CLASSINFO("Author", "Ulrich Van Den Hekke")
 	Q_CLASSINFO("URL", "http://xinx.shadoware.org")
 	Q_CLASSINFO("Licence", "GPL v2 or later")
-	Q_PROPERTY( QColor color READ color WRITE setColor )
+	Q_PROPERTY(QColor color READ color WRITE setColor)
 public:
 	/*!
 	 * Create a color combo box
 	 * \param parent The parent widget of the color combo box.
 	 */
-	XinxColorCombo( QWidget *parent );
+	XinxColorCombo(QWidget *parent);
 	/*!
 	* Destroy the ColorComboBox
 	*/
@@ -66,7 +67,7 @@ public:
 	* Change the value of the ComboBox to the color define in bracket.
 	* \param col The new color to use.
 	*/
-	void setColor( const QColor &col );
+	void setColor(const QColor &col);
 	/*!
 	* Return the color selected in the ComboBox.
 	* \return The color selected
@@ -81,18 +82,18 @@ signals:
 	/*!
 	 * Signal emited when a color is activated by the user.
 	 */
-	void activated( const QColor &col );
+	void activated(const QColor &col);
 	/*!
 	* Signal emited when a color is highlighted by the user.
 	*/
-	void highlighted( const QColor &col );
+	void highlighted(const QColor &col);
 
 protected:
-	virtual void resizeEvent( QResizeEvent *re );
+	virtual void resizeEvent(QResizeEvent *re);
 
 private slots:
-	void slotActivated( int index );
-	void slotHighlighted( int index );
+	void slotActivated(int index);
+	void slotHighlighted(int index);
 
 private:
 	void addColors();

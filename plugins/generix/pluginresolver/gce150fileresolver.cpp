@@ -27,34 +27,42 @@
 
 /* Gce150FileResolver */
 
-Gce150FileResolver::Gce150FileResolver() {
+Gce150FileResolver::Gce150FileResolver()
+{
 }
 
-Gce150FileResolver::~Gce150FileResolver() {
+Gce150FileResolver::~Gce150FileResolver()
+{
 }
 
-QString Gce150FileResolver::staticId() {
+QString Gce150FileResolver::staticId()
+{
 	return "gce150resolver";
 }
 
-QString Gce150FileResolver::id() {
+QString Gce150FileResolver::id()
+{
 	return staticId();
 }
 
-QString Gce150FileResolver::name() {
+QString Gce150FileResolver::name()
+{
 	return tr("GCE150 File Resolver");
 }
 
-bool Gce150FileResolver::isActivated() {
-	return static_cast<GenerixProject*>( XINXProjectManager::self()->project() )->isGenerixActivated();
+bool Gce150FileResolver::isActivated()
+{
+	return static_cast<GenerixProject*>(XINXProjectManager::self()->project().data())->isGenerixActivated();
 }
 
-QString Gce150FileResolver::resolveFileName( const QString & nameToResolve, const QString & currentPath ) {
-	Q_UNUSED( currentPath );
+QString Gce150FileResolver::resolveFileName(const QString & nameToResolve, const QString & currentPath)
+{
+	Q_UNUSED(currentPath);
 
-	GceInterface * interface = ConfigurationManager::self()->getInterfaceOfProject( XINXProjectManager::self()->project() );
-	if( interface ) {
-		return interface->resolveFileName( nameToResolve );
+	GceInterface * interface = ConfigurationManager::self()->getInterfaceOfProject(XINXProjectManager::self()->project());
+	if (interface)
+	{
+		return interface->resolveFileName(nameToResolve);
 		delete interface;
 	}
 

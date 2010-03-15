@@ -25,15 +25,16 @@
 #include <core/configurationfile.h>
 #include <core/xinxthread.h>
 
-class ThreadedConfigurationFile : public XinxThread {
+class ThreadedConfigurationFile : public XinxThread
+{
 	Q_OBJECT
 public:
 	virtual ~ThreadedConfigurationFile();
-	static ThreadedConfigurationFile * simpleConfigurationFile( const QString & pathname );
-	static ThreadedConfigurationFile * businessViewOfFile( const QString & filename );
+	static ThreadedConfigurationFile * simpleConfigurationFile(const QString & pathname);
+	static ThreadedConfigurationFile * businessViewOfFile(const QString & filename);
 signals:
-	void businessViewFinded( QStringList list );
-	void versionFinded( ConfigurationFile configuration );
+	void businessViewFinded(QStringList list);
+	void versionFinded(ConfigurationFile configuration);
 protected:
 	ThreadedConfigurationFile();
 	virtual void threadrun();

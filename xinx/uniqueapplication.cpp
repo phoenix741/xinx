@@ -39,40 +39,51 @@
 
 /* UniqueApplication */
 
-UniqueApplication::UniqueApplication( int & argc, char ** argv ) : QtSingleApplication( QString( "XINX" ), argc, argv ), m_mainform(0) {
+UniqueApplication::UniqueApplication(int & argc, char ** argv) : QtSingleApplication(QString("XINX"), argc, argv), m_mainform(0)
+{
 
 }
 
-UniqueApplication::~UniqueApplication() {
+UniqueApplication::~UniqueApplication()
+{
 
 }
 
-bool UniqueApplication::notify ( QObject * receiver, QEvent * event ) {
-	try {
-		return QtSingleApplication::notify( receiver, event );
-	} catch( XinxException e ) {
-		qFatal( qPrintable( e.getMessage() ) );
+bool UniqueApplication::notify(QObject * receiver, QEvent * event)
+{
+	try
+	{
+		return QtSingleApplication::notify(receiver, event);
+	}
+	catch (XinxException e)
+	{
+		qFatal(qPrintable(e.getMessage()));
 		return true;
-	} catch( ... ) {
-		qFatal( "Generic Exception" );
+	}
+	catch (...)
+	{
+		qFatal("Generic Exception");
 		return true;
 	}
 }
 
-void UniqueApplication::attachMainWindow( MainformImpl * mainform ) {
+void UniqueApplication::attachMainWindow(MainformImpl * mainform)
+{
 	m_mainform = mainform;
-	
-	setActivationWindow( m_mainform );
-	connect( ExceptionManager::self(), SIGNAL(errorTriggered()), this, SLOT(slotErrorTriggered()) );
-	connect( this, SIGNAL(messageReceived(QString)), mainform, SLOT(openFile(QString)) );
+
+	setActivationWindow(m_mainform);
+	connect(ExceptionManager::self(), SIGNAL(errorTriggered()), this, SLOT(slotErrorTriggered()));
+	connect(this, SIGNAL(messageReceived(QString)), mainform, SLOT(openFile(QString)));
 }
 
-void UniqueApplication::slotErrorTriggered() {
-	if( m_mainform ) {
+void UniqueApplication::slotErrorTriggered()
+{
+	if (m_mainform)
+	{
 		// Hide the main widget
 		m_mainform->hide();
 
-		if( XINXProjectManager::self()->project() )
-			m_mainform->saveProject( true );
+		if (XINXProjectManager::self()->project())
+			m_mainform->saveProject(true);
 	}
 }

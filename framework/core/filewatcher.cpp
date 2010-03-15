@@ -33,13 +33,15 @@ FileWatcherManager * fileWatcherManager = NULL;
 
 /* FileWatched */
 
-void FileWatched::initializeDate() {
-	m_date = QFileInfo( m_name ).lastModified();
+void FileWatched::initializeDate()
+{
+	m_date = QFileInfo(m_name).lastModified();
 }
 
-bool FileWatched::isFileChanged() {
-	QDateTime date = QFileInfo( m_name ).lastModified();
-	if( date == m_date )
+bool FileWatched::isFileChanged()
+{
+	QDateTime date = QFileInfo(m_name).lastModified();
+	if (date == m_date)
 		return false;
 	m_date = date;
 	return true;
@@ -47,77 +49,96 @@ bool FileWatched::isFileChanged() {
 
 /* FileWatcherManager */
 
-FileWatcherManager::FileWatcherManager() {
+FileWatcherManager::FileWatcherManager()
+{
 }
 
-FileWatcherManager::~FileWatcherManager() {
-	for( int i = 0 ; i < m_watchedfiles.count() ; i++ ) {
-		delete m_watchedfiles.at( i );
+FileWatcherManager::~FileWatcherManager()
+{
+	for (int i = 0 ; i < m_watchedfiles.count() ; i++)
+	{
+		delete m_watchedfiles.at(i);
 	}
 	m_watchedfiles.clear();
 }
 
-void FileWatcherManager::watch() {
+void FileWatcherManager::watch()
+{
 	// File to watch
 	m_watchedFilesMutex.lock();
-	for( int i = 0 ; i < m_watchedfiles.count() ; i++ ) {
-		if( m_watchedfiles.at( i )->isFileChanged() ) {
-			emit fileChanged( m_watchedfiles.at( i )->name() );
+	for (int i = 0 ; i < m_watchedfiles.count() ; i++)
+	{
+		if (m_watchedfiles.at(i)->isFileChanged())
+		{
+			emit fileChanged(m_watchedfiles.at(i)->name());
 		}
 	}
 	m_watchedFilesMutex.unlock();
 }
 
-void FileWatcherManager::threadrun() {
+void FileWatcherManager::threadrun()
+{
 	QTimer timer;
-	connect( &timer, SIGNAL(timeout()), this, SLOT(watch()) );
-	timer.start( 1000 );
+	connect(&timer, SIGNAL(timeout()), this, SLOT(watch()));
+	timer.start(1000);
 	exec();
 }
 
-int FileWatcherManager::indexOfWatchedFile( const QString & filename ) {
-	for( int i = 0 ; i < m_watchedfiles.count() ; i++ ) {
-		if( m_watchedfiles.at( i )->name() == filename )
+int FileWatcherManager::indexOfWatchedFile(const QString & filename)
+{
+	for (int i = 0 ; i < m_watchedfiles.count() ; i++)
+	{
+		if (m_watchedfiles.at(i)->name() == filename)
 			return i;
 	}
 	return -1;
 }
 
-void FileWatcherManager::addFile( const QString & filename ) {
+void FileWatcherManager::addFile(const QString & filename)
+{
 	m_watchedFilesMutex.lock();
 	int index;
-	if( ( index = indexOfWatchedFile( filename ) ) == -1 ) {
-		FileWatched * file = new FileWatched( filename );
-		m_watchedfiles.append( file );
-	} else {
-		m_watchedfiles.at( index )->ref();
-		qDebug() << QString("Duplicate entry for file %1").arg( filename );
+	if ((index = indexOfWatchedFile(filename)) == -1)
+	{
+		FileWatched * file = new FileWatched(filename);
+		m_watchedfiles.append(file);
+	}
+	else
+	{
+		m_watchedfiles.at(index)->ref();
+		qDebug() << QString("Duplicate entry for file %1").arg(filename);
 	}
 	m_watchedFilesMutex.unlock();
-	if( ( m_watchedfiles.count() > 0 ) && !isRunning() )
+	if ((m_watchedfiles.count() > 0) && !isRunning())
 		start();
 }
 
-void FileWatcherManager::removeFile( const QString & filename ) {
+void FileWatcherManager::removeFile(const QString & filename)
+{
 	m_watchedFilesMutex.lock();
-	int index = indexOfWatchedFile( filename );
-	if( m_watchedfiles.at( index )->deref() == 0 ) {
-		m_watchedfiles.removeAt( index );
+	int index = indexOfWatchedFile(filename);
+	if (m_watchedfiles.at(index)->deref() == 0)
+	{
+		m_watchedfiles.removeAt(index);
 	}
 	m_watchedFilesMutex.unlock();
 }
 
-FileWatcherManager * FileWatcherManager::instance() {
-	if( ! fileWatcherManager )
+FileWatcherManager * FileWatcherManager::instance()
+{
+	if (! fileWatcherManager)
 		fileWatcherManager = new FileWatcherManager();
 	return fileWatcherManager;
 }
 
-void FileWatcherManager::deleteIfPossible() {
-	if( fileWatcherManager && ( fileWatcherManager->m_watchedfiles.count() == 0 ) ) {
+void FileWatcherManager::deleteIfPossible()
+{
+	if (fileWatcherManager && (fileWatcherManager->m_watchedfiles.count() == 0))
+	{
 		FileWatcherManager * manager = fileWatcherManager;
 		fileWatcherManager = NULL;
-		if( manager->isRunning() ) {
+		if (manager->isRunning())
+		{
 			manager->quit();
 			manager->wait();
 		}
@@ -125,47 +146,55 @@ void FileWatcherManager::deleteIfPossible() {
 	}
 }
 
-FileWatched * FileWatcherManager::watchedFileAt( int index ) {
-	return m_watchedfiles.at( index );
+FileWatched * FileWatcherManager::watchedFileAt(int index)
+{
+	return m_watchedfiles.at(index);
 }
 
 
 /* PrivateFileWatcher */
 
-PrivateWatcher::PrivateWatcher( FileWatcher * parent ) : m_isActivated( true ), m_parent( parent ) {
+PrivateWatcher::PrivateWatcher(FileWatcher * parent) : m_isActivated(true), m_parent(parent)
+{
 }
 
-PrivateWatcher::~PrivateWatcher() {
-	FileWatcherManager::instance()->removeFile( m_filename );
+PrivateWatcher::~PrivateWatcher()
+{
+	FileWatcherManager::instance()->removeFile(m_filename);
 	FileWatcherManager::deleteIfPossible();
 }
 
-void PrivateWatcher::fileChanged( QString filename ) {
-	if( m_isActivated && ( m_filename == filename ) )
+void PrivateWatcher::fileChanged(QString filename)
+{
+	if (m_isActivated && (m_filename == filename))
 		emit m_parent->fileChanged();
 }
 
 /* FileWatcher */
 
-FileWatcher::FileWatcher( const QString & filename ) {
-	d = new PrivateWatcher( this );
+FileWatcher::FileWatcher(const QString & filename)
+{
+	d = new PrivateWatcher(this);
 	d->m_filename = filename;
 
-	connect( FileWatcherManager::instance(), SIGNAL(fileChanged(QString)), d, SLOT(fileChanged(QString)), Qt::QueuedConnection );
-	FileWatcherManager::instance()->addFile( filename );
+	connect(FileWatcherManager::instance(), SIGNAL(fileChanged(QString)), d, SLOT(fileChanged(QString)), Qt::QueuedConnection);
+	FileWatcherManager::instance()->addFile(filename);
 }
 
-FileWatcher::~FileWatcher() {
+FileWatcher::~FileWatcher()
+{
 	delete d;
 }
 
-void FileWatcher::desactivate() {
+void FileWatcher::desactivate()
+{
 	d->m_isActivated = false;
 }
 
-void FileWatcher::activate() {
-	int index = FileWatcherManager::instance()->indexOfWatchedFile( d->m_filename );
-	FileWatcherManager::instance()->watchedFileAt( index )->initializeDate();
+void FileWatcher::activate()
+{
+	int index = FileWatcherManager::instance()->indexOfWatchedFile(d->m_filename);
+	FileWatcherManager::instance()->watchedFileAt(index)->initializeDate();
 	d->m_isActivated = true;
 }
 

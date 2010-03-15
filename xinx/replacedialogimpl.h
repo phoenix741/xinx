@@ -28,18 +28,19 @@
 // Qt header
 #include <QPushButton>
 
-class ReplaceDialogImpl : public QDialog, public Ui::ReplaceDialog {
+class ReplaceDialogImpl : public QDialog, public Ui::ReplaceDialog
+{
 	Q_OBJECT
 public:
-	ReplaceDialogImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
+	ReplaceDialogImpl(QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint);
 
-	void initialize( bool hasEditor = true );
-	void setText( const QString & );
-	void setReplace( bool );
+	void initialize(bool hasEditor = true);
+	void setText(const QString &);
+	void setReplace(bool);
 
 signals:
-	void find( const QString & from, const QString & to, const AbstractEditor::SearchOptions & options );
-	void findInFiles( const QString & directory, const QString & from, const QString & to, const AbstractEditor::SearchOptions & options );
+	void find(const QString & from, const QString & to, const AbstractEditor::SearchOptions & options);
+	void findInFiles(const QString & directory, const QString & from, const QString & to, const AbstractEditor::SearchOptions & options);
 
 private slots:
 	void m_findButton_clicked();

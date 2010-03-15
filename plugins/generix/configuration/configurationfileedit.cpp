@@ -22,27 +22,34 @@
 
 /* ConfigurationVersionLabel */
 
-ConfigurationVersionLabel::ConfigurationVersionLabel( QWidget * parent ) : QLabel( parent ) {
+ConfigurationVersionLabel::ConfigurationVersionLabel(QWidget * parent) : QLabel(parent)
+{
 
 }
 
-const ConfigurationVersion & ConfigurationVersionLabel::version() const {
+const ConfigurationVersion & ConfigurationVersionLabel::version() const
+{
 	return m_version;
 }
 
-void ConfigurationVersionLabel::setVersion( const ConfigurationVersion & value ) {
-	QPalette paletteVerion( palette() );
+void ConfigurationVersionLabel::setVersion(const ConfigurationVersion & value)
+{
+	QPalette paletteVerion(palette());
 
-	if( m_version != value ) {
-		if( value.isValid() ) {
-			paletteVerion.setColor( QPalette::WindowText, QColor() );
-			setText( value.toString() );
-		} else {
-			paletteVerion.setColor( QPalette::WindowText, Qt::red );
-			setText( tr("This directory doesn't containt a valide GCE project.") );
+	if (m_version != value)
+	{
+		if (value.isValid())
+		{
+			paletteVerion.setColor(QPalette::WindowText, QColor());
+			setText(value.toString());
 		}
-		setPalette( paletteVerion );
-		
+		else
+		{
+			paletteVerion.setColor(QPalette::WindowText, Qt::red);
+			setText(tr("This directory doesn't containt a valide GCE project."));
+		}
+		setPalette(paletteVerion);
+
 		m_version = value;
 	}
 }

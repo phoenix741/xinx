@@ -25,25 +25,26 @@
 
 /* PluginSelectorPlugin */
 
-class PluginSelectorPlugin : public QObject, public QDesignerCustomWidgetInterface {
+class PluginSelectorPlugin : public QObject, public QDesignerCustomWidgetInterface
+{
 	Q_OBJECT
 	Q_INTERFACES(QDesignerCustomWidgetInterface)
 public:
-	PluginSelectorPlugin( QObject *parent = 0 );
+	PluginSelectorPlugin(QObject *parent = 0);
 
-    bool isContainer() const;
-    bool isInitialized() const;
-    QIcon icon() const;
-    QString domXml() const;
-    QString group() const;
-    QString includeFile() const;
-    QString name() const;
-    QString toolTip() const;
-    QString whatsThis() const;
-    QWidget *createWidget( QWidget *parent );
-    void initialize( QDesignerFormEditorInterface *core );
+	bool isContainer() const;
+	bool isInitialized() const;
+	QIcon icon() const;
+	QString domXml() const;
+	QString group() const;
+	QString includeFile() const;
+	QString name() const;
+	QString toolTip() const;
+	QString whatsThis() const;
+	QWidget *createWidget(QWidget *parent);
+	void initialize(QDesignerFormEditorInterface *core);
 private:
-    bool m_initialized;
+	bool m_initialized;
 };
 
 #endif /* PLUGINSELECTORPLUGIN_H_ */

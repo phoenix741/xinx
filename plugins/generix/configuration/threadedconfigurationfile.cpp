@@ -27,19 +27,22 @@
 
 /* ThreadedConfigurationFile */
 
-ThreadedConfigurationFile::ThreadedConfigurationFile() {
+ThreadedConfigurationFile::ThreadedConfigurationFile()
+{
 	qRegisterMetaType<ConfigurationFile>("ConfigurationFile");
 
-	connect( this, SIGNAL(finished()), this, SLOT(threadFinished()) );
+	connect(this, SIGNAL(finished()), this, SLOT(threadFinished()));
 }
 
-ThreadedConfigurationFile::~ThreadedConfigurationFile() {
+ThreadedConfigurationFile::~ThreadedConfigurationFile()
+{
 	disconnect();
 	terminate();
 	wait();
 }
 
-ThreadedConfigurationFile * ThreadedConfigurationFile::simpleConfigurationFile( const QString & pathname ) {
+ThreadedConfigurationFile * ThreadedConfigurationFile::simpleConfigurationFile(const QString & pathname)
+{
 	ThreadedConfigurationFile * instance = new ThreadedConfigurationFile();
 	instance->m_state = ThreadedConfigurationFile::GETVERSION;
 	instance->m_pathname = pathname;
@@ -47,7 +50,8 @@ ThreadedConfigurationFile * ThreadedConfigurationFile::simpleConfigurationFile( 
 	return instance;
 }
 
-ThreadedConfigurationFile * ThreadedConfigurationFile::businessViewOfFile( const QString & filename ) {
+ThreadedConfigurationFile * ThreadedConfigurationFile::businessViewOfFile(const QString & filename)
+{
 	ThreadedConfigurationFile * instance = new ThreadedConfigurationFile();
 	instance->m_state = ThreadedConfigurationFile::GETBUSINESSVIEW;
 	instance->m_filename = filename;
@@ -56,31 +60,42 @@ ThreadedConfigurationFile * ThreadedConfigurationFile::businessViewOfFile( const
 	return instance;
 }
 
-void ThreadedConfigurationFile::threadrun() {
-	if( m_state == ThreadedConfigurationFile::GETVERSION ) {
-		m_configuration = MetaConfigurationFile::simpleConfigurationFile( m_pathname );
+void ThreadedConfigurationFile::threadrun()
+{
+	if (m_state == ThreadedConfigurationFile::GETVERSION)
+	{
+		m_configuration = MetaConfigurationFile::simpleConfigurationFile(m_pathname);
 		m_configuration.version();
 		m_configuration.xmlPresentationFile();
-	} else if( m_state == ThreadedConfigurationFile::GETBUSINESSVIEW ) {
-		if( XINXProjectManager::self()->project() ) {
+	}
+	else if (m_state == ThreadedConfigurationFile::GETBUSINESSVIEW)
+	{
+		if (XINXProjectManager::self()->project())
+		{
 			QString path = XINXProjectManager::self()->project()->projectPath();
 
-			MetaConfigurationFile metaconf( QDir( path ).absoluteFilePath( "configurationdef.xml" ) );
-			foreach( ConfigurationFile * conf, metaconf.configurations() ) {
-				QStringList bvs = conf->businessViewPerFiles( QDir( path ).relativeFilePath( m_filename ) );
-				foreach( const QString & bv, bvs ) {
-					m_businessView << (bv + " (" + QFileInfo( conf->filename() ).fileName() + ")");
+			MetaConfigurationFile metaconf(QDir(path).absoluteFilePath("configurationdef.xml"));
+			foreach(ConfigurationFile * conf, metaconf.configurations())
+			{
+				QStringList bvs = conf->businessViewPerFiles(QDir(path).relativeFilePath(m_filename));
+				foreach(const QString & bv, bvs)
+				{
+					m_businessView << (bv + " (" + QFileInfo(conf->filename()).fileName() + ")");
 				}
 			}
 		}
 	}
 }
 
-void ThreadedConfigurationFile::threadFinished() {
-	if( m_state == GETVERSION ) {
-		emit versionFinded( m_configuration );
-	} else if( m_state == GETBUSINESSVIEW ) {
-		emit businessViewFinded( m_businessView );
+void ThreadedConfigurationFile::threadFinished()
+{
+	if (m_state == GETVERSION)
+	{
+		emit versionFinded(m_configuration);
+	}
+	else if (m_state == GETBUSINESSVIEW)
+	{
+		emit businessViewFinded(m_businessView);
 	}
 }
 

@@ -39,20 +39,21 @@ class SnipetDockItemModel;
  * This dock represent a Snipet Dock Widget to search and place snipet
  * in XINX.
  */
-class SnipetDockWidget : public QDockWidget {
+class SnipetDockWidget : public QDockWidget
+{
 	Q_OBJECT
 public:
-	SnipetDockWidget( const QString & title, QWidget * parent = 0, Qt::WindowFlags flags = 0 );
-	SnipetDockWidget( QWidget * parent = 0, Qt::WindowFlags flags = 0 );
+	SnipetDockWidget(const QString & title, QWidget * parent = 0, Qt::WindowFlags flags = 0);
+	SnipetDockWidget(QWidget * parent = 0, Qt::WindowFlags flags = 0);
 	virtual ~SnipetDockWidget();
 
 public slots:
-	void setEditor( AbstractEditor * ed );
+	void setEditor(AbstractEditor * ed);
 private slots:
 	void createSnipet();
 	void customizeSnipet();
-	void filterChanged( const QString & filterText );
-	void callSnipet( const QModelIndex & index );
+	void filterChanged(const QString & filterText);
+	void callSnipet(const QModelIndex & index);
 private:
 	void init();
 

@@ -19,7 +19,6 @@
 
 // Xinx header
 #include "cssmodeldata.h"
-#include <contentview/contentviewnode.h>
 
 // Qt header
 #include <QFileInfo>
@@ -30,24 +29,29 @@
 
 /* CSSFileContentParser */
 
-CSSFileContentParser::CSSFileContentParser( bool autoDelete ) : ContentViewParser( autoDelete ) {
+CSSFileContentParser::CSSFileContentParser() : ContentView2::Parser()
+{
 
 }
 
-CSSFileContentParser::~CSSFileContentParser() {
+CSSFileContentParser::~CSSFileContentParser()
+{
 
 }
 
-void CSSFileContentParser::loadFromDeviceImpl() {
-	if( ! rootNode() ) return;
+void CSSFileContentParser::load()
+{
+	if (! rootNode().isValid()) return;
 
-	rootNode()->setData( ":/images/typecss.png", ContentViewNode::NODE_ICON );
+	rootNode().setData(":/images/typecss.png", ContentView2::Node::NODE_ICON);
+	rootNode().update(database());
 
-	loadAttachedNode( rootNode() );
+	loadAttachedNode(rootNode());
 
 	QString text = inputDevice()->readAll();
 
-	if( text.isEmpty() ) {
+	if (text.isEmpty())
+	{
 		removeAttachedNodes();
 		return;
 	}
@@ -57,90 +61,122 @@ void CSSFileContentParser::loadFromDeviceImpl() {
 	QRegExp keywordExpression("[A-Za-z_][A-Za-z0-9_-:.]*");
 	QRegExp indentifierExpression("[^\n]*;");
 
-	QList<ContentViewNode*> elements;
+	QList<ContentView2::Node> elements;
 
 	int pos;
 	ParsingState state = CssDefault;
 
 	m_line = 1;
 
-	for( int i = 0; i < text.length(); i++ ) {
+	for (int i = 0; i < text.length(); i++)
+	{
 		char c = text.at(i).toLower().toAscii();
-		if( c == '/' ) {
-			pos = commentStartExpression.indexIn( text, i, QRegExp::CaretAtOffset );
+		if (c == '/')
+		{
+			pos = commentStartExpression.indexIn(text, i, QRegExp::CaretAtOffset);
 
-			if( pos == i ) {
-				const int posEnd = commentEndExpression.indexIn( text, pos + 2, QRegExp::CaretAtOffset );
-				if( posEnd == -1 )
+			if (pos == i)
+			{
+				const int posEnd = commentEndExpression.indexIn(text, pos + 2, QRegExp::CaretAtOffset);
+				if (posEnd == -1)
 					break;
 
-				m_line += text.mid( pos, posEnd - pos ).count( QRegExp( "\\n" ) );
+				m_line += text.mid(pos, posEnd - pos).count(QRegExp("\\n"));
 
 				i = posEnd;
 			}
-		} else if( ( c >= 'a' ) && ( c <= 'z' ) ) {
-			if( state == CssDefault ) {
+		}
+		else if ((c >= 'a') && (c <= 'z'))
+		{
+			if (state == CssDefault)
+			{
 				// TAG
-				pos = keywordExpression.indexIn( text, i, QRegExp::CaretAtOffset );
+				pos = keywordExpression.indexIn(text, i, QRegExp::CaretAtOffset);
 
-				if( pos == i ) {
+				if (pos == i)
+				{
 					const int iLength = keywordExpression.matchedLength();
-					elements.append( attacheNewTagNode( rootNode(), keywordExpression.cap(), m_line ) );
+					elements.append(attacheNewTagNode(rootNode(), keywordExpression.cap(), m_line));
 					i += iLength - 1;
 				}
-			} else if( state == CssIdentifier ) {
+			}
+			else if (state == CssIdentifier)
+			{
 				// Identifier
-				pos = indentifierExpression.indexIn( text, i, QRegExp::CaretAtOffset );
+				pos = indentifierExpression.indexIn(text, i, QRegExp::CaretAtOffset);
 
-				if( pos == i ) {
+				if (pos == i)
+				{
 					const int iLength = indentifierExpression.matchedLength();
-					foreach( ContentViewNode * element, elements ) {
-						attacheNewPropertyNode( element, indentifierExpression.cap(), m_line );
+					foreach(ContentView2::Node element, elements)
+					{
+						attacheNewPropertyNode(element, indentifierExpression.cap(), m_line);
 					}
 					i += iLength - 1;
 				}
 			}
-		} else if( c == ':' ) {
-			if( state != CssIdentifier ){
-				pos = keywordExpression.indexIn( text, i + 1, QRegExp::CaretAtOffset );
-				if( pos == ( i + 1 ) ) {
+		}
+		else if (c == ':')
+		{
+			if (state != CssIdentifier)
+			{
+				pos = keywordExpression.indexIn(text, i + 1, QRegExp::CaretAtOffset);
+				if (pos == (i + 1))
+				{
 					const int iLength = keywordExpression.matchedLength();
 					// Pseudo class
-					elements.append( attacheNewClassNode( rootNode(), ":" + keywordExpression.cap(), m_line ) );
+					elements.append(attacheNewClassNode(rootNode(), ":" + keywordExpression.cap(), m_line));
 					i += iLength;
 				}
 			}
-		} else if( c == '.' ) {
-			if( state != CssIdentifier ) {
-				pos = keywordExpression.indexIn( text, i + 1, QRegExp::CaretAtOffset );
-				if( pos == ( i + 1 ) ) {
+		}
+		else if (c == '.')
+		{
+			if (state != CssIdentifier)
+			{
+				pos = keywordExpression.indexIn(text, i + 1, QRegExp::CaretAtOffset);
+				if (pos == (i + 1))
+				{
 					const int iLength = keywordExpression.matchedLength();
 					// Class
-					elements.append( attacheNewClassNode( rootNode(), "." + keywordExpression.cap(), m_line ) );
+					elements.append(attacheNewClassNode(rootNode(), "." + keywordExpression.cap(), m_line));
 					i += iLength;
 				}
 			}
-		} else if( c == '#' ) {
-			if( state != CssIdentifier ) {
-				pos = keywordExpression.indexIn( text, i + 1, QRegExp::CaretAtOffset );
-				if( pos == ( i + 1 ) ) {
+		}
+		else if (c == '#')
+		{
+			if (state != CssIdentifier)
+			{
+				pos = keywordExpression.indexIn(text, i + 1, QRegExp::CaretAtOffset);
+				if (pos == (i + 1))
+				{
 					const int iLength = keywordExpression.matchedLength();
 					// ID
-					elements.append( attacheNewIdNode( rootNode(), "#" + keywordExpression.cap(), m_line ) );
+					elements.append(attacheNewIdNode(rootNode(), "#" + keywordExpression.cap(), m_line));
 					i += iLength;
 				}
 			}
-		} else if( c == '*' ) {
-			if( state == CssDefault ) {
-				elements.append( attacheNewTagNode( rootNode(), "*", m_line ) );
+		}
+		else if (c == '*')
+		{
+			if (state == CssDefault)
+			{
+				elements.append(attacheNewTagNode(rootNode(), "*", m_line));
 			}
-		} else if( c == '{' ) {
-			if( state == CssDefault )
+		}
+		else if (c == '{')
+		{
+			if (state == CssDefault)
 				state = CssIdentifier;
-		} else if( c == '}' ) {
+		}
+		else if (c == '}')
+		{
 			state = CssDefault;
 			elements.clear();
-		} else if( c == '\n' ) {
+		}
+		else if (c == '\n')
+		{
 			m_line++;
 		}
 	}
@@ -148,69 +184,84 @@ void CSSFileContentParser::loadFromDeviceImpl() {
 	detachAttachedNode();
 }
 
-ContentViewNode * CSSFileContentParser::attacheNewPropertyNode( ContentViewNode * parent, const QString & name, int line ) {
-	QStringList property = name.split( ':' );
+ContentView2::Node CSSFileContentParser::attacheNewPropertyNode(ContentView2::Node parent, const QString & name, int line)
+{
+	QStringList property = name.split(':');
 	QString n, v;
 
 	int cnt = property.count();
-	if( cnt > 0 )
-		n = property.at( 0 ).trimmed();
-	if( cnt > 1 )
-		v = property.at( 1 ).trimmed();
-	if( v.endsWith( ';' ) )
-		v.chop( 1 );
+	if (cnt > 0)
+		n = property.at(0).trimmed();
+	if (cnt > 1)
+		v = property.at(1).trimmed();
+	if (v.endsWith(';'))
+		v.chop(1);
 
 
-	ContentViewNode * node = new ContentViewNode( name, line );
-	node->setData( "CssProperty", ContentViewNode::NODE_TYPE );
-	node->setData( ":/images/html_value.png", ContentViewNode::NODE_ICON );
-	node->setData( n, ContentViewNode::NODE_DISPLAY_NAME );
-	node->setData( tr( "Element at line : %1\nValue : %2" ).arg( line ).arg( v ), ContentViewNode::NODE_DISPLAY_TIPS );
-	node = attachNode( parent, node );
-
-	return node;
-}
-
-ContentViewNode * CSSFileContentParser::attacheNewIdentifierNode( ContentViewNode * parent, const QString & name, int line ) {
-	ContentViewNode * node = new ContentViewNode( name, line );
-	node->setData( "CssIdentifier", ContentViewNode::NODE_TYPE );
-	node->setData( ":/images/noeud.png", ContentViewNode::NODE_ICON );
-	node->setData( name, ContentViewNode::NODE_DISPLAY_NAME );
-	node->setData( tr( "Element at line : %1" ).arg( line ), ContentViewNode::NODE_DISPLAY_TIPS );
-	node = attachNode( parent, node );
+	ContentView2::Node node;
+	node.setLine(line);
+	node.setData(name, ContentView2::Node::NODE_NAME);
+	node.setData("CssProperty", ContentView2::Node::NODE_TYPE);
+	node.setData(":/images/html_value.png", ContentView2::Node::NODE_ICON);
+	node.setData(n, ContentView2::Node::NODE_DISPLAY_NAME);
+	node.setData(tr("Element at line : %1\nValue : %2").arg(line).arg(v), ContentView2::Node::NODE_DISPLAY_TIPS);
+	attachNode(parent, node);
 
 	return node;
 }
 
-ContentViewNode * CSSFileContentParser::attacheNewClassNode( ContentViewNode * parent, const QString & name, int line ) {
-	ContentViewNode * node = new ContentViewNode( name, line );
-	node->setData( "CssClass", ContentViewNode::NODE_TYPE );
-	node->setData( ":/images/noeud.png", ContentViewNode::NODE_ICON );
-	node->setData( name, ContentViewNode::NODE_DISPLAY_NAME );
-	node->setData( tr( "Element at line : %1" ).arg( line ), ContentViewNode::NODE_DISPLAY_TIPS );
-	node = attachNode( parent, node );
+ContentView2::Node CSSFileContentParser::attacheNewIdentifierNode(ContentView2::Node parent, const QString & name, int line)
+{
+	ContentView2::Node node;
+	node.setLine(line);
+	node.setData(name, ContentView2::Node::NODE_NAME);
+	node.setData("CssIdentifier", ContentView2::Node::NODE_TYPE);
+	node.setData(":/images/noeud.png", ContentView2::Node::NODE_ICON);
+	node.setData(name, ContentView2::Node::NODE_DISPLAY_NAME);
+	node.setData(tr("Element at line : %1").arg(line), ContentView2::Node::NODE_DISPLAY_TIPS);
+	attachNode(parent, node);
 
 	return node;
 }
 
-ContentViewNode * CSSFileContentParser::attacheNewTagNode( ContentViewNode * parent, const QString & name, int line ) {
-	ContentViewNode * node = new ContentViewNode( name, line );
-	node->setData( "CssTag", ContentViewNode::NODE_TYPE );
-	node->setData( ":/images/noeud.png", ContentViewNode::NODE_ICON );
-	node->setData( name, ContentViewNode::NODE_DISPLAY_NAME );
-	node->setData( tr( "Element at line : %1" ).arg( line ), ContentViewNode::NODE_DISPLAY_TIPS );
-	node = attachNode( parent, node );
+ContentView2::Node CSSFileContentParser::attacheNewClassNode(ContentView2::Node parent, const QString & name, int line)
+{
+	ContentView2::Node node;
+	node.setLine(line);
+	node.setData(name, ContentView2::Node::NODE_NAME);
+	node.setData("CssClass", ContentView2::Node::NODE_TYPE);
+	node.setData(":/images/noeud.png", ContentView2::Node::NODE_ICON);
+	node.setData(name, ContentView2::Node::NODE_DISPLAY_NAME);
+	node.setData(tr("Element at line : %1").arg(line), ContentView2::Node::NODE_DISPLAY_TIPS);
+	attachNode(parent, node);
 
 	return node;
 }
 
-ContentViewNode * CSSFileContentParser::attacheNewIdNode( ContentViewNode * parent, const QString & name, int line ) {
-	ContentViewNode * node = new ContentViewNode( name, line );
-	node->setData( "CssId", ContentViewNode::NODE_TYPE );
-	node->setData( ":/images/noeud.png", ContentViewNode::NODE_ICON );
-	node->setData( name, ContentViewNode::NODE_DISPLAY_NAME );
-	node->setData( tr( "Element at line : %1" ).arg( line ), ContentViewNode::NODE_DISPLAY_TIPS );
-	node = attachNode( parent, node );
+ContentView2::Node CSSFileContentParser::attacheNewTagNode(ContentView2::Node parent, const QString & name, int line)
+{
+	ContentView2::Node node;
+	node.setLine(line);
+	node.setData(name, ContentView2::Node::NODE_NAME);
+	node.setData("CssTag", ContentView2::Node::NODE_TYPE);
+	node.setData(":/images/noeud.png", ContentView2::Node::NODE_ICON);
+	node.setData(name, ContentView2::Node::NODE_DISPLAY_NAME);
+	node.setData(tr("Element at line : %1").arg(line), ContentView2::Node::NODE_DISPLAY_TIPS);
+	attachNode(parent, node);
+
+	return node;
+}
+
+ContentView2::Node CSSFileContentParser::attacheNewIdNode(ContentView2::Node parent, const QString & name, int line)
+{
+	ContentView2::Node node;
+	node.setLine(line);
+	node.setData(name, ContentView2::Node::NODE_NAME);
+	node.setData("CssId", ContentView2::Node::NODE_TYPE);
+	node.setData(":/images/noeud.png", ContentView2::Node::NODE_ICON);
+	node.setData(name, ContentView2::Node::NODE_DISPLAY_NAME);
+	node.setData(tr("Element at line : %1").arg(line), ContentView2::Node::NODE_DISPLAY_TIPS);
+	attachNode(parent, node);
 
 	return node;
 }

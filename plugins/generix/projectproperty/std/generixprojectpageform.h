@@ -25,13 +25,14 @@
 #include "ui_generixprojectpageform.h"
 #include <plugins/plugininterfaces.h>
 
-class GenerixProjectPageFormImpl : public QWidget, public Ui::GenerixProjectPageForm, public IXinxPluginProjectConfigurationPage {
+class GenerixProjectPageFormImpl : public QWidget, public Ui::GenerixProjectPageForm, public IXinxPluginProjectConfigurationPage
+{
 	Q_OBJECT
 public:
-	GenerixProjectPageFormImpl( QWidget * parent = 0, Qt::WFlags f = 0 );
+	GenerixProjectPageFormImpl(QWidget * parent = 0, Qt::WFlags f = 0);
 	virtual ~GenerixProjectPageFormImpl();
 
-	virtual void setProject( XinxProject * project );
+	virtual void setProject(XinxProject * project);
 
 	virtual QPixmap image();
 	virtual QString name();

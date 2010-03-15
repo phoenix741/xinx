@@ -26,30 +26,32 @@
 #include <qmenuview.h>
 #include <snipets/snipetitemmodel.h>
 
-class LIBEXPORT SnipetMenuModel : public SnipetItemModel {
+class LIBEXPORT SnipetMenuModel : public SnipetItemModel
+{
 	Q_OBJECT
 public:
-	virtual Qt::ItemFlags flags( const QModelIndex & index ) const;
+	virtual Qt::ItemFlags flags(const QModelIndex & index) const;
 protected:
 	friend class SnipetManager;
 
-	SnipetMenuModel( QSqlDatabase db, QObject * parent = 0 );
+	SnipetMenuModel(QSqlDatabase db, QObject * parent = 0);
 private:
 };
 
 /* SnipetMenu */
 
-class LIBEXPORT SnipetMenu : public QMenuView {
+class LIBEXPORT SnipetMenu : public QMenuView
+{
 	Q_OBJECT
 public:
-	SnipetMenu( QWidget * parent = 0 );
+	SnipetMenu(QWidget * parent = 0);
 	virtual ~SnipetMenu();
 signals:
-	void snipetTriggered( int snipetId ) const;
+	void snipetTriggered(int snipetId) const;
 protected:
 	virtual bool prePopulated();
 private slots:
-	void snipetTriggered( const QModelIndex & index ) const;
+	void snipetTriggered(const QModelIndex & index) const;
 	void createSnipet() const;
 private:
 	QAction * m_createAction;

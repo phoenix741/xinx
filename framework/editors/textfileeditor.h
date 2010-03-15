@@ -25,9 +25,11 @@
 #include <core/lib-config.h>
 #include <editors/abstracteditor.h>
 #include <plugins/plugininterfaces.h>
+#include <contentview2/contentview2file.h>
 
 // Qt header
 #include <QTimer>
+#include <QSqlDatabase>
 
 // QCodeEdit header
 #include <qdocumentcursor.h>
@@ -40,9 +42,19 @@ class QAction;
 class FileWatcher;
 class SyntaxHighlighter;
 class BookmarkTextEditorInterface;
+class QModelIndex;
+class QBuffer;
+namespace ContentView2
+{
+class CompletionModel;
+class Node;
+class Parser;
+class TreeModel;
+}
 
 
 /*!
+ * \class TextFileEditor
  * Class used to represent a file editor. A file editor have a XinxCodeEditor class, who show the line in the document,
  * folding, ....
  * The File Editor is a subclass of Editor and implements all its pure virtual method.
@@ -51,12 +63,18 @@ class BookmarkTextEditorInterface;
  * If a file is open, getTitle() return the file name otherwise it return noname.
  *
  * FileEditor has also two methode for load and save file.
+ *
+ * An \e TextFileEditor load and unload the content view model editor when
+ * reading the device. The content model is based on a ContentViewParser and
+ * some ContentViewNode.
  */
-class LIBEXPORT TextFileEditor : public AbstractEditor {
+class LIBEXPORT TextFileEditor : public AbstractEditor
+{
 	Q_OBJECT
 public:
 	/*! Type of End Of Line that the editor can understand. */
-	enum EndOfLineType {
+	enum EndOfLineType
+	{
 		WindowsEndOfLine, //!< The end of line is terminated by \\r\\n
 		UnixEndOfLine,    //!< The end of line is terminated by \\n
 		MacEndOfLine      //!< The end of line is terminated by \\r\\n
@@ -66,24 +84,32 @@ public:
 	 * \param editor TextEditor to use to print file to screen (center widget)
 	 * \param parent Parent of the editor.
 	 */
-	TextFileEditor( XinxCodeEdit * editor = 0, QWidget *parent = 0 );
+	TextFileEditor(XinxCodeEdit * editor = 0, QWidget *parent = 0);
 	/*! Destructor of the FileEditor.*/
 	virtual ~TextFileEditor();
 
- 	/*!
- 	 * Return the text editor corresponding on the file editor. This editor can't be null.
- 	 * \return The text editor widget used by the file editor.
- 	 */
+	/*!
+	 * Return the text editor corresponding on the file editor. This editor can't be null.
+	 * \return The text editor widget used by the file editor.
+	 */
 	virtual XinxCodeEdit * textEdit() const;
 	virtual QString defaultFileName() const;
 
-	virtual void loadFromFile( const QString & fileName = QString() );
-	virtual void saveToFile( const QString & fileName = QString() );
-	virtual void loadFromDevice( QIODevice & d );
-	virtual void saveToDevice( QIODevice & d );
+	virtual void loadFromFile(const QString & fileName = QString());
+	virtual void saveToFile(const QString & fileName = QString());
+	virtual void loadFromDevice(QIODevice & d);
+	virtual void saveToDevice(QIODevice & d);
 
-	//! The default implementation return null.
+	/*!
+	 * The default implementation return null
+	 * \sa contentViewModel()
+	 */
 	virtual QAbstractItemModel * model()  const;
+	/*!
+	 * Return the model used in the editor as model() but with the type ContentViewModel
+	 * \sa model()
+	 */
+	ContentView2::TreeModel * contentViewModel() const;
 
 	//! The codec used to read and write the file. By Default, the codec is defined in options.
 	virtual QTextCodec * codec() const;
@@ -99,15 +125,15 @@ public:
 	virtual bool canUndo();
 	virtual bool canRedo();
 
-	virtual void serialize( XinxProjectSessionEditor * data, bool content );
-	virtual void deserialize( XinxProjectSessionEditor * data );
+	virtual void serialize(XinxProjectSessionEditor * data, bool content);
+	virtual void deserialize(XinxProjectSessionEditor * data);
 
 	virtual BookmarkEditorInterface * bookmarkInterface();
 	virtual BookmarkTextEditorInterface * bookmarkTextInterface();
 public slots :
-	virtual void initSearch( SearchOptions & options );
-	virtual bool find( const QString & text, SearchOptions options );
-	virtual void replace( const QString & from, const QString & to, SearchOptions options );
+	virtual void initSearch(SearchOptions & options);
+	virtual bool find(const QString & text, SearchOptions options);
+	virtual void replace(const QString & from, const QString & to, SearchOptions options);
 
 	//! The default implementation do nothing
 	virtual void updateModel();
@@ -127,28 +153,55 @@ public slots :
 	/*! Call the completer of the text on the current position of the cursor, if possible. */
 	virtual void complete();
 
-	virtual void searchWord( const QString & word );
+	virtual void searchWord(const QString & word);
 signals:
 	/*!
 	 * Signal emitted when a text is selected or deselected.
 	 * \param yes The value is true if a part of the text is selected, else the value is false.
 	 */
-	void selectionAvailable ( bool yes );
+	void selectionAvailable(bool yes);
+	/*!
+	 * Signal emited when the position in the editor is changed. The \e index give
+	 * the position of the cursor in the ContentViewModel.
+	 */
+	void positionInEditorChanged(const QModelIndex & index);
 
 protected:
-	virtual void setModified( bool isModified );
-	virtual void contextMenuEvent ( QContextMenuEvent * contextMenuEvent );
+	virtual void setModified(bool isModified);
+	virtual void contextMenuEvent(QContextMenuEvent * contextMenuEvent);
+
+	virtual ContentView2::CompletionModel * createModel(QSqlDatabase db, QObject * parent = 0);
 
 	virtual void initLayout();
+	virtual void initCompleter();
 	friend class EditorFactory;
+
+	//! Return the current root node
+	ContentView2::Node rootNode() const;
+	//! Return the file container
+	ContentView2::FileContainer fileContainer() const;
+	//! Create a parser for the text editor
+	virtual ContentView2::Parser * createParser();
+private slots:
+	void textChanged();
+	void updateImports(const ContentView2::File & file);
 private:
 	void initObjects();
 
+	QTimer * m_keyTimer;
+
+	QTextCodec * m_codec;
+	QBuffer * m_buffer;
 	XinxCodeEdit * m_view;
 	EndOfLineType m_eol;
 	QDocumentCursor m_cursorStart, m_cursorEnd;
 
 	BookmarkTextEditorInterface * m_bookmarkInterface;
+
+	QString m_uuid;
+	ContentView2::FileContainer m_file;
+	ContentView2::CompletionModel * m_completionModel;
+	ContentView2::TreeModel * m_model;
 };
 
 #endif // __FILEEDITOR_H__

@@ -41,11 +41,13 @@
  *   the user. After the validation of the dialog, the class must add, and remove files
  *   and commit the class.
  */
-class LIBEXPORT RCSManager : public QObject {
+class LIBEXPORT RCSManager : public QObject
+{
 	Q_OBJECT
 public:
 	//! Operations on file that XINX can made.
-	enum rcsAddRemoveOperation {
+	enum rcsAddRemoveOperation
+	{
 		RCS_ADD,    //!< Add a file to RCS
 		RCS_REMOVE //!< Remove a file to the RCS
 	};
@@ -64,7 +66,7 @@ public:
 	 * \param revision The system to use.
 	 * \param basePath The path used in the constructor.
 	 */
-	bool setCurrentRCS( const QString & rcs );
+	bool setCurrentRCS(const QString & rcs);
 	//! Return the name of the current RCS
 	QString currentRCS() const;
 	//! Return the description of the current RCS
@@ -73,12 +75,12 @@ public:
 	RCS * currentRCSInterface() const;
 
 	//! Set the current root path
-	void setCurrentRootPath( const QString & rootPath );
+	void setCurrentRootPath(const QString & rootPath);
 	//! Get the current root path
 	const QString & currentRootPath() const;
 
 	//! Add an operation to the the RCS
-	void addFileOperation( rcsAddRemoveOperation op, const QStringList & filename, QWidget * parent = 0, bool confirm = true );
+	void addFileOperation(rcsAddRemoveOperation op, const QStringList & filename, QWidget * parent = 0, bool confirm = true);
 
 	//! Return the single instance of the RCSManager
 	static RCSManager * self();
@@ -99,18 +101,18 @@ public slots:
 	void rollbackFileOperations();
 
 	//! Valide the working copy
-	void validWorkingCopy( QStringList files = QStringList(), QWidget * parent = 0 );
+	void validWorkingCopy(QStringList files = QStringList(), QWidget * parent = 0);
 	//! Update the working copy
-	void updateWorkingCopy( QStringList list = QStringList() );
+	void updateWorkingCopy(QStringList list = QStringList());
 
 	//! Update one file to the given revision
-	void updateToRevision( const QString & path, const QString & revision, QByteArray * content = 0 );
+	void updateToRevision(const QString & path, const QString & revision, QByteArray * content = 0);
 
 	//! Abort all the opreration
 	void abort();
 signals:
-	void stateChange( const QString & filename, RCS::struct_rcs_infos informations );
-	void log( RCS::rcsLog niveau, const QString & info );
+	void stateChange(const QString & filename, RCS::struct_rcs_infos informations);
+	void log(RCS::rcsLog niveau, const QString & info);
 	void operationStarted();
 	void operationTerminated();
 private slots:
@@ -118,12 +120,12 @@ private slots:
 private:
 	RCSManager();
 
-	void callRCSFileOperations( RCS * rcs, QStringList toAdd, QStringList toRemove );
-	void callRCSValideWorkingCopy( RCS * rcs, RCS::FilesOperation operations, QString messages );
-	void callRCSUpdateWorkingCopy( RCS * rcs, QStringList list );
-	void callRCSUpdateRevision( RCS * rcs, QString path, QString revision, QByteArray * content );
+	void callRCSFileOperations(RCS * rcs, QStringList toAdd, QStringList toRemove);
+	void callRCSValideWorkingCopy(RCS * rcs, RCS::FilesOperation operations, QString messages);
+	void callRCSUpdateWorkingCopy(RCS * rcs, QStringList list);
+	void callRCSUpdateRevision(RCS * rcs, QString path, QString revision, QByteArray * content);
 
-	RCS * createRevisionControl( QString revision, QString basePath ) const;
+	RCS * createRevisionControl(QString revision, QString basePath) const;
 
 	QAction * m_updateAll, * m_commitAll, * m_abort;
 

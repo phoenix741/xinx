@@ -25,10 +25,11 @@
 
 /* XQModelCompleter */
 
-class XQModelCompleter : public QAbstractListModel {
+class XQModelCompleter : public QAbstractListModel
+{
 	Q_OBJECT
 public:
-	XQModelCompleter( QObject *parent = 0 );
+	XQModelCompleter(QObject *parent = 0);
 	virtual ~XQModelCompleter();
 
 	QVariant data(const QModelIndex &index, int role) const;

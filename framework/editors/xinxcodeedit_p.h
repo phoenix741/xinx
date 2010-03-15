@@ -30,14 +30,18 @@
 
 /* XinxEditor */
 
-class XinxEditor : public QEditor {
+class XinxEditor : public QEditor
+{
 	Q_OBJECT
 public:
-	XinxEditor( QWidget *p = 0 ) : QEditor( p ) {};
-	XinxEditor( const QString& s, QWidget *p = 0 ) : QEditor( s, p ) { };
+	XinxEditor(QWidget *p = 0) : QEditor(p) {};
+	XinxEditor(const QString& s, QWidget *p = 0) : QEditor(s, p) { };
 	virtual ~XinxEditor() {};
 
-	virtual void setContentModified(bool y) { setContentModified( y ); };
+	virtual void setContentModified(bool y)
+	{
+		setContentModified(y);
+	};
 };
 
 #endif /* _XINXCODEEDIT_P_ */

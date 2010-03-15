@@ -32,51 +32,54 @@
 #include <QPainter>
 #include <QPointer>
 
-class DerivationDirectoryEditDelegate : public QItemDelegate {
+class DerivationDirectoryEditDelegate : public QItemDelegate
+{
 	Q_OBJECT
 public:
-	DerivationDirectoryEditDelegate( QObject *parent = 0 );
+	DerivationDirectoryEditDelegate(QObject *parent = 0);
 
-	QWidget *createEditor( QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index ) const;
-	void setEditorData( QWidget *editor, const QModelIndex &index ) const;
-	void setModelData( QWidget *editor, QAbstractItemModel *model, const QModelIndex &index ) const;
-	void updateEditorGeometry( QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index ) const;
+	QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+	void setEditorData(QWidget *editor, const QModelIndex &index) const;
+	void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
+	void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
-	void paint( QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index ) const;
+	void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
-	void setAbsolutePath( const QString & path );
+	void setAbsolutePath(const QString & path);
 private:
 	QString m_absolutePath;
 };
 
-class DerivationPathTableModel : public QAbstractTableModel {
+class DerivationPathTableModel : public QAbstractTableModel
+{
 	Q_OBJECT
 public:
-	DerivationPathTableModel( QObject * parent = 0 );
+	DerivationPathTableModel(QObject * parent = 0);
 
 	void setDerivationPath(const QList<GenerixProject::DerivationPath> & values);
 	const QList<GenerixProject::DerivationPath> & derivationPath() const;
 
 	virtual int columnCount(const QModelIndex & parent = QModelIndex()) const;
-	virtual int	rowCount(const QModelIndex & parent = QModelIndex() ) const;
+	virtual int	rowCount(const QModelIndex & parent = QModelIndex()) const;
 	virtual QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
-	virtual QVariant headerData( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
-	virtual Qt::ItemFlags flags( const QModelIndex & index ) const;
+	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+	virtual Qt::ItemFlags flags(const QModelIndex & index) const;
 
-	virtual bool setData( const QModelIndex & index, const QVariant & value, int role = Qt::EditRole );
-	virtual bool insertRows ( int row, int count, const QModelIndex & parent = QModelIndex() );
-	virtual bool removeRows ( int row, int count, const QModelIndex & parent = QModelIndex() );
+	virtual bool setData(const QModelIndex & index, const QVariant & value, int role = Qt::EditRole);
+	virtual bool insertRows(int row, int count, const QModelIndex & parent = QModelIndex());
+	virtual bool removeRows(int row, int count, const QModelIndex & parent = QModelIndex());
 private:
 	QList<GenerixProject::DerivationPath> m_paths;
 };
 
-class GenerixDerivationPathPageImpl : public QWidget, public Ui::GenerixDerivationPathPage, public IXinxPluginProjectConfigurationPage {
+class GenerixDerivationPathPageImpl : public QWidget, public Ui::GenerixDerivationPathPage, public IXinxPluginProjectConfigurationPage
+{
 	Q_OBJECT
 public:
-	GenerixDerivationPathPageImpl( QWidget * parent = 0, Qt::WFlags f = 0 );
+	GenerixDerivationPathPageImpl(QWidget * parent = 0, Qt::WFlags f = 0);
 	virtual ~GenerixDerivationPathPageImpl();
 
-	virtual void setProject( XinxProject * project );
+	virtual void setProject(XinxProject * project);
 
 	virtual QPixmap image();
 	virtual QString name();
@@ -91,7 +94,7 @@ public:
 private slots:
 	void on_m_delBtn_clicked();
 	void on_m_addBtn_clicked();
-	void derivationLineChanged( const QModelIndex & current );
+	void derivationLineChanged(const QModelIndex & current);
 
 private:
 	XinxProject * m_project;

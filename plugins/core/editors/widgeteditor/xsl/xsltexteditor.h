@@ -33,21 +33,22 @@
 
 class XslCompletionNodeModel;
 
-class XslTextEditor : public XmlTextEditor {
+class XslTextEditor : public XmlTextEditor
+{
 	Q_OBJECT
 public:
-	XslTextEditor( QWidget * parent = 0 );
+	XslTextEditor(QWidget * parent = 0);
 	virtual ~XslTextEditor();
 
 	virtual QCompleter * completer();
 
-	virtual QDocumentCursor insertCompletionBalises( QDocumentCursor & tc, QString node );
-	virtual void insertCompletionAccolade( QDocumentCursor & tc, QString node, QString param, QString value, const QModelIndex & index );
+	virtual QDocumentCursor insertCompletionBalises(QDocumentCursor & tc, QString node);
+	virtual void insertCompletionAccolade(QDocumentCursor & tc, QString node, QString param, QString value, const QModelIndex & index);
 
-	void setModel( XslCompletionNodeModel * model );
+	void setModel(XslCompletionNodeModel * model);
 private:
-	QString paramValue( const QDocumentCursor & cursor, const QString & param );
-	void getTemplate( const QDocumentCursor & cursor, QString * name, QString * mode );
+	QString paramValue(const QDocumentCursor & cursor, const QString & param);
+	void getTemplate(const QDocumentCursor & cursor, QString * name, QString * mode);
 
 	XslCompletionNodeModel * m_model;
 };

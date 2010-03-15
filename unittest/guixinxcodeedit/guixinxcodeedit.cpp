@@ -24,10 +24,11 @@
 // Qt header
 #include <QApplication>
 
-int main( int argc, char ** argv ) {
+int main(int argc, char ** argv)
+{
 	Q_INIT_RESOURCE(application);
 
-	QApplication app( argc, argv );
+	QApplication app(argc, argv);
 
 	XINXConfig::self()->load();
 	CodeDialogImpl dlg;

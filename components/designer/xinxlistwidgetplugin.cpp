@@ -26,54 +26,66 @@
 
 /* XinxListWidgetPlugin */
 
-XinxListWidgetPlugin::XinxListWidgetPlugin( QObject *parent ) : QObject( parent ) {
+XinxListWidgetPlugin::XinxListWidgetPlugin(QObject *parent) : QObject(parent)
+{
 	m_initialized = false;
 }
 
-void XinxListWidgetPlugin::initialize( QDesignerFormEditorInterface *core ) {
-	if( m_initialized )
+void XinxListWidgetPlugin::initialize(QDesignerFormEditorInterface *core)
+{
+	if (m_initialized)
 		return;
 
 	m_initialized = true;
 }
 
-bool XinxListWidgetPlugin::isInitialized() const {
+bool XinxListWidgetPlugin::isInitialized() const
+{
 	return m_initialized;
 }
 
-bool XinxListWidgetPlugin::isContainer() const {
+bool XinxListWidgetPlugin::isContainer() const
+{
 	return false;
 }
 
-QIcon XinxListWidgetPlugin::icon() const {
+QIcon XinxListWidgetPlugin::icon() const
+{
 	return QIcon();
 }
 
-QString XinxListWidgetPlugin::toolTip() const {
+QString XinxListWidgetPlugin::toolTip() const
+{
 	return "";
 }
 
-QString XinxListWidgetPlugin::whatsThis() const {
+QString XinxListWidgetPlugin::whatsThis() const
+{
 	return "";
 }
 
-QString XinxListWidgetPlugin::group() const {
+QString XinxListWidgetPlugin::group() const
+{
 	return "XINX Widget";
 }
 
-QString XinxListWidgetPlugin::name() const {
+QString XinxListWidgetPlugin::name() const
+{
 	return "XinxListWidgetImpl";
 }
 
-QString XinxListWidgetPlugin::includeFile() const {
+QString XinxListWidgetPlugin::includeFile() const
+{
 	return "xinxlistwidgetimpl.h";
 }
 
-QString XinxListWidgetPlugin::domXml() const {
+QString XinxListWidgetPlugin::domXml() const
+{
 	return  "<widget class=\"XinxListWidgetImpl\" name=\"xinxListWidget\"/>";
 }
 
-QWidget * XinxListWidgetPlugin::createWidget( QWidget *parent ) {
-	return new XinxListWidgetImpl( parent );
+QWidget * XinxListWidgetPlugin::createWidget(QWidget *parent)
+{
+	return new XinxListWidgetImpl(parent);
 }
 

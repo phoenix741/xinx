@@ -35,20 +35,22 @@
 #include <QApplication>
 #include <QSqlDatabase>
 
-namespace ContentView2 {
+namespace ContentView2
+{
 
 /*!
  * \class ParserException
  * \brief Exception throw when the model can't be updated.
  */
-class LIBEXPORT ParserException : public XinxException {
+class LIBEXPORT ParserException : public XinxException
+{
 public:
 	/*!
 	 * Create the exception with a message and a line.
 	 * \param message Error of the exception.
 	 * \param line Line where the error is.
 	 */
-	ParserException( QString message, QString filename, int line, int column = 0 );
+	ParserException(QString message, QString filename, int line, int column = 0);
 
 	/*!
 	 * Return the line where the error is.
@@ -76,26 +78,29 @@ private:
  * \brief The content view parser create the content view tree (and fill the base)
  *
  */
-class LIBEXPORT Parser {
+class LIBEXPORT Parser
+{
 	Q_DECLARE_TR_FUNCTIONS(Parser);
 public:
-	Parser( bool persistent = false );
+	Parser();
 	virtual ~Parser();
 
 	/*! Set the root node */
-	void setRootNode( const Node & node );
+	void setRootNode(const Node & node);
 	/*! Return the root node */
 	Node rootNode() const;
+
+
 	/*! Set the filename */
-	virtual void setFilename( const QString & filename );
+	virtual void setFilename(const QString & filename);
 	/*! Get the filename */
 	QString filename() const;
 	/*! Set the device */
-	void setInputDevice( QIODevice * device );
+	void setInputDevice(QIODevice * device);
 	/*! Return the device */
 	QIODevice * inputDevice() const;
 	/*! Set the database */
-	void setDatabase( const QSqlDatabase & db );
+	void setDatabase(const QSqlDatabase & db);
 	/*! Return the database */
 	QSqlDatabase database() const;
 
@@ -104,38 +109,34 @@ public:
 	/*! Get the list of import */
 	const QStringList & imports() const;
 
-	/*! Change the autodelete member to \e value. */
-	void setPersistent( bool value );
-	/*! Return wethere the object will be auto deleted */
-	bool isPersistent() const;
-
 	/*! Set a decalage when attach a node to the parent */
-	void setDecalage( int line );
+	void setDecalage(int line);
 	/*! Return the current decalage */
 	int decalage() const;
+
+	virtual QTextCodec * codec();
 protected:
 	/*!
 	 * Attach the node \e child to \e parent if this node isn't already attached.
 	 */
-	void attachNode( const Node & parent, Node & child );
+	void attachNode(const Node & parent, Node & child);
 
 	//! Load all child from the given \e rootNode for future detach
-	void loadAttachedNode( const Node & rootNode );
+	void loadAttachedNode(const Node & rootNode);
 	//! Detach all node again in the list
 	void detachAttachedNode();
 	//! Remove \e rootNode from the attachedNodeList
-	void removeAttachedNode( const Node & rootNode );
+	void removeAttachedNode(const Node & rootNode);
 	//! Remove all node in the list
 	void removeAttachedNodes();
 
 	//! Return the location (absolute path) of the filename, with the help of the \e parent node
-	QString locationOf( const QString & relativeFilename );
+	QString locationOf(const QString & relativeFilename);
 
 	//! Add the import to the list
-	void addImport( const QString & import );
+	void addImport(const QString & import);
 private:
 	QList< QPair<uint,uint> > m_attachedNode;
-	bool m_persistent;
 	unsigned long m_decaledLine;
 	QString m_filename;
 	QIODevice * m_device;

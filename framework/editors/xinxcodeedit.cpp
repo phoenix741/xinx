@@ -23,7 +23,8 @@
 #include "editors/xinxlanguagefactory.h"
 #include "editors/xinxformatscheme.h"
 #include "snipets/snipetmanager.h"
-#include "contentview/contentviewnode.h"
+#include "contentview2/contentview2node.h"
+#include "contentview2/contentview2completionmodel.h"
 
 // Qt header
 #include <QHBoxLayout>
@@ -58,536 +59,616 @@
 
 /* XinxCodeEdit */
 
-XinxCodeEdit::XinxCodeEdit( QWidget * parent ) : QWidget( parent ), m_completer( 0 ) {
-	init( false );
+XinxCodeEdit::XinxCodeEdit(QWidget * parent) : QWidget(parent), m_completer(0)
+{
+	init(false);
 }
 
-XinxCodeEdit::XinxCodeEdit( bool action, QWidget * parent ) : QWidget( parent ), m_completer( 0 ) {
-	init( action );
+XinxCodeEdit::XinxCodeEdit(bool action, QWidget * parent) : QWidget(parent), m_completer(0)
+{
+	init(action);
 }
 
-void XinxCodeEdit::init( bool action ) {
-	m_editor = new QCodeEdit( action, this );
-	setHighlighter( QString() );
+void XinxCodeEdit::init(bool action)
+{
+	m_editor = new QCodeEdit(action, this);
+	setHighlighter(QString());
 
-	m_editor->editor()->document()->setLineEnding( QDocument::Unix );
-	m_editor->editor()->setAcceptDrops( true );
-	m_editor->editor()->setWindowTitle( "[*]" );
-	m_editor->editor()->addInputBinding( this );
-	m_editor->editor()->setInputBinding( this );
-	m_editor->editor()->setFrameShape( QFrame::NoFrame );
+	m_editor->editor()->document()->setLineEnding(QDocument::Unix);
+	m_editor->editor()->setAcceptDrops(true);
+	m_editor->editor()->setWindowTitle("[*]");
+	m_editor->editor()->addInputBinding(this);
+	m_editor->editor()->setInputBinding(this);
+	m_editor->editor()->setFrameShape(QFrame::NoFrame);
 
 	QDocumentSearch::Options opt = QDocumentSearch::Silent | QDocumentSearch::HighlightAll;
-	m_matchingText = new QDocumentSearch( m_editor->editor(), QString(), opt );
+	m_matchingText = new QDocumentSearch(m_editor->editor(), QString(), opt);
 
-	m_editor->addPanel( new QLineMarkPanel, QCodeEdit::West, true );
-	m_editor->addPanel( new QLineNumberPanel, QCodeEdit::West, true );
-	m_editor->addPanel( new QFoldPanel, QCodeEdit::West, true );
-	m_editor->addPanel( new QLineChangePanel, QCodeEdit::West, true );
+	m_editor->addPanel(new QLineMarkPanel, QCodeEdit::West, true);
+	m_editor->addPanel(new QLineNumberPanel, QCodeEdit::West, true);
+	m_editor->addPanel(new QFoldPanel, QCodeEdit::West, true);
+	m_editor->addPanel(new QLineChangePanel, QCodeEdit::West, true);
 
 	QHBoxLayout * layout = new QHBoxLayout;
-	layout->addWidget( m_editor->editor() );
-	layout->setSpacing( 0 );
-	layout->setMargin( 0 );
-	setLayout( layout );
+	layout->addWidget(m_editor->editor());
+	layout->setSpacing(0);
+	layout->setMargin(0);
+	setLayout(layout);
 
-	connect( XINXConfig::self(), SIGNAL( changed() ), this, SLOT( updateHighlighter() ) );
-	connect( XINXConfig::self(), SIGNAL( changed() ), this, SLOT( updateFont() ) );
-	connect( m_editor->editor(), SIGNAL( cursorPositionChanged() ), this, SLOT( refreshTextHighlighter()));
-	connect( m_editor->editor(), SIGNAL( copyAvailable( bool ) ), this, SIGNAL( copyAvailable( bool ) ) );
-	connect( m_editor->editor(), SIGNAL( redoAvailable( bool ) ), this, SIGNAL( redoAvailable( bool ) ) );
-	connect( m_editor->editor(), SIGNAL( undoAvailable( bool ) ), this, SIGNAL( undoAvailable( bool ) ) );
-	connect( m_editor->editor()->document(), SIGNAL(markChanged(QDocumentLineHandle*,int,bool)), this, SLOT(slotMarkChanged(QDocumentLineHandle*,int,bool)) );
+	connect(XINXConfig::self(), SIGNAL(changed()), this, SLOT(updateHighlighter()));
+	connect(XINXConfig::self(), SIGNAL(changed()), this, SLOT(updateFont()));
+	connect(m_editor->editor(), SIGNAL(cursorPositionChanged()), this, SLOT(refreshTextHighlighter()));
+	connect(m_editor->editor(), SIGNAL(copyAvailable(bool)), this, SIGNAL(copyAvailable(bool)));
+	connect(m_editor->editor(), SIGNAL(redoAvailable(bool)), this, SIGNAL(redoAvailable(bool)));
+	connect(m_editor->editor(), SIGNAL(undoAvailable(bool)), this, SIGNAL(undoAvailable(bool)));
+	connect(m_editor->editor()->document(), SIGNAL(markChanged(QDocumentLineHandle*,int,bool)), this, SLOT(slotMarkChanged(QDocumentLineHandle*,int,bool)));
 
 	updateFont();
 }
 
-XinxCodeEdit::~XinxCodeEdit() {
-	m_editor->editor()->setInputBinding( 0 );
-	m_editor->editor()->removeInputBinding( this );
+XinxCodeEdit::~XinxCodeEdit()
+{
+	m_editor->editor()->setInputBinding(0);
+	m_editor->editor()->removeInputBinding(this);
 	delete m_editor;
 }
 
-void XinxCodeEdit::setFilename( const QString & filename ) {
+void XinxCodeEdit::setFilename(const QString & filename)
+{
 	m_filename = filename;
 }
 
-const QString & XinxCodeEdit::filename() const {
+const QString & XinxCodeEdit::filename() const
+{
 	return m_filename;
 }
 
-bool XinxCodeEdit::isModified() {
-    return m_editor->editor()->document()->isClean();
+bool XinxCodeEdit::isModified()
+{
+	return m_editor->editor()->document()->isClean();
 }
 
-int XinxCodeEdit::currentColumn() {
+int XinxCodeEdit::currentColumn()
+{
 	return m_editor->editor()->cursor().columnNumber();
 }
 
-int XinxCodeEdit::currentRow() {
+int XinxCodeEdit::currentRow()
+{
 	return m_editor->editor()->cursor().lineNumber();
 }
 
-QDocument * XinxCodeEdit::document() const {
+QDocument * XinxCodeEdit::document() const
+{
 	return m_editor->editor()->document();
 }
 
-QEditor * XinxCodeEdit::editor() const {
+QEditor * XinxCodeEdit::editor() const
+{
 	return m_editor->editor();
 }
 
-void XinxCodeEdit::slotMarkChanged( QDocumentLineHandle* line, int type, bool enabled ) {
-	Q_UNUSED( type );
+void XinxCodeEdit::slotMarkChanged(QDocumentLineHandle* line, int type, bool enabled)
+{
+	Q_UNUSED(type);
 
-	emit bookmarkToggled( line->line(), enabled );
+	emit bookmarkToggled(line->line(), enabled);
 }
 
-void XinxCodeEdit::clearBookmark() {
-	int bid = QLineMarksInfoCenter::instance()->markTypeId( "bookmark" );
-	int mark = document()->findNextMark( bid );
-	while( mark != -1 ) {
-		emit bookmarkToggled( mark + 1, false );
-		document()->line( mark ).removeMark( bid );
+void XinxCodeEdit::clearBookmark()
+{
+	int bid = QLineMarksInfoCenter::instance()->markTypeId("bookmark");
+	int mark = document()->findNextMark(bid);
+	while (mark != -1)
+	{
+		emit bookmarkToggled(mark + 1, false);
+		document()->line(mark).removeMark(bid);
 
-		mark = document()->findNextMark( bid, mark + 1 );
+		mark = document()->findNextMark(bid, mark + 1);
 	}
 }
 
-bool XinxCodeEdit::previousBookmark() {
-	int bid = QLineMarksInfoCenter::instance()->markTypeId( "bookmark" );
-	int mark = document()->findPreviousMark( bid, currentRow() - 1 );
-	if( mark == -1 ) return false;
-	gotoLine( mark + 1 );
+bool XinxCodeEdit::previousBookmark()
+{
+	int bid = QLineMarksInfoCenter::instance()->markTypeId("bookmark");
+	int mark = document()->findPreviousMark(bid, currentRow() - 1);
+	if (mark == -1) return false;
+	gotoLine(mark + 1);
 	return true;
 }
 
-bool XinxCodeEdit::nextBookmark() {
-	int bid = QLineMarksInfoCenter::instance()->markTypeId( "bookmark" );
-	int mark = document()->findNextMark( bid, currentRow() + 1 );
-	if( mark == -1 ) return false;
-	gotoLine( mark + 1 );
+bool XinxCodeEdit::nextBookmark()
+{
+	int bid = QLineMarksInfoCenter::instance()->markTypeId("bookmark");
+	int mark = document()->findNextMark(bid, currentRow() + 1);
+	if (mark == -1) return false;
+	gotoLine(mark + 1);
 	return true;
 }
 
-void XinxCodeEdit::setBookmark( int line, bool enabled ) {
-	int bid = QLineMarksInfoCenter::instance()->markTypeId( "bookmark" );
-	QDocumentLine documentLine = m_editor->editor()->document()->line( line - 1 );
-	if( enabled )
-		documentLine.addMark( bid );
+void XinxCodeEdit::setBookmark(int line, bool enabled)
+{
+	int bid = QLineMarksInfoCenter::instance()->markTypeId("bookmark");
+	QDocumentLine documentLine = m_editor->editor()->document()->line(line - 1);
+	if (enabled)
+		documentLine.addMark(bid);
 	else
-		documentLine.removeMark( bid );
+		documentLine.removeMark(bid);
 
-	emit bookmarkToggled( line, enabled );
+	emit bookmarkToggled(line, enabled);
 }
 
-QList<int> XinxCodeEdit::listOfBookmark() {
+QList<int> XinxCodeEdit::listOfBookmark()
+{
 	QList<int> bookmarks;
 
-	int bid = QLineMarksInfoCenter::instance()->markTypeId( "bookmark" );
-	int mark = document()->findNextMark( bid );
-	while( mark != -1 ) {
-		bookmarks.append( mark + 1 );
+	int bid = QLineMarksInfoCenter::instance()->markTypeId("bookmark");
+	int mark = document()->findNextMark(bid);
+	while (mark != -1)
+	{
+		bookmarks.append(mark + 1);
 
-		mark = document()->findNextMark( bid, mark + 1 );
+		mark = document()->findNextMark(bid, mark + 1);
 	}
 
 	return bookmarks;
 }
 
-void XinxCodeEdit::setErrors( QList<int> errors ) {
+void XinxCodeEdit::setErrors(QList<int> errors)
+{
 	QList<int> bookmarks;
 
-	int bid = QLineMarksInfoCenter::instance()->markTypeId( "error" );
+	int bid = QLineMarksInfoCenter::instance()->markTypeId("error");
 
 	// Remove old mark
-	int mark = document()->findNextMark( bid );
-	while( mark != -1 ) {
-		QDocumentLine line = m_editor->editor()->document()->line( mark );
-		line.removeMark( bid );
+	int mark = document()->findNextMark(bid);
+	while (mark != -1)
+	{
+		QDocumentLine line = m_editor->editor()->document()->line(mark);
+		line.removeMark(bid);
 
-		mark = document()->findNextMark( bid, mark + 1 );
+		mark = document()->findNextMark(bid, mark + 1);
 	}
 
 	// Activate new marks
-	foreach( mark, errors ) {
-		QDocumentLine line = m_editor->editor()->document()->line( mark );
-		line.addMark( bid );
+	foreach(mark, errors)
+	{
+		QDocumentLine line = m_editor->editor()->document()->line(mark);
+		line.addMark(bid);
 	}
 }
 
-bool XinxCodeEdit::find( const QString & exp, XinxCodeEdit::FindFlags options ) {
-	QDocumentCursor c = find( exp, m_editor->editor()->cursor(), options );
+bool XinxCodeEdit::find(const QString & exp, XinxCodeEdit::FindFlags options)
+{
+	QDocumentCursor c = find(exp, m_editor->editor()->cursor(), options);
 	return ! c.isNull();
 }
 
-QDocumentCursor XinxCodeEdit::find ( const QString & subString, const QDocumentCursor & cursor, XinxCodeEdit::FindFlags options ) const {
+QDocumentCursor XinxCodeEdit::find(const QString & subString, const QDocumentCursor & cursor, XinxCodeEdit::FindFlags options) const
+{
 	QDocumentSearch::Options opt = QDocumentSearch::Silent;
-	if( options.testFlag( FindCaseSensitively ) ) opt |= QDocumentSearch::CaseSensitive;
-	if( options.testFlag( FindWholeWords ) ) opt |= QDocumentSearch::WholeWords;
-	QDocumentSearch searchEngine( m_editor->editor(), subString, opt );
+	if (options.testFlag(FindCaseSensitively)) opt |= QDocumentSearch::CaseSensitive;
+	if (options.testFlag(FindWholeWords)) opt |= QDocumentSearch::WholeWords;
+	QDocumentSearch searchEngine(m_editor->editor(), subString, opt);
 
-	searchEngine.setCursor( cursor );
-	searchEngine.next( options.testFlag( FindBackward ) );
+	searchEngine.setCursor(cursor);
+	searchEngine.next(options.testFlag(FindBackward));
 	return searchEngine.cursor();
 }
 
-QDocumentCursor XinxCodeEdit::find ( const QRegExp & expr, const QDocumentCursor & cursor, XinxCodeEdit::FindFlags options ) const {
+QDocumentCursor XinxCodeEdit::find(const QRegExp & expr, const QDocumentCursor & cursor, XinxCodeEdit::FindFlags options) const
+{
 	QDocumentSearch::Options opt = QDocumentSearch::Silent | QDocumentSearch::RegExp | QDocumentSearch::CaseSensitive;
-	if( options.testFlag( FindWholeWords ) ) opt |= QDocumentSearch::WholeWords;
-	QDocumentSearch searchEngine( m_editor->editor(), expr.pattern(), opt );
+	if (options.testFlag(FindWholeWords)) opt |= QDocumentSearch::WholeWords;
+	QDocumentSearch searchEngine(m_editor->editor(), expr.pattern(), opt);
 
-	searchEngine.setCursor( cursor );
-	searchEngine.next( options.testFlag( FindBackward ) );
+	searchEngine.setCursor(cursor);
+	searchEngine.next(options.testFlag(FindBackward));
 	return searchEngine.cursor();
 }
 
-QString XinxCodeEdit::textUnderCursor( const QDocumentCursor & cursor, bool deleteWord, bool dot ) {
-	Q_ASSERT( ! cursor.isNull() );
+QString XinxCodeEdit::textUnderCursor(const QDocumentCursor & cursor, bool deleteWord, bool dot)
+{
+	Q_ASSERT(! cursor.isNull());
 	QString expr = EOWREGEXPDOT;
-	if( ! dot )
+	if (! dot)
 		expr = EOWREGEXP;
 
-	QDocumentCursor before ( find ( QRegExp( expr ), cursor, XinxCodeEdit::FindBackward ).selectionEnd() );
-	QDocumentCursor after ( find ( QRegExp( expr ), cursor ).selectionStart() );
+	QDocumentCursor before(find(QRegExp(expr), cursor, XinxCodeEdit::FindBackward).selectionEnd());
+	QDocumentCursor after(find(QRegExp(expr), cursor).selectionStart());
 
 	QDocumentCursor tc = cursor;
 
-	if( ( ! before.isNull() ) && ( before.lineNumber() == tc.lineNumber() ) ) {
-		tc.moveTo( before );
-	} else
-		tc.movePosition( 1, QDocumentCursor::StartOfBlock, QDocumentCursor::MoveAnchor ) ;
-
-	if( ( ! after.isNull() ) && ( after.lineNumber() == tc.lineNumber() ) )
-		tc.movePosition( after.position() - (before.position() == -1 ? 0 : before.position()), QDocumentCursor::Right, QDocumentCursor::KeepAnchor ) ;
+	if ((! before.isNull()) && (before.lineNumber() == tc.lineNumber()))
+	{
+		tc.moveTo(before);
+	}
 	else
-		tc.movePosition( 1, QDocumentCursor::EndOfBlock, QDocumentCursor::KeepAnchor ) ;
+		tc.movePosition(1, QDocumentCursor::StartOfBlock, QDocumentCursor::MoveAnchor) ;
+
+	if ((! after.isNull()) && (after.lineNumber() == tc.lineNumber()))
+		tc.movePosition(after.position() - (before.position() == -1 ? 0 : before.position()), QDocumentCursor::Right, QDocumentCursor::KeepAnchor) ;
+	else
+		tc.movePosition(1, QDocumentCursor::EndOfBlock, QDocumentCursor::KeepAnchor) ;
 
 	QString selection = tc.selectedText().trimmed();
 
-	if( ( ! tc.selectedText().trimmed().isEmpty() ) && deleteWord ) {
+	if ((! tc.selectedText().trimmed().isEmpty()) && deleteWord)
+	{
 		tc.removeSelectedText();
-		m_editor->editor()->setCursor( tc );
+		m_editor->editor()->setCursor(tc);
 	}
 
 	return selection;
 }
 
-void XinxCodeEdit::setTextCursor( const QDocumentCursor & cursor ) {
-	m_editor->editor()->setCursor( cursor );
+void XinxCodeEdit::setTextCursor(const QDocumentCursor & cursor)
+{
+	m_editor->editor()->setCursor(cursor);
 }
 
-QDocumentCursor XinxCodeEdit::textCursor() const {
+QDocumentCursor XinxCodeEdit::textCursor() const
+{
 	return m_editor->editor()->cursor();
 }
 
-void XinxCodeEdit::moveCursor( QDocumentCursor::MoveOperation operation, QDocumentCursor::MoveMode mode ) {
+void XinxCodeEdit::moveCursor(QDocumentCursor::MoveOperation operation, QDocumentCursor::MoveMode mode)
+{
 	QDocumentCursor c = m_editor->editor()->cursor();
-	c.movePosition( 1, operation, mode );
-	m_editor->editor()->setCursor( c );
+	c.movePosition(1, operation, mode);
+	m_editor->editor()->setCursor(c);
 }
 
-QString XinxCodeEdit::selection() const {
-	if( m_editor->editor()->cursor().hasSelection() )
+QString XinxCodeEdit::selection() const
+{
+	if (m_editor->editor()->cursor().hasSelection())
 		return m_editor->editor()->cursor().selectedText();
 	else
 		return toPlainText();
 }
 
-QString XinxCodeEdit::toPlainText() const {
+QString XinxCodeEdit::toPlainText() const
+{
 	return m_editor->editor()->text();
 }
 
-void XinxCodeEdit::setPlainText( const QString & text ) {
-	m_editor->editor()->cursor().movePosition( 1, QDocumentCursor::Start );
-	m_editor->editor()->setText( text );
+void XinxCodeEdit::setPlainText(const QString & text)
+{
+	m_editor->editor()->cursor().movePosition(1, QDocumentCursor::Start);
+	m_editor->editor()->setText(text);
 	m_editor->editor()->document()->setClean();
 	m_editor->editor()->update();
 }
 
-void XinxCodeEdit::setSelection( QString text ) {
-	if( m_editor->editor()->cursor().hasSelection() ) {
+void XinxCodeEdit::setSelection(QString text)
+{
+	if (m_editor->editor()->cursor().hasSelection())
+	{
 		m_editor->editor()->cursor().beginEditBlock();
 		m_editor->editor()->cursor().removeSelectedText();
-		m_editor->editor()->cursor().insertText( text );
+		m_editor->editor()->cursor().insertText(text);
 		m_editor->editor()->cursor().endEditBlock();
-	} else {
+	}
+	else
+	{
 		m_editor->editor()->cursor().beginEditBlock();
 		m_editor->editor()->selectAll();
 		m_editor->editor()->cursor().removeSelectedText();
-		m_editor->editor()->cursor().movePosition( 1, QDocumentCursor::Start );
-		m_editor->editor()->cursor().insertText( text );
+		m_editor->editor()->cursor().movePosition(1, QDocumentCursor::Start);
+		m_editor->editor()->cursor().insertText(text);
 		m_editor->editor()->cursor().endEditBlock();
 	}
 }
 
-void XinxCodeEdit::setMatchingText( QString text ) {
-	if( m_matchingTextString != text ) {
+void XinxCodeEdit::setMatchingText(QString text)
+{
+	if (m_matchingTextString != text)
+	{
 		QDocumentCursor cursor;
-		cursor.setSilent( true );
-		if( ! text.isEmpty() ) {
-			m_matchingText->setCursor( cursor );
-			m_matchingText->setSearchText( text );
-			m_matchingText->next( false );
-		} else {
+		cursor.setSilent(true);
+		if (! text.isEmpty())
+		{
+			m_matchingText->setCursor(cursor);
+			m_matchingText->setSearchText(text);
+			m_matchingText->next(false);
+		}
+		else
+		{
 			delete m_matchingText;
 			QDocumentSearch::Options opt = QDocumentSearch::Silent | QDocumentSearch::HighlightAll;
-			m_matchingText = new QDocumentSearch( m_editor->editor(), QString(), opt );
+			m_matchingText = new QDocumentSearch(m_editor->editor(), QString(), opt);
 		}
 		m_matchingTextString = text;
 	}
 }
 
-void XinxCodeEdit::setCompleter( QCompleter * completer ) {
-	if( completer != m_completer ) {
-		if( m_completer ) m_completer->disconnect( this );
-		completer->setWidget( m_editor->editor() );
-		completer->setCompletionMode( QCompleter::PopupCompletion );
-		completer->setCaseSensitivity( Qt::CaseInsensitive );
-		completer->setCompletionRole( Qt::DisplayRole );
-		connect( completer, SIGNAL(activated(const QModelIndex &)), this, SLOT(insertCompletion(const QModelIndex &)) );
+void XinxCodeEdit::setCompleter(QCompleter * completer)
+{
+	if (completer != m_completer)
+	{
+		if (m_completer) m_completer->disconnect(this);
+		completer->setWidget(m_editor->editor());
+		completer->setCompletionMode(QCompleter::PopupCompletion);
+		completer->setCaseSensitivity(Qt::CaseInsensitive);
+		completer->setCompletionRole(Qt::DisplayRole);
+		connect(completer, SIGNAL(activated(const QModelIndex &)), this, SLOT(insertCompletion(const QModelIndex &)));
 		m_completer = completer;
 	}
 }
 
-bool XinxCodeEdit::canPaste() {
+bool XinxCodeEdit::canPaste()
+{
 	const QMimeData *d = QApplication::clipboard()->mimeData();
 	return d && d->hasText();
 }
 
-void XinxCodeEdit::print( QPrinter * printer ) const {
-	document()->print( printer );
+void XinxCodeEdit::print(QPrinter * printer) const
+{
+	document()->print(printer);
 }
 
-void XinxCodeEdit::setModified( bool modified ) {
-	if( ! modified )
+void XinxCodeEdit::setModified(bool modified)
+{
+	if (! modified)
 		document()->setClean();
-	else {
+	else
+	{
 		//! \todo Find a solution to setModified(true)
-		qDebug( "Call of setModified( true ) but not managed" );
+		qDebug("Call of setModified( true ) but not managed");
 	}
 }
 
-void XinxCodeEdit::setTabStopWidth( int width ) {
-	m_editor->editor()->document()->setTabStop( width );
+void XinxCodeEdit::setTabStopWidth(int width)
+{
+	m_editor->editor()->document()->setTabStop(width);
 }
 
-int XinxCodeEdit::tabStopWidth() const {
+int XinxCodeEdit::tabStopWidth() const
+{
 	return m_editor->editor()->document()->tabStop();
 }
 
-void XinxCodeEdit::setReadOnly( bool readonly ) {
-	m_editor->editor()->setFlag( QEditor::ReadOnly, readonly );
+void XinxCodeEdit::setReadOnly(bool readonly)
+{
+	m_editor->editor()->setFlag(QEditor::ReadOnly, readonly);
 }
 
-bool XinxCodeEdit::isReadOnly() const {
-	return m_editor->editor()->flag( QEditor::ReadOnly );
+bool XinxCodeEdit::isReadOnly() const
+{
+	return m_editor->editor()->flag(QEditor::ReadOnly);
 }
 
-void XinxCodeEdit::setHighlighter( const QString & highlighter ) {
-	setHighlighter( highlighter, XINXConfig::self() );
+void XinxCodeEdit::setHighlighter(const QString & highlighter)
+{
+	setHighlighter(highlighter, XINXConfig::self());
 }
 
-void XinxCodeEdit::setHighlighter( const QString & highlighter, XINXConfig * config ) {
-	if( highlighter.isEmpty() ) {
-		document()->setFormatScheme( config->languageFactory()->defaultFormatScheme() );
-		config->languageFactory()->setLanguage( m_editor->editor(), "None" );
+void XinxCodeEdit::setHighlighter(const QString & highlighter, XINXConfig * config)
+{
+	if (highlighter.isEmpty())
+	{
+		document()->setFormatScheme(config->languageFactory()->defaultFormatScheme());
+		config->languageFactory()->setLanguage(m_editor->editor(), "None");
 		return;
 	}
 
-	QFormatScheme * scheme = config->scheme( highlighter );
-	if( ! scheme )
+	QFormatScheme * scheme = config->scheme(highlighter);
+	if (! scheme)
 		scheme = config->languageFactory()->defaultFormatScheme();
-	document()->setFormatScheme( scheme );
+	document()->setFormatScheme(scheme);
 
-	config->languageFactory()->setLanguage( m_editor->editor(), highlighter );
+	config->languageFactory()->setLanguage(m_editor->editor(), highlighter);
 }
 
-void XinxCodeEdit::updateHighlighter() {
-	document()->setFormatScheme( document()->formatScheme() );
+void XinxCodeEdit::updateHighlighter()
+{
+	document()->setFormatScheme(document()->formatScheme());
 }
 
-void XinxCodeEdit::updateFont() {
+void XinxCodeEdit::updateFont()
+{
 	QFont font = XINXConfig::self()->config().editor.defaultFormat;
-	QFontMetrics fm( font );
-	QDocument::setFont( font );
-	QDocument::setTabStop( XINXConfig::self()->config().editor.tabulationSize );
+	QFontMetrics fm(font);
+	QDocument::setFont(font);
+	QDocument::setTabStop(XINXConfig::self()->config().editor.tabulationSize);
 
-	if( XINXConfig::self()->config().editor.showTabulationAndSpace )
-		QDocument::setShowSpaces( QDocument::ShowTrailing | QDocument::ShowLeading | QDocument::ShowTabs );
+	if (XINXConfig::self()->config().editor.showTabulationAndSpace)
+		QDocument::setShowSpaces(QDocument::ShowTrailing | QDocument::ShowLeading | QDocument::ShowTabs);
 	else
-		QDocument::setShowSpaces( QDocument::ShowNone );
+		QDocument::setShowSpaces(QDocument::ShowNone);
 }
 
-void XinxCodeEdit::insertText( const QString & text ) {
+void XinxCodeEdit::insertText(const QString & text)
+{
 	QDocumentCursor cursor = textCursor();
 
 	QString indent = cursor.line().previous().text();
-	indent = indent.left( indent.indexOf( QRegExp( "\\S" ) ) );
+	indent = indent.left(indent.indexOf(QRegExp("\\S")));
 
-	QStringList lines = text.split( "\n", QString::KeepEmptyParts );
+	QStringList lines = text.split("\n", QString::KeepEmptyParts);
 
-	QStringListIterator i( lines );
-	if( i.hasNext() ) {
-		cursor.insertText( i.next() );
-		if( i.hasNext() )
+	QStringListIterator i(lines);
+	if (i.hasNext())
+	{
+		cursor.insertText(i.next());
+		if (i.hasNext())
 			cursor.insertLine();
 	}
 
-	while( i.hasNext() ) {
-		cursor.insertText( indent + i.next() );
-		if( i.hasNext() )
+	while (i.hasNext())
+	{
+		cursor.insertText(indent + i.next());
+		if (i.hasNext())
 			cursor.insertLine();
 	}
-	setTextCursor( cursor );
+	setTextCursor(cursor);
 }
 
-void XinxCodeEdit::insertCompletion( const QModelIndex& index ) {
+void XinxCodeEdit::insertCompletion(const QModelIndex& index)
+{
 	QDocumentCursor tc = textCursor();
 	QCompleter * c = completer();
 
-	QString completion = c->completionModel()->data( index ).toString(),
-			prefix     = c->completionPrefix();
+	QString completion = c->completionModel()->data(index).toString(),
+	                     prefix     = c->completionPrefix();
 
-	textUnderCursor( tc, true );
+	textUnderCursor(tc, true);
 	tc = textCursor();
 
-	if( c->completionModel()->data( index, ContentViewNode::NODE_TYPE ).toString() == "Snipet" ) {
-		insertSnipet( completion );
-	} else {
-		tc.insertText( completion );
+	if (c->completionModel()->data(index, ContentView2::Node::NODE_TYPE).toString() == "Snipet")
+	{
+		insertSnipet(completion);
+	}
+	else
+	{
+		tc.insertText(completion);
 	}
 
-	setTextCursor( tc );
+	setTextCursor(tc);
 }
 
-void XinxCodeEdit::insertSnipet( const QString & snipet ) {
+void XinxCodeEdit::insertSnipet(const QString & snipet)
+{
 	QString result;
-	if( SnipetManager::self()->callSnipet( snipet, &result, m_filename, qApp->activeWindow() ) ) {
-		insertText( result );
+	if (SnipetManager::self()->callSnipet(snipet, &result, m_filename, qApp->activeWindow()))
+	{
+		insertText(result);
 	}
 }
 
 
-void XinxCodeEdit::gotoLine( int line ) {
-	QDocumentCursor cursor( m_editor->editor()->document(), line - 1 );
-	m_editor->editor()->setCursor( cursor );
+void XinxCodeEdit::gotoLine(int line)
+{
+	QDocumentCursor cursor(m_editor->editor()->document(), line - 1);
+	m_editor->editor()->setCursor(cursor);
 }
 
-void XinxCodeEdit::duplicateLines() {
-	QDocumentCursor cursor( textCursor() );
+void XinxCodeEdit::duplicateLines()
+{
+	QDocumentCursor cursor(textCursor());
 	QString text;
-	if( cursor.hasSelection() )
+	if (cursor.hasSelection())
 		text = cursor.selectedText();
 	else
 		text = cursor.line().text();
 
-	if( (!cursor.hasSelection()) && cursor.line() == cursor.selectionStart().line() && cursor.line() == cursor.selectionEnd().line() )
+	if ((!cursor.hasSelection()) && cursor.line() == cursor.selectionStart().line() && cursor.line() == cursor.selectionEnd().line())
 		text += "\n";
 
 
 	QDocumentCursor selStart = cursor.selectionStart();
 	cursor.beginEditBlock();
-	cursor.moveTo( selStart );
-	if( text.contains( '\n' ) )
-		cursor.movePosition( 0, QDocumentCursor::StartOfLine );
-	cursor.insertText( text );
-	cursor.movePosition( text.length(), QDocumentCursor::Right, QDocumentCursor::KeepAnchor );
+	cursor.moveTo(selStart);
+	if (text.contains('\n'))
+		cursor.movePosition(0, QDocumentCursor::StartOfLine);
+	cursor.insertText(text);
+	cursor.movePosition(text.length(), QDocumentCursor::Right, QDocumentCursor::KeepAnchor);
 	cursor.endEditBlock();
-	setTextCursor( cursor );
+	setTextCursor(cursor);
 }
 
-void XinxCodeEdit::moveLineUp() {
-	QDocumentCursor cursor( textCursor() );
+void XinxCodeEdit::moveLineUp()
+{
+	QDocumentCursor cursor(textCursor());
 
 	int selectionLength = 0;
 	QDocumentCursor selectionStart 		= cursor.selectionStart(),
-					selectionEnd   		= cursor.selectionEnd();
-	selectionStart.setAutoUpdated( false );
-	selectionEnd.setAutoUpdated( false );
+	                                   selectionEnd   		= cursor.selectionEnd();
+	selectionStart.setAutoUpdated(false);
+	selectionEnd.setAutoUpdated(false);
 
-	if( selectionEnd.isValid() ) selectionLength = cursor.selectedText().length();
+	if (selectionEnd.isValid()) selectionLength = cursor.selectedText().length();
 
-	if( selectionEnd.columnNumber() == 0 ) selectionEnd.movePosition( 1, QDocumentCursor::Left );
-	if( selectionStart.lineNumber() == 0 ) return; // No move when we are at the first line
+	if (selectionEnd.columnNumber() == 0) selectionEnd.movePosition(1, QDocumentCursor::Left);
+	if (selectionStart.lineNumber() == 0) return;  // No move when we are at the first line
 
 	cursor.beginEditBlock();
 
 	QString text;
 	QDocumentLine currentLine = selectionStart.line();
-	cursor.moveTo( currentLine, 0 );
-	do {
+	cursor.moveTo(currentLine, 0);
+	do
+	{
 		text += currentLine.text() + "\n";
-		cursor.movePosition( 1, QDocumentCursor::NextLine, QDocumentCursor::KeepAnchor );
+		cursor.movePosition(1, QDocumentCursor::NextLine, QDocumentCursor::KeepAnchor);
 
 		currentLine = currentLine.next();
-	} while( currentLine.isValid() && ( currentLine <= selectionEnd.line() ) );
-
-	cursor.removeSelectedText();
-
-	cursor.movePosition( 1, QDocumentCursor::PreviousLine, QDocumentCursor::MoveAnchor );
-	cursor.movePosition( 1, QDocumentCursor::StartOfLine, QDocumentCursor::MoveAnchor );
-	cursor.insertText( text );
-
-	cursor.moveTo( selectionStart.lineNumber() - 1, selectionStart.columnNumber() );
-	if( selectionLength > 0 )
-		cursor.movePosition( selectionLength, QDocumentCursor::Right, QDocumentCursor::KeepAnchor );
-
-	cursor.endEditBlock();
-	setTextCursor( cursor );
-}
-
-void XinxCodeEdit::moveLineDown() {
-	QDocumentCursor cursor( textCursor() );
-
-	int selectionLength = 0;
-	QDocumentCursor selectionStart 		= cursor.selectionStart(),
-			selectionEnd   		= cursor.selectionEnd();
-	if( selectionEnd.isValid() ) selectionLength = cursor.selectedText().length();
-
-	if( selectionEnd.columnNumber() == 0 ) selectionEnd.movePosition( 1, QDocumentCursor::Left );
-	if( ( ( selectionEnd.lineNumber() + 1 ) == m_editor->editor()->document()->lines() ) || ( ( selectionStart.lineNumber() + 1 ) == m_editor->editor()->document()->lines() ) ) return; // No move at end of document
-
-	cursor.beginEditBlock();
-
-	QString text;
-	QDocumentLine currentLine = selectionStart.line();
-	cursor.moveTo( currentLine, 0 );
-	do {
-		text += currentLine.text() + "\n";
-		cursor.movePosition( 1, QDocumentCursor::NextLine, QDocumentCursor::KeepAnchor );
-
-		currentLine = currentLine.next();
-	} while( currentLine.isValid() && ( currentLine <= selectionEnd.line() ) );
-
-	cursor.removeSelectedText();
-
-	if( ( cursor.lineNumber() + 1 ) < m_editor->editor()->document()->lines() ) {
-		cursor.movePosition( 1, QDocumentCursor::NextLine, QDocumentCursor::MoveAnchor );
-		cursor.movePosition( 1, QDocumentCursor::StartOfLine, QDocumentCursor::MoveAnchor );
-	} else {
-		cursor.movePosition( 1, QDocumentCursor::EndOfLine, QDocumentCursor::MoveAnchor );
-		cursor.insertText( "\n" );
-		text.chop( 1 );
 	}
-	cursor.insertText( text );
+	while (currentLine.isValid() && (currentLine <= selectionEnd.line()));
 
-	cursor.moveTo( selectionStart.lineNumber() + 1, selectionStart.columnNumber() );
-	if( selectionLength > 0 )
-		cursor.movePosition( selectionLength, QDocumentCursor::Right, QDocumentCursor::KeepAnchor );
+	cursor.removeSelectedText();
+
+	cursor.movePosition(1, QDocumentCursor::PreviousLine, QDocumentCursor::MoveAnchor);
+	cursor.movePosition(1, QDocumentCursor::StartOfLine, QDocumentCursor::MoveAnchor);
+	cursor.insertText(text);
+
+	cursor.moveTo(selectionStart.lineNumber() - 1, selectionStart.columnNumber());
+	if (selectionLength > 0)
+		cursor.movePosition(selectionLength, QDocumentCursor::Right, QDocumentCursor::KeepAnchor);
 
 	cursor.endEditBlock();
-	setTextCursor( cursor );
+	setTextCursor(cursor);
 }
 
-void XinxCodeEdit::uploSelectedText( bool upper ) {
-	QDocumentCursor cursor( textCursor() );
+void XinxCodeEdit::moveLineDown()
+{
+	QDocumentCursor cursor(textCursor());
+
+	int selectionLength = 0;
+	QDocumentCursor selectionStart 		= cursor.selectionStart(),
+	                                   selectionEnd   		= cursor.selectionEnd();
+	if (selectionEnd.isValid()) selectionLength = cursor.selectedText().length();
+
+	if (selectionEnd.columnNumber() == 0) selectionEnd.movePosition(1, QDocumentCursor::Left);
+	if (((selectionEnd.lineNumber() + 1) == m_editor->editor()->document()->lines()) || ((selectionStart.lineNumber() + 1) == m_editor->editor()->document()->lines())) return;          // No move at end of document
+
+	cursor.beginEditBlock();
+
+	QString text;
+	QDocumentLine currentLine = selectionStart.line();
+	cursor.moveTo(currentLine, 0);
+	do
+	{
+		text += currentLine.text() + "\n";
+		cursor.movePosition(1, QDocumentCursor::NextLine, QDocumentCursor::KeepAnchor);
+
+		currentLine = currentLine.next();
+	}
+	while (currentLine.isValid() && (currentLine <= selectionEnd.line()));
+
+	cursor.removeSelectedText();
+
+	if ((cursor.lineNumber() + 1) < m_editor->editor()->document()->lines())
+	{
+		cursor.movePosition(1, QDocumentCursor::NextLine, QDocumentCursor::MoveAnchor);
+		cursor.movePosition(1, QDocumentCursor::StartOfLine, QDocumentCursor::MoveAnchor);
+	}
+	else
+	{
+		cursor.movePosition(1, QDocumentCursor::EndOfLine, QDocumentCursor::MoveAnchor);
+		cursor.insertText("\n");
+		text.chop(1);
+	}
+	cursor.insertText(text);
+
+	cursor.moveTo(selectionStart.lineNumber() + 1, selectionStart.columnNumber());
+	if (selectionLength > 0)
+		cursor.movePosition(selectionLength, QDocumentCursor::Right, QDocumentCursor::KeepAnchor);
+
+	cursor.endEditBlock();
+	setTextCursor(cursor);
+}
+
+void XinxCodeEdit::uploSelectedText(bool upper)
+{
+	QDocumentCursor cursor(textCursor());
 
 	QDocumentCursor startPos = cursor.selectionStart();
 	QDocumentCursor endPos   = cursor.selectionEnd();
 
 	QString text = cursor.selectedText();
 
-	if(upper)
+	if (upper)
 		text = text.toUpper();
 	else
 		text = text.toLower();
@@ -595,70 +676,85 @@ void XinxCodeEdit::uploSelectedText( bool upper ) {
 	cursor.beginEditBlock();
 
 	cursor.removeSelectedText();
-	cursor.insertText( text );
+	cursor.insertText(text);
 
-	cursor.moveTo( startPos );
-	cursor.movePosition( endPos.position() - startPos.position(), QDocumentCursor::NextCharacter, QDocumentCursor::KeepAnchor );
+	cursor.moveTo(startPos);
+	cursor.movePosition(endPos.position() - startPos.position(), QDocumentCursor::NextCharacter, QDocumentCursor::KeepAnchor);
 
 	cursor.endEditBlock();
 
-	setTextCursor( cursor );
+	setTextCursor(cursor);
 }
 
-void XinxCodeEdit::upperSelectedText() {
-	uploSelectedText( true );
+void XinxCodeEdit::upperSelectedText()
+{
+	uploSelectedText(true);
 }
 
-void XinxCodeEdit::lowerSelectedText() {
-	uploSelectedText( false );
+void XinxCodeEdit::lowerSelectedText()
+{
+	uploSelectedText(false);
 }
 
-void XinxCodeEdit::indent( bool unindent ) {
-	if( ! unindent )
+void XinxCodeEdit::indent(bool unindent)
+{
+	if (! unindent)
 		m_editor->editor()->indentSelection();
 	else
 		m_editor->editor()->unindentSelection();
 }
 
-void XinxCodeEdit::commentSelectedText( bool uncomment ) {
-	Q_UNUSED( uncomment );
-	throw XinxException( tr("Can't comment this type of document") );
+void XinxCodeEdit::commentSelectedText(bool uncomment)
+{
+	Q_UNUSED(uncomment);
+	throw XinxException(tr("Can't comment this type of document"));
 }
 
-bool XinxCodeEdit::isCommentAvailable() {
+bool XinxCodeEdit::isCommentAvailable()
+{
 	return false;
 }
 
-void XinxCodeEdit::refreshTextHighlighter() {
-	if( XINXConfig::self()->config().editor.autoHighlight && (!textCursor().isNull()) )
-		setMatchingText( textUnderCursor( textCursor(), false, false ) );
+void XinxCodeEdit::refreshTextHighlighter()
+{
+	if (XINXConfig::self()->config().editor.autoHighlight && (!textCursor().isNull()))
+		setMatchingText(textUnderCursor(textCursor(), false, false));
 }
 
-void XinxCodeEdit::callTextHighlighter() {
-	setMatchingText( textUnderCursor( textCursor(), false, false ) );
+void XinxCodeEdit::callTextHighlighter()
+{
+	setMatchingText(textUnderCursor(textCursor(), false, false));
 }
 
-QString XinxCodeEdit::id() const {
+QString XinxCodeEdit::id() const
+{
 	return "xinx";
 }
 
-QString XinxCodeEdit::name() const {
+QString XinxCodeEdit::name() const
+{
 	return "XINX Binding";
 }
 
-bool XinxCodeEdit::localKeyPressExecute( QKeyEvent * e ) {
-	bool isShortcut = ( (e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_Space ); // CTRL+Space
+bool XinxCodeEdit::localKeyPressExecute(QKeyEvent * e)
+{
+	bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_Space);   // CTRL+Space
 
-	if ( ( e->key() == Qt::Key_Home ) && ( e->modifiers() == Qt::ShiftModifier || e->modifiers() == Qt::NoModifier ) ) {
-		key_home( e->modifiers() == Qt::ShiftModifier );
+	if ((e->key() == Qt::Key_Home) && (e->modifiers() == Qt::ShiftModifier || e->modifiers() == Qt::NoModifier))
+	{
+		key_home(e->modifiers() == Qt::ShiftModifier);
 		e->accept();
 		return false;
-	} else if( ( e->key() == Qt::Key_Tab ) && ( ( e->modifiers() == Qt::NoModifier ) || ( e->modifiers() == Qt::ShiftModifier ) ) ) {
+	}
+	else if ((e->key() == Qt::Key_Tab) && ((e->modifiers() == Qt::NoModifier) || (e->modifiers() == Qt::ShiftModifier)))
+	{
 		// TODO: May be replace by an action of the texteditor...
-		indent( e->modifiers() != Qt::NoModifier );
+		indent(e->modifiers() != Qt::NoModifier);
 		e->accept();
 		return false;
-	} else if( isShortcut ) {
+	}
+	else if (isShortcut)
+	{
 		key_snipet();
 		e->ignore();
 		return false;
@@ -667,37 +763,44 @@ bool XinxCodeEdit::localKeyPressExecute( QKeyEvent * e ) {
 	return true;
 }
 
-void XinxCodeEdit::key_snipet() {
-	QString snipet = textUnderCursor( textCursor(), true ), result;
-	if( SnipetManager::self()->callSnipet( snipet, &result, m_filename, qApp->activeWindow() ) ) {
-		insertText( result );
+void XinxCodeEdit::key_snipet()
+{
+	QString snipet = textUnderCursor(textCursor(), true), result;
+	if (SnipetManager::self()->callSnipet(snipet, &result, m_filename, qApp->activeWindow()))
+	{
+		insertText(result);
 	}
 }
 
-void XinxCodeEdit::key_home( bool select ) {
+void XinxCodeEdit::key_home(bool select)
+{
 	QDocumentCursor cursor = textCursor();
 	int col = cursor.columnNumber();
-	cursor.movePosition( 1, QDocumentCursor::StartOfLine, select ? QDocumentCursor::KeepAnchor : QDocumentCursor::MoveAnchor );
-	QDocumentCursor cursorStart( cursor );
+	cursor.movePosition(1, QDocumentCursor::StartOfLine, select ? QDocumentCursor::KeepAnchor : QDocumentCursor::MoveAnchor);
+	QDocumentCursor cursorStart(cursor);
 	QDocumentLine b = cursorStart.line();
 	int i = 0;
-	while ( ( i < b.text().size() ) && ( i >= 0 ) && ( b.text().at(i) == ' ' || b.text().at(i) == '\t' ) ) {
-		cursorStart.movePosition( 1, QDocumentCursor::NextCharacter, select ? QDocumentCursor::KeepAnchor : QDocumentCursor::MoveAnchor );
+	while ((i < b.text().size()) && (i >= 0) && (b.text().at(i) == ' ' || b.text().at(i) == '\t'))
+	{
+		cursorStart.movePosition(1, QDocumentCursor::NextCharacter, select ? QDocumentCursor::KeepAnchor : QDocumentCursor::MoveAnchor);
 		i++;
 	}
-	if( col == cursorStart.columnNumber() )
-		setTextCursor( cursor );
+	if (col == cursorStart.columnNumber())
+		setTextCursor(cursor);
 	else
-		setTextCursor( cursorStart );
+		setTextCursor(cursorStart);
 }
 
-bool XinxCodeEdit::keyPressEvent( QKeyEvent * e, QEditor * editor ) {
-	Q_UNUSED( editor );
+bool XinxCodeEdit::keyPressEvent(QKeyEvent * e, QEditor * editor)
+{
+	Q_UNUSED(editor);
 	QCompleter * c = completer();
 
-	if( c && c->popup()->isVisible() ) {
+	if (c && c->popup()->isVisible())
+	{
 		// The following keys are forwarded by the completer to the widget
-		switch( e->key() ) {
+		switch (e->key())
+		{
 		case Qt::Key_Enter:
 		case Qt::Key_Return:
 		case Qt::Key_Escape:
@@ -710,80 +813,95 @@ bool XinxCodeEdit::keyPressEvent( QKeyEvent * e, QEditor * editor ) {
 		}
 	}
 
-	bool isShortcut = ( ( e->modifiers() & Qt::ControlModifier ) && e->key() == Qt::Key_E ); // CTRL+E
+	bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_E);     // CTRL+E
 	bool callParent = false;
-	if( !c || !isShortcut )
-		callParent = localKeyPressExecute( e );
+	if (!c || !isShortcut)
+		callParent = localKeyPressExecute(e);
 
-	if( callParent ) return false;
+	if (callParent) return false;
 
-	postKeyPressEvent( e, editor );
+	postKeyPressEvent(e, editor);
 
 	return true;
 }
 
-void XinxCodeEdit::postKeyPressEvent( QKeyEvent * e, QEditor * editor ) {
+void XinxCodeEdit::postKeyPressEvent(QKeyEvent * e, QEditor * editor)
+{
 	QCompleter * c = completer();
-	bool isShortcut = ( ( e->modifiers() & Qt::ControlModifier ) && e->key() == Qt::Key_E ); // CTRL+E
+	bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_E);     // CTRL+E
 
-	if( e->isAccepted() )
-		processKeyPress( e );
+	if (e->isAccepted())
+		processKeyPress(e);
 
-	const bool ctrlOrShift = e->modifiers() & ( Qt::ControlModifier | Qt::ShiftModifier );
-	if( !c || ( ctrlOrShift && e->text().isEmpty() ) )
+	const bool ctrlOrShift = e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
+	if (!c || (ctrlOrShift && e->text().isEmpty()))
 		return ;
 
-	static QString eow( EOW ); // end of word
-	bool hasModifier = ( e->modifiers() & ( Qt::ControlModifier | Qt::AltModifier ) );// && !ctrlOrShift;
-	QString completionPrefix = textUnderCursor( textCursor() ), result;
+	static QString eow(EOW);   // end of word
+	bool hasModifier = (e->modifiers() & (Qt::ControlModifier | Qt::AltModifier));    // && !ctrlOrShift;
+	QString completionPrefix = textUnderCursor(textCursor()), result;
 
-	if( !isShortcut && ( hasModifier || e->text().isEmpty() || completionPrefix.length() < 2 || eow.contains( e->text().right(1) ) ) ) {
+	if (!isShortcut && (hasModifier || e->text().isEmpty() || completionPrefix.length() < 2 || eow.contains(e->text().right(1))))
+	{
 		c->popup()->hide();
 		return ;
 	}
 
-	if( completionPrefix != c->completionPrefix() ) {
-		c->setCompletionPrefix( completionPrefix );
-		c->popup()->setCurrentIndex( c->completionModel()->index(0, 0) );
+	if (completionPrefix != c->completionPrefix())
+	{
+		ContentView2::CompletionModel * model = dynamic_cast<ContentView2::CompletionModel*>(c->model());
+		if (model)
+		{
+			model->setPrefix(completionPrefix);
+		}
+		c->setCompletionPrefix(completionPrefix);
+		c->popup()->setCurrentIndex(c->completionModel()->index(0, 0));
 	}
 
 	int x, y, h, w;
-	QPoint pos = m_editor->editor()->mapFromContents( textCursor().documentPosition() );
-	m_editor->editor()->getPanelMargins( &x, &y, &h, &w );
-	QRect cr( pos.x() + x, pos.y() + document()->fontMetrics().height(), 1, 1 );
-	cr.setWidth( c->popup()->sizeHintForColumn(0) + c->popup()->verticalScrollBar()->sizeHint().width() );
-	c->complete( cr ); // popup it up!
+	QPoint pos = m_editor->editor()->mapFromContents(textCursor().documentPosition());
+	m_editor->editor()->getPanelMargins(&x, &y, &h, &w);
+	QRect cr(pos.x() + x, pos.y() + document()->fontMetrics().height(), 1, 1);
+	cr.setWidth(c->popup()->sizeHintForColumn(0) + c->popup()->verticalScrollBar()->sizeHint().width());
+	c->complete(cr);   // popup it up!
 }
 
-void XinxCodeEdit::postMousePressEvent( QMouseEvent *event, QEditor * editor ) {
-	Q_UNUSED( editor );
-	if( ( event->type() == QEvent::MouseButtonPress ) && ( dynamic_cast<QMouseEvent*>( event )->button() == Qt::LeftButton ) && ( event->modifiers() == Qt::ControlModifier ) ) {
-		QMetaObject::invokeMethod( this, "searchWord", Qt::QueuedConnection, Q_ARG( QString, textUnderCursor( textCursor(), false ) ) );
+void XinxCodeEdit::postMousePressEvent(QMouseEvent *event, QEditor * editor)
+{
+	Q_UNUSED(editor);
+	if ((event->type() == QEvent::MouseButtonPress) && (dynamic_cast<QMouseEvent*>(event)->button() == Qt::LeftButton) && (event->modifiers() == Qt::ControlModifier))
+	{
+		QMetaObject::invokeMethod(this, "searchWord", Qt::QueuedConnection, Q_ARG(QString, textUnderCursor(textCursor(), false)));
 	}
 }
 
-bool XinxCodeEdit::dropEvent( QDropEvent *e, QEditor *editor ) {
-	if ( e && e->mimeData() && e->mimeData()->hasFormat("application/snipet.id.list") ) {
+bool XinxCodeEdit::dropEvent(QDropEvent *e, QEditor *editor)
+{
+	if (e && e->mimeData() && e->mimeData()->hasFormat("application/snipet.id.list"))
+	{
 		e->acceptProposedAction();
 
 		editor->cursor().beginEditBlock();
 		editor->cursor().clearSelection();
 
 		editor->clearCursorMirrors();
-		setTextCursor( editor->cursorForPosition( editor->mapToContents(e->pos()) ) );
+		setTextCursor(editor->cursorForPosition(editor->mapToContents(e->pos())));
 
 		QByteArray itemData = e->mimeData()->data("application/snipet.id.list");
-		QDataStream stream( &itemData, QIODevice::ReadOnly );
+		QDataStream stream(&itemData, QIODevice::ReadOnly);
 
-		while( ! stream.atEnd() ) {
+		while (! stream.atEnd())
+		{
 			int id;
 			QString type, name;
 			stream >> id >> type >> name;
 
-			if( type == "SNIPET" ) {
+			if (type == "SNIPET")
+			{
 				QString result;
-				if( SnipetManager::self()->callSnipet( id, &result, qApp->activeWindow() ) ) {
-					insertText( result );
+				if (SnipetManager::self()->callSnipet(id, &result, qApp->activeWindow()))
+				{
+					insertText(result);
 				}
 			}
 		}
@@ -798,5 +916,6 @@ bool XinxCodeEdit::dropEvent( QDropEvent *e, QEditor *editor ) {
 
 /* XinxCodeEditAction */
 
-XinxCodeEditAction::XinxCodeEditAction( QWidget * parent ) : XinxCodeEdit( true, parent ) {
+XinxCodeEditAction::XinxCodeEditAction(QWidget * parent) : XinxCodeEdit(true, parent)
+{
 }

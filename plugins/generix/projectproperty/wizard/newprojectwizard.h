@@ -32,38 +32,41 @@ class XinxProject;
 class NewProjectWizard;
 class IXinxPluginProjectConfiguration;
 
-class ProjectPageImpl : public QWizardPage, private Ui::ProjectPage {
+class ProjectPageImpl : public QWizardPage, private Ui::ProjectPage
+{
 	Q_OBJECT
 public:
-	ProjectPageImpl( QWidget * parent = 0 );
+	ProjectPageImpl(QWidget * parent = 0);
 
 	int nextId() const;
 
-    virtual void setVisible( bool visible );
+	virtual void setVisible(bool visible);
 	virtual void initializePage();
-	virtual bool isComplete () const;
+	virtual bool isComplete() const;
 private slots:
-    void on_m_ASPathBtn_clicked();
-    void on_m_logPathBtn_clicked();
-    void on_m_projectPathBtn_clicked();
+	void on_m_ASPathBtn_clicked();
+	void on_m_logPathBtn_clicked();
+	void on_m_projectPathBtn_clicked();
 
-    void on_m_projectNameEdit_textChanged( const QString & value );
-    void on_m_ASPathEdit_textChanged( const QString & value );
+	void on_m_projectNameEdit_textChanged(const QString & value);
+	void on_m_ASPathEdit_textChanged(const QString & value);
 };
 
-class SpecifiquePageImpl : public QWizardPage, private Ui::SpecifiquePage {
+class SpecifiquePageImpl : public QWizardPage, private Ui::SpecifiquePage
+{
 	Q_OBJECT
 public:
-	SpecifiquePageImpl( QWidget * parent = 0 );
+	SpecifiquePageImpl(QWidget * parent = 0);
 
 	int nextId() const;
 	virtual void initializePage();
 };
 
-class VersionsPageImpl : public QWizardPage {
+class VersionsPageImpl : public QWizardPage
+{
 	Q_OBJECT
 public:
-	VersionsPageImpl( QWidget * parent = 0 );
+	VersionsPageImpl(QWidget * parent = 0);
 
 	int nextId() const;
 private:
@@ -73,21 +76,23 @@ private:
 	friend class NewProjectWizard;
 };
 
-class LastPageImpl : public QWizardPage {
+class LastPageImpl : public QWizardPage
+{
 	Q_OBJECT
 public:
-	LastPageImpl( QWidget * parent = 0 );
+	LastPageImpl(QWidget * parent = 0);
 
 	int nextId() const;
 private:
 };
 
-class NewProjectWizard : public QWizard {
+class NewProjectWizard : public QWizard
+{
 	Q_OBJECT
 public:
 	enum { Page_Projet = 1, Page_Specifique = 2, Page_Versions = 3 };
 
-	NewProjectWizard( QWidget * widget = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
+	NewProjectWizard(QWidget * widget = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint);
 
 	XinxProject * createProject();
 private slots:

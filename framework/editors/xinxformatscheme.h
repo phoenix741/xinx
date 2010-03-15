@@ -32,13 +32,14 @@ class XINXConfig;
 /*!
  * This object base create standard format.
  */
-class LIBEXPORT XinxFormatScheme : public QFormatScheme {
+class LIBEXPORT XinxFormatScheme : public QFormatScheme
+{
 	Q_OBJECT
 public:
 	/*!
 	 * Create a XinxFormatScheme.
 	 */
-	XinxFormatScheme( XINXConfig * parent );
+	XinxFormatScheme(XINXConfig * parent);
 
 	/*!
 	 * Create a XinxFormatScheme from nothing
@@ -58,7 +59,7 @@ protected:
 	//! Create standards formats
 	void createStandardFormat();
 
-	void setNameSpace( const QString & value );
+	void setNameSpace(const QString & value);
 	const QString & nameSpace() const;
 private:
 	XINXConfig * m_config;

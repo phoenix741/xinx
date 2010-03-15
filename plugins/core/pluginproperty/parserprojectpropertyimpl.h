@@ -28,13 +28,14 @@
 // Qt header
 #include <QWizardPage>
 
-class ParserProjectPropertyImpl : public QWidget, public Ui::ParserProjectProperty, public IXinxPluginProjectConfigurationPage {
+class ParserProjectPropertyImpl : public QWidget, public Ui::ParserProjectProperty, public IXinxPluginProjectConfigurationPage
+{
 	Q_OBJECT
 public:
-	ParserProjectPropertyImpl( QWidget * parent = 0, Qt::WindowFlags f = 0 );
+	ParserProjectPropertyImpl(QWidget * parent = 0, Qt::WindowFlags f = 0);
 	virtual ~ParserProjectPropertyImpl();
 
-	virtual void setProject( XinxProject * project );
+	virtual void setProject(XinxProject * project);
 
 	virtual QPixmap image();
 	virtual QString name();
@@ -49,13 +50,14 @@ private:
 	XinxProject * m_project;
 };
 
-class WebPluginProjectPropertyWizard : public IXinxPluginNewProjectConfigurationPage {
+class WebPluginProjectPropertyWizard : public IXinxPluginNewProjectConfigurationPage
+{
 	Q_OBJECT
 public:
 	WebPluginProjectPropertyWizard();
 
 	virtual void initializePage();
-	virtual bool saveSettingsDialog( XinxProject * project );
+	virtual bool saveSettingsDialog(XinxProject * project);
 
 	virtual QString pagePluginId() const;
 	virtual bool pageIsVisible() const;

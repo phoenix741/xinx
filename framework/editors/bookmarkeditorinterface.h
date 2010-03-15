@@ -26,13 +26,14 @@
 // Qt header
 #include <QObject>
 
-class LIBEXPORT BookmarkEditorInterface : public QObject {
+class LIBEXPORT BookmarkEditorInterface : public QObject
+{
 	Q_OBJECT
 public:
-	BookmarkEditorInterface( QObject * parent );
+	BookmarkEditorInterface(QObject * parent);
 
 	/*! Return a string reprensents the content of the \em i -ième bookmark. */
-	virtual QString bookmarkAt( int i ) = 0;
+	virtual QString bookmarkAt(int i) = 0;
 	/*! Return the number of bookmark. */
 	virtual int bookmarkCount() = 0;
 
@@ -60,7 +61,7 @@ public slots :
 	/*!
 	 * Go to the \em i Bookmark of the editor.
 	 */
-	virtual void gotoBookmarkAt( int i ) = 0;
+	virtual void gotoBookmarkAt(int i) = 0;
 	/*!
 	 * Delete all existing bookmark
 	 */
@@ -73,7 +74,7 @@ signals:
 	 * \param minValue The first bound
 	 * \param maxValue The second bound
 	 */
-	void bookmarkModified( int minValue, int maxValue );
+	void bookmarkModified(int minValue, int maxValue);
 };
 
 #endif // BOOKMARKEDITORINTERFACE_H

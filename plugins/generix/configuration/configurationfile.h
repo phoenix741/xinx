@@ -36,19 +36,22 @@
 #undef major
 #undef minor
 
-class ConfigurationVersionIncorectException : public XinxException {
+class ConfigurationVersionIncorectException : public XinxException
+{
 public:
-	ConfigurationVersionIncorectException( QString version );
+	ConfigurationVersionIncorectException(QString version);
 };
 
-class MetaConfigurationException : public XinxException {
+class MetaConfigurationException : public XinxException
+{
 public:
-	MetaConfigurationException( QString message );
+	MetaConfigurationException(QString message);
 };
 
-class MetaConfigurationNotExistException : public MetaConfigurationException {
+class MetaConfigurationNotExistException : public MetaConfigurationException
+{
 public:
-	MetaConfigurationNotExistException( QString filename );
+	MetaConfigurationNotExistException(QString filename);
 };
 
 
@@ -58,7 +61,8 @@ class PrivateMetaConfigurationFile;
  * Represent a version of a XML Configuration file. The file version has
  * the form VXX.XX-XX. The version can also have a special edition number.
  */
-class ConfigurationVersion {
+class ConfigurationVersion
+{
 public:
 	/*!
 	 * Construct a configuration version object
@@ -67,14 +71,14 @@ public:
 	 * \param release The release number of the version
 	 * \param build The build number (or special edition number) of the version
 	 */
-	ConfigurationVersion( int major = -1, int minor = -1, int release = -1, int build = -1 );
+	ConfigurationVersion(int major = -1, int minor = -1, int release = -1, int build = -1);
 	/*!
 	 * Construct a configuration version as input a strint. The number version translate
 	 * the string into a version object. The special number is outside
 	 * \param version The version string used to construct the object
 	 * \param build The build number (or special edition number) of the version.
 	 */
-	ConfigurationVersion( const QString & version, int build = 0 );
+	ConfigurationVersion(const QString & version, int build = 0);
 	/*!
 	 * Destroy the configuration version object.
 	 */
@@ -120,32 +124,32 @@ public:
 	 * Compare two version number.
 	 * \return Return false if the two version are equal
 	 */
-	bool operator!= ( ConfigurationVersion version ) const;
+	bool operator!= (ConfigurationVersion version) const;
 	/*!
 	 * Compare two version number.
 	 * \return Return true if the two version are equal
 	 */
-	bool operator== ( ConfigurationVersion version ) const;
+	bool operator== (ConfigurationVersion version) const;
 	/*!
 	 * Compare two version number.
 	 * \return Return true if the first is greater than the second
 	 */
-	bool operator>  ( ConfigurationVersion version ) const;
+	bool operator> (ConfigurationVersion version) const;
 	/*!
 	 * Compare two version number.
 	 * \return Return true if the first is greater or equal than the second
 	 */
-	bool operator>= ( ConfigurationVersion version ) const;
+	bool operator>= (ConfigurationVersion version) const;
 	/*!
 	 * Compare two version number.
 	 * \return Return true if the first is lesser than the second
 	 */
-	bool operator<  ( ConfigurationVersion version ) const;
+	bool operator< (ConfigurationVersion version) const;
 	/*!
 	 * Compare two version number.
 	 * \return Return true if the first is lesser or equal than the second
 	 */
-	bool operator<= ( ConfigurationVersion version ) const;
+	bool operator<= (ConfigurationVersion version) const;
 private:
 	int m_major;
 	int m_minor;
@@ -153,24 +157,25 @@ private:
 	int m_build;
 };
 
-class BusinessViewInformation {
+class BusinessViewInformation
+{
 public:
 	BusinessViewInformation();
 
 	const QString & configurationFileName() const;
-	void setConfigurationFileName( const QString & value );
+	void setConfigurationFileName(const QString & value);
 
 	int configurationNumber() const;
-	void setConfigurationNumber( int value );
+	void setConfigurationNumber(int value);
 
 	const QString & businesViewName() const;
-	void setBusinessViewName( const QString & value );
+	void setBusinessViewName(const QString & value);
 
 	const QString & targetName() const;
-	void setTargetName( const QString & value );
+	void setTargetName(const QString & value);
 
 	const QString & viewstructName() const;
-	void setViewstructName( const QString & value );
+	void setViewstructName(const QString & value);
 private:
 	int m_configurationNumber;
 	QString m_configurationFilename, m_businessViewName, m_targetName, m_viewStructName;
@@ -181,15 +186,16 @@ private:
  * version number of a configuration file, testing if the file exists in the path
  * or other usuable functionnality.
  */
-class ConfigurationFile : public QObject {
+class ConfigurationFile : public QObject
+{
 	Q_OBJECT
-	Q_PROPERTY( QString filename READ filename )
-	Q_PROPERTY( ConfigurationVersion version READ version )
-	Q_PROPERTY( QString xmlPresentationFile READ xmlPresentationFile )
+	Q_PROPERTY(QString filename READ filename)
+	Q_PROPERTY(ConfigurationVersion version READ version)
+	Q_PROPERTY(QString xmlPresentationFile READ xmlPresentationFile)
 public:
-	ConfigurationFile( QObject * parent = 0 );
-	ConfigurationFile( const QString & filename, QObject * parent = 0 );
-	ConfigurationFile( const ConfigurationFile & configuration );
+	ConfigurationFile(QObject * parent = 0);
+	ConfigurationFile(const QString & filename, QObject * parent = 0);
+	ConfigurationFile(const ConfigurationFile & configuration);
 
 	virtual ~ConfigurationFile();
 
@@ -201,7 +207,7 @@ public:
 	/*! Return the name of presentations files, if defined, else return presentation.xml */
 	QString xmlPresentationFile();
 
-	QStringList businessViewPerFiles( const QString & filename );
+	QStringList businessViewPerFiles(const QString & filename);
 
 	/*!
 	 * Test if the configuration file exists in the directory path.
@@ -209,7 +215,7 @@ public:
 	 * \param DirectoryPath The path of the directory where we check if a configuration file exists.
 	 * \return True if the configuration file exist, else return false.
 	 */
-	static bool exists( const QString & directoryPath );
+	static bool exists(const QString & directoryPath);
 	/*!
 	 * Return the version of the configuration file (only if the file exists and the version
 	 * can be found).
@@ -218,9 +224,9 @@ public:
 	 * \param DirectoryPath the path where the configuration file is.
 	 * \return A ConfigurationVersion with the version number or an invalid object if the version can't be found.
 	 */
-	static ConfigurationFile simpleConfigurationFile( const QString & directoryPath );
+	static ConfigurationFile simpleConfigurationFile(const QString & directoryPath);
 
-	ConfigurationFile & operator=( const ConfigurationFile & p );
+	ConfigurationFile & operator=(const ConfigurationFile & p);
 private:
 	QString m_filename;
 	ConfigurationVersion m_version;
@@ -235,15 +241,16 @@ private:
  * Definition of a meta configuration file defined in file configurationdef.xml. The meta file defined
  * one or more configuration file. This file define dictionary too.
  */
-class MetaConfigurationFile : public QObject {
+class MetaConfigurationFile : public QObject
+{
 	Q_OBJECT
-	Q_PROPERTY( QList<ConfigurationFile*> configurations READ configurations );
+	Q_PROPERTY(QList<ConfigurationFile*> configurations READ configurations);
 public:
 	/*!
 	 * Create a meta configuration file object an load configuration in memory.
 	 * \param The file name of the meta configuration file.
 	 */
-	MetaConfigurationFile( const QString & filename, QObject * parent = 0 );
+	MetaConfigurationFile(const QString & filename, QObject * parent = 0);
 	/*!
 	 * Destroy the meta configuration file
 	 */
@@ -253,7 +260,7 @@ public:
 	 * Test if the meta configuration file exists in the path \e DirectoryPath
 	 * and return true if the file exist
 	 */
-	static bool exists( const QString & directoryPath );
+	static bool exists(const QString & directoryPath);
 	/*!
 	 * Return the version of one of the configuration file (only if the file exists and the
 	 * version can be found).
@@ -261,7 +268,7 @@ public:
 	 * this not parse the next files.
 	 * \param DirectoryPath path of the meta configuration file.
 	 */
-	static ConfigurationFile simpleConfigurationFile( const QString & directoryPath );
+	static ConfigurationFile simpleConfigurationFile(const QString & directoryPath);
 
 	const QList<ConfigurationFile*> & configurations() const;
 	const QStringList & dictionaryList() const;

@@ -25,14 +25,16 @@
 #include "docks/dictionary/dictionaryparser.h"
 #include <core/exceptions.h>
 
-class GceInterfaceException : public XinxException {
+class GceInterfaceException : public XinxException
+{
 public:
-	GceInterfaceException( const QString & exception ) : XinxException( exception ) {}
+	GceInterfaceException(const QString & exception) : XinxException(exception) {}
 };
 
-class GceInterface {
+class GceInterface
+{
 public:
-    GceInterface();
+	GceInterface();
 	virtual ~GceInterface();
 
 	virtual QString rootFilename() = 0;
@@ -41,9 +43,9 @@ public:
 
 	virtual QStringList dictionnaries() = 0;
 
-	virtual QList<BusinessViewInformation> businessView( const QString & filename ) = 0;
+	virtual QList<BusinessViewInformation> businessView(const QString & filename) = 0;
 	virtual QList<BusinessViewInformation> businessViews() = 0;
-	virtual QString resolveFileName( const QString & filename ) = 0;
+	virtual QString resolveFileName(const QString & filename) = 0;
 };
 
 #endif // GCEINTERFACE_H

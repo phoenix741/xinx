@@ -29,75 +29,87 @@
 
 /* SearchFileThread */
 
-SearchFileThread::SearchFileThread( QObject * parent ) : XinxThread( parent ) {
+SearchFileThread::SearchFileThread(QObject * parent) : XinxThread(parent)
+{
 }
 
-SearchFileThread::~SearchFileThread() {
+SearchFileThread::~SearchFileThread()
+{
 }
 
-void SearchFileThread::search() {
-	if( ! m_to.isNull() )
-		QMessageBox::information( qApp->activeWindow(), tr("Not supported"), tr("Replacement on multiple file is not yet supported") );
+void SearchFileThread::search()
+{
+	if (! m_to.isNull())
+		QMessageBox::information(qApp->activeWindow(), tr("Not supported"), tr("Replacement on multiple file is not yet supported"));
 
-	start( QThread::IdlePriority );
+	start(QThread::IdlePriority);
 }
 
-void SearchFileThread::testFile( const QString & path ) {
-	emit test( path );
+void SearchFileThread::testFile(const QString & path)
+{
+	emit test(path);
 
-	QFile file( path );
-	if( ! file.open( QIODevice::ReadOnly | QIODevice::Text ) ) return;
+	QFile file(path);
+	if (! file.open(QIODevice::ReadOnly | QIODevice::Text)) return;
 	int line = 0;
 	QString text;
-	while( !file.atEnd() ) {
-		text = file.readLine(); line ++;
+	while (!file.atEnd())
+	{
+		text = file.readLine();
+		line ++;
 
 		Qt::CaseSensitivity cs = Qt::CaseInsensitive;
-		if( m_options.testFlag( AbstractEditor::MATCH_CASE ) )
+		if (m_options.testFlag(AbstractEditor::MATCH_CASE))
 			cs = Qt::CaseSensitive;
 
 		QString from = m_from;
-		if( m_options.testFlag( AbstractEditor::WHOLE_WORDS ) && ! m_options.testFlag( AbstractEditor::REGULAR_EXPRESSION ) )
+		if (m_options.testFlag(AbstractEditor::WHOLE_WORDS) && ! m_options.testFlag(AbstractEditor::REGULAR_EXPRESSION))
 			from = "\\b" + m_from + "\\b";
 
 		bool contains;
-		if( m_options.testFlag( AbstractEditor::WHOLE_WORDS ) || m_options.testFlag( AbstractEditor::REGULAR_EXPRESSION ) )
-			contains = text.contains( QRegExp( from ) );
+		if (m_options.testFlag(AbstractEditor::WHOLE_WORDS) || m_options.testFlag(AbstractEditor::REGULAR_EXPRESSION))
+			contains = text.contains(QRegExp(from));
 		else
-			contains = text.contains( from, cs );
+			contains = text.contains(from, cs);
 
-		if( contains )
-			emit find( path, text.trimmed(), line );
+		if (contains)
+			emit find(path, text.trimmed(), line);
 	}
 }
 
-void SearchFileThread::searchRecursive( const QString & path ) {
-	QDir pathObject( path );
-	QStringList directory = pathObject.entryList( QDir::Dirs );
+void SearchFileThread::searchRecursive(const QString & path)
+{
+	QDir pathObject(path);
+	QStringList directory = pathObject.entryList(QDir::Dirs);
 
-	foreach( const QString & pathName, directory ) {
-		if( ( pathName != "." ) && ( pathName != ".." ) )
-		searchRecursive( pathObject.absoluteFilePath( pathName ) );
+	foreach(const QString & pathName, directory)
+	{
+		if ((pathName != ".") && (pathName != ".."))
+			searchRecursive(pathObject.absoluteFilePath(pathName));
 	}
 
-	QStringList files = pathObject.entryList( XinxPluginsLoader::self()->managedFilters(), QDir::Files );
+	QStringList files = pathObject.entryList(XinxPluginsLoader::self()->managedFilters(), QDir::Files);
 
-	foreach( const QString & fileName, files ) {
-		testFile( pathObject.absoluteFilePath( fileName ) );
+	foreach(const QString & fileName, files)
+	{
+		testFile(pathObject.absoluteFilePath(fileName));
 	}
 }
 
-void SearchFileThread::threadrun() {
-	searchRecursive( m_path );
+void SearchFileThread::threadrun()
+{
+	searchRecursive(m_path);
 	emit end();
 	this->deleteLater();
 }
 
-void SearchFileThread::setPath( const QString & path ) {
+void SearchFileThread::setPath(const QString & path)
+{
 	m_path = path;
 }
 
-void SearchFileThread::setSearchString( const QString & from, const QString & to, const AbstractEditor::SearchOptions & options ) {
+void SearchFileThread::setSearchString(const QString & from, const QString & to, const AbstractEditor::SearchOptions & options)
+{
 	m_from    = from;
 	m_to      = to;
 	m_options = options;

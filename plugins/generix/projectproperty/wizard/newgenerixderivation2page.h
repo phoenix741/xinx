@@ -27,14 +27,15 @@
 // Qt header
 #include <QWizardPage>
 
-class NewGenerixDerivation2Page : public IXinxPluginNewProjectConfigurationPage, public Ui::NewGenerixDerivation2Page {
+class NewGenerixDerivation2Page : public IXinxPluginNewProjectConfigurationPage, public Ui::NewGenerixDerivation2Page
+{
 	Q_OBJECT
 public:
-    NewGenerixDerivation2Page();
+	NewGenerixDerivation2Page();
 
 	virtual QString pagePluginId() const;
 	virtual bool pageIsVisible() const;
-	virtual bool saveSettingsDialog( XinxProject * project );
+	virtual bool saveSettingsDialog(XinxProject * project);
 
 	virtual void initializePage();
 };

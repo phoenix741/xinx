@@ -27,14 +27,15 @@
 
 // Qt header
 
-class XQueryDialogImpl : public QDialog, private Ui::XQueryDialog {
+class XQueryDialogImpl : public QDialog, private Ui::XQueryDialog
+{
 	Q_OBJECT
 public:
-	XQueryDialogImpl( QWidget * parent = 0, Qt::WindowFlags f = Qt::MSWindowsFixedSizeDialogHint );
+	XQueryDialogImpl(QWidget * parent = 0, Qt::WindowFlags f = Qt::MSWindowsFixedSizeDialogHint);
 	virtual ~XQueryDialogImpl();
 
-	void setFileName( const QString & filename );
-	void setCurrentXPath( const QString & currentXPath );
+	void setFileName(const QString & filename);
+	void setCurrentXPath(const QString & currentXPath);
 public slots:
 	void evaluate();
 private slots:

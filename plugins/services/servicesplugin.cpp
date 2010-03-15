@@ -34,37 +34,42 @@
 
 /* ServicesPlugin */
 
-ServicesPlugin::ServicesPlugin() {
+ServicesPlugin::ServicesPlugin()
+{
 	Q_INIT_RESOURCE(servicesplugin);
 
-	qRegisterMetaType<WebServicesEditor>( "WebServicesEditor" );
+	qRegisterMetaType<WebServicesEditor>("WebServicesEditor");
 
 	WebServicesManager::self();
 	m_fileTypes << new WebServicesFileType;
 }
 
-ServicesPlugin::~ServicesPlugin() {
-	qDeleteAll( m_fileTypes );
+ServicesPlugin::~ServicesPlugin()
+{
+	qDeleteAll(m_fileTypes);
 }
 
-bool ServicesPlugin::initializePlugin( const QString & lang ) {
-	QTranslator * tranlator = new QTranslator( this );
-	tranlator->load( QString(":/services/translations/servicesplugin_%1").arg( lang ) );
+bool ServicesPlugin::initializePlugin(const QString & lang)
+{
+	QTranslator * tranlator = new QTranslator(this);
+	tranlator->load(QString(":/services/translations/servicesplugin_%1").arg(lang));
 	qApp->installTranslator(tranlator);
 
 	return true;
 }
 
-QVariant ServicesPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr ) {
-	switch( attr ) {
+QVariant ServicesPlugin::getPluginAttribute(const enum IXinxPlugin::PluginAttribute & attr)
+{
+	switch (attr)
+	{
 	case PLG_NAME:
 		return tr("XINX WebServices");
 	case PLG_DESCRIPTION:
 		return tr("Enable the WebServices Capabilities to XINX.");
 	case PLG_AUTHOR:
 		return "Ulrich Van Den Hekke";
-    case PLG_ICON:
-		return QPixmap( ":/services/images/webservices.png" );
+	case PLG_ICON:
+		return QPixmap(":/services/images/webservices.png");
 	case PLG_EMAIL:
 		return "ulrich.vdh@shadoware.org";
 	case PLG_WEBSITE:
@@ -77,31 +82,36 @@ QVariant ServicesPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttri
 	return QVariant();
 }
 
-QList<IFileTypePlugin*> ServicesPlugin::fileTypes() {
+QList<IFileTypePlugin*> ServicesPlugin::fileTypes()
+{
 	return m_fileTypes;
 }
 
-XinxAction::MenuList ServicesPlugin::actions() {
-	if( m_menus.size() == 0 ) {
-		XinxAction::Action * refreshAction = new WebServicesRefreshAction( QIcon(":/images/reload.png"), tr("Update WebServices List"), QString(), this );
-		XinxAction::Action * runAction = new WebServicesRunAction( QIcon(":/services/images/action.png"), tr("Call the service"), QString( "F9" ), this );
+XinxAction::MenuList ServicesPlugin::actions()
+{
+	if (m_menus.size() == 0)
+	{
+		XinxAction::Action * refreshAction = new WebServicesRefreshAction(QIcon(":/images/reload.png"), tr("Update WebServices List"), QString(), this);
+		XinxAction::Action * runAction = new WebServicesRunAction(QIcon(":/services/images/action.png"), tr("Call the service"), QString("F9"), this);
 
-		XinxAction::ActionList menu( tr("&Execute"), "execute" );
-		menu.append( new XinxAction::Separator() );
-		menu.append( refreshAction );
-		menu.append( runAction );
-		m_menus.append( menu );
+		XinxAction::ActionList menu(tr("&Execute"), "execute");
+		menu.append(new XinxAction::Separator());
+		menu.append(refreshAction);
+		menu.append(runAction);
+		m_menus.append(menu);
 	}
 	return m_menus;
 }
 
-QList<IXinxPluginProjectConfigurationPage*> ServicesPlugin::createProjectSettingsPage( QWidget * parent ) {
+QList<IXinxPluginProjectConfigurationPage*> ServicesPlugin::createProjectSettingsPage(QWidget * parent)
+{
 	QList<IXinxPluginProjectConfigurationPage*> list;
-	list << new ServicesProjectPropertyImpl( parent );
+	list << new ServicesProjectPropertyImpl(parent);
 	return list;
 }
 
-QList<IXinxPluginNewProjectConfigurationPage*> ServicesPlugin::createNewProjectSettingsPages() {
+QList<IXinxPluginNewProjectConfigurationPage*> ServicesPlugin::createNewProjectSettingsPages()
+{
 	QList<IXinxPluginNewProjectConfigurationPage*> pages;
 	pages << new ServicesListPageImpl();
 	return pages;

@@ -22,41 +22,48 @@
 
 /* XmlPresConfigFormImpl */
 
-XmlPresConfigFormImpl::XmlPresConfigFormImpl( QWidget * parent ) : QWidget( parent ) {
-	setupUi( this );
-	
+XmlPresConfigFormImpl::XmlPresConfigFormImpl(QWidget * parent) : QWidget(parent)
+{
+	setupUi(this);
+
 	// XML Pres
-	m_hideElementList->setDefaultVisible( false );
+	m_hideElementList->setDefaultVisible(false);
 }
 
-XmlPresConfigFormImpl::~XmlPresConfigFormImpl() {
-	
+XmlPresConfigFormImpl::~XmlPresConfigFormImpl()
+{
+
 }
 
-QPixmap XmlPresConfigFormImpl::image() {
-	return QPixmap( ":/images/preferences-xmlpres.png" );
+QPixmap XmlPresConfigFormImpl::image()
+{
+	return QPixmap(":/images/preferences-xmlpres.png");
 }
 
-QString XmlPresConfigFormImpl::name() {
-	return tr( "XML Pres." );
+QString XmlPresConfigFormImpl::name()
+{
+	return tr("XML Pres.");
 }
 
-QWidget * XmlPresConfigFormImpl::settingsDialog() {
+QWidget * XmlPresConfigFormImpl::settingsDialog()
+{
 	return this;
 }
 
-bool XmlPresConfigFormImpl::loadSettingsDialog() {
-	m_expandPathLineEdit->setText( SelfWebPluginSettings::self()->config().xmlPres.autoExpandedPath );
-	m_hideElementList->setValues( SelfWebPluginSettings::self()->config().xmlPres.hidePath );
-	m_showSubEltCheckBox->setChecked( SelfWebPluginSettings::self()->config().xmlPres.showFilteredSubTree );
-	m_showNameAttributeCheckBox->setChecked( SelfWebPluginSettings::self()->config().xmlPres.showNameAttributeIfExists );
-	m_viewColorBox->setColor( SelfWebPluginSettings::self()->config().xmlPres.viewColor );
-	m_errorColorBox->setColor( SelfWebPluginSettings::self()->config().xmlPres.errorColor );
-	m_screenColorBox->setColor( SelfWebPluginSettings::self()->config().xmlPres.screenDataColor );
+bool XmlPresConfigFormImpl::loadSettingsDialog()
+{
+	m_expandPathLineEdit->setText(SelfWebPluginSettings::self()->config().xmlPres.autoExpandedPath);
+	m_hideElementList->setValues(SelfWebPluginSettings::self()->config().xmlPres.hidePath);
+	m_showSubEltCheckBox->setChecked(SelfWebPluginSettings::self()->config().xmlPres.showFilteredSubTree);
+	m_showNameAttributeCheckBox->setChecked(SelfWebPluginSettings::self()->config().xmlPres.showNameAttributeIfExists);
+	m_viewColorBox->setColor(SelfWebPluginSettings::self()->config().xmlPres.viewColor);
+	m_errorColorBox->setColor(SelfWebPluginSettings::self()->config().xmlPres.errorColor);
+	m_screenColorBox->setColor(SelfWebPluginSettings::self()->config().xmlPres.screenDataColor);
 	return true;
 }
 
-bool XmlPresConfigFormImpl::saveSettingsDialog() {
+bool XmlPresConfigFormImpl::saveSettingsDialog()
+{
 	SelfWebPluginSettings::self()->config().xmlPres.autoExpandedPath = m_expandPathLineEdit->text();
 	SelfWebPluginSettings::self()->config().xmlPres.hidePath = m_hideElementList->values();
 	SelfWebPluginSettings::self()->config().xmlPres.showFilteredSubTree = m_showSubEltCheckBox->isChecked();
@@ -69,14 +76,17 @@ bool XmlPresConfigFormImpl::saveSettingsDialog() {
 	return true;
 }
 
-bool XmlPresConfigFormImpl::cancelSettingsDialog() {
+bool XmlPresConfigFormImpl::cancelSettingsDialog()
+{
 	return true;
 }
 
-bool XmlPresConfigFormImpl::isSettingsValid() {
+bool XmlPresConfigFormImpl::isSettingsValid()
+{
 	return true;
 }
 
-bool XmlPresConfigFormImpl::isVisible() {
+bool XmlPresConfigFormImpl::isVisible()
+{
 	return true;
 }

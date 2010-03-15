@@ -20,8 +20,11 @@
 // Xinx header
 #include "snipetcompletionparser.h"
 #include "snipetmanager.h"
-#include "contentview/contentviewnode.h"
+#include "contentview2/contentview2node.h"
+#include "contentview2/contentview2cache.h"
+#include "contentview2/contentview2manager.h"
 #include "core/xinxconfig.h"
+#include "project/xinxproject.h"
 
 // Qt header
 #include <QSqlQuery>
@@ -29,67 +32,48 @@
 #include <QSqlError>
 #include <QVariant>
 
-/* Static member */
-
-SnipetCompletionParser * SnipetCompletionParser::s_self = 0;
-
 /* SnipetCompletionParser */
 
-SnipetCompletionParser::SnipetCompletionParser() : ContentViewParser( true ) {
-	ContentViewNode * node = new ContentViewNode( "SnipetRoot", -1 );
-	node->setAutoDelete( false );
-	setRootNode( node );
-	setAttachId( (unsigned long)node );
+SnipetCompletionParser::SnipetCompletionParser() : ContentView2::Parser()
+{
 
-	connect( XINXConfig::self(), SIGNAL(changed()), this, SLOT(refresh()) );
 }
 
-SnipetCompletionParser::~SnipetCompletionParser() {
-	rootNode()->setAutoDelete( true );
+SnipetCompletionParser::~SnipetCompletionParser()
+{
+
 }
 
-SnipetCompletionParser * SnipetCompletionParser::self() {
-	if( ! s_self ) {
-		s_self = new SnipetCompletionParser();
-		XINXStaticDeleter::self()->add( s_self );
+void SnipetCompletionParser::load()
+{
+	loadAttachedNode(rootNode());
 
-		// Pas besoin de future, la première fois, l'opération est faite une unique fois et n'est pas très longue.
-		s_self->loadFromMember();
-	}
-	return s_self;
-}
-
-void SnipetCompletionParser::refresh() {
-	QFuture<void> future = QtConcurrent::run( (ContentViewParser*)s_self, &ContentViewParser::loadFromMember );
-}
-
-void SnipetCompletionParser::loadFromDeviceImpl() {
-	Q_ASSERT( rootNode() );
-
-	loadAttachedNode( rootNode() );
-
-	QSqlQuery selectQuery( "SELECT id, icon, shortcut, name FROM snipets WHERE auto>=:auto", SnipetManager::self()->database() );
-	selectQuery.bindValue( ":auto", true );
+	QSqlQuery selectQuery("SELECT id, icon, shortcut, name FROM snipets WHERE auto>=:auto", SnipetManager::self()->database());
+	selectQuery.bindValue(":auto", true);
 
 	bool result = selectQuery.exec();
-	Q_ASSERT( result );
-	if( ! result ) {
-		qWarning( qPrintable( selectQuery.lastError().text() ) );
+	Q_ASSERT(result);
+	if (! result)
+	{
+		qWarning(qPrintable(selectQuery.lastError().text()));
 		return;
 	}
 
-	while( selectQuery.next() ) {
-		const int id = selectQuery.value( 0 ).toInt();
-		const QString icon = selectQuery.value( 1 ).toString();
-		const QString shortcut = selectQuery.value( 2 ).toString();
-		const QString name = selectQuery.value( 3 ).toString();
+	while (selectQuery.next())
+	{
+		const QString icon = selectQuery.value(1).toString();
+		const QString shortcut = selectQuery.value(2).toString();
+		const QString name = selectQuery.value(3).toString();
 
-		ContentViewNode * node = new ContentViewNode( shortcut, id );
-		node->setData( "Snipet", ContentViewNode::NODE_TYPE );
-		node->setData( icon.isEmpty() ? ":/images/help-hint.png" : icon, ContentViewNode::NODE_ICON );
-		node->setData( shortcut, ContentViewNode::NODE_DISPLAY_NAME );
+		ContentView2::Node node;
+		node.setLine(-1);
+		node.setFileId(rootNode().fileId());
+		node.setData(shortcut, ContentView2::Node::NODE_NAME);
+		node.setData("Snipet",  ContentView2::Node::NODE_TYPE);
+		node.setData(icon.isEmpty() ? ":/images/help-hint.png" : icon,  ContentView2::Node::NODE_ICON);
+		node.setData(shortcut,  ContentView2::Node::NODE_DISPLAY_NAME);
 
-		node = attachNode( rootNode(), node );
+		attachNode(rootNode(), node);
 	}
 
 	detachAttachedNode();

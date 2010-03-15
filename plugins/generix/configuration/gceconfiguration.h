@@ -28,19 +28,20 @@
 #include <QMultiHash>
 #include <QCoreApplication>
 
-class GceConfiguration : public GceInterface {
+class GceConfiguration : public GceInterface
+{
 	Q_DECLARE_TR_FUNCTIONS(GceConfiguration)
 public:
-	GceConfiguration( const QString & filename );
+	GceConfiguration(const QString & filename);
 	virtual ~GceConfiguration();
 
 	virtual QString rootFilename();
 	virtual QStringList filenames();
 	virtual ConfigurationVersion version();
 	virtual QStringList dictionnaries();
-	virtual QList<BusinessViewInformation> businessView( const QString & filename );
+	virtual QList<BusinessViewInformation> businessView(const QString & filename);
 	virtual QList<BusinessViewInformation> businessViews();
-	virtual QString resolveFileName( const QString & filename );
+	virtual QString resolveFileName(const QString & filename);
 private:
 	QString m_configurationFileName;
 	ConfigurationVersion m_version;

@@ -33,10 +33,11 @@
 class AbstractEditor;
 class XinxProject;
 
-class LIBEXPORT ScriptValue {
+class LIBEXPORT ScriptValue
+{
 public:
 	ScriptValue();
-	ScriptValue( QScriptValue value );
+	ScriptValue(QScriptValue value);
 
 	const QScriptValue & value() const;
 
@@ -60,7 +61,8 @@ private:
 };
 
 
-class LIBEXPORT ScriptManager : public QObject {
+class LIBEXPORT ScriptManager : public QObject
+{
 	Q_OBJECT
 public:
 	~ScriptManager();
@@ -68,7 +70,7 @@ public:
 	const QList<ScriptValue> & objects() const;
 	QScriptEngine & engine();
 
-	void setCurrentEditeur( AbstractEditor * editor );
+	void setCurrentEditeur(AbstractEditor * editor);
 
 	static ScriptManager * self();
 
@@ -84,7 +86,7 @@ private slots:
 	void projectChange();
 private:
 	ScriptManager();
-	void loadScript( const QString & filename );
+	void loadScript(const QString & filename);
 
 	QStringList m_filenames;
 	QScriptEngine m_engine;
@@ -94,7 +96,7 @@ private:
 	static ScriptManager * s_self;
 };
 
-Q_DECLARE_METATYPE( QScriptValue )
-Q_DECLARE_METATYPE( ScriptValue )
+Q_DECLARE_METATYPE(QScriptValue)
+Q_DECLARE_METATYPE(ScriptValue)
 
 #endif /*__SCRIPTMANAGER_H__*/

@@ -23,7 +23,6 @@
 
 // Xinx header
 #include <editors/textfileeditor.h>
-#include <editors/contentviewtexteditor.h>
 
 // Qt header
 #include <QProcess>
@@ -37,10 +36,11 @@ class XslTextEditor;
 
 /* XslContentEditor */
 
-class StyleSheetEditor : public ContentViewTextEditor {
+class StyleSheetEditor : public TextFileEditor
+{
 	Q_OBJECT
 public:
-	StyleSheetEditor( QWidget *parent = 0 );
+	StyleSheetEditor(QWidget *parent = 0);
 	virtual ~StyleSheetEditor();
 
 	virtual QString defaultFileName() const;
@@ -48,20 +48,21 @@ public:
 	virtual bool autoIndent();
 
 	virtual QIcon icon() const;
-	virtual QTextCodec * codec() const;
 
-	virtual void searchWord( const QString & word );
+	virtual void searchWord(const QString & word);
 
-	void launchStylesheetParsing( const QString & xmlfile );
+	void launchStylesheetParsing(const QString & xmlfile);
 	static XmlPresentationDockWidget * xmlPresentationDockWidget();
 
 	XslCompletionNodeModel * completionModel() const;
 protected:
 	virtual void initLayout();
+	virtual ContentView2::Parser * createParser();
+	virtual ContentView2::CompletionModel * createModel(QSqlDatabase db, QObject * parent = 0);
 private slots:
 	void cursorPositionChanged();
 	void tabIndexChange(int);
-	void xmlPresentationDockFilenameChanged( const QString & filename );
+	void xmlPresentationDockFilenameChanged(const QString & filename);
 private:
 	void initObjects();
 

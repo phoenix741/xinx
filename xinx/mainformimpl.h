@@ -51,21 +51,22 @@ class QAction;
 class QToolButton;
 class SnipetMenu;
 
-class MainformImpl : public QMainWindow {
+class MainformImpl : public QMainWindow
+{
 	Q_OBJECT
 public:
-	MainformImpl( QWidget * parent = 0, Qt::WFlags f = 0 );
+	MainformImpl(QWidget * parent = 0, Qt::WFlags f = 0);
 	virtual ~MainformImpl();
 public slots:
-	void newFile( const QString &filename );
-	void openFile( const QString & filename );
-	void saveFileAs( const QString & filename = QString() );
+	void newFile(const QString &filename);
+	void openFile(const QString & filename);
+	void saveFileAs(const QString & filename = QString());
 	void saveAllFile();
 	void closeFile();
 	bool closeAllFile();
 
-	void openProject( const QString & filename );
-	void saveProject( bool withSessionData );
+	void openProject(const QString & filename);
+	void saveProject(bool withSessionData);
 	void closeProjectNoSessionData();
 	void closeProjectWithSessionData();
 
@@ -73,8 +74,8 @@ public slots:
 signals:
 	void aboutToClose();
 protected:
-	virtual void closeEvent( QCloseEvent *event );
-	virtual void timerEvent( QTimerEvent * event );
+	virtual void closeEvent(QCloseEvent *event);
+	virtual void timerEvent(QTimerEvent * event);
 private:
 	// Creation
 	void createMainForm();
@@ -96,15 +97,15 @@ private:
 	QString m_lastProjectOpenedPlace;
 	QStringList m_fileToAdd;
 
-	bool fileEditorMayBeSave( int index );
-	void fileEditorSave( int index, bool saveAs );
-	void fileEditorSave( int index );
-	void fileEditorSaveAs( int index );
-	void fileEditorClose( int index );
-	void fileEditorRefreshFile( int index );
+	bool fileEditorMayBeSave(int index);
+	void fileEditorSave(int index, bool saveAs);
+	void fileEditorSave(int index);
+	void fileEditorSaveAs(int index);
+	void fileEditorClose(int index);
+	void fileEditorRefreshFile(int index);
 
 	// Project
-	bool closeProject( bool session, bool showWelcome = true );
+	bool closeProject(bool session, bool showWelcome = true);
 
 	// Settings
 	void readWindowSettings();
@@ -148,7 +149,7 @@ private:
 	QAction * m_recentFileActs[ MAXRECENTFILES ];
 	QAction * m_recentFileSeparator;
 
-	void setupRecentMenu( QMenu * menu, QAction * & seperator, QAction * recentActions[ MAXRECENTFILES ] );
+	void setupRecentMenu(QMenu * menu, QAction * & seperator, QAction * recentActions[ MAXRECENTFILES ]);
 
 	// Scripts
 	QList<QAction*> m_scriptActs;
@@ -166,13 +167,13 @@ private:
 
 	// Actions
 	QAction *m_newAct, *m_openAct, *m_saveAct, *m_saveAsAct, *m_saveAllAct, *m_printAct, *m_closeAct, *m_closeAllAct,
-			*m_exitAct, *m_recentFileAct, *m_refreshFileAct, *m_copyFileNameAct, *m_copyPathAct;
+	*m_exitAct, *m_recentFileAct, *m_refreshFileAct, *m_copyFileNameAct, *m_copyPathAct;
 	QAction *m_undoAct, *m_redoAct, *m_cutAct, *m_copyAct, *m_pasteAct, *m_selectAllAct, *m_duplicateLineAct, *m_moveUpLineAct,
-			*m_moveDownLineAct, *m_upperTextAct, *m_lowerTextAct, *m_commentLineAct, *m_uncommentLineAct, *m_completeAct, *m_indentAct,
-			*m_unindentAct, *m_prettyPrintAct, *m_highlightWord, *m_showSpaceAndTabAct;
+	*m_moveDownLineAct, *m_upperTextAct, *m_lowerTextAct, *m_commentLineAct, *m_uncommentLineAct, *m_completeAct, *m_indentAct,
+	*m_unindentAct, *m_prettyPrintAct, *m_highlightWord, *m_showSpaceAndTabAct;
 	QAction *m_searchAct, *m_searchNextAct, *m_replaceAct, *m_searchPreviousAct;
 	QAction *m_newProjectAct, *m_openProjectAct, *m_saveProjectAct, *m_closeProjectNoSessionAct, *m_projectPropertyAct,
-			*m_closeProjectWithSessionAct,  *m_recentProjectAct, *m_closeProjectAct;
+	*m_closeProjectWithSessionAct,  *m_recentProjectAct, *m_closeProjectAct;
 	QAction *m_nextBookmarkAct, *m_bookmarkAct, *m_previousBookmarkAct, *m_clearAllBookmarkAct;
 	QAction *m_toggledFlatView;
 	QAction *m_nextTabAct, *m_previousTabAct;
@@ -194,7 +195,7 @@ private slots:
 	// File
 	void newFile();
 	void openFile();
-	void openFile( const QString & name, int line );
+	void openFile(const QString & name, int line);
 	void refreshFile();
 	void saveFile();
 	void saveAsFile();
@@ -212,8 +213,8 @@ private slots:
 
 	// Search
 	void findEnd();
-	void findInFiles( const QString & directory, const QString & from, const QString & to, const AbstractEditor::SearchOptions & options );
-	void findFirst( const QString & chaine, const QString & dest, const AbstractEditor::SearchOptions & options );
+	void findInFiles(const QString & directory, const QString & from, const QString & to, const AbstractEditor::SearchOptions & options);
+	void findFirst(const QString & chaine, const QString & dest, const AbstractEditor::SearchOptions & options);
 	void findNext();
 	void findPrevious();
 	void find();
@@ -234,11 +235,11 @@ private slots:
 	void nextTab();
 	void previousTab();
 	void currentTabChanged(int);
-	void setEditorPosition( int line, int column );
+	void setEditorPosition(int line, int column);
 	void changeShowSnipetDialogAction();
 
 	// Tools
-	void callSnipetAction( int snipetId );
+	void callSnipetAction(int snipetId);
 	void callScriptAction();
 	void updateToolsMenu();
 	void customize();

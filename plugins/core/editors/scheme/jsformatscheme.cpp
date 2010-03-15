@@ -23,38 +23,40 @@
 // QCodeEdit header
 #include <qformat.h>
 
-JsFormatScheme::JsFormatScheme( XINXConfig * config ) : XinxFormatScheme( config ) {
-	setNameSpace( "js" );
+JsFormatScheme::JsFormatScheme(XINXConfig * config) : XinxFormatScheme(config)
+{
+	setNameSpace("js");
 	createDefaultScheme();
 }
 
-void JsFormatScheme::createDefaultScheme() {
+void JsFormatScheme::createDefaultScheme()
+{
 	QFormat comment, string, danger, escapeseq, reservedword, numbers;
 
 	// Comment format
 	comment.foreground = Qt::darkGreen;
-	setFormat( "comment", comment );
+	setFormat("comment", comment);
 
 	// String format
 	string.foreground = Qt::red;
-	setFormat( "string", string );
+	setFormat("string", string);
 
 	// Danger format
 	danger.weight = QFont::Bold;
 	danger.waveUnderline = true;
-	danger.foreground = QColor( 0xd0, 0x60, 0xd0 );
+	danger.foreground = QColor(0xd0, 0x60, 0xd0);
 	danger.background = Qt::red;
-	setFormat( "danger", danger );
+	setFormat("danger", danger);
 
 	// Escape Sequence format
-	escapeseq.foreground = QColor( 0xff, 0x14, 0x93 );
-	setFormat( "escapeseq", escapeseq );
+	escapeseq.foreground = QColor(0xff, 0x14, 0x93);
+	setFormat("escapeseq", escapeseq);
 
 	// Reserved Word format
 	reservedword.weight = QFont::Bold;
-	setFormat( "reservedword", reservedword );
+	setFormat("reservedword", reservedword);
 
 	// Numbers format
 	numbers.foreground = Qt::blue;
-	setFormat( "numbers", numbers );
+	setFormat("numbers", numbers);
 }

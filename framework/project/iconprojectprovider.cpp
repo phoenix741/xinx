@@ -21,21 +21,25 @@
 #include <plugins/xinxpluginsloader.h>
 #include "iconprojectprovider.h"
 
-IconProjectProvider::IconProjectProvider() : QFileIconProvider() {
+IconProjectProvider::IconProjectProvider() : QFileIconProvider()
+{
 
 }
 
-IconProjectProvider::~IconProjectProvider() {
+IconProjectProvider::~IconProjectProvider()
+{
 
 }
 
-QIcon IconProjectProvider::icon( const QFileInfo & info ) const {
-	IFileTypePlugin * plugin = XinxPluginsLoader::self()->matchedFileType( info.fileName() );
-	if( plugin ) {
-		QIcon icon = QIcon( plugin->icon() );
-		if( ! icon.isNull() )
+QIcon IconProjectProvider::icon(const QFileInfo & info) const
+{
+	IFileTypePlugin * plugin = XinxPluginsLoader::self()->matchedFileType(info.fileName());
+	if (plugin)
+	{
+		QIcon icon = QIcon(plugin->icon());
+		if (! icon.isNull())
 			return icon;
 	}
-	return QFileIconProvider::icon( info );
+	return QFileIconProvider::icon(info);
 }
 

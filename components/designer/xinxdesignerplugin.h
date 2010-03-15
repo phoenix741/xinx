@@ -23,11 +23,12 @@
 #include <QtDesigner/QtDesigner>
 #include <QtCore/qplugin.h>
 
-class XinxDesignerPlugin: public QObject, public QDesignerCustomWidgetCollectionInterface {
+class XinxDesignerPlugin: public QObject, public QDesignerCustomWidgetCollectionInterface
+{
 	Q_OBJECT
 	Q_INTERFACES(QDesignerCustomWidgetCollectionInterface)
 public:
-	XinxDesignerPlugin( QObject *parent = 0 );
+	XinxDesignerPlugin(QObject *parent = 0);
 
 	virtual QList<QDesignerCustomWidgetInterface*> customWidgets() const;
 private:

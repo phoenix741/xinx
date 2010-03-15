@@ -36,33 +36,34 @@ class XinxProject;
 class RCS;
 class IconProjectProvider;
 
-class ProjectDirectoryDockWidget : public QDockWidget  {
+class ProjectDirectoryDockWidget : public QDockWidget
+{
 	Q_OBJECT
 public:
-	ProjectDirectoryDockWidget( const QString & title, QWidget * parent = 0, Qt::WindowFlags flags = 0 );
-	ProjectDirectoryDockWidget( QWidget * parent = 0, Qt::WindowFlags flags = 0 );
+	ProjectDirectoryDockWidget(const QString & title, QWidget * parent = 0, Qt::WindowFlags flags = 0);
+	ProjectDirectoryDockWidget(QWidget * parent = 0, Qt::WindowFlags flags = 0);
 	virtual ~ProjectDirectoryDockWidget();
 
-	void setToggledViewAction( QAction * action );
+	void setToggledViewAction(QAction * action);
 
 	bool isViewFlat();
 	QStringList selectedFiles();
 
-	void refreshPath( const QString & path );
-	bool removeFile( const QString & path );
+	void refreshPath(const QString & path);
+	bool removeFile(const QString & path);
 
 public slots:
 	void toggledView();
-	void toggledView( bool flat );
+	void toggledView(bool flat);
 signals:
-	void open( const QString & name );
+	void open(const QString & name);
 
 private slots:
 	void projectChange();
 	void filtreChange();
 	void on_m_filtreLineEdit_returnPressed();
-	void on_m_filtreLineEdit_textChanged( QString filtre );
-	void on_m_projectDirectoryTreeView_doubleClicked( QModelIndex index );
+	void on_m_filtreLineEdit_textChanged(QString filtre);
+	void on_m_projectDirectoryTreeView_doubleClicked(QModelIndex index);
 
 	void copyFileNameTriggered();
 	void copyPathNameTriggered();
@@ -78,8 +79,8 @@ private slots:
 	void updateActions();
 private:
 	void init();
-	bool eventFilter( QObject *obj, QEvent *event );
-	void setProjectPath( XinxProject * project );
+	bool eventFilter(QObject *obj, QEvent *event);
+	void setProjectPath(XinxProject * project);
 
 	QAction* m_selectedUpdateAction;
 	QAction* m_selectedCommitAction;

@@ -29,13 +29,24 @@
 
 /* XSLStyleSheetFileType */
 
-class XSDFileType : public QObject, public IFileTypePlugin {
+class XSDFileType : public QObject, public IFileTypePlugin
+{
 public:
-	virtual QString description() {	return tr( "XML Schema Description" ); };
-	virtual QString match() { return "*.xsd"; };
-	virtual QIcon icon() { return QIcon( ":/xsd/images/typexsd.png" ); };
+	virtual QString description()
+	{
+		return tr("XML Schema Description");
+	};
+	virtual QString match()
+	{
+		return "*.xsd";
+	};
+	virtual QIcon icon()
+	{
+		return QIcon(":/xsd/images/typexsd.png");
+	};
 
-	virtual AppSettings::struct_extentions properties() {
+	virtual AppSettings::struct_extentions properties()
+	{
 		AppSettings::struct_extentions p;
 		p.canBeCommitToRcs = true;
 		p.canBeFindInConfiguration = false;
@@ -44,50 +55,58 @@ public:
 		return p;
 	};
 
-	virtual AbstractEditor * createEditor( const QString & filename ) {
+	virtual AbstractEditor * createEditor(const QString & filename)
+	{
 		XsdEditor * editor = new XsdEditor();
-		if( ! filename.isEmpty() )
-			editor->loadFromFile( filename );
+		if (! filename.isEmpty())
+			editor->loadFromFile(filename);
 		return editor;
 	}
-	virtual FileContentElement * createElement( FileContentElement * parent, int line, const QString & filename ) {
+	virtual FileContentElement * createElement(FileContentElement * parent, int line, const QString & filename)
+	{
 		return NULL;
 	}
 
-	virtual ContentViewParser * createParser() {
+	virtual ContentViewParser * createParser()
+	{
 		return 0;
 	}
 };
 
 /* XsdEditPlugin */
 
-XsdEditPlugin::XsdEditPlugin() {
-    Q_INIT_RESOURCE(xsdedit);
+XsdEditPlugin::XsdEditPlugin()
+{
+	Q_INIT_RESOURCE(xsdedit);
 
 	m_fileTypes << new XSDFileType;
 }
 
-XsdEditPlugin::~XsdEditPlugin() {
+XsdEditPlugin::~XsdEditPlugin()
+{
 }
 
-bool XsdEditPlugin::initializePlugin( const QString & lang ) {
-	QTranslator * tranlator = new QTranslator( this );
-	tranlator->load( QString(":/xsd/translations/xsdedit_%1").arg( lang ) );
+bool XsdEditPlugin::initializePlugin(const QString & lang)
+{
+	QTranslator * tranlator = new QTranslator(this);
+	tranlator->load(QString(":/xsd/translations/xsdedit_%1").arg(lang));
 	qApp->installTranslator(tranlator);
 
 	return true;
 }
 
-QVariant XsdEditPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr ) {
-	switch( attr ) {
+QVariant XsdEditPlugin::getPluginAttribute(const enum IXinxPlugin::PluginAttribute & attr)
+{
+	switch (attr)
+	{
 	case PLG_NAME:
 		return tr("User Interface for editing XML Schema");
 	case PLG_DESCRIPTION:
 		return tr("EXPERIMENTAL / Editor for visualise and edit XML Schema");
 	case PLG_AUTHOR:
 		return "Ulrich Van Den Hekke";
-    case PLG_ICON:
-		return QPixmap( ":/xsd/images/xsdedit.png" );
+	case PLG_ICON:
+		return QPixmap(":/xsd/images/xsdedit.png");
 	case PLG_EMAIL:
 		return "ulrich.vdh@shadoware.org";
 	case PLG_WEBSITE:
@@ -100,7 +119,8 @@ QVariant XsdEditPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttrib
 	return QVariant();
 }
 
-QList<IFileTypePlugin*> XsdEditPlugin::fileTypes() {
+QList<IFileTypePlugin*> XsdEditPlugin::fileTypes()
+{
 	return m_fileTypes;
 }
 

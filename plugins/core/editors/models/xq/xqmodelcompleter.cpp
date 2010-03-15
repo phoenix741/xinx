@@ -31,36 +31,45 @@
 
 /* XQModelCompleter */
 
-XQModelCompleter::XQModelCompleter( QObject *parent ) : QAbstractListModel( parent ) {
+XQModelCompleter::XQModelCompleter(QObject *parent) : QAbstractListModel(parent)
+{
 }
 
-XQModelCompleter::~XQModelCompleter() {
+XQModelCompleter::~XQModelCompleter()
+{
 
 }
 
-QVariant XQModelCompleter::data( const QModelIndex &index, int role ) const {
-	if ( ! index.isValid() ) return QVariant();
+QVariant XQModelCompleter::data(const QModelIndex &index, int role) const
+{
+	if (! index.isValid()) return QVariant();
 
-	QString e = XQueryKeyword::self()->keywords().keys().at( index.row() );
+	QString e = XQueryKeyword::self()->keywords().keys().at(index.row());
 
-	if( role == Qt::ForegroundRole ) {
+	if (role == Qt::ForegroundRole)
+	{
 		QString format =  "xquery_" + XQueryKeyword::self()->keywords()[e];
-		return XINXConfig::self()->scheme( "XQuery" )->format( format ).foreground;
-	} else if( role == Qt::DecorationRole ) {
+		return XINXConfig::self()->scheme("XQuery")->format(format).foreground;
+	}
+	else if (role == Qt::DecorationRole)
+	{
 		return QIcon(":/images/complete_fn.png");
-	} else if ( ( role == Qt::DisplayRole ) && ( index.column() == 0 ) )
+	}
+	else if ((role == Qt::DisplayRole) && (index.column() == 0))
 		return e;
 
 	return QVariant();
 }
 
-Qt::ItemFlags XQModelCompleter::flags( const QModelIndex &index ) const {
-	Q_UNUSED( index );
+Qt::ItemFlags XQModelCompleter::flags(const QModelIndex &index) const
+{
+	Q_UNUSED(index);
 	return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
-int XQModelCompleter::rowCount( const QModelIndex &parent ) const {
-	Q_UNUSED( parent );
+int XQModelCompleter::rowCount(const QModelIndex &parent) const
+{
+	Q_UNUSED(parent);
 	return XQueryKeyword::self()->keywords().keys().count();
 }
 

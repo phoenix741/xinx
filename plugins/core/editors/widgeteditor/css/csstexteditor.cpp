@@ -32,47 +32,53 @@
 #include <QTextBlock>
 #include <QCompleter>
 
-CSSTextEditor::CSSTextEditor( QWidget * parent ) : XinxCodeEdit( parent ) {
-	setHighlighter( "CSS" );
+CSSTextEditor::CSSTextEditor(QWidget * parent) : XinxCodeEdit(parent)
+{
+	setHighlighter("CSS");
 }
 
-CSSTextEditor::~CSSTextEditor() {
+CSSTextEditor::~CSSTextEditor()
+{
 
 }
 
-bool CSSTextEditor::isCommentAvailable() {
+bool CSSTextEditor::isCommentAvailable()
+{
 	return false;
 }
 
-void CSSTextEditor::commentSelectedText( bool uncomment ) {
-	QDocumentCursor cursor( textCursor() );
+void CSSTextEditor::commentSelectedText(bool uncomment)
+{
+	QDocumentCursor cursor(textCursor());
 
-	QDocumentCursor cursorStart( textCursor() );
-	cursorStart.moveTo( cursor.selectionStart() );
-	bool isStartCommented = editPosition( this, cursorStart ) == cpEditComment;
+	QDocumentCursor cursorStart(textCursor());
+	cursorStart.moveTo(cursor.selectionStart());
+	bool isStartCommented = editPosition(this, cursorStart) == cpEditComment;
 
-	QDocumentCursor cursorEnd( textCursor() );
-	cursorEnd.moveTo( cursor.selectionEnd() );
-	bool isEndCommented =  editPosition( this, cursorEnd ) == cpEditComment;
+	QDocumentCursor cursorEnd(textCursor());
+	cursorEnd.moveTo(cursor.selectionEnd());
+	bool isEndCommented =  editPosition(this, cursorEnd) == cpEditComment;
 
 	QString text = cursor.selectedText();
-	text = text.replace( "/*", "" );
-	text = text.replace( "*/", "" );
+	text = text.replace("/*", "");
+	text = text.replace("*/", "");
 
 	cursor.beginEditBlock();
 
 	cursor.removeSelectedText();
-	if(! ( isStartCommented ^ uncomment ) ) {
+	if (!(isStartCommented ^ uncomment))
+	{
 		// Comment
-		if(! uncomment)
+		if (! uncomment)
 			cursor.insertText("/*");
 		else
 			cursor.insertText("*/");
 	}
 	cursor.insertText(text);
-	if(! ( isEndCommented ^ uncomment )) {
+	if (!(isEndCommented ^ uncomment))
+	{
 		// End the comment
-		if(! uncomment)
+		if (! uncomment)
 			cursor.insertText("*/");
 		else
 			cursor.insertText("/*");
@@ -82,35 +88,39 @@ void CSSTextEditor::commentSelectedText( bool uncomment ) {
 }
 
 
-CSSTextEditor::cursorPosition CSSTextEditor::editPosition( const XinxCodeEdit * textEdit, const QDocumentCursor & cursor ) {
-	QDocumentCursor cursorStartOfComment = textEdit->find( "/*", cursor, XinxCodeEdit::FindBackward ).selectionStart();
-	QDocumentCursor cursorEndOfComment   = textEdit->find( "*/", cursor, XinxCodeEdit::FindBackward ).selectionStart();
+CSSTextEditor::cursorPosition CSSTextEditor::editPosition(const XinxCodeEdit * textEdit, const QDocumentCursor & cursor)
+{
+	QDocumentCursor cursorStartOfComment = textEdit->find("/*", cursor, XinxCodeEdit::FindBackward).selectionStart();
+	QDocumentCursor cursorEndOfComment   = textEdit->find("*/", cursor, XinxCodeEdit::FindBackward).selectionStart();
 
 	bool inComment =
-		(! ( cursorStartOfComment.isNull() || ( !cursorEndOfComment.isNull() && (cursorStartOfComment < cursorEndOfComment ) ) ));
+	    (!(cursorStartOfComment.isNull() || (!cursorEndOfComment.isNull() && (cursorStartOfComment < cursorEndOfComment))));
 
-	if( inComment )
+	if (inComment)
 		return cpEditComment;
 
 	int bloc = 0;
-	QDocumentCursor c = textEdit->find( "{", cursor, XinxCodeEdit::FindBackward );
-	while( c < cursor ) {
+	QDocumentCursor c = textEdit->find("{", cursor, XinxCodeEdit::FindBackward);
+	while (c < cursor)
+	{
 		QString text = c.selectedText();
-		if( text.contains( '{' ) )
+		if (text.contains('{'))
 			bloc++;
-		else if( text.contains( '}' ) )
+		else if (text.contains('}'))
 			bloc--;
 
-		c = textEdit->find( QRegExp("[\\S]+"), c );
+		c = textEdit->find(QRegExp("[\\S]+"), c);
 	}
 
-	if( bloc > 0 )
+	if (bloc > 0)
 		return cpEditTag;
-	else {
+	else
+	{
 		return cpEditGlobal;
 	}
 }
 
-CSSTextEditor::cursorPosition CSSTextEditor::editPosition( const QDocumentCursor & cursor ) {
-	return editPosition( this, cursor );
+CSSTextEditor::cursorPosition CSSTextEditor::editPosition(const QDocumentCursor & cursor)
+{
+	return editPosition(this, cursor);
 }

@@ -30,16 +30,17 @@
 
 /* DerivationDialogImpl */
 
-class DerivationDialogImpl : public QDialog, Ui::DerivationDialog {
+class DerivationDialogImpl : public QDialog, Ui::DerivationDialog
+{
 	Q_OBJECT
 public:
-	DerivationDialogImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
+	DerivationDialogImpl(QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint);
 	virtual ~DerivationDialogImpl();
 
-	void load( const QString & filename, const QString & filter );
+	void load(const QString & filename, const QString & filter);
 	QString getNewPath() const;
 
-	static bool isDerivableFile( const QString & filename );
+	static bool isDerivableFile(const QString & filename);
 
 private slots:
 	void changePath();

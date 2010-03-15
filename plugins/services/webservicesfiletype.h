@@ -26,24 +26,36 @@
 
 /* WebServicesFileType */
 
-class WebServicesFileType : public QObject, public IFileTypePlugin {
+class WebServicesFileType : public QObject, public IFileTypePlugin
+{
 	Q_OBJECT
 public:
-	virtual QString description() {	return tr( "Web Services Stream" ); };
-	virtual QString match() { return "*.fws"; };
-	virtual QString icon() { return ":/services/images/typefws.png"; };
+	virtual QString description()
+	{
+		return tr("Web Services Stream");
+	};
+	virtual QString match()
+	{
+		return "*.fws";
+	};
+	virtual QString icon()
+	{
+		return ":/services/images/typefws.png";
+	};
 
-	virtual AbstractEditor * createEditor( const QString & filename ) {
+	virtual AbstractEditor * createEditor(const QString & filename)
+	{
 		WebServicesEditor * editor = new WebServicesEditor();
 
-		if( ! filename.isEmpty() )
-			editor->loadFromFile( filename );
+		if (! filename.isEmpty())
+			editor->loadFromFile(filename);
 
 		return editor;
 	}
 
-	virtual ContentViewParser * createParser() {
-		return 0;
+	virtual QString parserType()
+	{
+		return QString();
 	}
 };
 

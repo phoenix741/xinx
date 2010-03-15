@@ -28,55 +28,65 @@
 
 /* CustomToolsImpl */
 
-CustomToolsImpl::CustomToolsImpl( QWidget * parent ) : QWidget( parent ) {
-	setupUi( this );
+CustomToolsImpl::CustomToolsImpl(QWidget * parent) : QWidget(parent)
+{
+	setupUi(this);
 }
 
-CustomToolsImpl::~CustomToolsImpl() {
+CustomToolsImpl::~CustomToolsImpl()
+{
 }
 
-QPixmap CustomToolsImpl::image() {
-	return QPixmap( ":/images/preferences-tools.png" );
+QPixmap CustomToolsImpl::image()
+{
+	return QPixmap(":/images/preferences-tools.png");
 }
 
-QString CustomToolsImpl::name() {
+QString CustomToolsImpl::name()
+{
 	return windowTitle();
 }
 
-QWidget * CustomToolsImpl::settingsDialog() {
+QWidget * CustomToolsImpl::settingsDialog()
+{
 	return this;
 }
 
-bool CustomToolsImpl::loadSettingsDialog() {
+bool CustomToolsImpl::loadSettingsDialog()
+{
 	m_tools = XINXConfig::self()->config().tools;
 
 	// Tools
-	ToolsModelIndex * toolsModel = new ToolsModelIndex( &(m_tools), m_toolsTable );
-	m_toolsTable->setModel( toolsModel );
-	m_toolsTable->setItemDelegate( new DirectoryEditDelegate( m_toolsTable ) );
-	m_toolsTable->horizontalHeader()->setResizeMode( 0, QHeaderView::ResizeToContents );
-	m_toolsTable->horizontalHeader()->setResizeMode( 1, QHeaderView::Stretch );
+	ToolsModelIndex * toolsModel = new ToolsModelIndex(&(m_tools), m_toolsTable);
+	m_toolsTable->setModel(toolsModel);
+	m_toolsTable->setItemDelegate(new DirectoryEditDelegate(m_toolsTable));
+	m_toolsTable->horizontalHeader()->setResizeMode(0, QHeaderView::ResizeToContents);
+	m_toolsTable->horizontalHeader()->setResizeMode(1, QHeaderView::Stretch);
 	//m_toolsTable->resizeColumnsToContents();
 	//QObject::connect( toolsModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), m_toolsTable, SLOT(resizeColumnsToContents()) );
 
 	return true;
 }
 
-bool CustomToolsImpl::saveSettingsDialog() {
+bool CustomToolsImpl::saveSettingsDialog()
+{
 	XINXConfig::self()->config().tools = m_tools;
 
 	return true;
 }
 
-bool CustomToolsImpl::cancelSettingsDialog() {
+bool CustomToolsImpl::cancelSettingsDialog()
+{
 	return true;
 }
 
-bool CustomToolsImpl::isSettingsValid() {
+bool CustomToolsImpl::isSettingsValid()
+{
 	return true;
 }
 
-bool CustomToolsImpl::isVisible() {
+bool CustomToolsImpl::isVisible()
+{
 	return true;
 }
 

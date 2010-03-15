@@ -16,121 +16,138 @@
  * You should have received a copy of the GNU General Public License       *
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
- 
+
 #include "wsdl.h"
 
-WSDLPart::WSDLPart( const QDomElement & element ) {
-	m_name = element.attribute( "name" );
-	m_type = element.attribute( "type" );
-	m_element = element.attribute( "element" );
+WSDLPart::WSDLPart(const QDomElement & element)
+{
+	m_name = element.attribute("name");
+	m_type = element.attribute("type");
+	m_element = element.attribute("element");
 }
 
-WSDLMessage::WSDLMessage( const QDomElement & element ) {
-	m_name = element.attribute( "name" );
-	
-	QDomElement childs = element.firstChildElement( "part" );
-	while( ! childs.isNull() ) {
-		m_parts.append( WSDLPart( childs ) );
-		
-		childs = childs.nextSiblingElement( "part" );
-	}
-}
+WSDLMessage::WSDLMessage(const QDomElement & element)
+{
+	m_name = element.attribute("name");
 
-WSDLOperation::WSDLOperation( const QDomElement & element ) {
-	m_name = element.attribute( "name" );
-	m_parameterOrder = element.attribute( "parameterOrder" );
-	
-	QDomElement inputMsg = element.firstChildElement( "input" );
-	QDomElement outputMsg = element.firstChildElement( "output" );
-	
-	m_inputMessage = inputMsg.attribute( "message" );
-	m_outputMessage = outputMsg.attribute( "message" );
-	
-	QDomElement input = element.firstChildElement( "input" );
-	if( ! input.isNull() ) {
-		QDomElement inputBody = input.firstChildElement( "body" );
-		m_inputEncodingStyle = inputBody.attribute( "encodingStyle" );
-		m_inputNamespace = inputBody.attribute( "namespace" );
-	}
-	
-	QDomElement output = element.firstChildElement( "output" );
-	if( ! input.isNull() ) {
-		QDomElement outputBody = output.firstChildElement( "body" );
-		m_outputEncodingStyle = outputBody.attribute( "encodingStyle" );
-		m_outputNamespace = outputBody.attribute( "namespace" );
+	QDomElement childs = element.firstChildElement("part");
+	while (! childs.isNull())
+	{
+		m_parts.append(WSDLPart(childs));
+
+		childs = childs.nextSiblingElement("part");
 	}
 }
 
-WSDLBinding::WSDLBinding( const QDomElement & element ) {
-	m_name = element.attribute( "name" );
-	m_type = element.attribute( "type" );
-	
-	QDomElement childs = element.firstChildElement( "operation" );
-	while( ! childs.isNull() ) {
-		m_operations.append( WSDLOperation( childs ) );
-		
-		childs = childs.nextSiblingElement( "operation" );
+WSDLOperation::WSDLOperation(const QDomElement & element)
+{
+	m_name = element.attribute("name");
+	m_parameterOrder = element.attribute("parameterOrder");
+
+	QDomElement inputMsg = element.firstChildElement("input");
+	QDomElement outputMsg = element.firstChildElement("output");
+
+	m_inputMessage = inputMsg.attribute("message");
+	m_outputMessage = outputMsg.attribute("message");
+
+	QDomElement input = element.firstChildElement("input");
+	if (! input.isNull())
+	{
+		QDomElement inputBody = input.firstChildElement("body");
+		m_inputEncodingStyle = inputBody.attribute("encodingStyle");
+		m_inputNamespace = inputBody.attribute("namespace");
+	}
+
+	QDomElement output = element.firstChildElement("output");
+	if (! input.isNull())
+	{
+		QDomElement outputBody = output.firstChildElement("body");
+		m_outputEncodingStyle = outputBody.attribute("encodingStyle");
+		m_outputNamespace = outputBody.attribute("namespace");
 	}
 }
 
-WSDLPortType::WSDLPortType( const QDomElement & element ) {
-	m_name = element.attribute( "name" );
-	
-	QDomElement childs = element.firstChildElement( "operation" );
-	while( ! childs.isNull() ) {
-		m_operations.append( WSDLOperation( childs ) );
-		
-		childs = childs.nextSiblingElement( "operation" );
+WSDLBinding::WSDLBinding(const QDomElement & element)
+{
+	m_name = element.attribute("name");
+	m_type = element.attribute("type");
+
+	QDomElement childs = element.firstChildElement("operation");
+	while (! childs.isNull())
+	{
+		m_operations.append(WSDLOperation(childs));
+
+		childs = childs.nextSiblingElement("operation");
 	}
 }
 
-WSDLPort::WSDLPort( const QDomElement & element ) {
-	m_name = element.attribute( "name" );
-	m_binding = element.attribute( "binding" );
-	
-	QDomElement address = element.firstChildElement( "address" );
-	m_addressLocation = address.attribute( "location" );
+WSDLPortType::WSDLPortType(const QDomElement & element)
+{
+	m_name = element.attribute("name");
+
+	QDomElement childs = element.firstChildElement("operation");
+	while (! childs.isNull())
+	{
+		m_operations.append(WSDLOperation(childs));
+
+		childs = childs.nextSiblingElement("operation");
+	}
 }
 
-WSDLService::WSDLService( const QDomElement & element ) {
-	m_name = element.attribute( "name" );
+WSDLPort::WSDLPort(const QDomElement & element)
+{
+	m_name = element.attribute("name");
+	m_binding = element.attribute("binding");
 
-	QDomElement port = element.firstChildElement( "port" );
-	m_port = WSDLPort( port );
+	QDomElement address = element.firstChildElement("address");
+	m_addressLocation = address.attribute("location");
 }
 
-WSDL::WSDL( const QDomElement & element ) {
-	m_name = element.attribute( "name" );
-	
-	QDomElement message = element.firstChildElement( "message" );
-	while( ! message.isNull() ) {
-		WSDLMessage e ( message );
-		m_messages[ e.name() ] = e;
-		
-		message = message.nextSiblingElement( "message" );
+WSDLService::WSDLService(const QDomElement & element)
+{
+	m_name = element.attribute("name");
+
+	QDomElement port = element.firstChildElement("port");
+	m_port = WSDLPort(port);
+}
+
+WSDL::WSDL(const QDomElement & element)
+{
+	m_name = element.attribute("name");
+
+	QDomElement message = element.firstChildElement("message");
+	while (! message.isNull())
+	{
+		WSDLMessage e(message);
+		m_messages[ e.name()] = e;
+
+		message = message.nextSiblingElement("message");
 	}
 
-	QDomElement portType = element.firstChildElement( "portType" );
-	while( ! portType.isNull() ) {
-		WSDLPortType e ( portType );
-		m_portTypes[ e.name() ] = e;
-		
-		portType = portType.nextSiblingElement( "portType" );
+	QDomElement portType = element.firstChildElement("portType");
+	while (! portType.isNull())
+	{
+		WSDLPortType e(portType);
+		m_portTypes[ e.name()] = e;
+
+		portType = portType.nextSiblingElement("portType");
 	}
 
-	QDomElement binding = element.firstChildElement( "binding" );
-	while( ! binding.isNull() ) {
-		WSDLBinding e ( binding );
-		m_bindings[ e.name() ] = e;
-		
-		binding = binding.nextSiblingElement( "binding" );
+	QDomElement binding = element.firstChildElement("binding");
+	while (! binding.isNull())
+	{
+		WSDLBinding e(binding);
+		m_bindings[ e.name()] = e;
+
+		binding = binding.nextSiblingElement("binding");
 	}
 
-	QDomElement service = element.firstChildElement( "service" );
-	while( ! service.isNull() ) {
-		m_services.append( WSDLService ( service ) );
-		
-		service = service.nextSiblingElement( "service" );
+	QDomElement service = element.firstChildElement("service");
+	while (! service.isNull())
+	{
+		m_services.append(WSDLService(service));
+
+		service = service.nextSiblingElement("service");
 	}
 }
 

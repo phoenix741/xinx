@@ -23,8 +23,6 @@
 #include "editors/models/xsl/xslcompletionnodemodel.h"
 #include "editors/models/xsl/xslcontentviewparser.h"
 #include "editors/widgeteditor/xsl/xsltexteditor.h"
-#include <contentview/contentviewnode.h>
-#include <contentview/contentviewmodel.h>
 #include <borderlayout.h>
 #include <plugins/xinxpluginsloader.h>
 #include "plugindefinition/coreplugin.h"
@@ -49,99 +47,120 @@
 
 /* HtmlFileEditor */
 
-HtmlFileEditor::HtmlFileEditor( QWidget *parent ) : TextFileEditor( new XslTextEditor(), parent ), m_htmlTempFile( 0 ) {
+HtmlFileEditor::HtmlFileEditor(QWidget *parent) : TextFileEditor(new XslTextEditor(), parent), m_htmlTempFile(0)
+{
 	initObjects();
 }
 
-HtmlFileEditor::~HtmlFileEditor() {
-	qobject_cast<XslTextEditor*>( textEdit() )->setModel( 0 );
+HtmlFileEditor::~HtmlFileEditor()
+{
+	qobject_cast<XslTextEditor*>(textEdit())->setModel(0);
 	delete m_completionModel;
 }
 
-void HtmlFileEditor::initObjects() {
-	m_htmlView = new QWebView( this );
-	m_htmlView->load( QUrl( "about:blank" ) );
-	m_htmlView->setMinimumHeight( 100 );
+void HtmlFileEditor::initObjects()
+{
+	m_htmlView = new QWebView(this);
+	m_htmlView->load(QUrl("about:blank"));
+	m_htmlView->setMinimumHeight(100);
 
-	m_completionModel = new XslCompletionNodeModel( 0, this );
-	m_completionModel->setCompleteTags( XslCompletionNodeModel::Html );
+	m_completionModel = 0;
 
-	QCompleter * completer = new QCompleter( textEdit() );
-	completer->setModel( m_completionModel );
-	textEdit()->setCompleter( completer );
-	qobject_cast<XslTextEditor*>( textEdit() )->setModel( m_completionModel );
+	m_tabWidget = new QTabWidget(this);
+	m_tabWidget->setTabShape(QTabWidget::Triangular);
+	m_tabWidget->setTabPosition(QTabWidget::South);
 
-	m_tabWidget = new QTabWidget( this );
-	m_tabWidget->setTabShape( QTabWidget::Triangular );
-	m_tabWidget->setTabPosition( QTabWidget::South );
-
-	connect( m_tabWidget, SIGNAL(currentChanged(int)), this, SLOT(tabIndexChange(int)) );
+	connect(m_tabWidget, SIGNAL(currentChanged(int)), this, SLOT(tabIndexChange(int)));
 }
 
-void HtmlFileEditor::initLayout() {
-	m_tabWidget->addTab( textEdit(), tr("HTML Source") );
-	m_tabWidget->addTab( m_htmlView, tr("Web View") );
+ContentView2::CompletionModel * HtmlFileEditor::createModel(QSqlDatabase db, QObject * parent)
+{
+	if (! m_completionModel)
+	{
+		m_completionModel = new XslCompletionNodeModel(db, fileContainer(), parent);
+		m_completionModel->setCompleteTags(XslCompletionNodeModel::Html);
 
-	QHBoxLayout * hbox = new QHBoxLayout;
-	hbox->addWidget( m_tabWidget );
-
-	hbox->setMargin( 0 );
-
-	setLayout( hbox );
-}
-
-XslCompletionNodeModel * HtmlFileEditor::completionModel() const {
+		qobject_cast<XslTextEditor*>(textEdit())->setModel(m_completionModel);
+	}
 	return m_completionModel;
 }
 
-QString HtmlFileEditor::defaultFileName() const {
-	return tr( "noname.html" );
+void HtmlFileEditor::initLayout()
+{
+	m_tabWidget->addTab(textEdit(), tr("HTML Source"));
+	m_tabWidget->addTab(m_htmlView, tr("Web View"));
+
+	QHBoxLayout * hbox = new QHBoxLayout;
+	hbox->addWidget(m_tabWidget);
+
+	hbox->setMargin(0);
+
+	setLayout(hbox);
 }
 
-QIcon HtmlFileEditor::icon() const {
-	return QIcon( ":/images/typehtml.png" );
+XslCompletionNodeModel * HtmlFileEditor::completionModel() const
+{
+	return m_completionModel;
 }
 
-QTextCodec * HtmlFileEditor::codec() const {
-	return QTextCodec::codecForHtml( textEdit()->toPlainText().toLocal8Bit(), TextFileEditor::codec() );
+QString HtmlFileEditor::defaultFileName() const
+{
+	return tr("noname.html");
 }
 
-bool HtmlFileEditor::autoIndent() {
-	try {
+QIcon HtmlFileEditor::icon() const
+{
+	return QIcon(":/images/typehtml.png");
+}
+
+QTextCodec * HtmlFileEditor::codec() const
+{
+	return QTextCodec::codecForHtml(textEdit()->toPlainText().toLocal8Bit(), TextFileEditor::codec());
+}
+
+bool HtmlFileEditor::autoIndent()
+{
+	try
+	{
 		XMLPrettyPrinter prettyPrinter;
-		prettyPrinter.setText( textEdit()->toPlainText() );
+		prettyPrinter.setText(textEdit()->toPlainText());
 		prettyPrinter.process();
 
 		textEdit()->textCursor().beginEditBlock();
 		textEdit()->editor()->selectAll();
 		textEdit()->textCursor().removeSelectedText();
-		textEdit()->textCursor().movePosition( 1, QDocumentCursor::Start );
-		textEdit()->textCursor().insertText( prettyPrinter.getResult() );
+		textEdit()->textCursor().movePosition(1, QDocumentCursor::Start);
+		textEdit()->textCursor().insertText(prettyPrinter.getResult());
 		textEdit()->textCursor().endEditBlock();
-	} catch( XMLPrettyPrinterException e ) {
-		addNewErrorMessages( e.m_line, e.getMessage(), ERROR_MESSAGE );
+	}
+	catch (XMLPrettyPrinterException e)
+	{
+		addNewErrorMessages(e.m_line, e.getMessage(), ERROR_MESSAGE);
 		return false;
 	}
 	return true;
 }
 
-void HtmlFileEditor::tabIndexChange( int index ) {
-	if( index == 1 ) {
+void HtmlFileEditor::tabIndexChange(int index)
+{
+	if (index == 1)
+	{
 		showHtml();
 	}
 }
 
-void HtmlFileEditor::showHtml() {
-	m_tabWidget->setCurrentIndex( 1 );
+void HtmlFileEditor::showHtml()
+{
+	m_tabWidget->setCurrentIndex(1);
 
 	// Get HTML text
 	QString htmlText = textEdit()->toPlainText();
 
 	QString moduleInternetAdresse = XINXProjectManager::self()->project() ?
-			QDir( XINXProjectManager::self()->project()->projectPath() ).absoluteFilePath(
-				XINXProjectManager::self()->project()->readProperty( "moduleInternetAdresse" ).toString()
-				) : lastFileName();
+	                                QDir(XINXProjectManager::self()->project()->projectPath()).absoluteFilePath(
+	                                    XINXProjectManager::self()->project()->readProperty("moduleInternetAdresse").toString()
+	                                ) : lastFileName();
 
-	m_htmlView->setHtml( htmlText, QUrl( moduleInternetAdresse ) );
+	m_htmlView->setHtml(htmlText, QUrl(moduleInternetAdresse));
 }
 

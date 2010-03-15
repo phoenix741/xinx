@@ -23,15 +23,16 @@
 // Xinx header
 #include <plugins/plugininterfaces.h>
 
-class EmptyPlugin : public QObject, public IXinxPlugin {
+class EmptyPlugin : public QObject, public IXinxPlugin
+{
 	Q_OBJECT
 	Q_INTERFACES(IXinxPlugin)
 public:
 	EmptyPlugin();
 	virtual ~EmptyPlugin();
 
-	virtual bool initializePlugin( const QString & lang );
-	virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr );
+	virtual bool initializePlugin(const QString & lang);
+	virtual QVariant getPluginAttribute(const enum IXinxPlugin::PluginAttribute & attr);
 };
 
 #endif /* EMPTYPLUGIN_H_*/

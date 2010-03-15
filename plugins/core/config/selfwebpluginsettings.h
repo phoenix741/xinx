@@ -24,7 +24,8 @@
 // Xinx header
 #include "webpluginsettings.h"
 
-class SelfWebPluginSettings : public QObject, public WebPluginSettings {
+class SelfWebPluginSettings : public QObject, public WebPluginSettings
+{
 	Q_OBJECT
 public:
 	virtual ~SelfWebPluginSettings();

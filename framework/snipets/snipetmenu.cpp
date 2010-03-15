@@ -32,30 +32,35 @@
 
 /* SnipetMenuModel */
 
-SnipetMenuModel::SnipetMenuModel( QSqlDatabase db, QObject * parent ) : SnipetItemModel( db, parent ) {
+SnipetMenuModel::SnipetMenuModel(QSqlDatabase db, QObject * parent) : SnipetItemModel(db, parent)
+{
 }
 
-Qt::ItemFlags SnipetMenuModel::flags( const QModelIndex & index ) const {
-	if( index.isValid() ) {
-		QModelIndex sourceIndex = mapToSource( index );
-		QSqlRecord record = sourceModel()->record( sourceIndex.row() );
+Qt::ItemFlags SnipetMenuModel::flags(const QModelIndex & index) const
+{
+	if (index.isValid())
+	{
+		QModelIndex sourceIndex = mapToSource(index);
+		QSqlRecord record = sourceModel()->record(sourceIndex.row());
 
 		// Enable the snipet according to the script stored on the snipet or category
-		QString availableScript = record.value( list_availablejs ).toString();
-		if( ! SnipetManager::self()->isAvailable( availableScript, record.value( list_type ).toString(), record.value( list_id ).toInt() ) )
+		QString availableScript = record.value(list_availablejs).toString();
+		if (! SnipetManager::self()->isAvailable(availableScript, record.value(list_type).toString(), record.value(list_id).toInt()))
 			return Qt::ItemIsSelectable;
 
 		// The script is the only restriction for category
-		if( record.value( list_type ).toString() == "CATEGORY" ) {
+		if (record.value(list_type).toString() == "CATEGORY")
+		{
 			return Qt::ItemIsEnabled;
 		}
 
 		// If no editor open, we can't call snipet
-		if( EditorManager::self()->currentEditor() ) {
+		if (EditorManager::self()->currentEditor())
+		{
 			// Get the filename in the editor
 			QString filename = EditorManager::self()->currentEditor()->getTitle();
 
-			if( SnipetManager::self()->isSnipetMatch( filename, record.value( list_id ).toInt() ) )
+			if (SnipetManager::self()->isSnipetMatch(filename, record.value(list_id).toInt()))
 				return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
 		}
 
@@ -67,30 +72,34 @@ Qt::ItemFlags SnipetMenuModel::flags( const QModelIndex & index ) const {
 
 /* SnipetMenu */
 
-SnipetMenu::SnipetMenu( QWidget * parent ) : QMenuView( parent ) {
-	connect( this, SIGNAL(triggered(QModelIndex)), this, SLOT(snipetTriggered(QModelIndex)) );
+SnipetMenu::SnipetMenu(QWidget * parent) : QMenuView(parent)
+{
+	connect(this, SIGNAL(triggered(QModelIndex)), this, SLOT(snipetTriggered(QModelIndex)));
 }
 
-SnipetMenu::~SnipetMenu() {
+SnipetMenu::~SnipetMenu()
+{
 }
 
-void SnipetMenu::snipetTriggered( const QModelIndex & index ) const {
-	emit snipetTriggered( index.data( SnipetItemModel::SnipetIdRole ).toInt() );
+void SnipetMenu::snipetTriggered(const QModelIndex & index) const
+{
+	emit snipetTriggered(index.data(SnipetItemModel::SnipetIdRole).toInt());
 }
 
-void SnipetMenu::createSnipet() const {
-	SnipetManager::self()->addSnipet( 1, qApp->activeWindow() );
+void SnipetMenu::createSnipet() const
+{
+	SnipetManager::self()->addSnipet(1, qApp->activeWindow());
 }
 
-bool SnipetMenu::prePopulated() {
-	SnipetItemModel * m = static_cast<SnipetItemModel*>( model() );
+bool SnipetMenu::prePopulated()
+{
+	SnipetItemModel * m = static_cast<SnipetItemModel*>(model());
 	m->select();
-	setRootIndex( m->index( 0, 0 ) );
 
 	// Create snipet action
-	m_createAction = new QAction( tr("&Create Snipet ..."), this );
-	connect( m_createAction, SIGNAL(triggered()), this, SLOT(createSnipet()) );
-	addAction( m_createAction );
+	m_createAction = new QAction(tr("&Create Snipet ..."), this);
+	connect(m_createAction, SIGNAL(triggered()), this, SLOT(createSnipet()));
+	addAction(m_createAction);
 
 	return true;
 }

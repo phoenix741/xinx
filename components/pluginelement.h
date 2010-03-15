@@ -29,7 +29,8 @@
  * The \e PluginElement is used by the \e PluginSelector to show information in
  * the list.
  */
-class PluginElement {
+class PluginElement
+{
 public:
 	/*! Initialise the plugin element */
 	PluginElement();
@@ -45,12 +46,12 @@ public:
 	 * Activate the plugin if \e activated is true
 	 * \sa setDesactivated()
 	 */
-	void setActivated( bool activated );
+	void setActivated(bool activated);
 	/*!
 	 * Desactivate the plugin if \e desactivated is true.
 	 * \sa setActivated()
 	 */
-	void setDesactivated( bool desactivated );
+	void setDesactivated(bool desactivated);
 
 	/*! If the plugin is configurable a button "Configured ..." is showed. */
 	virtual bool isConfigurable() const = 0;

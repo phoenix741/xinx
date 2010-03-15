@@ -32,22 +32,23 @@ class IFileResolverPlugin;
 
 /* ExternalFileResolver */
 
-class LIBEXPORT ExternalFileResolver : public QObject {
+class LIBEXPORT ExternalFileResolver : public QObject
+{
 	Q_OBJECT
 public:
 	virtual ~ExternalFileResolver();
 
 	QStringList externalFileResoverIds() const;
 	QStringList externalFileResoverNames() const;
-	IFileResolverPlugin * externalFileResover( const QString & id ) const;
+	IFileResolverPlugin * externalFileResover(const QString & id) const;
 
-	QString resolveFileName( const QString & nameToResolve, const QString & currentPath = QString() );
+	QString resolveFileName(const QString & nameToResolve, const QString & currentPath = QString());
 
 	static ExternalFileResolver * self();
 public slots:
 	void clearCache();
 private:
-    ExternalFileResolver();
+	ExternalFileResolver();
 
 	QHash< QPair<QString,QString> ,QString> m_externalFileResolverCache;
 

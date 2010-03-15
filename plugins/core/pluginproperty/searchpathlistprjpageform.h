@@ -25,10 +25,11 @@
 #include "ui_searchpathlistprjpageform.h"
 #include "plugins/plugininterfaces.h"
 
-class SearchPathListFormImpl : public QWidget, public Ui::SearchPathListForm, public IXinxPluginProjectConfigurationPage {
+class SearchPathListFormImpl : public QWidget, public Ui::SearchPathListForm, public IXinxPluginProjectConfigurationPage
+{
 	Q_OBJECT
 public:
-	SearchPathListFormImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
+	SearchPathListFormImpl(QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint);
 	virtual ~SearchPathListFormImpl();
 
 	virtual QPixmap image();
@@ -41,7 +42,7 @@ public:
 	virtual bool isSettingsValid();
 	virtual bool isVisible();
 
-	virtual void setProject( XinxProject * project );
+	virtual void setProject(XinxProject * project);
 public:
 	XinxProject * m_project;
 	QString m_currentResolverName;

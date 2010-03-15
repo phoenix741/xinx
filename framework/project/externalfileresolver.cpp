@@ -32,50 +32,62 @@ ExternalFileResolver * ExternalFileResolver::s_self = 0;
 
 /* ExternalFileResolver */
 
-ExternalFileResolver::ExternalFileResolver() {
+ExternalFileResolver::ExternalFileResolver()
+{
 }
 
-ExternalFileResolver::~ExternalFileResolver() {
-	if( s_self == this ) {
+ExternalFileResolver::~ExternalFileResolver()
+{
+	if (s_self == this)
+	{
 		s_self = 0;
 	}
 }
 
-QStringList ExternalFileResolver::externalFileResoverNames() const {
+QStringList ExternalFileResolver::externalFileResoverNames() const
+{
 	QStringList result;
 
-	foreach( XinxPluginElement * plugin, XinxPluginsLoader::self()->plugins() ) {
-		IResolverPlugin * resolverPlugin = qobject_cast<IResolverPlugin*>( plugin->plugin() );
-		if( ! resolverPlugin )  continue;
+	foreach(XinxPluginElement * plugin, XinxPluginsLoader::self()->plugins())
+	{
+		IResolverPlugin * resolverPlugin = qobject_cast<IResolverPlugin*>(plugin->plugin());
+		if (! resolverPlugin)  continue;
 
-		foreach( IFileResolverPlugin * resolver, resolverPlugin->fileResolvers() ) {
+		foreach(IFileResolverPlugin * resolver, resolverPlugin->fileResolvers())
+		{
 			result << resolver->name();
 		}
 	}
 	return result;
 }
 
-QStringList ExternalFileResolver::externalFileResoverIds() const {
+QStringList ExternalFileResolver::externalFileResoverIds() const
+{
 	QStringList result;
 
-	foreach( XinxPluginElement * plugin, XinxPluginsLoader::self()->plugins() ) {
-		IResolverPlugin * resolverPlugin = qobject_cast<IResolverPlugin*>( plugin->plugin() );
-		if( ! resolverPlugin )  continue;
+	foreach(XinxPluginElement * plugin, XinxPluginsLoader::self()->plugins())
+	{
+		IResolverPlugin * resolverPlugin = qobject_cast<IResolverPlugin*>(plugin->plugin());
+		if (! resolverPlugin)  continue;
 
-		foreach( IFileResolverPlugin * resolver, resolverPlugin->fileResolvers() ) {
+		foreach(IFileResolverPlugin * resolver, resolverPlugin->fileResolvers())
+		{
 			result << resolver->id();
 		}
 	}
 	return result;
 }
 
-IFileResolverPlugin * ExternalFileResolver::externalFileResover( const QString & id ) const {
-	foreach( XinxPluginElement * plugin, XinxPluginsLoader::self()->plugins() ) {
-		IResolverPlugin * resolverPlugin = qobject_cast<IResolverPlugin*>( plugin->plugin() );
-		if( ! resolverPlugin )  continue;
+IFileResolverPlugin * ExternalFileResolver::externalFileResover(const QString & id) const
+{
+	foreach(XinxPluginElement * plugin, XinxPluginsLoader::self()->plugins())
+	{
+		IResolverPlugin * resolverPlugin = qobject_cast<IResolverPlugin*>(plugin->plugin());
+		if (! resolverPlugin)  continue;
 
-		foreach( IFileResolverPlugin * resolver, resolverPlugin->fileResolvers() ) {
-			if( resolver->id() != id ) continue;
+		foreach(IFileResolverPlugin * resolver, resolverPlugin->fileResolvers())
+		{
+			if (resolver->id() != id) continue;
 
 			return resolver;
 		}
@@ -83,37 +95,45 @@ IFileResolverPlugin * ExternalFileResolver::externalFileResover( const QString &
 	return 0;
 }
 
-QString ExternalFileResolver::resolveFileName( const QString & nameToResolve, const QString & currentPath ) {
-	QString resolvedName = m_externalFileResolverCache.value( qMakePair(nameToResolve,currentPath) );
-	if( ! resolvedName.isEmpty() && QFile::exists( resolvedName ) )
+QString ExternalFileResolver::resolveFileName(const QString & nameToResolve, const QString & currentPath)
+{
+	QString resolvedName = m_externalFileResolverCache.value(qMakePair(nameToResolve,currentPath));
+	if (! resolvedName.isEmpty() && QFile::exists(resolvedName))
 		return resolvedName;
 
-	foreach( XinxPluginElement * plugin, XinxPluginsLoader::self()->plugins() ) {
-		IResolverPlugin * resolverPlugin = qobject_cast<IResolverPlugin*>( plugin->plugin() );
-		if( ! resolverPlugin )  continue;
+	foreach(XinxPluginElement * plugin, XinxPluginsLoader::self()->plugins())
+	{
+		IResolverPlugin * resolverPlugin = qobject_cast<IResolverPlugin*>(plugin->plugin());
+		if (! resolverPlugin)  continue;
 
-		foreach( IFileResolverPlugin * resolver, resolverPlugin->fileResolvers() ) {
-			if( resolver->isActivated() ) {
-				resolvedName = resolver->resolveFileName( nameToResolve, currentPath );
-				if( QFile::exists( resolvedName ) ) {
-					m_externalFileResolverCache.insert( qMakePair( nameToResolve, currentPath ), resolvedName );
+		foreach(IFileResolverPlugin * resolver, resolverPlugin->fileResolvers())
+		{
+			if (resolver->isActivated())
+			{
+				resolvedName = resolver->resolveFileName(nameToResolve, currentPath);
+				if (QFile::exists(resolvedName))
+				{
+					m_externalFileResolverCache.insert(qMakePair(nameToResolve, currentPath), resolvedName);
 					return resolvedName;
 				}
 			}
 		}
 	}
 
-	return QDir( currentPath ).absoluteFilePath( nameToResolve );
+	return QDir(currentPath).absoluteFilePath(nameToResolve);
 }
 
-void ExternalFileResolver::clearCache() {
+void ExternalFileResolver::clearCache()
+{
 	m_externalFileResolverCache.clear();
 }
 
-ExternalFileResolver * ExternalFileResolver::self() {
-	if( ! s_self ) {
+ExternalFileResolver * ExternalFileResolver::self()
+{
+	if (! s_self)
+	{
 		s_self = new ExternalFileResolver();
-		XINXStaticDeleter::self()->add( s_self );
+		XINXStaticDeleter::self()->add(s_self);
 	}
 	return s_self;
 }

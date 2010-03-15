@@ -29,8 +29,9 @@
 
 /* Gce150FileResolver */
 
-class Gce150FileResolver : public IFileResolverPlugin {
-	Q_DECLARE_TR_FUNCTIONS( Gce150FileResolver )
+class Gce150FileResolver : public IFileResolverPlugin
+{
+	Q_DECLARE_TR_FUNCTIONS(Gce150FileResolver)
 public:
 	Gce150FileResolver();
 	virtual ~Gce150FileResolver();
@@ -39,7 +40,7 @@ public:
 	virtual QString id();
 	virtual QString name();
 	virtual bool isActivated();
-	virtual QString resolveFileName( const QString & nameToResolve, const QString & currentPath = QString() );
+	virtual QString resolveFileName(const QString & nameToResolve, const QString & currentPath = QString());
 };
 
 #endif // GCE150FILERESOLVER_H

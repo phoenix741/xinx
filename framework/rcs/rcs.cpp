@@ -22,18 +22,22 @@
 
 /* RCS */
 
-RCS::RCS( const QString & workingDirectory ) : m_workingDirectory( workingDirectory ) {
+RCS::RCS(const QString & workingDirectory) : m_workingDirectory(workingDirectory)
+{
 	qRegisterMetaType<RCS::rcsLog>("RCS::rcsLog");
 }
 
-RCS::~RCS() {
+RCS::~RCS()
+{
 
 }
 
-void RCS::setWorkingDirectory( const QString & value ) {
+void RCS::setWorkingDirectory(const QString & value)
+{
 	m_workingDirectory = value;
 }
 
-const QString & RCS::getWorkingDirectory() const {
+const QString & RCS::getWorkingDirectory() const
+{
 	return m_workingDirectory;
 }

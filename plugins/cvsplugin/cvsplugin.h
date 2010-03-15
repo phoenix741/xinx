@@ -25,7 +25,8 @@
 #include <plugins/plugininterfaces.h>
 #include "pluginsettings.h"
 
-class CVSPlugin : public QObject, public IXinxPluginConfiguration, public IRCSPlugin {
+class CVSPlugin : public QObject, public IXinxPluginConfiguration, public IRCSPlugin
+{
 	Q_OBJECT
 	Q_INTERFACES(IXinxPlugin)
 	Q_INTERFACES(IXinxPluginConfiguration)
@@ -34,16 +35,16 @@ public:
 	CVSPlugin();
 	virtual ~CVSPlugin();
 
-	virtual bool initializePlugin( const QString & lang );
-	virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr );
+	virtual bool initializePlugin(const QString & lang);
+	virtual QVariant getPluginAttribute(const enum IXinxPlugin::PluginAttribute & attr);
 
 	virtual QList< QPair<QString,QString> > pluginTools();
 
-	virtual QList<IXinxPluginConfigurationPage*> createSettingsDialog( QWidget * parent );
+	virtual QList<IXinxPluginConfigurationPage*> createSettingsDialog(QWidget * parent);
 
 	virtual QStringList rcs();
-	virtual QString descriptionOfRCS( const QString & rcs );
-	virtual RCS * createRCS( const QString & rcs, const QString & basePath );
+	virtual QString descriptionOfRCS(const QString & rcs);
+	virtual RCS * createRCS(const QString & rcs, const QString & basePath);
 private:
 	PluginSettings * m_settings;
 };

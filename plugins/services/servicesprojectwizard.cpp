@@ -23,41 +23,47 @@
 
 /* ServicesListPageImpl */
 
-ServicesListPageImpl::ServicesListPageImpl() {
-	setupUi( this );
-	setTitle( windowTitle() );
-	setSubTitle( tr("Define the list of WSDL. WSDL is used to describe the web services. This"
-					"list contains link to WSDL.") );
+ServicesListPageImpl::ServicesListPageImpl()
+{
+	setupUi(this);
+	setTitle(windowTitle());
+	setSubTitle(tr("Define the list of WSDL. WSDL is used to describe the web services. This"
+	               "list contains link to WSDL."));
 
-	registerField( "services.list", m_webServicesWidget );
+	registerField("services.list", m_webServicesWidget);
 
-	m_webServicesWidget->setDefaultProposedValue( "http://localhost:8888/gce/services/?WSDL" );
-	m_webServicesWidget->setDefaultVisible( false );
+	m_webServicesWidget->setDefaultProposedValue("http://localhost:8888/gce/services/?WSDL");
+	m_webServicesWidget->setDefaultVisible(false);
 }
 
-QVariant ServicesListPageImpl::field( const QString &name ) const {
-	return QWizardPage::field( name );
+QVariant ServicesListPageImpl::field(const QString &name) const
+{
+	return QWizardPage::field(name);
 }
 
-QString ServicesListPageImpl::pagePluginId() const {
+QString ServicesListPageImpl::pagePluginId() const
+{
 	return "ServiceInformation";
 }
 
-bool ServicesListPageImpl::pageIsVisible() const {
+bool ServicesListPageImpl::pageIsVisible() const
+{
 	return true;
 }
 
-bool ServicesListPageImpl::saveSettingsDialog( XinxProject * project ) {
-	project->writeProperty( "hasWebServices", true );
+bool ServicesListPageImpl::saveSettingsDialog(XinxProject * project)
+{
+	project->writeProperty("hasWebServices", true);
 
 	QStringList services;
-	foreach( const QString & value, m_webServicesWidget->values() )
-		services += value;
+	foreach(const QString & value, m_webServicesWidget->values())
+	services += value;
 
 
 	int index = 0;
-	foreach( const QString & link, services ) {
-		project->writeProperty( QString( "webServiceLink_%1" ).arg( index ), link );
+	foreach(const QString & link, services)
+	{
+		project->writeProperty(QString("webServiceLink_%1").arg(index), link);
 		index++;
 	}
 

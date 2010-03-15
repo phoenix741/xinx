@@ -22,35 +22,37 @@
 
 // Xinx header
 #include <contentview2/contentview2node.h>
+#include <contentview2/contentview2file.h>
 
 // Qt header
 #include <QSqlQueryModel>
 
-namespace ContentView2 {
+namespace ContentView2
+{
 
-class LIBEXPORT CompletionModel : public QSqlQueryModel {
+class LIBEXPORT CompletionModel : public QSqlQueryModel
+{
 	Q_OBJECT
 public:
-	enum CompletionModelRole { CompletionIdRole = 0x77 };
-
-	CompletionModel( QSqlDatabase db, QObject * parent = 0 );
+	CompletionModel(QSqlDatabase db, FileContainer file, QObject * parent = 0);
 	virtual ~CompletionModel();
 
-	virtual QVariant data( const QModelIndex &index, int role ) const;
-	virtual int columnCount( const QModelIndex & parent = QModelIndex() ) const;
-	virtual bool setHeaderData( int section, Qt::Orientation orientation, const QVariant & value, int role = Qt::EditRole );
+	virtual QVariant data(const QModelIndex &index, int role) const;
+	virtual bool setHeaderData(int section, Qt::Orientation orientation, const QVariant & value, int role = Qt::EditRole);
+	virtual void setPrefix(const QString & prefix);
 
-	void addWhereClause( const QString & whereClause );
-	void addFile( uint file );
+	QSqlDatabase database() const;
+	QSqlDatabase database();
 public slots:
 	//! Launch the selection in the base
 	virtual void select();
 
+protected:
+	virtual QString whereClause() const;
 private:
 	QSqlDatabase m_db;
-
-	QList<int> m_filesId;
-	QStringList m_whereClauses;
+	QString m_prefix;
+	FileContainer m_file;
 };
 
 } // namespace ContentView2

@@ -26,25 +26,31 @@
 
 /* XsdGraphicsAnnotationItem */
 
-XsdGraphicsAnnotationItem::XsdGraphicsAnnotationItem( const QString & text, QGraphicsItem * parent ) : QGraphicsTextItem( text, parent ) {
+XsdGraphicsAnnotationItem::XsdGraphicsAnnotationItem(const QString & text, QGraphicsItem * parent) : QGraphicsTextItem(text, parent)
+{
 	updatePosition();
 }
 
-void XsdGraphicsAnnotationItem::updatePosition() {
-	setPos( parentItem()->boundingRect().left(), parentItem()->boundingRect().bottom() );
-	setTextWidth( qMin( document()->size().width(), qMax( parentItem()->boundingRect().width(), 150.0 ) ) );
+void XsdGraphicsAnnotationItem::updatePosition()
+{
+	setPos(parentItem()->boundingRect().left(), parentItem()->boundingRect().bottom());
+	setTextWidth(qMin(document()->size().width(), qMax(parentItem()->boundingRect().width(), 150.0)));
 }
 
 
 /* XsdNodeItem */
 
-XsdNodeItem::~XsdNodeItem() {
-	qDeleteAll( m_line );
+XsdNodeItem::~XsdNodeItem()
+{
+	qDeleteAll(m_line);
 }
 
-QVariant XsdNodeItem::itemChange( QGraphicsItem::GraphicsItemChange change, const QVariant &value ) {
-	if( change == QGraphicsItem::ItemPositionHasChanged ) {
-		foreach( XsdGraphicsLine * l, m_line ) {
+QVariant XsdNodeItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
+{
+	if (change == QGraphicsItem::ItemPositionHasChanged)
+	{
+		foreach(XsdGraphicsLine * l, m_line)
+		{
 			l->updatePosition();
 		}
 	}
@@ -54,317 +60,367 @@ QVariant XsdNodeItem::itemChange( QGraphicsItem::GraphicsItemChange change, cons
 
 /* XsdGraphicsLine */
 
-XsdGraphicsLine::XsdGraphicsLine( XsdNodeItem * startItem, XsdNodeItem * endItem ) : QGraphicsPathItem( dynamic_cast<QGraphicsItem*>( startItem ) ), m_startItem( startItem ), m_endItem( endItem ) {
-	m_startItem->m_line.append( this );
-	m_endItem->m_line.append( this );
-	setZValue( -999 );
+XsdGraphicsLine::XsdGraphicsLine(XsdNodeItem * startItem, XsdNodeItem * endItem) : QGraphicsPathItem(dynamic_cast<QGraphicsItem*>(startItem)), m_startItem(startItem), m_endItem(endItem)
+{
+	m_startItem->m_line.append(this);
+	m_endItem->m_line.append(this);
+	setZValue(-999);
 
 	updatePosition();
 }
 
-XsdGraphicsLine::~XsdGraphicsLine() {
-	m_startItem->m_line.removeOne( this ) ;
-	m_endItem->m_line.removeOne( this );
+XsdGraphicsLine::~XsdGraphicsLine()
+{
+	m_startItem->m_line.removeOne(this) ;
+	m_endItem->m_line.removeOne(this);
 }
 
-QRectF XsdGraphicsLine::boundingRect() const {
+QRectF XsdGraphicsLine::boundingRect() const
+{
 	return m_path.boundingRect();
 }
 
-void XsdGraphicsLine::updatePosition() {
+void XsdGraphicsLine::updatePosition()
+{
 	m_path = QPainterPath();
-	QPointF start = mapFromItem( dynamic_cast<QGraphicsItem*>( m_startItem ), dynamic_cast<QGraphicsItem*>( m_startItem )->boundingRect().right(), 0 );
-	QPointF end   = mapFromItem( dynamic_cast<QGraphicsItem*>( m_endItem ), 0, 0 );
-	m_path.moveTo( start );
-	m_path.lineTo( 30, start.y() );
-	m_path.lineTo( 30, end.y() );
-	m_path.lineTo( end );
+	QPointF start = mapFromItem(dynamic_cast<QGraphicsItem*>(m_startItem), dynamic_cast<QGraphicsItem*>(m_startItem)->boundingRect().right(), 0);
+	QPointF end   = mapFromItem(dynamic_cast<QGraphicsItem*>(m_endItem), 0, 0);
+	m_path.moveTo(start);
+	m_path.lineTo(30, start.y());
+	m_path.lineTo(30, end.y());
+	m_path.lineTo(end);
 
-	setPath( m_path );
+	setPath(m_path);
 }
 
 /* XsdElementItem */
 
-XsdGraphicsElementItem::XsdGraphicsElementItem( const QString & name, const QString & type, int minOccurs, int maxOccurs, QGraphicsItem * parent ) : QGraphicsItem( parent ), m_name( name ), m_type( type ), m_minOccurs( minOccurs ), m_maxOccurs( maxOccurs ), m_spacing( 5 ) {
-	new XsdGraphicsLine( dynamic_cast<XsdNodeItem*>( parent ), this );
+XsdGraphicsElementItem::XsdGraphicsElementItem(const QString & name, const QString & type, int minOccurs, int maxOccurs, QGraphicsItem * parent) : QGraphicsItem(parent), m_name(name), m_type(type), m_minOccurs(minOccurs), m_maxOccurs(maxOccurs), m_spacing(5)
+{
+	new XsdGraphicsLine(dynamic_cast<XsdNodeItem*>(parent), this);
 }
 
 
-QRectF XsdGraphicsElementItem::boundingRect () const {
-	QFontMetrics metrics( m_font );
-	QRectF r = metrics.boundingRect( m_name );
-	r.adjust( -m_spacing, -m_spacing, m_spacing, m_spacing );
-	r.moveCenter( QPointF( 0, 0 ) );
+QRectF XsdGraphicsElementItem::boundingRect() const
+{
+	QFontMetrics metrics(m_font);
+	QRectF r = metrics.boundingRect(m_name);
+	r.adjust(-m_spacing, -m_spacing, m_spacing, m_spacing);
+	r.moveCenter(QPointF(0, 0));
 	return r;
 }
 
-void XsdGraphicsElementItem::paint( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * ) {
-	QPen borderLine( Qt::black );
-	if( m_minOccurs == 0 )
-		borderLine.setStyle( Qt::DashLine );
-	painter->setPen( borderLine );
-	painter->setBrush( Qt::white );
-	painter->drawRect( boundingRect() );
+void XsdGraphicsElementItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget *)
+{
+	QPen borderLine(Qt::black);
+	if (m_minOccurs == 0)
+		borderLine.setStyle(Qt::DashLine);
+	painter->setPen(borderLine);
+	painter->setBrush(Qt::white);
+	painter->drawRect(boundingRect());
 
-	painter->drawText( boundingRect(), m_name, QTextOption( Qt::AlignCenter ) );
+	painter->drawText(boundingRect(), m_name, QTextOption(Qt::AlignCenter));
 }
 
 /* XsdGraphicsSequenceItem */
 
-XsdGraphicsSequenceItem::XsdGraphicsSequenceItem( QGraphicsItem * parent ) : QGraphicsPolygonItem( parent ), m_vspacing( 10 ), m_hspacing( 30 ) {
+XsdGraphicsSequenceItem::XsdGraphicsSequenceItem(QGraphicsItem * parent) : QGraphicsPolygonItem(parent), m_vspacing(10), m_hspacing(30)
+{
 //	setFlag( QGraphicsItem::ItemIsMovable, true );
-	setBrush( Qt::white );
-	setPen( QPen( Qt::black ) );
+	setBrush(Qt::white);
+	setPen(QPen(Qt::black));
 
 	QPolygonF polygone;
-	polygone << QPointF( 5, 0 );
-	polygone << QPointF( 35, 0 );
-	polygone << QPointF( 40, 5 );
-	polygone << QPointF( 40, 15 );
-	polygone << QPointF( 35, 20 );
-	polygone << QPointF( 5, 20 );
-	polygone << QPointF( 0, 15 );
-	polygone << QPointF( 0, 5 );
-	polygone << QPointF( 5, 0 );
-	polygone.translate( -20, -10 );
-	setPolygon( polygone );
+	polygone << QPointF(5, 0);
+	polygone << QPointF(35, 0);
+	polygone << QPointF(40, 5);
+	polygone << QPointF(40, 15);
+	polygone << QPointF(35, 20);
+	polygone << QPointF(5, 20);
+	polygone << QPointF(0, 15);
+	polygone << QPointF(0, 5);
+	polygone << QPointF(5, 0);
+	polygone.translate(-20, -10);
+	setPolygon(polygone);
 }
 
-void XsdGraphicsSequenceItem::paint( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * w ) {
-	QGraphicsPolygonItem::paint( painter, option, w );
-	painter->drawText( boundingRect(), "seq", QTextOption( Qt::AlignCenter ) );
+void XsdGraphicsSequenceItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * w)
+{
+	QGraphicsPolygonItem::paint(painter, option, w);
+	painter->drawText(boundingRect(), "seq", QTextOption(Qt::AlignCenter));
 }
 
-void XsdGraphicsSequenceItem::addItem( QGraphicsItem * item ) {
-	item->setParentItem( this );
+void XsdGraphicsSequenceItem::addItem(QGraphicsItem * item)
+{
+	item->setParentItem(this);
 	updatePosition();
 }
 
-void XsdGraphicsSequenceItem::updatePosition() {
+void XsdGraphicsSequenceItem::updatePosition()
+{
 	qreal height = 0;
 	qreal itemPosX = 0;
-	for( int i = 0 ; i < childItems().count(); i++ ) {
-		QGraphicsItem * item = childItems().at( i );
+	for (int i = 0 ; i < childItems().count(); i++)
+	{
+		QGraphicsItem * item = childItems().at(i);
 
-		if( dynamic_cast<XsdGraphicsLine*>( item ) ) continue;
+		if (dynamic_cast<XsdGraphicsLine*>(item)) continue;
 
-		qreal itemHeight = ( item->boundingRect() | item->childrenBoundingRect() ).height();
+		qreal itemHeight = (item->boundingRect() | item->childrenBoundingRect()).height();
 		height += itemHeight;
-		if( i < childItems().count() / 2 ) {
+		if (i < childItems().count() / 2)
+		{
 			itemPosX -= itemHeight - m_vspacing;
 		}
 
-		if( item != childItems().last() ) height += m_vspacing;
+		if (item != childItems().last()) height += m_vspacing;
 	}
 
-	foreach( QGraphicsItem * i, childItems() ) {
-		if( dynamic_cast<XsdGraphicsLine*>( i ) ) continue;
+	foreach(QGraphicsItem * i, childItems())
+	{
+		if (dynamic_cast<XsdGraphicsLine*>(i)) continue;
 
-		i->setPos( boundingRect().right() + m_hspacing - i->boundingRect().left(), itemPosX - i->boundingRect().top() );
+		i->setPos(boundingRect().right() + m_hspacing - i->boundingRect().left(), itemPosX - i->boundingRect().top());
 
-		itemPosX += ( i->boundingRect() | i->childrenBoundingRect() ).height();
-		if( i != childItems().last() ) itemPosX += m_vspacing;
+		itemPosX += (i->boundingRect() | i->childrenBoundingRect()).height();
+		if (i != childItems().last()) itemPosX += m_vspacing;
 	}
 }
 
 
 /* XsdGraphicsChoiceItem */
 
-XsdGraphicsChoiceItem::XsdGraphicsChoiceItem( QGraphicsItem * parent ) : XsdGraphicsSequenceItem( parent ) {
+XsdGraphicsChoiceItem::XsdGraphicsChoiceItem(QGraphicsItem * parent) : XsdGraphicsSequenceItem(parent)
+{
 }
 
-void XsdGraphicsChoiceItem::paint( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * w ) {
-	QGraphicsPolygonItem::paint( painter, option, w );
-	painter->drawText( boundingRect(), "chx", QTextOption( Qt::AlignCenter ) );
+void XsdGraphicsChoiceItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * w)
+{
+	QGraphicsPolygonItem::paint(painter, option, w);
+	painter->drawText(boundingRect(), "chx", QTextOption(Qt::AlignCenter));
 }
 
 
 /* XsdComplexeType */
 
-XsdGraphicsComplexeType::XsdGraphicsComplexeType( const QString & name ) : QGraphicsRectItem(), m_name( name ), m_spacing( 5 ) {
+XsdGraphicsComplexeType::XsdGraphicsComplexeType(const QString & name) : QGraphicsRectItem(), m_name(name), m_spacing(5)
+{
 //	setFlag( QGraphicsItem::ItemIsMovable, true );
-	QPen borderPen = QPen( Qt::black );
-	borderPen.setStyle( Qt::DashLine );
-	setPen( borderPen );
-	setBrush( QColor( 255, 252, 158 ) );
+	QPen borderPen = QPen(Qt::black);
+	borderPen.setStyle(Qt::DashLine);
+	setPen(borderPen);
+	setBrush(QColor(255, 252, 158));
 	updatePosition();
 }
 
-const QString & XsdGraphicsComplexeType::name() const {
+const QString & XsdGraphicsComplexeType::name() const
+{
 	return m_name;
 }
 
-void XsdGraphicsComplexeType::addItem( QGraphicsItem * item ) {
-	item->setParentItem( this );
+void XsdGraphicsComplexeType::addItem(QGraphicsItem * item)
+{
+	item->setParentItem(this);
 	updatePosition();
 }
 
-void XsdGraphicsComplexeType::updatePosition() {
-	QRectF textRect = QFontMetrics( QFont() ).boundingRect( m_name );
+void XsdGraphicsComplexeType::updatePosition()
+{
+	QRectF textRect = QFontMetrics(QFont()).boundingRect(m_name);
 	qreal width = textRect.width(), height = textRect.height();
 
-	foreach( QGraphicsItem * i, childItems() ) {
+	foreach(QGraphicsItem * i, childItems())
+	{
 		QRectF r = i->boundingRect() | i->childrenBoundingRect();
-		if( width < r.width() ) width = r.width();
+		if (width < r.width()) width = r.width();
 		height += r.height();
 	}
 
 	qreal top = - height / 2 + textRect.height();
 
-	foreach( QGraphicsItem * i, childItems() ) {
+	foreach(QGraphicsItem * i, childItems())
+	{
 		QRectF r = i->boundingRect() | i->childrenBoundingRect();
 
 		qreal left = - width / 2;
-		i->setPos( left - r.left(), top - r.top() );
+		i->setPos(left - r.left(), top - r.top());
 
 		top += i->boundingRect().height();
 	}
 
-	QRectF rect( - width / 2, - height / 2, width, height );
-	rect.adjust( - m_spacing, - m_spacing, m_spacing, m_spacing );
-	setRect( rect );
+	QRectF rect(- width / 2, - height / 2, width, height);
+	rect.adjust(- m_spacing, - m_spacing, m_spacing, m_spacing);
+	setRect(rect);
 }
 
-void XsdGraphicsComplexeType::paint( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * w ) {
-	QGraphicsRectItem::paint( painter, option, w );
+void XsdGraphicsComplexeType::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * w)
+{
+	QGraphicsRectItem::paint(painter, option, w);
 	QRectF textRect = boundingRect();
-	textRect.adjust( m_spacing, m_spacing, - m_spacing, - m_spacing );
-	painter->drawText( textRect, m_name, QTextOption( Qt::AlignLeft | Qt::AlignTop ) );
+	textRect.adjust(m_spacing, m_spacing, - m_spacing, - m_spacing);
+	painter->drawText(textRect, m_name, QTextOption(Qt::AlignLeft | Qt::AlignTop));
 }
 
 
 /* XsdEditor */
 
-XsdEditor::XsdEditor( QWidget * parent ) : AbstractEditor( parent ) {
+XsdEditor::XsdEditor(QWidget * parent) : AbstractEditor(parent)
+{
 //	m_scene = new QGraphicsScene(0, 0, 1024, 768, this);
 	m_scene = new QGraphicsScene(this);
 	m_view  = new QGraphicsView(this);
 
-	m_view->setScene( m_scene );
+	m_view->setScene(m_scene);
 	//m_view->setDragMode( QGraphicsView::RubberBandDrag );
 	//m_view->setRenderHints( QPainter::Antialiasing | QPainter::TextAntialiasing );
 
-	XsdGraphicsComplexeType * complex = new XsdGraphicsComplexeType( "VersionInfo" );
-	m_scene->addItem( complex );
-	complex->setPos( 500, 500 );
+	XsdGraphicsComplexeType * complex = new XsdGraphicsComplexeType("VersionInfo");
+	m_scene->addItem(complex);
+	complex->setPos(500, 500);
 
 	XsdGraphicsSequenceItem * seq = new XsdGraphicsSequenceItem();
 //	m_scene->addItem( seq );
-	complex->addItem( seq );
+	complex->addItem(seq);
 
-	XsdGraphicsElementItem * item = new XsdGraphicsElementItem( "numero", "xs:string", 1, 1, seq );
-	seq->addItem( item );
+	XsdGraphicsElementItem * item = new XsdGraphicsElementItem("numero", "xs:string", 1, 1, seq);
+	seq->addItem(item);
 
-	new XsdGraphicsAnnotationItem( "Num�ro de version", item );
+	new XsdGraphicsAnnotationItem("Num�ro de version", item);
 
-	item = new XsdGraphicsElementItem( "edition_special", "xs:string", 0, 1, seq );
-	seq->addItem( item );
+	item = new XsdGraphicsElementItem("edition_special", "xs:string", 0, 1, seq);
+	seq->addItem(item);
 
-	new XsdGraphicsAnnotationItem( "Num�ro de l'�dition sp�cial", item );
+	new XsdGraphicsAnnotationItem("Num�ro de l'�dition sp�cial", item);
 
-	item = new XsdGraphicsElementItem( "level", "xs:string", 1, 1, seq );
-	seq->addItem( item );
+	item = new XsdGraphicsElementItem("level", "xs:string", 1, 1, seq);
+	seq->addItem(item);
 	complex->updatePosition();
-	new XsdGraphicsAnnotationItem( "Gestion de la version de eGX. Les valeurs des �lements sont mis � jour par l'outil de migration. Toute modification par l'utilisateur entrainera des disfonctionnements de cet outil.", complex );
+	new XsdGraphicsAnnotationItem("Gestion de la version de eGX. Les valeurs des �lements sont mis � jour par l'outil de migration. Toute modification par l'utilisateur entrainera des disfonctionnements de cet outil.", complex);
 
 
 //	m_view->centerOn( 0, 0 );
 
-	borderLayout()->addWidget( m_view, BorderLayout::Center );
+	borderLayout()->addWidget(m_view, BorderLayout::Center);
 }
 
-XsdEditor::~XsdEditor() {
+XsdEditor::~XsdEditor()
+{
 }
 
-QString XsdEditor::defaultFileName() const {
+QString XsdEditor::defaultFileName() const
+{
 	return tr("noname.xsd");
 }
 
-QIcon XsdEditor::icon() const {
+QIcon XsdEditor::icon() const
+{
 	return QIcon(":/xsd/images/typexsd.png");
 }
 
-bool XsdEditor::canCopy() {
+bool XsdEditor::canCopy()
+{
 	return false;
 }
 
-bool XsdEditor::canPaste() {
+bool XsdEditor::canPaste()
+{
 	return false;
 }
 
-bool XsdEditor::canUndo() {
+bool XsdEditor::canUndo()
+{
 	return false;
 }
 
-bool XsdEditor::canRedo() {
+bool XsdEditor::canRedo()
+{
 	return false;
 }
 
-void XsdEditor::loadFromDevice( QIODevice & d ) {
-	if( m_schema ) delete m_schema;
-	m_schema = new XmlSchemaFile( &d );
+void XsdEditor::loadFromDevice(QIODevice & d)
+{
+	if (m_schema) delete m_schema;
+	m_schema = new XmlSchemaFile(&d);
 	m_schema->dumpObjectTree();
 }
 
-void XsdEditor::saveToDevice( QIODevice & d ) {
+void XsdEditor::saveToDevice(QIODevice & d)
+{
 }
 
-QAbstractItemModel * XsdEditor::model() const {
+QAbstractItemModel * XsdEditor::model() const
+{
 	return 0;
 }
 
-void XsdEditor::initSearch( SearchOptions & options ) {
+void XsdEditor::initSearch(SearchOptions & options)
+{
 
 }
 
-bool XsdEditor::find( const QString & text, SearchOptions options ) {
+bool XsdEditor::find(const QString & text, SearchOptions options)
+{
 
 }
 
-void XsdEditor::replace( const QString & from, const QString & to, SearchOptions options ) {
+void XsdEditor::replace(const QString & from, const QString & to, SearchOptions options)
+{
 
 }
 
-void XsdEditor::updateModel() {
+void XsdEditor::updateModel()
+{
 }
 
-QString XsdEditor::bookmarkAt( int i ) {
+QString XsdEditor::bookmarkAt(int i)
+{
 	return QString();
 }
 
-int XsdEditor::bookmarkCount() {
+int XsdEditor::bookmarkCount()
+{
 	return 0;
 }
 
-bool XsdEditor::previousBookmark() {
+bool XsdEditor::previousBookmark()
+{
 	return true;
 }
 
-bool XsdEditor::nextBookmark() {
+bool XsdEditor::nextBookmark()
+{
 	return false;
 }
 
-void XsdEditor::gotoBookmarkAt( int ) {
+void XsdEditor::gotoBookmarkAt(int)
+{
 
 }
 
-void XsdEditor::undo() {
+void XsdEditor::undo()
+{
 }
 
-void XsdEditor::redo() {
+void XsdEditor::redo()
+{
 }
 
-void XsdEditor::cut() {
+void XsdEditor::cut()
+{
 }
 
-void XsdEditor::copy() {
+void XsdEditor::copy()
+{
 }
 
-void XsdEditor::paste() {
+void XsdEditor::paste()
+{
 }
 
-void XsdEditor::toogledBookmark() {
+void XsdEditor::toogledBookmark()
+{
 }
 
-void XsdEditor::clearAllBookmark() {
+void XsdEditor::clearAllBookmark()
+{
 }

@@ -17,107 +17,63 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-#ifndef _XSLCONTENTVIEWPARSER_H_
-#define _XSLCONTENTVIEWPARSER_H_
+#ifndef _XSLCONTENTVIEW2PARSER_H_
+#define _XSLCONTENTVIEW2PARSER_H_
 #pragma once
 
 // Xinx header
-#include <contentview/contentviewparser.h>
+#include <contentview2/contentview2parser.h>
 
 // Qt header
 #include <QApplication>
 #include <QXmlStreamReader>
 #include <QStack>
 
-class ContentViewNode;
 class QTextCodec;
 
 /* XslContentViewParser */
 
-class XslContentViewParser : public ContentViewParser, private QXmlStreamReader {
-	Q_DECLARE_TR_FUNCTIONS(XslContentViewParser)
+class XslContentView2Parser : public ContentView2::Parser, private QXmlStreamReader
+{
+	Q_DECLARE_TR_FUNCTIONS(XslContentView2Parser)
 public:
-	XslContentViewParser( bool persistent = false );
-	virtual ~XslContentViewParser();
+	XslContentView2Parser();
+	virtual ~XslContentView2Parser();
 
-	QTextCodec * codec() { return m_codec; };
-protected:
-	virtual void loadFromDeviceImpl();
+	virtual void load();
+
+	QTextCodec * codec()
+	{
+		return m_codec;
+	}
 private:
-	struct struct_xsl_variable {
+	struct struct_xsl_variable
+	{
 		bool isParam;
 		int line;
 		QString name;
 		QString value;
 	};
-	struct struct_script {
-		bool isSrc;
+	struct struct_script
+	{
 		int line;
-		QString content;
 		QString src;
+		QString content;
 		QString title;
 	};
 
 	void readStyleSheet();
 	void readUnknownElement();
 	void readVariable();
-	void readTemplate( QList<struct_xsl_variable> & t, QList<struct_script> & s );
+	void readTemplate(QList<struct_xsl_variable> & t, QList<struct_script> & s);
 	void readTemplate();
 	QString readElementText();
 
-	ContentViewNode * attacheNewTemplateNode( ContentViewNode * parent, const QString & name, const QString & mode, int line );
-	ContentViewNode * attacheNewParamsNode( ContentViewNode * parent, const QString & name, const QString & value,  int line );
-	ContentViewNode * attacheNewVariableNode( ContentViewNode * parent, const QString & filename, const QString & value, int line );
+	ContentView2::Node attacheNewTemplateNode(ContentView2::Node parent, const QString & name, const QString & mode, int line);
+	void attacheNewParamsNode(ContentView2::Node parent, const QString & name, const QString & value,  int line);
+	void attacheNewVariableNode(ContentView2::Node parent, const QString & filename, const QString & value, int line);
 
 	QTextCodec * m_codec;
 };
 
-/* XmlCompletionParser */
-
-class XmlCompletionParser : public QObject, private ContentViewParser, private QXmlStreamReader {
-	Q_OBJECT
-public:
-	enum XmlCompletionRoleIndex {
-		NODE_XML_TYPE       = 34,
-		NODE_XML_ISDEFAULT  = 35,
-		NODE_XML_SORT_INDEX = 36
-	};
-
-	XmlCompletionParser();
-	virtual ~XmlCompletionParser();
-
-	static XmlCompletionParser * self();
-
-	ContentViewNode * balise( const QString & name ) const;
-	QList<ContentViewNode*> balises() const;
-	ContentViewNode * baliseAttribute( const QString & name, const QString & attribute ) const;
-	ContentViewNode * baliseOfBalise( const QString & name, const QString & baliseName ) const;
-	QList<ContentViewNode*> baliseAttributes( const QString & name ) const;
-	ContentViewNode * baliseAttributeValue( const QString & name, const QString & attribute, const QString & value ) const;
-	QList<ContentViewNode*> baliseAttributeValues( const QString & name, const QString & attribute ) const;
-
-	ContentViewNode * defaultValue( ContentViewNode * node );
-	QList<ContentViewNode*> defaultAttributes( ContentViewNode * node );
-	QList<ContentViewNode*> defaultBalises( ContentViewNode * node );
-
-	ContentViewNode * rootNode() const;
-	QTextCodec * codec() { return m_codec; };
-protected:
-	virtual void loadFromDeviceImpl();
-private:
-	void readRootTag();
-	void readTypeTag();
-	void readBaliseTag();
-	void readAttributeTag();
-	void readValueTag();
-	QString readElementText();
-
-	QStack<ContentViewNode*> m_parentNode;
-	QTextCodec * m_codec;
-	QString m_type;
-
-	static XmlCompletionParser * s_self;
-	unsigned long m_index;
-};
-
-#endif /* _XSLCONTENTVIEWPARSER_H_ */
+#endif /* _XSLCONTENTVIEW2PARSER_H_ */

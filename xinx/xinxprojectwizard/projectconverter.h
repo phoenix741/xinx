@@ -34,10 +34,11 @@
 #define XINX_PROJECT_VERSION_4 4
 #define XINX_PROJECT_VERSION 4
 
-class ProjectConverter : public QObject {
+class ProjectConverter : public QObject
+{
 	Q_OBJECT
 public:
-	ProjectConverter( const QString & filename );
+	ProjectConverter(const QString & filename);
 	virtual ~ProjectConverter();
 
 	int version() const;
@@ -47,8 +48,8 @@ public:
 	void process();
 	void save();
 signals:
-	void setMaximum( int value );
-	void setValue( int value );
+	void setMaximum(int value);
+	void setValue(int value);
 private:
 	QDomDocument m_projectDocument;
 	QDomDocument m_sessionDocument;

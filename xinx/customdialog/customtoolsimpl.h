@@ -28,10 +28,11 @@
 // Qt header
 #include <QHash>
 
-class CustomToolsImpl : public QWidget, public Ui::CustomTools, public IXinxPluginConfigurationPage {
+class CustomToolsImpl : public QWidget, public Ui::CustomTools, public IXinxPluginConfigurationPage
+{
 	Q_OBJECT
 public:
-	CustomToolsImpl( QWidget * parent = 0 );
+	CustomToolsImpl(QWidget * parent = 0);
 	~CustomToolsImpl();
 
 	virtual QPixmap image();

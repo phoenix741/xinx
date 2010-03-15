@@ -31,20 +31,22 @@ class XsdGraphicsLine;
 
 /* XsdGraphicsAnnotationItem */
 
-class XsdGraphicsAnnotationItem : public QGraphicsTextItem {
+class XsdGraphicsAnnotationItem : public QGraphicsTextItem
+{
 public:
-	XsdGraphicsAnnotationItem( const QString & text, QGraphicsItem * parent = 0 );
+	XsdGraphicsAnnotationItem(const QString & text, QGraphicsItem * parent = 0);
 public slots:
 	void updatePosition();
 };
 
 /* XsdGraphicsNodeItem */
 
-class XsdNodeItem {
+class XsdNodeItem
+{
 public:
 	virtual ~XsdNodeItem();
 protected:
-	virtual QVariant itemChange( QGraphicsItem::GraphicsItemChange change, const QVariant &value );
+	virtual QVariant itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value);
 private:
 	QList<XsdGraphicsLine*> m_line;
 	friend class XsdGraphicsLine;
@@ -52,13 +54,20 @@ private:
 
 /* XsdGraphicsLine */
 
-class XsdGraphicsLine : public QGraphicsPathItem {
+class XsdGraphicsLine : public QGraphicsPathItem
+{
 public:
-	XsdGraphicsLine( XsdNodeItem * startItem, XsdNodeItem * endItem );
+	XsdGraphicsLine(XsdNodeItem * startItem, XsdNodeItem * endItem);
 	virtual ~XsdGraphicsLine();
 
-	XsdNodeItem *startItem() const { return m_startItem; };
-	XsdNodeItem *endItem() const { return m_endItem; };
+	XsdNodeItem *startItem() const
+	{
+		return m_startItem;
+	};
+	XsdNodeItem *endItem() const
+	{
+		return m_endItem;
+	};
 
 	virtual QRectF boundingRect() const;
 public slots:
@@ -71,17 +80,21 @@ private:
 
 /* XsdGraphicsElementItem */
 
-class XsdGraphicsElementItem : public QGraphicsItem, public XsdNodeItem {
+class XsdGraphicsElementItem : public QGraphicsItem, public XsdNodeItem
+{
 public:
-	XsdGraphicsElementItem( const QString & name, const QString & type, int minOccurs = 1, int maxOccurs = 1, QGraphicsItem * parent = 0 );
+	XsdGraphicsElementItem(const QString & name, const QString & type, int minOccurs = 1, int maxOccurs = 1, QGraphicsItem * parent = 0);
 
 	QRectF boundingRect() const;
-	virtual void paint( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * = 0 );
+	virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * = 0);
 
 	const QFont & font() const;
-	void setFont( const QFont & font );
+	void setFont(const QFont & font);
 protected:
-	virtual QVariant itemChange( QGraphicsItem::GraphicsItemChange change, const QVariant &value ) { return XsdNodeItem::itemChange( change, value ); };
+	virtual QVariant itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
+	{
+		return XsdNodeItem::itemChange(change, value);
+	};
 private:
 	QFont m_font;
 	QString m_name, m_type;
@@ -90,45 +103,54 @@ private:
 
 /* XsdGraphicsSequenceItem */
 
-class XsdGraphicsSequenceItem : public QGraphicsPolygonItem, public XsdNodeItem {
+class XsdGraphicsSequenceItem : public QGraphicsPolygonItem, public XsdNodeItem
+{
 public:
-	XsdGraphicsSequenceItem( QGraphicsItem * parent = 0 );
+	XsdGraphicsSequenceItem(QGraphicsItem * parent = 0);
 
-	void addItem( QGraphicsItem * item );
+	void addItem(QGraphicsItem * item);
 
-	virtual void paint( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * = 0 );
+	virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * = 0);
 public slots:
 	void updatePosition();
 protected:
-	virtual QVariant itemChange( QGraphicsItem::GraphicsItemChange change, const QVariant &value ) { return XsdNodeItem::itemChange( change, value ); };
+	virtual QVariant itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
+	{
+		return XsdNodeItem::itemChange(change, value);
+	};
 private:
 	qreal m_vspacing, m_hspacing;
 };
 
 /* XsdGraphicsChoiceItem */
 
-class XsdGraphicsChoiceItem : public XsdGraphicsSequenceItem {
+class XsdGraphicsChoiceItem : public XsdGraphicsSequenceItem
+{
 public:
-	XsdGraphicsChoiceItem( QGraphicsItem * parent = 0 );
+	XsdGraphicsChoiceItem(QGraphicsItem * parent = 0);
 
-	virtual void paint( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * = 0 );
+	virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * = 0);
 };
 
 /* XsdGraphicsComplexeType */
 
-class XsdGraphicsComplexeType : public QGraphicsRectItem, public XsdNodeItem {
+class XsdGraphicsComplexeType : public QGraphicsRectItem, public XsdNodeItem
+{
 public:
-	XsdGraphicsComplexeType( const QString & name );
+	XsdGraphicsComplexeType(const QString & name);
 
 	const QString & name() const;
 
-	void addItem( QGraphicsItem * item );
+	void addItem(QGraphicsItem * item);
 
-	virtual void paint( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * = 0 );
+	virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * = 0);
 public slots:
 	void updatePosition();
 protected:
-	virtual QVariant itemChange( QGraphicsItem::GraphicsItemChange change, const QVariant &value ) { return XsdNodeItem::itemChange( change, value ); };
+	virtual QVariant itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
+	{
+		return XsdNodeItem::itemChange(change, value);
+	};
 private:
 	QString m_name;
 	int m_spacing;

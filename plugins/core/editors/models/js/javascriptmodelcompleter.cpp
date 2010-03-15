@@ -19,42 +19,45 @@
 
 // Xinx header
 #include "javascriptmodelcompleter.h"
-#include <contentview/contentviewnode.h>
 
 // Qt header
 #include <QIcon>
 
 /* JavascriptModelCompleter */
 
-JavascriptModelCompleter::JavascriptModelCompleter( ContentViewNode * root, QObject *parent ) : SnipetCompletionNodeModel( root, parent ), m_functionFiltre( QString() ) {
+JavascriptModelCompleter::JavascriptModelCompleter(QSqlDatabase db, ContentView2::FileContainer file, QObject *parent) : ContentView2::CompletionModel(db, file, parent), m_functionFiltre(QString())
+{
 
 }
 
-JavascriptModelCompleter::~JavascriptModelCompleter() {
+JavascriptModelCompleter::~JavascriptModelCompleter()
+{
 
 }
 
-void JavascriptModelCompleter::setFilter( const QString functionName ) {
-	if( m_functionFiltre != functionName ) {
+void JavascriptModelCompleter::setFilter(const QString functionName)
+{
+	if (m_functionFiltre != functionName)
+	{
 		m_functionFiltre = functionName;
-		reset();
+		select();
 	}
 }
 
-bool JavascriptModelCompleter::mustElementBeShowed( ContentViewNode * node ) {
-	if( node->data( ContentViewNode::NODE_TYPE ).toString() == "Snipet" ) {
-		return true;
-	}
+QString JavascriptModelCompleter::whereClause() const
+{
+	QString clause = ContentView2::CompletionModel::whereClause();
 
-	ContentViewNode * p = parent( node );
-	if( p && ( p->data( ContentViewNode::NODE_TYPE ).toString() == "function" ) ) {
-		return true;
-	}
+	clause += " AND ( ( cv_node.type = 'Snipet' ) ";
 
-	if( ! p ) {
-		return true;
-	}
+	clause += QString(" OR ( cv_node.type like 'Js%' AND EXISTS ( "
+	                  "	SELECT 1 "
+	                  "	FROM cv_link linkParent, cv_node nodeParent "
+	                  "	WHERE linkParent.parent_id=nodeParent.id "
+	                  "	  AND linkParent.child_id=cv_node.id"
+	                  "	  AND (nodeParent.type <> 'JsFunction' OR nodeParent.name='%1' ))) ").arg(m_functionFiltre);
 
-	return false;
+	clause += ")";
+
+	return clause;
 }
-

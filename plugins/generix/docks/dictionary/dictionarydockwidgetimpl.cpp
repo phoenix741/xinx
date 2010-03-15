@@ -19,47 +19,52 @@
 
 // Xinx header
 #include "dictionarydockwidgetimpl.h"
-#include <contentview/contentviewmodel.h>
+#include <contentview2/contentview2manager.h>
+#include <contentview2/contentview2cache.h>
 #include <configuration/configurationmanager.h>
 #include "projectproperty/generixproject.h"
 #include "dictionaryparser.h"
-#include <modeltest.h>
+#include "dictionarymodel.h"
 
 /* DictionaryDockWidgetImpl */
 
-DictionaryDockWidgetImpl::DictionaryDockWidgetImpl( QWidget * parent ) : QDockWidget( parent ), m_dictionaryModel( 0 )  {
-	setupUi( this );
+DictionaryDockWidgetImpl::DictionaryDockWidgetImpl(QWidget * parent) : QDockWidget(parent), m_dictionaryModel(0)
+{
+	setupUi(this);
 
-	// Create node and model to use for the dictionary
-	//m_dictionaryModel = new ContentViewModel( m_dictionaryNode, m_dictionaryTreeView );
-	//m_dictionaryTreeView->setModel( m_dictionaryModel );
-
-	connect( XINXProjectManager::self(), SIGNAL(changed()), this, SLOT(projectChanged()) );
+	connect(XINXProjectManager::self(), SIGNAL(changed()), this, SLOT(projectChanged()));
+	connect(ContentView2::Manager::self()->cache(), SIGNAL(cacheLoaded(ContentView2::File)), this, SLOT(update(ContentView2::File)));
 }
 
-DictionaryDockWidgetImpl::~DictionaryDockWidgetImpl() {
+DictionaryDockWidgetImpl::~DictionaryDockWidgetImpl()
+{
 
 }
 
-void DictionaryDockWidgetImpl::projectChanged() {
+void DictionaryDockWidgetImpl::update(const ContentView2::File & file)
+{
+	if (file.path() == "GenerixDictionary")
+	{
+		//m_dictionaryModel->select( ContentView2::Manager::self()->database(), "CREA", "" );
+		m_informationLbl->setText(tr("%1 label(s) loaded.").arg(m_dictionaryModel->rowCount()));
+	}
+}
+
+void DictionaryDockWidgetImpl::projectChanged()
+{
 	// Desactivate the dictionary
-	m_dictionaryTreeView->setModel( 0 );
-	delete m_dictionaryModel; m_dictionaryModel = 0;
+	m_dictionaryTreeView->setModel(0);
+	delete m_dictionaryModel;
+	m_dictionaryModel = 0;
 
 	// Create the new dictionary
-	/*
-	GenerixProject * project = static_cast<GenerixProject*>( XINXProjectManager::self()->project() );
-	if( project && project->isGenerixActivated() ) {
-		DictionaryParser * parser = ConfigurationManager::self()->dictionaryOfProject( project );
-		if( parser ) {
-			m_dictionaryModel = new ContentViewModel( parser->rootNode(), m_dictionaryTreeView );
-			//new ModelTest( m_dictionaryModel );
-			m_dictionaryTreeView->setModel( m_dictionaryModel );
-
-			m_informationLbl->setText( tr("%1 label(s) loaded.").arg( m_dictionaryModel->rowCount() ) );
-		}
+	GenerixProject * project = static_cast<GenerixProject*>(XINXProjectManager::self()->project().data());
+	if (project && project->isGenerixActivated())
+	{
+		ConfigurationManager::self()->loadDictionary(project);
+		//m_dictionaryModel = new DictionaryModel("GenerixDictionary", m_dictionaryTreeView);
+		//m_dictionaryTreeView->setModel(m_dictionaryModel);
 	}
-	*/
 }
 
 

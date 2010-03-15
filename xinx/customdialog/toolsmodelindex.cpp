@@ -25,79 +25,94 @@
 
 /* ToolsModelIndex */
 
-ToolsModelIndex::ToolsModelIndex( QHash<QString,QString> * tools, QObject * parent ) : QAbstractTableModel( parent ) {
+ToolsModelIndex::ToolsModelIndex(QHash<QString,QString> * tools, QObject * parent) : QAbstractTableModel(parent)
+{
 	m_tools = tools;
 }
 
-ToolsModelIndex::~ToolsModelIndex() {
+ToolsModelIndex::~ToolsModelIndex()
+{
 
 }
 
-void ToolsModelIndex::setTools( QHash<QString,QString> * tools ) {
+void ToolsModelIndex::setTools(QHash<QString,QString> * tools)
+{
 	emit layoutAboutToBeChanged();
 	m_tools = tools;
 	emit layoutChanged();
 }
 
-int ToolsModelIndex::rowCount( const QModelIndex & parent ) const {
-	Q_UNUSED( parent );
+int ToolsModelIndex::rowCount(const QModelIndex & parent) const
+{
+	Q_UNUSED(parent);
 
 	return m_tools->count();
 }
 
-int ToolsModelIndex::columnCount( const QModelIndex & parent ) const {
-	Q_UNUSED( parent );
+int ToolsModelIndex::columnCount(const QModelIndex & parent) const
+{
+	Q_UNUSED(parent);
 
 	return 2;
 }
 
-bool ToolsModelIndex::setData ( const QModelIndex & index, const QVariant & value, int role ) {
-	if( index.isValid() && ( role == Qt::EditRole ) ) {
-		m_tools->insert( m_tools->keys().at( index.row() ), value.toString() );
-		emit dataChanged( index, index );
+bool ToolsModelIndex::setData(const QModelIndex & index, const QVariant & value, int role)
+{
+	if (index.isValid() && (role == Qt::EditRole))
+	{
+		m_tools->insert(m_tools->keys().at(index.row()), value.toString());
+		emit dataChanged(index, index);
 		return true;
 	}
 	return false;
 }
 
-QVariant ToolsModelIndex::data( const QModelIndex & index, int role ) const {
-	if( ! index.isValid() ) return QVariant();
-	if( role == Qt::DisplayRole ) {
+QVariant ToolsModelIndex::data(const QModelIndex & index, int role) const
+{
+	if (! index.isValid()) return QVariant();
+	if (role == Qt::DisplayRole)
+	{
 		QString key;
-		switch( index.column() ) {
+		switch (index.column())
+		{
 		case 0:
-			key = m_tools->keys().at( index.row() );
-			return key.at(0).toUpper() + key.mid( 1 );
+			key = m_tools->keys().at(index.row());
+			return key.at(0).toUpper() + key.mid(1);
 		case 1:
-			return QDir::toNativeSeparators( m_tools->values().at( index.row() ) );
+			return QDir::toNativeSeparators(m_tools->values().at(index.row()));
 		}
-	} else
-	if( role == Qt::EditRole ) {
+	}
+	else if (role == Qt::EditRole)
+	{
 		QString key;
-		switch( index.column() ) {
+		switch (index.column())
+		{
 		case 0:
-			return m_tools->keys().at( index.row() );
+			return m_tools->keys().at(index.row());
 		case 1:
-			return m_tools->values().at( index.row() );
+			return m_tools->values().at(index.row());
 		}
 	}
 
 	return QVariant();
 }
 
-QVariant ToolsModelIndex::headerData ( int section, Qt::Orientation orientation, int role ) const {
-	if( ( role == Qt::DisplayRole ) && ( orientation == Qt::Horizontal ) )
-		switch( section ) {
+QVariant ToolsModelIndex::headerData(int section, Qt::Orientation orientation, int role) const
+{
+	if ((role == Qt::DisplayRole) && (orientation == Qt::Horizontal))
+		switch (section)
+		{
 		case 0:
-			return tr( "Tool name" );
+			return tr("Tool name");
 		case 1:
-			return tr( "Tool path" );
+			return tr("Tool path");
 		}
 	return QVariant();
 }
 
-Qt::ItemFlags ToolsModelIndex::flags( const QModelIndex & index ) const {
-	if( index.isValid() && ( index.column() == 1 ) )
-		return QAbstractTableModel::flags( index ) | Qt::ItemIsEditable;
-	return QAbstractTableModel::flags( index );
+Qt::ItemFlags ToolsModelIndex::flags(const QModelIndex & index) const
+{
+	if (index.isValid() && (index.column() == 1))
+		return QAbstractTableModel::flags(index) | Qt::ItemIsEditable;
+	return QAbstractTableModel::flags(index);
 }

@@ -31,8 +31,9 @@
 
 /* WelcomDialogImpl */
 
-WelcomDialogImpl::WelcomDialogImpl( QWidget * parent, Qt::WindowFlags f ) : QDialog( parent, f ) {
-	setupUi( this );
+WelcomDialogImpl::WelcomDialogImpl(QWidget * parent, Qt::WindowFlags f) : QDialog(parent, f)
+{
+	setupUi(this);
 	createWebsiteList();
 	updateTipOfTheDay();
 
@@ -44,93 +45,114 @@ WelcomDialogImpl::WelcomDialogImpl( QWidget * parent, Qt::WindowFlags f ) : QDia
 	connect(m_openProjectBtn, SIGNAL(clicked()), SIGNAL(openExistingProject()));
 }
 
-WelcomDialogImpl::~WelcomDialogImpl() {
+WelcomDialogImpl::~WelcomDialogImpl()
+{
 }
 
-void WelcomDialogImpl::updateTipOfTheDay() {
-	QString filename = QString( ":/rc/tipoftheday_%1.txt" ).arg( XINXConfig::self()->config().language );
-	QFile tipFile( filename );
-	if( tipFile.open( QFile::ReadOnly ) ) {
-		QTextStream textStream( &tipFile );
+void WelcomDialogImpl::updateTipOfTheDay()
+{
+	QString filename = QString(":/rc/tipoftheday_%1.txt").arg(XINXConfig::self()->config().language);
+	QFile tipFile(filename);
+	if (tipFile.open(QFile::ReadOnly))
+	{
+		QTextStream textStream(&tipFile);
 		tipFrame->show();
 		QStringList tips;
-		do {
-			tips.append( textStream.readLine() );
-		} while (! textStream.atEnd() );
+		do
+		{
+			tips.append(textStream.readLine());
+		}
+		while (! textStream.atEnd());
 
-		if( tips.count() > 0 ) {
-			int row = ( qrand() % tips.count() );
-			textBrowser->setHtml( tips.at( row ) );
+		if (tips.count() > 0)
+		{
+			int row = (qrand() % tips.count());
+			textBrowser->setHtml(tips.at(row));
 		}
 
 		tipFile.close();
-	} else {
+	}
+	else
+	{
 		tipFrame->hide();
 	}
 }
 
-void WelcomDialogImpl::createWebsiteList() {
-	m_sitesWidget->addItem( tr("Documentation"), QLatin1String("http://xinx.shadoware.org/wiki") );
-	m_sitesWidget->addItem( tr("Report a bug"), QLatin1String("http://xinx.shadoware.org/newticket") );
-	m_sitesWidget->addItem( tr("Downloads"), QLatin1String("http://xinx.shadoware.org/downloads") );
+void WelcomDialogImpl::createWebsiteList()
+{
+	m_sitesWidget->addItem(tr("Documentation"), QLatin1String("http://xinx.shadoware.org/wiki"));
+	m_sitesWidget->addItem(tr("Report a bug"), QLatin1String("http://xinx.shadoware.org/newticket"));
+	m_sitesWidget->addItem(tr("Downloads"), QLatin1String("http://xinx.shadoware.org/downloads"));
 }
 
-void WelcomDialogImpl::addProjectFile( const QString & filename ) {
-	if( QFile::exists( filename ) ) {
-		try {
-			m_projectWidget->addItem( XinxProject( filename ).projectName(), filename );
-		} catch( XinxProjectException e ) {
-			m_projectWidget->addItem( QString( "%1 (%2)" ).arg( QFileInfo( filename ).fileName() ).arg( e.getMessage() ), filename );
+void WelcomDialogImpl::addProjectFile(const QString & filename)
+{
+	if (QFile::exists(filename))
+	{
+		try
+		{
+			m_projectWidget->addItem(XinxProject(filename).projectName(), filename);
+		}
+		catch (XinxProjectException e)
+		{
+			m_projectWidget->addItem(QString("%1 (%2)").arg(QFileInfo(filename).fileName()).arg(e.getMessage()), filename);
 		}
 	}
 }
 
-void WelcomDialogImpl::slotProjectClicked( const QString &data ) {
+void WelcomDialogImpl::slotProjectClicked(const QString &data)
+{
 	accept();
-	emit requestProject( data );
+	emit requestProject(data);
 }
 
-void WelcomDialogImpl::slotUrlClicked( const QString &data ) {
-	QDesktopServices::openUrl( QUrl( data ) );
+void WelcomDialogImpl::slotUrlClicked(const QString &data)
+{
+	QDesktopServices::openUrl(QUrl(data));
 }
 
 /* WelcomTreeWidget */
 
 
-WelcomTreeWidget::WelcomTreeWidget( QWidget *parent ) : QListWidget( parent ), m_bullet(QLatin1String(":/images/bullet_arrow.png")) {
+WelcomTreeWidget::WelcomTreeWidget(QWidget *parent) : QListWidget(parent), m_bullet(QLatin1String(":/images/bullet_arrow.png"))
+{
 	connect(this, SIGNAL(itemClicked(QListWidgetItem *)), SLOT(slotItemClicked(QListWidgetItem *)));
 }
 
-QSize WelcomTreeWidget::minimumSizeHint() const {
+QSize WelcomTreeWidget::minimumSizeHint() const
+{
 	return QSize();
 }
 
-QSize WelcomTreeWidget::sizeHint() const {
-	return QSize( QListWidget::sizeHint().width(), 30 * count() );
+QSize WelcomTreeWidget::sizeHint() const
+{
+	return QSize(QListWidget::sizeHint().width(), 30 * count());
 }
 
-QListWidgetItem *WelcomTreeWidget::addItem( const QString &label, const QString &data ) {
-	QListWidgetItem *item = new QListWidgetItem( this );
-	item->setIcon( m_bullet );
-	item->setSizeHint( QSize(24, 30) );
+QListWidgetItem *WelcomTreeWidget::addItem(const QString &label, const QString &data)
+{
+	QListWidgetItem *item = new QListWidgetItem(this);
+	item->setIcon(m_bullet);
+	item->setSizeHint(QSize(24, 30));
 
-	QLabel * lbl = new QLabel( label );
-	lbl->setTextInteractionFlags( Qt::NoTextInteraction );
-	lbl->setCursor( QCursor(Qt::PointingHandCursor) );
-	lbl->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed );
+	QLabel * lbl = new QLabel(label);
+	lbl->setTextInteractionFlags(Qt::NoTextInteraction);
+	lbl->setCursor(QCursor(Qt::PointingHandCursor));
+	lbl->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
 	QBoxLayout *lay = new QVBoxLayout;
-	lay->setContentsMargins( 3, 2, 0, 0 );
-	lay->addWidget( lbl );
+	lay->setContentsMargins(3, 2, 0, 0);
+	lay->addWidget(lbl);
 
 	QWidget *wdg = new QWidget;
-	wdg->setLayout( lay );
-	setItemWidget( item, wdg );
-	item->setData( Qt::UserRole, data );
+	wdg->setLayout(lay);
+	setItemWidget(item, wdg);
+	item->setData(Qt::UserRole, data);
 
 	return item;
 }
 
-void WelcomTreeWidget::slotItemClicked( QListWidgetItem * item ) {
-	emit activated( item->data( Qt::UserRole ).toString() );
+void WelcomTreeWidget::slotItemClicked(QListWidgetItem * item)
+{
+	emit activated(item->data(Qt::UserRole).toString());
 }

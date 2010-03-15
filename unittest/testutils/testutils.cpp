@@ -29,7 +29,8 @@
 #include <QApplication>
 #include <modeltest.h>
 
-class TestUtils : public QObject {
+class TestUtils : public QObject
+{
 	Q_OBJECT
 private slots:
 	void initTestCase();
@@ -45,33 +46,36 @@ private:
 	QTreeView * m_tree;
 };
 
-void TestUtils::initTestCase() {
-	QDir::addSearchPath( "datas", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../../datas" ) );
-	QDir::addSearchPath( "datas", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../datas" ) );
-	QDir::addSearchPath( "datas", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../share/xinx/datas" ) );
+void TestUtils::initTestCase()
+{
+	QDir::addSearchPath("datas", QDir(QApplication::applicationDirPath()).absoluteFilePath("../../datas"));
+	QDir::addSearchPath("datas", QDir(QApplication::applicationDirPath()).absoluteFilePath("../datas"));
+	QDir::addSearchPath("datas", QDir(QApplication::applicationDirPath()).absoluteFilePath("../share/xinx/datas"));
 
-	QVERIFY( SnipetManager::self()->database().isValid() );
-	QVERIFY( SnipetManager::self()->database().isOpen() );
+	QVERIFY(SnipetManager::self()->database().isValid());
+	QVERIFY(SnipetManager::self()->database().isOpen());
 
-	m_model       = new RecursiveSortFilterProxyModel( this );
-	m_srcModel = SnipetManager::self()->createSnipetItemModel( m_model );
+	m_model       = new RecursiveSortFilterProxyModel(this);
+	m_srcModel = SnipetManager::self()->createSnipetItemModel(m_model);
 	m_srcModel->select();
 
-	m_model->setSourceModel( m_srcModel );
+	m_model->setSourceModel(m_srcModel);
 
 	m_tree = new QTreeView;
-	m_tree->setModel( m_model );
+	m_tree->setModel(m_model);
 
-	m_tree->setWindowTitle( QTreeView::tr("View") );
+	m_tree->setWindowTitle(QTreeView::tr("View"));
 	m_tree->resize(640, 480);
 	m_tree->show();
 }
 
-void TestUtils::testEmptyRecursiveModel() {
-	new ModelTest( m_model );
+void TestUtils::testEmptyRecursiveModel()
+{
+	new ModelTest(m_model);
 }
 
-void TestUtils::testFilterRecursiveModel_data() {
+void TestUtils::testFilterRecursiveModel_data()
+{
 	QTest::addColumn<QString>("filter");
 	QTest::addColumn<bool>("showAllChild");
 	QTest::addColumn<bool>("dynamicSort");
@@ -128,24 +132,26 @@ void TestUtils::testFilterRecursiveModel_data() {
 	QTest::newRow("filter find") << "Codzn" << false << false << false << false;
 }
 
-void TestUtils::testFilterRecursiveModel() {
+void TestUtils::testFilterRecursiveModel()
+{
 	QFETCH(QString, filter);
 	QFETCH(bool, showAllChild);
 	QFETCH(bool, dynamicSort);
 	QFETCH(bool, insensitive);
 	QFETCH(bool, includeIndex);
 
-	m_model->setFilterRegExp( filter );
-	m_model->setShowAllChild( showAllChild );
-	m_model->setDynamicSortFilter( dynamicSort );
-	m_model->setFilterCaseSensitivity( insensitive ? Qt::CaseInsensitive : Qt::CaseSensitive );
-	m_model->setIncludeIndex( includeIndex ? QModelIndexList() << m_model->mapToSource( m_model->index( 0, 0 ) ) : QModelIndexList() );
+	m_model->setFilterRegExp(filter);
+	m_model->setShowAllChild(showAllChild);
+	m_model->setDynamicSortFilter(dynamicSort);
+	m_model->setFilterCaseSensitivity(insensitive ? Qt::CaseInsensitive : Qt::CaseSensitive);
+	m_model->setIncludeIndex(includeIndex ? QModelIndexList() << m_model->mapToSource(m_model->index(0, 0)) : QModelIndexList());
 
 	m_tree->expandAll();
 	qApp->processEvents();
 }
 
-void TestUtils::cleanupTestCase() {
+void TestUtils::cleanupTestCase()
+{
 
 }
 

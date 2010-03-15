@@ -27,13 +27,15 @@
 
 /* XinxLanguageFactory */
 
-XinxLanguageFactory::XinxLanguageFactory( XinxFormatScheme *fmt, XINXConfig *p ) : QLanguageFactory( fmt, p ) {
-/*	QLanguageFactory::LangData data;
-	QNFADefinition::load( ":/qcodeedit/lan/xml.qnfa", &data, XINXConfig::self()->formatFactory()->scheme( "XML" ) );
-	XINXConfig::self()->languageFactory()->addLanguage(data);
-*/
+XinxLanguageFactory::XinxLanguageFactory(XinxFormatScheme *fmt, XINXConfig *p) : QLanguageFactory(fmt, p)
+{
+	/*	QLanguageFactory::LangData data;
+		QNFADefinition::load( ":/qcodeedit/lan/xml.qnfa", &data, XINXConfig::self()->formatFactory()->scheme( "XML" ) );
+		XINXConfig::self()->languageFactory()->addLanguage(data);
+	*/
 //	addDefinitionPath( ":/qcodeedit/lan" );
 }
 
-XinxLanguageFactory::~XinxLanguageFactory() {
+XinxLanguageFactory::~XinxLanguageFactory()
+{
 }

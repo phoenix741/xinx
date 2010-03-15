@@ -18,24 +18,62 @@
  * *********************************************************************** */
 
 // Xinx header
-#include "snipetcompletionnodemodel.h"
-#include "snipets/snipetcompletionparser.h"
-#include "contentview/contentviewnode.h"
+#include "contentview2/contentview2parserfactory.h"
+#include "plugins/xinxpluginsloader.h"
 
-SnipetCompletionNodeModel::SnipetCompletionNodeModel( ContentViewNode * root, QObject *parent ) : CompletionNodeModel( root ? root : SnipetCompletionParser::self()->rootNode(), parent ) {
-	if( root )
-		startTimer( 0 );
+namespace ContentView2 {
+
+ParserFactory::ParserFactory()
+{
 }
 
-SnipetCompletionNodeModel::~SnipetCompletionNodeModel() {
-	SnipetCompletionParser::self()->rootNode()->removeModel( this, (unsigned long)SnipetCompletionParser::self()->rootNode() );
+QString ParserFactory::getParserTypeByFilename( const QString & filename )
+{
+	if (! QFileInfo(filename).exists()) return QString();
+
+	IFileTypePlugin * fileType = XinxPluginsLoader::self()->matchedFileType(filename);
+	if( fileType )
+	{
+		QString parserType = fileType->parserType();
+		if( ! parserType.isEmpty() )
+		{
+			return parserType;
+		}
+	}
+	return QString();
 }
 
-void SnipetCompletionNodeModel::timerEvent( QTimerEvent * event ) {
-	killTimer( event->timerId() );
+Parser * ParserFactory::getParserByFilename( const QString & filename )
+{
+	QString parserType = getParserTypeByFilename( filename );
+	if( ! parserType.isEmpty() )
+	{
+		return getParserByType( parserType );
+	}
+	return 0;
+}
 
-	QMutexLocker locker( mutex() );
+Parser * ParserFactory::getParserByType( const QString & type )
+{
+	Parser * parser = 0;
 
-	SnipetCompletionParser::self()->rootNode()->addModel( this, (unsigned long)SnipetCompletionParser::self()->rootNode() );
-	addAllNodes( 0, SnipetCompletionParser::self()->rootNode() );
+	foreach( XinxPluginElement * e, XinxPluginsLoader::self()->plugins() )
+	{
+		if( e->isActivated() )
+		{
+			IContentViewParserPlugin * plugin = qobject_cast<IContentViewParserPlugin*>( e->plugin() );
+			if( plugin )
+			{
+				parser = plugin->createParser( type );
+				if( parser )
+				{
+					break;
+				}
+			}
+		}
+	}
+
+	return parser;
+}
+
 }

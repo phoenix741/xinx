@@ -26,79 +26,93 @@
 
 /* CustomSyntaxImpl */
 
-CustomSyntaxImpl::CustomSyntaxImpl( QWidget * parent ) : QWidget( parent ) {
-	setupUi( this );
+CustomSyntaxImpl::CustomSyntaxImpl(QWidget * parent) : QWidget(parent)
+{
+	setupUi(this);
 }
 
-CustomSyntaxImpl::~CustomSyntaxImpl() {
-	qDeleteAll( m_formatScheme );
+CustomSyntaxImpl::~CustomSyntaxImpl()
+{
+	qDeleteAll(m_formatScheme);
 }
 
-QPixmap CustomSyntaxImpl::image() {
-	return QPixmap( ":/images/preferences-color.png" );
+QPixmap CustomSyntaxImpl::image()
+{
+	return QPixmap(":/images/preferences-color.png");
 }
 
-QString CustomSyntaxImpl::name() {
+QString CustomSyntaxImpl::name()
+{
 	return windowTitle();
 }
 
-QWidget * CustomSyntaxImpl::settingsDialog() {
+QWidget * CustomSyntaxImpl::settingsDialog()
+{
 	return this;
 }
 
-bool CustomSyntaxImpl::loadSettingsDialog() {
+bool CustomSyntaxImpl::loadSettingsDialog()
+{
 	QStringList languages = XINXConfig::self()->languageFactory()->languages();
-	languages.removeAll( "None" );
+	languages.removeAll("None");
 	languages.sort();
 
 	m_highlighterComboBox->clear();
-	foreach( QString lang, languages ) {
-		m_highlighterComboBox->addItem( lang );
+	foreach(QString lang, languages)
+	{
+		m_highlighterComboBox->addItem(lang);
 		XinxFormatScheme * scheme;
-		if( m_formatScheme.value( lang ) )
-			scheme = m_formatScheme.value( lang );
-		else {
+		if (m_formatScheme.value(lang))
+			scheme = m_formatScheme.value(lang);
+		else
+		{
 			scheme = new XinxFormatScheme();
-			m_formatScheme.insert( lang, scheme );
+			m_formatScheme.insert(lang, scheme);
 		}
 
-		*scheme = *(XINXConfig::self()->scheme( lang ));
+		*scheme = *(XINXConfig::self()->scheme(lang));
 	}
-	m_highlighterComboBox->setCurrentIndex( 0 );
-	on_m_highlighterComboBox_activated( m_highlighterComboBox->currentText() );
+	m_highlighterComboBox->setCurrentIndex(0);
+	on_m_highlighterComboBox_activated(m_highlighterComboBox->currentText());
 
 	return true;
 }
 
-bool CustomSyntaxImpl::saveSettingsDialog() {
+bool CustomSyntaxImpl::saveSettingsDialog()
+{
 	QStringList languages = XINXConfig::self()->languageFactory()->languages();
-	languages.removeAll( "None" );
+	languages.removeAll("None");
 
-	foreach( QString lang, languages ) {
-		*(XINXConfig::self()->scheme( lang )) = *(m_formatScheme.value( lang ));
+	foreach(QString lang, languages)
+	{
+		*(XINXConfig::self()->scheme(lang)) = *(m_formatScheme.value(lang));
 	}
 	XINXConfig::self()->putFormatsSchemeToConfig();
 
 	return true;
 }
 
-void CustomSyntaxImpl::on_m_highlighterComboBox_activated( QString text ) {
-	m_customScheme->setHiddenFormat( QStringList() << "normal" << "search" << "match" << "braceMatch" << "braceMismatch" );
-	m_customScheme->setFormatScheme( m_formatScheme.value( text ) );
-	m_customScheme->setLanguageFactory( XINXConfig::self()->languageFactory() );
-	m_customScheme->setLanguageDefinition( text );
-	m_customScheme->setExample( XinxPluginsLoader::self()->exampleOfHighlighter( text ) );
+void CustomSyntaxImpl::on_m_highlighterComboBox_activated(QString text)
+{
+	m_customScheme->setHiddenFormat(QStringList() << "normal" << "search" << "match" << "braceMatch" << "braceMismatch");
+	m_customScheme->setFormatScheme(m_formatScheme.value(text));
+	m_customScheme->setLanguageFactory(XINXConfig::self()->languageFactory());
+	m_customScheme->setLanguageDefinition(text);
+	m_customScheme->setExample(XinxPluginsLoader::self()->exampleOfHighlighter(text));
 }
 
-bool CustomSyntaxImpl::cancelSettingsDialog() {
+bool CustomSyntaxImpl::cancelSettingsDialog()
+{
 	return true;
 }
 
-bool CustomSyntaxImpl::isSettingsValid() {
+bool CustomSyntaxImpl::isSettingsValid()
+{
 	return true;
 }
 
-bool CustomSyntaxImpl::isVisible() {
+bool CustomSyntaxImpl::isVisible()
+{
 	return true;
 }
 

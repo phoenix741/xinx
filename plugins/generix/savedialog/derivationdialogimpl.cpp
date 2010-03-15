@@ -26,86 +26,100 @@
 
 /* DerivationDialogImpl */
 
-DerivationDialogImpl::DerivationDialogImpl( QWidget * parent, Qt::WindowFlags f ) : QDialog( parent, f ) {
-	setupUi( this );
+DerivationDialogImpl::DerivationDialogImpl(QWidget * parent, Qt::WindowFlags f) : QDialog(parent, f)
+{
+	setupUi(this);
 
-	m_directoryEdit->setDirectory( false );
-	m_directoryEdit->lineEdit()->setFileMustExist( false );
+	m_directoryEdit->setDirectory(false);
+	m_directoryEdit->lineEdit()->setFileMustExist(false);
 
-	connect( m_derivationPathList, SIGNAL(currentTextChanged(QString)), this, SLOT(changePath()) );
-	connect( m_prefixList, SIGNAL(currentTextChanged(QString)), this, SLOT(changePath()) );
-	connect( m_derivationChk, SIGNAL(toggled(bool)), this, SLOT(changePath()) );
+	connect(m_derivationPathList, SIGNAL(currentTextChanged(QString)), this, SLOT(changePath()));
+	connect(m_prefixList, SIGNAL(currentTextChanged(QString)), this, SLOT(changePath()));
+	connect(m_derivationChk, SIGNAL(toggled(bool)), this, SLOT(changePath()));
 }
 
-DerivationDialogImpl::~DerivationDialogImpl() {
+DerivationDialogImpl::~DerivationDialogImpl()
+{
 }
 
-void DerivationDialogImpl::load( const QString & filename, const QString & filter ) {
-	GenerixProject * gnxProject = static_cast<GenerixProject*>( XINXProjectManager::self()->project() );
-	if( ! gnxProject ) return;
+void DerivationDialogImpl::load(const QString & filename, const QString & filter)
+{
+	GenerixProject * gnxProject = static_cast<GenerixProject*>(XINXProjectManager::self()->project().data());
+	if (! gnxProject) return;
 
-	m_directoryEdit->lineEdit()->setFilter( filter );
+	m_directoryEdit->lineEdit()->setFilter(filter);
 
-	if( QDir::isRelativePath( filename ) )
-		m_filename = QDir::cleanPath( QDir( gnxProject->webModuleLocation() ).absoluteFilePath( filename ) );
+	if (QDir::isRelativePath(filename))
+		m_filename = QDir::cleanPath(QDir(gnxProject->webModuleLocation()).absoluteFilePath(filename));
 	else
-		m_filename = QDir::cleanPath( filename );
+		m_filename = QDir::cleanPath(filename);
 
 	QList<GenerixProject::DerivationPath> derivationPaths = gnxProject->derivationsPath();
-	foreach( GenerixProject::DerivationPath dp, derivationPaths ) {
-		QString path = QDir::cleanPath( QDir( gnxProject->webModuleLocation() ).absoluteFilePath( dp.path ) );
+	foreach(GenerixProject::DerivationPath dp, derivationPaths)
+	{
+		QString path = QDir::cleanPath(QDir(gnxProject->webModuleLocation()).absoluteFilePath(dp.path));
 
-		if( dp.visible ) {
-			QListWidgetItem * item = new QListWidgetItem( m_derivationPathList );
-			item->setText( dp.name );
-			item->setData( Qt::UserRole, dp.path );
+		if (dp.visible)
+		{
+			QListWidgetItem * item = new QListWidgetItem(m_derivationPathList);
+			item->setText(dp.name);
+			item->setData(Qt::UserRole, dp.path);
 		}
 
-		if( m_filename.contains( path ) ) {
-			m_relativeFilename = QDir( path ).relativeFilePath( QFileInfo( m_filename ).absolutePath() );
+		if (m_filename.contains(path))
+		{
+			m_relativeFilename = QDir(path).relativeFilePath(QFileInfo(m_filename).absolutePath());
 		}
 	}
-	m_derivationPathList->setCurrentRow( 0 );
+	m_derivationPathList->setCurrentRow(0);
 
-	QListWidgetItem * noprefix = new QListWidgetItem( tr("<No prefix>"), m_prefixList );
-	noprefix->setSelected( true );
-	noprefix->setData( Qt::UserRole, true );
+	QListWidgetItem * noprefix = new QListWidgetItem(tr("<No prefix>"), m_prefixList);
+	noprefix->setSelected(true);
+	noprefix->setData(Qt::UserRole, true);
 
 	QListWidgetItem * defaultItem = 0;
-	if( ! gnxProject->defaultPrefix().isEmpty() ) {
+	if (! gnxProject->defaultPrefix().isEmpty())
+	{
 		QStringList prefixes = gnxProject->prefixes();
-		foreach( const QString & prefix, prefixes ) {
-			QListWidgetItem * item = new QListWidgetItem( prefix, m_prefixList );
-			if( gnxProject->defaultPrefix() == prefix ) {
-				item->setData( Qt::UserRole, false );
+		foreach(const QString & prefix, prefixes)
+		{
+			QListWidgetItem * item = new QListWidgetItem(prefix, m_prefixList);
+			if (gnxProject->defaultPrefix() == prefix)
+			{
+				item->setData(Qt::UserRole, false);
 				defaultItem = item;
 			}
 		}
 	}
-	m_prefixList->setCurrentItem( defaultItem );
+	m_prefixList->setCurrentItem(defaultItem);
 
 	changePath();
 }
 
-QString DerivationDialogImpl::getNewPath() const {
+QString DerivationDialogImpl::getNewPath() const
+{
 	return m_directoryEdit->lineEdit()->text();
 }
 
-bool DerivationDialogImpl::isDerivableFile( const QString & filename ) {
-	GenerixProject * project = static_cast<GenerixProject*>( XINXProjectManager::self()->project() );
-	if( ! project ) return false;
+bool DerivationDialogImpl::isDerivableFile(const QString & filename)
+{
+	GenerixProject * project = static_cast<GenerixProject*>(XINXProjectManager::self()->project().data());
+	if (! project) return false;
 
 	QString absoluteFilename;
-	if( QDir::isRelativePath( filename ) )
-		absoluteFilename = QDir::cleanPath( QDir( project->webModuleLocation() ).absoluteFilePath( filename ) );
+	if (QDir::isRelativePath(filename))
+		absoluteFilename = QDir::cleanPath(QDir(project->webModuleLocation()).absoluteFilePath(filename));
 	else
-		absoluteFilename = QDir::cleanPath( filename );
+		absoluteFilename = QDir::cleanPath(filename);
 
 	QList<GenerixProject::DerivationPath> derivationPaths = project->derivationsPath();
-	foreach( GenerixProject::DerivationPath dp, derivationPaths ) {
-		if( ! dp.derivation ) {
-			QString path = QDir::cleanPath( QDir( project->webModuleLocation() ).absoluteFilePath( dp.path ) );
-			if( absoluteFilename.contains( path ) ) {
+	foreach(GenerixProject::DerivationPath dp, derivationPaths)
+	{
+		if (! dp.derivation)
+		{
+			QString path = QDir::cleanPath(QDir(project->webModuleLocation()).absoluteFilePath(dp.path));
+			if (absoluteFilename.contains(path))
+			{
 				return false;
 			}
 		}
@@ -113,28 +127,32 @@ bool DerivationDialogImpl::isDerivableFile( const QString & filename ) {
 	return true;
 }
 
-void DerivationDialogImpl::changePath() {
-	GenerixProject * gnxProject = static_cast<GenerixProject*>( XINXProjectManager::self()->project() );
-	if( ! gnxProject ) return;
+void DerivationDialogImpl::changePath()
+{
+	GenerixProject * gnxProject = static_cast<GenerixProject*>(XINXProjectManager::self()->project().data());
+	if (! gnxProject) return;
 
-	if( m_derivationChk->isChecked() && m_derivationPathList->currentItem() && m_prefixList->currentItem() ) {
+	if (m_derivationChk->isChecked() && m_derivationPathList->currentItem() && m_prefixList->currentItem())
+	{
 		QListWidgetItem * derivationPathItem = m_derivationPathList->currentItem();
 		QListWidgetItem * prefixItem         = m_prefixList->currentItem();
 
 		const QString projectPath    = gnxProject->webModuleLocation();
-		const QString derivationPath = derivationPathItem->data( Qt::UserRole ).toString();
+		const QString derivationPath = derivationPathItem->data(Qt::UserRole).toString();
 		const QString prefix         = prefixItem->text();
 
-		QString pathname             = QDir( projectPath ).absoluteFilePath( derivationPath ) + ( m_relativeFilename.isEmpty() ? "/" : ( "/" + m_relativeFilename + "/" ) );
-		QString filename             = prefix + "_" + QFileInfo( m_filename ).fileName();
-		if( prefixItem->data( Qt::UserRole ).toBool() )
-			filename                 = QFileInfo( m_filename ).fileName();
+		QString pathname             = QDir(projectPath).absoluteFilePath(derivationPath) + (m_relativeFilename.isEmpty() ? "/" : ("/" + m_relativeFilename + "/"));
+		QString filename             = prefix + "_" + QFileInfo(m_filename).fileName();
+		if (prefixItem->data(Qt::UserRole).toBool())
+			filename                 = QFileInfo(m_filename).fileName();
 
-		if( gnxProject->createMissingDirectory() )
-			QDir::current().mkpath( pathname );
-		m_directoryEdit->lineEdit()->setText( pathname + filename );
-	} else {
-		m_directoryEdit->lineEdit()->setText( m_filename );
+		if (gnxProject->createMissingDirectory())
+			QDir::current().mkpath(pathname);
+		m_directoryEdit->lineEdit()->setText(pathname + filename);
+	}
+	else
+	{
+		m_directoryEdit->lineEdit()->setText(m_filename);
 	}
 }
 

@@ -26,154 +26,180 @@
 #include <QFileInfo>
 #include <QFile>
 
-namespace ContentView2 {
+namespace ContentView2
+{
 
 /* ParserException */
 
-ParserException::ParserException( QString message, QString filename, int line, int column ) : XinxException( QString("Error : %1 at line %2:%3 of file %4").arg( message ).arg( line ).arg( column ).arg( QFileInfo(filename).fileName() ) ), m_line( line ), m_column( column ), m_filename( filename ) {
+ParserException::ParserException(QString message, QString filename, int line, int column) : XinxException(QString("Error : %1 at line %2:%3 of file %4").arg(message).arg(line).arg(column).arg(QFileInfo(filename).fileName())), m_line(line), m_column(column), m_filename(filename)
+{
 
 }
 
-int ParserException::getLine() const {
+int ParserException::getLine() const
+{
 	return m_line;
 }
 
-int ParserException::getColumn() const {
+int ParserException::getColumn() const
+{
 	return m_column;
 }
 
 /* Parser */
 
-Parser::Parser( bool persistent ) : m_persistent( persistent ), m_decaledLine( 0 ), m_device( 0 ) {
+Parser::Parser() : m_decaledLine(0), m_device(0)
+{
 }
 
-Parser::~Parser() {
+Parser::~Parser()
+{
 }
 
-void Parser::setPersistent( bool value ) {
-	m_persistent = value;
-}
-
-bool Parser::isPersistent() const {
-	return m_persistent;
-}
-
-void Parser::setDecalage( int line ) {
+void Parser::setDecalage(int line)
+{
 	m_decaledLine = line;
 }
 
-int Parser::decalage() const {
+int Parser::decalage() const
+{
 	return m_decaledLine;
 }
 
-void Parser::setRootNode( const Node & node ) {
+void Parser::setRootNode(const Node & node)
+{
 	m_rootNode = node;
 }
 
-Node Parser::rootNode() const {
+Node Parser::rootNode() const
+{
 	return m_rootNode;
 }
 
-void Parser::setFilename( const QString & filename ) {
-	QFile * file = new QFile( filename );
+void Parser::setFilename(const QString & filename)
+{
+	QFile * file = new QFile(filename);
 
 	// Open the file
-	if( ! file->open(QFile::ReadOnly) ) {
+	if (! file->open(QFile::ReadOnly))
+	{
 		QString errorString = file->errorString();
 		delete file;
-		throw ParserException( tr("Cannot read file %1:%2.").arg( filename ).arg( errorString ), filename, 0, 0 );
+		throw ParserException(tr("Cannot read file %1:%2.").arg(filename).arg(errorString), filename, 0, 0);
 	}
 
 	delete m_device;
-	if( m_rootNode.isValid() )
-		m_rootNode.setFileName( filename );
 	m_filename = filename;
 	m_device = file;
 }
 
-QString Parser::filename() const {
-	if( m_rootNode.isValid() )
-		return m_rootNode.fileName();
+QString Parser::filename() const
+{
 	return m_filename;
 }
 
-void Parser::setInputDevice( QIODevice * device ) {
+void Parser::setInputDevice(QIODevice * device)
+{
 	m_device = device;
 }
 
-QIODevice * Parser::inputDevice() const {
+QIODevice * Parser::inputDevice() const
+{
 	return m_device;
 }
 
-void Parser::setDatabase( const QSqlDatabase & db ) {
+void Parser::setDatabase(const QSqlDatabase & db)
+{
 	m_db = db;
 }
 
-QSqlDatabase Parser::database() const {
+QSqlDatabase Parser::database() const
+{
 	return m_db;
 }
 
-void Parser::addImport( const QString & import ) {
-	m_imports.append( locationOf( import ) );
+void Parser::addImport(const QString & import)
+{
+	m_imports.append(locationOf(import));
 }
 
-const QStringList & Parser::imports() const {
+const QStringList & Parser::imports() const
+{
 	return m_imports;
 }
 
-void Parser::attachNode( const Node & parent, Node & child ) {
-	Q_ASSERT( parent.isValid() );
+void Parser::attachNode(const Node & parent, Node & child)
+{
+	Q_ASSERT(parent.isValid());
 
 	int id;
-	child.setLine( child.line() + m_decaledLine );
-	if( ( id = parent.indexOfChild( m_db, child ) ) >= 0 ) {
-		child.load( m_db, id );
-		removeAttachedNode( child );
-	} else {
-		child.create( m_db );
-		child.attach( m_db, parent.nodeId() );
-		removeAttachedNode( child );
+	child.setLine(child.line() + m_decaledLine);
+	if ((id = parent.indexOfChild(m_db, child)) >= 0)
+	{
+		child.load(m_db, id);
+		removeAttachedNode(child);
+	}
+	else
+	{
+		child.create(m_db);
+		child.attach(m_db, parent.nodeId());
+		removeAttachedNode(child);
 	}
 }
 
-void Parser::loadAttachedNode( const Node & rootNode ) {
-	if( ! rootNode.isValid() ) return;
-	foreach( uint n, rootNode.childs( m_db ) ) {
-		m_attachedNode.append( qMakePair( rootNode.nodeId(), n ) );
+void Parser::loadAttachedNode(const Node & rootNode)
+{
+	if (! rootNode.isValid()) return;
+	foreach(uint n, rootNode.childs(m_db))
+	{
+		m_attachedNode.append(qMakePair(rootNode.nodeId(), n));
 	}
 }
 
-void Parser::detachAttachedNode() {
+void Parser::detachAttachedNode()
+{
 	QPair<uint,uint> p;
-	foreach( p, m_attachedNode ) {
-		Node parent( m_db, p.second );
-		parent.detach( m_db, p.first );
+	foreach(p, m_attachedNode)
+	{
+		Node child(m_db, p.second);
+		child.detach(m_db, p.first);
+		child.destroy(m_db);
 	}
 	m_attachedNode.clear();
 }
 
-void Parser::removeAttachedNode( const Node & n ) {
-	QMutableListIterator< QPair<uint,uint> > i( m_attachedNode );
-	while( i.hasNext() ) {
+void Parser::removeAttachedNode(const Node & n)
+{
+	QMutableListIterator< QPair<uint,uint> > i(m_attachedNode);
+	while (i.hasNext())
+	{
 		QPair<uint,uint> p = i.next();
-		if( p.second == n.nodeId() ) {
+		if (p.second == n.nodeId())
+		{
 			i.remove();
 		}
 	}
 }
 
-void Parser::removeAttachedNodes() {
+void Parser::removeAttachedNodes()
+{
 	m_attachedNode.clear();
 }
 
-QString Parser::locationOf( const QString & relativeFilename ) {
+QString Parser::locationOf(const QString & relativeFilename)
+{
 	QString fn = filename();
-	if( XINXProjectManager::self()->project() && fn.isEmpty() )
+	if (XINXProjectManager::self()->project() && fn.isEmpty())
 		fn = XINXProjectManager::self()->project()->projectPath();
 	else
-		fn = QFileInfo( filename() ).absolutePath();
+		fn = QFileInfo(filename()).absolutePath();
 
-	return ExternalFileResolver::self()->resolveFileName( relativeFilename, fn );
+	return ExternalFileResolver::self()->resolveFileName(relativeFilename, fn);
+}
+
+QTextCodec * Parser::codec()
+{
+	return 0;
 }
 
 } // namespace ContentView2

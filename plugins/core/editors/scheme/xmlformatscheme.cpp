@@ -23,47 +23,49 @@
 // QCodeEdit header
 #include <qformat.h>
 
-XmlFormatScheme::XmlFormatScheme( XINXConfig * config ) : XinxFormatScheme( config ) {
-	setNameSpace( "xml" );
+XmlFormatScheme::XmlFormatScheme(XINXConfig * config) : XinxFormatScheme(config)
+{
+	setNameSpace("xml");
 	createDefaultScheme();
 }
 
-void XmlFormatScheme::createDefaultScheme() {
+void XmlFormatScheme::createDefaultScheme()
+{
 	QFormat comment, cdata, preprocessor, doctype, entity, elementname, attributename, attributevalue, xpath;
 
 	// Comment format
 	comment.foreground = Qt::darkGreen;
-	setFormat( "comment", comment );
+	setFormat("comment", comment);
 
 	// CDATA format
 	cdata.foreground = Qt::gray;
-	setFormat( "cdata", cdata );
+	setFormat("cdata", cdata);
 
 	// Preprocessor format
 	preprocessor.foreground = Qt::gray;
-	setFormat( "preprocessor", preprocessor );
+	setFormat("preprocessor", preprocessor);
 
 	// doctype format
 	doctype.foreground = Qt::gray;
-	setFormat( "doctype", doctype );
+	setFormat("doctype", doctype);
 
 	// entity format
 	entity.foreground = Qt::gray;
-	setFormat( "entity", entity );
+	setFormat("entity", entity);
 
 	// Element Name format
 	elementname.foreground = Qt::darkRed;
-	setFormat( "elementname", elementname );
+	setFormat("elementname", elementname);
 
 	// Attribute Name format
 	attributename.foreground = Qt::red;
-	setFormat( "attributename", attributename );
+	setFormat("attributename", attributename);
 
 	// Attribute Value format
 	attributevalue.foreground = Qt::blue;
-	setFormat( "attributevalue", attributevalue );
+	setFormat("attributevalue", attributevalue);
 
 	// X Path format
 	xpath.foreground = Qt::darkMagenta;
-	setFormat( "xpath", xpath );
+	setFormat("xpath", xpath);
 }

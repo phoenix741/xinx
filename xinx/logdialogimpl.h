@@ -31,25 +31,26 @@
 
 class PrivateLogDockWidget;
 
-class LogDockWidget : public QDockWidget {
+class LogDockWidget : public QDockWidget
+{
 	Q_OBJECT
 public:
-	LogDockWidget( const QString & title, QWidget * parent = 0, Qt::WindowFlags flags = 0 );
-	LogDockWidget( QWidget * parent = 0, Qt::WindowFlags flags = 0 );
+	LogDockWidget(const QString & title, QWidget * parent = 0, Qt::WindowFlags flags = 0);
+	LogDockWidget(QWidget * parent = 0, Qt::WindowFlags flags = 0);
 	virtual ~LogDockWidget();
 
 	void init();
 	void end();
 public slots:
-	void log( RCS::rcsLog niveau, const QString & info );
-	void find( const QString & filename, const QString & text, int line );
+	void log(RCS::rcsLog niveau, const QString & info);
+	void find(const QString & filename, const QString & text, int line);
 
-	void clearMessages( const QString & file );
-	void addMessage( const QString & file, int line, const QString & message, AbstractEditor::LevelMessage level );
+	void clearMessages(const QString & file);
+	void addMessage(const QString & file, int line, const QString & message, AbstractEditor::LevelMessage level);
 signals:
-	void open( const QString & filename, int line );
+	void open(const QString & filename, int line);
 protected slots:
-	void on_m_searchTreeWidget_doubleClicked( const QModelIndex & index );;
+	void on_m_searchTreeWidget_doubleClicked(const QModelIndex & index);;
 private:
 	Ui::LogWidget * m_logwidget;
 	QHash<QString,QTreeWidgetItem*>  m_messageItemFile;

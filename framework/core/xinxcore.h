@@ -278,7 +278,8 @@
  * All static class add self to the static deleter who delete all static class when the application is stopped
  * (if necessary).
  */
-class LIBEXPORT XINXStaticDeleter : public QObjectCleanupHandler {
+class LIBEXPORT XINXStaticDeleter : public QObjectCleanupHandler
+{
 	Q_OBJECT
 public:
 	/*! Intialize default value of object. */
@@ -291,7 +292,10 @@ public:
 	 * Add an object to the static deleter class. This function is replaced by
 	 * the add() method of the QObjectCleanupHandler.
 	 */
-	void addObject( QObject * object ) { add( object ); };
+	void addObject(QObject * object)
+	{
+		add(object);
+	};
 
 	/*!
 	 * Retrieve the global object created at the first call of the this method.
@@ -321,10 +325,12 @@ private:
  * \sa qDeleteAllLater(const Container &c)
  */
 template <typename ForwardIterator>
-void qDeleteAllLater(ForwardIterator begin, ForwardIterator end) {
-	while (begin != end) {
-		if( dynamic_cast<QObject*>( *begin ) )
-			dynamic_cast<QObject*>( *begin )->deleteLater();
+void qDeleteAllLater(ForwardIterator begin, ForwardIterator end)
+{
+	while (begin != end)
+	{
+		if (dynamic_cast<QObject*>(*begin))
+			dynamic_cast<QObject*>(*begin)->deleteLater();
 		else
 			delete *begin;
 		++begin;
@@ -337,7 +343,8 @@ void qDeleteAllLater(ForwardIterator begin, ForwardIterator end) {
  * \sa qDeleteAllLater(ForwardIterator begin, ForwardIterator end)
  */
 template <typename Container>
-inline void qDeleteAllLater(const Container &c) {
+inline void qDeleteAllLater(const Container &c)
+{
 	qDeleteAllLater(c.begin(), c.end());
 }
 

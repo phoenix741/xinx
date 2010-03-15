@@ -32,10 +32,11 @@
 /*!
  * \internal
  */
-class SnipetParameterNameItem : public QTableWidgetItem {
+class SnipetParameterNameItem : public QTableWidgetItem
+{
 public:
 	SnipetParameterNameItem();
-	SnipetParameterNameItem( const QString & name );
+	SnipetParameterNameItem(const QString & name);
 private:
 
 };
@@ -43,13 +44,14 @@ private:
 /*!
  * \internal
  */
-class SnipetParameterValueItem : public QTableWidgetItem {
+class SnipetParameterValueItem : public QTableWidgetItem
+{
 public:
 	SnipetParameterValueItem();
-	SnipetParameterValueItem( const QString & defaultValue );
+	SnipetParameterValueItem(const QString & defaultValue);
 
 	void setDefault();
-	void setDefaultValue( const QString & value );
+	void setDefaultValue(const QString & value);
 	const QString & defaultValue() const;
 private:
 	QString m_defaultValue;
@@ -60,7 +62,8 @@ private:
  * The implementation containts only a constructor who defines default dialog
  * presentation : Windows Style Dialog.
  */
-class CallSnipetDialogImpl : public QDialog, public Ui::CallSnipetDialog {
+class CallSnipetDialogImpl : public QDialog, public Ui::CallSnipetDialog
+{
 	Q_OBJECT
 public:
 	/*!
@@ -70,7 +73,7 @@ public:
 	 * \param parent The parent of the dialog
 	 * \param f Flags to use on Windows. By default, the dialog have a fixed size.
 	 */
-	CallSnipetDialogImpl( QSqlDatabase db, int snipetId, QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
+	CallSnipetDialogImpl(QSqlDatabase db, int snipetId, QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint);
 	/*!
 	 * Destroy the dialog.
 	 */
@@ -81,9 +84,9 @@ public:
 
 	int exec();
 private slots:
-	void on_m_tabWidget_currentChanged( int );
+	void on_m_tabWidget_currentChanged(int);
 private:
-	void setupUi( QSqlDatabase db, int snipetId, QDialog * parent );
+	void setupUi(QSqlDatabase db, int snipetId, QDialog * parent);
 
 	QString m_snipetText;
 	bool m_isAutomatic, m_showDialog;

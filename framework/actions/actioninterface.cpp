@@ -25,87 +25,107 @@ using namespace XinxAction;
 
 /* Action */
 
-Action::Action( QAction * a, QObject * parent ) : QObject( parent ), m_action( a ) {
+Action::Action(QAction * a, QObject * parent) : QObject(parent), m_action(a)
+{
 	updateActionState();
-	connect( m_action, SIGNAL(triggered()), this, SLOT(actionTriggered()) );
+	connect(m_action, SIGNAL(triggered()), this, SLOT(actionTriggered()));
 }
 
-Action::Action( const QString & text, const QKeySequence & shortcut, QObject * parent ) : QObject( parent ) {
-	m_action = new QAction( text, this );
-	m_action->setShortcut( shortcut );
+Action::Action(const QString & text, const QKeySequence & shortcut, QObject * parent) : QObject(parent)
+{
+	m_action = new QAction(text, this);
+	m_action->setShortcut(shortcut);
 	updateActionState();
-	connect( m_action, SIGNAL(triggered()), this, SLOT(actionTriggered()) );
+	connect(m_action, SIGNAL(triggered()), this, SLOT(actionTriggered()));
 }
 
-Action::Action( const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent ) : QObject( parent ) {
-	m_action = new QAction( icon, text, this );
-	m_action->setShortcut( shortcut );
+Action::Action(const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent) : QObject(parent)
+{
+	m_action = new QAction(icon, text, this);
+	m_action->setShortcut(shortcut);
 	updateActionState();
-	connect( m_action, SIGNAL(triggered()), this, SLOT(actionTriggered()) );
+	connect(m_action, SIGNAL(triggered()), this, SLOT(actionTriggered()));
 }
 
-Action::~Action() {
+Action::~Action()
+{
 }
 
-QAction * Action::action() const {
+QAction * Action::action() const
+{
 	return m_action;
 }
 
-bool Action::isActionVisible() const {
+bool Action::isActionVisible() const
+{
 	return true;
 }
 
-bool Action::isActionEnabled() const {
+bool Action::isActionEnabled() const
+{
 	return true;
 }
 
-bool Action::isInToolBar() const {
+bool Action::isInToolBar() const
+{
 	return true;
 }
 
-bool Action::isInPopupMenu() const {
+bool Action::isInPopupMenu() const
+{
 	return true;
 }
 
-void Action::updateActionState() {
-	m_action->setVisible( isActionVisible() );
-	m_action->setEnabled( isActionEnabled() );
+void Action::updateActionState()
+{
+	m_action->setVisible(isActionVisible());
+	m_action->setEnabled(isActionEnabled());
 }
 
-void Action::actionTriggered() {
+void Action::actionTriggered()
+{
 }
 
 /* ActionList */
 
-ActionList::ActionList( const QString & menu ) : m_menu( menu ), m_menuId( menu ) {
+ActionList::ActionList(const QString & menu) : m_menu(menu), m_menuId(menu)
+{
 }
 
-ActionList::ActionList( const QString & menu, const QString & id ) : m_menu( menu ), m_menuId( id ) {
+ActionList::ActionList(const QString & menu, const QString & id) : m_menu(menu), m_menuId(id)
+{
 }
 
-const QString & ActionList::menu() const {
+const QString & ActionList::menu() const
+{
 	return m_menu;
 }
 
-const QString & ActionList::menuId() const {
+const QString & ActionList::menuId() const
+{
 	return m_menuId;
 }
 
-void ActionList::updateActionsState() {
-	foreach( MenuItem * item, *this ) {
-		Action * action = dynamic_cast<Action*>( item );
-		if( action )
+void ActionList::updateActionsState()
+{
+	foreach(MenuItem * item, *this)
+	{
+		Action * action = dynamic_cast<Action*>(item);
+		if (action)
 			action->updateActionState();
 	}
 }
 
 /* MenuList */
 
-MenuList::MenuList() {
+MenuList::MenuList()
+{
 }
 
-void MenuList::updateMenuState() {
-	foreach( ActionList menu, *this ) {
+void MenuList::updateMenuState()
+{
+	foreach(ActionList menu, *this)
+	{
 		menu.updateActionsState();
 	}
 }

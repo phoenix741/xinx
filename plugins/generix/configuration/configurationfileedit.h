@@ -26,14 +26,15 @@
 // Xinx header
 #include "configurationfile.h"
 
-class ConfigurationVersionLabel : public QLabel {
+class ConfigurationVersionLabel : public QLabel
+{
 	Q_OBJECT
-	Q_PROPERTY( ConfigurationVersion version READ version WRITE setVersion  )
+	Q_PROPERTY(ConfigurationVersion version READ version WRITE setVersion)
 public:
-	ConfigurationVersionLabel( QWidget * parent );
+	ConfigurationVersionLabel(QWidget * parent);
 
 	const ConfigurationVersion & version() const;
-	void setVersion( const ConfigurationVersion & value );
+	void setVersion(const ConfigurationVersion & value);
 
 private:
 	ConfigurationVersion m_version;

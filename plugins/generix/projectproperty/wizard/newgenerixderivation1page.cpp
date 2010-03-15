@@ -24,21 +24,25 @@
 
 /* NewGenerixDerivation1Page */
 
-NewGenerixDerivation1Page::NewGenerixDerivation1Page() {
-	setupUi( this );
+NewGenerixDerivation1Page::NewGenerixDerivation1Page()
+{
+	setupUi(this);
 
-	registerField( "generix.derivation", m_derivationRadio );
+	registerField("generix.derivation", m_derivationRadio);
 }
 
-QString NewGenerixDerivation1Page::pagePluginId() const {
+QString NewGenerixDerivation1Page::pagePluginId() const
+{
 	return "GenerixDerivation1";
 }
 
-bool NewGenerixDerivation1Page::pageIsVisible() const {
+bool NewGenerixDerivation1Page::pageIsVisible() const
+{
 	return true;
 }
 
-bool NewGenerixDerivation1Page::saveSettingsDialog( XinxProject * project ) {
+bool NewGenerixDerivation1Page::saveSettingsDialog(XinxProject * project)
+{
 //	static_cast<GenerixProject*>( project )->setDerivationOption( m_derivationRadio->isChecked() );
 
 	return true;

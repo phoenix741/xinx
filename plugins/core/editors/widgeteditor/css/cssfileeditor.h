@@ -23,18 +23,20 @@
 
 // Xinx header
 #include <editors/textfileeditor.h>
-#include <editors/contentviewtexteditor.h>
 
 class CSSFileContentParser;
 
-class CSSFileEditor : public ContentViewTextEditor {
+class CSSFileEditor : public TextFileEditor
+{
 	Q_OBJECT
 public:
-	CSSFileEditor( QWidget *parent = 0 );
+	CSSFileEditor(QWidget *parent = 0);
 	virtual ~CSSFileEditor();
 
 	virtual QString defaultFileName() const;
 	virtual QIcon icon() const;
+protected:
+	virtual ContentView2::Parser * createParser();
 private:
 	CSSFileContentParser * m_parser;
 };

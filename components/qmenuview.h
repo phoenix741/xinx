@@ -25,33 +25,34 @@
 #include <QMenu>
 #include <QAbstractItemModel>
 
-class QMenuView : public QMenu {
+class QMenuView : public QMenu
+{
 	Q_OBJECT
 public:
-	QMenuView( QWidget * parent = 0 );
+	QMenuView(QWidget * parent = 0);
 	virtual ~QMenuView();
 
-	virtual void setModel ( QAbstractItemModel * model );
-	QAbstractItemModel * model () const;
+	virtual void setModel(QAbstractItemModel * model);
+	QAbstractItemModel * model() const;
 
-	virtual void setRootIndex ( const QModelIndex & index );
-	QModelIndex rootIndex () const;
+	virtual void setRootIndex(const QModelIndex & index);
+	QModelIndex rootIndex() const;
 protected:
 	// add any actions before the tree, return true if any actions are added.
 	virtual bool prePopulated();
 	// add any actions after the tree
 	virtual void postPopulated();
 	// put all of the children of parent into menu
-	void createMenu( const QModelIndex &parent, QMenu *parentMenu = 0, QMenu *menu = 0 );
+	void createMenu(const QModelIndex &parent, QMenu *parentMenu = 0, QMenu *menu = 0);
 signals:
-	void hovered( const QString &text ) const;
-	void triggered( const QModelIndex & index ) const;
+	void hovered(const QString &text) const;
+	void triggered(const QModelIndex & index) const;
 private slots:
 	void aboutToShow();
 	void triggered(QAction *action);
 	void hovered(QAction *action);
 private:
-	QAction *makeAction( const QModelIndex &index );
+	QAction *makeAction(const QModelIndex &index);
 
 	QAbstractItemModel * m_model;
 	QPersistentModelIndex m_root;

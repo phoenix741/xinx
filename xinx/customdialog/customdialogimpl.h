@@ -33,7 +33,8 @@ class IXinxPluginConfigurationPage;
  * Implementation of dialog used to configure custom options in XINX. The options is globals for the application.
  * This dialog save and restore modification in a XINXConfig class.
  */
-class CustomDialogImpl : public QDialog, public Ui::CustomDialog {
+class CustomDialogImpl : public QDialog, public Ui::CustomDialog
+{
 	Q_OBJECT
 public:
 	/*!
@@ -41,7 +42,7 @@ public:
 	 * \param parent Parent of the dialog
 	 * \param f Flags to use on Windows. By default, the dialog have a fixed size.
 	 */
-	CustomDialogImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
+	CustomDialogImpl(QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint);
 	~CustomDialogImpl();
 
 	void loadConfig();

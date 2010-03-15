@@ -27,124 +27,156 @@
 
 /* XMLPrettyPrinter */
 
-XMLPrettyPrinter::XMLPrettyPrinter() {
+XMLPrettyPrinter::XMLPrettyPrinter()
+{
 }
 
-XMLPrettyPrinter::~XMLPrettyPrinter() {
+XMLPrettyPrinter::~XMLPrettyPrinter()
+{
 }
 
-void XMLPrettyPrinter::setText( const QString & text ) {
+void XMLPrettyPrinter::setText(const QString & text)
+{
 	m_text = text;
 }
 
-void XMLPrettyPrinter::process() {
-	addData( m_text );
+void XMLPrettyPrinter::process()
+{
+	addData(m_text);
 	//QByteArray buffer = m_text.toUtf8();
 	//QBuffer dev( &buffer );
 	//dev.open( QIODevice::ReadOnly );
 	//setDevice( &dev );
 
-	m_resultBuffer.open( QIODevice::WriteOnly | QIODevice::Truncate );
-	m_result.setDevice( &m_resultBuffer );
-	m_result.setCodec( QTextCodec::codecForName( qPrintable( XINXConfig::self()->config().editor.defaultTextCodec ) ) );
+	m_resultBuffer.open(QIODevice::WriteOnly | QIODevice::Truncate);
+	m_result.setDevice(&m_resultBuffer);
+	m_result.setCodec(QTextCodec::codecForName(qPrintable(XINXConfig::self()->config().editor.defaultTextCodec)));
 
 	constructXML();
 
 	m_resultBuffer.close();
 	//clear();
 
-	if( error() )
-		throw XMLPrettyPrinterException( errorString(), lineNumber(), columnNumber() );
+	if (error())
+		throw XMLPrettyPrinterException(errorString(), lineNumber(), columnNumber());
 }
 
-QString XMLPrettyPrinter::getResult() {
-	return QString( m_resultBuffer.data() );
+QString XMLPrettyPrinter::getResult()
+{
+	return QString(m_resultBuffer.data());
 }
 
-void XMLPrettyPrinter::writeLevel( int level ) {
-	for( int i = 0; i < level; i++ )
+void XMLPrettyPrinter::writeLevel(int level)
+{
+	for (int i = 0; i < level; i++)
 		m_result << "\t";
 }
 
-void XMLPrettyPrinter::constructXML( int level ) {
+void XMLPrettyPrinter::constructXML(int level)
+{
 	QXmlStreamReader::TokenType prevType = QXmlStreamReader::NoToken;
 	QString plainText;
 	bool firstTour = true;
 
-	while( ! atEnd() ) {
+	while (! atEnd())
+	{
 		readNext();
 
-		if( firstTour && ( ( level > 0 ) && ( prevType == QXmlStreamReader::NoToken ) && ( !isWhitespace() ) ) ) {
-			if( isEndElement() ) {
+		if (firstTour && ((level > 0) && (prevType == QXmlStreamReader::NoToken) && (!isWhitespace())))
+		{
+			if (isEndElement())
+			{
 				m_result << "/>";
-			} else
+			}
+			else
 				m_result << ">";
 		}
 
 
-		if( !isWhitespace() && ( isEntityReference() || isCharacters() ) ) {
-			if( isCDATA() )
+		if (!isWhitespace() && (isEntityReference() || isCharacters()))
+		{
+			if (isCDATA())
 				plainText += "<![CDATA[" + text().toString() + "]]>";
-			else if( isEntityReference() )
+			else if (isEntityReference())
 				plainText += name().toString();
-			else if( isCharacters() )
-				plainText += Qt::escape( text().toString() );
-		} else if( ! plainText.isEmpty() ) {
-			plainText = plainText.replace( QChar(QChar::Nbsp), "&#160;" );
+			else if (isCharacters())
+				plainText += Qt::escape(text().toString());
+		}
+		else if (! plainText.isEmpty())
+		{
+			plainText = plainText.replace(QChar(QChar::Nbsp), "&#160;");
 			m_result << plainText.trimmed();
 			plainText = QString();
 		}
 
-		if( isStartElement() ) {
-			if( prevType != QXmlStreamReader::Characters ) {
+		if (isStartElement())
+		{
+			if (prevType != QXmlStreamReader::Characters)
+			{
 				m_result << "\n";
-				writeLevel( level );
+				writeLevel(level);
 			}
 
 			m_result << "<" + qualifiedName().toString();
 
-			foreach( const QXmlStreamAttribute & a, attributes() ) {
-				m_result << " " + a.qualifiedName().toString() + "=\"" + Qt::escape( a.value().toString() ) + "\"";
+			foreach(const QXmlStreamAttribute & a, attributes())
+			{
+				m_result << " " + a.qualifiedName().toString() + "=\"" + Qt::escape(a.value().toString()) + "\"";
 			}
 
 			QXmlStreamNamespaceDeclarations ns = namespaceDeclarations();
-			for (int i = 0; i < ns.size(); ++i) {
+			for (int i = 0; i < ns.size(); ++i)
+			{
 				const QXmlStreamNamespaceDeclaration &namespaceDeclaration = ns.at(i);
-				if( namespaceDeclaration.prefix().isEmpty() )
+				if (namespaceDeclaration.prefix().isEmpty())
 					m_result << " xmlns" << "=\"" << namespaceDeclaration.namespaceUri().toString() << "\"";
 				else
 					m_result << " xmlns:" << namespaceDeclaration.prefix().toString() << "=\"" << namespaceDeclaration.namespaceUri().toString() << "\"";
 			}
 
-			constructXML( level + 1 );
-		} else if( isEndElement() ) {
-			if( prevType != QXmlStreamReader::NoToken ) {
-				if( prevType != QXmlStreamReader::Characters ) {
+			constructXML(level + 1);
+		}
+		else if (isEndElement())
+		{
+			if (prevType != QXmlStreamReader::NoToken)
+			{
+				if (prevType != QXmlStreamReader::Characters)
+				{
 					m_result << "\n";
-					writeLevel( level - 1 );
+					writeLevel(level - 1);
 				}
 				m_result << "</" + qualifiedName().toString() + ">";
 			}
 			break;
-		} else if( isDTD() ) {
+		}
+		else if (isDTD())
+		{
 			m_result << text().toString();
-		} else if( isProcessingInstruction() ) {
+		}
+		else if (isProcessingInstruction())
+		{
 			m_result << "<?" << processingInstructionTarget().toString() << " " << processingInstructionData().toString() << "?>";
-		} else if( isStartDocument() ) {
-			if( ! documentEncoding().toString().isEmpty() )
-				m_result.setCodec( QTextCodec::codecForName( qPrintable( documentEncoding().toString() ) ) );
+		}
+		else if (isStartDocument())
+		{
+			if (! documentEncoding().toString().isEmpty())
+				m_result.setCodec(QTextCodec::codecForName(qPrintable(documentEncoding().toString())));
 			else
-				m_result.setCodec( QTextCodec::codecForName( qPrintable( XINXConfig::self()->config().editor.defaultTextCodec ) ) );
+				m_result.setCodec(QTextCodec::codecForName(qPrintable(XINXConfig::self()->config().editor.defaultTextCodec)));
 			m_result << "<?xml version=\"1.0\" encoding=\"" << m_result.codec()->name().constData() << "\"?>";
-		} else if( isComment() ) {
-			if( prevType != QXmlStreamReader::Characters ) {
+		}
+		else if (isComment())
+		{
+			if (prevType != QXmlStreamReader::Characters)
+			{
 				m_result << "\n";
-				writeLevel( level );
+				writeLevel(level);
 			}
 			m_result << "<!--" << text().toString() << "-->";
 		}
 
-		if( !isWhitespace() ) {
+		if (!isWhitespace())
+		{
 			prevType = tokenType();
 			firstTour = false;
 		}

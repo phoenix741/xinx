@@ -24,42 +24,49 @@
 
 /* CustomGenerixImpl */
 
-CustomGenerixImpl::CustomGenerixImpl( QWidget * parent ) : QWidget( parent ) {
-	setupUi( this );
+CustomGenerixImpl::CustomGenerixImpl(QWidget * parent) : QWidget(parent)
+{
+	setupUi(this);
 }
 
-CustomGenerixImpl::~CustomGenerixImpl() {
+CustomGenerixImpl::~CustomGenerixImpl()
+{
 }
 
-QPixmap CustomGenerixImpl::image() {
-	return QPixmap( ":/generix/images/logo_gce64.png" );
+QPixmap CustomGenerixImpl::image()
+{
+	return QPixmap(":/generix/images/logo_gce64.png");
 }
 
-QString CustomGenerixImpl::name() {
+QString CustomGenerixImpl::name()
+{
 	return windowTitle();
 }
 
-QWidget * CustomGenerixImpl::settingsDialog() {
+QWidget * CustomGenerixImpl::settingsDialog()
+{
 	return this;
 }
 
-bool CustomGenerixImpl::loadSettingsDialog() {
+bool CustomGenerixImpl::loadSettingsDialog()
+{
 	SelfGenerixSettings::self()->load();
 
 	// Extentions
 	m_extentions = SelfGenerixSettings::self()->config().files;
 
-	SpecifiqueModelIndex * specifiqueModel = new SpecifiqueModelIndex( &m_extentions , m_specifiqueTableView );
-	m_specifiqueTableView->setModel( specifiqueModel );
+	SpecifiqueModelIndex * specifiqueModel = new SpecifiqueModelIndex(&m_extentions , m_specifiqueTableView);
+	m_specifiqueTableView->setModel(specifiqueModel);
 	m_specifiqueTableView->resizeColumnsToContents();
-	QObject::connect( specifiqueModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), m_specifiqueTableView, SLOT(resizeColumnsToContents()) );
+	QObject::connect(specifiqueModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), m_specifiqueTableView, SLOT(resizeColumnsToContents()));
 
-	m_lineEditDefaultProjectPathName->setText( SelfGenerixSettings::self()->config().defaultProjectPathName );
+	m_lineEditDefaultProjectPathName->setText(SelfGenerixSettings::self()->config().defaultProjectPathName);
 
 	return true;
 }
 
-bool CustomGenerixImpl::saveSettingsDialog() {
+bool CustomGenerixImpl::saveSettingsDialog()
+{
 	SelfGenerixSettings::self()->config().files = m_extentions;
 	SelfGenerixSettings::self()->config().defaultProjectPathName = m_lineEditDefaultProjectPathName->text();
 
@@ -68,15 +75,18 @@ bool CustomGenerixImpl::saveSettingsDialog() {
 	return true;
 }
 
-bool CustomGenerixImpl::cancelSettingsDialog() {
+bool CustomGenerixImpl::cancelSettingsDialog()
+{
 	return true;
 }
 
-bool CustomGenerixImpl::isSettingsValid() {
+bool CustomGenerixImpl::isSettingsValid()
+{
 	return true;
 }
 
-bool CustomGenerixImpl::isVisible() {
+bool CustomGenerixImpl::isVisible()
+{
 	return true;
 }
 

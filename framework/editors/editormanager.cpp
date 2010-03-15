@@ -26,19 +26,24 @@ EditorManager * EditorManager::s_self = 0;
 
 /* EditorManager */
 
-EditorManager::EditorManager() {
-	if( s_self == 0 ) {
+EditorManager::EditorManager()
+{
+	if (s_self == 0)
+	{
 		s_self = this;
 	}
 }
 
-EditorManager::~EditorManager() {
-	if( s_self == this ) {
+EditorManager::~EditorManager()
+{
+	if (s_self == this)
+	{
 		s_self = 0;
 	}
 }
 
-EditorManager * EditorManager::self() {
+EditorManager * EditorManager::self()
+{
 	return s_self;
 }
 

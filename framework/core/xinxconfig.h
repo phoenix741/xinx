@@ -35,20 +35,22 @@ class XinxLanguageFactory;
 class XinxFormatScheme;
 class QWidget;
 
-class LIBEXPORT ToolsNotDefinedException : public XinxException {
+class LIBEXPORT ToolsNotDefinedException : public XinxException
+{
 public:
-	ToolsNotDefinedException( const QString & tool );
+	ToolsNotDefinedException(const QString & tool);
 };
 
 /*!
  * Represente the configuration of XINX. The configuration of unique for a
  * unique process.
  */
-class LIBEXPORT XINXConfig : public QObject, public AppSettings {
+class LIBEXPORT XINXConfig : public QObject, public AppSettings
+{
 	Q_OBJECT
 public:
 	/*! Create a configuration by assignation */
-	XINXConfig( const XINXConfig & origine );
+	XINXConfig(const XINXConfig & origine);
 	/*! Create an empty configuration */
 	XINXConfig();
 	/*! Destroy the configuration object */
@@ -58,14 +60,14 @@ public:
 	static XINXConfig * self();
 
 	//! Get a created format scheme
-	XinxFormatScheme * scheme( const QString & highlighter );
+	XinxFormatScheme * scheme(const QString & highlighter);
 
 	/*!
 	 * Add a new format scheme to XINX
 	 * \param id the id to use for the scheme
 	 * \param scheme the added scheme
 	 */
-	void addFormatScheme( const QString & id, XinxFormatScheme * scheme );
+	void addFormatScheme(const QString & id, XinxFormatScheme * scheme);
 
 	/*! Return the language factory (from QCodeEdit library) for the definition in config */
 	XinxLanguageFactory * languageFactory();
@@ -83,16 +85,16 @@ public:
 	 * \param parentWindow The parent windows used to show the dialog.
 	 * \throw ToolsNotDefinedException
 	 */
-	QString getTools( const QString & tool, bool showDialog = true, QWidget * parentWindow = 0 );
+	QString getTools(const QString & tool, bool showDialog = true, QWidget * parentWindow = 0);
 	/*!
 	 * Add a new tool in the configuration with a default value.
 	 * \param tool The tool to add (cvs, svn, diff, ...).
 	 * \param defaultValue The default value to use, if not already defined.
 	 */
-	void addDefaultTool( const QString & tool, const QString & defaultValue );
+	void addDefaultTool(const QString & tool, const QString & defaultValue);
 
 	/*! Assign a configuration to another */
-	XINXConfig & operator=( const XINXConfig& p );
+	XINXConfig & operator=(const XINXConfig& p);
 signals:
 	/*! Signal emited when the configuration is changed */
 	void changed();

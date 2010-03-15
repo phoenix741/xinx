@@ -26,54 +26,66 @@
 
 /* CustomSchemeWidgetPlugin */
 
-CustomSchemeWidgetPlugin::CustomSchemeWidgetPlugin( QObject *parent ) : QObject( parent ) {
+CustomSchemeWidgetPlugin::CustomSchemeWidgetPlugin(QObject *parent) : QObject(parent)
+{
 	m_initialized = false;
 }
 
-void CustomSchemeWidgetPlugin::initialize( QDesignerFormEditorInterface *core ) {
-	if( m_initialized )
+void CustomSchemeWidgetPlugin::initialize(QDesignerFormEditorInterface *core)
+{
+	if (m_initialized)
 		return;
 
 	m_initialized = true;
 }
 
-bool CustomSchemeWidgetPlugin::isInitialized() const {
+bool CustomSchemeWidgetPlugin::isInitialized() const
+{
 	return m_initialized;
 }
 
-bool CustomSchemeWidgetPlugin::isContainer() const {
+bool CustomSchemeWidgetPlugin::isContainer() const
+{
 	return false;
 }
 
-QIcon CustomSchemeWidgetPlugin::icon() const {
+QIcon CustomSchemeWidgetPlugin::icon() const
+{
 	return QIcon();
 }
 
-QString CustomSchemeWidgetPlugin::toolTip() const {
+QString CustomSchemeWidgetPlugin::toolTip() const
+{
 	return "";
 }
 
-QString CustomSchemeWidgetPlugin::whatsThis() const {
+QString CustomSchemeWidgetPlugin::whatsThis() const
+{
 	return "";
 }
 
-QString CustomSchemeWidgetPlugin::group() const {
+QString CustomSchemeWidgetPlugin::group() const
+{
 	return "XINX Widget";
 }
 
-QString CustomSchemeWidgetPlugin::name() const {
+QString CustomSchemeWidgetPlugin::name() const
+{
 	return "CustomSchemeImpl";
 }
 
-QString CustomSchemeWidgetPlugin::includeFile() const {
+QString CustomSchemeWidgetPlugin::includeFile() const
+{
 	return "customschemeimpl.h";
 }
 
-QString CustomSchemeWidgetPlugin::domXml() const {
+QString CustomSchemeWidgetPlugin::domXml() const
+{
 	return  "<widget class=\"CustomSchemeImpl\" name=\"customScheme\"/>";
 }
 
-QWidget * CustomSchemeWidgetPlugin::createWidget( QWidget *parent ) {
-	return new CustomSchemeImpl( parent );
+QWidget * CustomSchemeWidgetPlugin::createWidget(QWidget *parent)
+{
+	return new CustomSchemeImpl(parent);
 }
 

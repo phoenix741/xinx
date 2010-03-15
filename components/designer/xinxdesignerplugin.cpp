@@ -26,16 +26,18 @@
 #include "xinxlistwidgetplugin.h"
 #include "customschemeplugin.h"
 
-XinxDesignerPlugin::XinxDesignerPlugin( QObject *parent ) : QObject( parent ) {
-	widgets.append( new DirectoryEditPlugin( this ) );
-	widgets.append( new DirectoryEditWidgetPlugin( this ) );
-	widgets.append( new XinxColorComboPlugin( this ) );
-	widgets.append( new PluginSelectorPlugin( this ) );
-	widgets.append( new XinxListWidgetPlugin( this ) );
-	widgets.append( new CustomSchemeWidgetPlugin( this ) );
+XinxDesignerPlugin::XinxDesignerPlugin(QObject *parent) : QObject(parent)
+{
+	widgets.append(new DirectoryEditPlugin(this));
+	widgets.append(new DirectoryEditWidgetPlugin(this));
+	widgets.append(new XinxColorComboPlugin(this));
+	widgets.append(new PluginSelectorPlugin(this));
+	widgets.append(new XinxListWidgetPlugin(this));
+	widgets.append(new CustomSchemeWidgetPlugin(this));
 }
 
-QList<QDesignerCustomWidgetInterface*> XinxDesignerPlugin::customWidgets() const {
+QList<QDesignerCustomWidgetInterface*> XinxDesignerPlugin::customWidgets() const
+{
 	return widgets;
 }
 

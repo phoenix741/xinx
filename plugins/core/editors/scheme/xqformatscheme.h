@@ -25,10 +25,11 @@
 #include <editors/xinxformatscheme.h>
 
 
-class XqFormatScheme : public XinxFormatScheme {
+class XqFormatScheme : public XinxFormatScheme
+{
 	Q_OBJECT
 public:
-	XqFormatScheme( XINXConfig * config );
+	XqFormatScheme(XINXConfig * config);
 protected:
 	void createDefaultScheme();
 private:

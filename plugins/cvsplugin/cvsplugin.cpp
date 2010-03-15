@@ -30,28 +30,33 @@
 
 /* CVSPlugin */
 
-CVSPlugin::CVSPlugin() {
-    Q_INIT_RESOURCE(cvsplugin);
+CVSPlugin::CVSPlugin()
+{
+	Q_INIT_RESOURCE(cvsplugin);
 	m_settings = new PluginSettings();
 }
 
-CVSPlugin::~CVSPlugin() {
+CVSPlugin::~CVSPlugin()
+{
 	delete m_settings;
 }
 
-bool CVSPlugin::initializePlugin( const QString & lang ) {
-	QTranslator * tranlator = new QTranslator( this );
-	tranlator->load( QString(":/translations/cvsplugin_%1").arg( lang ) );
+bool CVSPlugin::initializePlugin(const QString & lang)
+{
+	QTranslator * tranlator = new QTranslator(this);
+	tranlator->load(QString(":/translations/cvsplugin_%1").arg(lang));
 	qApp->installTranslator(tranlator);
-	
-	Q_ASSERT( m_settings );
+
+	Q_ASSERT(m_settings);
 	m_settings->load();
 
 	return true;
 }
 
-QVariant CVSPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr ) {
-	switch( attr ) {
+QVariant CVSPlugin::getPluginAttribute(const enum IXinxPlugin::PluginAttribute & attr)
+{
+	switch (attr)
+	{
 	case PLG_NAME:
 		return tr("Wrapper of CVS");
 	case PLG_DESCRIPTION:
@@ -74,37 +79,43 @@ QVariant CVSPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute 
 	return QVariant();
 }
 
-QList<IXinxPluginConfigurationPage*> CVSPlugin::createSettingsDialog( QWidget * parent ) {
+QList<IXinxPluginConfigurationPage*> CVSPlugin::createSettingsDialog(QWidget * parent)
+{
 	QList<IXinxPluginConfigurationPage*> list;
-	list << new CustomizePlugin( m_settings, parent );
+	list << new CustomizePlugin(m_settings, parent);
 	return list;
 }
 
 
-QList< QPair<QString,QString> > CVSPlugin::pluginTools() {
+QList< QPair<QString,QString> > CVSPlugin::pluginTools()
+{
 	QList< QPair<QString,QString> > tools;
 #ifdef Q_WS_WIN
-	tools.append( qMakePair( QString("cvs"), QString("%1/CVSNT/cvs.exe").arg( "C:/Program Files" ) ) );
+	tools.append(qMakePair(QString("cvs"), QString("%1/CVSNT/cvs.exe").arg("C:/Program Files")));
 #else
-	tools.append( qMakePair( QString("cvs"), QString("/usr/bin/cvs") ) );
+	tools.append(qMakePair(QString("cvs"), QString("/usr/bin/cvs")));
 #endif // Q_WS_WIN
 	return tools;
 }
 
-QStringList CVSPlugin::rcs() {
+QStringList CVSPlugin::rcs()
+{
 	return QStringList() << "cvs";
 }
 
-QString CVSPlugin::descriptionOfRCS( const QString & rcs ) {
-	if( rcs.toLower() == "cvs" )
-		return tr( "CVS - Concurent Version System" );
+QString CVSPlugin::descriptionOfRCS(const QString & rcs)
+{
+	if (rcs.toLower() == "cvs")
+		return tr("CVS - Concurent Version System");
 	return QString();
 }
 
-RCS * CVSPlugin::createRCS( const QString & rcs, const QString & basePath ) {
-	if( rcs.toLower() == "cvs" ) {
-		RCS_CVS * rcs = new RCS_CVS( basePath );
-		rcs->setPluginSettings( m_settings );
+RCS * CVSPlugin::createRCS(const QString & rcs, const QString & basePath)
+{
+	if (rcs.toLower() == "cvs")
+	{
+		RCS_CVS * rcs = new RCS_CVS(basePath);
+		rcs->setPluginSettings(m_settings);
 		return rcs;
 	}
 	return NULL;

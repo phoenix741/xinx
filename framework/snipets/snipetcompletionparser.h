@@ -22,25 +22,18 @@
 
 // Xinx header
 #include <core/lib-config.h>
-#include <contentview/contentviewparser.h>
+#include <contentview2/contentview2parser.h>
 
-class LIBEXPORT SnipetCompletionParser : public QObject, public ContentViewParser {
+class LIBEXPORT SnipetCompletionParser : public QObject, public ContentView2::Parser
+{
 	Q_OBJECT
 public:
-	enum SnipetCompletionRoleIndex {
-		NODE_SNIPET_KEY = 2
-	};
-
 	SnipetCompletionParser();
 	virtual ~SnipetCompletionParser();
 
-	static SnipetCompletionParser * self();
-public slots:
-	void refresh();
-protected:
-	virtual void loadFromDeviceImpl();
+	virtual void load();
+
 private:
-	static SnipetCompletionParser * s_self;
 };
 
 #endif // SNIPETCOMPLETIONPARSER_H

@@ -26,59 +26,69 @@
 
 /* CustomGeneralImpl */
 
-CustomGeneralImpl::CustomGeneralImpl( QWidget * parent ) : QWidget( parent ) {
-	setupUi( this );
+CustomGeneralImpl::CustomGeneralImpl(QWidget * parent) : QWidget(parent)
+{
+	setupUi(this);
 
 	// Style
-	m_styleComboBox->addItem( QString() );
-	foreach( const QString & style, QStyleFactory::keys() ) {
-		m_styleComboBox->addItem( style );
+	m_styleComboBox->addItem(QString());
+	foreach(const QString & style, QStyleFactory::keys())
+	{
+		m_styleComboBox->addItem(style);
 	}
 }
 
-CustomGeneralImpl::~CustomGeneralImpl() {
+CustomGeneralImpl::~CustomGeneralImpl()
+{
 }
 
-QPixmap CustomGeneralImpl::image() {
-	return QPixmap( ":/images/preferences-general.png" );
+QPixmap CustomGeneralImpl::image()
+{
+	return QPixmap(":/images/preferences-general.png");
 }
 
-QString CustomGeneralImpl::name() {
+QString CustomGeneralImpl::name()
+{
 	return windowTitle();
 }
 
-QWidget * CustomGeneralImpl::settingsDialog() {
+QWidget * CustomGeneralImpl::settingsDialog()
+{
 	return this;
 }
 
-bool CustomGeneralImpl::loadSettingsDialog() {
+bool CustomGeneralImpl::loadSettingsDialog()
+{
 	// Language
-	m_langComboBox->setCurrentIndex( 0 );
-	for( int i = 0; i < m_langComboBox->count(); i++ ) {
-		if( m_langComboBox->itemText( i ).contains( QString("(%1)").arg( XINXConfig::self()->config().language ) ) ) {
-			m_langComboBox->setCurrentIndex( i );
+	m_langComboBox->setCurrentIndex(0);
+	for (int i = 0; i < m_langComboBox->count(); i++)
+	{
+		if (m_langComboBox->itemText(i).contains(QString("(%1)").arg(XINXConfig::self()->config().language)))
+		{
+			m_langComboBox->setCurrentIndex(i);
 			break;
 		}
 	}
 
 	// Trace Log File
-	m_traceLogWidget->lineEdit()->setText( QDir::toNativeSeparators( XINXConfig::self()->config().xinxTrace ) );
+	m_traceLogWidget->lineEdit()->setText(QDir::toNativeSeparators(XINXConfig::self()->config().xinxTrace));
 
 	// Style
-	int currentStyle = m_styleComboBox->findText( XINXConfig::self()->config().style, Qt::MatchFixedString );
-	m_styleComboBox->setCurrentIndex( currentStyle );
+	int currentStyle = m_styleComboBox->findText(XINXConfig::self()->config().style, Qt::MatchFixedString);
+	m_styleComboBox->setCurrentIndex(currentStyle);
 
 	return true;
 }
 
-bool CustomGeneralImpl::saveSettingsDialog() {
+bool CustomGeneralImpl::saveSettingsDialog()
+{
 	// Language
 	QRegExp exp("^\\((.*)\\).*$");
-	if( exp.indexIn( m_langComboBox->currentText() ) >= 0 )
-		XINXConfig::self()->config().language = exp.cap( 1 );
+	if (exp.indexIn(m_langComboBox->currentText()) >= 0)
+		XINXConfig::self()->config().language = exp.cap(1);
 
 	// Trace Log File
-	XINXConfig::self()->config().xinxTrace = QDir::fromNativeSeparators( m_traceLogWidget->lineEdit()->text() );
+	XINXConfig::self()->config().xinxTrace = QDir::fromNativeSeparators(m_traceLogWidget->lineEdit()->text());
 
 	// Style
 	XINXConfig::self()->config().style = m_styleComboBox->currentText();
@@ -86,15 +96,18 @@ bool CustomGeneralImpl::saveSettingsDialog() {
 	return true;
 }
 
-bool CustomGeneralImpl::cancelSettingsDialog() {
+bool CustomGeneralImpl::cancelSettingsDialog()
+{
 	return true;
 }
 
-bool CustomGeneralImpl::isSettingsValid() {
+bool CustomGeneralImpl::isSettingsValid()
+{
 	return true;
 }
 
-bool CustomGeneralImpl::isVisible() {
+bool CustomGeneralImpl::isVisible()
+{
 	return true;
 }
 

@@ -32,42 +32,44 @@
 
 /* TreeProxyItemModel */
 
-class LIBEXPORT TreeProxyItemModel : public QAbstractProxyModel {
+class LIBEXPORT TreeProxyItemModel : public QAbstractProxyModel
+{
 	Q_OBJECT
-	Q_PROPERTY( bool resetModel READ resetModel WRITE setResetModel )
+	Q_PROPERTY(bool resetModel READ resetModel WRITE setResetModel)
 public:
-	TreeProxyItemModel( QObject * parent = 0 );
+	TreeProxyItemModel(QObject * parent = 0);
 	virtual ~TreeProxyItemModel();
 
-	virtual QModelIndex index( int id ) const;
-	virtual QModelIndex index( int row, int column, const QModelIndex & parent = QModelIndex() ) const;
-	virtual QModelIndex parent( const QModelIndex & index ) const;
+	virtual QModelIndex index(int id) const;
+	virtual QModelIndex index(int row, int column, const QModelIndex & parent = QModelIndex()) const;
+	virtual QModelIndex parent(const QModelIndex & index) const;
 
-	virtual QVariant data( const QModelIndex &proxyIndex, int role ) const;
-	virtual Qt::ItemFlags flags( const QModelIndex &index ) const;
+	virtual QVariant data(const QModelIndex &proxyIndex, int role) const;
+	virtual Qt::ItemFlags flags(const QModelIndex &index) const;
 
-	virtual int rowCount( const QModelIndex & parent = QModelIndex() ) const;
-	virtual int columnCount( const QModelIndex & parent = QModelIndex() ) const;
+	virtual int rowCount(const QModelIndex & parent = QModelIndex()) const;
+	virtual int columnCount(const QModelIndex & parent = QModelIndex()) const;
 
-	virtual QModelIndex mapFromSource ( const QModelIndex & sourceIndex ) const;
-	virtual QModelIndex mapToSource ( const QModelIndex & proxyIndex ) const;
+	virtual QModelIndex mapFromSource(const QModelIndex & sourceIndex) const;
+	virtual QModelIndex mapToSource(const QModelIndex & proxyIndex) const;
 
 	bool resetModel() const;
-	void setResetModel( bool value );
+	void setResetModel(bool value);
 protected:
-	virtual int getUniqueIdentifier( const QModelIndex & sourceIndex ) const = 0;
-	virtual int getParentUniqueIdentifier( const QModelIndex & sourceIndex ) const = 0;
+	virtual int getUniqueIdentifier(const QModelIndex & sourceIndex) const = 0;
+	virtual int getParentUniqueIdentifier(const QModelIndex & sourceIndex) const = 0;
 
-	virtual void setSourceModel( QAbstractItemModel * sourceModel );
+	virtual void setSourceModel(QAbstractItemModel * sourceModel);
 	virtual void createMapping();
-	void setParentId( int id, int parentId );
+	void setParentId(int id, int parentId);
 
 protected slots:
 #ifndef _XINX_RELEASE_MODE_
-	void printMapping( int id = 0, int niveau = 0 ) const;
+	void printMapping(int id = 0, int niveau = 0) const;
 #endif
 private:
-	struct Mapping {
+	struct Mapping
+	{
 		int id; //!< Define the id of the line. This id have nothing to do with the line in the source model
 		int parentId; //! Define the parent id of this structure
 		QVector<int> childs; //!< Define a list of id, child of this element
@@ -87,12 +89,12 @@ private:
 	int m_sourceColumnCount;
 	bool m_resetModel;
 
-	Mapping * getMapping( int id ) const;
-	Mapping * getMapping( const QModelIndex & index ) const;
-	void unassignId( Mapping * mapping );
-	void assignId( Mapping * mapping, int parentId );
-	void validAssignement( Mapping * mapping );
-	bool isAttachedToRoot( Mapping * mapping );
+	Mapping * getMapping(int id) const;
+	Mapping * getMapping(const QModelIndex & index) const;
+	void unassignId(Mapping * mapping);
+	void assignId(Mapping * mapping, int parentId);
+	void validAssignement(Mapping * mapping);
+	bool isAttachedToRoot(Mapping * mapping);
 };
 
 #endif // TREEPROXYITEMMODEL_H

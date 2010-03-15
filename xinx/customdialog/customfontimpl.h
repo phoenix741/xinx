@@ -25,10 +25,11 @@
 #include "ui_customfont.h"
 #include <plugins/plugininterfaces.h>
 
-class CustomFontImpl : public QWidget, public Ui::CustomFont, public IXinxPluginConfigurationPage {
+class CustomFontImpl : public QWidget, public Ui::CustomFont, public IXinxPluginConfigurationPage
+{
 	Q_OBJECT
 public:
-	CustomFontImpl( QWidget * parent = 0 );
+	CustomFontImpl(QWidget * parent = 0);
 	~CustomFontImpl();
 
 	virtual QPixmap image();

@@ -23,7 +23,8 @@
 // Xinx header
 #include <plugins/plugininterfaces.h>
 
-class XslGuiPlugin : public QObject, public IFilePlugin {
+class XslGuiPlugin : public QObject, public IFilePlugin
+{
 	Q_OBJECT
 	Q_INTERFACES(IXinxPlugin)
 	Q_INTERFACES(IFilePlugin)
@@ -31,8 +32,8 @@ public:
 	XslGuiPlugin();
 	virtual ~XslGuiPlugin();
 
-	virtual bool initializePlugin( const QString & lang );
-	virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr );
+	virtual bool initializePlugin(const QString & lang);
+	virtual QVariant getPluginAttribute(const enum IXinxPlugin::PluginAttribute & attr);
 
 	virtual QList<IFileTypePlugin*> fileTypes();
 

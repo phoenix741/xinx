@@ -23,13 +23,14 @@
 // Xinx header
 #include "ui_codedialog.h"
 
-class CodeDialogImpl : public QDialog, public Ui::CodeDialog {
+class CodeDialogImpl : public QDialog, public Ui::CodeDialog
+{
 	Q_OBJECT
 public:
-	CodeDialogImpl( QWidget * p = 0 );
+	CodeDialogImpl(QWidget * p = 0);
 	virtual ~CodeDialogImpl();
 public slots:
-	void showText( const QString & text );
+	void showText(const QString & text);
 private:
 };
 

@@ -27,7 +27,8 @@
 
 /* XQueryKeyword */
 
-class XQueryKeyword : public QObject {
+class XQueryKeyword : public QObject
+{
 	Q_OBJECT
 public:
 	~XQueryKeyword();

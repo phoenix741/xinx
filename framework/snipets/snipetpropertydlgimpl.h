@@ -33,33 +33,35 @@
 
 class ParametersDelegate;
 
-class SnipetPropertyDlgImpl : public QDialog, private Ui::SnipetPropertyDialog {
+class SnipetPropertyDlgImpl : public QDialog, private Ui::SnipetPropertyDialog
+{
 	Q_OBJECT
 public:
 	virtual ~SnipetPropertyDlgImpl();
 
-	void setParentId( int id );
-	void duplicate( int id );
+	void setParentId(int id);
+	void duplicate(int id);
 protected:
-	SnipetPropertyDlgImpl( QSqlDatabase db, QWidget * parent = 0, Qt::WindowFlags f = Qt::MSWindowsFixedSizeDialogHint );
-	SnipetPropertyDlgImpl( int snipetId, QSqlDatabase db, QWidget * parent = 0, Qt::WindowFlags f = Qt::MSWindowsFixedSizeDialogHint );
+	SnipetPropertyDlgImpl(QSqlDatabase db, QWidget * parent = 0, Qt::WindowFlags f = Qt::MSWindowsFixedSizeDialogHint);
+	SnipetPropertyDlgImpl(int snipetId, QSqlDatabase db, QWidget * parent = 0, Qt::WindowFlags f = Qt::MSWindowsFixedSizeDialogHint);
 
 	void setupUi();
 	void createMapper();
 private slots:
-	void on_m_categoryTreeView_activated ( const QModelIndex & index );
+	void on_m_categoryTreeView_activated(const QModelIndex & index);
 	void on_m_addCategoryButton_clicked();
 	void on_m_removeCategoryButton_clicked();
 	void on_m_buttons_accepted();
 	void on_m_buttons_rejected();
-	void m_mapper_currentIndexChanged( int index );
+	void m_mapper_currentIndexChanged(int index);
 	void m_textEdit_textChanged();
-	void m_paramsModel_primeInsert( int row, QSqlRecord & record );
-	void m_paramsModel_beforeInsert ( QSqlRecord & record );
+	void m_paramsModel_primeInsert(int row, QSqlRecord & record);
+	void m_paramsModel_beforeInsert(QSqlRecord & record);
 private:
-	void initialiseExtentions( int id );
+	void initialiseExtentions(int id);
 
-	enum {
+	enum
+	{
 		snipet_params_id = 0,
 		snipet_params_snipet_id = 1,
 		snipet_params_name = 2,

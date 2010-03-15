@@ -33,10 +33,12 @@
 #include <QTextBlock>
 #include <QCompleter>
 
-XQTextEditor::XQTextEditor( QWidget * parent ) : XinxCodeEdit( parent ) {
-	setHighlighter( "XQuery" );
+XQTextEditor::XQTextEditor(QWidget * parent) : XinxCodeEdit(parent)
+{
+	setHighlighter("XQuery");
 }
 
-XQTextEditor::~XQTextEditor() {
+XQTextEditor::~XQTextEditor()
+{
 
 }

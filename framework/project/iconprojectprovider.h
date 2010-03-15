@@ -34,12 +34,13 @@
  * This Icon provider is used by \e ProjectDirectoryDockWidget to show the tree
  * project with custom icons.
  */
-class LIBEXPORT IconProjectProvider : public QFileIconProvider {
+class LIBEXPORT IconProjectProvider : public QFileIconProvider
+{
 public:
 	IconProjectProvider();
 	~IconProjectProvider();
-	
-	QIcon icon( const QFileInfo & info ) const;
+
+	QIcon icon(const QFileInfo & info) const;
 };
 
 

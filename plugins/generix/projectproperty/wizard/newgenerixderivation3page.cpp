@@ -24,52 +24,61 @@
 
 /* NewGenerixDerivation3Page */
 
-NewGenerixDerivation3Page::NewGenerixDerivation3Page() {
-	setupUi( this );
+NewGenerixDerivation3Page::NewGenerixDerivation3Page()
+{
+	setupUi(this);
 
-	registerField( "generix.prefix", m_prefixEdit );
-	registerField( "generix.createMissingDirectory", m_missingDirChk );
-	registerField( "generix.copyStdFileToDirectory", m_copyToChk );
+	registerField("generix.prefix", m_prefixEdit);
+	registerField("generix.createMissingDirectory", m_missingDirChk);
+	registerField("generix.copyStdFileToDirectory", m_copyToChk);
 }
 
-QString NewGenerixDerivation3Page::pagePluginId() const {
+QString NewGenerixDerivation3Page::pagePluginId() const
+{
 	return "GenerixDerivation3";
 }
 
-bool NewGenerixDerivation3Page::pageIsVisible() const {
-	return field( "generix.derivation" ).toBool();
+bool NewGenerixDerivation3Page::pageIsVisible() const
+{
+	return field("generix.derivation").toBool();
 }
 
-bool NewGenerixDerivation3Page::saveSettingsDialog( XinxProject * project ) {
+bool NewGenerixDerivation3Page::saveSettingsDialog(XinxProject * project)
+{
 	QStringList prefixes;
-	static_cast<GenerixProject*>( project )->setCreateMissingDirectory( m_missingDirChk->isChecked() );
-	if( m_addPrefixChk->isChecked() )
+	static_cast<GenerixProject*>(project)->setCreateMissingDirectory(m_missingDirChk->isChecked());
+	if (m_addPrefixChk->isChecked())
 		prefixes << m_prefixEdit->text();
-	static_cast<GenerixProject*>( project )->setPrefixes( prefixes );
-	static_cast<GenerixProject*>( project )->setCopySourceFileInDerivationPath( m_copyToChk->isChecked() );
+	static_cast<GenerixProject*>(project)->setPrefixes(prefixes);
+	static_cast<GenerixProject*>(project)->setCopySourceFileInDerivationPath(m_copyToChk->isChecked());
 
 	return true;
 }
 
-void NewGenerixDerivation3Page::initializePage() {
+void NewGenerixDerivation3Page::initializePage()
+{
 	IXinxPluginNewProjectConfigurationPage::initializePage();
 
-	ConfigurationVersion version = field( "generix.version" ).value<ConfigurationVersion>();
-	ConfigurationVersion version150( 6, 1, 50 );
+	ConfigurationVersion version = field("generix.version").value<ConfigurationVersion>();
+	ConfigurationVersion version150(6, 1, 50);
 
 	QString projet = SelfGenerixSettings::self()->config().defaultProjectPathName;
 
-	m_addPrefixChk->setChecked( true );
-	m_missingDirChk->setChecked( true );
-	m_prefixEdit->setText( QString("P%1").arg( field("project.name").toString().left( 2 ) ).toUpper() );
-	if( version <= version150 ) {
-		m_copyToChk->setChecked( true );
-	} else {
-		m_copyToChk->setChecked( false );
+	m_addPrefixChk->setChecked(true);
+	m_missingDirChk->setChecked(true);
+	m_prefixEdit->setText(QString("P%1").arg(field("project.name").toString().left(2)).toUpper());
+	if (version <= version150)
+	{
+		m_copyToChk->setChecked(true);
+	}
+	else
+	{
+		m_copyToChk->setChecked(false);
 	}
 }
 
-bool NewGenerixDerivation3Page::isComplete() const {
-	if( ! IXinxPluginNewProjectConfigurationPage::isComplete() ) return false;
-	return !( m_addPrefixChk->isChecked() && m_prefixEdit->text().isEmpty() );
+bool NewGenerixDerivation3Page::isComplete() const
+{
+	if (! IXinxPluginNewProjectConfigurationPage::isComplete()) return false;
+	return !(m_addPrefixChk->isChecked() && m_prefixEdit->text().isEmpty());
 }

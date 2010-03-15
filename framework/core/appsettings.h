@@ -23,20 +23,24 @@
 
 class PrivateAppSettings;
 
-class LIBEXPORT AppSettingsSettings : public QSettings {
+class LIBEXPORT AppSettingsSettings : public QSettings
+{
 public:
-	AppSettingsSettings( const QString & organization, const QString & application );
-	void setValue( const QString & key, const QVariant & value, const QVariant & defaultValue );
-	void setValue( const QString & key, const QVariant & value );
+	AppSettingsSettings(const QString & organization, const QString & application);
+	void setValue(const QString & key, const QVariant & value, const QVariant & defaultValue);
+	void setValue(const QString & key, const QVariant & value);
 };
 
-class LIBEXPORT AppSettings {
+class LIBEXPORT AppSettings
+{
 public:
-	struct struct_snipets {
+	struct struct_snipets
+	{
 		bool alwaysShowDialog;
 	};
 
-	struct struct_qformat {
+	struct struct_qformat
+	{
 		bool italic;
 		bool bold;
 		bool overline;
@@ -47,7 +51,8 @@ public:
 		QColor background;
 	};
 
-	struct struct_editor {
+	struct struct_editor
+	{
 		QString defaultTextCodec;
 		bool autoindentOnSaving;
 		bool popupWhenFileModified;
@@ -63,12 +68,14 @@ public:
 		int automaticModelRefreshTimeout;
 	};
 
-	struct struct_rcs {
+	struct struct_rcs
+	{
 		bool createChangelog;
 		bool autoAddFileToVersionningSystem;
 	};
 
-	struct struct_project {
+	struct struct_project
+	{
 		QString lastOpenedProject;
 		bool openTheLastProjectAtStart;
 		bool saveWithSessionByDefault;
@@ -78,7 +85,8 @@ public:
 		int automaticProjectDirectoryRefreshTimeout;
 	};
 
-	struct struct_globals {
+	struct struct_globals
+	{
 		QString language;
 		QPoint position;
 		QSize size;
@@ -96,7 +104,7 @@ public:
 	};
 
 
-	AppSettings( const AppSettings & origine );
+	AppSettings(const AppSettings & origine);
 	AppSettings();
 	virtual ~AppSettings();
 
@@ -109,38 +117,38 @@ public:
 	AppSettings& operator=(const AppSettings& p);
 protected:
 	virtual struct_snipets getDefaultSnipets();
-	virtual AppSettings::struct_snipets getSettingsSnipets( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_snipets & defaultValue );
-	virtual void setSettingsSnipets( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_snipets & value );
+	virtual AppSettings::struct_snipets getSettingsSnipets(AppSettingsSettings * settings, const QString & path, const AppSettings::struct_snipets & defaultValue);
+	virtual void setSettingsSnipets(AppSettingsSettings * settings, const QString & path, const AppSettings::struct_snipets & value);
 
 	virtual struct_qformat getDefaultQformat();
-	virtual AppSettings::struct_qformat getSettingsQformat( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_qformat & defaultValue );
-	virtual void setSettingsQformat( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_qformat & value );
+	virtual AppSettings::struct_qformat getSettingsQformat(AppSettingsSettings * settings, const QString & path, const AppSettings::struct_qformat & defaultValue);
+	virtual void setSettingsQformat(AppSettingsSettings * settings, const QString & path, const AppSettings::struct_qformat & value);
 
 	virtual struct_editor getDefaultEditor();
-	virtual AppSettings::struct_editor getSettingsEditor( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_editor & defaultValue );
-	virtual void setSettingsEditor( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_editor & value );
+	virtual AppSettings::struct_editor getSettingsEditor(AppSettingsSettings * settings, const QString & path, const AppSettings::struct_editor & defaultValue);
+	virtual void setSettingsEditor(AppSettingsSettings * settings, const QString & path, const AppSettings::struct_editor & value);
 
 	virtual struct_rcs getDefaultRcs();
-	virtual AppSettings::struct_rcs getSettingsRcs( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_rcs & defaultValue );
-	virtual void setSettingsRcs( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_rcs & value );
+	virtual AppSettings::struct_rcs getSettingsRcs(AppSettingsSettings * settings, const QString & path, const AppSettings::struct_rcs & defaultValue);
+	virtual void setSettingsRcs(AppSettingsSettings * settings, const QString & path, const AppSettings::struct_rcs & value);
 
 	virtual struct_project getDefaultProject();
-	virtual AppSettings::struct_project getSettingsProject( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_project & defaultValue );
-	virtual void setSettingsProject( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_project & value );
+	virtual AppSettings::struct_project getSettingsProject(AppSettingsSettings * settings, const QString & path, const AppSettings::struct_project & defaultValue);
+	virtual void setSettingsProject(AppSettingsSettings * settings, const QString & path, const AppSettings::struct_project & value);
 
 	virtual struct_globals getDefaultGlobals();
-	virtual AppSettings::struct_globals getSettingsGlobals( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_globals & defaultValue );
-	virtual void setSettingsGlobals( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_globals & value );
+	virtual AppSettings::struct_globals getSettingsGlobals(AppSettingsSettings * settings, const QString & path, const AppSettings::struct_globals & defaultValue);
+	virtual void setSettingsGlobals(AppSettingsSettings * settings, const QString & path, const AppSettings::struct_globals & value);
 
-	virtual QHash<QString,bool> getSettingsHash_bool( AppSettingsSettings * settings, const QString & path, const QHash<QString,bool> & defaultValue );
-	virtual void setSettingsHash_bool( AppSettingsSettings * settings, const QString & path, const QHash<QString,bool> & value );
+	virtual QHash<QString,bool> getSettingsHash_bool(AppSettingsSettings * settings, const QString & path, const QHash<QString,bool> & defaultValue);
+	virtual void setSettingsHash_bool(AppSettingsSettings * settings, const QString & path, const QHash<QString,bool> & value);
 
-	virtual QHash<QString,QString> getSettingsHash_QString( AppSettingsSettings * settings, const QString & path, const QHash<QString,QString> & defaultValue );
-	virtual void setSettingsHash_QString( AppSettingsSettings * settings, const QString & path, const QHash<QString,QString> & value );
+	virtual QHash<QString,QString> getSettingsHash_QString(AppSettingsSettings * settings, const QString & path, const QHash<QString,QString> & defaultValue);
+	virtual void setSettingsHash_QString(AppSettingsSettings * settings, const QString & path, const QHash<QString,QString> & value);
 
 	virtual QHash<QString,struct_qformat> getDefaultHash_struct_qformat();
-	virtual QHash<QString,AppSettings::struct_qformat> getSettingsHash_struct_qformat( AppSettingsSettings * settings, const QString & path, const QHash<QString,AppSettings::struct_qformat> & defaultValue );
-	virtual void setSettingsHash_struct_qformat( AppSettingsSettings * settings, const QString & path, const QHash<QString,AppSettings::struct_qformat> & value );
+	virtual QHash<QString,AppSettings::struct_qformat> getSettingsHash_struct_qformat(AppSettingsSettings * settings, const QString & path, const QHash<QString,AppSettings::struct_qformat> & defaultValue);
+	virtual void setSettingsHash_struct_qformat(AppSettingsSettings * settings, const QString & path, const QHash<QString,AppSettings::struct_qformat> & value);
 
 private:
 	PrivateAppSettings * d;

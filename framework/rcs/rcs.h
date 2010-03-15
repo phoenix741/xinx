@@ -40,19 +40,21 @@
  * This object will be used along the project mode, to show to the user the \e status of a file, to \e update from repository,
  * to \e commit to the repository, to \e add a file to the repository, or to \e remove a file from the repository.
  */
-class LIBEXPORT RCS : public QObject {
+class LIBEXPORT RCS : public QObject
+{
 	Q_OBJECT
 public:
 	/*!
 	 * Create a RCS base object.
 	 * \param workingDirectory This is the project path, used in the RCS as the base path of operations.
 	 */
-	RCS( const QString & workingDirectory = QString() );
+	RCS(const QString & workingDirectory = QString());
 	/*! Destroy the object */
 	virtual ~RCS();
 
 	/*! Information that can be returned in the log */
-	enum rcsLog {
+	enum rcsLog
+	{
 		LogError,           ///< The message is an error
 		LogNormal,          ///< The message has no attribute
 		LogConflict,        ///< The message is about conflicted files.
@@ -62,7 +64,8 @@ public:
 		LogApplication      ///< This is the application (XINX) who log the message.
 	};
 	/*! RCS state of a file on the disk */
-	enum rcsState {
+	enum rcsState
+	{
 		Updated,                 ///< The file is up to date, no operation to do.
 		LocallyModified,         ///< The file is modified on the disk but not in the repository.
 		LocallyAdded,            ///< The file is added to the repository
@@ -74,14 +77,16 @@ public:
 		Unknown                  ///< The state of the file is unknown, the file is not is the repository
 	};
 	/*! Informations about a file  */
-	struct struct_rcs_infos {
+	struct struct_rcs_infos
+	{
 		QString filename;  ///< The informations' filename
 		rcsState state;    ///< State of the file (see the enum \e rcsState)
 		QString version;   ///< Version of the file on the disk
 		QDateTime rcsDate; ///< Date of the last modified time in the RCS
 	};
 	/*! Operation that can be made on a file when commit is asked */
-	enum rcsOperation {
+	enum rcsOperation
+	{
 		RemoveAndCommit, ///< Remove the file and commit this change
 		AddAndCommit,    ///< Add the file and commit it.
 		Commit,          ///< Commit the file
@@ -89,8 +94,9 @@ public:
 	};
 
 	/// Pair of file name and operation to do.
-	struct FileOperation {
-		FileOperation( const QString & f, rcsOperation o ) : filename( f ), operation( o ) {}
+	struct FileOperation
+	{
+		FileOperation(const QString & f, rcsOperation o) : filename(f), operation(o) {}
 		FileOperation() {}
 
 		QString filename;
@@ -110,7 +116,7 @@ public:
 	 * \param path List of path or file to be updated.
 	 * \sa abort(), add(), remove(), commit(), updateToRevision()
 	 */
-	virtual void update( const QStringList & paths ) = 0;
+	virtual void update(const QStringList & paths) = 0;
 	/*!
 	 * Call the update command of the plugin for a file at a given revision.
 	 *
@@ -121,7 +127,7 @@ public:
 	 * \param content Where the content of the revision must be stored. If null, the revision must override the original file.
 	 * \sa abort(), add(), remove(), commit(), update()
 	 */
-	virtual void updateToRevision( const QString & path, const QString & revision, QByteArray * content = 0 ) = 0;
+	virtual void updateToRevision(const QString & path, const QString & revision, QByteArray * content = 0) = 0;
 	/*!
 	 * Call the commit command of the plugin.
 	 *
@@ -131,7 +137,7 @@ public:
 	 * \param message Message used while commit.
 	 * \sa abort(), add(), remove(), updateToRevision(), update()
 	 */
-	virtual void commit( const QStringList & paths, const QString & message ) = 0;
+	virtual void commit(const QStringList & paths, const QString & message) = 0;
 
 	/* Operation on file of the working copy */
 
@@ -144,7 +150,7 @@ public:
 	 * \param path List of path or file to be added.
 	 * \sa abort(), remove(), commit(), updateToRevision(), update()
 	 */
-	virtual void add( const QStringList & paths ) = 0;
+	virtual void add(const QStringList & paths) = 0;
 	/*!
 	 * Call the remove command of the plugin.
 	 *
@@ -153,21 +159,21 @@ public:
 	 * \param path List of path or file to be removed.
 	 * \sa abort(), add(), commit(), updateToRevision(), update()
 	 */
-	virtual void remove( const QStringList & paths ) = 0;
+	virtual void remove(const QStringList & paths) = 0;
 
 	/*!
 	 * Return a list of operation for a path or a list of path (in case of multiple selections. In function of
 	 * plugin and state of file, the operation can be \e RCS::RemoveAndCommit, \e RCS::AddAndCommit, and \e RCS::Commit.
 	 * This list will be used in the commit dialog to show files to Commit.
 	 */
-	virtual FilesOperation operations( const QStringList & path ) = 0;
+	virtual FilesOperation operations(const QStringList & path) = 0;
 
 	/*!
 	 * Take a file name in argument and return informations about the filename in a \e struct_rcs_infos structure.
 	 * The file name must be in the base path
 	 * \sa getBasePath(), searchFileToAddOrRemove()
 	 */
-	virtual struct_rcs_infos info( const QString & path ) = 0;
+	virtual struct_rcs_infos info(const QString & path) = 0;
 
 	/*!
 	 * Return all the file for the directory \e path.
@@ -176,12 +182,12 @@ public:
 	 * \param filters Filter for the directory
 	 * \param sort Sort of the list
 	 */
-	virtual QList<struct_rcs_infos> infoList( const QString & path, const QStringList & nameFilters, QDir::Filters filters = QDir::NoFilter, QDir::SortFlags sort = QDir::NoSort ) = 0;
+	virtual QList<struct_rcs_infos> infoList(const QString & path, const QStringList & nameFilters, QDir::Filters filters = QDir::NoFilter, QDir::SortFlags sort = QDir::NoSort) = 0;
 
 	/* Working Directory */
 
 	/// Set the base path of the revision control system class.
-	void setWorkingDirectory( const QString & value );
+	void setWorkingDirectory(const QString & value);
 
 	/// Return the base path of the revision control system class.
 	const QString & getWorkingDirectory() const;
@@ -198,7 +204,7 @@ signals:
 	 * \param fileName the name of the file who changed.
 	 * \param informations New status of the file
 	 */
-	void stateChanged( const QString & fileName, RCS::struct_rcs_infos informations );
+	void stateChanged(const QString & fileName, RCS::struct_rcs_infos informations);
 	/*!
 	 * Signal emited when a new message must be added to the log. The \e niveau is used to highlight the
 	 * text in different way, depending on the gravity of the message.
@@ -206,11 +212,11 @@ signals:
 	 * \param info message to be added.
 	 * \sa add(), remove(), commit(), updateToRevision(), update()
 	 */
-	void log( RCS::rcsLog niveau, const QString & info );
+	void log(RCS::rcsLog niveau, const QString & info);
 private:
 	QString m_workingDirectory;
 };
 
-Q_DECLARE_METATYPE( RCS::rcsLog )
+Q_DECLARE_METATYPE(RCS::rcsLog)
 
 #endif // __RCS_H__

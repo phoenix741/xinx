@@ -26,59 +26,71 @@
 
 /* ManualFileResolver */
 
-ManualFileResolver::ManualFileResolver() {
+ManualFileResolver::ManualFileResolver()
+{
 }
 
-ManualFileResolver::~ManualFileResolver() {
+ManualFileResolver::~ManualFileResolver()
+{
 }
 
-QString ManualFileResolver::staticId() {
+QString ManualFileResolver::staticId()
+{
 	return "manual";
 }
 
-QString ManualFileResolver::id() {
+QString ManualFileResolver::id()
+{
 	return staticId();
 }
 
-QString ManualFileResolver::name() {
+QString ManualFileResolver::name()
+{
 	return tr("Manual Resolver");
 }
 
-bool ManualFileResolver::isActivated() {
+bool ManualFileResolver::isActivated()
+{
 	return true;
 }
 
-QStringList ManualFileResolver::searchPathList() const {
-	QStringList searchList = XINXProjectManager::self()->project()->readProperty( "searchPathList" ).toString().split( ";;" );
+QStringList ManualFileResolver::searchPathList() const
+{
+	QStringList searchList = XINXProjectManager::self()->project()->readProperty("searchPathList").toString().split(";;");
 	QMutableStringListIterator it(searchList);
-	while( it.hasNext() ) {
-		QString path = QDir( XINXProjectManager::self()->project()->projectPath() ).absoluteFilePath( it.next() );
-		it.setValue( path );
+	while (it.hasNext())
+	{
+		QString path = QDir(XINXProjectManager::self()->project()->projectPath()).absoluteFilePath(it.next());
+		it.setValue(path);
 	}
 	return searchList;
 }
 
-QString ManualFileResolver::resolveFileName( const QString & nameToResolve, const QString & currentPath ) {
+QString ManualFileResolver::resolveFileName(const QString & nameToResolve, const QString & currentPath)
+{
 	QStringList searchList;
 
-	if( ! currentPath.isEmpty() )
+	if (! currentPath.isEmpty())
 		searchList << currentPath;
 
-	if( XINXProjectManager::self()->project() ) {
+	if (XINXProjectManager::self()->project())
+	{
 		searchList += searchPathList();
 	}
 
 	QString absPath = QString();
 	bool finded = false;
-	foreach( const QString & path, searchList ) {
-		absPath = QDir( path ).absoluteFilePath( nameToResolve );
-		if( QFile::exists( absPath ) ) {
+	foreach(const QString & path, searchList)
+	{
+		absPath = QDir(path).absoluteFilePath(nameToResolve);
+		if (QFile::exists(absPath))
+		{
 			finded = true;
 			break;
 		}
 	}
 
-	if( finded )
+	if (finded)
 		return absPath;
 
 	return nameToResolve;

@@ -26,16 +26,17 @@
 
 /* StringComboBox */
 
-class StringComboBox : public QComboBox {
+class StringComboBox : public QComboBox
+{
 	Q_OBJECT
-	Q_PROPERTY( QString value READ value WRITE setValue USER true )
+	Q_PROPERTY(QString value READ value WRITE setValue USER true)
 public:
-	StringComboBox( QWidget * parent = 0 );
+	StringComboBox(QWidget * parent = 0);
 	virtual ~StringComboBox();
 
 	QString value() const;
 public slots:
-	void setValue( const QString & value );
+	void setValue(const QString & value);
 private:
 };
 

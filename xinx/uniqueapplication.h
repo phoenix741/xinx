@@ -27,15 +27,16 @@
 
 class MainformImpl;
 
-class UniqueApplication : public QtSingleApplication {
+class UniqueApplication : public QtSingleApplication
+{
 	Q_OBJECT
 public:
-	UniqueApplication ( int & argc, char ** argv );
-	virtual ~UniqueApplication ();
+	UniqueApplication(int & argc, char ** argv);
+	virtual ~UniqueApplication();
 
-	virtual bool notify ( QObject * receiver, QEvent * event );
+	virtual bool notify(QObject * receiver, QEvent * event);
 
-	void attachMainWindow( MainformImpl * mainform );
+	void attachMainWindow(MainformImpl * mainform);
 public slots:
 	void slotErrorTriggered();
 private:

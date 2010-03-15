@@ -30,14 +30,15 @@
  * A XinxPluginElement is a plugin (a library, PluginElement can be a script :).
  * It's used with PluginSelector.
  */
-class LIBEXPORT XinxPluginElement : public PluginElement {
+class LIBEXPORT XinxPluginElement : public PluginElement
+{
 public:
 	/*!
 	 * Create an object based on a \e plugin. If the plugin \e isStatic
 	 * \e isModifiable() will return false and \e isActivated() will
 	 * return true.
 	 */
-	XinxPluginElement( QObject * plugin, bool isStatic = false );
+	XinxPluginElement(QObject * plugin, bool isStatic = false);
 
 	/*! Return true if the plugin is modifiable (no static) */
 	virtual bool isModifiable() const;

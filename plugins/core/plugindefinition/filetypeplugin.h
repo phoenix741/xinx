@@ -69,110 +69,116 @@ static const QColor DEFAULT_STRING			= Qt::red;
 
 /* TextFileType */
 
-class TextFileType : public QObject, public IFileTextPlugin {
+class TextFileType : public QObject, public IFileTextPlugin
+{
 	Q_OBJECT
 public:
 	virtual QString description();
 	virtual QString match();
 	virtual QString icon();
 
-	virtual AbstractEditor * createEditor( const QString & filename );
+	virtual AbstractEditor * createEditor(const QString & filename);
 
 	virtual QString highlighterId() const;
-	virtual XinxFormatScheme * createFormatScheme( XINXConfig * config ) const;
+	virtual XinxFormatScheme * createFormatScheme(XINXConfig * config) const;
 	virtual QString createLanguageDescription() const;
 	virtual QString fileExample() const;
 
-	virtual ContentViewParser * createParser();
+	virtual QString parserType();
 };
 
 /* XMLFileType */
 
-class XMLFileType : public QObject, public IFileTextPlugin {
+class XMLFileType : public QObject, public IFileTextPlugin
+{
 	Q_OBJECT
 public:
 	virtual QString description();
 	virtual QString match();
 	virtual QString icon();
 
-	virtual AbstractEditor * createEditor( const QString & filename );
+	virtual AbstractEditor * createEditor(const QString & filename);
 
 	virtual QString highlighterId() const;
-	virtual XinxFormatScheme * createFormatScheme( XINXConfig * config ) const;
+	virtual XinxFormatScheme * createFormatScheme(XINXConfig * config) const;
 	virtual QString createLanguageDescription() const;
 	virtual QString fileExample() const;
 
-	virtual ContentViewParser * createParser();
+	virtual QString parserType();
 };
 
 /* XSLStyleSheetFileType */
 
-class XSLStyleSheetFileType : public XMLFileType {
+class XSLStyleSheetFileType : public XMLFileType
+{
 	Q_OBJECT
 public:
 	virtual QString description();
 	virtual QString match();
 	virtual QString icon();
 
-	virtual AbstractEditor * createEditor( const QString & filename );
+	virtual AbstractEditor * createEditor(const QString & filename);
 
-	virtual ContentViewParser * createParser();
-	virtual ContentView2::Parser * createParser2();
+	virtual QString parserType();
 };
 
 /* HTMLFileType */
 
-class HTMLFileType : public XMLFileType {
+class HTMLFileType : public XMLFileType
+{
 	Q_OBJECT
 public:
 	virtual QString description();
 	virtual QString match();
 	virtual QString icon();
 
-	virtual AbstractEditor * createEditor( const QString & filename );
+	virtual AbstractEditor * createEditor(const QString & filename);
 };
 
 /* JSFileType */
 
-class JSFileType : public QObject, public IFileTextPlugin {
+class JSFileType : public QObject, public IFileTextPlugin
+{
 	Q_OBJECT
 public:
 	virtual QString description();
 	virtual QString match();
 	virtual QString icon();
 
-	virtual AbstractEditor * createEditor( const QString & filename );
+	virtual AbstractEditor * createEditor(const QString & filename);
 
 	virtual QString highlighterId() const;
-	virtual XinxFormatScheme * createFormatScheme( XINXConfig * config ) const;
+	virtual XinxFormatScheme * createFormatScheme(XINXConfig * config) const;
 	virtual QString createLanguageDescription() const;
 	virtual QString fileExample() const;
 
-	virtual ContentViewParser * createParser();
+	virtual QString parserType();
 };
 
 /* CSSFileType */
 
-class CSSFileType : public QObject, public IFileTextPlugin {
+class CSSFileType : public QObject, public IFileTextPlugin
+{
 	Q_OBJECT
 public:
 	virtual QString description();
 	virtual QString match();
 	virtual QString icon();
 
-	virtual AbstractEditor * createEditor( const QString & filename );
+	virtual AbstractEditor * createEditor(const QString & filename);
 
 	virtual QString highlighterId() const;
-	virtual XinxFormatScheme * createFormatScheme( XINXConfig * config ) const;
+	virtual XinxFormatScheme * createFormatScheme(XINXConfig * config) const;
 	virtual QString createLanguageDescription() const;
 	virtual QString fileExample() const;
 
-	virtual ContentViewParser * createParser();
+	virtual QString parserType();
 };
 
 /* XQFileType */
 
-class XQFileType : public QObject, public IFileTextPlugin {
+class XQFileType : public QObject, public IFileTextPlugin
+{
 	Q_OBJECT
 public:
 	XQFileType();
@@ -182,14 +188,14 @@ public:
 	virtual QString match();
 	virtual QString icon();
 
-	virtual AbstractEditor * createEditor( const QString & filename );
+	virtual AbstractEditor * createEditor(const QString & filename);
 
 	virtual QString highlighterId() const;
-	virtual XinxFormatScheme * createFormatScheme( XINXConfig * config ) const;
+	virtual XinxFormatScheme * createFormatScheme(XINXConfig * config) const;
 	virtual QString createLanguageDescription() const;
 	virtual QString fileExample() const;
 
-	virtual ContentViewParser * createParser();
+	virtual QString parserType();
 };
 
 #endif // _FILETYPEPLUGIN_H_

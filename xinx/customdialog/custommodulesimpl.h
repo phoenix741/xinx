@@ -25,10 +25,11 @@
 #include "ui_custommodules.h"
 #include <plugins/plugininterfaces.h>
 
-class CustomModulesImpl : public QWidget, public Ui::CustomModules, public IXinxPluginConfigurationPage {
+class CustomModulesImpl : public QWidget, public Ui::CustomModules, public IXinxPluginConfigurationPage
+{
 	Q_OBJECT
 public:
-	CustomModulesImpl( QWidget * parent = 0 );
+	CustomModulesImpl(QWidget * parent = 0);
 	~CustomModulesImpl();
 
 	virtual QPixmap image();
@@ -41,8 +42,8 @@ public:
 	virtual bool isSettingsValid();
 	virtual bool isVisible();
 private slots:
-	void aboutPlugin( PluginElement * plugin );
-	void aboutScript( PluginElement * plugin );
+	void aboutPlugin(PluginElement * plugin);
+	void aboutScript(PluginElement * plugin);
 };
 
 #endif /* CUSTOMMODULESIMPL_H */

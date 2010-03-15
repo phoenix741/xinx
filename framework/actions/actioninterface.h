@@ -39,7 +39,8 @@
  * \namespace XinxAction
  * \brief Interfaces to manage action in XINX
  */
-namespace XinxAction {
+namespace XinxAction
+{
 
 /*!
  * \class MenuItem
@@ -47,7 +48,8 @@ namespace XinxAction {
  * Class represent a menu item. A menu item can be an action or a separator. This used by plugin, for define
  * which type of item the element is.
  */
-class LIBEXPORT MenuItem {
+class LIBEXPORT MenuItem
+{
 public:
 	//! Destroy the menu item
 	virtual ~MenuItem() {};
@@ -58,7 +60,8 @@ public:
  * \brief Represent a separator
  * Class represent a separator.
  */
-class LIBEXPORT Separator : public MenuItem {
+class LIBEXPORT Separator : public MenuItem
+{
 public:
 	//! Destroy the separator
 	virtual ~Separator() {};
@@ -70,15 +73,16 @@ public:
  * This class is a wrapper of a Qt action QAction. This wrapper is used to facilite
  * the enable, and visible feature of the action.
  */
-class LIBEXPORT Action : public QObject, public MenuItem {
+class LIBEXPORT Action : public QObject, public MenuItem
+{
 	Q_OBJECT
 public:
 	//! Create an action with \a a
-	Action( QAction * a, QObject * parent );
+	Action(QAction * a, QObject * parent);
 	//! Create an action with the text \e text and the shortcut \e shortcut.
-	Action( const QString & text, const QKeySequence & shortcut, QObject * parent );
+	Action(const QString & text, const QKeySequence & shortcut, QObject * parent);
 	//! Create an actiion with the icon \e icon, text \e text, and the shortcut \e shortcut
-	Action( const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent );
+	Action(const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent);
 	virtual ~Action();
 
 	//! The Action to add
@@ -109,12 +113,13 @@ private:
  * This class is a list of action. This list of action is
  * a menu too.
  */
-class LIBEXPORT ActionList : public QList<MenuItem*> {
+class LIBEXPORT ActionList : public QList<MenuItem*>
+{
 public:
 	//! Create the list with the name \e menu and the id \e menu
-	ActionList( const QString & menu );
+	ActionList(const QString & menu);
 	//! Create the list with the name \e menu and the id \e id
-	ActionList( const QString & menu, const QString & id );
+	ActionList(const QString & menu, const QString & id);
 
 	//! Return the name of the list
 	const QString & menu() const;
@@ -134,7 +139,8 @@ private:
  * \brief Class to manage a list of ActionList (Menu)
  * This list is a list of menu used in the plugin interface.
  */
-class LIBEXPORT MenuList : public QList<ActionList> {
+class LIBEXPORT MenuList : public QList<ActionList>
+{
 public:
 	//! Create the menu list
 	MenuList();

@@ -35,108 +35,130 @@ RCSManager * RCSManager::s_self = 0;
 
 /* RCSManager */
 
-RCSManager::RCSManager() : m_rcs( 0 ) {
+RCSManager::RCSManager() : m_rcs(0)
+{
 	// Global Update
-	m_updateAll = new QAction( QIcon(":/images/vcs_update.png"), tr( "Update project"), this );
-	m_updateAll->setWhatsThis(tr( "Call the update fonction of your <i>revision control system</i> for all the project directory."));
-	m_updateAll->setShortcut( QKeySequence::Refresh );
-	connect( m_updateAll, SIGNAL(triggered()), this, SLOT(updateWorkingCopy()) );
+	m_updateAll = new QAction(QIcon(":/images/vcs_update.png"), tr("Update project"), this);
+	m_updateAll->setWhatsThis(tr("Call the update fonction of your <i>revision control system</i> for all the project directory."));
+	m_updateAll->setShortcut(QKeySequence::Refresh);
+	connect(m_updateAll, SIGNAL(triggered()), this, SLOT(updateWorkingCopy()));
 
 	// Global Commit
-	m_commitAll = new QAction( QIcon(":/images/vcs_commit.png"), tr( "Commit project"), this );
+	m_commitAll = new QAction(QIcon(":/images/vcs_commit.png"), tr("Commit project"), this);
 	m_commitAll->setWhatsThis(QApplication::translate("MainForm", "<p>Call the commit method of your <i>revision control sytem</i> for all the project directory. An optional message can be added.</p>\n"
-		"<p><i>Only <b>XINX</b> managed files are commited to the repository.</i></p>", 0, QApplication::UnicodeUTF8));
-	m_commitAll->setShortcut( QKeySequence( "F6" ) );
-	connect( m_commitAll, SIGNAL(triggered()), this, SLOT(validWorkingCopy()) );
+	                          "<p><i>Only <b>XINX</b> managed files are commited to the repository.</i></p>", 0, QApplication::UnicodeUTF8));
+	m_commitAll->setShortcut(QKeySequence("F6"));
+	connect(m_commitAll, SIGNAL(triggered()), this, SLOT(validWorkingCopy()));
 
 	// Cancel
-	m_abort = new QAction( QIcon(":/images/button_cancel.png"), tr( "Cancel RCS operation"), this );
-	m_abort->setShortcut( QKeySequence( "Escape" ) );
-	connect( m_abort, SIGNAL(triggered()), this, SLOT(abort()) );
+	m_abort = new QAction(QIcon(":/images/button_cancel.png"), tr("Cancel RCS operation"), this);
+	m_abort->setShortcut(QKeySequence("Escape"));
+	connect(m_abort, SIGNAL(triggered()), this, SLOT(abort()));
 
-	connect( &m_rcsWatcher, SIGNAL(started()), this, SIGNAL(operationStarted()) );
-	connect( &m_rcsWatcher, SIGNAL(finished()), this, SIGNAL(operationTerminated()) );
+	connect(&m_rcsWatcher, SIGNAL(started()), this, SIGNAL(operationStarted()));
+	connect(&m_rcsWatcher, SIGNAL(finished()), this, SIGNAL(operationTerminated()));
 
-	connect( &m_rcsWatcher, SIGNAL(started()), this, SLOT(updateActions()) );
-	connect( &m_rcsWatcher, SIGNAL(finished()), this, SLOT(updateActions()) );
+	connect(&m_rcsWatcher, SIGNAL(started()), this, SLOT(updateActions()));
+	connect(&m_rcsWatcher, SIGNAL(finished()), this, SLOT(updateActions()));
 
 	updateActions();
 }
 
-RCSManager::~RCSManager() {
-	if( s_self == this )
+RCSManager::~RCSManager()
+{
+	if (s_self == this)
 		s_self = 0;
 }
 
-RCSManager * RCSManager::self() {
-	if( ! s_self ) {
+RCSManager * RCSManager::self()
+{
+	if (! s_self)
+	{
 		s_self = new RCSManager();
-		XINXStaticDeleter::self()->add( s_self );
+		XINXStaticDeleter::self()->add(s_self);
 	}
 	return s_self;
 }
 
-QAction * RCSManager::updateAllAction() const {
+QAction * RCSManager::updateAllAction() const
+{
 	return m_updateAll;
 }
 
-QAction * RCSManager::commitAllAction() const {
+QAction * RCSManager::commitAllAction() const
+{
 	return m_commitAll;
 }
 
-QAction * RCSManager::abortAction() const {
+QAction * RCSManager::abortAction() const
+{
 	return m_abort;
 }
 
-QMap<QString,QString> RCSManager::revisionControlIds() const {
+QMap<QString,QString> RCSManager::revisionControlIds() const
+{
 	QMap<QString,QString> result;
-	foreach( XinxPluginElement * element, XinxPluginsLoader::self()->plugins() ) {
-		IRCSPlugin * interface = qobject_cast<IRCSPlugin*>( element->plugin() );
-		if( element->isActivated() && interface ) {
-			foreach( const QString & rcsKey, interface->rcs() ) {
-				result.insert( rcsKey, interface->descriptionOfRCS( rcsKey ) );
+	foreach(XinxPluginElement * element, XinxPluginsLoader::self()->plugins())
+	{
+		IRCSPlugin * interface = qobject_cast<IRCSPlugin*>(element->plugin());
+		if (element->isActivated() && interface)
+		{
+			foreach(const QString & rcsKey, interface->rcs())
+			{
+				result.insert(rcsKey, interface->descriptionOfRCS(rcsKey));
 			}
 		}
 	}
 	return result;
 }
 
-RCS * RCSManager::createRevisionControl( QString revision, QString basePath ) const {
+RCS * RCSManager::createRevisionControl(QString revision, QString basePath) const
+{
 	RCS * rcs = NULL;
-	foreach( XinxPluginElement * element, XinxPluginsLoader::self()->plugins() ) {
-		IRCSPlugin * interface = qobject_cast<IRCSPlugin*>( element->plugin() );
-		if( element->isActivated() && interface ) {
-			rcs = interface->createRCS( revision, basePath );
-			if( rcs )
+	foreach(XinxPluginElement * element, XinxPluginsLoader::self()->plugins())
+	{
+		IRCSPlugin * interface = qobject_cast<IRCSPlugin*>(element->plugin());
+		if (element->isActivated() && interface)
+		{
+			rcs = interface->createRCS(revision, basePath);
+			if (rcs)
 				break;
 		}
 	}
 	return rcs;
 }
 
-bool RCSManager::setCurrentRCS( const QString & rcs ) {
-	if( rcs != m_rcsName ) {
-		if( m_rcs ) {
+bool RCSManager::setCurrentRCS(const QString & rcs)
+{
+	if (rcs != m_rcsName)
+	{
+		if (m_rcs)
+		{
 			m_rcsWatcher.waitForFinished();
 			delete m_rcs;
 			m_rcs     = 0;
 			m_rcsName = QString();
 		}
 
-		if( ! rcs.isEmpty() ) {
-			try {
-				m_rcs     = createRevisionControl( rcs, m_rootPath );
+		if (! rcs.isEmpty())
+		{
+			try
+			{
+				m_rcs     = createRevisionControl(rcs, m_rootPath);
 				m_rcsName = m_rcs ? rcs : QString();
-				if( ! m_rcs ) {
+				if (! m_rcs)
+				{
 					updateActions();
 					return false;
 				}
-				connect( m_rcs, SIGNAL(log(RCS::rcsLog,QString)), this, SIGNAL(log(RCS::rcsLog,QString)) );
-				connect( m_rcs, SIGNAL(stateChanged(QString,RCS::struct_rcs_infos)), this, SIGNAL(stateChange(QString,RCS::struct_rcs_infos)) );
-			} catch( ToolsNotDefinedException e ) {
+				connect(m_rcs, SIGNAL(log(RCS::rcsLog,QString)), this, SIGNAL(log(RCS::rcsLog,QString)));
+				connect(m_rcs, SIGNAL(stateChanged(QString,RCS::struct_rcs_infos)), this, SIGNAL(stateChange(QString,RCS::struct_rcs_infos)));
+			}
+			catch (ToolsNotDefinedException e)
+			{
 				m_rcs     = 0;
 				m_rcsName = QString();
-				emit log( RCS::LogApplication, tr("No tools defined") );
+				emit log(RCS::LogApplication, tr("No tools defined"));
 				updateActions();
 				return false;
 			}
@@ -146,66 +168,82 @@ bool RCSManager::setCurrentRCS( const QString & rcs ) {
 	return true;
 }
 
-QString RCSManager::currentRCS() const {
+QString RCSManager::currentRCS() const
+{
 	return m_rcsName;
 }
 
-QString RCSManager::description() const {
-	return revisionControlIds().value( m_rcsName );
+QString RCSManager::description() const
+{
+	return revisionControlIds().value(m_rcsName);
 }
 
-RCS * RCSManager::currentRCSInterface() const {
+RCS * RCSManager::currentRCSInterface() const
+{
 	return m_rcs;
 }
 
-void RCSManager::setCurrentRootPath( const QString & rootPath ) {
-	if( m_rootPath == rootPath ) {
-		if( m_rcs )
-			m_rcs->setWorkingDirectory( rootPath );
+void RCSManager::setCurrentRootPath(const QString & rootPath)
+{
+	if (m_rootPath == rootPath)
+	{
+		if (m_rcs)
+			m_rcs->setWorkingDirectory(rootPath);
 		m_rootPath = rootPath;
 	}
 }
 
-const QString & RCSManager::currentRootPath() const {
+const QString & RCSManager::currentRootPath() const
+{
 	return m_rootPath;
 }
 
-bool RCSManager::isExecuting() const {
+bool RCSManager::isExecuting() const
+{
 	return m_rcsWatcher.isRunning();
 }
 
-void RCSManager::addFileOperation( rcsAddRemoveOperation op, const QStringList & filename, QWidget * parent, bool confirm ) {
+void RCSManager::addFileOperation(rcsAddRemoveOperation op, const QStringList & filename, QWidget * parent, bool confirm)
+{
 	QStringList filenameList = filename;
-	if( ( ! XINXConfig::self()->config().rcs.autoAddFileToVersionningSystem ) && confirm && ( op == RCSManager::RCS_ADD ) ) {
-		QMutableStringListIterator it( filenameList );
-		while( it.hasNext() ) {
+	if ((! XINXConfig::self()->config().rcs.autoAddFileToVersionningSystem) && confirm && (op == RCSManager::RCS_ADD))
+	{
+		QMutableStringListIterator it(filenameList);
+		while (it.hasNext())
+		{
 			const QString text = it.next();
 
-			if( QMessageBox::question( parent, tr("Add a file"), tr("Do you want to add the file '%1' to the repository").arg( text ), QMessageBox::Yes | QMessageBox::No ) == QMessageBox::No ) {
+			if (QMessageBox::question(parent, tr("Add a file"), tr("Do you want to add the file '%1' to the repository").arg(text), QMessageBox::Yes | QMessageBox::No) == QMessageBox::No)
+			{
 				it.remove();
 			}
 		}
 	}
 
-	m_operations.append( qMakePair( op, filenameList ) );
+	m_operations.append(qMakePair(op, filenameList));
 }
 
-void RCSManager::callRCSFileOperations( RCS * rcs, QStringList toAdd, QStringList toRemove ) {
-	if( ! toAdd.isEmpty() )
-		rcs->add( toAdd );
-	if( ! toRemove.isEmpty() )
-		rcs->remove( toRemove );
+void RCSManager::callRCSFileOperations(RCS * rcs, QStringList toAdd, QStringList toRemove)
+{
+	if (! toAdd.isEmpty())
+		rcs->add(toAdd);
+	if (! toRemove.isEmpty())
+		rcs->remove(toRemove);
 }
 
-void RCSManager::validFileOperations() {
+void RCSManager::validFileOperations()
+{
 	m_rcsWatcher.waitForFinished();
 
-	if( m_rcs ) {
+	if (m_rcs)
+	{
 		QStringList fileToAdd, fileToRemove;
-		while( m_operations.size() ) {
+		while (m_operations.size())
+		{
 			QPair<rcsAddRemoveOperation,QStringList> operation = m_operations.dequeue();
 
-			switch( operation.first ) {
+			switch (operation.first)
+			{
 			case RCSManager::RCS_ADD:
 				fileToAdd << operation.second;
 				break;
@@ -215,130 +253,152 @@ void RCSManager::validFileOperations() {
 			}
 		}
 
-		m_rcsWatcher.setFuture( QtConcurrent::run( this, &RCSManager::callRCSFileOperations, m_rcs, fileToAdd, fileToRemove ) );
+		m_rcsWatcher.setFuture(QtConcurrent::run(this, &RCSManager::callRCSFileOperations, m_rcs, fileToAdd, fileToRemove));
 
-	} else {
+	}
+	else
+	{
 		emit operationStarted();
 		m_operations.clear();
 		emit operationTerminated();
 	}
 }
 
-void RCSManager::rollbackFileOperations() {
+void RCSManager::rollbackFileOperations()
+{
 	m_operations.clear();
 }
 
-void RCSManager::callRCSValideWorkingCopy( RCS * rcs, RCS::FilesOperation operations, QString messages ) {
+void RCSManager::callRCSValideWorkingCopy(RCS * rcs, RCS::FilesOperation operations, QString messages)
+{
 	QStringList toAdd, toRemove, toCommit;
 
-	foreach( RCS::FileOperation operation, operations ) {
-		if( operation.operation == RCS::AddAndCommit ) {
+	foreach(RCS::FileOperation operation, operations)
+	{
+		if (operation.operation == RCS::AddAndCommit)
+		{
 			toAdd << operation.filename;
 		}
-		if( operation.operation == RCS::RemoveAndCommit ) {
+		if (operation.operation == RCS::RemoveAndCommit)
+		{
 			toRemove << operation.filename;
 		}
 		toCommit << operation.filename;
 	}
 
-	rcs->add( toAdd );
-	rcs->remove( toRemove );
-	rcs->commit( toCommit, messages );
+	rcs->add(toAdd);
+	rcs->remove(toRemove);
+	rcs->commit(toCommit, messages);
 }
 
-void RCSManager::validWorkingCopy( QStringList files, QWidget * parent ) {
-	Q_ASSERT( m_rcs );
+void RCSManager::validWorkingCopy(QStringList files, QWidget * parent)
+{
+	Q_ASSERT(m_rcs);
 
 	m_rcsWatcher.waitForFinished();
 
 	QString changeLog;
-	CommitMessageDialogImpl dlg( parent );
+	CommitMessageDialogImpl dlg(parent);
 	RCS::FilesOperation operations;
 
-	if( files.count() == 0 ) {
-		if( XINXProjectManager::self()->project() )
+	if (files.count() == 0)
+	{
+		if (XINXProjectManager::self()->project())
 			files << XINXProjectManager::self()->project()->projectPath();
 
 	}
 
-	if( files.count() > 0 ) {
-		operations = m_rcs->operations( files );
+	if (files.count() > 0)
+	{
+		operations = m_rcs->operations(files);
 
-		if( XINXConfig::self()->config().rcs.createChangelog ) {
-			changeLog = QDir( XINXProjectManager::self()->project()->projectPath() ).absoluteFilePath( "changelog" );
-			if( QFile::exists( changeLog ) )
-				operations << RCS::FileOperation( changeLog, RCS::Commit );
+		if (XINXConfig::self()->config().rcs.createChangelog)
+		{
+			changeLog = QDir(XINXProjectManager::self()->project()->projectPath()).absoluteFilePath("changelog");
+			if (QFile::exists(changeLog))
+				operations << RCS::FileOperation(changeLog, RCS::Commit);
 			else
-				operations << RCS::FileOperation( changeLog, RCS::AddAndCommit );
+				operations << RCS::FileOperation(changeLog, RCS::AddAndCommit);
 		}
 	}
 
-	dlg.setFilesOperation( operations );
+	dlg.setFilesOperation(operations);
 
-	if( dlg.exec() ) {
+	if (dlg.exec())
+	{
 		QString message = dlg.messages();
 
-		if( XINXConfig::self()->config().rcs.createChangelog ) {
-			QFile changeLogFile( changeLog );
-			if( changeLogFile.open( QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text ) ) {
-				QTextStream stream( &changeLogFile );
-				stream << QDate::currentDate().toString( Qt::ISODate ) << " " << QTime::currentTime().toString( Qt::ISODate ) << " : ";
-				if( message.isEmpty() )
-					stream << tr( "<Commit with no text>" );
+		if (XINXConfig::self()->config().rcs.createChangelog)
+		{
+			QFile changeLogFile(changeLog);
+			if (changeLogFile.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))
+			{
+				QTextStream stream(&changeLogFile);
+				stream << QDate::currentDate().toString(Qt::ISODate) << " " << QTime::currentTime().toString(Qt::ISODate) << " : ";
+				if (message.isEmpty())
+					stream << tr("<Commit with no text>");
 				else
 					stream << message;
 				stream << endl;
 			}
 		}
 
-		m_rcsWatcher.setFuture( QtConcurrent::run( this, &RCSManager::callRCSValideWorkingCopy, m_rcs, dlg.filesOperation(), message ) );
-	} else {
+		m_rcsWatcher.setFuture(QtConcurrent::run(this, &RCSManager::callRCSValideWorkingCopy, m_rcs, dlg.filesOperation(), message));
+	}
+	else
+	{
 		emit operationStarted();
-		emit log( RCS::LogApplication, tr("Operation cancelled") );
+		emit log(RCS::LogApplication, tr("Operation cancelled"));
 		emit operationTerminated();
 	}
 }
 
-void RCSManager::callRCSUpdateWorkingCopy( RCS * rcs, QStringList list ) {
-	rcs->update( list );
+void RCSManager::callRCSUpdateWorkingCopy(RCS * rcs, QStringList list)
+{
+	rcs->update(list);
 }
 
-void RCSManager::updateWorkingCopy( QStringList list ) {
-	Q_ASSERT( m_rcs );
+void RCSManager::updateWorkingCopy(QStringList list)
+{
+	Q_ASSERT(m_rcs);
 
 	m_rcsWatcher.waitForFinished();
 
-	if( list.count() == 0 )
+	if (list.count() == 0)
 		list << XINXProjectManager::self()->project()->projectPath();
 
-	m_rcsWatcher.setFuture( QtConcurrent::run( this, &RCSManager::callRCSUpdateWorkingCopy, m_rcs, list ) );
+	m_rcsWatcher.setFuture(QtConcurrent::run(this, &RCSManager::callRCSUpdateWorkingCopy, m_rcs, list));
 }
 
-void RCSManager::callRCSUpdateRevision( RCS * rcs, QString path, QString revision, QByteArray * content ) {
-	rcs->updateToRevision( path, revision, content );
+void RCSManager::callRCSUpdateRevision(RCS * rcs, QString path, QString revision, QByteArray * content)
+{
+	rcs->updateToRevision(path, revision, content);
 }
 
-void RCSManager::updateToRevision( const QString & path, const QString & revision, QByteArray * content ) {
-	Q_ASSERT( m_rcs );
+void RCSManager::updateToRevision(const QString & path, const QString & revision, QByteArray * content)
+{
+	Q_ASSERT(m_rcs);
 
 	m_rcsWatcher.waitForFinished();
 
-	m_rcsWatcher.setFuture( QtConcurrent::run( this, &RCSManager::callRCSUpdateRevision, m_rcs, path, revision, content ) );
+	m_rcsWatcher.setFuture(QtConcurrent::run(this, &RCSManager::callRCSUpdateRevision, m_rcs, path, revision, content));
 }
 
-void RCSManager::abort() {
-	Q_ASSERT( m_rcs );
+void RCSManager::abort()
+{
+	Q_ASSERT(m_rcs);
 
-	if( m_rcsWatcher.isRunning() )
+	if (m_rcsWatcher.isRunning())
 		m_rcs->abort();
 }
 
-void RCSManager::updateActions() {
+void RCSManager::updateActions()
+{
 	bool hasRCS     = (m_rcs != NULL);
 	bool isExecute  = hasRCS && RCSManager::self()->isExecuting();
 
-	m_updateAll->setEnabled( hasRCS && (!isExecute) );
-	m_commitAll->setEnabled( hasRCS && (!isExecute) );
-	m_abort->setEnabled( hasRCS && (!isExecute) );
+	m_updateAll->setEnabled(hasRCS && (!isExecute));
+	m_commitAll->setEnabled(hasRCS && (!isExecute));
+	m_abort->setEnabled(hasRCS && (!isExecute));
 }
 

@@ -28,27 +28,33 @@ XinxThreadManager * XinxThreadManager::s_self = NULL;
 
 /* XinxThreadManager */
 
-XinxThreadManager::XinxThreadManager() : m_threadCount( 0 ), m_threadClassCount( 0 ) {
+XinxThreadManager::XinxThreadManager() : m_threadCount(0), m_threadClassCount(0)
+{
 
 }
 
-XinxThreadManager::~XinxThreadManager() {
-	if( this == s_self )
+XinxThreadManager::~XinxThreadManager()
+{
+	if (this == s_self)
 		s_self = NULL;
 }
 
-int XinxThreadManager::getThreadCount() const {
+int XinxThreadManager::getThreadCount() const
+{
 	return m_threadCount;
 }
 
-int XinxThreadManager::getThreadClassCount() const {
+int XinxThreadManager::getThreadClassCount() const
+{
 	return m_threadClassCount;
 }
 
-XinxThreadManager * XinxThreadManager::self() {
-	if( ! s_self ) {
+XinxThreadManager * XinxThreadManager::self()
+{
+	if (! s_self)
+	{
 		s_self = new XinxThreadManager();
-		XINXStaticDeleter::self()->add( s_self );
+		XINXStaticDeleter::self()->add(s_self);
 	}
 
 	return s_self;
@@ -56,21 +62,24 @@ XinxThreadManager * XinxThreadManager::self() {
 
 /* XinxThread */
 
-XinxThread::XinxThread( QObject * parent ) : QThread( parent ) {
-	QMutexLocker locker( &(XinxThreadManager::self()->m_mutex) );
+XinxThread::XinxThread(QObject * parent) : QThread(parent)
+{
+	QMutexLocker locker(&(XinxThreadManager::self()->m_mutex));
 	XinxThreadManager::self()->m_threadClassCount++;
 	emit XinxThreadManager::self()->threadCountChange();
 }
 
-XinxThread::~XinxThread() {
-	QMutexLocker locker( &(XinxThreadManager::self()->m_mutex) );
+XinxThread::~XinxThread()
+{
+	QMutexLocker locker(&(XinxThreadManager::self()->m_mutex));
 	XinxThreadManager::self()->m_threadClassCount--;
 	emit XinxThreadManager::self()->threadCountChange();
 }
 
-void XinxThread::run() {
+void XinxThread::run()
+{
 	{
-		QMutexLocker locker( &(XinxThreadManager::self()->m_mutex) );
+		QMutexLocker locker(&(XinxThreadManager::self()->m_mutex));
 		XinxThreadManager::self()->m_threadCount++;
 		emit XinxThreadManager::self()->threadCountChange();
 	}
@@ -78,7 +87,7 @@ void XinxThread::run() {
 	threadrun();
 
 	{
-		QMutexLocker locker( &(XinxThreadManager::self()->m_mutex) );
+		QMutexLocker locker(&(XinxThreadManager::self()->m_mutex));
 		XinxThreadManager::self()->m_threadCount--;
 		emit XinxThreadManager::self()->threadCountChange();
 	}

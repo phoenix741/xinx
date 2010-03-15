@@ -22,12 +22,11 @@
 #pragma once
 
 // Xinx header
-#include <snipets/snipetcompletionnodemodel.h>
+#include <contentview2/contentview2completionmodel.h>
+#include <contentview2/contentview2node.h>
 
 // Qt header
 #include <QAbstractListModel>
-
-class ContentViewNode;
 
 /* JavascriptModelCompleter */
 
@@ -36,7 +35,8 @@ class ContentViewNode;
  * This class based on a parser show all variables, params, and function name,
  * that could be used in the JavaScript file.
  */
-class JavascriptModelCompleter : public SnipetCompletionNodeModel {
+class JavascriptModelCompleter : public ContentView2::CompletionModel
+{
 	Q_OBJECT
 public:
 	/*!
@@ -44,7 +44,7 @@ public:
 	 * \param parser The parser used to parse the javascript text
 	 * \param parent Parent object used to create this object.
 	 */
-	JavascriptModelCompleter( ContentViewNode * root, QObject *parent = 0 );
+	JavascriptModelCompleter(QSqlDatabase db, ContentView2::FileContainer file, QObject *parent = 0);
 	/*!
 	 * Destroy the Javascript model.
 	 */
@@ -54,10 +54,10 @@ public slots:
 	 * Set the filter used to define the scope of the function.
 	 * If the function is NULL, the scope is global.
 	 */
-	void setFilter( const QString functionName = QString() );
+	void setFilter(const QString functionName = QString());
 
 protected:
-	virtual bool mustElementBeShowed( ContentViewNode * node );
+	virtual QString whereClause() const;
 
 private:
 	QString m_functionFiltre;

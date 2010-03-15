@@ -25,13 +25,14 @@
 #include "ui_generixderivationoptionspage.h"
 #include <plugins/plugininterfaces.h>
 
-class GenerixDerivationOptionsPageImpl : public QWidget, public Ui::GenerixDerivationOptionsPage, public IXinxPluginProjectConfigurationPage {
+class GenerixDerivationOptionsPageImpl : public QWidget, public Ui::GenerixDerivationOptionsPage, public IXinxPluginProjectConfigurationPage
+{
 	Q_OBJECT
 public:
-	GenerixDerivationOptionsPageImpl( QWidget * parent = 0, Qt::WFlags f = 0 );
+	GenerixDerivationOptionsPageImpl(QWidget * parent = 0, Qt::WFlags f = 0);
 	virtual ~GenerixDerivationOptionsPageImpl();
 
-	virtual void setProject( XinxProject * project );
+	virtual void setProject(XinxProject * project);
 
 	virtual QPixmap image();
 	virtual QString name();

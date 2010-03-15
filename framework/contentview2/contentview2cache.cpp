@@ -21,6 +21,12 @@
 #include "contentview2cache.h"
 #include "project/xinxproject.h"
 #include "plugins/xinxpluginsloader.h"
+#include "core/exceptions.h"
+#include "contentview2/contentview2manager.h"
+#include "contentview2/contentview2project.h"
+#include "contentview2/contentview2file.h"
+#include "contentview2/contentview2node.h"
+#include "contentview2/contentview2parserfactory.h"
 
 // Qt header
 #include <QSqlDatabase>
@@ -29,278 +35,499 @@
 #include <QFileInfo>
 #include <QDateTime>
 #include <QDebug>
+#include <QTextCodec>
 
-namespace ContentView2 {
+namespace ContentView2
+{
 
 /* Cache */
 
-Cache::Cache( XinxProject * project ) : m_project( project ) {
-	m_watcher = new QFileSystemWatcher( this );
-	connect( m_watcher, SIGNAL(fileChanged(QString)), this, SLOT(refreshCache(QString)) );
+Cache::Cache()
+{
+	qRegisterMetaType<ContentView2::File>("ContentView2::File");
+	m_watcher = new QFileSystemWatcher(this);
+	connect(m_watcher, SIGNAL(fileChanged(QString)), this, SLOT(refreshCache(QString)));
 }
 
-Cache::~Cache() {
+Cache::~Cache()
+{
+
 }
 
-QStringList Cache::contentsViewLoaded() const {
+QStringList Cache::contentsViewLoaded() const
+{
 	return m_watcher->files();
 }
 
-void Cache::initializeCache() {
-	QSqlQuery cacheQuery( "SELECT id, path, datmod, root_id, loaded FROM cv_file WHERE cached = :cached", XINXProjectManager::self()->session()->database() );
-	cacheQuery.bindValue( ":cached", true );
-	bool result = cacheQuery.exec();
-	Q_ASSERT_X( result, "Cache::initializeCache", qPrintable( cacheQuery.lastError().text() ) );
+void Cache::initializeCache()
+{
+	if (m_watcher->files().size())
+		m_watcher->removePaths(m_watcher->files());
 
-	while( cacheQuery.next() ) {
-		const uint      id           = cacheQuery.value( 0 ).toUInt();
-		const QString   path         = cacheQuery.value( 1 ).toString();
-		const QString   datmod       = cacheQuery.value( 2 ).toString();
-		const uint      nodeId       = cacheQuery.value( 3 ).toUInt();
-		const bool      loaded       = cacheQuery.value( 4 ).toBool();
-		const QDateTime lastModified = QDateTime::fromString( QFileInfo( path ).lastModified().toString( Qt::ISODate ), Qt::ISODate );
-		const QDateTime cacheDate    = QDateTime::fromString( datmod, Qt::ISODate );
-
-		if( ( lastModified > cacheDate ) || !loaded ) {
-			Parser * parser = 0;
-			try {
-				parser = createParser( path, false );
-				parser->setFilename( path );
-				parser->setRootNode( Node( XINXProjectManager::self()->session()->database(), nodeId ) );
-				changeDatmod( XINXProjectManager::self()->session()->database(), id, lastModified );
-				m_parsers.append( parser );
-				m_watcher->addPath( path );
-			} catch( ParserException e ) {
-				delete parser;
-			}
-		}
-	}
-
-	start( QThread::IdlePriority );
-}
-
-int Cache::createRootId( const QString & filename, bool get, bool cached ) {
-	QSqlQuery selectQuery( "SELECT root_id FROM cv_file WHERE path=:filename", XINXProjectManager::self()->session()->database() );
-	selectQuery.bindValue( ":filename", filename );
-	bool result = selectQuery.exec();
-	Q_ASSERT_X( result, "Cache::createRootId", qPrintable( selectQuery.lastError().text() ) );
-
-	if( selectQuery.first() ) {
-		if( ! get ) return -1;
-		return selectQuery.value(0).toUInt();
-	}
-
-	QSqlQuery createQuery( "INSERT INTO cv_file( path, datmod, root_id, loaded, cached ) VALUES( :path, :datmod, -1, :loaded, :cached )", XINXProjectManager::self()->session()->database() );
-	createQuery.bindValue( ":path", filename );
-	createQuery.bindValue( ":datmod", QFileInfo( filename ).lastModified().toString( Qt::ISODate ) );
-	createQuery.bindValue( ":loaded", false );
-	createQuery.bindValue( ":cached", cached );
-	result = createQuery.exec();
-	Q_ASSERT_X( result, "Cache::createRootId", qPrintable( createQuery.lastError().text() ) );
-
-	const uint fileId = createQuery.lastInsertId().toUInt();
-
-	Node node;
-	node.setFileName( filename );
-	node.setData( filename, Node::NODE_DISPLAY_NAME );
-	node.setData( filename, Node::NODE_NAME );
-	node.setData( "RootFilename", Node::NODE_TYPE );
-
-	const uint rootId = node.create( XINXProjectManager::self()->session()->database() );
-
-	QSqlQuery updateQuery( "UPDATE cv_file set root_id=:rootId WHERE id=:id", XINXProjectManager::self()->session()->database() );
-	updateQuery.bindValue( ":rootId", rootId );
-	updateQuery.bindValue( ":id", fileId );
-	result = updateQuery.exec();
-	Q_ASSERT_X( result, "Cache::createRootId", qPrintable( updateQuery.lastError().text() ) );
-
-	return rootId;
-}
-
-void Cache::changeDatmod( QSqlDatabase db, uint fileId, const QDateTime & datmod ) {
-	QSqlQuery updateQuery( "UPDATE cv_file SET datmod=:datmod, loaded=:loaded WHERE id=:fileId", db );
-	updateQuery.bindValue( ":datmod", QVariant::fromValue( datmod.toString( Qt::ISODate ) ) );
-	updateQuery.bindValue( ":loaded", false );
-	updateQuery.bindValue( ":fileId", QVariant::fromValue( fileId ) );
-	bool result = updateQuery.exec();
-	Q_ASSERT_X( result, "Cache::markAsLoaded", qPrintable( updateQuery.lastError().text() ) );
-}
-
-void Cache::markAsLoaded( QSqlDatabase db, uint rootId ) {
-	QSqlQuery updateQuery( "UPDATE cv_file SET loaded=:loaded WHERE root_id=:rootId", db );
-	updateQuery.bindValue( ":loaded", QVariant::fromValue( true ) );
-	updateQuery.bindValue( ":rootId", QVariant::fromValue( rootId ) );
-	bool result = updateQuery.exec();
-	Q_ASSERT_X( result, "Cache::markAsLoaded", qPrintable( updateQuery.lastError().text() ) );
-}
-
-void Cache::loadCache( const QStringList & filenames ) {
-	QSqlDatabase db = XINXProjectManager::self()->session()->database();
-	foreach( const QString & filename, filenames ) {
-		if( ! QFileInfo( filename ).exists() ) continue;
-
-		db.transaction();
-
-		int rootId = createRootId( filename, false, true );
-		if( rootId == -1 ) continue;
-
-		Parser * parser = 0;
-		try {
-			parser = createParser( filename, false );
-			if( parser ) {
-				parser->setFilename( filename );
-				parser->setRootNode( Node( db, rootId ) );
-
-				db.commit();
-
-				m_parsers.append( parser );
-				m_watcher->addPath( filename );
-			} else {
-				db.rollback();
-			}
-		} catch( ParserException e ) {
-			delete parser;
-			db.rollback();
-		}
-
-	}
-	start( QThread::IdlePriority );
-}
-
-void Cache::addToCache( Parser * parser ) {
-	if( parser )
-		m_parsers.append( parser );
-	start( QThread::IdlePriority );
-}
-
-void Cache::run() {
+	try
 	{
-		QSqlDatabase db = QSqlDatabase::cloneDatabase( XINXProjectManager::self()->session()->database(), "CONTENTVIEW_THREAD" );
-		bool result =  db.open();
-		Q_ASSERT_X( result, "Cache::run", "Can't load session file in the cache for update" );
-		// To be quick
-		db.exec( "PRAGMA synchronous = OFF" );
+		Project project( Manager::self()->database(), XINXProjectManager::self()->project() );
 
+		QSqlQuery cacheQuery("SELECT path, type, selection FROM cv_file WHERE project_id=:project and cached = :cached", Manager::self()->database());
+		cacheQuery.bindValue(":project", project.projectId());
+		cacheQuery.bindValue(":cached", true);
+		bool result = cacheQuery.exec();
+		Q_ASSERT_X(result, "Cache::initializeCache", qPrintable(cacheQuery.lastError().text()));
 
-		while( m_parsers.size() ) {
-			QList<Parser*> parsers;
-			while( m_parsers.size() )
-				parsers.append( m_parsers.dequeue() );
+		while (cacheQuery.next())
+		{
+			const QString path         = cacheQuery.value(0).toString();
+			const QString type         = cacheQuery.value(1).toString();
+			const QString selection    = cacheQuery.value(2).toString();
 
-			emit progressRangeChanged( 0, parsers.size() );
-			emit progressValueChanged( 0 );
+			struct_cache fileCache;
+			fileCache.project      = XINXProjectManager::self()->project();
+			fileCache.selection    = selection;
+			fileCache.cached       = true;
+			fileCache.path         = path;
+			fileCache.type         = type;
+			fileCache.parser       = 0;
 
-			for( int i = 0 ; i < parsers.size() ; i++ ) {
-				db.transaction();
-				Parser * parser = parsers.at( i );
-				try {
-					uint rootId = parser->rootNode().nodeId();
+			m_parsers.append(fileCache);
+			if(QFileInfo(path).exists())
+				m_watcher->addPath(path);
+		}
+	}
+	catch(...)
+	{
+		// In case of error, make nothing
+	}
 
-					parser->setDatabase( db );
-					parser->load();
-					parser->setDatabase( QSqlDatabase() );
+	startTimer(300);
+}
 
-					markAsLoaded( db, rootId );
-					db.commit();
+void Cache::addToCache(struct_cache p)
+{
+	m_parsers.append(p);
+	if (QFileInfo(p.path).exists() && ! m_watcher->files().contains(p.path))
+		m_watcher->addPath(p.path);
+}
 
-					QSqlQuery filesQuery( "SELECT id, path FROM cv_file WHERE root_id=:root_id", db );
-					filesQuery.bindValue( ":root_id", rootId );
-					bool result = filesQuery.exec();
-					Q_ASSERT_X( result, "Cache::run", qPrintable( filesQuery.lastError().text() ) );
+void Cache::addToCache(XinxProject * project, const QString & path, const QString & selection, Parser * parser)
+{
+	struct_cache fileCache;
+	fileCache.project      = project;
+	fileCache.cached       = parser == 0;
+	fileCache.selection    = selection;
+	fileCache.path         = path;
+	fileCache.type         = QString();
+	fileCache.parser       = parser;
 
-					while( filesQuery.next() ) {
-						emit cacheLoaded( filesQuery.value( 0 ).toUInt(), filesQuery.value( 1 ).toString() );
-					}
-				} catch( ContentView2::ParserException e ) {
-					// Tant que le parseur Javascript n'est pas au norme on ne n'affiche pas les erreurs des imports ï¿½  l'utilisateur
-					qDebug( qPrintable( e.getMessage() ) );
-					db.rollback();
+	m_parsers.append(fileCache);
+	if (QFileInfo(path).exists() && ! m_watcher->files().contains(path))
+		m_watcher->addPath(path);
+
+	startTimer(500);
+}
+
+void Cache::addToCache(XinxProject * project, const QString & path, const QString & type, const QString & selection, Parser * parser)
+{
+	struct_cache fileCache;
+	fileCache.project      = project;
+	fileCache.cached       = parser == 0;
+	fileCache.selection    = selection;
+	fileCache.path         = path;
+	fileCache.type         = type;
+	fileCache.parser       = parser;
+	if (QFileInfo(path).exists() && ! m_watcher->files().contains(path))
+		m_watcher->addPath(path);
+
+	m_parsers.append(fileCache);
+
+	startTimer(500);
+}
+
+void Cache::deleteFromCache(XinxProject * project, const QString & path, bool isCached)
+{
+	struct_cache fileCache;
+	fileCache.project      = project;
+	fileCache.cached       = isCached;
+	fileCache.path         = path;
+	if (QFileInfo(path).exists() && m_watcher->files().contains(path))
+		m_watcher->removePath(path);
+
+	m_toDelete.append(fileCache);
+
+	startTimer(500);
+}
+
+void Cache::registerPath(const QString & path)
+{
+	if(! m_registeredFile.contains(path))
+		m_registeredFile.append(path);
+}
+
+void Cache::unregisterPath(const QString & path)
+{
+	m_registeredFile.removeAll(path);
+	startTimer(500);
+}
+
+void Cache::timerEvent(QTimerEvent * event)
+{
+	killTimer(event->timerId());
+	if (m_parsers.size())
+		start(QThread::IdlePriority);
+}
+
+Project Cache::getProject(QSqlDatabase db, XinxProject * p)
+{
+	Project project;
+	try
+	{
+		project = Project( db, p );
+	}
+	catch(ProjectException e)
+	{
+		if( p )
+		{
+			project.setProjectName( p->projectName() );
+			project.setProjectPath( p->fileName() );
+		}
+		else
+		{
+			project.setProjectName( "/" );
+			project.setProjectPath( "/" );
+		}
+		project.create(db);
+	}
+	return project;
+}
+
+File Cache::getFile(QSqlDatabase db, struct_cache p)
+{
+	File file;
+	try
+	{
+		/* Lecture du fichier */
+		file = File( db, p.project, p.path, p.cached );
+	}
+	catch(FileException e)
+	{
+		/* Lecture/Création du projet */
+		Project project = getProject(db, p.project);
+
+		/* Creation du fichier */
+		file.setProject(project);
+		file.setPath(p.path);
+		file.setIsCached(p.cached);
+		file.setIsLoaded(false);
+		file.setSelection(p.selection);
+		if (p.type.isEmpty())
+		{
+			file.setType(ParserFactory::getParserTypeByFilename(p.path));
+		}
+		else
+		{
+			file.setType(p.type);
+		}
+
+		file.create(db);
+
+		/* Creation de la racine */
+		Node node;
+		node.setFile(file);
+		node.setData(p.path, Node::NODE_DISPLAY_NAME);
+		node.setData(p.path, Node::NODE_NAME);
+		node.setData("RootFilename", Node::NODE_TYPE);
+
+		node.create(db);
+
+		/* Indication de la racine sur le fichier */
+		file.setRoot(node);
+		file.update(db);
+	}
+
+	return file;
+}
+
+void Cache::regenerateImport(QSqlDatabase db)
+{
+	QMultiHash<int,int> imports;
+
+	bool result = db.transaction();
+	Q_ASSERT_X(result, "Cache::regenerateImport", qPrintable(db.lastError().text()));
+
+	try
+	{
+		QSqlQuery deleteAllImportsQuery("DELETE FROM cv_import WHERE automatic_import=:automatic", db);
+		deleteAllImportsQuery.bindValue(":automatic", QVariant::fromValue(true));
+		bool result = deleteAllImportsQuery.exec();
+		Q_ASSERT_X(result, "Cache::regenerateImport", qPrintable(deleteAllImportsQuery.lastError().text()));
+
+		QSqlQuery selectImportQuery("SELECT parent_id, child_id FROM cv_import WHERE automatic_import=:automatic", db);
+		selectImportQuery.bindValue(":automatic", QVariant::fromValue(false));
+		result = selectImportQuery.exec();
+		Q_ASSERT_X(result, "Cache::regenerateImport", qPrintable(selectImportQuery.lastError().text()));
+
+		while(selectImportQuery.next())
+		{
+			imports.insert(selectImportQuery.value(0).toInt(), selectImportQuery.value(1).toInt());
+		}
+
+		foreach(int key, imports.keys())
+		{
+			foreach(int value, imports.values(key))
+			{
+				foreach(int node, imports.keys(key))
+				{
+					imports.insert(node, value);
+					QSqlQuery insertImportQuery("INSERT INTO cv_import(parent_id, child_id, automatic_import) VALUES(:parent_id, :child_id, :automatic)", db);
+					insertImportQuery.bindValue(":parent_id", node);
+					insertImportQuery.bindValue(":child_id",value);
+					insertImportQuery.bindValue(":automatic", true);
+					result = insertImportQuery.exec();
+					Q_ASSERT_X(result, "Cache::regenerateImport", qPrintable(insertImportQuery.lastError().text()));
 				}
-
-				if( parser && ! parser->isPersistent() ) {
-					delete parser;
-				}
-
-				emit progressValueChanged( i );
 			}
 		}
+
+		result = db.commit();
+		Q_ASSERT_X(result, "Cache::regenerateImport", qPrintable(db.lastError().text()));
+	}
+	catch(FileException e)
+	{
+		result = db.rollback();
+		Q_ASSERT_X(result, "Cache::regenerateImport", qPrintable(db.lastError().text()));
+	}
+}
+
+void Cache::run()
+{
+	{
+		QSqlDatabase db = QSqlDatabase::cloneDatabase(Manager::self()->database(), "CONTENTVIEW_SESSION_THREAD");
+		db.open();
+
+		bool deleteNotRegistered = true;
+		while (m_parsers.size() || m_toDelete.size() || (deleteNotRegistered))
+		{
+			QList<struct_cache> parsers;
+			while (m_parsers.size())
+				parsers.append(m_parsers.dequeue());
+
+			QList<struct_cache> toDelete;
+			while (m_toDelete.size())
+				toDelete.append(m_toDelete.dequeue());
+
+			emit progressRangeChanged(0, parsers.size() + toDelete.size() + (deleteNotRegistered ? 1 : 0));
+			emit progressValueChanged(0);
+
+			int progress = 0;
+
+			/* Cache to create */
+			for (int i = 0 ; i < parsers.size() ; i++)
+			{
+				bool result = db.transaction();
+				Q_ASSERT_X(result, "Cache::run", qPrintable(db.lastError().text()));
+
+				Parser * parser = parsers.at(i).parser;
+				File file;
+				try
+				{
+					QDateTime lastModified;
+					file = getFile(db, parsers.at(i));
+
+					bool manageDatmod = (file.isCached() && QFileInfo(file.path()).exists());
+					if (manageDatmod)
+					{
+						lastModified = QDateTime::fromString(QFileInfo(file.path()).lastModified().toString(Qt::ISODate), Qt::ISODate);
+						if ((lastModified <= file.datmod()) && file.isLoaded())
+						{
+							result = db.commit();
+							Q_ASSERT_X(result, "Cache::run", qPrintable(db.lastError().text()));
+							emit progressValueChanged(progress++);
+							continue;
+						}
+					}
+
+					if( ! parser )
+						parser = ParserFactory::getParserByType(file.type());
+					if( ! parser )
+					{
+						result = db.commit();
+						Q_ASSERT_X(result, "Cache::run", qPrintable(db.lastError().text()));
+						emit progressValueChanged(progress++);
+						continue;
+					}
+
+					if (file.isCached() && QFileInfo(file.path()).exists())
+					{
+						parser->setFilename(file.path());
+					}
+
+					parser->setRootNode(Node(db, file.rootId()));
+					parser->setDatabase(db);
+					try
+					{
+						parser->load();
+						if(parser->codec())
+							file.setEncoding(parser->codec()->name());
+
+						file.destroyImports(db);
+						foreach(const QString & import, parser->imports())
+						{
+							struct_cache fileCache;
+							fileCache.project      = XINXProjectManager::self()->project();
+							fileCache.path         = import;
+							fileCache.cached       = true;
+							fileCache.selection    = "M";
+							fileCache.type         = QString();
+							fileCache.parser       = 0;
+
+							File importFile = getFile(db, fileCache);
+							file.addImport(db, importFile, false);
+							addToCache(fileCache);
+						}
+
+						file.setIsLoaded(true);
+						if (lastModified.isValid())
+						{
+							file.setDatmod (lastModified);
+						}
+						file.update(db);
+
+						result = db.commit();
+						Q_ASSERT_X(result, "Cache::run", qPrintable(db.lastError().text()));
+
+						emit cacheLoaded(file);
+					}
+					catch(ParserException e)
+					{
+						result = db.rollback();
+						Q_ASSERT_X(result, "Cache::run", qPrintable(db.lastError().text()));
+					}
+				}
+				catch (ParserException e)
+				{
+					result = db.rollback();
+					Q_ASSERT_X(result, "Cache::run", qPrintable(db.lastError().text()));
+
+					if( file.isValid() )
+					{
+						struct_cache fileCache;
+						fileCache.project      = XINXProjectManager::self()->project();
+						fileCache.path         = file.path();
+						fileCache.cached       = file.isCached();
+						m_toDelete.append(fileCache);
+					}
+				}
+				catch (...)
+				{
+					result = db.rollback();
+					Q_ASSERT_X(result, "Cache::run", qPrintable(db.lastError().text()));
+				}
+
+				delete parser;
+
+				emit progressValueChanged(progress++);
+			}
+
+			/* Cached to deletes */
+			for (int i = 0 ; i < toDelete.size() ; i++)
+			{
+				bool result = db.transaction();
+				Q_ASSERT_X(result, "Cache::run", qPrintable(db.lastError().text()));
+
+				File file;
+				try
+				{
+					file = File(db, toDelete.at(i).project, toDelete.at(i).path, toDelete.at(i).cached);
+					file.destroy(db);
+
+					result = db.commit();
+					Q_ASSERT_X(result, "Cache::run", qPrintable(db.lastError().text()));
+				}
+				catch (...)
+				{
+					result = db.rollback();
+					Q_ASSERT_X(result, "Cache::run", qPrintable(db.lastError().text()));
+				}
+
+				emit progressValueChanged(progress++);
+			}
+
+			/* Delete file not registered */
+			if(deleteNotRegistered)
+			{
+				deleteNotRegistered = false;
+				try
+				{
+					Project project(db, XINXProjectManager::self()->project());
+
+					QSqlQuery query("SELECT path, id FROM cv_file WHERE project_id=:project_id and cached=:cached", db);
+					query.bindValue(":project_id", project.projectId());
+					query.bindValue(":cached",false);
+					bool result = query.exec();
+					Q_ASSERT_X(result, "Cache::run", qPrintable(query.lastError().text()));
+
+					while(query.next())
+					{
+						const QString path = query.value(0).toString();
+						const int     id   = query.value(1).toInt();
+
+						if(! m_registeredFile.contains(path))
+						{
+							bool result = db.transaction();
+							Q_ASSERT_X(result, "Cache::run", qPrintable(db.lastError().text()));
+
+							try
+							{
+								File file(db, id);
+								file.destroy(db);
+
+								result = db.commit();
+								Q_ASSERT_X(result, "Cache::run", qPrintable(db.lastError().text()));
+							}
+							catch(FileException e)
+							{
+								result = db.rollback();
+								Q_ASSERT_X(result, "Cache::run", qPrintable(db.lastError().text()));
+							}
+						}
+					}
+				}
+				catch(ProjectException e)
+				{
+				}
+
+				emit progressValueChanged(progress++);
+			}
+		}
+
+		/* Regenerate automatic import */
+		regenerateImport(db);
+
+		/* End of thread */
 		emit cacheLoaded();
 	}
 
-	QSqlDatabase::database( "CONTENTVIEW_THREAD" ).close();
-	QSqlDatabase::removeDatabase( "CONTENTVIEW_THREAD" );
+	QSqlDatabase::database("CONTENTVIEW_SESSION_THREAD").close();
+	QSqlDatabase::removeDatabase("CONTENTVIEW_SESSION_THREAD");
 }
 
-void Cache::refreshCache( const QString & filename ) {
-	if( QFileInfo( filename ).exists()  ) {
-		QSqlQuery selectQuery( "SELECT id, root_id FROM cv_file WHERE path = :path", XINXProjectManager::self()->session()->database() );
-		selectQuery.bindValue( ":path", filename );
-		bool result = selectQuery.exec();
-		Q_ASSERT_X( result, "Cache::fileChanged", qPrintable( selectQuery.lastError().text() ) );
+void Cache::refreshCache(const QString & filename)
+{
+	if (QFileInfo(filename).exists())
+	{
+		struct_cache fileCache;
+		fileCache.project      = XINXProjectManager::self()->project();
+		fileCache.path         = filename;
+		fileCache.cached       = true;
+		fileCache.selection    = "M";
+		fileCache.type         = QString();
+		fileCache.parser       = 0;
 
-		if( ! selectQuery.first() ) {
-			qWarning() << tr( "File %1 not cached" ).arg( filename );
-			return;
-		}
-
-		XINXProjectManager::self()->session()->database().transaction();
-
-		const uint     id = selectQuery.value( 0 ).toUInt();
-		const uint nodeId = selectQuery.value( 1 ).toUInt();
-
-		Parser * parser = 0;
-		try {
-			parser = createParser( filename, false );
-			parser->setFilename( filename );
-			parser->setRootNode( Node( XINXProjectManager::self()->session()->database(), nodeId ) );
-
-			changeDatmod( XINXProjectManager::self()->session()->database(), id, QFileInfo( filename ).lastModified() );
-			XINXProjectManager::self()->session()->database().commit();
-
-			addToCache( parser );
-		} catch( ParserException e ) {
-			XINXProjectManager::self()->session()->database().rollback();
-			delete parser;
-		}
-	} else {
-		destroyCache( filename );
+		addToCache(fileCache);
 	}
-}
-
-void Cache::destroyCache( const QString & filename ) {
-	QSqlQuery selectQuery( "SELECT id, root_id FROM cv_file WHERE path = :path", XINXProjectManager::self()->session()->database() );
-	selectQuery.bindValue( ":path", filename );
-	bool result = selectQuery.exec();
-	Q_ASSERT( result );
-
-	XINXProjectManager::self()->session()->database().transaction();
-
-	while( selectQuery.next() ) {
-		const uint id     = selectQuery.value( 0 ).toUInt();
-		const uint rootId = selectQuery.value( 1 ).toUInt();
-
-		Node node( XINXProjectManager::self()->session()->database(), rootId );
-		node.destroy( XINXProjectManager::self()->session()->database() );
-
-		QSqlQuery removeQuery( "DELETE FROM cv_file WHERE id = :id", XINXProjectManager::self()->session()->database() );
-		removeQuery.bindValue( ":id", id );
-		bool result = removeQuery.exec();
-		Q_ASSERT( result );
+	else
+	{
+		deleteFromCache(XINXProjectManager::self()->project(), filename, true);
 	}
-
-	XINXProjectManager::self()->session()->database().commit();
-}
-
-Parser * Cache::createParser( const QString & filename, bool persistent ) {
-	if( ! QFileInfo( filename ).exists() ) return 0;
-
-	IFileTypePlugin * fileType = XinxPluginsLoader::self()->matchedFileType( filename );
-	Parser * parser = 0;
-	if( fileType && ( parser = fileType->createParser2() ) ) {
-		parser->setPersistent( persistent );
-		return parser;
-	}
-	return 0;
 }
 
 }

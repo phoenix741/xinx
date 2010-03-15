@@ -20,43 +20,52 @@
 // Xinx header
 #include "plugins/xinxpluginelement.h"
 
-XinxPluginElement::XinxPluginElement( QObject * plugin, bool isStatic ) : m_plugin( plugin ), m_isStatic( isStatic ) {
+XinxPluginElement::XinxPluginElement(QObject * plugin, bool isStatic) : m_plugin(plugin), m_isStatic(isStatic)
+{
 }
 
-QObject * XinxPluginElement::plugin() const {
+QObject * XinxPluginElement::plugin() const
+{
 	return m_plugin;
 }
 
-bool XinxPluginElement::isStatic() const {
+bool XinxPluginElement::isStatic() const
+{
 	return m_isStatic;
 }
 
-bool XinxPluginElement::isModifiable() const {
+bool XinxPluginElement::isModifiable() const
+{
 	return !m_isStatic;
 }
 
-bool XinxPluginElement::isConfigurable() const {
+bool XinxPluginElement::isConfigurable() const
+{
 	return false;
 }
 
-QPixmap XinxPluginElement::pixmap() const {
-	IXinxPlugin * plugin = qobject_cast<IXinxPlugin*>( m_plugin );
-	if( plugin->getPluginAttribute( IXinxPlugin::PLG_ICON ).isValid() )
-		return plugin->getPluginAttribute( IXinxPlugin::PLG_ICON ).value<QPixmap>();
+QPixmap XinxPluginElement::pixmap() const
+{
+	IXinxPlugin * plugin = qobject_cast<IXinxPlugin*>(m_plugin);
+	if (plugin->getPluginAttribute(IXinxPlugin::PLG_ICON).isValid())
+		return plugin->getPluginAttribute(IXinxPlugin::PLG_ICON).value<QPixmap>();
 	else
 		return PluginElement::pixmap();
 }
 
-QString XinxPluginElement::objectName() const {
+QString XinxPluginElement::objectName() const
+{
 	return m_plugin->metaObject()->className();
 }
 
-QString XinxPluginElement::name() const {
-	IXinxPlugin * plugin = qobject_cast<IXinxPlugin*>( m_plugin );
-	return plugin->getPluginAttribute( IXinxPlugin::PLG_NAME ).toString();
+QString XinxPluginElement::name() const
+{
+	IXinxPlugin * plugin = qobject_cast<IXinxPlugin*>(m_plugin);
+	return plugin->getPluginAttribute(IXinxPlugin::PLG_NAME).toString();
 }
 
-QString XinxPluginElement::description() const {
-	IXinxPlugin * plugin = qobject_cast<IXinxPlugin*>( m_plugin );
-	return plugin->getPluginAttribute( IXinxPlugin::PLG_DESCRIPTION ).toString();
+QString XinxPluginElement::description() const
+{
+	IXinxPlugin * plugin = qobject_cast<IXinxPlugin*>(m_plugin);
+	return plugin->getPluginAttribute(IXinxPlugin::PLG_DESCRIPTION).toString();
 }

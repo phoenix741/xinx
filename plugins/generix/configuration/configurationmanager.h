@@ -29,21 +29,22 @@
 #include "configuration/gceinterface.h"
 #include <project/xinxproject.h>
 
-class ConfigurationManager : public QObject {
+class ConfigurationManager : public QObject
+{
 	Q_OBJECT
 public:
 	virtual ~ConfigurationManager();
 
-	GceInterface * getInterfaceOfProject( XinxProject * project );
-	GceInterface * getInterfaceOfDirectory( const QString & directory );
+	GceInterface * getInterfaceOfProject(XinxProject * project);
+	GceInterface * getInterfaceOfDirectory(const QString & directory);
 
-	DictionaryParser * dictionaryOfProject( XinxProject * project );
+	DictionaryParser * loadDictionary(XinxProject * project);
 
 	void cleanCache();
 
 	static ConfigurationManager * self();
 private slots:
-	void clearCache( const QString & filename );
+	void clearCache(const QString & filename);
 private:
 
 	ConfigurationManager();
@@ -53,7 +54,6 @@ private:
 	QHash<QString,XinxProject*> m_fileToDictionaryKey;
 
 	QHash<QString,GceInterface*> m_interface;
-	QHash<XinxProject*,DictionaryParser*> m_dictionary;
 
 	static ConfigurationManager * s_self;
 };

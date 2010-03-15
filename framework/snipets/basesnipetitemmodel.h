@@ -33,10 +33,12 @@
 
 /* BaseSnipetItemModel */
 
-class LIBEXPORT BaseSnipetItemModel : public TreeProxyItemModel {
+class LIBEXPORT BaseSnipetItemModel : public TreeProxyItemModel
+{
 	Q_OBJECT
 public:
-	enum SnipetItemRole {
+	enum SnipetItemRole
+	{
 		SnipetIdRole = Qt::UserRole,
 		SnipetParentIdRole = Qt::UserRole + 2,
 		SnipetTypeRole = Qt::UserRole + 1
@@ -44,13 +46,13 @@ public:
 
 	virtual ~BaseSnipetItemModel();
 
-	virtual QModelIndex index( bool isCategory, int id ) const;
-	virtual QModelIndex index( int row, int column, const QModelIndex & parent = QModelIndex() ) const;
+	virtual QModelIndex index(bool isCategory, int id) const;
+	virtual QModelIndex index(int row, int column, const QModelIndex & parent = QModelIndex()) const;
 
-	virtual QVariant data( const QModelIndex & index, int role = Qt::DisplayRole ) const;
+	virtual QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
 
-	void indexesToIds( const QModelIndexList & indexes, QList<int> & snipetIds, QList<int> & categoryIds ) const;
-	QList<int> indexesToIds( const QModelIndexList & indexes ) const;
+	void indexesToIds(const QModelIndexList & indexes, QList<int> & snipetIds, QList<int> & categoryIds) const;
+	QList<int> indexesToIds(const QModelIndexList & indexes) const;
 
 	QSqlQueryModel * sourceModel();
 	QSqlQueryModel * sourceModel() const;
@@ -59,13 +61,14 @@ public slots:
 
 protected:
 	friend class SnipetManager;
-	BaseSnipetItemModel( QSqlDatabase db, QObject * parent = 0 );
+	BaseSnipetItemModel(QSqlDatabase db, QObject * parent = 0);
 
-	int getTreeModelIdentifier( QString type, int id ) const;
-	virtual int getUniqueIdentifier( const QModelIndex & sourceIndex ) const;
-	virtual int getParentUniqueIdentifier( const QModelIndex & sourceIndex ) const;
+	int getTreeModelIdentifier(QString type, int id) const;
+	virtual int getUniqueIdentifier(const QModelIndex & sourceIndex) const;
+	virtual int getParentUniqueIdentifier(const QModelIndex & sourceIndex) const;
 
-	enum {
+	enum
+	{
 		list_id          = 0,
 		list_parentid    = 1,
 		list_icon        = 2,
@@ -79,7 +82,7 @@ protected:
 	QSqlDatabase database();
 	QSqlDatabase database() const;
 private:
-	void addIndexToList( QModelIndex index, QList<int> * ids ) const;
+	void addIndexToList(QModelIndex index, QList<int> * ids) const;
 
 	QSqlDatabase m_db;
 	QSqlQueryModel * m_sourceModel;

@@ -36,27 +36,41 @@
 #include <QDateTime>
 #include <QTimer>
 
-class FileWatched : public QObject {
+class FileWatched : public QObject
+{
 	Q_OBJECT
 public:
 	FileWatched() {}
-	FileWatched( const FileWatched & o ) : QObject(), m_name( o.m_name ), m_date( o.m_date ) {}
-	FileWatched( const QString & name ) : m_name( name ) { initializeDate(); }
+	FileWatched(const FileWatched & o) : QObject(), m_name(o.m_name), m_date(o.m_date) {}
+	FileWatched(const QString & name) : m_name(name)
+	{
+		initializeDate();
+	}
 	virtual ~FileWatched() {}
 
-	const QString & name() const { return m_name; }
+	const QString & name() const
+	{
+		return m_name;
+	}
 	bool isFileChanged();
 	void initializeDate();
 
-	inline int ref() { return ++count; }
-	inline int deref() { return --count; }
+	inline int ref()
+	{
+		return ++count;
+	}
+	inline int deref()
+	{
+		return --count;
+	}
 private:
 	int count;
 	QString m_name;
 	QDateTime m_date;
 };
 
-class FileWatcherManager : public XinxThread {
+class FileWatcherManager : public XinxThread
+{
 	Q_OBJECT
 public:
 	FileWatcherManager();
@@ -64,34 +78,35 @@ public:
 
 	virtual void threadrun();
 
-	void addFile( const QString & filename );
-	void removeFile( const QString & filename );
+	void addFile(const QString & filename);
+	void removeFile(const QString & filename);
 
-	int indexOfWatchedFile( const QString & filename );
-	FileWatched * watchedFileAt( int index );
+	int indexOfWatchedFile(const QString & filename);
+	FileWatched * watchedFileAt(int index);
 
 	static FileWatcherManager * instance();
 	static void deleteIfPossible();
 public slots:
 	void watch();
 signals:
-	void fileChanged( QString filename );
-	void directoryChanged( QString directory );
+	void fileChanged(QString filename);
+	void directoryChanged(QString directory);
 private:
 	QMutex m_watchedFilesMutex;
 	QList<FileWatched*> m_watchedfiles;
 };
 
-class PrivateWatcher : public QObject {
+class PrivateWatcher : public QObject
+{
 	Q_OBJECT
 public:
-	PrivateWatcher( FileWatcher * parent );
+	PrivateWatcher(FileWatcher * parent);
 	~PrivateWatcher();
 
 	QString m_filename;
 	bool m_isActivated;
 public slots:
-	void fileChanged( QString filename );
+	void fileChanged(QString filename);
 private:
 	FileWatcher * m_parent;
 };

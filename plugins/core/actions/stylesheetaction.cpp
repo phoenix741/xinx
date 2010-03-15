@@ -30,54 +30,69 @@
 
 /* StyleSheetAction */
 
-StyleSheetAction::StyleSheetAction( QAction * a, QObject * parent ) : XinxAction::Action( a, parent ), m_dock( 0 ) {
+StyleSheetAction::StyleSheetAction(QAction * a, QObject * parent) : XinxAction::Action(a, parent), m_dock(0)
+{
 }
 
-StyleSheetAction::StyleSheetAction( const QString & text, const QKeySequence & shortcut, QObject * parent ) : XinxAction::Action( text, shortcut, parent ), m_dock( 0 ) {
+StyleSheetAction::StyleSheetAction(const QString & text, const QKeySequence & shortcut, QObject * parent) : XinxAction::Action(text, shortcut, parent), m_dock(0)
+{
 }
 
-StyleSheetAction::StyleSheetAction( const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent ) : XinxAction::Action( icon, text, shortcut, parent ), m_dock( 0 ) {
+StyleSheetAction::StyleSheetAction(const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent) : XinxAction::Action(icon, text, shortcut, parent), m_dock(0)
+{
 }
 
-void StyleSheetAction::setXmlPresentationDockWidget( XmlPresentationDockWidget * value ) const {
-	if( m_dock != value ) {
-		if( m_dock != 0 )
-			m_dock->disconnect( this );
-		if( value  != 0 )
-			connect( value, SIGNAL(filenameChanged(QString)), this, SLOT(updateActionState()) );
+void StyleSheetAction::setXmlPresentationDockWidget(XmlPresentationDockWidget * value) const
+{
+	if (m_dock != value)
+	{
+		if (m_dock != 0)
+			m_dock->disconnect(this);
+		if (value  != 0)
+			connect(value, SIGNAL(filenameChanged(QString)), this, SLOT(updateActionState()));
 		m_dock = value;
 	}
 }
 
-bool StyleSheetAction::isActionVisible() const {
-	return ( SelfWebPluginSettings::self()->config().stylesheetParsing.viewer.type != "none" );
+bool StyleSheetAction::isActionVisible() const
+{
+	return (SelfWebPluginSettings::self()->config().stylesheetParsing.viewer.type != "none");
 }
 
-bool StyleSheetAction::isActionEnabled() const {
-	if( ( SelfWebPluginSettings::self()->config().stylesheetParsing.viewer.type != "none" ) && EditorManager::self() ) {
-		if( qobject_cast<StyleSheetEditor*>( EditorManager::self()->currentEditor() ) && ( SelfWebPluginSettings::self()->config().stylesheetParsing.parser.type != "none" ) ) {
-			if( ! m_dock ) {
-				setXmlPresentationDockWidget( StyleSheetEditor::xmlPresentationDockWidget() );
+bool StyleSheetAction::isActionEnabled() const
+{
+	if ((SelfWebPluginSettings::self()->config().stylesheetParsing.viewer.type != "none") && EditorManager::self())
+	{
+		if (qobject_cast<StyleSheetEditor*>(EditorManager::self()->currentEditor()) && (SelfWebPluginSettings::self()->config().stylesheetParsing.parser.type != "none"))
+		{
+			if (! m_dock)
+			{
+				setXmlPresentationDockWidget(StyleSheetEditor::xmlPresentationDockWidget());
 			}
 			return m_dock && !m_dock->filename().isEmpty();
-		} else if( qobject_cast<HtmlFileEditor*>( EditorManager::self()->currentEditor() ) ) {
+		}
+		else if (qobject_cast<HtmlFileEditor*>(EditorManager::self()->currentEditor()))
+		{
 			return true;
 		}
 	}
 	return false;
 }
 
-bool StyleSheetAction::isInToolBar() const {
+bool StyleSheetAction::isInToolBar() const
+{
 	return true;
 }
 
-void StyleSheetAction::actionTriggered() {
-	Q_ASSERT( qobject_cast<StyleSheetEditor*>( EditorManager::self()->currentEditor() ) || qobject_cast<HtmlFileEditor*>( EditorManager::self()->currentEditor() ) );
+void StyleSheetAction::actionTriggered()
+{
+	Q_ASSERT(qobject_cast<StyleSheetEditor*>(EditorManager::self()->currentEditor()) || qobject_cast<HtmlFileEditor*>(EditorManager::self()->currentEditor()));
 
-	if( qobject_cast<StyleSheetEditor*>( EditorManager::self()->currentEditor() ) ) {
-		Q_ASSERT( m_dock );
-		qobject_cast<StyleSheetEditor*>( EditorManager::self()->currentEditor() )->launchStylesheetParsing( m_dock->filename() );
+	if (qobject_cast<StyleSheetEditor*>(EditorManager::self()->currentEditor()))
+	{
+		Q_ASSERT(m_dock);
+		qobject_cast<StyleSheetEditor*>(EditorManager::self()->currentEditor())->launchStylesheetParsing(m_dock->filename());
 	}
-	if( qobject_cast<HtmlFileEditor*>( EditorManager::self()->currentEditor() ) )
-		qobject_cast<HtmlFileEditor*>( EditorManager::self()->currentEditor() )->showHtml();
+	if (qobject_cast<HtmlFileEditor*>(EditorManager::self()->currentEditor()))
+		qobject_cast<HtmlFileEditor*>(EditorManager::self()->currentEditor())->showHtml();
 }

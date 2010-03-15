@@ -30,59 +30,102 @@
 #include <QPainter>
 
 
-class PluginModel : public QAbstractListModel {
+class PluginModel : public QAbstractListModel
+{
 	Q_OBJECT
 public:
 	enum PluginModelRole { PLG_NAME = 1001, PLG_DESCRIPTION = 1002, PLG_ICON = 1003 };
 
-	PluginModel( QWidget * parent );
+	PluginModel(QWidget * parent);
 	virtual ~PluginModel();
 
-	void addPlugin( PluginElement * plugin );
+	void addPlugin(PluginElement * plugin);
 	const QList<PluginElement*> & plugins() const;
 	void clear();
 
-	bool setData( const QModelIndex &index, const QVariant &value, int role = Qt::CheckStateRole );
-	QVariant data( const QModelIndex &index, int role ) const;
-	Qt::ItemFlags flags( const QModelIndex &index ) const;
-	QModelIndex index( int row, int column, const QModelIndex &parent = QModelIndex() ) const;
-	int rowCount( const QModelIndex &parent = QModelIndex() ) const;
+	bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::CheckStateRole);
+	QVariant data(const QModelIndex &index, int role) const;
+	Qt::ItemFlags flags(const QModelIndex &index) const;
+	QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
+	int rowCount(const QModelIndex &parent = QModelIndex()) const;
 private:
 	QList<PluginElement*> m_plugins;
 };
 
-class PluginDelegate : public QItemDelegate {
+class PluginDelegate : public QItemDelegate
+{
 	Q_OBJECT
 public:
-	PluginDelegate( QObject * parent );
+	PluginDelegate(QObject * parent);
 	virtual ~PluginDelegate();
 
 	void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 	QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
-	int separtorPixels() const { return m_separatorPixels; };
-	void setSepartorPixels( int value ) { m_separatorPixels = value; };
+	int separtorPixels() const
+	{
+		return m_separatorPixels;
+	};
+	void setSepartorPixels(int value)
+	{
+		m_separatorPixels = value;
+	};
 
-	int rightMargin() const { return m_rightMargin; };
-	void setRightMargin( int value ) { m_rightMargin = value; };
+	int rightMargin() const
+	{
+		return m_rightMargin;
+	};
+	void setRightMargin(int value)
+	{
+		m_rightMargin = value;
+	};
 
-	int leftMargin() const { return m_leftMargin; };
-	void setLeftMargin( int value ) { m_leftMargin = value; };
+	int leftMargin() const
+	{
+		return m_leftMargin;
+	};
+	void setLeftMargin(int value)
+	{
+		m_leftMargin = value;
+	};
 
-	int iconHeight() const { return m_iconHeight; };
-	void setIconHeight( int value ) { m_iconHeight = value; };
+	int iconHeight() const
+	{
+		return m_iconHeight;
+	};
+	void setIconHeight(int value)
+	{
+		m_iconHeight = value;
+	};
 
-	int iconWidth() const { return m_iconWidth; };
-	void setIconWidth( int value ) { m_iconWidth = value; };
+	int iconWidth() const
+	{
+		return m_iconWidth;
+	};
+	void setIconWidth(int value)
+	{
+		m_iconWidth = value;
+	};
 
-	QSize iconSize() const { return QSize( m_iconWidth, m_iconHeight ); };
-	void setIconSize( QSize value ) { m_iconWidth = value.width(); m_iconHeight = value.height(); };
-	void setIconSize( int width, int height ) { m_iconWidth = width; m_iconHeight = height; };
+	QSize iconSize() const
+	{
+		return QSize(m_iconWidth, m_iconHeight);
+	};
+	void setIconSize(QSize value)
+	{
+		m_iconWidth = value.width();
+		m_iconHeight = value.height();
+	};
+	void setIconSize(int width, int height)
+	{
+		m_iconWidth = width;
+		m_iconHeight = height;
+	};
 signals:
-	void configurePlugin( PluginElement * plugin );
-	void aboutPlugin( PluginElement * plugin );
+	void configurePlugin(PluginElement * plugin);
+	void aboutPlugin(PluginElement * plugin);
 protected:
-	virtual bool eventFilter( QObject *watched, QEvent *event );
+	virtual bool eventFilter(QObject *watched, QEvent *event);
 private:
 	/*!
 	 * Prerpare a button to be designed. \e decalage define the distance from the border (left or right), and ca be used
@@ -91,7 +134,7 @@ private:
 	 * \param caption The text to show on the button.
 	 * \param option  The option used to design the view item.
 	 */
-	QStyleOptionButton calculateButton( const QIcon & icon, const QString & caption, const QStyleOptionViewItem & option, int decalage = 0 ) const;
+	QStyleOptionButton calculateButton(const QIcon & icon, const QString & caption, const QStyleOptionViewItem & option, int decalage = 0) const;
 	/*!
 	 * Draw a button on the line. \e decalage define the distance from the border (left or right), and ca be used
 	 * when another button is designed.
@@ -100,25 +143,26 @@ private:
 	 * \param caption The text to show on the button.
 	 * \param option  The option used to design the view item.
 	 */
-	QStyleOptionButton drawButton( QPainter * painter, const QIcon & icon, const QString & caption, const QStyleOptionViewItem & option, int decalage = 0 ) const;
+	QStyleOptionButton drawButton(QPainter * painter, const QIcon & icon, const QString & caption, const QStyleOptionViewItem & option, int decalage = 0) const;
 
-	QStyleOptionViewItem calculateCheckbox( const QStyleOptionViewItem & option, QRect & rect, int decalage = 0 ) const;
+	QStyleOptionViewItem calculateCheckbox(const QStyleOptionViewItem & option, QRect & rect, int decalage = 0) const;
 
-	QStyleOptionButton calculateButtonAbout( const QStyleOptionViewItem & option, int decalage = 0 ) const;
-	QStyleOptionButton drawButtonAbout( QPainter * painter, const QStyleOptionViewItem & option, int decalage = 0 ) const;
+	QStyleOptionButton calculateButtonAbout(const QStyleOptionViewItem & option, int decalage = 0) const;
+	QStyleOptionButton drawButtonAbout(QPainter * painter, const QStyleOptionViewItem & option, int decalage = 0) const;
 
-	QStyleOptionButton calculateButtonConfigure( const QStyleOptionViewItem & option, int decalage = 0 ) const;
-	QStyleOptionButton drawButtonConfigure( QPainter * painter, const QStyleOptionViewItem & option, int decalage = 0 ) const;
+	QStyleOptionButton calculateButtonConfigure(const QStyleOptionViewItem & option, int decalage = 0) const;
+	QStyleOptionButton drawButtonConfigure(QPainter * painter, const QStyleOptionViewItem & option, int decalage = 0) const;
 
 	int m_separatorPixels, m_rightMargin, m_leftMargin, m_iconHeight, m_iconWidth, m_minimumItemWidth;
 	QPoint m_cursorPosition;
 	bool m_buttonPressed;
 };
 
-class PrivatePluginSelector : public QObject {
+class PrivatePluginSelector : public QObject
+{
 	Q_OBJECT
 public:
-	PrivatePluginSelector( PluginSelector * parent );
+	PrivatePluginSelector(PluginSelector * parent);
 
 	PluginModel * m_model;
 	PluginDelegate * m_delegate;

@@ -29,13 +29,24 @@
 
 /* XSLStyleSheetFileType */
 
-class XUIFileType : public QObject, public IFileTypePlugin {
+class XUIFileType : public QObject, public IFileTypePlugin
+{
 public:
-	virtual QString description() {	return tr( "XML User Interface File" ); };
-	virtual QString match() { return "*.xui"; };
-	virtual QIcon icon() { return QIcon( ":/xslgui/images/typexui.png" ); };
+	virtual QString description()
+	{
+		return tr("XML User Interface File");
+	};
+	virtual QString match()
+	{
+		return "*.xui";
+	};
+	virtual QIcon icon()
+	{
+		return QIcon(":/xslgui/images/typexui.png");
+	};
 
-	virtual AppSettings::struct_extentions properties() {
+	virtual AppSettings::struct_extentions properties()
+	{
 		AppSettings::struct_extentions p;
 		p.canBeCommitToRcs = true;
 		p.canBeFindInConfiguration = true;
@@ -44,43 +55,51 @@ public:
 		return p;
 	};
 
-	virtual AbstractEditor * createEditor( const QString & filename ) {
+	virtual AbstractEditor * createEditor(const QString & filename)
+	{
 		XUIEditor * editor = new XUIEditor();
-		if( ! filename.isEmpty() )
-			editor->loadFromFile( filename );
+		if (! filename.isEmpty())
+			editor->loadFromFile(filename);
 		return editor;
 	}
 
-	virtual FileContentElement * createElement( FileContentElement * parent, int line, const QString & filename ) {
+	virtual FileContentElement * createElement(FileContentElement * parent, int line, const QString & filename)
+	{
 		return NULL;
 	}
 
-	virtual ContentViewParser * createParser() {
+	virtual ContentViewParser * createParser()
+	{
 		return 0;
 	}
 };
 
 /* XslGuiPlugin */
 
-XslGuiPlugin::XslGuiPlugin() {
-    Q_INIT_RESOURCE(xslgui);
+XslGuiPlugin::XslGuiPlugin()
+{
+	Q_INIT_RESOURCE(xslgui);
 
 	m_fileTypes << new XUIFileType;
 }
 
-XslGuiPlugin::~XslGuiPlugin() {
+XslGuiPlugin::~XslGuiPlugin()
+{
 }
 
-bool XslGuiPlugin::initializePlugin( const QString & lang ) {
-	QTranslator * tranlator = new QTranslator( this );
-	tranlator->load( QString(":/xslgui/translations/xslgui_%1").arg( lang ) );
+bool XslGuiPlugin::initializePlugin(const QString & lang)
+{
+	QTranslator * tranlator = new QTranslator(this);
+	tranlator->load(QString(":/xslgui/translations/xslgui_%1").arg(lang));
 	qApp->installTranslator(tranlator);
 
 	return true;
 }
 
-QVariant XslGuiPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr ) {
-	switch( attr ) {
+QVariant XslGuiPlugin::getPluginAttribute(const enum IXinxPlugin::PluginAttribute & attr)
+{
+	switch (attr)
+	{
 	case PLG_NAME:
 		return tr("User Interface for editing Stylesheet");
 	case PLG_DESCRIPTION:
@@ -88,7 +107,7 @@ QVariant XslGuiPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribu
 	case PLG_AUTHOR:
 		return "Ulrich Van Den Hekke";
 	case PLG_ICON:
-		return QPixmap( ":/xslgui/images/xslgui.png" );
+		return QPixmap(":/xslgui/images/xslgui.png");
 	case PLG_EMAIL:
 		return "ulrich.vdh@shadoware.org";
 	case PLG_WEBSITE:
@@ -101,7 +120,8 @@ QVariant XslGuiPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribu
 	return QVariant();
 }
 
-QList<IFileTypePlugin*> XslGuiPlugin::fileTypes() {
+QList<IFileTypePlugin*> XslGuiPlugin::fileTypes()
+{
 	return m_fileTypes;
 }
 

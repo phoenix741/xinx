@@ -35,10 +35,11 @@
 #include <QPointer>
 #include <QStringList>
 
-class XmlPresentationDockThread : public XinxThread {
+class XmlPresentationDockThread : public XinxThread
+{
 	Q_OBJECT
 public:
-	XmlPresentationDockThread( XmlPresentationDockWidget * parent );
+	XmlPresentationDockThread(XmlPresentationDockWidget * parent);
 	~XmlPresentationDockThread();
 
 	Ui::XmlPresentationWidget * m_xmlPresentationWidget;
@@ -56,20 +57,20 @@ public:
 
 	enum { THREAD_OPENING, THREAD_FILTERED } m_threadAct;
 
-	void open( const QString& filename );
-	void setComboToolTip( const QString & filename );
+	void open(const QString& filename);
+	void setComboToolTip(const QString & filename);
 public slots:
 	void projectChanged();
 	void adaptColumns();
 	void open();
 	void initXmlPresentationCombo();
-	void presentationActivated( int index );
+	void presentationActivated(int index);
 	void threadTerminated();
 
-	void filterTextChanged( const QString & text );
+	void filterTextChanged(const QString & text);
 	void filterTextChangedTimer();
 
-	void updateXinxConf( int value );
+	void updateXinxConf(int value);
 
 	void evaluate();
 

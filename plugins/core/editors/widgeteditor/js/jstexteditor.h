@@ -26,30 +26,32 @@
 
 class JavascriptModelCompleter;
 
-class JSTextEditor : public XinxCodeEdit {
+class JSTextEditor : public XinxCodeEdit
+{
 	Q_OBJECT
 public:
-	JSTextEditor( QWidget * parent = 0 );
+	JSTextEditor(QWidget * parent = 0);
 	virtual ~JSTextEditor();
 
 	virtual QCompleter * completer();
 
-	void setModel( JavascriptModelCompleter * model );
+	void setModel(JavascriptModelCompleter * model);
 
 	virtual bool isCommentAvailable();
 public slots:
-	virtual void commentSelectedText( bool uncomment = false );
+	virtual void commentSelectedText(bool uncomment = false);
 protected:
-	enum cursorPosition {
+	enum cursorPosition
+	{
 		cpEditLongComment, // in /* ... */
-			cpEditSimpleComment, // in // ...
-			cpEditFunction, // in function ....() {Â .... }
-			cpEditParams, // in function .... ( .... )
-			cpEditGlobal
+		cpEditSimpleComment, // in // ...
+		cpEditFunction, // in function ....() {Â .... }
+		cpEditParams, // in function .... ( .... )
+		cpEditGlobal
 	};
 
-	static cursorPosition editPosition( const XinxCodeEdit * textEdit, const QDocumentCursor & cursor, QString & functionName );
-	cursorPosition editPosition( const QDocumentCursor & cursor );
+	static cursorPosition editPosition(const XinxCodeEdit * textEdit, const QDocumentCursor & cursor, QString & functionName);
+	cursorPosition editPosition(const QDocumentCursor & cursor);
 
 	QString m_functionName;
 	JavascriptModelCompleter * m_model;

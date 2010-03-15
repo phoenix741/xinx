@@ -28,31 +28,43 @@
 
 /* StyleSheetContainer */
 
-JSFileEditor::JSFileEditor( QWidget *parent ) : ContentViewTextEditor( new JsContentViewParser(), new JSTextEditor(), parent ) {
-	m_completionModel = new JavascriptModelCompleter( rootNode(), this );
+JSFileEditor::JSFileEditor(QWidget *parent) : TextFileEditor(new JSTextEditor(), parent), m_completionModel(0)
+{
 
-	QCompleter * completer = new QCompleter( textEdit() );
-	completer->setModel( m_completionModel );
-	textEdit()->setCompleter( completer );
-	qobject_cast<JSTextEditor*>( textEdit() )->setModel( m_completionModel );
 }
 
-JSFileEditor::~JSFileEditor() {
-	ContentViewParser * p = parser();
-	setParser( 0 );
-	qobject_cast<JSTextEditor*>( textEdit() )->setModel( m_completionModel );
-	delete m_completionModel;
-	delete p;
+JSFileEditor::~JSFileEditor()
+{
+	qobject_cast<JSTextEditor*>(textEdit())->setModel(0);
 }
 
-QString JSFileEditor::defaultFileName() const {
-	return tr( "noname.js" );
+ContentView2::Parser * JSFileEditor::createParser()
+{
+	return new JsContentViewParser();
 }
 
-QIcon JSFileEditor::icon() const {
-	return QIcon( ":/images/typejs.png" );
+ContentView2::CompletionModel * JSFileEditor::createModel(QSqlDatabase db, QObject * parent)
+{
+	if (! m_completionModel)
+	{
+		m_completionModel = new JavascriptModelCompleter(db, fileContainer(), parent);
+
+		qobject_cast<JSTextEditor*>(textEdit())->setModel(m_completionModel);
+	}
+	return m_completionModel;
 }
 
-JavascriptModelCompleter * JSFileEditor::completionModel() const {
+QString JSFileEditor::defaultFileName() const
+{
+	return tr("noname.js");
+}
+
+QIcon JSFileEditor::icon() const
+{
+	return QIcon(":/images/typejs.png");
+}
+
+JavascriptModelCompleter * JSFileEditor::completionModel() const
+{
 	return m_completionModel;
 }

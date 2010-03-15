@@ -51,18 +51,20 @@
  * n'y a plus de notion de sous-dossier de destination par type d'extention (Necessitera peut-être
  * une confirmation sur la mailing-liste utilisateur).
  */
-class GenerixProject : public XinxProject {
+class GenerixProject : public XinxProject
+{
 public:
 	bool isGenerixActivated() const;
 
 	/* Option du Web-module */
 
-	void setWebModuleLocation( const QString & value );
+	void setWebModuleLocation(const QString & value);
 	QString webModuleLocation() const;
 
 	/* Options de dérivation */
 
-	class DerivationPath {
+	class DerivationPath
+	{
 	public:
 		DerivationPath() : derivation(true), visible(true) {}
 
@@ -70,22 +72,22 @@ public:
 		QString name, path;
 	};
 
-	void setDerivationsPath( const QList<DerivationPath> & value );
+	void setDerivationsPath(const QList<DerivationPath> & value);
 	QList<DerivationPath> derivationsPath() const;
 
 	/* Options */
 
 	bool createMissingDirectory() const;
-	void setCreateMissingDirectory( bool value );
+	void setCreateMissingDirectory(bool value);
 
 	QStringList prefixes() const;
-	void setPrefixes( const QStringList & value );
+	void setPrefixes(const QStringList & value);
 
 	QString defaultPrefix() const;
-	void setDefaultPrefix( const QString & value );
+	void setDefaultPrefix(const QString & value);
 
 	bool copySourceFileInDerivationPath() const;
-	void setCopySourceFileInDerivationPath( bool value );
+	void setCopySourceFileInDerivationPath(bool value);
 
 
 };

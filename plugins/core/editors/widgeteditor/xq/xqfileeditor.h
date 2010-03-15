@@ -25,10 +25,11 @@
 #include <editors/textfileeditor.h>
 #include "editors/models/xq/xqmodelcompleter.h"
 
-class XQFileEditor : public TextFileEditor {
+class XQFileEditor : public TextFileEditor
+{
 	Q_OBJECT
 public:
-	XQFileEditor( QWidget *parent = 0 );
+	XQFileEditor(QWidget *parent = 0);
 	virtual ~XQFileEditor();
 
 	virtual QString defaultFileName() const;

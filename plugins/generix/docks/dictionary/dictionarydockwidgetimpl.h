@@ -26,20 +26,25 @@
 
 // Qt header
 #include <QDockWidget>
-#include <QFutureWatcher>
 
-class ContentViewModel;
-class ContentViewNode;
+class DictionaryModel;
+namespace ContentView2
+{
+class Parser;
+class File;
+}
 
-class DictionaryDockWidgetImpl : public QDockWidget, private Ui::DictionaryDockWidget {
+class DictionaryDockWidgetImpl : public QDockWidget, private Ui::DictionaryDockWidget
+{
 	Q_OBJECT
 public:
-	DictionaryDockWidgetImpl( QWidget * parent = 0 );
+	DictionaryDockWidgetImpl(QWidget * parent = 0);
 	virtual ~DictionaryDockWidgetImpl();
 private slots:
 	void projectChanged();
+	void update(const ContentView2::File & file);
 private:
-	ContentViewModel * m_dictionaryModel;
+	DictionaryModel * m_dictionaryModel;
 };
 
 #endif // DICTIONARYDOCKWIDGET_H

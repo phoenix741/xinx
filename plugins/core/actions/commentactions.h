@@ -29,12 +29,13 @@
 
 class TextFileEditor;
 
-class CommentAction : public XinxAction::Action {
+class CommentAction : public XinxAction::Action
+{
 	Q_OBJECT
 public:
-	CommentAction( QAction * a, QObject * parent );
-	CommentAction( const QString & text, const QKeySequence & shortcut, QObject * parent );
-	CommentAction( const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent );
+	CommentAction(QAction * a, QObject * parent);
+	CommentAction(const QString & text, const QKeySequence & shortcut, QObject * parent);
+	CommentAction(const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent);
 
 	virtual bool isInToolBar() const;
 	virtual bool isActionVisible() const;
@@ -47,12 +48,13 @@ private:
 	QPointer<TextFileEditor> m_editor;
 };
 
-class UncommentAction : public CommentAction {
+class UncommentAction : public CommentAction
+{
 	Q_OBJECT
 public:
-	UncommentAction( QAction * a, QObject * parent );
-	UncommentAction( const QString & text, const QKeySequence & shortcut, QObject * parent );
-	UncommentAction( const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent );
+	UncommentAction(QAction * a, QObject * parent);
+	UncommentAction(const QString & text, const QKeySequence & shortcut, QObject * parent);
+	UncommentAction(const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent);
 protected slots:
 	virtual void actionTriggered();
 };

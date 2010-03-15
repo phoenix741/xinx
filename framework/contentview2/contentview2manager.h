@@ -17,57 +17,56 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-#ifndef _XSLCONTENTVIEW2PARSER_H_
-#define _XSLCONTENTVIEW2PARSER_H_
+#ifndef CONTENTVIEW2MANAGER_H
+#define CONTENTVIEW2MANAGER_H
 #pragma once
 
-// Xinx header
-#include <contentview2/contentview2parser.h>
-
 // Qt header
-#include <QApplication>
-#include <QXmlStreamReader>
-#include <QStack>
+#include <QObject>
+#include <QSqlDatabase>
 
-class QTextCodec;
+// Xiinx header
+#include <core/xinxcore.h>
 
-/* XslContentViewParser */
+class XinxProject;
 
-class XslContentView2Parser : public ContentView2::Parser, private QXmlStreamReader {
-	Q_DECLARE_TR_FUNCTIONS(XslContentView2Parser)
+namespace ContentView2
+{
+
+class Cache;
+class Parser;
+
+class LIBEXPORT Manager : public QObject
+{
+	Q_OBJECT
 public:
-	XslContentView2Parser( bool persistent = false );
-	virtual ~XslContentView2Parser();
+	virtual ~Manager();
 
-	virtual void load();
+	void addInitializationParser(bool isGlobal, const QString & path, const QString & type, const QString & selection);
+	void initializeDatabase();
 
-	QTextCodec * codec() { return m_codec; }
+	QSqlDatabase database() const;
+	Cache * cache();
+
+	static Manager * self();
 private:
-	struct struct_xsl_variable {
-		bool isParam;
-		int line;
-		QString name;
-		QString value;
-	};
-	struct struct_script {
-		int line;
-		QString src;
-		QString content;
-		QString title;
+	void openDatabase();
+	void createDatabase(QSqlDatabase db);
+	void closeDatabase();
+	Manager();
+
+	struct ParserTuple
+	{
+		bool isGlobal;
+		QString path, type, selection;
 	};
 
-	void readStyleSheet();
-	void readUnknownElement();
-	void readVariable();
-	void readTemplate( QList<struct_xsl_variable> & t, QList<struct_script> & s );
-	void readTemplate();
-	QString readElementText();
-
-	ContentView2::Node attacheNewTemplateNode( ContentView2::Node parent, const QString & name, const QString & mode, int line );
-	void attacheNewParamsNode( ContentView2::Node parent, const QString & name, const QString & value,  int line );
-	void attacheNewVariableNode( ContentView2::Node parent, const QString & filename, const QString & value, int line );
-
-	QTextCodec * m_codec;
+	QList<ParserTuple> m_persistentParser;
+	Cache * m_cache;
+	QSqlDatabase m_localBase;
+	static Manager * s_self;
 };
 
-#endif /* _XSLCONTENTVIEW2PARSER_H_ */
+} // namespace ContentView2
+
+#endif // CONTENTVIEW2MANAGER_H

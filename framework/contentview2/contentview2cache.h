@@ -30,6 +30,7 @@
 #include <core/lib-config.h>
 #include <contentview2/contentview2node.h>
 #include <contentview2/contentview2parser.h>
+#include <contentview2/contentview2file.h>
 
 // Qt header
 #include <QThread>
@@ -40,7 +41,8 @@
 class XinxProject;
 class TestContentView2;
 
-namespace ContentView2 {
+namespace ContentView2
+{
 
 /*!
  * \class Cache
@@ -54,11 +56,11 @@ namespace ContentView2 {
  * if no project is opened. In the near future, the session file must be independ of the project:
  * in memory or in file...
  */
-class LIBEXPORT Cache : public QThread {
+class LIBEXPORT Cache : public QThread
+{
 	Q_OBJECT
 public:
-	//! Create a content view cache and launch the indexation.
-	Cache( XinxProject * project );
+	Cache();
 	//! Destroy the content view cache
 	virtual ~Cache();
 
@@ -67,34 +69,43 @@ public:
 
 	//! Intialize a cache from the content of preloaded files.
 	void initializeCache();
-	//! Load file and import to cache
-	void loadCache( const QStringList & filenames );
 	//! Load and add the parser to cache
-	void addToCache( Parser * parser );
-	//! Create the root id
-	int createRootId( const QString & filename, bool get = true, bool cached = true );
-	//! Top the file as loaded
-	void markAsLoaded( QSqlDatabase db, uint rootId );
+	void addToCache(XinxProject * project, const QString & path, const QString & selection, Parser * parser = 0);
+	void addToCache(XinxProject * project, const QString & path, const QString & type, const QString & selection, Parser * parser = 0);
+	void deleteFromCache(XinxProject * project, const QString & path, bool isCached = true);
 
-	//! Method to destroy the cache for a file \e filename
-	void destroyCache( const QString & filename );
+	void registerPath(const QString & path);
+	void unregisterPath(const QString & path);
 public slots:
 	//! Call this method if you want refresh the cache for a given file
-	void refreshCache( const QString & filename );
+	void refreshCache(const QString & filename);
 signals:
-	void cacheLoaded( uint file_id, const QString & filename );
+	void cacheLoaded(const ContentView2::File & file);
 	void cacheLoaded();
-	void progressRangeChanged( int min, int max );
-	void progressValueChanged( int value );
+	void progressRangeChanged(int min, int max);
+	void progressValueChanged(int value);
 protected:
 	virtual void run();
+	virtual void timerEvent(QTimerEvent * event);
 private:
-	void changeDatmod( QSqlDatabase db, uint fileId, const QDateTime & datmod );
-	Parser * createParser( const QString & filename, bool persistent );
+	struct struct_cache
+	{
+		Parser * parser;
+		XinxProject * project;
+		bool cached;
+		QString path, selection, type;
+	};
+
+	void regenerateImport(QSqlDatabase db);
+
+	void addToCache(struct_cache p);
+	Project getProject(QSqlDatabase db, XinxProject * project);
+	File getFile(QSqlDatabase db, struct_cache p);
 
 	QFileSystemWatcher * m_watcher;
-	QQueue< Parser* > m_parsers;
-	XinxProject * m_project;
+	QQueue< struct_cache > m_parsers;
+	QQueue< struct_cache > m_toDelete;
+	QStringList m_registeredFile;
 };
 
 }

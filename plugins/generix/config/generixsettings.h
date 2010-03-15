@@ -11,28 +11,32 @@
 
 class PrivateGenerixSettings;
 
-class GenerixSettingsSettings : public QSettings {
+class GenerixSettingsSettings : public QSettings
+{
 public:
-	GenerixSettingsSettings( const QString & organization, const QString & application );
-	void setValue( const QString & key, const QVariant & value, const QVariant & defaultValue );
-	void setValue( const QString & key, const QVariant & value );
+	GenerixSettingsSettings(const QString & organization, const QString & application);
+	void setValue(const QString & key, const QVariant & value, const QVariant & defaultValue);
+	void setValue(const QString & key, const QVariant & value);
 };
 
-class GenerixSettings {
+class GenerixSettings
+{
 public:
-	struct struct_extentions {
+	struct struct_extentions
+	{
 		QString specifiqueSubDirectory;
 		bool canBeSaveAsSpecifique;
 		bool canBeFindInConfiguration;
 	};
 
-	struct struct_globals {
+	struct struct_globals
+	{
 		QString defaultProjectPathName;
 		QHash<QString,struct_extentions> files;
 	};
 
 
-	GenerixSettings( const GenerixSettings & origine );
+	GenerixSettings(const GenerixSettings & origine);
 	GenerixSettings();
 	virtual ~GenerixSettings();
 
@@ -45,16 +49,16 @@ public:
 	GenerixSettings& operator=(const GenerixSettings& p);
 protected:
 	virtual struct_extentions getDefaultExtentions();
-	virtual GenerixSettings::struct_extentions getSettingsExtentions( GenerixSettingsSettings * settings, const QString & path, const GenerixSettings::struct_extentions & defaultValue );
-	virtual void setSettingsExtentions( GenerixSettingsSettings * settings, const QString & path, const GenerixSettings::struct_extentions & value );
+	virtual GenerixSettings::struct_extentions getSettingsExtentions(GenerixSettingsSettings * settings, const QString & path, const GenerixSettings::struct_extentions & defaultValue);
+	virtual void setSettingsExtentions(GenerixSettingsSettings * settings, const QString & path, const GenerixSettings::struct_extentions & value);
 
 	virtual struct_globals getDefaultGlobals();
-	virtual GenerixSettings::struct_globals getSettingsGlobals( GenerixSettingsSettings * settings, const QString & path, const GenerixSettings::struct_globals & defaultValue );
-	virtual void setSettingsGlobals( GenerixSettingsSettings * settings, const QString & path, const GenerixSettings::struct_globals & value );
+	virtual GenerixSettings::struct_globals getSettingsGlobals(GenerixSettingsSettings * settings, const QString & path, const GenerixSettings::struct_globals & defaultValue);
+	virtual void setSettingsGlobals(GenerixSettingsSettings * settings, const QString & path, const GenerixSettings::struct_globals & value);
 
 	virtual QHash<QString,struct_extentions> getDefaultHash_struct_extentions();
-	virtual QHash<QString,GenerixSettings::struct_extentions> getSettingsHash_struct_extentions( GenerixSettingsSettings * settings, const QString & path, const QHash<QString,GenerixSettings::struct_extentions> & defaultValue );
-	virtual void setSettingsHash_struct_extentions( GenerixSettingsSettings * settings, const QString & path, const QHash<QString,GenerixSettings::struct_extentions> & value );
+	virtual QHash<QString,GenerixSettings::struct_extentions> getSettingsHash_struct_extentions(GenerixSettingsSettings * settings, const QString & path, const QHash<QString,GenerixSettings::struct_extentions> & defaultValue);
+	virtual void setSettingsHash_struct_extentions(GenerixSettingsSettings * settings, const QString & path, const QHash<QString,GenerixSettings::struct_extentions> & value);
 
 private:
 	PrivateGenerixSettings * d;

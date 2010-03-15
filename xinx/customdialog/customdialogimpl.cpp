@@ -36,71 +36,81 @@
 
 /* CustomDialogImpl */
 
-CustomDialogImpl::CustomDialogImpl( QWidget * parent, Qt::WFlags f)  : QDialog( parent, f ) {
-	setupUi( this );
+CustomDialogImpl::CustomDialogImpl(QWidget * parent, Qt::WFlags f)  : QDialog(parent, f)
+{
+	setupUi(this);
 
 	delete pageToDelete;
 
-	m_pages << new CustomGeneralImpl( this );
-	m_pages << new CustomProjectImpl( this );
-	m_pages << new CustomEditorImpl( this );
-	m_pages << new CustomFontImpl( this );
-	m_pages << new CustomSyntaxImpl( this );
-	m_pages << new CustomSnipetImpl( this );
-	m_pages << new CustomToolsImpl( this );
+	m_pages << new CustomGeneralImpl(this);
+	m_pages << new CustomProjectImpl(this);
+	m_pages << new CustomEditorImpl(this);
+	m_pages << new CustomFontImpl(this);
+	m_pages << new CustomSyntaxImpl(this);
+	m_pages << new CustomSnipetImpl(this);
+	m_pages << new CustomToolsImpl(this);
 
-	foreach( XinxPluginElement * plugin, XinxPluginsLoader::self()->plugins() ) {
-		XinxPluginElement * e = new XinxPluginElement( plugin->plugin(), plugin->isStatic() );
+	foreach(XinxPluginElement * plugin, XinxPluginsLoader::self()->plugins())
+	{
+		XinxPluginElement * e = new XinxPluginElement(plugin->plugin(), plugin->isStatic());
 
-		IXinxPluginConfiguration * p = dynamic_cast<IXinxPluginConfiguration*>( e->plugin() );
-		if( ! p ) continue;
+		IXinxPluginConfiguration * p = dynamic_cast<IXinxPluginConfiguration*>(e->plugin());
+		if (! p) continue;
 
-		QList<IXinxPluginConfigurationPage*> pages = p->createSettingsDialog( this );
+		QList<IXinxPluginConfigurationPage*> pages = p->createSettingsDialog(this);
 		m_pages << pages;
 
-		foreach( IXinxPluginConfigurationPage * page, pages ) {
-			m_pluginsPages.insertMulti( e, page );
+		foreach(IXinxPluginConfigurationPage * page, pages)
+		{
+			m_pluginsPages.insertMulti(e, page);
 		}
 	}
 
-	m_pages << new CustomModulesImpl( this );
+	m_pages << new CustomModulesImpl(this);
 
-	foreach( IXinxPluginConfigurationPage * page, m_pages ) {
-		QListWidgetItem * item = new QListWidgetItem( QIcon( page->image() ), page->name() );
-		m_listWidget->addItem( item );
+	foreach(IXinxPluginConfigurationPage * page, m_pages)
+	{
+		QListWidgetItem * item = new QListWidgetItem(QIcon(page->image()), page->name());
+		m_listWidget->addItem(item);
 
-		m_stackedWidget->addWidget( page->settingsDialog() );
+		m_stackedWidget->addWidget(page->settingsDialog());
 	}
 
-	QTimer * updateOkTimer = new QTimer( this );
-	updateOkTimer->setInterval( 250 );
-	updateOkTimer->setSingleShot( false );
-	connect( updateOkTimer, SIGNAL(timeout()), SLOT(updateOkButton()) );
+	QTimer * updateOkTimer = new QTimer(this);
+	updateOkTimer->setInterval(250);
+	updateOkTimer->setSingleShot(false);
+	connect(updateOkTimer, SIGNAL(timeout()), SLOT(updateOkButton()));
 
 	updateOkTimer->start();
 }
 
-CustomDialogImpl::~CustomDialogImpl() {
-	qDeleteAll( m_pages );
+CustomDialogImpl::~CustomDialogImpl()
+{
+	qDeleteAll(m_pages);
 }
 
-void CustomDialogImpl::loadConfig() {
-	foreach( IXinxPluginConfigurationPage * page, m_pages )
-		page->loadSettingsDialog();
+void CustomDialogImpl::loadConfig()
+{
+	foreach(IXinxPluginConfigurationPage * page, m_pages)
+	page->loadSettingsDialog();
 }
 
-void CustomDialogImpl::saveConfig() {
-	foreach( IXinxPluginConfigurationPage * page, m_pages )
-		page->saveSettingsDialog();
+void CustomDialogImpl::saveConfig()
+{
+	foreach(IXinxPluginConfigurationPage * page, m_pages)
+	page->saveSettingsDialog();
 }
 
-void CustomDialogImpl::updateOkButton() {
-	foreach( IXinxPluginConfigurationPage * page, m_pages ) {
-		if( ! page->isSettingsValid() ) {
-			m_buttonBox->button( QDialogButtonBox::Ok )->setEnabled( false );
+void CustomDialogImpl::updateOkButton()
+{
+	foreach(IXinxPluginConfigurationPage * page, m_pages)
+	{
+		if (! page->isSettingsValid())
+		{
+			m_buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 			return;
 		}
 	}
 
-	m_buttonBox->button( QDialogButtonBox::Ok )->setEnabled( true );
+	m_buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
 }

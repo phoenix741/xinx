@@ -34,16 +34,17 @@
 #include <QHttp>
 #include <QProgressDialog>
 
-class ServicesProjectPropertyImpl : public QWidget, public Ui::ServicesProjectProperty, public IXinxPluginProjectConfigurationPage {
+class ServicesProjectPropertyImpl : public QWidget, public Ui::ServicesProjectProperty, public IXinxPluginProjectConfigurationPage
+{
 	Q_OBJECT
 public:
-	ServicesProjectPropertyImpl( QWidget* parent = 0, Qt::WFlags fl = 0 );
+	ServicesProjectPropertyImpl(QWidget* parent = 0, Qt::WFlags fl = 0);
 	~ServicesProjectPropertyImpl();
 
 	virtual QPixmap image();
 	virtual QString name();
 
-	virtual void setProject( XinxProject * project );
+	virtual void setProject(XinxProject * project);
 
 	virtual bool loadSettingsDialog();
 	virtual bool saveSettingsDialog();
@@ -58,8 +59,8 @@ private slots:
 	void on_m_adressLineEdit_editingFinished();
 	void on_m_wsdlEdit_textChanged();
 
-	void httpDataReadProgress( int done, int total );
-	void httpRequestFinished( bool error );
+	void httpDataReadProgress(int done, int total);
+	void httpRequestFinished(bool error);
 private:
 	QHash<QString,QString> m_wsdlContent;
 

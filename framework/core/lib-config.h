@@ -28,13 +28,17 @@
 	\brief Macro needed for cross-platform shared libraries creation
 */
 #ifdef LIBEXPORT
-	#error LIBEXPORT already defined...
+#error LIBEXPORT already defined...
 #endif
 
-#ifdef _LIB_BUILD_
-	#define LIBEXPORT Q_DECL_EXPORT
+#ifdef Q_WS_WIN
+#	ifdef _LIB_BUILD_
+#		define LIBEXPORT Q_DECL_EXPORT
+#	else
+#		define LIBEXPORT Q_DECL_IMPORT
+#	endif
 #else
-	#define LIBEXPORT Q_DECL_IMPORT
+#	define LIBEXPORT
 #endif
 
 #endif // !_LIB_CONFIG_H_

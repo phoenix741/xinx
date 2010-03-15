@@ -19,63 +19,73 @@
 
 // Xinx header
 #include "filecontentdockwidget.h"
-#include <contentview/contentviewmodel.h>
+#include <contentview2/contentview2treemodel.h>
 
 // Qt header
 #include <QVBoxLayout>
 #include <QTreeView>
 #include <QAbstractItemModel>
+#include <QDebug>
 
 //#include <modeltest.h>
 
 /* ContentDockWidget */
 
-FileContentDockWidget::FileContentDockWidget( const QString & title, QWidget * parent, Qt::WindowFlags flags ) : QDockWidget( title, parent, flags ), m_model(0) {
+FileContentDockWidget::FileContentDockWidget(const QString & title, QWidget * parent, Qt::WindowFlags flags) : QDockWidget(title, parent, flags), m_model(0)
+{
 	init();
 }
 
-FileContentDockWidget::FileContentDockWidget( QWidget * parent, Qt::WindowFlags flags ) : QDockWidget( parent, flags ), m_model(0) {
+FileContentDockWidget::FileContentDockWidget(QWidget * parent, Qt::WindowFlags flags) : QDockWidget(parent, flags), m_model(0)
+{
 	init();
 }
 
-FileContentDockWidget::~FileContentDockWidget() {
+FileContentDockWidget::~FileContentDockWidget()
+{
 
 }
 
-void FileContentDockWidget::init() {
-	m_contentTreeView = new QTreeView( this );
+void FileContentDockWidget::init()
+{
+	m_contentTreeView = new QTreeView(this);
 
 	QVBoxLayout * vlayout = new QVBoxLayout();
-	vlayout->setSpacing( 0 );
-	vlayout->setMargin( 0 );
-	vlayout->addWidget( m_contentTreeView );
+	vlayout->setSpacing(0);
+	vlayout->setMargin(0);
+	vlayout->addWidget(m_contentTreeView);
 
-	QWidget * m_contentWidget = new QWidget( this );
-	m_contentWidget->setLayout( vlayout );
+	QWidget * m_contentWidget = new QWidget(this);
+	m_contentWidget->setLayout(vlayout);
 
-	setWidget( m_contentWidget );
-	connect( m_contentTreeView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(contentTreeViewDblClick(QModelIndex)) );
+	setWidget(m_contentWidget);
+	connect(m_contentTreeView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(contentTreeViewDblClick(QModelIndex)));
 }
 
-void FileContentDockWidget::contentTreeViewDblClick( QModelIndex index ) {
+void FileContentDockWidget::contentTreeViewDblClick(QModelIndex index)
+{
+	/*
 	struct ContentViewModel::struct_file_content data = m_model->data( index, Qt::UserRole ).value<ContentViewModel::struct_file_content>();
 	int line = data.line;
 	QString name = data.filename;
 
-	emit open( data.filename, line );
+	emit open( data.filename, line );*/
+	qWarning() << "No implementation";
 }
 
-void FileContentDockWidget::updateModel( QAbstractItemModel * model ) {
-	if( model == m_model ) return;
+void FileContentDockWidget::updateModel(QAbstractItemModel * model)
+{
+	if (model == m_model) return;
 // 	if( model ) {
 // 		new ModelTest(model, this);
 // 	}
-	m_contentTreeView->setModel( model );
+	m_contentTreeView->setModel(model);
 	m_model = model;
 }
 
-void FileContentDockWidget::positionChanged( const QModelIndex & index ) {
-	m_contentTreeView->setCurrentIndex( index );
+void FileContentDockWidget::positionChanged(const QModelIndex & index)
+{
+	m_contentTreeView->setCurrentIndex(index);
 	/*QItemSelectionModel * selectionModel = m_contentTreeView->selectionModel();
 	QItemSelection selection( index, index );
 	selectionModel->select( selection, QItemSelectionModel::ToggleCurrent );*/

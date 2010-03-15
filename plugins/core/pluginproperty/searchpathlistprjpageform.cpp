@@ -27,70 +27,83 @@
 #include <QInputDialog>
 #include <QPushButton>
 
-SearchPathListFormImpl::SearchPathListFormImpl( QWidget * parent, Qt::WFlags f ) : QWidget( parent, f ), m_project( 0 ) {
+SearchPathListFormImpl::SearchPathListFormImpl(QWidget * parent, Qt::WFlags f) : QWidget(parent, f), m_project(0)
+{
 	setupUi(this);
 
-	m_searchPathList->setDefaultVisible( false );
+	m_searchPathList->setDefaultVisible(false);
 }
 
-SearchPathListFormImpl::~SearchPathListFormImpl() {
+SearchPathListFormImpl::~SearchPathListFormImpl()
+{
 
 }
 
-QPixmap SearchPathListFormImpl::image() {
+QPixmap SearchPathListFormImpl::image()
+{
 	return QPixmap();
 }
 
-QString SearchPathListFormImpl::name() {
+QString SearchPathListFormImpl::name()
+{
 	return windowTitle();
 }
 
-QWidget * SearchPathListFormImpl::settingsDialog() {
+QWidget * SearchPathListFormImpl::settingsDialog()
+{
 	return this;
 }
 
-bool SearchPathListFormImpl::loadSettingsDialog() {
-	if( ! m_project ) return true;
+bool SearchPathListFormImpl::loadSettingsDialog()
+{
+	if (! m_project) return true;
 
-	QStringList searchPathList = m_project->readProperty( "searchPathList" ).toString().split( ";;" ),
-				searchPathList_fromNativeSeparators;
+	QStringList searchPathList = m_project->readProperty("searchPathList").toString().split(";;"),
+	                             searchPathList_fromNativeSeparators;
 
-	foreach( QString path, searchPathList ) {
-		searchPathList_fromNativeSeparators.append( QDir::fromNativeSeparators( path ) );
+	foreach(QString path, searchPathList)
+	{
+		searchPathList_fromNativeSeparators.append(QDir::fromNativeSeparators(path));
 	}
-	m_searchPathList->setValues( searchPathList_fromNativeSeparators );
+	m_searchPathList->setValues(searchPathList_fromNativeSeparators);
 
 	return true;
 }
 
-bool SearchPathListFormImpl::saveSettingsDialog() {
-	if( ! m_project ) return true;
+bool SearchPathListFormImpl::saveSettingsDialog()
+{
+	if (! m_project) return true;
 
 	QStringList searchPathList = m_searchPathList->values(),
-				searchPathList_toNativeSeparators;
+	                             searchPathList_toNativeSeparators;
 
-	foreach( QString path, searchPathList ) {
-		searchPathList_toNativeSeparators.append( QDir::toNativeSeparators( path ) );
+	foreach(QString path, searchPathList)
+	{
+		searchPathList_toNativeSeparators.append(QDir::toNativeSeparators(path));
 	}
 
-	m_project->writeProperty( "searchPathList",  m_searchPathList->values() ); // toNativeSeparators
+	m_project->writeProperty("searchPathList",  m_searchPathList->values());   // toNativeSeparators
 
 	return true;
 }
 
-bool SearchPathListFormImpl::cancelSettingsDialog() {
+bool SearchPathListFormImpl::cancelSettingsDialog()
+{
 	return true;
 }
 
-bool SearchPathListFormImpl::isSettingsValid() {
+bool SearchPathListFormImpl::isSettingsValid()
+{
 	return true;
 }
 
-bool SearchPathListFormImpl::isVisible() {
-	return ManualFileResolver::staticId().compare( m_currentResolverName ) == 0;
+bool SearchPathListFormImpl::isVisible()
+{
+	return ManualFileResolver::staticId().compare(m_currentResolverName) == 0;
 }
 
-void SearchPathListFormImpl::setProject( XinxProject * project ) {
+void SearchPathListFormImpl::setProject(XinxProject * project)
+{
 	m_project = project;
 }
 

@@ -48,14 +48,16 @@ ExceptionManager * ExceptionManager::s_self = 0;
 
 /* Message Handler */
 
-static void xinxMessageHandler( QtMsgType t, const char * m ) {
+static void xinxMessageHandler(QtMsgType t, const char * m)
+{
 #ifdef _XINX_RELEASE_MODE_
-	if( t == QtDebugMsg ) return;
+	if (t == QtDebugMsg) return;
 #endif /* _XINX_RELEASE_MODE_ */
 
 	QString rich, plain;
 
-	switch (t) {
+	switch (t)
+	{
 	case QtDebugMsg:
 	default:
 		rich = QErrorMessage::tr("Debug Message:");
@@ -67,46 +69,52 @@ static void xinxMessageHandler( QtMsgType t, const char * m ) {
 	case QtFatalMsg:
 		rich = QErrorMessage::tr("FATAL");
 	}
-	rich = QString::fromLatin1("<p><b>%1</b></p>").arg( rich );
-	rich += Qt::escape(QLatin1String( m ));
+	rich = QString::fromLatin1("<p><b>%1</b></p>").arg(rich);
+	rich += Qt::escape(QLatin1String(m));
 
 	// ### work around text engine quirk
 	if (rich.endsWith(QLatin1String("</p>")))
-			rich.chop(4);
+		rich.chop(4);
 
-	plain += " : " + QLatin1String( m );
+	plain += " : " + QLatin1String(m);
 
-	ExceptionManager::self()->notifyError( rich, plain, t );
+	ExceptionManager::self()->notifyError(rich, plain, t);
 }
 
 /* ExceptionManager */
 
-ExceptionManager::ExceptionManager() {
+ExceptionManager::ExceptionManager()
+{
 	m_dialog = new QErrorMessage(0);
-	m_dialog->setWindowTitle( qApp->applicationName() );
+	m_dialog->setWindowTitle(qApp->applicationName());
 
-	QFile exceptionFilterFile( ":/rc/exceptionfilter.txt" );
-	if( exceptionFilterFile.open( QIODevice::ReadOnly ) ) {
-		QTextStream exceptionFilterStream( &exceptionFilterFile );
-		m_exceptionFilter = exceptionFilterStream.readAll().split( "\n" );
+	QFile exceptionFilterFile(":/rc/exceptionfilter.txt");
+	if (exceptionFilterFile.open(QIODevice::ReadOnly))
+	{
+		QTextStream exceptionFilterStream(&exceptionFilterFile);
+		m_exceptionFilter = exceptionFilterStream.readAll().split("\n");
 	}
 }
 
-ExceptionManager::~ExceptionManager() {
+ExceptionManager::~ExceptionManager()
+{
 	delete m_dialog;
-	if( s_self == this )
+	if (s_self == this)
 		s_self = 0;
 }
 
-void ExceptionManager::installExceptionHandler() {
-	qInstallMsgHandler( xinxMessageHandler );
+void ExceptionManager::installExceptionHandler()
+{
+	qInstallMsgHandler(xinxMessageHandler);
 }
 
-QHash<unsigned long,QStringList> & ExceptionManager::xinxStackTrace() {
+QHash<unsigned long,QStringList> & ExceptionManager::xinxStackTrace()
+{
 	return m_stackTrace;
 }
 
-QStringList ExceptionManager::stackTrace() const {
+QStringList ExceptionManager::stackTrace() const
+{
 	QStringList stack;
 
 #ifndef Q_WS_WIN
@@ -114,22 +122,26 @@ QStringList ExceptionManager::stackTrace() const {
 	size_t size, i;
 	char ** strings;
 
-	size = backtrace( array, 10 );
-	strings = backtrace_symbols( array, size );
-	for( i = 0; i < size; i++ ) {
+	size = backtrace(array, 10);
+	strings = backtrace_symbols(array, size);
+	for (i = 0; i < size; i++)
+	{
 		stack << strings[i];
 	}
-	free( strings );
+	free(strings);
 #endif
 	return stack;
 }
 
-QErrorMessage * ExceptionManager::errorDialog() const {
+QErrorMessage * ExceptionManager::errorDialog() const
+{
 	return m_dialog;
 }
 
-void ExceptionManager::notifyError( QString error, QString plainError, QtMsgType t ) {
-	if( t == QtFatalMsg ) {
+void ExceptionManager::notifyError(QString error, QString plainError, QtMsgType t)
+{
+	if (t == QtFatalMsg)
+	{
 		// On restore les signaux pour �viter d'�tre perturb� pendant la phase de sauvegarde ...
 		std::signal(SIGSEGV, SIG_DFL);
 		std::signal(SIGABRT, SIG_DFL);
@@ -139,17 +151,19 @@ void ExceptionManager::notifyError( QString error, QString plainError, QtMsgType
 		emit errorTriggered();
 	}
 
-	foreach( const QString & filter, m_exceptionFilter ) {
-		if( QRegExp( filter ).exactMatch( error ) )
+	foreach(const QString & filter, m_exceptionFilter)
+	{
+		if (QRegExp(filter).exactMatch(error))
 			return;
 	}
 
 	//QStringList stack = stackTrace();
 
 	// Create a file where write error
-	QFile file( XINXConfig::self()->config().xinxTrace );
-	if( file.open( QIODevice::Append ) ) {
-		QTextStream text( &file );
+	QFile file(XINXConfig::self()->config().xinxTrace);
+	if (file.open(QIODevice::Append))
+	{
+		QTextStream text(&file);
 		text << QDateTime::currentDateTime().toString();
 		text << " : ";
 		text << plainError;
@@ -157,29 +171,35 @@ void ExceptionManager::notifyError( QString error, QString plainError, QtMsgType
 		file.close();
 	}
 
-	std::cout << qPrintable( plainError ) << std::endl;
+	std::cout << qPrintable(plainError) << std::endl;
 
-	if( t == QtDebugMsg ) return;
+	if (t == QtDebugMsg) return;
 
-	if( QThread::currentThread() == qApp->thread() )
-		m_dialog->showMessage( error );
+	if (QThread::currentThread() == qApp->thread())
+		m_dialog->showMessage(error);
 	else
-		QMetaObject::invokeMethod( m_dialog, "showMessage", Qt::QueuedConnection, Q_ARG(QString, error));
+		QMetaObject::invokeMethod(m_dialog, "showMessage", Qt::QueuedConnection, Q_ARG(QString, error));
 
-	if( t == QtFatalMsg ) {
-		if( QThread::currentThread() == qApp->thread()  ) {
+	if (t == QtFatalMsg)
+	{
+		if (QThread::currentThread() == qApp->thread())
+		{
 			m_dialog->exec(); // Pour ne pas quitter de suite
-		} else {
-			QMetaObject::invokeMethod( m_dialog, "exec", Qt::BlockingQueuedConnection, Q_ARG(QString, error));
+		}
+		else
+		{
+			QMetaObject::invokeMethod(m_dialog, "exec", Qt::BlockingQueuedConnection, Q_ARG(QString, error));
 		}
 		abort();
 	}
 }
 
-ExceptionManager * ExceptionManager::self() {
-	if( ! s_self ) {
+ExceptionManager * ExceptionManager::self()
+{
+	if (! s_self)
+	{
 		s_self = new ExceptionManager();
-		XINXStaticDeleter::self()->addObject( s_self );
+		XINXStaticDeleter::self()->addObject(s_self);
 	}
 	return s_self;
 }
@@ -187,14 +207,17 @@ ExceptionManager * ExceptionManager::self() {
 
 /* XinxException */
 
-XinxException::XinxException( QString message ) : m_message( message ) {
+XinxException::XinxException(QString message) : m_message(message)
+{
 	m_stack = ExceptionManager::self()->stackTrace(); //[ (unsigned long)QThread::currentThreadId() ];
 }
 
-const QString & XinxException::getMessage() const {
+const QString & XinxException::getMessage() const
+{
 	return m_message;
 }
 
-const QStringList & XinxException::getStack() const {
+const QStringList & XinxException::getStack() const
+{
 	return m_stack;
 }

@@ -22,40 +22,47 @@
 
 /* EditorsConfigFormImpl */
 
-EditorsConfigFormImpl::EditorsConfigFormImpl( QWidget * parent ) : QWidget( parent ) {
-	setupUi( this );
-	
+EditorsConfigFormImpl::EditorsConfigFormImpl(QWidget * parent) : QWidget(parent)
+{
+	setupUi(this);
+
 }
 
-EditorsConfigFormImpl::~EditorsConfigFormImpl() {
-	
+EditorsConfigFormImpl::~EditorsConfigFormImpl()
+{
+
 }
 
-QPixmap EditorsConfigFormImpl::image() {
-	return QPixmap( ":/images/preferences-editors.png" );
+QPixmap EditorsConfigFormImpl::image()
+{
+	return QPixmap(":/images/preferences-editors.png");
 }
 
-QString EditorsConfigFormImpl::name() {
-	return tr( "Editors Completion" );
+QString EditorsConfigFormImpl::name()
+{
+	return tr("Editors Completion");
 }
 
-QWidget * EditorsConfigFormImpl::settingsDialog() {
+QWidget * EditorsConfigFormImpl::settingsDialog()
+{
 	return this;
 }
 
-bool EditorsConfigFormImpl::loadSettingsDialog() {
+bool EditorsConfigFormImpl::loadSettingsDialog()
+{
 	SelfWebPluginSettings * settings = SelfWebPluginSettings::self();
 
-	m_activeXmlGroupBox->setChecked( settings->config().xml.activeCompletion );
-	m_addClosedBaliseCheckBox->setChecked( settings->config().xml.addClosedBalise );
-	m_addDefaultAttributeCheckBox->setChecked( settings->config().xml.addDefaultAttribute );
-	m_addDefaultSubBaliseCheckBox->setChecked( settings->config().xml.addDefaultSubBalise );
+	m_activeXmlGroupBox->setChecked(settings->config().xml.activeCompletion);
+	m_addClosedBaliseCheckBox->setChecked(settings->config().xml.addClosedBalise);
+	m_addDefaultAttributeCheckBox->setChecked(settings->config().xml.addDefaultAttribute);
+	m_addDefaultSubBaliseCheckBox->setChecked(settings->config().xml.addDefaultSubBalise);
 
-	m_javaScriptGroupBox->setChecked( settings->config().javascript.activeCompletion );
+	m_javaScriptGroupBox->setChecked(settings->config().javascript.activeCompletion);
 	return true;
 }
 
-bool EditorsConfigFormImpl::saveSettingsDialog() {
+bool EditorsConfigFormImpl::saveSettingsDialog()
+{
 	SelfWebPluginSettings * settings = SelfWebPluginSettings::self();
 
 	settings->config().xml.activeCompletion = m_activeXmlGroupBox->isChecked();
@@ -69,15 +76,18 @@ bool EditorsConfigFormImpl::saveSettingsDialog() {
 	return true;
 }
 
-bool EditorsConfigFormImpl::isSettingsValid() {
+bool EditorsConfigFormImpl::isSettingsValid()
+{
 	return true;
 }
 
-bool EditorsConfigFormImpl::cancelSettingsDialog() {
+bool EditorsConfigFormImpl::cancelSettingsDialog()
+{
 	return true;
 }
 
-bool EditorsConfigFormImpl::isVisible() {
+bool EditorsConfigFormImpl::isVisible()
+{
 	return true;
 }
 

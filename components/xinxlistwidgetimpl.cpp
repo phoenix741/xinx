@@ -22,169 +22,194 @@
 
 /* XinxListWidgetImpl */
 
-XinxListWidgetImpl::XinxListWidgetImpl( QWidget * parent, Qt::WindowFlags f ) : QWidget( parent, f ) {
-	setupUi( this );
+XinxListWidgetImpl::XinxListWidgetImpl(QWidget * parent, Qt::WindowFlags f) : QWidget(parent, f)
+{
+	setupUi(this);
 
-	connect( m_list, SIGNAL(currentRowChanged(int)), this, SIGNAL(currentRowChanged(int)));
+	connect(m_list, SIGNAL(currentRowChanged(int)), this, SIGNAL(currentRowChanged(int)));
 
-	m_btnDel->setEnabled( m_list->count() > 0 );
-	m_btnDef->setEnabled( m_list->count() > 0 );
-	m_btnUp->setEnabled( m_list->currentRow() > 0 );
-	m_btnDown->setEnabled( ( m_list->currentRow() >= 0 ) && ( m_list->currentRow() < m_list->count() - 1 ) );
+	m_btnDel->setEnabled(m_list->count() > 0);
+	m_btnDef->setEnabled(m_list->count() > 0);
+	m_btnUp->setEnabled(m_list->currentRow() > 0);
+	m_btnDown->setEnabled((m_list->currentRow() >= 0) && (m_list->currentRow() < m_list->count() - 1));
 }
 
-XinxListWidgetImpl::~XinxListWidgetImpl() {
+XinxListWidgetImpl::~XinxListWidgetImpl()
+{
 
 }
 
-void XinxListWidgetImpl::updateDefault( const QString & def ) {
+void XinxListWidgetImpl::updateDefault(const QString & def)
+{
 	m_defaultValue = -1;
 	bool hasDefault = def.isEmpty() ? true : false;
-	for( int i = 0; i < m_list->count() ; i++ ) {
-		QListWidgetItem * item = m_list->item( i );
+	for (int i = 0; i < m_list->count() ; i++)
+	{
+		QListWidgetItem * item = m_list->item(i);
 		bool isDefault = item->text() == def;
-		if( isDefault ) {
+		if (isDefault)
+		{
 			hasDefault = true;
 			m_defaultValue = i;
 		}
 		QFont font = item->font();
-		font.setBold( isDefault );
-		item->setFont( font );
+		font.setBold(isDefault);
+		item->setFont(font);
 	}
-	if( ! hasDefault ) {
-		QListWidgetItem * item = new QListWidgetItem( def, m_list );
-		item->setFlags( item->flags() | Qt::ItemIsEditable );
+	if (! hasDefault)
+	{
+		QListWidgetItem * item = new QListWidgetItem(def, m_list);
+		item->setFlags(item->flags() | Qt::ItemIsEditable);
 		QFont font = item->font();
-		font.setBold( true );
-		item->setFont( font );
-		m_list->addItem( item );
+		font.setBold(true);
+		item->setFont(font);
+		m_list->addItem(item);
 		m_defaultValue = m_list->count() - 1;
 	}
 }
 
-QString XinxListWidgetImpl::defaultValue() const {
-	if( m_list->item( m_defaultValue ) )
-		return m_list->item( m_defaultValue )->text();
+QString XinxListWidgetImpl::defaultValue() const
+{
+	if (m_list->item(m_defaultValue))
+		return m_list->item(m_defaultValue)->text();
 	else
 		return QString();
 }
 
-void XinxListWidgetImpl::setDefaultValue( const QString & value ) {
-	updateDefault( value );
+void XinxListWidgetImpl::setDefaultValue(const QString & value)
+{
+	updateDefault(value);
 }
 
-bool XinxListWidgetImpl::defaultVisible() const {
+bool XinxListWidgetImpl::defaultVisible() const
+{
 	return m_btnDef->isVisible();
 }
 
-void XinxListWidgetImpl::setDefaultVisible( bool visible ) {
-	m_btnDef->setVisible( visible );
+void XinxListWidgetImpl::setDefaultVisible(bool visible)
+{
+	m_btnDef->setVisible(visible);
 }
 
-QStringList XinxListWidgetImpl::values() const {
+QStringList XinxListWidgetImpl::values() const
+{
 	QStringList result;
-	for( int i = 0; i < m_list->count(); i++ ) {
-		result.append( m_list->item( i )->text() );
+	for (int i = 0; i < m_list->count(); i++)
+	{
+		result.append(m_list->item(i)->text());
 	}
 	return result;
 }
 
-void XinxListWidgetImpl::setValues( const QStringList & values ) {
-	QString def = m_list->item( m_defaultValue ) ? m_list->item( m_defaultValue )->text() : QString();
+void XinxListWidgetImpl::setValues(const QStringList & values)
+{
+	QString def = m_list->item(m_defaultValue) ? m_list->item(m_defaultValue)->text() : QString();
 
 	m_list->clear();
-	foreach( const QString & value, values ) {
-		QListWidgetItem * item = new QListWidgetItem( value, m_list );
-		item->setFlags( item->flags() | Qt::ItemIsEditable );
-		m_list->addItem( item );
+	foreach(const QString & value, values)
+	{
+		QListWidgetItem * item = new QListWidgetItem(value, m_list);
+		item->setFlags(item->flags() | Qt::ItemIsEditable);
+		m_list->addItem(item);
 	}
-	m_btnDel->setEnabled( m_list->count() > 0 );
-	m_btnDef->setEnabled( m_list->count() > 0 );
-	m_btnUp->setEnabled( m_list->currentRow() > 0 );
-	m_btnDown->setEnabled( ( m_list->currentRow() >= 0 ) && ( m_list->currentRow() < m_list->count() - 1 ) );
+	m_btnDel->setEnabled(m_list->count() > 0);
+	m_btnDef->setEnabled(m_list->count() > 0);
+	m_btnUp->setEnabled(m_list->currentRow() > 0);
+	m_btnDown->setEnabled((m_list->currentRow() >= 0) && (m_list->currentRow() < m_list->count() - 1));
 
-	updateDefault( def );
+	updateDefault(def);
 }
 
-void XinxListWidgetImpl::add( const QString & value ) {
-	QListWidgetItem * item = new QListWidgetItem( value, m_list );
-	item->setFlags( item->flags() | Qt::ItemIsEditable );
-	m_list->addItem( item );
-	m_list->setCurrentItem( item );
+void XinxListWidgetImpl::add(const QString & value)
+{
+	QListWidgetItem * item = new QListWidgetItem(value, m_list);
+	item->setFlags(item->flags() | Qt::ItemIsEditable);
+	m_list->addItem(item);
+	m_list->setCurrentItem(item);
 
-	m_btnDel->setEnabled( m_list->count() > 0 );
-	m_btnDef->setEnabled( m_list->count() > 0 );
-	m_btnUp->setEnabled( m_list->currentRow() > 0 );
-	m_btnDown->setEnabled( ( m_list->currentRow() >= 0 ) && ( m_list->currentRow() < m_list->count() - 1 ) );
+	m_btnDel->setEnabled(m_list->count() > 0);
+	m_btnDef->setEnabled(m_list->count() > 0);
+	m_btnUp->setEnabled(m_list->currentRow() > 0);
+	m_btnDown->setEnabled((m_list->currentRow() >= 0) && (m_list->currentRow() < m_list->count() - 1));
 }
 
-QString XinxListWidgetImpl::defaultProposedValue() const {
+QString XinxListWidgetImpl::defaultProposedValue() const
+{
 	return m_defaultProposedValue;
 }
 
-void XinxListWidgetImpl::setDefaultProposedValue( const QString & value ) {
+void XinxListWidgetImpl::setDefaultProposedValue(const QString & value)
+{
 	m_defaultProposedValue = value;
 }
 
-void XinxListWidgetImpl::on_m_btnDef_clicked() {
+void XinxListWidgetImpl::on_m_btnDef_clicked()
+{
 	QListWidgetItem * item = m_list->currentItem();
-	if( item ) {
+	if (item)
+	{
 		m_defaultValue = m_list->currentRow();
-		updateDefault( item->text() );
-		emit defaultValueChanged( item->text() );
+		updateDefault(item->text());
+		emit defaultValueChanged(item->text());
 	}
 }
 
-void XinxListWidgetImpl::on_m_btnAdd_clicked() {
-	QListWidgetItem * item = new QListWidgetItem( m_defaultProposedValue.isEmpty() ? "..." : m_defaultProposedValue, m_list );
-	item->setFlags( item->flags() | Qt::ItemIsEditable );
-	m_list->addItem( item );
-	m_list->setCurrentItem( item );
-	m_list->editItem( item );
+void XinxListWidgetImpl::on_m_btnAdd_clicked()
+{
+	QListWidgetItem * item = new QListWidgetItem(m_defaultProposedValue.isEmpty() ? "..." : m_defaultProposedValue, m_list);
+	item->setFlags(item->flags() | Qt::ItemIsEditable);
+	m_list->addItem(item);
+	m_list->setCurrentItem(item);
+	m_list->editItem(item);
 
-	m_btnDel->setEnabled( m_list->count() > 0 );
-	m_btnDef->setEnabled( m_list->count() > 0 );
-	m_btnUp->setEnabled( m_list->currentRow() > 0 );
-	m_btnDown->setEnabled( ( m_list->currentRow() >= 0 ) && ( m_list->currentRow() < m_list->count() - 1 ) );
+	m_btnDel->setEnabled(m_list->count() > 0);
+	m_btnDef->setEnabled(m_list->count() > 0);
+	m_btnUp->setEnabled(m_list->currentRow() > 0);
+	m_btnDown->setEnabled((m_list->currentRow() >= 0) && (m_list->currentRow() < m_list->count() - 1));
 }
 
-void XinxListWidgetImpl::on_m_btnDel_clicked() {
-	Q_ASSERT( m_list->currentRow() >= 0 );
+void XinxListWidgetImpl::on_m_btnDel_clicked()
+{
+	Q_ASSERT(m_list->currentRow() >= 0);
 
 	delete m_list->currentItem();
 
-	m_btnDel->setEnabled( m_list->count() > 0 );
-	m_btnDef->setEnabled( m_list->count() > 0 );
-	m_btnUp->setEnabled( m_list->currentRow() > 0 );
-	m_btnDown->setEnabled( ( m_list->currentRow() >= 0 ) && ( m_list->currentRow() < m_list->count() - 1 ) );
+	m_btnDel->setEnabled(m_list->count() > 0);
+	m_btnDef->setEnabled(m_list->count() > 0);
+	m_btnUp->setEnabled(m_list->currentRow() > 0);
+	m_btnDown->setEnabled((m_list->currentRow() >= 0) && (m_list->currentRow() < m_list->count() - 1));
 }
 
-void XinxListWidgetImpl::on_m_btnUp_clicked() {
-	Q_ASSERT( ( m_list->currentRow() >= 0 ) && ( m_list->currentRow() - 1 >= 0 ) );
+void XinxListWidgetImpl::on_m_btnUp_clicked()
+{
+	Q_ASSERT((m_list->currentRow() >= 0) && (m_list->currentRow() - 1 >= 0));
 
 	int row = m_list->currentRow();
-	QListWidgetItem * item = m_list->takeItem( m_list->currentRow() );
-	m_list->insertItem( row - 1, item );
-	m_list->setCurrentItem( item );
+	QListWidgetItem * item = m_list->takeItem(m_list->currentRow());
+	m_list->insertItem(row - 1, item);
+	m_list->setCurrentItem(item);
 }
 
-void XinxListWidgetImpl::on_m_btnDown_clicked() {
-	Q_ASSERT( ( m_list->currentRow() >= 0 ) && ( m_list->currentRow() + 1 < m_list->count() ) );
+void XinxListWidgetImpl::on_m_btnDown_clicked()
+{
+	Q_ASSERT((m_list->currentRow() >= 0) && (m_list->currentRow() + 1 < m_list->count()));
 
 	int row = m_list->currentRow();
-	QListWidgetItem * item = m_list->takeItem( m_list->currentRow() );
-	m_list->insertItem( row + 1, item );
-	m_list->setCurrentItem( item );
+	QListWidgetItem * item = m_list->takeItem(m_list->currentRow());
+	m_list->insertItem(row + 1, item);
+	m_list->setCurrentItem(item);
 }
 
-void XinxListWidgetImpl::on_m_list_currentRowChanged( int row ) {
-	m_btnUp->setEnabled( row > 0 );
-	m_btnDown->setEnabled( row < m_list->count() - 1 );
+void XinxListWidgetImpl::on_m_list_currentRowChanged(int row)
+{
+	m_btnUp->setEnabled(row > 0);
+	m_btnDown->setEnabled(row < m_list->count() - 1);
 }
 
-void XinxListWidgetImpl::on_m_list_itemChanged( QListWidgetItem * item ) {
-	if( item )
-		emit itemChanged( item->text() );
+void XinxListWidgetImpl::on_m_list_itemChanged(QListWidgetItem * item)
+{
+	if (item)
+		emit itemChanged(item->text());
 	else
-		emit itemChanged( QString() );
+		emit itemChanged(QString());
 }

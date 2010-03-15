@@ -30,23 +30,25 @@
 #include <QBuffer>
 #include <QTextStream>
 
-class XMLPrettyPrinterException : public XinxException {
+class XMLPrettyPrinterException : public XinxException
+{
 public:
-	XMLPrettyPrinterException( const QString & message, int line, int column ) : XinxException( message ), m_line( line ), m_column( column ) {}
+	XMLPrettyPrinterException(const QString & message, int line, int column) : XinxException(message), m_line(line), m_column(column) {}
 	int m_line, m_column;
 };
 
-class XMLPrettyPrinter : public QXmlStreamReader {
+class XMLPrettyPrinter : public QXmlStreamReader
+{
 public:
 	XMLPrettyPrinter();
 	virtual ~XMLPrettyPrinter();
 
-	void setText( const QString & text );
+	void setText(const QString & text);
 	void process();
 	QString getResult();
 private:
-	void writeLevel( int level );
-	void constructXML( int level = 0 );
+	void writeLevel(int level);
+	void constructXML(int level = 0);
 
 	QString m_text;
 	QBuffer m_resultBuffer;

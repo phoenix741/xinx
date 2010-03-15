@@ -29,19 +29,20 @@
 #include <QMultiHash>
 #include <QCoreApplication>
 
-class GceProperties : public GceConfigurationDef {
+class GceProperties : public GceConfigurationDef
+{
 	Q_DECLARE_TR_FUNCTIONS(GceProperties)
 public:
-	GceProperties( const QString & filename );
+	GceProperties(const QString & filename);
 	virtual ~GceProperties();
 
-	QStringList generateFileName( const QString & filename );
+	QStringList generateFileName(const QString & filename);
 	virtual QString rootFilename();
 	virtual QStringList filenames();
-	virtual QString resolveFileName( const QString & filename );
+	virtual QString resolveFileName(const QString & filename);
 protected:
-	virtual void readGceProperties( const QString & propertiesFileName );
-	virtual void readConfigurationFile( int configurationIndex, const QString & configurationFileName );
+	virtual void readGceProperties(const QString & propertiesFileName);
+	virtual void readConfigurationFile(int configurationIndex, const QString & configurationFileName);
 
 	QStringList m_dictionnaries, m_filenames;
 	QString m_propertiesFilename, m_configurationDef;

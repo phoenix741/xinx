@@ -24,7 +24,8 @@
 // Xinx header
 #include "generixsettings.h"
 
-class SelfGenerixSettings : public QObject, public GenerixSettings {
+class SelfGenerixSettings : public QObject, public GenerixSettings
+{
 	Q_OBJECT
 public:
 	virtual ~SelfGenerixSettings();

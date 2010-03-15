@@ -36,7 +36,7 @@ HEADERS = docks/datastream/xmlpresentationdockwidget.h \
     editors/models/xq/xquery_keyword.h \
     editors/models/xsl/xslcompletionnodemodel.h \
     editors/models/xsl/xslcontentviewparser.h \
-	editors/models/xsl/xslcv2parser.h \
+	editors/models/xsl/xmlcompletionparser.h \
     editors/models/js/javascriptmodelcompleter.h \
     editors/models/js/jscontentviewparser.h \
     editors/models/css/cssmodeldata.h \
@@ -75,7 +75,7 @@ SOURCES = docks/datastream/xmlpresentationdockthread.cpp \
     editors/models/xq/xqmodelcompleter.cpp \
     editors/models/xsl/xslcompletionnodemodel.cpp \
     editors/models/xsl/xslcontentviewparser.cpp \
-	editors/models/xsl/xslcv2parser.cpp \
+	editors/models/xsl/xmlcompletionparser.cpp \
     editors/models/js/javascriptmodelcompleter.cpp \
     editors/models/js/jscontentviewparser.cpp \
     editors/models/css/cssmodeldata.cpp \

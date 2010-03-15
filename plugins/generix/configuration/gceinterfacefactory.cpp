@@ -27,27 +27,35 @@
 #include <QFile>
 #include <QDir>
 
-GceInterfaceFactory::GceInterfaceFactory() {
+GceInterfaceFactory::GceInterfaceFactory()
+{
 }
 
-GceInterface * GceInterfaceFactory::createGceInterface( const QString & path ) {
+GceInterface * GceInterfaceFactory::createGceInterface(const QString & path)
+{
 	/*
 	 * Recherche l'existance des fichiers
 	 * - gce.properties.xml pour la GCE150
 	 * - configurationdef.xml pour la GCE140 ou 130
 	 * - configuration.xml pour le reste.
 	 */
-	try {
-		if( QFile::exists( QDir( path ).absoluteFilePath( "gce.properties.xml" ) ) ) {
-			return new GceProperties( QDir( path ).absoluteFilePath( "gce.properties.xml" ) );
-		} else
-		if( QFile::exists( QDir( path ).absoluteFilePath( "configurationdef.xml" ) ) ) {
-			return new GceConfigurationDef( QDir( path ).absoluteFilePath( "configurationdef.xml" ) );
-		} else
-		if( QFile::exists( QDir( path ).absoluteFilePath( "configuration.xml" ) ) ) {
-			return new GceConfiguration( QDir( path ).absoluteFilePath( "configuration.xml" ) );
+	try
+	{
+		if (QFile::exists(QDir(path).absoluteFilePath("gce.properties.xml")))
+		{
+			return new GceProperties(QDir(path).absoluteFilePath("gce.properties.xml"));
 		}
-	} catch( GceInterfaceException e ) {
+		else if (QFile::exists(QDir(path).absoluteFilePath("configurationdef.xml")))
+		{
+			return new GceConfigurationDef(QDir(path).absoluteFilePath("configurationdef.xml"));
+		}
+		else if (QFile::exists(QDir(path).absoluteFilePath("configuration.xml")))
+		{
+			return new GceConfiguration(QDir(path).absoluteFilePath("configuration.xml"));
+		}
+	}
+	catch (GceInterfaceException e)
+	{
 		return NULL;
 	}
 

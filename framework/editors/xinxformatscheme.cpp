@@ -26,56 +26,64 @@
 
 /* XinxFormatScheme */
 
-XinxFormatScheme::XinxFormatScheme( XINXConfig * parent ) : QFormatScheme( parent ), m_config( parent ) {
+XinxFormatScheme::XinxFormatScheme(XINXConfig * parent) : QFormatScheme(parent), m_config(parent)
+{
 	createStandardFormat();
 }
 
-XinxFormatScheme::XinxFormatScheme() : m_config( 0 ) {
+XinxFormatScheme::XinxFormatScheme() : m_config(0)
+{
 	createStandardFormat();
 }
 
-XinxFormatScheme::~XinxFormatScheme() {
+XinxFormatScheme::~XinxFormatScheme()
+{
 
 }
 
-void XinxFormatScheme::createStandardFormat() {
+void XinxFormatScheme::createStandardFormat()
+{
 	QFormat searchFormat, braceMatchFormat, braceMismatchFormat;
 
 	// Init search format
-	if( m_config )
+	if (m_config)
 		searchFormat.background = m_config->config().editor.highlightWord;
 	else
 		searchFormat.background = Qt::yellow;
 
-	setFormat( "search", searchFormat );
+	setFormat("search", searchFormat);
 
 	// Init match format
 	braceMatchFormat.weight = QFont::Bold;
 	braceMatchFormat.foreground = Qt::red;
 	braceMatchFormat.background = Qt::yellow;
-	setFormat( "match", braceMatchFormat );
-	setFormat( "braceMatch", braceMatchFormat );
+	setFormat("match", braceMatchFormat);
+	setFormat("braceMatch", braceMatchFormat);
 
 	// Init mismatch format
 	braceMismatchFormat.weight = QFont::Bold;
 	braceMismatchFormat.foreground = Qt::yellow;
 	braceMismatchFormat.background = Qt::red;
-	setFormat( "braceMismatch", braceMismatchFormat );
+	setFormat("braceMismatch", braceMismatchFormat);
 }
 
-void XinxFormatScheme::updateFormatsFromConfig() {
+void XinxFormatScheme::updateFormatsFromConfig()
+{
 	// Reload from config file ;)
 	createStandardFormat();
 
-	if( ! m_config ) return;
+	if (! m_config) return;
 
-	foreach( const QString & format, m_config->config().formats.keys() ) {
-		if( m_nameSpace.isEmpty() || format.startsWith( m_nameSpace + "_" ) ) {
-			if( m_config->config().formats.contains( format ) ) {
-				XINXConfig::struct_qformat conf = m_config->config().formats.value( format );
+	foreach(const QString & format, m_config->config().formats.keys())
+	{
+		if (m_nameSpace.isEmpty() || format.startsWith(m_nameSpace + "_"))
+		{
+			if (m_config->config().formats.contains(format))
+			{
+				XINXConfig::struct_qformat conf = m_config->config().formats.value(format);
 
-				QString formatName( format );
-				formatName = formatName.remove( 0, m_nameSpace.length() + 1 );
+				QString formatName(format);
+				formatName = formatName.remove(0, m_nameSpace.length() + 1);
 				QFormat format;
 				format.italic        = conf.italic;
 				format.weight        = conf.bold ? QFont::Bold : QFont::Normal;
@@ -85,43 +93,49 @@ void XinxFormatScheme::updateFormatsFromConfig() {
 				format.waveUnderline = conf.waveunderline;
 				format.foreground    = conf.foreground;
 				format.background    = conf.background;
-				setFormat( formatName, format );
+				setFormat(formatName, format);
 			}
 		}
 	}
 }
 
-void XinxFormatScheme::putFormatsToConfig() {
-	if( ! m_config ) return;
+void XinxFormatScheme::putFormatsToConfig()
+{
+	if (! m_config) return;
 
-	foreach( const QString & f, formats() ) {
-		if( ( f == "normal" ) || ( f == "match" ) || ( f == "search" ) || ( f == "braceMatch" ) || ( f == "braceMismatch" ) ) continue;
+	foreach(const QString & f, formats())
+	{
+		if ((f == "normal") || (f == "match") || (f == "search") || (f == "braceMatch") || (f == "braceMismatch")) continue;
 		XINXConfig::struct_qformat conf;
-		conf.italic        = format( f ).italic;
-		conf.bold          = format( f ).weight == QFont::Bold;
-		conf.overline      = format( f ).overline;
-		conf.strikout      = format( f ).strikeout;
-		conf.underline     = format( f ).underline;
-		conf.waveunderline = format( f ).waveUnderline;
-		conf.foreground    = format( f ).foreground;
-		conf.background    = format( f ).background;
+		conf.italic        = format(f).italic;
+		conf.bold          = format(f).weight == QFont::Bold;
+		conf.overline      = format(f).overline;
+		conf.strikout      = format(f).strikeout;
+		conf.underline     = format(f).underline;
+		conf.waveunderline = format(f).waveUnderline;
+		conf.foreground    = format(f).foreground;
+		conf.background    = format(f).background;
 
 		m_config->config().formats[ m_nameSpace + "_" + f ] = conf;
 	}
 }
 
-void XinxFormatScheme::setNameSpace( const QString & value ) {
+void XinxFormatScheme::setNameSpace(const QString & value)
+{
 	m_nameSpace = value;
 }
 
-const QString & XinxFormatScheme::nameSpace() const {
+const QString & XinxFormatScheme::nameSpace() const
+{
 	return m_nameSpace;
 }
 
-XinxFormatScheme& XinxFormatScheme::operator=(const XinxFormatScheme& p) {
+XinxFormatScheme& XinxFormatScheme::operator=(const XinxFormatScheme& p)
+{
 	this->m_nameSpace = m_nameSpace;
-	foreach( const QString & f, p.formats() ) {
-		 this->setFormat( f, p.format( f ) );
+	foreach(const QString & f, p.formats())
+	{
+		this->setFormat(f, p.format(f));
 	}
 	return *this;
 }

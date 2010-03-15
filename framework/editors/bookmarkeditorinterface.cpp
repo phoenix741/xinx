@@ -22,15 +22,18 @@
 
 /* BookmarkEditorInterface */
 
-BookmarkEditorInterface::BookmarkEditorInterface( QObject * parent ) : QObject( parent ) {
+BookmarkEditorInterface::BookmarkEditorInterface(QObject * parent) : QObject(parent)
+{
 }
 
-void BookmarkEditorInterface::firstBookmark() {
-	if( bookmarkCount() > 0 )
-		gotoBookmarkAt( 0 );
+void BookmarkEditorInterface::firstBookmark()
+{
+	if (bookmarkCount() > 0)
+		gotoBookmarkAt(0);
 }
 
-void BookmarkEditorInterface::lastBookmark() {
-	if( bookmarkCount() > 0 )
-		gotoBookmarkAt( bookmarkCount() - 1 );
+void BookmarkEditorInterface::lastBookmark()
+{
+	if (bookmarkCount() > 0)
+		gotoBookmarkAt(bookmarkCount() - 1);
 }

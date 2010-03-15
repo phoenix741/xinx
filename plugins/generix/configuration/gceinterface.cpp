@@ -19,8 +19,10 @@
 
 #include "gceinterface.h"
 
-GceInterface::GceInterface() {
+GceInterface::GceInterface()
+{
 }
 
-GceInterface::~GceInterface() {
+GceInterface::~GceInterface()
+{
 }

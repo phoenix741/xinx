@@ -26,11 +26,12 @@
 
 class XmlPresentationDockWidget;
 
-class StyleSheetAction : public XinxAction::Action {
+class StyleSheetAction : public XinxAction::Action
+{
 public:
-	StyleSheetAction( QAction * a, QObject * parent );
-	StyleSheetAction( const QString & text, const QKeySequence & shortcut, QObject * parent );
-	StyleSheetAction( const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent );
+	StyleSheetAction(QAction * a, QObject * parent);
+	StyleSheetAction(const QString & text, const QKeySequence & shortcut, QObject * parent);
+	StyleSheetAction(const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent);
 
 	virtual bool isActionVisible() const;
 	virtual bool isActionEnabled() const;
@@ -38,7 +39,7 @@ public:
 protected slots:
 	virtual void actionTriggered();
 private:
-	void setXmlPresentationDockWidget( XmlPresentationDockWidget * value ) const;
+	void setXmlPresentationDockWidget(XmlPresentationDockWidget * value) const;
 
 	mutable XmlPresentationDockWidget * m_dock;
 };

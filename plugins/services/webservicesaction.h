@@ -24,11 +24,12 @@
 // Xinx header
 #include <actions/actioninterface.h>
 
-class WebServicesRefreshAction : public XinxAction::Action {
+class WebServicesRefreshAction : public XinxAction::Action
+{
 public:
-	WebServicesRefreshAction( QAction * a, QObject * parent );
-	WebServicesRefreshAction( const QString & text, const QKeySequence & shortcut, QObject * parent );
-	WebServicesRefreshAction( const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent );
+	WebServicesRefreshAction(QAction * a, QObject * parent);
+	WebServicesRefreshAction(const QString & text, const QKeySequence & shortcut, QObject * parent);
+	WebServicesRefreshAction(const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent);
 
 	virtual bool isActionVisible() const;
 	virtual bool isActionEnabled() const;
@@ -37,11 +38,12 @@ protected slots:
 	virtual void actionTriggered();
 };
 
-class WebServicesRunAction : public XinxAction::Action {
+class WebServicesRunAction : public XinxAction::Action
+{
 public:
-	WebServicesRunAction( QAction * a, QObject * parent );
-	WebServicesRunAction( const QString & text, const QKeySequence & shortcut, QObject * parent );
-	WebServicesRunAction( const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent );
+	WebServicesRunAction(QAction * a, QObject * parent);
+	WebServicesRunAction(const QString & text, const QKeySequence & shortcut, QObject * parent);
+	WebServicesRunAction(const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent);
 
 	virtual bool isActionVisible() const;
 	virtual bool isActionEnabled() const;

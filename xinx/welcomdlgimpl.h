@@ -28,19 +28,20 @@
 
 /* WelcomDialogImpl */
 
-class WelcomDialogImpl : public QDialog, public Ui::WelcomDialog {
+class WelcomDialogImpl : public QDialog, public Ui::WelcomDialog
+{
 	Q_OBJECT
 public:
-	WelcomDialogImpl( QWidget * parent = 0, Qt::WindowFlags f = Qt::MSWindowsFixedSizeDialogHint );
+	WelcomDialogImpl(QWidget * parent = 0, Qt::WindowFlags f = Qt::MSWindowsFixedSizeDialogHint);
 	virtual ~WelcomDialogImpl();
 
-	void addProjectFile( const QString & filename );
+	void addProjectFile(const QString & filename);
 public slots:
-	void slotUrlClicked( const QString &data );
-	void slotProjectClicked( const QString &data );
+	void slotUrlClicked(const QString &data);
+	void slotProjectClicked(const QString &data);
 
 signals:
-	void requestProject( const QString & data );
+	void requestProject(const QString & data);
 	void createNewProject();
 	void openExistingProject();
 private:

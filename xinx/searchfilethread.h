@@ -25,25 +25,26 @@
 #include <core/xinxthread.h>
 #include <editors/abstracteditor.h>
 
-class SearchFileThread : public XinxThread {
+class SearchFileThread : public XinxThread
+{
 	Q_OBJECT
 public:
-	SearchFileThread( QObject * parent = 0 );
+	SearchFileThread(QObject * parent = 0);
 	virtual ~SearchFileThread();
 
-	void setPath( const QString & path );
-	void setSearchString( const QString & from, const QString & to, const AbstractEditor::SearchOptions & options );
+	void setPath(const QString & path);
+	void setSearchString(const QString & from, const QString & to, const AbstractEditor::SearchOptions & options);
 
 	void search();
 signals:
-	void find( const QString & filename, const QString & lineText, int lineNumber );
-	void test( const QString & filename );
+	void find(const QString & filename, const QString & lineText, int lineNumber);
+	void test(const QString & filename);
 	void end();
 protected:
 	virtual void threadrun();
 private:
-	void searchRecursive( const QString & path );
-	void testFile( const QString & path );
+	void searchRecursive(const QString & path);
+	void testFile(const QString & path);
 
 	QString m_from, m_to, m_path;
 	AbstractEditor::SearchOptions m_options;

@@ -23,11 +23,12 @@
 // Xinx header
 #include "gceinterface.h"
 
-class GceInterfaceFactory {
+class GceInterfaceFactory
+{
 public:
 	GceInterfaceFactory();
 
-	static GceInterface * createGceInterface( const QString & path );
+	static GceInterface * createGceInterface(const QString & path);
 };
 
 #endif // GCEINTERFACEFACTORY_H

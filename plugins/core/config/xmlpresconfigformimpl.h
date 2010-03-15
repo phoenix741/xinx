@@ -25,10 +25,11 @@
 #include "ui_xmlpresconfigform.h"
 #include <plugins/plugininterfaces.h>
 
-class XmlPresConfigFormImpl : public QWidget, public Ui::XmlPresConfigForm, public IXinxPluginConfigurationPage {
+class XmlPresConfigFormImpl : public QWidget, public Ui::XmlPresConfigForm, public IXinxPluginConfigurationPage
+{
 	Q_OBJECT
 public:
-	XmlPresConfigFormImpl( QWidget * parent = 0 );
+	XmlPresConfigFormImpl(QWidget * parent = 0);
 	virtual ~XmlPresConfigFormImpl();
 
 	virtual QPixmap image();
@@ -41,7 +42,7 @@ public:
 	virtual bool isSettingsValid();
 	virtual bool isVisible();
 private:
-	
+
 };
 
 #endif /*XMLPRESCONFIGFORMIMPL_H_*/

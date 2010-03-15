@@ -27,28 +27,31 @@
 
 /* CodeDialogImpl */
 
-CodeDialogImpl::CodeDialogImpl( QWidget * p ) : QDialog( p ) {
-	setupUi( this );
-	connect( codeEdit, SIGNAL(searchWord(QString)), this, SLOT(showText(QString)) );
+CodeDialogImpl::CodeDialogImpl(QWidget * p) : QDialog(p)
+{
+	setupUi(this);
+	connect(codeEdit, SIGNAL(searchWord(QString)), this, SLOT(showText(QString)));
 
-	QStringListModel * listModel = new QStringListModel( QStringList() << "void" << "int" << "temp" << "test", codeEdit );
-	QCompleter * completer = new QCompleter( listModel, codeEdit );
-	codeEdit->setCompleter( completer );
+	QStringListModel * listModel = new QStringListModel(QStringList() << "void" << "int" << "temp" << "test", codeEdit);
+	QCompleter * completer = new QCompleter(listModel, codeEdit);
+	codeEdit->setCompleter(completer);
 
-	QLineMarksInfoCenter::instance()->loadMarkTypes( ":/qcodeedit/marks.qxm" );
+	QLineMarksInfoCenter::instance()->loadMarkTypes(":/qcodeedit/marks.qxm");
 
-	QFile f( "codedialogimpl.cpp" );
-	f.open( QIODevice::ReadOnly );
-	QTextStream s( &f );
-	codeEdit->setPlainText( s.readAll() );
+	QFile f("codedialogimpl.cpp");
+	f.open(QIODevice::ReadOnly);
+	QTextStream s(&f);
+	codeEdit->setPlainText(s.readAll());
 
-	codeEdit->setErrors( QList<int>() << 4 << 9 );
+	codeEdit->setErrors(QList<int>() << 4 << 9);
 }
 
-CodeDialogImpl::~CodeDialogImpl() {
+CodeDialogImpl::~CodeDialogImpl()
+{
 
 }
 
-void CodeDialogImpl::showText( const QString & text ) {
-	QMessageBox::information( this, "Message", text );
+void CodeDialogImpl::showText(const QString & text)
+{
+	QMessageBox::information(this, "Message", text);
 }

@@ -23,8 +23,6 @@
 #include "editors/models/xsl/xslcompletionnodemodel.h"
 #include "editors/models/xsl/xslcontentviewparser.h"
 #include "xmltexteditor.h"
-#include <contentview/contentviewnode.h>
-#include <contentview/contentviewmodel.h>
 #include <borderlayout.h>
 #include <plugins/xinxpluginsloader.h>
 #include "plugindefinition/coreplugin.h"
@@ -49,68 +47,82 @@
 
 /* XmlFileEditor */
 
-XmlFileEditor::XmlFileEditor( QWidget *parent ) : TextFileEditor( new XmlTextEditor(), parent ), m_codec( 0 ) {
+XmlFileEditor::XmlFileEditor(QWidget *parent) : TextFileEditor(new XmlTextEditor(), parent), m_codec(0)
+{
 	initObjects();
 }
 
-XmlFileEditor::~XmlFileEditor() {
+XmlFileEditor::~XmlFileEditor()
+{
 }
 
-void XmlFileEditor::initObjects() {
+void XmlFileEditor::initObjects()
+{
 }
 
-QTextCodec * XmlFileEditor::codec() const {
-	if( m_codec )
+QTextCodec * XmlFileEditor::codec() const
+{
+	if (m_codec)
 		return m_codec;
 	else
 		return TextFileEditor::codec();
 }
 
-QString XmlFileEditor::defaultFileName() const {
-	return tr( "noname.xml" );
+QString XmlFileEditor::defaultFileName() const
+{
+	return tr("noname.xml");
 }
 
-QIcon XmlFileEditor::icon() const {
-	return QIcon( ":/images/typexml.png" );
+QIcon XmlFileEditor::icon() const
+{
+	return QIcon(":/images/typexml.png");
 }
 
-bool XmlFileEditor::autoIndent() {
-	try {
+bool XmlFileEditor::autoIndent()
+{
+	try
+	{
 		XMLPrettyPrinter prettyPrinter;
-		prettyPrinter.setText( textEdit()->toPlainText() );
+		prettyPrinter.setText(textEdit()->toPlainText());
 		prettyPrinter.process();
 
 		textEdit()->textCursor().beginEditBlock();
 		textEdit()->editor()->selectAll();
 		textEdit()->textCursor().removeSelectedText();
-		textEdit()->textCursor().movePosition( 1, QDocumentCursor::Start );
-		textEdit()->textCursor().insertText( prettyPrinter.getResult() );
+		textEdit()->textCursor().movePosition(1, QDocumentCursor::Start);
+		textEdit()->textCursor().insertText(prettyPrinter.getResult());
 		textEdit()->textCursor().endEditBlock();
-	} catch( XMLPrettyPrinterException e ) {
-		addNewErrorMessages( e.m_line, e.getMessage(), ERROR_MESSAGE );
+	}
+	catch (XMLPrettyPrinterException e)
+	{
+		addNewErrorMessages(e.m_line, e.getMessage(), ERROR_MESSAGE);
 		return false;
 	}
 	return true;
 }
 
-void XmlFileEditor::loadFromDevice( QIODevice & d ) {
+void XmlFileEditor::loadFromDevice(QIODevice & d)
+{
 	{
-		QXmlStreamReader reader( &d );
-		while( ! reader.atEnd() ) {
+		QXmlStreamReader reader(&d);
+		while (! reader.atEnd())
+		{
 			reader.readNext();
 
-			if( reader.isStartDocument() ) {
-				m_codec = QTextCodec::codecForName( reader.documentEncoding().toString().toLatin1() );
+			if (reader.isStartDocument())
+			{
+				m_codec = QTextCodec::codecForName(reader.documentEncoding().toString().toLatin1());
 				break;
 			}
 
-			if( reader.isStartElement() ) {
+			if (reader.isStartElement())
+			{
 				m_codec = TextFileEditor::codec();
 				break;
 			}
 		}
 	}
 	d.reset();
-	TextFileEditor::loadFromDevice( d );
+	TextFileEditor::loadFromDevice(d);
 }
 

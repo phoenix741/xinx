@@ -32,38 +32,41 @@
 
 /* CategoryItemModel */
 
-class LIBEXPORT CategoryItemModel : public TreeProxyItemModel {
+class LIBEXPORT CategoryItemModel : public TreeProxyItemModel
+{
 	Q_OBJECT
 public:
-	enum CategoryItemRole {
+	enum CategoryItemRole
+	{
 		CategoryIdRole = Qt::UserRole
 	};
 
 	virtual ~CategoryItemModel();
 
-	virtual int columnCount( const QModelIndex & parent = QModelIndex() ) const;
-	virtual QVariant data( const QModelIndex & index, int role = Qt::DisplayRole ) const;
-	virtual Qt::ItemFlags flags( const QModelIndex & index ) const;
+	virtual int columnCount(const QModelIndex & parent = QModelIndex()) const;
+	virtual QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
+	virtual Qt::ItemFlags flags(const QModelIndex & index) const;
 
 	void select();
 
-	virtual QModelIndex mapFromSource ( const QModelIndex & sourceIndex ) const;
-	virtual QModelIndex mapToSource ( const QModelIndex & proxyIndex ) const;
+	virtual QModelIndex mapFromSource(const QModelIndex & sourceIndex) const;
+	virtual QModelIndex mapToSource(const QModelIndex & proxyIndex) const;
 protected:
 	friend class SnipetManager;
-	CategoryItemModel( QSqlDatabase db, QObject * parent = 0 );
+	CategoryItemModel(QSqlDatabase db, QObject * parent = 0);
 
-	virtual int getUniqueIdentifier( const QModelIndex & sourceIndex ) const;
-	virtual int getParentUniqueIdentifier( const QModelIndex & sourceIndex ) const;
+	virtual int getUniqueIdentifier(const QModelIndex & sourceIndex) const;
+	virtual int getParentUniqueIdentifier(const QModelIndex & sourceIndex) const;
 private:
-	enum {
+	enum
+	{
 		list_id          = 0,
 		list_parentid    = 1,
 		list_name        = 2
 	};
 
-	int proxyColumnToSource( int proxyColumn ) const;
-	int sourceColumnToProxy( int sourceColumn ) const;
+	int proxyColumnToSource(int proxyColumn) const;
+	int sourceColumnToProxy(int sourceColumn) const;
 
 	QSqlDatabase m_db;
 	QSqlQueryModel * m_sourceModel;

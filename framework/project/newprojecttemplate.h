@@ -32,17 +32,19 @@
 #include <QStringList>
 #include <QPair>
 
-class LIBEXPORT NewProjectTemplateException : public XinxException {
+class LIBEXPORT NewProjectTemplateException : public XinxException
+{
 public:
-	NewProjectTemplateException( const QString & message );
+	NewProjectTemplateException(const QString & message);
 };
 
-class LIBEXPORT NewProjectTemplate {
+class LIBEXPORT NewProjectTemplate
+{
 	Q_DECLARE_TR_FUNCTIONS(NewProjectTemplate)
 public:
 	typedef QPair<QString,QString> Property;
 
-	NewProjectTemplate( const QString & filename );
+	NewProjectTemplate(const QString & filename);
 
 	const QStringList & plugins() const;
 	const QString & projectName() const;

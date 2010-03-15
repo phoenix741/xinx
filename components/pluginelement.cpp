@@ -22,24 +22,30 @@
 
 /* PluginElement */
 
-PluginElement::PluginElement() : m_isActivated( true ) {
+PluginElement::PluginElement() : m_isActivated(true)
+{
 
 }
 
-bool PluginElement::isActivated() const {
+bool PluginElement::isActivated() const
+{
 	return m_isActivated || (! isModifiable());
 }
 
-void PluginElement::setActivated( bool activated ) {
-	if( m_isActivated != activated ) {
+void PluginElement::setActivated(bool activated)
+{
+	if (m_isActivated != activated)
+	{
 		m_isActivated = activated;
 	}
 }
 
-void PluginElement::setDesactivated( bool desactivated ) {
-	setActivated( ! desactivated );
+void PluginElement::setDesactivated(bool desactivated)
+{
+	setActivated(! desactivated);
 }
 
-QPixmap PluginElement::pixmap() const {
-	return QPixmap( ":/images/unknown.png" );
+QPixmap PluginElement::pixmap() const
+{
+	return QPixmap(":/images/unknown.png");
 }

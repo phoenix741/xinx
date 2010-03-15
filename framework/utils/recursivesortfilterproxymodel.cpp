@@ -38,105 +38,128 @@
  * force to show a path.
  */
 
-RecursiveSortFilterProxyModel::RecursiveSortFilterProxyModel( QObject * parent ) : QSortFilterProxyModel( parent ), m_showAllChild( true ), m_disabledVisible( true ) {
+RecursiveSortFilterProxyModel::RecursiveSortFilterProxyModel(QObject * parent) : QSortFilterProxyModel(parent), m_showAllChild(true), m_disabledVisible(true)
+{
 
 }
 
-void RecursiveSortFilterProxyModel::setHidePath( const QStringList & hidePath ) {
-	if( m_hidePath != hidePath ) {
+void RecursiveSortFilterProxyModel::setHidePath(const QStringList & hidePath)
+{
+	if (m_hidePath != hidePath)
+	{
 		m_indexCache.clear();
 		m_hidePath = hidePath;
 	}
 }
 
-void RecursiveSortFilterProxyModel::setDisabledVisible( bool value ) {
-	if( value != m_disabledVisible ) {
+void RecursiveSortFilterProxyModel::setDisabledVisible(bool value)
+{
+	if (value != m_disabledVisible)
+	{
 		m_indexCache.clear();
 		m_disabledVisible = value;
 		invalidate();
 	}
 }
 
-bool RecursiveSortFilterProxyModel::disabledVisible() const {
+bool RecursiveSortFilterProxyModel::disabledVisible() const
+{
 	return m_disabledVisible;
 }
 
-bool RecursiveSortFilterProxyModel::canBeShow( const QModelIndex & index ) const {
-	if( ! index.isValid() ) return true;
-	if( m_indexCache.contains( index ) ) return m_indexCache.value( index );
+bool RecursiveSortFilterProxyModel::canBeShow(const QModelIndex & index) const
+{
+	if (! index.isValid()) return true;
+	if (m_indexCache.contains(index)) return m_indexCache.value(index);
 
-	if( ( ! m_disabledVisible ) && ( ! index.flags().testFlag( Qt::ItemIsEnabled ) ) ) {
-		m_indexCache.insert( QPersistentModelIndex( index ), false );
+	if ((! m_disabledVisible) && (! index.flags().testFlag(Qt::ItemIsEnabled)))
+	{
+		m_indexCache.insert(QPersistentModelIndex(index), false);
 		return false;
 	}
 
 	bool show = false;
-	QString data = sourceModel()->data( index ).toString();
-	if( m_hidePath.contains( data ) ) {
-		m_indexCache.insert( QPersistentModelIndex( index ), false );
+	QString data = sourceModel()->data(index).toString();
+	if (m_hidePath.contains(data))
+	{
+		m_indexCache.insert(QPersistentModelIndex(index), false);
 		return false;
 	}
 
-	show = data.contains( filterRegExp() );
+	show = data.contains(filterRegExp());
 
-	if( ! show ) {
-		int r = sourceModel()->rowCount( index );
-		for( int i = 0; i < r; i++ ) {
-			QModelIndex child = sourceModel()->index( i, filterKeyColumn(), index );
-			if( canBeShow( child ) ) {
-				m_indexCache.insert( QPersistentModelIndex( index ), true );
+	if (! show)
+	{
+		int r = sourceModel()->rowCount(index);
+		for (int i = 0; i < r; i++)
+		{
+			QModelIndex child = sourceModel()->index(i, filterKeyColumn(), index);
+			if (canBeShow(child))
+			{
+				m_indexCache.insert(QPersistentModelIndex(index), true);
 				return true;
 			}
 		}
 
-		show = m_showAllChild && mustBeShow( index );
-		m_indexCache.insert( QPersistentModelIndex( index ), show );
+		show = m_showAllChild && mustBeShow(index);
+		m_indexCache.insert(QPersistentModelIndex(index), show);
 		return show;
-	} else {
-		m_indexCache.insert( QPersistentModelIndex( index ), true );
+	}
+	else
+	{
+		m_indexCache.insert(QPersistentModelIndex(index), true);
 		return true;
 	}
 }
 
-bool RecursiveSortFilterProxyModel::mustBeShow( const QModelIndex & index ) const {
+bool RecursiveSortFilterProxyModel::mustBeShow(const QModelIndex & index) const
+{
 	QModelIndex parent = index.parent();
-	if( ! parent.isValid() ) return false;
-	bool show = parent.data().toString().contains( filterRegExp() );
-	return show || mustBeShow( parent );
+	if (! parent.isValid()) return false;
+	bool show = parent.data().toString().contains(filterRegExp());
+	return show || mustBeShow(parent);
 }
 
-bool RecursiveSortFilterProxyModel::filterAcceptsRow ( int source_row, const QModelIndex & source_parent ) const {
-	Q_ASSERT( filterKeyColumn() != -1 );
+bool RecursiveSortFilterProxyModel::filterAcceptsRow(int source_row, const QModelIndex & source_parent) const
+{
+	Q_ASSERT(filterKeyColumn() != -1);
 
-	QModelIndex index = sourceModel()->index( source_row, filterKeyColumn(), source_parent );
+	QModelIndex index = sourceModel()->index(source_row, filterKeyColumn(), source_parent);
 
-	return canBeShow( index );
+	return canBeShow(index);
 }
 
-bool RecursiveSortFilterProxyModel::showAllChild() const {
+bool RecursiveSortFilterProxyModel::showAllChild() const
+{
 	return m_showAllChild;
 }
 
-void RecursiveSortFilterProxyModel::setShowAllChild( bool value ) {
-	if( m_showAllChild != value ) {
+void RecursiveSortFilterProxyModel::setShowAllChild(bool value)
+{
+	if (m_showAllChild != value)
+	{
 		m_indexCache.clear();
 		m_showAllChild = value;
 	}
 }
 
-void RecursiveSortFilterProxyModel::setFilterRegExp( const QString & regExp ) {
+void RecursiveSortFilterProxyModel::setFilterRegExp(const QString & regExp)
+{
 	m_indexCache.clear();
-	foreach( QModelIndex index , m_indexes ) {
-		if( index.isValid() )
-			m_indexCache.insert( index, true );
+	foreach(QModelIndex index , m_indexes)
+	{
+		if (index.isValid())
+			m_indexCache.insert(index, true);
 	}
-	QSortFilterProxyModel::setFilterRegExp( regExp );
+	QSortFilterProxyModel::setFilterRegExp(regExp);
 }
 
-void RecursiveSortFilterProxyModel::setIncludeIndex( const QModelIndexList & indexes ) {
+void RecursiveSortFilterProxyModel::setIncludeIndex(const QModelIndexList & indexes)
+{
 	m_indexes.clear();
-	foreach( QModelIndex index , indexes ) {
-		m_indexes.append( index );
+	foreach(QModelIndex index , indexes)
+	{
+		m_indexes.append(index);
 	}
 }
 

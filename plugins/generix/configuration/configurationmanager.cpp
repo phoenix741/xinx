@@ -23,7 +23,8 @@
 #include <core/filewatcher.h>
 #include "configuration/gceinterfacefactory.h"
 #include "projectproperty/generixproject.h"
-#include <contentview/contentviewcache.h>
+#include <contentview2/contentview2cache.h>
+#include <contentview2/contentview2manager.h>
 
 /* Global */
 
@@ -31,109 +32,109 @@ ConfigurationManager * ConfigurationManager::s_self = 0;
 
 /* ConfigurationManager */
 
-ConfigurationManager::ConfigurationManager() {
-	m_watcher = new QFileSystemWatcher( this );
-	connect( m_watcher, SIGNAL(fileChanged(QString)), this, SLOT(clearCache(QString)) );
+ConfigurationManager::ConfigurationManager()
+{
+	m_watcher = new QFileSystemWatcher(this);
+	connect(m_watcher, SIGNAL(fileChanged(QString)), this, SLOT(clearCache(QString)));
 }
 
-ConfigurationManager::~ConfigurationManager() {
-	if( s_self == this ) {
+ConfigurationManager::~ConfigurationManager()
+{
+	if (s_self == this)
+	{
 		s_self = 0;
 	}
-	foreach( GceInterface * interface, m_interface.values() ) {
+	foreach(GceInterface * interface, m_interface.values())
+	{
 		delete interface;
-	}
-	foreach( DictionaryParser * parser, m_dictionary.values() ) {
-		delete parser;
 	}
 }
 
-ConfigurationManager * ConfigurationManager::self() {
-	if( ! s_self ) {
+ConfigurationManager * ConfigurationManager::self()
+{
+	if (! s_self)
+	{
 		s_self = new ConfigurationManager();
-		XINXStaticDeleter::self()->add( s_self );
+		XINXStaticDeleter::self()->add(s_self);
 	}
 	return s_self;
 }
 
-void ConfigurationManager::cleanCache() {
-	foreach( GceInterface * interface, m_interface.values() ) {
+void ConfigurationManager::cleanCache()
+{
+	foreach(GceInterface * interface, m_interface.values())
+	{
 		delete interface;
 	}
 
-	foreach( DictionaryParser * parser, m_dictionary.values() ) {
-		delete parser;
+	foreach(const QString & key, m_interface.keys())
+	{
+		m_watcher->removePath(key);
 	}
 
-	foreach( const QString & key, m_interface.keys() ) {
-		m_watcher->removePath( key );
-	}
-
-	m_dictionary.clear();
 	m_fileToGceInterfaceKey.clear();
 	m_interface.clear();
 }
 
-void ConfigurationManager::clearCache( const QString & filename ) {
-	QString directory = m_fileToGceInterfaceKey.value( filename );
-	if( ! directory.isEmpty() ) {
-		foreach( GceInterface * interface, m_interface.values( directory ) ) {
+void ConfigurationManager::clearCache(const QString & filename)
+{
+	QString directory = m_fileToGceInterfaceKey.value(filename);
+	if (! directory.isEmpty())
+	{
+		foreach(GceInterface * interface, m_interface.values(directory))
+		{
 			delete interface;
 		}
-		m_interface.remove( directory );
-		foreach( const QString & key, m_fileToGceInterfaceKey.keys( directory ) ) {
-			m_watcher->removePath( key );
-			m_fileToGceInterfaceKey.remove( key );
+		m_interface.remove(directory);
+		foreach(const QString & key, m_fileToGceInterfaceKey.keys(directory))
+		{
+			m_watcher->removePath(key);
+			m_fileToGceInterfaceKey.remove(key);
 		}
 	}
 }
 
-GceInterface * ConfigurationManager::getInterfaceOfDirectory( const QString & directory ) {
-	if( m_interface.contains( directory ) ) {
-		return m_interface.value( directory );
+GceInterface * ConfigurationManager::getInterfaceOfDirectory(const QString & directory)
+{
+	if (m_interface.contains(directory))
+	{
+		return m_interface.value(directory);
 	}
 
 	/* Create the interface */
-	GceInterface * interface = GceInterfaceFactory::createGceInterface( directory );
-	if( interface ) {
-		m_interface.insert( directory, interface );
-		foreach( const QString & file, interface->filenames() ) {
-			m_fileToGceInterfaceKey.insert( file, directory );
-			m_watcher->addPath( file );
+	GceInterface * interface = GceInterfaceFactory::createGceInterface(directory);
+	if (interface)
+	{
+		m_interface.insert(directory, interface);
+		foreach(const QString & file, interface->filenames())
+		{
+			m_fileToGceInterfaceKey.insert(file, directory);
+			m_watcher->addPath(file);
 		}
 	}
 
 	return interface;
 }
 
-GceInterface * ConfigurationManager::getInterfaceOfProject( XinxProject * project ) {
-	GenerixProject * gnxProject = static_cast<GenerixProject*>( project );
-	if( gnxProject ) {
-		return getInterfaceOfDirectory( gnxProject->webModuleLocation() );
-	} else {
+GceInterface * ConfigurationManager::getInterfaceOfProject(XinxProject * project)
+{
+	GenerixProject * gnxProject = static_cast<GenerixProject*>(project);
+	if (gnxProject)
+	{
+		return getInterfaceOfDirectory(gnxProject->webModuleLocation());
+	}
+	else
+	{
 		return 0;
 	}
 }
 
-DictionaryParser * ConfigurationManager::dictionaryOfProject( XinxProject * project ) {
-	if( ! m_dictionary.contains( project ) )  {
-		QStringList dictionaries = getInterfaceOfProject( project )->dictionnaries();
-		DictionaryParser * parser = 0;
-		if( dictionaries.size() ) {
-			parser = new DictionaryParser();
-			parser->setFileList( dictionaries );
-
-			if( project->filesCache() ) {
-				project->filesCache()->addToCache( parser );
-			} else {
-				parser->loadFromMember();
-			}
-		}
-
-		m_dictionary.insert( project, parser );
+DictionaryParser * ConfigurationManager::loadDictionary(XinxProject * project)
+{
+	QStringList dictionaries = getInterfaceOfProject(project)->dictionnaries();
+	foreach( const QString & filename, dictionaries ) {
+		ContentView2::Manager::self()->cache()->addToCache( project, filename, "GNX_DICO", "*");
 	}
-
-	return m_dictionary.value( project );
 }
 
 

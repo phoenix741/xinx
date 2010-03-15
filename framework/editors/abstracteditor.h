@@ -46,20 +46,23 @@ class QAbstractItemModel;
  * This class is also an editor that can read and write from and to a file. This class
  * open the file (with the correct option) and call loadFromDevice and saveTofDevice.
  */
-class LIBEXPORT AbstractEditor : public QFrame {
+class LIBEXPORT AbstractEditor : public QFrame
+{
 	Q_OBJECT
-	Q_PROPERTY( QString title READ getTitle STORED false )
-	Q_PROPERTY( bool isModified READ isModified WRITE setModified )
-	Q_PROPERTY( QString filename READ lastFileName WRITE setWatcher )
+	Q_PROPERTY(QString title READ getTitle STORED false)
+	Q_PROPERTY(bool isModified READ isModified WRITE setModified)
+	Q_PROPERTY(QString filename READ lastFileName WRITE setWatcher)
 public:
-	enum LevelMessage {
+	enum LevelMessage
+	{
 		ERROR_MESSAGE = 0,
 		WARNING_MESSAGE = 1,
 		INFORMATION_MESSAGE = 2
 	};
 
 	/*! Options used for search text in the editor. */
-	enum SearchOption {
+	enum SearchOption
+	{
 		ONLY_SELECTION = 0x01,      //!< Search only on selected element (text, widget, ...)
 		BACKWARD = 0x02,            //!< Reverse search
 		WHOLE_WORDS = 0x04,         //!< Search a word and not a piece of word
@@ -67,13 +70,13 @@ public:
 		SEARCH_FROM_START = 0x10,   //!< Search from the start of the document (backward and selection must be ignored)
 		MATCH_CASE = 0x20           //!< The search is case sensitive
 	};
-	Q_DECLARE_FLAGS( SearchOptions, SearchOption )
+	Q_DECLARE_FLAGS(SearchOptions, SearchOption)
 
 	/*!
 	 * Create an editor and define default style for the Frame.
 	 * \param parent Parent and containers of the editor.
 	 */
-	AbstractEditor( QWidget * parent = 0 );
+	AbstractEditor(QWidget * parent = 0);
 
 	/*! Destroy the created frame editor. */
 	virtual ~AbstractEditor();
@@ -169,17 +172,17 @@ public:
 	 * Load the editor from a device (from a file, the memory or any medium).
 	 * \param d The device where XINX must load.
 	 */
-	virtual void loadFromDevice( QIODevice & d ) = 0;
+	virtual void loadFromDevice(QIODevice & d) = 0;
 	/*!
 	 * Save the editor in a device(to a file, in the memory, or any medium).
 	 * \param d The device where XINX must write.
 	 */
-	virtual void saveToDevice( QIODevice & d ) = 0;
+	virtual void saveToDevice(QIODevice & d) = 0;
 
 	/*! Open and load from the file \e fileName */
-	virtual void loadFromFile( const QString & fileName = QString() );
+	virtual void loadFromFile(const QString & fileName = QString());
 	/*! Open and save to file \e fileName */
-	virtual void saveToFile( const QString & fileName = QString() );
+	virtual void saveToFile(const QString & fileName = QString());
 
 	/*! Return the model that represent the content of the editor. */
 	virtual QAbstractItemModel * model() const = 0;
@@ -202,7 +205,7 @@ public:
 	 * the state.
 	 * \sa deserialze(), deserialzeEditor()
 	 */
-	virtual void serialize( XinxProjectSessionEditor * data, bool content );
+	virtual void serialize(XinxProjectSessionEditor * data, bool content);
 
 	/*!
 	 * Restore the editor with the content of the XML document. The deserialization restore the
@@ -210,14 +213,14 @@ public:
 	 * \param data from what the data must be read
 	 * \sa serialize(), deserializeEditor()
 	 */
-	virtual void deserialize( XinxProjectSessionEditor * data );
+	virtual void deserialize(XinxProjectSessionEditor * data);
 	/*!
 	 * Create the right editor and deserualize it.
 	 * \param data from what the data must be read
 	 * \return An editor
 	 * \sa serialize(), deserialize()
 	 */
-	static AbstractEditor * deserializeEditor( XinxProjectSessionEditor * data );
+	static AbstractEditor * deserializeEditor(XinxProjectSessionEditor * data);
 
 	virtual BookmarkEditorInterface * bookmarkInterface() = 0;
 public slots :
@@ -226,14 +229,14 @@ public slots :
 	 * when search and initialize some variables.
 	 * @param options Options used to search text.
 	 */
-	virtual void initSearch( SearchOptions & options ) = 0;
+	virtual void initSearch(SearchOptions & options) = 0;
 
 	/*!
 	 * Search the \e text in the document, and select it.
 	 * @param text The text to search in the document
 	 * @param options User options used to find the text
 	 */
-	virtual bool find( const QString & text, SearchOptions options ) = 0;
+	virtual bool find(const QString & text, SearchOptions options) = 0;
 
 	/*!
 	 * Replace the current selection by the user text.
@@ -241,7 +244,7 @@ public slots :
 	 * @param to The text the user want to put. (if regexp \\1, \\2 is catched text)
 	 * @param options User options used to replace the text
 	 */
-	virtual void replace( const QString & from, const QString & to, SearchOptions options ) = 0;
+	virtual void replace(const QString & from, const QString & to, SearchOptions options) = 0;
 
 	/*!
 	 * Call undo operation on the editor, if available. This operation rollback the last modification
@@ -274,39 +277,39 @@ public slots :
 
 signals:
 	//! Signal emited when the content changed to update view synchronised on this container.
-	void modificationChanged( bool isModified );
+	void modificationChanged(bool isModified);
 
 	/*!
 	 * Signal emitted when the undo state change.
 	 * \param available  true if undo is Available, else false
 	 * \sa canUndo(), undoAvailable()
 	 */
-	void undoAvailable( bool available );
+	void undoAvailable(bool available);
 	/*!
 	 * Signal emitted when the redo state change.
 	 * \param available  true if redo available, else false.
 	 * \sa canRedo(), redoAvailable()
 	 */
-	void redoAvailable( bool available );
+	void redoAvailable(bool available);
 	/*!
 	 * Signal emitted when the cut/copy state change.
 	 * \param available true if copy or cut is available (e.g. a text is selected), else false
 	 * \sa copy(), cut(), canCopy()
 	 */
-	void copyAvailable( bool available );
+	void copyAvailable(bool available);
 	/*!
 	 * Signal emitted when the paste state change.
 	 * \param available  true if paste is available, else false.
 	 * \sa canPaste(), paste()
 	 */
-	void pasteAvailable( bool available );
+	void pasteAvailable(bool available);
 
 	/*!
 	 * Signal emited when a request to open a file is made.
 	 * \param filename file name of the file to open
 	 * \param line line of the file to open
 	 */
-	void open( const QString & filename, int line );
+	void open(const QString & filename, int line);
 
 	/*!
 	 * Signal emited when the content of the editor change.
@@ -319,28 +322,28 @@ signals:
 	 * \param message the message to show
 	 * \param level the level error of the message
 	 */
-	void message( const QString & filename, int line, const QString & message, AbstractEditor::LevelMessage level );
+	void message(const QString & filename, int line, const QString & message, AbstractEditor::LevelMessage level);
 
 	/*!
 	 * Clear message
 	 * \param filename the name of the file
 	 */
-	void clearMessages( const QString & filename );
+	void clearMessages(const QString & filename);
 protected:
 	/*! Constructor used to copy the editor content. This constructor must exist for serialization works. */
-	AbstractEditor( const AbstractEditor & editor );
+	AbstractEditor(const AbstractEditor & editor);
 
 	virtual void initLayout();
 	friend class EditorFactory;
 
 	void clearErrorMessages();
-	void addNewErrorMessages( int line, const QString & message, AbstractEditor::LevelMessage level );
+	void addNewErrorMessages(int line, const QString & message, AbstractEditor::LevelMessage level);
 protected slots:
 	/*!
 	 * Set the modified attribute in local.
 	 * \param isModified The new value for the modified attribute.
 	 */
-	virtual void setModified( bool isModified );
+	virtual void setModified(bool isModified);
 
 private slots:
 	void fileChanged();
@@ -348,7 +351,7 @@ private:
 	void initObjects();
 	void desactivateWatcher();
 	void activateWatcher();
-	void setWatcher( const QString & path );
+	void setWatcher(const QString & path);
 
 	bool m_isSaving, m_modified;
 	QPointer<FileWatcher> m_watcher;
@@ -356,6 +359,6 @@ private:
 	QAction * m_undoAction, * m_redoAction, * m_cutAction, * m_copyAction, * m_pasteAction;
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS( AbstractEditor::SearchOptions );
+Q_DECLARE_OPERATORS_FOR_FLAGS(AbstractEditor::SearchOptions);
 
 #endif

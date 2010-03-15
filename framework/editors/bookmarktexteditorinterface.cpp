@@ -24,59 +24,73 @@
 
 /* BookmarkTextEditorInterface */
 
-BookmarkTextEditorInterface::BookmarkTextEditorInterface( TextFileEditor * parent ) : BookmarkEditorInterface( parent ), m_view( 0 ), m_textEdit( parent ) {
+BookmarkTextEditorInterface::BookmarkTextEditorInterface(TextFileEditor * parent) : BookmarkEditorInterface(parent), m_view(0), m_textEdit(parent)
+{
 }
 
-void BookmarkTextEditorInterface::slotBookmarkToggled( int line, bool enabled ) {
-	Q_UNUSED( enabled );
-	Q_UNUSED( line );
+void BookmarkTextEditorInterface::slotBookmarkToggled(int line, bool enabled)
+{
+	Q_UNUSED(enabled);
+	Q_UNUSED(line);
 
-	if( enabled ) {
-		gotoBookmarkAt( m_view->listOfBookmark().indexOf( line ) );
+	if (enabled)
+	{
+		gotoBookmarkAt(m_view->listOfBookmark().indexOf(line));
 	}
-	emit bookmarkModified( 0, bookmarkCount() );
+	emit bookmarkModified(0, bookmarkCount());
 }
 
-QList<int> BookmarkTextEditorInterface::bookmarks() const {
+QList<int> BookmarkTextEditorInterface::bookmarks() const
+{
 	return m_view->listOfBookmark();
 }
 
-void BookmarkTextEditorInterface::setBookmark( int line, bool enabled ) {
-	m_view->setBookmark( line, enabled );
+void BookmarkTextEditorInterface::setBookmark(int line, bool enabled)
+{
+	m_view->setBookmark(line, enabled);
 }
 
-void BookmarkTextEditorInterface::toogledBookmark() {
-	m_view->setBookmark( m_view->currentRow(), !m_view->listOfBookmark().contains( m_view->currentRow() ) );
+void BookmarkTextEditorInterface::toogledBookmark()
+{
+	m_view->setBookmark(m_view->currentRow(), !m_view->listOfBookmark().contains(m_view->currentRow()));
 }
 
-void BookmarkTextEditorInterface::gotoBookmarkAt( int i ) {
-	m_view->gotoLine( m_view->listOfBookmark().at( i ) );
+void BookmarkTextEditorInterface::gotoBookmarkAt(int i)
+{
+	m_view->gotoLine(m_view->listOfBookmark().at(i));
 }
 
-QString BookmarkTextEditorInterface::bookmarkAt( int i ) {
-	QString description = tr( "In editor '%1' at line %2" );
-	description = description.arg( m_textEdit->getTitle() ).arg( m_view->listOfBookmark().at( i ) );
+QString BookmarkTextEditorInterface::bookmarkAt(int i)
+{
+	QString description = tr("In editor '%1' at line %2");
+	description = description.arg(m_textEdit->getTitle()).arg(m_view->listOfBookmark().at(i));
 	return description;
 }
 
-int BookmarkTextEditorInterface::bookmarkCount() {
+int BookmarkTextEditorInterface::bookmarkCount()
+{
 	return m_view->listOfBookmark().count();
 }
 
-bool BookmarkTextEditorInterface::previousBookmark() {
+bool BookmarkTextEditorInterface::previousBookmark()
+{
 	return m_view->previousBookmark();
 }
 
-bool BookmarkTextEditorInterface::nextBookmark() {
+bool BookmarkTextEditorInterface::nextBookmark()
+{
 	return m_view->nextBookmark();
 }
 
-void BookmarkTextEditorInterface::clearAllBookmark() {
+void BookmarkTextEditorInterface::clearAllBookmark()
+{
 	m_view->clearBookmark();
 }
 
-void BookmarkTextEditorInterface::setTextEditor( XinxCodeEdit * textEdit ) {
-	if( m_view != textEdit ) {
+void BookmarkTextEditorInterface::setTextEditor(XinxCodeEdit * textEdit)
+{
+	if (m_view != textEdit)
+	{
 		m_view = textEdit;
 	}
 }

@@ -40,270 +40,322 @@
 #include <typeinfo>
 
 //
-TabEditor::TabEditor( QWidget * parent ) : QTabWidget( parent ), m_refreshAction(0), m_saveAction(0), m_saveAsAction(0), m_closeAction(0), m_clickedItem( -1 ) { //, m_previous(NULL) {
-	setAcceptDrops( true );
+TabEditor::TabEditor(QWidget * parent) : QTabWidget(parent), m_refreshAction(0), m_saveAction(0), m_saveAsAction(0), m_closeAction(0), m_clickedItem(-1)         //, m_previous(NULL) {
+{
+	setAcceptDrops(true);
 
 	tabBar()->installEventFilter(this);
-	tabBar()->setAttribute( Qt::WA_Hover );
+	tabBar()->setAttribute(Qt::WA_Hover);
 
-	connect(this, SIGNAL(currentChanged(int)), SLOT(slotCurrentTabChanged(int)) );
-	connect(this, SIGNAL(tabCloseRequested(int)), SLOT(slotTabCloseRequested(int)) );
+	connect(this, SIGNAL(currentChanged(int)), SLOT(slotCurrentTabChanged(int)));
+	connect(this, SIGNAL(tabCloseRequested(int)), SLOT(slotTabCloseRequested(int)));
 }
 //
-TabEditor::~TabEditor() {
+TabEditor::~TabEditor()
+{
 }
 //
 
-bool TabEditor::isTextFileEditor( AbstractEditor * editor ) {
+bool TabEditor::isTextFileEditor(AbstractEditor * editor)
+{
 	return dynamic_cast<TextFileEditor*>(editor) != NULL;
 }
 
-AbstractEditor * TabEditor::currentEditor() const {
-	return dynamic_cast<AbstractEditor*>( currentWidget() );
+AbstractEditor * TabEditor::currentEditor() const
+{
+	return dynamic_cast<AbstractEditor*>(currentWidget());
 }
 
-AbstractEditor * TabEditor::editor( int index ) const {
-	return dynamic_cast<AbstractEditor*>( widget( index ) );
+AbstractEditor * TabEditor::editor(int index) const
+{
+	return dynamic_cast<AbstractEditor*>(widget(index));
 }
 
-AbstractEditor * TabEditor::editor( const QString & filename ) const {
-	for( int i = 0; i < count(); i++ ) {
-		AbstractEditor * ed = dynamic_cast<AbstractEditor*>( editor(i) );
-		if( ed && ( ed->lastFileName() == QDir::fromNativeSeparators( filename ) ) )
+AbstractEditor * TabEditor::editor(const QString & filename) const
+{
+	for (int i = 0; i < count(); i++)
+	{
+		AbstractEditor * ed = dynamic_cast<AbstractEditor*>(editor(i));
+		if (ed && (ed->lastFileName() == QDir::fromNativeSeparators(filename)))
 			return editor(i);
 	}
 	return NULL;
 }
 
-QList<AbstractEditor*> TabEditor::editors() const {
+QList<AbstractEditor*> TabEditor::editors() const
+{
 	QList<AbstractEditor*> list;
-	for( int i = 0 ; i < count() ; i++ ) {
-		list << editor( i );
+	for (int i = 0 ; i < count() ; i++)
+	{
+		list << editor(i);
 	}
 	return list;
 }
 
-int TabEditor::editorsCount() const {
+int TabEditor::editorsCount() const
+{
 	return count();
 }
 
-void TabEditor::changeToNextEditor() {
-	setCurrentIndex( ( currentIndex() + 1 ) % count() );
+void TabEditor::changeToNextEditor()
+{
+	setCurrentIndex((currentIndex() + 1) % count());
 }
 
-void TabEditor::changeToPreviousEditor() {
-	setCurrentIndex( ( currentIndex() - 1 + count() ) % count() );
+void TabEditor::changeToPreviousEditor()
+{
+	setCurrentIndex((currentIndex() - 1 + count()) % count());
 }
 
-void TabEditor::changeToEditor( int index ) {
-	setCurrentIndex( index );
+void TabEditor::changeToEditor(int index)
+{
+	setCurrentIndex(index);
 }
 
-void TabEditor::addTab( AbstractEditor * editor ) {
-	Q_ASSERT( editor );
+void TabEditor::addTab(AbstractEditor * editor)
+{
+	Q_ASSERT(editor);
 
-	connect( editor, SIGNAL(open(QString,int)), this, SLOT(fileEditorOpen(QString,int)) );
-	connect( editor, SIGNAL(contentChanged()), this, SIGNAL(contentChanged()) );
-	connect( editor, SIGNAL(modificationChanged(bool)), this, SLOT(slotModifiedChange()) );
-	connect( editor, SIGNAL(copyAvailable(bool)), this, SIGNAL(copyAvailable(bool)) );
-	connect( editor, SIGNAL(pasteAvailable(bool)), this, SIGNAL(pasteAvailable(bool)) );
-	connect( editor, SIGNAL(undoAvailable(bool)), this, SIGNAL(undoAvailable(bool)) );
-	connect( editor, SIGNAL(redoAvailable(bool)), this, SIGNAL(redoAvailable(bool)) );
-	connect( editor, SIGNAL(message(QString,int,QString,AbstractEditor::LevelMessage)), this, SIGNAL(messageTranslation(QString,int,QString,AbstractEditor::LevelMessage)) );
-	connect( editor, SIGNAL(clearMessages(QString)), this, SIGNAL(clearMessagesTranslation(QString)) );
+	connect(editor, SIGNAL(open(QString,int)), this, SLOT(fileEditorOpen(QString,int)));
+	connect(editor, SIGNAL(contentChanged()), this, SIGNAL(contentChanged()));
+	connect(editor, SIGNAL(modificationChanged(bool)), this, SLOT(slotModifiedChange()));
+	connect(editor, SIGNAL(copyAvailable(bool)), this, SIGNAL(copyAvailable(bool)));
+	connect(editor, SIGNAL(pasteAvailable(bool)), this, SIGNAL(pasteAvailable(bool)));
+	connect(editor, SIGNAL(undoAvailable(bool)), this, SIGNAL(undoAvailable(bool)));
+	connect(editor, SIGNAL(redoAvailable(bool)), this, SIGNAL(redoAvailable(bool)));
+	connect(editor, SIGNAL(message(QString,int,QString,AbstractEditor::LevelMessage)), this, SIGNAL(messageTranslation(QString,int,QString,AbstractEditor::LevelMessage)));
+	connect(editor, SIGNAL(clearMessages(QString)), this, SIGNAL(clearMessagesTranslation(QString)));
 
-	if( isTextFileEditor( editor ) ) {
-		connect( editor, SIGNAL( selectionAvailable(bool) ), this, SIGNAL( hasTextSelection(bool) ) );
-		connect( qobject_cast<TextFileEditor*>( editor )->textEdit()->editor(), SIGNAL( cursorPositionChanged() ), this, SLOT( slotCursorPositionChanged() ) );
-		if( editor->metaObject()->indexOfSignal( SIGNAL(positionInEditorChanged(QModelIndex)) ) >= 0 )
-			connect( editor, SIGNAL(positionInEditorChanged(QModelIndex)), this, SIGNAL( positionChanged(QModelIndex) ) );
+	if (isTextFileEditor(editor))
+	{
+		connect(editor, SIGNAL(selectionAvailable(bool)), this, SIGNAL(hasTextSelection(bool)));
+		connect(qobject_cast<TextFileEditor*>(editor)->textEdit()->editor(), SIGNAL(cursorPositionChanged()), this, SLOT(slotCursorPositionChanged()));
+		if (editor->metaObject()->indexOfSignal(SIGNAL(positionInEditorChanged(QModelIndex))) >= 0)
+			connect(editor, SIGNAL(positionInEditorChanged(QModelIndex)), this, SIGNAL(positionChanged(QModelIndex)));
 	}
 
-	int index = QTabWidget::addTab( editor, QString() );
-	updateTabWidget( editor );
+	int index = QTabWidget::addTab(editor, QString());
+	updateTabWidget(editor);
 
-	setCurrentIndex( index );
-	emit currentChanged( currentIndex() );
+	setCurrentIndex(index);
+	emit currentChanged(currentIndex());
 }
 
-void TabEditor::newEditor( IFileTypePlugin * interface ) {
-	AbstractEditor * editor = EditorFactory::self()->createEditor( interface );
-	addTab( editor );
+void TabEditor::newEditor(IFileTypePlugin * interface)
+{
+	AbstractEditor * editor = EditorFactory::self()->createEditor(interface);
+	addTab(editor);
 
-	setCurrentWidget( editor );
-	dynamic_cast<QWidget*>( parent() )->activateWindow();
-	emit currentChanged( currentIndex() );
+	setCurrentWidget(editor);
+	dynamic_cast<QWidget*>(parent())->activateWindow();
+	emit currentChanged(currentIndex());
 }
 
-void TabEditor::openFilename( const QString & filename ) {
-	Q_ASSERT( ! filename.isEmpty() );
+void TabEditor::openFilename(const QString & filename)
+{
+	Q_ASSERT(! filename.isEmpty());
 
-	AbstractEditor * editor = TabEditor::editor( filename );
-	if( ! editor ) {
-		editor = EditorFactory::self()->createEditor( filename );
+	AbstractEditor * editor = TabEditor::editor(filename);
+	if (! editor)
+	{
+		editor = EditorFactory::self()->createEditor(filename);
 
-		addTab( editor );
+		addTab(editor);
 	}
 
-	setCurrentWidget( editor );
-	dynamic_cast<QWidget*>( parent() )->activateWindow();
-	emit currentChanged( currentIndex() );
+	setCurrentWidget(editor);
+	dynamic_cast<QWidget*>(parent())->activateWindow();
+	emit currentChanged(currentIndex());
 }
 
-void TabEditor::updateTabWidget( AbstractEditor * editor ) {
-	Q_ASSERT( indexOf( editor ) != -1 );
+void TabEditor::updateTabWidget(AbstractEditor * editor)
+{
+	Q_ASSERT(indexOf(editor) != -1);
 
 	const QFontMetrics & metrics = fontMetrics();
 
-	int index = indexOf( editor );
+	int index = indexOf(editor);
 	int width = qApp->desktop()->screenGeometry().width();
 
 	QString title = editor->getTitle();
-	QString longTitle = metrics.elidedText( editor->getLongTitle(), Qt::ElideLeft, width );
+	QString longTitle = metrics.elidedText(editor->getLongTitle(), Qt::ElideLeft, width);
 
-	if( editor->isModified() ) title += "*";
+	if (editor->isModified()) title += "*";
 
-	setTabText( index, title );
-	setTabToolTip( index, longTitle );
-	setTabIcon( index, editor->icon() );
+	setTabText(index, title);
+	setTabToolTip(index, longTitle);
+	setTabIcon(index, editor->icon());
 }
 
-void TabEditor::fileEditorOpen( const QString & name, int line ) {
-	if( !name.isEmpty() )
-		openFilename( name );
+void TabEditor::fileEditorOpen(const QString & name, int line)
+{
+	if (!name.isEmpty())
+		openFilename(name);
 
-	emit fileOpened( name );
+	emit fileOpened(name);
 
 	// Deplace to rigth line.
-	TextFileEditor * ed = qobject_cast<TextFileEditor*>( currentEditor() );
-	ed->textEdit()->gotoLine( line );
-	ed->textEdit()->setFocus( Qt::OtherFocusReason );
+	TextFileEditor * ed = qobject_cast<TextFileEditor*>(currentEditor());
+	ed->textEdit()->gotoLine(line);
+	ed->textEdit()->setFocus(Qt::OtherFocusReason);
 }
 
-void TabEditor::copy() {
+void TabEditor::copy()
+{
 	AbstractEditor * editor = currentEditor();
-	if( editor && editor->canCopy() )
+	if (editor && editor->canCopy())
 		editor->copy();
 }
 
-void TabEditor::cut() {
+void TabEditor::cut()
+{
 	AbstractEditor * editor = currentEditor();
-	if( editor && editor->canCopy() )
+	if (editor && editor->canCopy())
 		editor->cut();
 }
 
-void TabEditor::paste() {
+void TabEditor::paste()
+{
 	AbstractEditor * editor = currentEditor();
-	if( editor && editor->canPaste() )
+	if (editor && editor->canPaste())
 		editor->paste();
 }
 
-void TabEditor::undo() {
+void TabEditor::undo()
+{
 	AbstractEditor * editor = currentEditor();
-	if( editor && editor->canUndo() )
+	if (editor && editor->canUndo())
 		editor->undo();
 }
 
-void TabEditor::redo() {
+void TabEditor::redo()
+{
 	AbstractEditor * editor = currentEditor();
-	if( editor && editor->canRedo() )
+	if (editor && editor->canRedo())
 		editor->redo();
 }
 
-void TabEditor::selectAll() {
-	if( currentEditor() && isTextFileEditor( currentEditor() ) ) {
-		TextFileEditor * editor = static_cast<TextFileEditor*>( currentEditor() );
+void TabEditor::selectAll()
+{
+	if (currentEditor() && isTextFileEditor(currentEditor()))
+	{
+		TextFileEditor * editor = static_cast<TextFileEditor*>(currentEditor());
 		editor->selectAll();
 	}
 }
 
-void TabEditor::duplicateCurrentLine() {
-	if( currentEditor() && isTextFileEditor( currentEditor() ) ) {
-		TextFileEditor * editor = static_cast<TextFileEditor*>( currentEditor() );
+void TabEditor::duplicateCurrentLine()
+{
+	if (currentEditor() && isTextFileEditor(currentEditor()))
+	{
+		TextFileEditor * editor = static_cast<TextFileEditor*>(currentEditor());
 		editor->textEdit()->duplicateLines();
 	}
 }
 
-void TabEditor::moveLineUp() {
-	if( currentEditor() && isTextFileEditor( currentEditor() ) ) {
-		TextFileEditor * editor = static_cast<TextFileEditor*>( currentEditor() );
+void TabEditor::moveLineUp()
+{
+	if (currentEditor() && isTextFileEditor(currentEditor()))
+	{
+		TextFileEditor * editor = static_cast<TextFileEditor*>(currentEditor());
 		editor->textEdit()->moveLineUp();
 	}
 }
 
-void TabEditor::moveLineDown() {
-	if( currentEditor() && isTextFileEditor( currentEditor() ) ) {
-		TextFileEditor * editor = static_cast<TextFileEditor*>( currentEditor() );
+void TabEditor::moveLineDown()
+{
+	if (currentEditor() && isTextFileEditor(currentEditor()))
+	{
+		TextFileEditor * editor = static_cast<TextFileEditor*>(currentEditor());
 		editor->textEdit()->moveLineDown();
 	}
 }
 
-void TabEditor::upperSelectedText() {
-	if( currentEditor() && isTextFileEditor( currentEditor() ) && currentEditor()->canCopy() ) {
-		TextFileEditor * editor = static_cast<TextFileEditor*>( currentEditor() );
+void TabEditor::upperSelectedText()
+{
+	if (currentEditor() && isTextFileEditor(currentEditor()) && currentEditor()->canCopy())
+	{
+		TextFileEditor * editor = static_cast<TextFileEditor*>(currentEditor());
 		editor->textEdit()->upperSelectedText();
 	}
 }
 
-void TabEditor::lowerSelectedText() {
-	if( currentEditor() && isTextFileEditor( currentEditor() ) && currentEditor()->canCopy() ) {
-		TextFileEditor * editor = static_cast<TextFileEditor*>( currentEditor() );
+void TabEditor::lowerSelectedText()
+{
+	if (currentEditor() && isTextFileEditor(currentEditor()) && currentEditor()->canCopy())
+	{
+		TextFileEditor * editor = static_cast<TextFileEditor*>(currentEditor());
 		editor->textEdit()->lowerSelectedText();
 	}
 }
 
-void TabEditor::indent() {
-	if( currentEditor() && isTextFileEditor( currentEditor() ) ) {
-		TextFileEditor * editor = static_cast<TextFileEditor*>( currentEditor() );
+void TabEditor::indent()
+{
+	if (currentEditor() && isTextFileEditor(currentEditor()))
+	{
+		TextFileEditor * editor = static_cast<TextFileEditor*>(currentEditor());
 		editor->textEdit()->indent();
 	}
 }
 
-void TabEditor::unindent() {
-	if( currentEditor() && isTextFileEditor( currentEditor() ) ) {
-		TextFileEditor * editor = static_cast<TextFileEditor*>( currentEditor() );
-		editor->textEdit()->indent( true );
+void TabEditor::unindent()
+{
+	if (currentEditor() && isTextFileEditor(currentEditor()))
+	{
+		TextFileEditor * editor = static_cast<TextFileEditor*>(currentEditor());
+		editor->textEdit()->indent(true);
 	}
 }
 
-void TabEditor::autoindent() {
-	if( currentEditor() && isTextFileEditor( currentEditor() ) ) {
-		TextFileEditor * editor = static_cast<TextFileEditor*>( currentEditor() );
+void TabEditor::autoindent()
+{
+	if (currentEditor() && isTextFileEditor(currentEditor()))
+	{
+		TextFileEditor * editor = static_cast<TextFileEditor*>(currentEditor());
 		editor->autoIndent();
 	}
 }
 
 
-void TabEditor::complete() {
-	if( currentEditor() && isTextFileEditor( currentEditor() ) ) {
-		TextFileEditor * editor = static_cast<TextFileEditor*>( currentEditor() );
+void TabEditor::complete()
+{
+	if (currentEditor() && isTextFileEditor(currentEditor()))
+	{
+		TextFileEditor * editor = static_cast<TextFileEditor*>(currentEditor());
 		editor->complete();
 	}
 }
 
-void TabEditor::highlightWord() {
-	if( currentEditor() && isTextFileEditor( currentEditor() ) ) {
-		TextFileEditor * editor = static_cast<TextFileEditor*>( currentEditor() );
+void TabEditor::highlightWord()
+{
+	if (currentEditor() && isTextFileEditor(currentEditor()))
+	{
+		TextFileEditor * editor = static_cast<TextFileEditor*>(currentEditor());
 		editor->textEdit()->callTextHighlighter();
 	}
 }
 
-void TabEditor::dragEnterEvent( QDragEnterEvent *event ) {
+void TabEditor::dragEnterEvent(QDragEnterEvent *event)
+{
 	const QMimeData *mimeData = event->mimeData();
-	if (mimeData->hasUrls()) {
+	if (mimeData->hasUrls())
+	{
 		setBackgroundRole(QPalette::Highlight);
 		event->acceptProposedAction();
 	}
 }
 
-void TabEditor::dropEvent( QDropEvent *event ) {
+void TabEditor::dropEvent(QDropEvent *event)
+{
 	const QMimeData *mimeData = event->mimeData();
 	const QList<QUrl> & urls = mimeData->urls();
-	if (mimeData->hasUrls()) {
-		for(int i = 0; i < urls.size(); i++) {
-			if((!urls.at(i).toLocalFile().isEmpty()))
-				openFilename( urls.at(i).toLocalFile() );
-				emit fileOpened( urls.at(i).toLocalFile() );
+	if (mimeData->hasUrls())
+	{
+		for (int i = 0; i < urls.size(); i++)
+		{
+			if ((!urls.at(i).toLocalFile().isEmpty()))
+				openFilename(urls.at(i).toLocalFile());
+			emit fileOpened(urls.at(i).toLocalFile());
 		}
 
 		setBackgroundRole(QPalette::NoRole);
@@ -311,101 +363,120 @@ void TabEditor::dropEvent( QDropEvent *event ) {
 	}
 }
 
-void TabEditor::tabRemoved ( int index ) {
-	Q_UNUSED( index );
+void TabEditor::tabRemoved(int index)
+{
+	Q_UNUSED(index);
 
-	if( count() == 0 ) {
-		emit copyAvailable( false );
-		emit pasteAvailable( false );
-		emit undoAvailable( false );
-		emit redoAvailable( false );
-		emit textAvailable( false );
-		emit hasTextSelection( false );
-		emit modelChanged( NULL );
-		emit currentChanged( -1 );
+	if (count() == 0)
+	{
+		emit copyAvailable(false);
+		emit pasteAvailable(false);
+		emit undoAvailable(false);
+		emit redoAvailable(false);
+		emit textAvailable(false);
+		emit hasTextSelection(false);
+		emit modelChanged(NULL);
+		emit currentChanged(-1);
 	}
 }
 
-void TabEditor::slotModifiedChange() {
-	Q_ASSERT( currentIndex() >= 0 );
-	Q_ASSERT( currentEditor() );
+void TabEditor::slotModifiedChange()
+{
+	Q_ASSERT(currentIndex() >= 0);
+	Q_ASSERT(currentEditor());
 
-	updateTabWidget( currentEditor() );
+	updateTabWidget(currentEditor());
 }
 
-void TabEditor::slotCursorPositionChanged() {
+void TabEditor::slotCursorPositionChanged()
+{
 	AbstractEditor * editor = currentEditor();
-	emit setEditorPosition( qobject_cast<TextFileEditor*>( editor )->textEdit()->currentRow(), qobject_cast<TextFileEditor*>( editor )->textEdit()->currentColumn() );
+	emit setEditorPosition(qobject_cast<TextFileEditor*>(editor)->textEdit()->currentRow(), qobject_cast<TextFileEditor*>(editor)->textEdit()->currentColumn());
 }
 
-void TabEditor::slotTabCloseRequested( int index ) {
+void TabEditor::slotTabCloseRequested(int index)
+{
 	m_clickedItem = index;
 	m_closeAction->trigger();
 }
 
-void TabEditor::slotCurrentTabChanged( int index ) {
-	if( index == -1 ) return;
+void TabEditor::slotCurrentTabChanged(int index)
+{
+	if (index == -1) return;
 
-	AbstractEditor * ed = editor( index );
+	AbstractEditor * ed = editor(index);
 
-	emit copyAvailable( ed->canCopy() );
+	emit copyAvailable(ed->canCopy());
 	//	emit pasteAvailable( ed->canPaste() );
-	emit pasteAvailable( true );
-	emit undoAvailable( ed->canUndo() );
-	emit redoAvailable( ed->canRedo() );
+	emit pasteAvailable(true);
+	emit undoAvailable(ed->canUndo());
+	emit redoAvailable(ed->canRedo());
 
-	if( isTextFileEditor( ed ) ) {
-		emit textAvailable( true );
-		emit setEditorPosition( qobject_cast<TextFileEditor*>( ed )->textEdit()->currentRow(), qobject_cast<TextFileEditor*>( ed )->textEdit()->currentColumn() );
-	} else {
-		emit textAvailable( false );
-		emit hasTextSelection( false );
+	if (isTextFileEditor(ed))
+	{
+		emit textAvailable(true);
+		emit setEditorPosition(qobject_cast<TextFileEditor*>(ed)->textEdit()->currentRow(), qobject_cast<TextFileEditor*>(ed)->textEdit()->currentColumn());
+	}
+	else
+	{
+		emit textAvailable(false);
+		emit hasTextSelection(false);
 	}
 
-	if( ed )
-		emit modelChanged( ed->model() );
+	if (ed)
+		emit modelChanged(ed->model());
 	else
-		emit modelChanged( 0 );
+		emit modelChanged(0);
 }
 
-int TabEditor::getClickedTab() {
+int TabEditor::getClickedTab()
+{
 	int item = m_clickedItem;
 	m_clickedItem = -1;
 	return item;
 }
 
-void TabEditor::setRefreshAction( QAction * action ) {
+void TabEditor::setRefreshAction(QAction * action)
+{
 	m_refreshAction = action;
 }
 
-void TabEditor::setSaveAction( QAction * action ) {
+void TabEditor::setSaveAction(QAction * action)
+{
 	m_saveAction = action;
 }
 
-void TabEditor::setSaveAsAction( QAction * action ) {
+void TabEditor::setSaveAsAction(QAction * action)
+{
 	m_saveAsAction = action;
 }
 
-void TabEditor::setCloseAction( QAction * action ) {
+void TabEditor::setCloseAction(QAction * action)
+{
 	m_closeAction = action;
 }
 
-void TabEditor::setCopyFileNameAction( QAction * action ) {
+void TabEditor::setCopyFileNameAction(QAction * action)
+{
 	m_copyFilenameAction = action;
 }
 
-void TabEditor::setCopyPathAction( QAction * action ) {
+void TabEditor::setCopyPathAction(QAction * action)
+{
 	m_copyPathAction = action;
 }
 
-int TabEditor::tabPositionIcon( QPoint point ) {
+int TabEditor::tabPositionIcon(QPoint point)
+{
 	int clickedItem = -1;
 
-	for ( int i = 0; i < tabBar()->count(); i++ ) {
-		QRect rect = tabBar()->tabRect( i );
-		rect.moveTo( QPoint( 5 + rect.left(), 5 + rect.top() ) );
-		rect.setSize( tabBar()->iconSize() );
-		if ( rect.contains( point ) ) {
+	for (int i = 0; i < tabBar()->count(); i++)
+	{
+		QRect rect = tabBar()->tabRect(i);
+		rect.moveTo(QPoint(5 + rect.left(), 5 + rect.top()));
+		rect.setSize(tabBar()->iconSize());
+		if (rect.contains(point))
+		{
 			clickedItem = i;
 			break;
 		}
@@ -414,11 +485,14 @@ int TabEditor::tabPositionIcon( QPoint point ) {
 	return clickedItem;
 }
 
-int TabEditor::tabPosition( QPoint point ) {
+int TabEditor::tabPosition(QPoint point)
+{
 	int clickedItem = -1;
 
-	for ( int i = 0; i < tabBar()->count(); i++ ) {
-		if ( tabBar()->tabRect( i ).contains( point ) ) {
+	for (int i = 0; i < tabBar()->count(); i++)
+	{
+		if (tabBar()->tabRect(i).contains(point))
+		{
 			clickedItem = i;
 			break;
 		}
@@ -427,65 +501,87 @@ int TabEditor::tabPosition( QPoint point ) {
 	return clickedItem;
 }
 
-bool TabEditor::eventFilter( QObject *obj, QEvent *event ) {
-	if ( obj==tabBar() ) {
- 		if ( ( ( event->type() == QEvent::MouseButtonPress ) && ( static_cast<QMouseEvent *>(event)->button() == Qt::RightButton ) ) || ( event->type() == QEvent::MouseButtonDblClick ) ) {
+bool TabEditor::eventFilter(QObject *obj, QEvent *event)
+{
+	if (obj==tabBar())
+	{
+		if (((event->type() == QEvent::MouseButtonPress) && (static_cast<QMouseEvent *>(event)->button() == Qt::RightButton)) || (event->type() == QEvent::MouseButtonDblClick))
+		{
 			QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
-			m_clickedItem = tabPosition( mouseEvent->pos() );
-			if( m_clickedItem == -1 ) return QTabWidget::eventFilter( obj, event );
+			m_clickedItem = tabPosition(mouseEvent->pos());
+			if (m_clickedItem == -1) return QTabWidget::eventFilter(obj, event);
 
-			if ( ( event->type() == QEvent::MouseButtonPress ) && ( mouseEvent->button() == Qt::RightButton ) ) {
-				QMenu *menu = new QMenu( this );
-				menu->addAction( m_refreshAction );
+			if ((event->type() == QEvent::MouseButtonPress) && (mouseEvent->button() == Qt::RightButton))
+			{
+				QMenu *menu = new QMenu(this);
+				menu->addAction(m_refreshAction);
 				menu->addSeparator();
-				menu->addAction( m_saveAction );
-				menu->addAction( m_saveAsAction );
+				menu->addAction(m_saveAction);
+				menu->addAction(m_saveAsAction);
 				menu->addSeparator();
-				menu->addAction( m_closeAction );
+				menu->addAction(m_closeAction);
 				menu->addSeparator();
-				menu->addAction( m_copyFilenameAction );
-				menu->addAction( m_copyPathAction );
+				menu->addAction(m_copyFilenameAction);
+				menu->addAction(m_copyPathAction);
 				menu->exec(mouseEvent->globalPos());
 				delete menu;
-			} else
-			if ( ( event->type() == QEvent::MouseButtonDblClick ) && ( mouseEvent->button() == Qt::LeftButton ) ) {
+			}
+			else if ((event->type() == QEvent::MouseButtonDblClick) && (mouseEvent->button() == Qt::LeftButton))
+			{
 				m_closeAction->trigger();
 			}
 			return true;
 		}
 	}
-	return QTabWidget::eventFilter( obj, event );
+	return QTabWidget::eventFilter(obj, event);
 }
 
-void TabEditor::bookmark() {
+void TabEditor::bookmark()
+{
 	currentEditor()->bookmarkInterface()->toogledBookmark();
 }
 
-void TabEditor::nextBookmark() {
-	if( ( ! currentEditor()->bookmarkInterface()->nextBookmark() ) && ( currentIndex() < count() ) ) {
+void TabEditor::nextBookmark()
+{
+	if ((! currentEditor()->bookmarkInterface()->nextBookmark()) && (currentIndex() < count()))
+	{
 		int index = currentIndex();
-		do { index ++ ; } while( ( index < count() ) && ( editor( index )->bookmarkInterface()->bookmarkCount() == 0 ) );
-		if( index < count() ) {
-			setCurrentIndex( index );
+		do
+		{
+			index ++ ;
+		}
+		while ((index < count()) && (editor(index)->bookmarkInterface()->bookmarkCount() == 0));
+		if (index < count())
+		{
+			setCurrentIndex(index);
 			currentEditor()->bookmarkInterface()->firstBookmark();
 		}
 	}
 }
 
-void TabEditor::previousBookmark() {
-	if( ( ! currentEditor()->bookmarkInterface()->previousBookmark() ) && ( currentIndex() > 0 ) ) {
+void TabEditor::previousBookmark()
+{
+	if ((! currentEditor()->bookmarkInterface()->previousBookmark()) && (currentIndex() > 0))
+	{
 		int index = currentIndex();
-		do { index -- ; } while( ( index >= 0 ) && ( editor( index )->bookmarkInterface()->bookmarkCount() == 0 ) );
-		if( index >= 0 ) {
-			setCurrentIndex( index );
+		do
+		{
+			index -- ;
+		}
+		while ((index >= 0) && (editor(index)->bookmarkInterface()->bookmarkCount() == 0));
+		if (index >= 0)
+		{
+			setCurrentIndex(index);
 			currentEditor()->bookmarkInterface()->lastBookmark();
 		}
 	}
 }
 
-void TabEditor::clearAllBookmark() {
-	for( int i = 0; i < count() ; i++ ) {
-		editor( i )->bookmarkInterface()->clearAllBookmark();
+void TabEditor::clearAllBookmark()
+{
+	for (int i = 0; i < count() ; i++)
+	{
+		editor(i)->bookmarkInterface()->clearAllBookmark();
 	}
 }
 

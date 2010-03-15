@@ -33,66 +33,80 @@
 
 /* CommentAction */
 
-CommentAction::CommentAction( QAction * a, QObject * parent ) : XinxAction::Action( a, parent ) {
-	connect( dynamic_cast<QObject*>( EditorManager::self() ), SIGNAL(currentChanged(int)), this, SLOT(updateSignals()) );
+CommentAction::CommentAction(QAction * a, QObject * parent) : XinxAction::Action(a, parent)
+{
+	connect(dynamic_cast<QObject*>(EditorManager::self()), SIGNAL(currentChanged(int)), this, SLOT(updateSignals()));
 }
 
-CommentAction::CommentAction( const QString & text, const QKeySequence & shortcut, QObject * parent ) : XinxAction::Action( text, shortcut, parent ) {
-	connect( dynamic_cast<QObject*>( EditorManager::self() ), SIGNAL(currentChanged(int)), this, SLOT(updateSignals()) );
+CommentAction::CommentAction(const QString & text, const QKeySequence & shortcut, QObject * parent) : XinxAction::Action(text, shortcut, parent)
+{
+	connect(dynamic_cast<QObject*>(EditorManager::self()), SIGNAL(currentChanged(int)), this, SLOT(updateSignals()));
 }
 
-CommentAction::CommentAction( const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent ) : XinxAction::Action( icon, text, shortcut, parent ) {
-	connect( dynamic_cast<QObject*>( EditorManager::self() ), SIGNAL(currentChanged(int)), this, SLOT(updateSignals()) );
+CommentAction::CommentAction(const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent) : XinxAction::Action(icon, text, shortcut, parent)
+{
+	connect(dynamic_cast<QObject*>(EditorManager::self()), SIGNAL(currentChanged(int)), this, SLOT(updateSignals()));
 }
 
-bool CommentAction::isActionVisible() const {
-	if( ! EditorManager::self() ) return false;
-	TextFileEditor * tfe = qobject_cast<TextFileEditor*>( EditorManager::self()->currentEditor() );
-	if( ! tfe )                   return false;
+bool CommentAction::isActionVisible() const
+{
+	if (! EditorManager::self()) return false;
+	TextFileEditor * tfe = qobject_cast<TextFileEditor*>(EditorManager::self()->currentEditor());
+	if (! tfe)                   return false;
 	return tfe->textEdit()->isCommentAvailable();
 }
 
-bool CommentAction::isActionEnabled() const {
-	if( ! EditorManager::self() ) return false;
-	TextFileEditor * editor = qobject_cast<TextFileEditor*>( EditorManager::self()->currentEditor() );
-	if( ! editor ) return false;
+bool CommentAction::isActionEnabled() const
+{
+	if (! EditorManager::self()) return false;
+	TextFileEditor * editor = qobject_cast<TextFileEditor*>(EditorManager::self()->currentEditor());
+	if (! editor) return false;
 	return editor->textEdit()->textCursor().hasSelection();
 }
 
-bool CommentAction::isInToolBar() const {
+bool CommentAction::isInToolBar() const
+{
 	return false;
 }
 
-void CommentAction::actionTriggered() {
-	TextFileEditor * editor = qobject_cast<TextFileEditor*>( EditorManager::self()->currentEditor() );
+void CommentAction::actionTriggered()
+{
+	TextFileEditor * editor = qobject_cast<TextFileEditor*>(EditorManager::self()->currentEditor());
 	editor->textEdit()->commentSelectedText();
 }
 
-void CommentAction::updateSignals() {
-	if( ! m_editor.isNull() ) {
-		m_editor->disconnect( action() );
+void CommentAction::updateSignals()
+{
+	if (! m_editor.isNull())
+	{
+		m_editor->disconnect(action());
 	}
 
-	TextFileEditor * editor = qobject_cast<TextFileEditor*>( EditorManager::self()->currentEditor() );
-	if( editor ) {
+	TextFileEditor * editor = qobject_cast<TextFileEditor*>(EditorManager::self()->currentEditor());
+	if (editor)
+	{
 		m_editor = editor;
-		connect( m_editor->textEdit(), SIGNAL(copyAvailable(bool)), action(), SLOT(setEnabled(bool)));
+		connect(m_editor->textEdit(), SIGNAL(copyAvailable(bool)), action(), SLOT(setEnabled(bool)));
 	}
 }
 
 /* UncommentAction */
 
-UncommentAction::UncommentAction( QAction * a, QObject * parent ) : CommentAction( a, parent ) {
+UncommentAction::UncommentAction(QAction * a, QObject * parent) : CommentAction(a, parent)
+{
 }
 
-UncommentAction::UncommentAction( const QString & text, const QKeySequence & shortcut, QObject * parent ) : CommentAction( text, shortcut, parent ) {
+UncommentAction::UncommentAction(const QString & text, const QKeySequence & shortcut, QObject * parent) : CommentAction(text, shortcut, parent)
+{
 }
 
-UncommentAction::UncommentAction( const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent ) : CommentAction( icon, text, shortcut, parent ) {
+UncommentAction::UncommentAction(const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent) : CommentAction(icon, text, shortcut, parent)
+{
 }
 
-void UncommentAction::actionTriggered() {
-	TextFileEditor * editor = qobject_cast<TextFileEditor*>( EditorManager::self()->currentEditor() );
-	editor->textEdit()->commentSelectedText( true );
+void UncommentAction::actionTriggered()
+{
+	TextFileEditor * editor = qobject_cast<TextFileEditor*>(EditorManager::self()->currentEditor());
+	editor->textEdit()->commentSelectedText(true);
 }
 

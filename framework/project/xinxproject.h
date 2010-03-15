@@ -31,6 +31,7 @@
 #include <QPair>
 #include <QVariant>
 #include <QSqlDatabase>
+#include <QPointer>
 
 /* Constante */
 
@@ -54,14 +55,15 @@ class QDomElement;
  * read, the exception is catched and the application continue. The project is
  * opened.
  */
-class LIBEXPORT XinxProjectException : public XinxException {
+class LIBEXPORT XinxProjectException : public XinxException
+{
 public:
 	/*!
 	 * Constructor of the exception.
 	 * \param message Message for the user.
 	 * \param wizard Show a wizard to migrate the project
 	 */
-	XinxProjectException( const QString & message, bool wizard = false );
+	XinxProjectException(const QString & message, bool wizard = false);
 
 	//! True if XINX must start "xinxprojectwizard"
 	bool startWizard() const;
@@ -79,11 +81,12 @@ class XinxProjectSession;
  *
  * The value is a QVariant but must be writtable in a text file. (QString, int, ...)
  */
-class LIBEXPORT XinxProjectSessionEditor : public QObject {
+class LIBEXPORT XinxProjectSessionEditor : public QObject
+{
 	Q_OBJECT
 public:
 	/*! Create a session editor with a session file as \e parent. */
-	XinxProjectSessionEditor( XinxProjectSession * parent = 0 );
+	XinxProjectSessionEditor(XinxProjectSession * parent = 0);
 	/*! Destroy the session editor */
 	~XinxProjectSessionEditor();
 
@@ -91,18 +94,18 @@ public:
 	 * Load the session from a DOM Element.
 	 * \param element The DOM Element to read
 	 */
-	void loadFromNode( const QDomElement & element );
+	void loadFromNode(const QDomElement & element);
 	/*!
 	 * Save the session to a DOM Element.
 	 * \param document The document used to create new QDomElement.
 	 * \param element The DOM Element to create.
 	 */
-	void saveToNode( QDomDocument & document, QDomElement & element );
+	void saveToNode(QDomDocument & document, QDomElement & element);
 
 	/*! Store the property \e key with the \e value in the session. */
-	void writeProperty( const QString & key, QVariant value );
+	void writeProperty(const QString & key, QVariant value);
 	/*! Read the property \e key */
-	QVariant readProperty( const QString & key );
+	QVariant readProperty(const QString & key);
 
 	/*! Project path, used to have relative path */
 	QString projectPath() const;
@@ -129,7 +132,8 @@ class XinxProject;
  * synchronisation with the disk is stopped. So the file can be corrupted easyly if
  * XINX crash.
  */
-class LIBEXPORT XinxProjectSession2 : public QObject {
+class LIBEXPORT XinxProjectSession2 : public QObject
+{
 	Q_OBJECT
 public:
 	/*! Create an empty session */
@@ -139,7 +143,7 @@ public:
 	 * \throw XinxProjectException When the application can't read the session file.
 	 * \sa loadFromFile
 	 */
-	XinxProjectSession2( const QString & filename );
+	XinxProjectSession2(const QString & filename);
 	/*! Destroy the session */
 	virtual ~XinxProjectSession2();
 
@@ -147,13 +151,9 @@ public:
 	 * Load the file \e filename
 	 * \throw XinxProjectException When the application can't read the session file.
 	 */
-	void loadFromFile( const QString & filename );
+	void loadFromFile(const QString & filename);
 
-	QSqlDatabase database() const;
 private:
-	bool openDatabase() const;
-	bool createDatabase( QSqlDatabase db ) const;
-	void closeDatabase() const;
 
 	QString m_filename;
 };
@@ -163,18 +163,19 @@ private:
  * tempory data as last opened file, current opened file. This file is extern of project file,
  * to permit project file to be saved in Revision Control System.
  */
-class LIBEXPORT XinxProjectSession : public QObject {
+class LIBEXPORT XinxProjectSession : public QObject
+{
 	Q_OBJECT
-	Q_PROPERTY( QStringList lastOpenedFile READ lastOpenedFile )
+	Q_PROPERTY(QStringList lastOpenedFile READ lastOpenedFile)
 public:
 	/*! Create an empty session */
-	XinxProjectSession( XinxProject * project );
+	XinxProjectSession(XinxProject * project);
 	/*!
 	 * Create a session object and load the file \e filename
 	 * \throw XinxProjectException When the application can't read the session file.
 	 * \sa loadFromFile
 	 */
-	XinxProjectSession( XinxProject * project, const QString & filename );
+	XinxProjectSession(XinxProject * project, const QString & filename);
 	/*! Destroy the session */
 	virtual ~XinxProjectSession();
 
@@ -183,14 +184,14 @@ public:
 	 * \sa saveToFile
 	 * \throw XinxProjectException When the application can't read the session file.
 	 */
-	void loadFromFile( const QString & filename );
+	void loadFromFile(const QString & filename);
 
 	/*!
 	 * Save the session in the file \e filename, or in the loaded file if possible
 	 * \sa loadFromFile
 	 * \throw XinxProjectException When the application can't save the session file.
 	 */
-	void saveToFile( const QString & filename = QString() );
+	void saveToFile(const QString & filename = QString());
 
 	/*!
 	 * List all the last opend files in the project.
@@ -226,13 +227,14 @@ class ContentViewCache;
  * \throw XinxProjectException When the application can't read a project file or can't
  * save it.
  */
-class LIBEXPORT XinxProject : public QObject {
+class LIBEXPORT XinxProject : public QObject
+{
 	Q_OBJECT
-	Q_PROPERTY( QString fileName READ fileName )
-	Q_PROPERTY( XinxProjectSession* session READ session )
-	Q_PROPERTY( QString projectName READ projectName WRITE setProjectName )
-	Q_PROPERTY( QString projectRCS READ projectRCS WRITE setProjectRCS )
-	Q_PROPERTY( QString projectPath READ projectPath WRITE setProjectPath )
+	Q_PROPERTY(QString fileName READ fileName)
+	Q_PROPERTY(XinxProjectSession* session READ session)
+	Q_PROPERTY(QString projectName READ projectName WRITE setProjectName)
+	Q_PROPERTY(QString projectRCS READ projectRCS WRITE setProjectRCS)
+	Q_PROPERTY(QString projectPath READ projectPath WRITE setProjectPath)
 public:
 	/*! Create an empty project. */
 	XinxProject();
@@ -240,19 +242,19 @@ public:
 	 * Create a project with another project. This is the copy constructor used in
 	 * assignation.
 	 */
-	XinxProject( const XinxProject & );
+	XinxProject(const XinxProject &);
 	/*!
 	 * Create a project and read the content of the file, to initalize variables.
 	 * \param filename The name of the file to be read.
 	 * \sa loadFromFile()
 	 * \throw XinxProjectException When the application can't read the project file.
 	 */
-	XinxProject( const QString & filename );
+	XinxProject(const QString & filename);
 	/*! Destroy the project */
 	~XinxProject();
 
 	/*! Assigned operator to copy object contents at assignation */
-	XinxProject& operator=( const XinxProject& p );
+	XinxProject& operator=(const XinxProject& p);
 
 	/*!
 	 * Read the content of the file in the XinxProject structure.
@@ -261,7 +263,7 @@ public:
 	 * \sa saveToFile()
 	 * \throw XinxProjectException When the application can't read the project file.
 	 */
-	void loadFromFile( const QString & filename );
+	void loadFromFile(const QString & filename);
 	/*!
 	 * Save the XinxProject structure in a file. If the file name is not specified
 	 * the project is saved in the file used to open the project.
@@ -270,7 +272,7 @@ public:
 	 * \sa loadFromFile()
 	 * \throw XinxProjectException When the application can't save the project file.
 	 */
-	void saveToFile( const QString & filename = QString() );
+	void saveToFile(const QString & filename = QString());
 
 	/*!
 	 * Return the file name where the project is stored.
@@ -299,7 +301,7 @@ public:
 	 * \param value The new name of the project.
 	 * \sa projectName()
 	 */
-	void setProjectName( const QString & value );
+	void setProjectName(const QString & value);
 
 	/*!
 	 * The concurent file system used by XINX.
@@ -312,7 +314,7 @@ public:
 	 * \param value The new system used.
 	 * \sa projectRCS()
 	 */
-	void setProjectRCS( const QString & value );
+	void setProjectRCS(const QString & value);
 
 	/*!
 	 * Get the project path. The project path is the path where the configuration file
@@ -326,35 +328,26 @@ public:
 	 * \param value Value of the project path
 	 * \sa projectPath(), languePath(), navPath(), languesPath(), specifPath(), setSpecifPath()
 	 */
-	void setProjectPath( const QString & value );
-
-	/*! List of file to preload at XINX start */
-	QStringList & preloadedFiles();
-
-	/*! Content the cache of preloaded files */
-	ContentViewCache * filesCache();
-
-	/*! Preload file that can be used later */
-	void preloadFilesCache();
+	void setProjectPath(const QString & value);
 
 	/*! Activated plugin for the project (the plugin must control this it-self, it's not a XINX control) */
 	QStringList activatedPlugin() const;
 
 	/*! Set activated plugin for the project */
-	void setActivatedPlugin( const QStringList & value );
+	void setActivatedPlugin(const QStringList & value);
 public slots:
 	/*!
 	 * Write a property in the project file (used by the plugin).
 	 * \param key The property to write
 	 * \param value The value to write
 	 */
-	void writeProperty( const QString & key, QVariant value );
+	void writeProperty(const QString & key, QVariant value);
 	/*!
 	 * Read a written property from the project file (used by the plugin).
 	 * \param key The Property to read
 	 * \return The value of the property
 	 */
-	QVariant readProperty( const QString & key ) const;
+	QVariant readProperty(const QString & key) const;
 signals:
 	/*! Emited when a property has changed. */
 	void changed();
@@ -367,7 +360,8 @@ private:
  * The XINX Project Manager is used to manage \e XinxProject file. One project
  * only by process is authorized.
  */
-class LIBEXPORT XINXProjectManager : public QObject {
+class LIBEXPORT XINXProjectManager : public QObject
+{
 	Q_OBJECT
 public:
 	/*! Destroy the manager */
@@ -377,9 +371,9 @@ public:
 	static XINXProjectManager * self();
 
 	/*! Change the current projet to \e project */
-	void setCurrentProject( XinxProject * project );
+	void setCurrentProject(XinxProject * project);
 	/*! Return the project */
-	XinxProject * project() const;
+	QPointer<XinxProject> project() const;
 
 	/*! Return the current session file */
 	XinxProjectSession2 * session() const;

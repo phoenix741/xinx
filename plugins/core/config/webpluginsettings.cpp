@@ -6,25 +6,29 @@
 
 /* WebPluginSettingsSettings */
 
-WebPluginSettingsSettings::WebPluginSettingsSettings( const QString & organization, const QString & application ) : QSettings( organization, application ) {
+WebPluginSettingsSettings::WebPluginSettingsSettings(const QString & organization, const QString & application) : QSettings(organization, application)
+{
 }
 
-void WebPluginSettingsSettings::setValue( const QString & key, const QVariant & value, const QVariant & defaultValue ) {
-	if( value == defaultValue )
-		remove( key );
+void WebPluginSettingsSettings::setValue(const QString & key, const QVariant & value, const QVariant & defaultValue)
+{
+	if (value == defaultValue)
+		remove(key);
 	else
-		QSettings::setValue( key, value );
+		QSettings::setValue(key, value);
 }
 
-void WebPluginSettingsSettings::setValue( const QString & key, const QVariant & value ) {
-	QSettings::setValue( key, value );
+void WebPluginSettingsSettings::setValue(const QString & key, const QVariant & value)
+{
+	QSettings::setValue(key, value);
 }
 
 /* PrivateWebPluginSettings */
 
-class PrivateWebPluginSettings {
+class PrivateWebPluginSettings
+{
 public:
-	PrivateWebPluginSettings( WebPluginSettings * parent );
+	PrivateWebPluginSettings(WebPluginSettings * parent);
 
 	WebPluginSettingsSettings * m_settings;
 	void createSettings();
@@ -35,61 +39,73 @@ private:
 	WebPluginSettings * m_parent;
 };
 
-PrivateWebPluginSettings::PrivateWebPluginSettings( WebPluginSettings * parent ) {
+PrivateWebPluginSettings::PrivateWebPluginSettings(WebPluginSettings * parent)
+{
 	m_parent = parent;
 }
 
-void PrivateWebPluginSettings::createSettings() {
+void PrivateWebPluginSettings::createSettings()
+{
 	m_settings = new WebPluginSettingsSettings("Shadoware.Org", "XINX");
 }
 
-void PrivateWebPluginSettings::deleteSettings() {
-	if( m_settings )
+void PrivateWebPluginSettings::deleteSettings()
+{
+	if (m_settings)
 		delete m_settings;
 	m_settings = NULL;
 }
 
 /* WebPluginSettings */
 
-WebPluginSettings::WebPluginSettings( const WebPluginSettings & origine ) {
-	d = new PrivateWebPluginSettings( this );
+WebPluginSettings::WebPluginSettings(const WebPluginSettings & origine)
+{
+	d = new PrivateWebPluginSettings(this);
 	d->m_globals = origine.d->m_globals;
 }
 
-WebPluginSettings::WebPluginSettings() {
-	d = new PrivateWebPluginSettings( this );
+WebPluginSettings::WebPluginSettings()
+{
+	d = new PrivateWebPluginSettings(this);
 }
 
-WebPluginSettings::~WebPluginSettings() {
+WebPluginSettings::~WebPluginSettings()
+{
 	delete d;
 }
 
-WebPluginSettings&WebPluginSettings::operator=( const WebPluginSettings& p ) {
+WebPluginSettings&WebPluginSettings::operator=(const WebPluginSettings& p)
+{
 	d->m_globals = p.d->m_globals;
 	return *this;
 }
 
-WebPluginSettings::struct_globals & WebPluginSettings::config() {
+WebPluginSettings::struct_globals & WebPluginSettings::config()
+{
 	return d->m_globals;
 }
 
-void WebPluginSettings::setDefault() {
+void WebPluginSettings::setDefault()
+{
 	d->m_globals = getDefaultGlobals();
 }
 
-void WebPluginSettings::save() {
+void WebPluginSettings::save()
+{
 	d->createSettings();
-	setSettingsGlobals( d->m_settings, "PluginsSettings/webplugin", d->m_globals );
+	setSettingsGlobals(d->m_settings, "PluginsSettings/webplugin", d->m_globals);
 	d->deleteSettings();
 }
 
-void WebPluginSettings::load() {
+void WebPluginSettings::load()
+{
 	d->createSettings();
-	d->m_globals = getSettingsGlobals( d->m_settings, "PluginsSettings/webplugin", getDefaultGlobals() );
+	d->m_globals = getSettingsGlobals(d->m_settings, "PluginsSettings/webplugin", getDefaultGlobals());
 	d->deleteSettings();
 }
 
-WebPluginSettings::struct_xmlpres WebPluginSettings::getDefaultXmlpres() {
+WebPluginSettings::struct_xmlpres WebPluginSettings::getDefaultXmlpres()
+{
 	struct_xmlpres value;
 
 	value.autoExpandedPath = "/layout_data/VueUtilisateurCourantSociete/JUt_UtiView/JUt_UtiViewRow";
@@ -103,38 +119,41 @@ WebPluginSettings::struct_xmlpres WebPluginSettings::getDefaultXmlpres() {
 	return value;
 }
 
-WebPluginSettings::struct_xmlpres WebPluginSettings::getSettingsXmlpres( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_xmlpres & defaultValue ) {
+WebPluginSettings::struct_xmlpres WebPluginSettings::getSettingsXmlpres(WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_xmlpres & defaultValue)
+{
 	struct_xmlpres value;
-	settings->beginGroup( path );
+	settings->beginGroup(path);
 
-	value.autoExpandedPath = settings->value( "Auto expanded path", defaultValue.autoExpandedPath ).toString();
-	value.hidePath = settings->value( "Hide path", defaultValue.hidePath ).toStringList();
-	value.showFilteredSubTree = settings->value( "Show filtered sub-tree", defaultValue.showFilteredSubTree ).toBool();
-	value.viewColor = settings->value( "View Color", defaultValue.viewColor ).value<QColor>();
-	value.errorColor = settings->value( "Error Color", defaultValue.errorColor ).value<QColor>();
-	value.screenDataColor = settings->value( "Screen data Color", defaultValue.screenDataColor ).value<QColor>();
-	value.showNameAttributeIfExists = settings->value( "Show name attribute if exists", defaultValue.showNameAttributeIfExists ).toBool();
+	value.autoExpandedPath = settings->value("Auto expanded path", defaultValue.autoExpandedPath).toString();
+	value.hidePath = settings->value("Hide path", defaultValue.hidePath).toStringList();
+	value.showFilteredSubTree = settings->value("Show filtered sub-tree", defaultValue.showFilteredSubTree).toBool();
+	value.viewColor = settings->value("View Color", defaultValue.viewColor).value<QColor>();
+	value.errorColor = settings->value("Error Color", defaultValue.errorColor).value<QColor>();
+	value.screenDataColor = settings->value("Screen data Color", defaultValue.screenDataColor).value<QColor>();
+	value.showNameAttributeIfExists = settings->value("Show name attribute if exists", defaultValue.showNameAttributeIfExists).toBool();
 
 	settings->endGroup();
 	return value;
 }
 
-void WebPluginSettings::setSettingsXmlpres( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_xmlpres & value ) {
+void WebPluginSettings::setSettingsXmlpres(WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_xmlpres & value)
+{
 	struct_xmlpres defaultValue = getDefaultXmlpres();
-	settings->beginGroup( path );
+	settings->beginGroup(path);
 
-	settings->setValue( "Auto expanded path", value.autoExpandedPath, defaultValue.autoExpandedPath );
-	settings->setValue( "Hide path", value.hidePath, defaultValue.hidePath );
-	settings->setValue( "Show filtered sub-tree", value.showFilteredSubTree, defaultValue.showFilteredSubTree );
-	settings->setValue( "View Color", value.viewColor, defaultValue.viewColor );
-	settings->setValue( "Error Color", value.errorColor, defaultValue.errorColor );
-	settings->setValue( "Screen data Color", value.screenDataColor, defaultValue.screenDataColor );
-	settings->setValue( "Show name attribute if exists", value.showNameAttributeIfExists, defaultValue.showNameAttributeIfExists );
+	settings->setValue("Auto expanded path", value.autoExpandedPath, defaultValue.autoExpandedPath);
+	settings->setValue("Hide path", value.hidePath, defaultValue.hidePath);
+	settings->setValue("Show filtered sub-tree", value.showFilteredSubTree, defaultValue.showFilteredSubTree);
+	settings->setValue("View Color", value.viewColor, defaultValue.viewColor);
+	settings->setValue("Error Color", value.errorColor, defaultValue.errorColor);
+	settings->setValue("Screen data Color", value.screenDataColor, defaultValue.screenDataColor);
+	settings->setValue("Show name attribute if exists", value.showNameAttributeIfExists, defaultValue.showNameAttributeIfExists);
 
 	settings->endGroup();
 }
 
-WebPluginSettings::struct_javascript WebPluginSettings::getDefaultJavascript() {
+WebPluginSettings::struct_javascript WebPluginSettings::getDefaultJavascript()
+{
 	struct_javascript value;
 
 	value.activeCompletion = true;
@@ -142,26 +161,29 @@ WebPluginSettings::struct_javascript WebPluginSettings::getDefaultJavascript() {
 	return value;
 }
 
-WebPluginSettings::struct_javascript WebPluginSettings::getSettingsJavascript( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_javascript & defaultValue ) {
+WebPluginSettings::struct_javascript WebPluginSettings::getSettingsJavascript(WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_javascript & defaultValue)
+{
 	struct_javascript value;
-	settings->beginGroup( path );
+	settings->beginGroup(path);
 
-	value.activeCompletion = settings->value( "Active completion", defaultValue.activeCompletion ).toBool();
+	value.activeCompletion = settings->value("Active completion", defaultValue.activeCompletion).toBool();
 
 	settings->endGroup();
 	return value;
 }
 
-void WebPluginSettings::setSettingsJavascript( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_javascript & value ) {
+void WebPluginSettings::setSettingsJavascript(WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_javascript & value)
+{
 	struct_javascript defaultValue = getDefaultJavascript();
-	settings->beginGroup( path );
+	settings->beginGroup(path);
 
-	settings->setValue( "Active completion", value.activeCompletion, defaultValue.activeCompletion );
+	settings->setValue("Active completion", value.activeCompletion, defaultValue.activeCompletion);
 
 	settings->endGroup();
 }
 
-WebPluginSettings::struct_stylesheetParsing WebPluginSettings::getDefaultStylesheetParsing() {
+WebPluginSettings::struct_stylesheetParsing WebPluginSettings::getDefaultStylesheetParsing()
+{
 	struct_stylesheetParsing value;
 
 	value.viewer = getDefaultViewerInformation();
@@ -170,28 +192,31 @@ WebPluginSettings::struct_stylesheetParsing WebPluginSettings::getDefaultStylesh
 	return value;
 }
 
-WebPluginSettings::struct_stylesheetParsing WebPluginSettings::getSettingsStylesheetParsing( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_stylesheetParsing & defaultValue ) {
+WebPluginSettings::struct_stylesheetParsing WebPluginSettings::getSettingsStylesheetParsing(WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_stylesheetParsing & defaultValue)
+{
 	struct_stylesheetParsing value;
-	settings->beginGroup( path );
+	settings->beginGroup(path);
 
-	value.viewer = getSettingsViewerInformation( settings, "Viewer", defaultValue.viewer );
-	value.parser = getSettingsParserInformation( settings, "Parser", defaultValue.parser );
+	value.viewer = getSettingsViewerInformation(settings, "Viewer", defaultValue.viewer);
+	value.parser = getSettingsParserInformation(settings, "Parser", defaultValue.parser);
 
 	settings->endGroup();
 	return value;
 }
 
-void WebPluginSettings::setSettingsStylesheetParsing( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_stylesheetParsing & value ) {
+void WebPluginSettings::setSettingsStylesheetParsing(WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_stylesheetParsing & value)
+{
 	struct_stylesheetParsing defaultValue = getDefaultStylesheetParsing();
-	settings->beginGroup( path );
+	settings->beginGroup(path);
 
-	setSettingsViewerInformation( settings, "Viewer", value.viewer );
-	setSettingsParserInformation( settings, "Parser", value.parser );
+	setSettingsViewerInformation(settings, "Viewer", value.viewer);
+	setSettingsParserInformation(settings, "Parser", value.parser);
 
 	settings->endGroup();
 }
 
-WebPluginSettings::struct_parserInformation WebPluginSettings::getDefaultParserInformation() {
+WebPluginSettings::struct_parserInformation WebPluginSettings::getDefaultParserInformation()
+{
 	struct_parserInformation value;
 
 	value.type = "none";
@@ -200,28 +225,31 @@ WebPluginSettings::struct_parserInformation WebPluginSettings::getDefaultParserI
 	return value;
 }
 
-WebPluginSettings::struct_parserInformation WebPluginSettings::getSettingsParserInformation( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_parserInformation & defaultValue ) {
+WebPluginSettings::struct_parserInformation WebPluginSettings::getSettingsParserInformation(WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_parserInformation & defaultValue)
+{
 	struct_parserInformation value;
-	settings->beginGroup( path );
+	settings->beginGroup(path);
 
-	value.type = settings->value( "Type", defaultValue.type ).toString();
-	value.oracleParser = getSettingsOracleParser( settings, "Oracle Parser", defaultValue.oracleParser );
+	value.type = settings->value("Type", defaultValue.type).toString();
+	value.oracleParser = getSettingsOracleParser(settings, "Oracle Parser", defaultValue.oracleParser);
 
 	settings->endGroup();
 	return value;
 }
 
-void WebPluginSettings::setSettingsParserInformation( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_parserInformation & value ) {
+void WebPluginSettings::setSettingsParserInformation(WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_parserInformation & value)
+{
 	struct_parserInformation defaultValue = getDefaultParserInformation();
-	settings->beginGroup( path );
+	settings->beginGroup(path);
 
-	settings->setValue( "Type", value.type, defaultValue.type );
-	setSettingsOracleParser( settings, "Oracle Parser", value.oracleParser );
+	settings->setValue("Type", value.type, defaultValue.type);
+	setSettingsOracleParser(settings, "Oracle Parser", value.oracleParser);
 
 	settings->endGroup();
 }
 
-WebPluginSettings::struct_oracleParser WebPluginSettings::getDefaultOracleParser() {
+WebPluginSettings::struct_oracleParser WebPluginSettings::getDefaultOracleParser()
+{
 	struct_oracleParser value;
 
 	value.classPath = "WEB-INF/lib/xmlparserv2.jar:WEB-INF/lib/gce_xmlparserv2.jar:WEB-INF/lib/technical_divers.jar:WEB-INF/lib/technical_framework.jar:WEB-INF/lib/log4j-1.2.14.jar";
@@ -230,28 +258,31 @@ WebPluginSettings::struct_oracleParser WebPluginSettings::getDefaultOracleParser
 	return value;
 }
 
-WebPluginSettings::struct_oracleParser WebPluginSettings::getSettingsOracleParser( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_oracleParser & defaultValue ) {
+WebPluginSettings::struct_oracleParser WebPluginSettings::getSettingsOracleParser(WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_oracleParser & defaultValue)
+{
 	struct_oracleParser value;
-	settings->beginGroup( path );
+	settings->beginGroup(path);
 
-	value.classPath = settings->value( "Class Path", defaultValue.classPath ).toString();
-	value.mainClass = settings->value( "Main Class", defaultValue.mainClass ).toString();
+	value.classPath = settings->value("Class Path", defaultValue.classPath).toString();
+	value.mainClass = settings->value("Main Class", defaultValue.mainClass).toString();
 
 	settings->endGroup();
 	return value;
 }
 
-void WebPluginSettings::setSettingsOracleParser( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_oracleParser & value ) {
+void WebPluginSettings::setSettingsOracleParser(WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_oracleParser & value)
+{
 	struct_oracleParser defaultValue = getDefaultOracleParser();
-	settings->beginGroup( path );
+	settings->beginGroup(path);
 
-	settings->setValue( "Class Path", value.classPath, defaultValue.classPath );
-	settings->setValue( "Main Class", value.mainClass, defaultValue.mainClass );
+	settings->setValue("Class Path", value.classPath, defaultValue.classPath);
+	settings->setValue("Main Class", value.mainClass, defaultValue.mainClass);
 
 	settings->endGroup();
 }
 
-WebPluginSettings::struct_viewerInformation WebPluginSettings::getDefaultViewerInformation() {
+WebPluginSettings::struct_viewerInformation WebPluginSettings::getDefaultViewerInformation()
+{
 	struct_viewerInformation value;
 
 	value.type = "internal";
@@ -259,26 +290,29 @@ WebPluginSettings::struct_viewerInformation WebPluginSettings::getDefaultViewerI
 	return value;
 }
 
-WebPluginSettings::struct_viewerInformation WebPluginSettings::getSettingsViewerInformation( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_viewerInformation & defaultValue ) {
+WebPluginSettings::struct_viewerInformation WebPluginSettings::getSettingsViewerInformation(WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_viewerInformation & defaultValue)
+{
 	struct_viewerInformation value;
-	settings->beginGroup( path );
+	settings->beginGroup(path);
 
-	value.type = settings->value( "Type", defaultValue.type ).toString();
+	value.type = settings->value("Type", defaultValue.type).toString();
 
 	settings->endGroup();
 	return value;
 }
 
-void WebPluginSettings::setSettingsViewerInformation( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_viewerInformation & value ) {
+void WebPluginSettings::setSettingsViewerInformation(WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_viewerInformation & value)
+{
 	struct_viewerInformation defaultValue = getDefaultViewerInformation();
-	settings->beginGroup( path );
+	settings->beginGroup(path);
 
-	settings->setValue( "Type", value.type, defaultValue.type );
+	settings->setValue("Type", value.type, defaultValue.type);
 
 	settings->endGroup();
 }
 
-WebPluginSettings::struct_xml WebPluginSettings::getDefaultXml() {
+WebPluginSettings::struct_xml WebPluginSettings::getDefaultXml()
+{
 	struct_xml value;
 
 	value.activeCompletion = true;
@@ -289,32 +323,35 @@ WebPluginSettings::struct_xml WebPluginSettings::getDefaultXml() {
 	return value;
 }
 
-WebPluginSettings::struct_xml WebPluginSettings::getSettingsXml( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_xml & defaultValue ) {
+WebPluginSettings::struct_xml WebPluginSettings::getSettingsXml(WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_xml & defaultValue)
+{
 	struct_xml value;
-	settings->beginGroup( path );
+	settings->beginGroup(path);
 
-	value.activeCompletion = settings->value( "Active completion", defaultValue.activeCompletion ).toBool();
-	value.addClosedBalise = settings->value( "Add closed balise", defaultValue.addClosedBalise ).toBool();
-	value.addDefaultAttribute = settings->value( "Add default attribute", defaultValue.addDefaultAttribute ).toBool();
-	value.addDefaultSubBalise = settings->value( "Add default sub-balise", defaultValue.addDefaultSubBalise ).toBool();
+	value.activeCompletion = settings->value("Active completion", defaultValue.activeCompletion).toBool();
+	value.addClosedBalise = settings->value("Add closed balise", defaultValue.addClosedBalise).toBool();
+	value.addDefaultAttribute = settings->value("Add default attribute", defaultValue.addDefaultAttribute).toBool();
+	value.addDefaultSubBalise = settings->value("Add default sub-balise", defaultValue.addDefaultSubBalise).toBool();
 
 	settings->endGroup();
 	return value;
 }
 
-void WebPluginSettings::setSettingsXml( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_xml & value ) {
+void WebPluginSettings::setSettingsXml(WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_xml & value)
+{
 	struct_xml defaultValue = getDefaultXml();
-	settings->beginGroup( path );
+	settings->beginGroup(path);
 
-	settings->setValue( "Active completion", value.activeCompletion, defaultValue.activeCompletion );
-	settings->setValue( "Add closed balise", value.addClosedBalise, defaultValue.addClosedBalise );
-	settings->setValue( "Add default attribute", value.addDefaultAttribute, defaultValue.addDefaultAttribute );
-	settings->setValue( "Add default sub-balise", value.addDefaultSubBalise, defaultValue.addDefaultSubBalise );
+	settings->setValue("Active completion", value.activeCompletion, defaultValue.activeCompletion);
+	settings->setValue("Add closed balise", value.addClosedBalise, defaultValue.addClosedBalise);
+	settings->setValue("Add default attribute", value.addDefaultAttribute, defaultValue.addDefaultAttribute);
+	settings->setValue("Add default sub-balise", value.addDefaultSubBalise, defaultValue.addDefaultSubBalise);
 
 	settings->endGroup();
 }
 
-WebPluginSettings::struct_globals WebPluginSettings::getDefaultGlobals() {
+WebPluginSettings::struct_globals WebPluginSettings::getDefaultGlobals()
+{
 	struct_globals value;
 
 	value.xmlPres = getDefaultXmlpres();
@@ -325,27 +362,29 @@ WebPluginSettings::struct_globals WebPluginSettings::getDefaultGlobals() {
 	return value;
 }
 
-WebPluginSettings::struct_globals WebPluginSettings::getSettingsGlobals( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_globals & defaultValue ) {
+WebPluginSettings::struct_globals WebPluginSettings::getSettingsGlobals(WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_globals & defaultValue)
+{
 	struct_globals value;
-	settings->beginGroup( path );
+	settings->beginGroup(path);
 
-	value.xmlPres = getSettingsXmlpres( settings, "Xml Pres", defaultValue.xmlPres );
-	value.xml = getSettingsXml( settings, "XML", defaultValue.xml );
-	value.stylesheetParsing = getSettingsStylesheetParsing( settings, "Stylesheet Parsing", defaultValue.stylesheetParsing );
-	value.javascript = getSettingsJavascript( settings, "JavaScript", defaultValue.javascript );
+	value.xmlPres = getSettingsXmlpres(settings, "Xml Pres", defaultValue.xmlPres);
+	value.xml = getSettingsXml(settings, "XML", defaultValue.xml);
+	value.stylesheetParsing = getSettingsStylesheetParsing(settings, "Stylesheet Parsing", defaultValue.stylesheetParsing);
+	value.javascript = getSettingsJavascript(settings, "JavaScript", defaultValue.javascript);
 
 	settings->endGroup();
 	return value;
 }
 
-void WebPluginSettings::setSettingsGlobals( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_globals & value ) {
+void WebPluginSettings::setSettingsGlobals(WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_globals & value)
+{
 	struct_globals defaultValue = getDefaultGlobals();
-	settings->beginGroup( path );
+	settings->beginGroup(path);
 
-	setSettingsXmlpres( settings, "Xml Pres", value.xmlPres );
-	setSettingsXml( settings, "XML", value.xml );
-	setSettingsStylesheetParsing( settings, "Stylesheet Parsing", value.stylesheetParsing );
-	setSettingsJavascript( settings, "JavaScript", value.javascript );
+	setSettingsXmlpres(settings, "Xml Pres", value.xmlPres);
+	setSettingsXml(settings, "XML", value.xml);
+	setSettingsStylesheetParsing(settings, "Stylesheet Parsing", value.stylesheetParsing);
+	setSettingsJavascript(settings, "JavaScript", value.javascript);
 
 	settings->endGroup();
 }

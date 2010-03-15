@@ -29,13 +29,14 @@ class QCheckBox;
 class DirectoryEditWidget;
 class ProjectConverter;
 
-class ProjectWizard : public QWizard {
+class ProjectWizard : public QWizard
+{
 	Q_OBJECT
 public:
-	ProjectWizard( QString filname, QWidget * parent = 0 );
+	ProjectWizard(QString filname, QWidget * parent = 0);
 
 	ProjectConverter * converter() const;
-	void setConverter( ProjectConverter * c );
+	void setConverter(ProjectConverter * c);
 
 	virtual void accept();
 private:
@@ -43,10 +44,11 @@ private:
 	QString m_filename;
 };
 
-class FileWizardPage : public QWizardPage {
+class FileWizardPage : public QWizardPage
+{
 	Q_OBJECT
 public:
-	FileWizardPage( QString filename, QWidget * parent = 0 );
+	FileWizardPage(QString filename, QWidget * parent = 0);
 
 	virtual void initializePage();
 	virtual bool validatePage();
@@ -55,32 +57,35 @@ private:
 	DirectoryEditWidget * m_projectEdit;
 };
 
-class VersionWizardPage : public QWizardPage {
+class VersionWizardPage : public QWizardPage
+{
 	Q_OBJECT
 public:
-	VersionWizardPage( QWidget * parent = 0 );
+	VersionWizardPage(QWidget * parent = 0);
 
 	virtual void initializePage();
 private:
 	QLabel * m_resume;
 };
 
-class ProgressWizardPage : public QWizardPage {
+class ProgressWizardPage : public QWizardPage
+{
 	Q_OBJECT
 public:
-	ProgressWizardPage( QWidget * parent = 0 );
+	ProgressWizardPage(QWidget * parent = 0);
 
-	virtual void initializePage ();
+	virtual void initializePage();
 private slots:
 	void processMessages();
 private:
 	QProgressBar * m_progressBar;
 };
 
-class ConclusionWizardPage : public QWizardPage {
+class ConclusionWizardPage : public QWizardPage
+{
 	Q_OBJECT
 public:
-	ConclusionWizardPage( QWidget * parent = 0 );
+	ConclusionWizardPage(QWidget * parent = 0);
 private:
 	QCheckBox * m_openCheck;
 };

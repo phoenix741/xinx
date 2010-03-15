@@ -23,53 +23,60 @@
 
 /* CustomProjectImpl */
 
-CustomProjectImpl::CustomProjectImpl( QWidget * parent ) : QWidget( parent ) {
-	setupUi( this );
+CustomProjectImpl::CustomProjectImpl(QWidget * parent) : QWidget(parent)
+{
+	setupUi(this);
 }
 
-CustomProjectImpl::~CustomProjectImpl() {
+CustomProjectImpl::~CustomProjectImpl()
+{
 }
 
-QPixmap CustomProjectImpl::image() {
-	return QPixmap( ":/images/preferences-project.png" );
+QPixmap CustomProjectImpl::image()
+{
+	return QPixmap(":/images/preferences-project.png");
 }
 
-QString CustomProjectImpl::name() {
+QString CustomProjectImpl::name()
+{
 	return windowTitle();
 }
 
-QWidget * CustomProjectImpl::settingsDialog() {
+QWidget * CustomProjectImpl::settingsDialog()
+{
 	return this;
 }
 
-bool CustomProjectImpl::loadSettingsDialog() {
+bool CustomProjectImpl::loadSettingsDialog()
+{
 	// Default project directory
-	m_projectPathLineEdit->lineEdit()->setText( QDir::toNativeSeparators( XINXConfig::self()->config().project.defaultPath ) );
+	m_projectPathLineEdit->lineEdit()->setText(QDir::toNativeSeparators(XINXConfig::self()->config().project.defaultPath));
 
 	// Refresh Directory Timeout
-	m_refreshProjectTimoutSpinBox->setValue( XINXConfig::self()->config().project.automaticProjectDirectoryRefreshTimeout );
+	m_refreshProjectTimoutSpinBox->setValue(XINXConfig::self()->config().project.automaticProjectDirectoryRefreshTimeout);
 
 	// Open the last project at start
-	m_openLastProjectCheckBox->setChecked( XINXConfig::self()->config().project.openTheLastProjectAtStart );
+	m_openLastProjectCheckBox->setChecked(XINXConfig::self()->config().project.openTheLastProjectAtStart);
 
 	// Save project with session
-	m_saveSessionCheckBox->setChecked( XINXConfig::self()->config().project.saveWithSessionByDefault );
+	m_saveSessionCheckBox->setChecked(XINXConfig::self()->config().project.saveWithSessionByDefault);
 
 	// Close the version management log automaticaly.
-	m_closeLogCheckBox->setChecked( XINXConfig::self()->config().project.closeVersionManagementLog );
+	m_closeLogCheckBox->setChecked(XINXConfig::self()->config().project.closeVersionManagementLog);
 
 	// CVS : Create Change Log automatically
-	m_changeLogCheckBox->setChecked( XINXConfig::self()->config().rcs.createChangelog );
+	m_changeLogCheckBox->setChecked(XINXConfig::self()->config().rcs.createChangelog);
 
 	// CVS : Auto add file
-	m_autoAddFileChk->setChecked( XINXConfig::self()->config().rcs.autoAddFileToVersionningSystem );
+	m_autoAddFileChk->setChecked(XINXConfig::self()->config().rcs.autoAddFileToVersionningSystem);
 
 	return true;
 }
 
-bool CustomProjectImpl::saveSettingsDialog() {
+bool CustomProjectImpl::saveSettingsDialog()
+{
 	// Default project directory
-	XINXConfig::self()->config().project.defaultPath = QDir::fromNativeSeparators( m_projectPathLineEdit->lineEdit()->text() );
+	XINXConfig::self()->config().project.defaultPath = QDir::fromNativeSeparators(m_projectPathLineEdit->lineEdit()->text());
 
 	// Refresh Directory Timeout
 	XINXConfig::self()->config().project.automaticProjectDirectoryRefreshTimeout = m_refreshProjectTimoutSpinBox->value();
@@ -92,16 +99,19 @@ bool CustomProjectImpl::saveSettingsDialog() {
 	return true;
 }
 
-bool CustomProjectImpl::cancelSettingsDialog() {
+bool CustomProjectImpl::cancelSettingsDialog()
+{
 	return true;
 }
 
-bool CustomProjectImpl::isSettingsValid() {
-	QString directory = QDir::fromNativeSeparators( m_projectPathLineEdit->lineEdit()->text() );
-	if( ! QDir( directory ).exists() ) return false;
+bool CustomProjectImpl::isSettingsValid()
+{
+	QString directory = QDir::fromNativeSeparators(m_projectPathLineEdit->lineEdit()->text());
+	if (! QDir(directory).exists()) return false;
 	return true;
 }
 
-bool CustomProjectImpl::isVisible() {
+bool CustomProjectImpl::isVisible()
+{
 	return true;
 }

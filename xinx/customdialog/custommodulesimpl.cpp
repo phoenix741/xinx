@@ -32,214 +32,230 @@
 
 /* CustomModulesImpl */
 
-CustomModulesImpl::CustomModulesImpl( QWidget * parent ) : QWidget( parent ) {
-	setupUi( this );
+CustomModulesImpl::CustomModulesImpl(QWidget * parent) : QWidget(parent)
+{
+	setupUi(this);
 
 	// Pluins
-	connect( m_pluginListView, SIGNAL(aboutPlugin(PluginElement*)), this, SLOT(aboutPlugin(PluginElement*)) );
-	connect( m_scriptListView, SIGNAL(aboutPlugin(PluginElement*)), this, SLOT(aboutScript(PluginElement*)) );
+	connect(m_pluginListView, SIGNAL(aboutPlugin(PluginElement*)), this, SLOT(aboutPlugin(PluginElement*)));
+	connect(m_scriptListView, SIGNAL(aboutPlugin(PluginElement*)), this, SLOT(aboutScript(PluginElement*)));
 }
 
-CustomModulesImpl::~CustomModulesImpl() {
+CustomModulesImpl::~CustomModulesImpl()
+{
 	QList<PluginElement*> list = m_pluginListView->plugins();
 	m_pluginListView->clear();
-	qDeleteAll( list );
+	qDeleteAll(list);
 
 	list = m_scriptListView->plugins();
 	m_scriptListView->clear();
-	qDeleteAll( list );
+	qDeleteAll(list);
 }
 
-QPixmap CustomModulesImpl::image() {
-	return QPixmap( ":/images/preferences-plugin.png" );
+QPixmap CustomModulesImpl::image()
+{
+	return QPixmap(":/images/preferences-plugin.png");
 }
 
-QString CustomModulesImpl::name() {
+QString CustomModulesImpl::name()
+{
 	return windowTitle();
 }
 
-QWidget * CustomModulesImpl::settingsDialog() {
+QWidget * CustomModulesImpl::settingsDialog()
+{
 	return this;
 }
 
-bool CustomModulesImpl::loadSettingsDialog() {
+bool CustomModulesImpl::loadSettingsDialog()
+{
 	// Load Script
 	m_scriptListView->clear();
-	foreach( const ScriptValue & s, ScriptManager::self()->objects() ) {
-		m_scriptListView->addPlugin( new ScriptElement( s ) );
+	foreach(const ScriptValue & s, ScriptManager::self()->objects())
+	{
+		m_scriptListView->addPlugin(new ScriptElement(s));
 	}
 
 	// Plugins
 	m_pluginListView->clear();
-	foreach( XinxPluginElement * plugin, XinxPluginsLoader::self()->plugins() ) {
-		XinxPluginElement * e = new XinxPluginElement( plugin->plugin(), plugin->isStatic() );
-		e->setActivated( plugin->isActivated() );
-		m_pluginListView->addPlugin( e );
+	foreach(XinxPluginElement * plugin, XinxPluginsLoader::self()->plugins())
+	{
+		XinxPluginElement * e = new XinxPluginElement(plugin->plugin(), plugin->isStatic());
+		e->setActivated(plugin->isActivated());
+		m_pluginListView->addPlugin(e);
 	}
 
 	return true;
 }
 
-bool CustomModulesImpl::saveSettingsDialog() {
+bool CustomModulesImpl::saveSettingsDialog()
+{
 	// Plugins
-	foreach( PluginElement * plugin, m_pluginListView->plugins() ) {
-		QString name = dynamic_cast<XinxPluginElement*>( plugin )->plugin()->metaObject()->className();
+	foreach(PluginElement * plugin, m_pluginListView->plugins())
+	{
+		QString name = dynamic_cast<XinxPluginElement*>(plugin)->plugin()->metaObject()->className();
 		bool isActivated = plugin->isActivated();
 
 		XINXConfig::self()->config().plugins[ name ] = isActivated;
-		if( XinxPluginsLoader::self()->plugin( name ) ) {
-			XinxPluginsLoader::self()->plugin( name )->setActivated( isActivated );
+		if (XinxPluginsLoader::self()->plugin(name))
+		{
+			XinxPluginsLoader::self()->plugin(name)->setActivated(isActivated);
 		}
 	}
 
 	return true;
 }
 
-bool CustomModulesImpl::cancelSettingsDialog() {
+bool CustomModulesImpl::cancelSettingsDialog()
+{
 	return true;
 }
 
-bool CustomModulesImpl::isSettingsValid() {
+bool CustomModulesImpl::isSettingsValid()
+{
 	return true;
 }
 
-bool CustomModulesImpl::isVisible() {
+bool CustomModulesImpl::isVisible()
+{
 	return true;
 }
 
-void CustomModulesImpl::aboutPlugin( PluginElement * plugin ) {
-	Q_ASSERT( plugin );
-	Q_ASSERT( dynamic_cast<XinxPluginElement*>( plugin ) );
+void CustomModulesImpl::aboutPlugin(PluginElement * plugin)
+{
+	Q_ASSERT(plugin);
+	Q_ASSERT(dynamic_cast<XinxPluginElement*>(plugin));
 
-	XinxPluginElement * xinxPlugin = dynamic_cast<XinxPluginElement*>( plugin );
+	XinxPluginElement * xinxPlugin = dynamic_cast<XinxPluginElement*>(plugin);
 
 	QDialog informationDialog;
-	informationDialog.setWindowFlags( Qt::MSWindowsFixedSizeDialogHint | Qt::Dialog );
+	informationDialog.setWindowFlags(Qt::MSWindowsFixedSizeDialogHint | Qt::Dialog);
 
-	QLabel * informations = new QLabel( &informationDialog );
-	informations->setWordWrap( true );
-	informations->setOpenExternalLinks( true );
+	QLabel * informations = new QLabel(&informationDialog);
+	informations->setWordWrap(true);
+	informations->setOpenExternalLinks(true);
 	informations->setText(
-			tr( "<table>"
-					"<tr>"
-						"<td colspan=\"3\"><b>%1</b></td>"
-					"</tr>"
-					"<tr>"
-						"<td colspan=\"3\">%2</td>"
-					"</tr>"
-					"<tr><td colspan=\"3\"><hr/></td></tr>"
-					"<tr>"
-						"<td><b>Author</b></td>"
-						"<td width=\"0\">:</td>"
-						"<td>%3</td>"
-					"</tr>"
-					"<tr>"
-						"<td><b>E-Mail</b></td>"
-						"<td width=\"0\">:</td>"
-						"<td><a href=\"mailto:%4\">%4</a></td>"
-					"</tr>"
-					"<tr>"
-						"<td><b>Web site</b></td>"
-						"<td width=\"0\">:</td>"
-						"<td><a href=\"%5\">%5</a></td>"
-					"</tr>"
-					"<tr>"
-						"<td><b>Version</b></td>"
-						"<td width=\"0\">:</td>"
-						"<td>%6</td>"
-					"</tr>"
-					"<tr>"
-						"<td><b>Licence</b></td>"
-						"<td width=\"0\">:</td>"
-						"<td>%7</td>"
-					"</tr>"
-				"</table>" )
-						   .arg( qobject_cast<IXinxPlugin*>( xinxPlugin->plugin() )->getPluginAttribute( IXinxPlugin::PLG_NAME ).toString() )
-						   .arg( qobject_cast<IXinxPlugin*>( xinxPlugin->plugin() )->getPluginAttribute( IXinxPlugin::PLG_DESCRIPTION ).toString() )
-						   .arg( qobject_cast<IXinxPlugin*>( xinxPlugin->plugin() )->getPluginAttribute( IXinxPlugin::PLG_AUTHOR ).toString() )
-						   .arg( qobject_cast<IXinxPlugin*>( xinxPlugin->plugin() )->getPluginAttribute( IXinxPlugin::PLG_EMAIL ).toString() )
-						   .arg( qobject_cast<IXinxPlugin*>( xinxPlugin->plugin() )->getPluginAttribute( IXinxPlugin::PLG_WEBSITE ).toString() )
-						   .arg( qobject_cast<IXinxPlugin*>( xinxPlugin->plugin() )->getPluginAttribute( IXinxPlugin::PLG_VERSION ).toString() )
-						   .arg( qobject_cast<IXinxPlugin*>( xinxPlugin->plugin() )->getPluginAttribute( IXinxPlugin::PLG_LICENCE ).toString() )
-			);
+	    tr("<table>"
+	       "<tr>"
+	       "<td colspan=\"3\"><b>%1</b></td>"
+	       "</tr>"
+	       "<tr>"
+	       "<td colspan=\"3\">%2</td>"
+	       "</tr>"
+	       "<tr><td colspan=\"3\"><hr/></td></tr>"
+	       "<tr>"
+	       "<td><b>Author</b></td>"
+	       "<td width=\"0\">:</td>"
+	       "<td>%3</td>"
+	       "</tr>"
+	       "<tr>"
+	       "<td><b>E-Mail</b></td>"
+	       "<td width=\"0\">:</td>"
+	       "<td><a href=\"mailto:%4\">%4</a></td>"
+	       "</tr>"
+	       "<tr>"
+	       "<td><b>Web site</b></td>"
+	       "<td width=\"0\">:</td>"
+	       "<td><a href=\"%5\">%5</a></td>"
+	       "</tr>"
+	       "<tr>"
+	       "<td><b>Version</b></td>"
+	       "<td width=\"0\">:</td>"
+	       "<td>%6</td>"
+	       "</tr>"
+	       "<tr>"
+	       "<td><b>Licence</b></td>"
+	       "<td width=\"0\">:</td>"
+	       "<td>%7</td>"
+	       "</tr>"
+	       "</table>")
+	    .arg(qobject_cast<IXinxPlugin*>(xinxPlugin->plugin())->getPluginAttribute(IXinxPlugin::PLG_NAME).toString())
+	    .arg(qobject_cast<IXinxPlugin*>(xinxPlugin->plugin())->getPluginAttribute(IXinxPlugin::PLG_DESCRIPTION).toString())
+	    .arg(qobject_cast<IXinxPlugin*>(xinxPlugin->plugin())->getPluginAttribute(IXinxPlugin::PLG_AUTHOR).toString())
+	    .arg(qobject_cast<IXinxPlugin*>(xinxPlugin->plugin())->getPluginAttribute(IXinxPlugin::PLG_EMAIL).toString())
+	    .arg(qobject_cast<IXinxPlugin*>(xinxPlugin->plugin())->getPluginAttribute(IXinxPlugin::PLG_WEBSITE).toString())
+	    .arg(qobject_cast<IXinxPlugin*>(xinxPlugin->plugin())->getPluginAttribute(IXinxPlugin::PLG_VERSION).toString())
+	    .arg(qobject_cast<IXinxPlugin*>(xinxPlugin->plugin())->getPluginAttribute(IXinxPlugin::PLG_LICENCE).toString())
+	);
 
 	QVBoxLayout * labelLayout = new QVBoxLayout;
-	labelLayout->addWidget( informations );
+	labelLayout->addWidget(informations);
 
-	QGroupBox * grp = new QGroupBox( tr("&Informations"), &informationDialog );
-	grp->setLayout( labelLayout );
+	QGroupBox * grp = new QGroupBox(tr("&Informations"), &informationDialog);
+	grp->setLayout(labelLayout);
 
-	QDialogButtonBox * buttonBox = new QDialogButtonBox( QDialogButtonBox::Ok );
-	buttonBox->setCenterButtons( true );
+	QDialogButtonBox * buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok);
+	buttonBox->setCenterButtons(true);
 
 	QVBoxLayout * vbox = new QVBoxLayout;
-	vbox->addWidget( grp );
-	vbox->addWidget( buttonBox );
+	vbox->addWidget(grp);
+	vbox->addWidget(buttonBox);
 
-	informationDialog.setLayout( vbox );
+	informationDialog.setLayout(vbox);
 
-	connect( buttonBox, SIGNAL(accepted()), &informationDialog, SLOT(accept()) );
+	connect(buttonBox, SIGNAL(accepted()), &informationDialog, SLOT(accept()));
 
 	informationDialog.exec();
 }
 
 
-void CustomModulesImpl::aboutScript( PluginElement * plugin ) {
-	Q_ASSERT( plugin );
-	Q_ASSERT( dynamic_cast<ScriptElement*>( plugin ) );
+void CustomModulesImpl::aboutScript(PluginElement * plugin)
+{
+	Q_ASSERT(plugin);
+	Q_ASSERT(dynamic_cast<ScriptElement*>(plugin));
 
-	ScriptElement * script = dynamic_cast<ScriptElement*>( plugin );
+	ScriptElement * script = dynamic_cast<ScriptElement*>(plugin);
 
 	QDialog informationDialog;
-	informationDialog.setWindowFlags( Qt::MSWindowsFixedSizeDialogHint | Qt::Dialog );
+	informationDialog.setWindowFlags(Qt::MSWindowsFixedSizeDialogHint | Qt::Dialog);
 
-	QLabel * informations = new QLabel( &informationDialog );
-	informations->setWordWrap( true );
-	informations->setOpenExternalLinks( true );
+	QLabel * informations = new QLabel(&informationDialog);
+	informations->setWordWrap(true);
+	informations->setOpenExternalLinks(true);
 	informations->setText(
-						   tr( "<table>"
-							   "<tr>"
-							   "<td colspan=\"3\"><b>%1</b></td>"
-							   "</tr>"
-							   "<tr><td colspan=\"3\"><hr/></td></tr>"
-							   "<tr>"
-							   "<td><b>Author</b></td>"
-							   "<td width=\"0\">:</td>"
-							   "<td>%2</td>"
-							   "</tr>"
-							   "<tr>"
-							   "<td><b>Version</b></td>"
-							   "<td width=\"0\">:</td>"
-							   "<td>%3</td>"
-							   "</tr>"
-							   "<tr>"
-							   "<td><b>Licence</b></td>"
-							   "<td width=\"0\">:</td>"
-							   "<td>%4</td>"
-							   "</tr>"
-							   "</table>" )
-						   .arg( script->name() )
-						   .arg( script->author() )
-						   .arg( script->version() )
-						   .arg( script->licence() )
-						 );
+	    tr("<table>"
+	       "<tr>"
+	       "<td colspan=\"3\"><b>%1</b></td>"
+	       "</tr>"
+	       "<tr><td colspan=\"3\"><hr/></td></tr>"
+	       "<tr>"
+	       "<td><b>Author</b></td>"
+	       "<td width=\"0\">:</td>"
+	       "<td>%2</td>"
+	       "</tr>"
+	       "<tr>"
+	       "<td><b>Version</b></td>"
+	       "<td width=\"0\">:</td>"
+	       "<td>%3</td>"
+	       "</tr>"
+	       "<tr>"
+	       "<td><b>Licence</b></td>"
+	       "<td width=\"0\">:</td>"
+	       "<td>%4</td>"
+	       "</tr>"
+	       "</table>")
+	    .arg(script->name())
+	    .arg(script->author())
+	    .arg(script->version())
+	    .arg(script->licence())
+	);
 
 	QVBoxLayout * labelLayout = new QVBoxLayout;
-	labelLayout->addWidget( informations );
+	labelLayout->addWidget(informations);
 
-	QGroupBox * grp = new QGroupBox( tr("&Informations"), &informationDialog );
-	grp->setLayout( labelLayout );
+	QGroupBox * grp = new QGroupBox(tr("&Informations"), &informationDialog);
+	grp->setLayout(labelLayout);
 
-	QDialogButtonBox * buttonBox = new QDialogButtonBox( QDialogButtonBox::Ok );
-	buttonBox->setCenterButtons( true );
+	QDialogButtonBox * buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok);
+	buttonBox->setCenterButtons(true);
 
 	QVBoxLayout * vbox = new QVBoxLayout;
-	vbox->addWidget( grp );
-	vbox->addWidget( buttonBox );
+	vbox->addWidget(grp);
+	vbox->addWidget(buttonBox);
 
-	informationDialog.setLayout( vbox );
+	informationDialog.setLayout(vbox);
 
-	connect( buttonBox, SIGNAL(accepted()), &informationDialog, SLOT(accept()) );
+	connect(buttonBox, SIGNAL(accepted()), &informationDialog, SLOT(accept()));
 
 	informationDialog.exec();
 }

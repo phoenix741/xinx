@@ -27,18 +27,19 @@
 // Qt header
 #include <QAbstractTableModel>
 
-class SpecifiqueModelIndex : public QAbstractTableModel {
+class SpecifiqueModelIndex : public QAbstractTableModel
+{
 	Q_OBJECT
 public:
-	SpecifiqueModelIndex( QHash<QString,GenerixSettings::struct_extentions> * extentions, QObject * parent = 0 );
+	SpecifiqueModelIndex(QHash<QString,GenerixSettings::struct_extentions> * extentions, QObject * parent = 0);
 	virtual ~SpecifiqueModelIndex();
 
-	virtual int rowCount( const QModelIndex & parent = QModelIndex() ) const;
-	virtual int columnCount( const QModelIndex & parent = QModelIndex() ) const;
-	virtual QVariant headerData( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
-	virtual bool setData( const QModelIndex & index, const QVariant & value, int role = Qt::EditRole );
-	virtual QVariant data( const QModelIndex & index, int role = Qt::DisplayRole ) const;
-	virtual Qt::ItemFlags flags( const QModelIndex & index ) const;
+	virtual int rowCount(const QModelIndex & parent = QModelIndex()) const;
+	virtual int columnCount(const QModelIndex & parent = QModelIndex()) const;
+	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+	virtual bool setData(const QModelIndex & index, const QVariant & value, int role = Qt::EditRole);
+	virtual QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
+	virtual Qt::ItemFlags flags(const QModelIndex & index) const;
 private:
 	QHash<QString,GenerixSettings::struct_extentions> * m_extentions;
 };

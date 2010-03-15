@@ -29,12 +29,13 @@
 
 /* CategoryPropertyDlgImpl */
 
-CategoryPropertyDlgImpl::CategoryPropertyDlgImpl( int categoryId, QSqlDatabase db, QWidget * parent, Qt::WindowFlags f ) : QDialog( parent, f ) {
+CategoryPropertyDlgImpl::CategoryPropertyDlgImpl(int categoryId, QSqlDatabase db, QWidget * parent, Qt::WindowFlags f) : QDialog(parent, f)
+{
 	setupUi();
 
-	m_categoryTableModel = new QSqlTableModel( this, db );
-	m_categoryTableModel->setTable( "categories" );
-	m_categoryTableModel->setFilter( QString( "id = %1" ).arg( categoryId ) );
+	m_categoryTableModel = new QSqlTableModel(this, db);
+	m_categoryTableModel->setTable("categories");
+	m_categoryTableModel->setFilter(QString("id = %1").arg(categoryId));
 	m_categoryTableModel->select();
 
 	createMapper();
@@ -42,87 +43,97 @@ CategoryPropertyDlgImpl::CategoryPropertyDlgImpl( int categoryId, QSqlDatabase d
 	m_mapper->toFirst();
 }
 
-CategoryPropertyDlgImpl::CategoryPropertyDlgImpl( QSqlDatabase db, QWidget * parent, Qt::WindowFlags f ) : QDialog( parent, f ) {
+CategoryPropertyDlgImpl::CategoryPropertyDlgImpl(QSqlDatabase db, QWidget * parent, Qt::WindowFlags f) : QDialog(parent, f)
+{
 	setupUi();
 
-	m_categoryTableModel = new QSqlTableModel( this, db );
-	m_categoryTableModel->setTable( "categories" );
+	m_categoryTableModel = new QSqlTableModel(this, db);
+	m_categoryTableModel->setTable("categories");
 	m_categoryTableModel->select();
 
-	int field = m_categoryTableModel->fieldIndex( "parent_id" );
+	int field = m_categoryTableModel->fieldIndex("parent_id");
 	int row = m_categoryTableModel->rowCount();
-	m_categoryTableModel->insertRow( row );
-	QModelIndex index = m_categoryTableModel->index( row, field );
-	m_categoryTableModel->setData( index, 0 );
+	m_categoryTableModel->insertRow(row);
+	QModelIndex index = m_categoryTableModel->index(row, field);
+	m_categoryTableModel->setData(index, 0);
 
 	createMapper();
 
-	m_mapper->setCurrentIndex( row );
+	m_mapper->setCurrentIndex(row);
 }
 
-CategoryPropertyDlgImpl::~CategoryPropertyDlgImpl() {
+CategoryPropertyDlgImpl::~CategoryPropertyDlgImpl()
+{
 }
 
-void CategoryPropertyDlgImpl::setupUi() {
-	Ui::CategoryPropertyDialog::setupUi( this );
+void CategoryPropertyDlgImpl::setupUi()
+{
+	Ui::CategoryPropertyDialog::setupUi(this);
 
 	// List of category
-	m_categoryModel = SnipetManager::self()->createCategoryItemModel( m_categoryTreeView );
+	m_categoryModel = SnipetManager::self()->createCategoryItemModel(m_categoryTreeView);
 	m_categoryModel->select();
-	m_categoryTreeView->setModel( m_categoryModel );
+	m_categoryTreeView->setModel(m_categoryModel);
 	m_categoryTreeView->expandAll();
 }
 
-void CategoryPropertyDlgImpl::createMapper() {
-	m_mapper = new QDataWidgetMapper( this );
-	m_mapper->setSubmitPolicy( QDataWidgetMapper::ManualSubmit );
-	m_mapper->setModel( m_categoryTableModel );
-	m_mapper->addMapping( m_nameLineEdit, m_categoryTableModel->fieldIndex( "name" ) );
-	m_mapper->addMapping( m_descriptionTextEdit, m_categoryTableModel->fieldIndex( "description" ) );
-	m_mapper->addMapping( m_categoryTreeView, m_categoryTableModel->fieldIndex( "parent_id" ) );
-	m_mapper->addMapping( m_availablePlainTextEdit, m_categoryTableModel->fieldIndex( "available_script" ) );
+void CategoryPropertyDlgImpl::createMapper()
+{
+	m_mapper = new QDataWidgetMapper(this);
+	m_mapper->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
+	m_mapper->setModel(m_categoryTableModel);
+	m_mapper->addMapping(m_nameLineEdit, m_categoryTableModel->fieldIndex("name"));
+	m_mapper->addMapping(m_descriptionTextEdit, m_categoryTableModel->fieldIndex("description"));
+	m_mapper->addMapping(m_categoryTreeView, m_categoryTableModel->fieldIndex("parent_id"));
+	m_mapper->addMapping(m_availablePlainTextEdit, m_categoryTableModel->fieldIndex("available_script"));
 }
 
-void CategoryPropertyDlgImpl::setParentId( int id ) {
-	m_categoryTreeView->setCategoryId( id );
+void CategoryPropertyDlgImpl::setParentId(int id)
+{
+	m_categoryTreeView->setCategoryId(id);
 }
 
-void CategoryPropertyDlgImpl::setCategoryAccess( bool value ) {
-	m_addCategoryButton->setVisible( value );
-	m_removeCategoryButton->setVisible( value );
+void CategoryPropertyDlgImpl::setCategoryAccess(bool value)
+{
+	m_addCategoryButton->setVisible(value);
+	m_removeCategoryButton->setVisible(value);
 }
 
-void CategoryPropertyDlgImpl::on_m_categoryTreeView_activated ( const QModelIndex & index ) {
-	int id = index.data( CategoryItemModel::CategoryIdRole ).toInt();
+void CategoryPropertyDlgImpl::on_m_categoryTreeView_activated(const QModelIndex & index)
+{
+	int id = index.data(CategoryItemModel::CategoryIdRole).toInt();
 
-	m_addCategoryButton->setEnabled( index != QModelIndex() );
-	m_removeCategoryButton->setEnabled( ( id != 0 ) && ( index != QModelIndex() ) );
+	m_addCategoryButton->setEnabled(index != QModelIndex());
+	m_removeCategoryButton->setEnabled((id != 0) && (index != QModelIndex()));
 }
 
-void CategoryPropertyDlgImpl::on_m_addCategoryButton_clicked() {
+void CategoryPropertyDlgImpl::on_m_addCategoryButton_clicked()
+{
 	QModelIndexList list = m_categoryTreeView->selectionModel()->selectedIndexes();
-	Q_ASSERT( list.size() );
+	Q_ASSERT(list.size());
 
-	int id = list.at( 0 ).data( CategoryItemModel::CategoryIdRole ).toInt();
+	int id = list.at(0).data(CategoryItemModel::CategoryIdRole).toInt();
 
-	SnipetManager::self()->addCategory( id, false, this );
+	SnipetManager::self()->addCategory(id, false, this);
 
 	m_categoryModel->select();
 	m_categoryTreeView->expandAll();
 }
 
-void CategoryPropertyDlgImpl::on_m_removeCategoryButton_clicked() {
+void CategoryPropertyDlgImpl::on_m_removeCategoryButton_clicked()
+{
 	QModelIndexList list = m_categoryTreeView->selectionModel()->selectedIndexes();
-	Q_ASSERT( list.size() );
+	Q_ASSERT(list.size());
 
-	int id = list.at( 0 ).data( CategoryItemModel::CategoryIdRole ).toInt();
+	int id = list.at(0).data(CategoryItemModel::CategoryIdRole).toInt();
 
-	SnipetManager::self()->removeCategory( id, this );
+	SnipetManager::self()->removeCategory(id, this);
 
 	m_categoryModel->select();
 	m_categoryTreeView->expandAll();
 }
 
-void CategoryPropertyDlgImpl::on_m_buttons_accepted() {
+void CategoryPropertyDlgImpl::on_m_buttons_accepted()
+{
 	m_mapper->submit();
 }

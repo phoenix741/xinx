@@ -39,7 +39,8 @@ class SnipetMenu;
  * The goal of SnipetDataBaseManager is too manage the new snipet interface
  * of XINX. This interface create table if necessary in the SQL database.
  */
-class LIBEXPORT SnipetManager : public QObject {
+class LIBEXPORT SnipetManager : public QObject
+{
 	Q_OBJECT
 public:
 	~SnipetManager();
@@ -48,39 +49,39 @@ public:
 
 	QSqlDatabase database() const;
 
-	CategoryItemModel * createCategoryItemModel( QObject * parent = 0 );
-	SnipetItemModel * createSnipetItemModel( QObject * parent = 0 );
-	SnipetDockItemModel * createSnipetDockItemModel( QObject * parent = 0 );
-	SnipetMenu * createSnipetMenu( const QString & title = QString(), QWidget * parent = 0 );
+	CategoryItemModel * createCategoryItemModel(QObject * parent = 0);
+	SnipetItemModel * createSnipetItemModel(QObject * parent = 0);
+	SnipetDockItemModel * createSnipetDockItemModel(QObject * parent = 0);
+	SnipetMenu * createSnipetMenu(const QString & title = QString(), QWidget * parent = 0);
 
-	void addCategory( int parentId = 0, bool categoryAccess = true, QWidget * parent = 0 );
-	void removeCategory( int id, QWidget * parent = 0 );
-	void modifyCategory( int id, QWidget * parent = 0 );
+	void addCategory(int parentId = 0, bool categoryAccess = true, QWidget * parent = 0);
+	void removeCategory(int id, QWidget * parent = 0);
+	void modifyCategory(int id, QWidget * parent = 0);
 
-	void addSnipet( int parentId, QWidget * parent = 0 );
-	void modifySnipet( int id, QWidget * parent = 0 );
-	void duplicateSnipet( int id, QWidget * parent = 0 );
-	bool removeSnipet( int id, QWidget * parent = 0 );
+	void addSnipet(int parentId, QWidget * parent = 0);
+	void modifySnipet(int id, QWidget * parent = 0);
+	void duplicateSnipet(int id, QWidget * parent = 0);
+	bool removeSnipet(int id, QWidget * parent = 0);
 
 	QList<int> snipets() const;
-	QList<int> snipets( int categoryId ) const;
-	bool importSnipetList( const SnipetList & list, QWidget * parent = 0 );
-	bool exportSnipetList( const QList<int> & list, SnipetList * snipets, QWidget * parent = 0 );
+	QList<int> snipets(int categoryId) const;
+	bool importSnipetList(const SnipetList & list, QWidget * parent = 0);
+	bool exportSnipetList(const QList<int> & list, SnipetList * snipets, QWidget * parent = 0);
 
-	bool callSnipet( int id, QString * result, QWidget * parent = 0 );
-	bool callSnipet( QString key, QString * result, const QString & filename = QString(), QWidget * parent = 0 );
-	bool callAutomaticSnipet( QString key, QString * result, const QString & filename = QString(), QWidget * parent = 0 );
+	bool callSnipet(int id, QString * result, QWidget * parent = 0);
+	bool callSnipet(QString key, QString * result, const QString & filename = QString(), QWidget * parent = 0);
+	bool callAutomaticSnipet(QString key, QString * result, const QString & filename = QString(), QWidget * parent = 0);
 
-	bool executeSnipetScript( const QString & script, const QStringList & values, QString * result ) const;
-	bool isAvailable( const QString & script, const QString & type, int id ) const;
-	bool isSnipetMatch( const QString & filename, int snipetId ) const;
+	bool executeSnipetScript(const QString & script, const QStringList & values, QString * result) const;
+	bool isAvailable(const QString & script, const QString & type, int id) const;
+	bool isSnipetMatch(const QString & filename, int snipetId) const;
 
-	int getCategoryId( const QStringList & category );
-	QStringList getCategoryName( int id );
+	int getCategoryId(const QStringList & category);
+	QStringList getCategoryName(int id);
 private:
 	SnipetManager();
 	bool openDatabase() const;
-	bool createDatabase( QSqlDatabase db ) const;
+	bool createDatabase(QSqlDatabase db) const;
 	void closeDatabase() const;
 
 	QObjectCleanupHandler m_handler;

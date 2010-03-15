@@ -34,7 +34,8 @@ class PluginElement;
  *
  * If the plugins propose one, the list can also show an icon.
  */
-class PluginSelector : public QListView {
+class PluginSelector : public QListView
+{
 	Q_OBJECT
 	Q_CLASSINFO("Author", "Ulrich Van Den Hekke")
 	Q_CLASSINFO("URL", "http://xinx.shadoware.org")
@@ -44,12 +45,12 @@ public:
 	 * Create the plugin selector widget.
 	 * \param parent The parent widget.
 	 */
-	PluginSelector( QWidget *parent = 0 );
+	PluginSelector(QWidget *parent = 0);
 	//! Destroy the plugin selector.
 	virtual ~PluginSelector();
 
 	//! Add a plugin to the list. The plugin must be a \e XinxPluginElement.
-	void addPlugin( PluginElement * plugin );
+	void addPlugin(PluginElement * plugin);
 
 	//! List of plugins add in the \e PluginSelector
 	const QList<PluginElement*> & plugins() const;
@@ -63,9 +64,9 @@ public slots:
 
 signals:
 	//! This signal is emited when the plugin request to be configured.
-	void configurePlugin( PluginElement * plugin );
+	void configurePlugin(PluginElement * plugin);
 	//! The signal is emited when the plugin request to show a description.
-	void aboutPlugin( PluginElement * plugin );
+	void aboutPlugin(PluginElement * plugin);
 private:
 	PrivatePluginSelector * d;
 	friend class PrivatePluginSelector;

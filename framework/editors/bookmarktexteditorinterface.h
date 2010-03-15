@@ -29,10 +29,11 @@
 class XinxCodeEdit;
 class TextFileEditor;
 
-class LIBEXPORT BookmarkTextEditorInterface : public BookmarkEditorInterface {
+class LIBEXPORT BookmarkTextEditorInterface : public BookmarkEditorInterface
+{
 	Q_OBJECT
 public:
-	BookmarkTextEditorInterface( TextFileEditor * parent );
+	BookmarkTextEditorInterface(TextFileEditor * parent);
 
 	/*!
 	 * List of bookmarks of the editor
@@ -40,19 +41,19 @@ public:
 	virtual QList<int> bookmarks() const;
 
 
-	void setBookmark( int line, bool enabled );
+	void setBookmark(int line, bool enabled);
 	virtual void toogledBookmark();
-	virtual void gotoBookmarkAt( int i );
-	virtual QString bookmarkAt( int i );
+	virtual void gotoBookmarkAt(int i);
+	virtual QString bookmarkAt(int i);
 	virtual int bookmarkCount();
 	virtual bool previousBookmark();
 	virtual bool nextBookmark();
 	virtual void clearAllBookmark();
 
-	void setTextEditor( XinxCodeEdit * textEdit );
+	void setTextEditor(XinxCodeEdit * textEdit);
 public slots:
 	/*! Slot called when the bookmark is toogled on a line. This slot change the project settings. */
-	void slotBookmarkToggled( int line, bool enabled );
+	void slotBookmarkToggled(int line, bool enabled);
 
 private:
 	XinxCodeEdit * m_view;

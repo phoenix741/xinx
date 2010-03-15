@@ -23,7 +23,6 @@
 
 // Xinx header
 #include <editors/textfileeditor.h>
-#include <editors/contentviewtexteditor.h>
 
 // Qt header
 #include <QProcess>
@@ -37,10 +36,11 @@ class XslTextEditor;
 
 /* XmlFileEditor */
 
-class XmlFileEditor : public TextFileEditor {
+class XmlFileEditor : public TextFileEditor
+{
 	Q_OBJECT
 public:
-	XmlFileEditor( QWidget *parent = 0 );
+	XmlFileEditor(QWidget *parent = 0);
 	virtual ~XmlFileEditor();
 
 	virtual QString defaultFileName() const;
@@ -50,7 +50,7 @@ public:
 	virtual QIcon icon() const;
 	virtual QTextCodec * codec() const;
 
-	virtual void loadFromDevice( QIODevice & d );
+	virtual void loadFromDevice(QIODevice & d);
 private:
 	void initObjects();
 

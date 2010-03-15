@@ -52,73 +52,83 @@ Q_IMPORT_PLUGIN(coreplugin);
 
 MainformImpl * mainWin = NULL;
 
-class SignalSegFaultException : public XinxException {
+class SignalSegFaultException : public XinxException
+{
 public:
-	SignalSegFaultException( int signal ) : XinxException( QString("Signal emited : %1").arg( signal ) ) {
+	SignalSegFaultException(int signal) : XinxException(QString("Signal emited : %1").arg(signal))
+	{
 
 	}
 };
 
-void backup_appli_signal( int signal ) {
+void backup_appli_signal(int signal)
+{
 	std::signal(SIGSEGV, SIG_DFL);
 	std::signal(SIGABRT, SIG_DFL);
 	std::signal(SIGINT, SIG_DFL);
 	std::signal(SIGTERM, SIG_DFL);
-	throw SignalSegFaultException( signal );
+	throw SignalSegFaultException(signal);
 }
 
-void initSearchPath() {
+void initSearchPath()
+{
 	// .. for datas ...
-	QDir::addSearchPath( "datas", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../datas" ) );
+	QDir::addSearchPath("datas", QDir(QApplication::applicationDirPath()).absoluteFilePath("../datas"));
 #ifndef Q_WS_WIN
-	QDir::addSearchPath( "datas", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../share/xinx/datas" ) );
+	QDir::addSearchPath("datas", QDir(QApplication::applicationDirPath()).absoluteFilePath("../share/xinx/datas"));
 #endif /* Q_WS_WIN */
 
 	// ... for scripts ...
-	QDir::addSearchPath( "scripts", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../scripts" ) );
+	QDir::addSearchPath("scripts", QDir(QApplication::applicationDirPath()).absoluteFilePath("../scripts"));
 #ifndef Q_WS_WIN
-	QDir::addSearchPath( "scripts", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../share/xinx/scripts" ) );
+	QDir::addSearchPath("scripts", QDir(QApplication::applicationDirPath()).absoluteFilePath("../share/xinx/scripts"));
 #endif /* Q_WS_WIN */
 
 	// ... for plugins ...
-	QDir::addSearchPath( "plugins", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../plugins" ) );
+	QDir::addSearchPath("plugins", QDir(QApplication::applicationDirPath()).absoluteFilePath("../plugins"));
 #ifndef Q_WS_WIN
-	QDir::addSearchPath( "plugins", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../share/xinx/plugins" ) );
+	QDir::addSearchPath("plugins", QDir(QApplication::applicationDirPath()).absoluteFilePath("../share/xinx/plugins"));
 #endif /* Q_WS_WIN */
 
 	// ... for tempalte ...
-	QDir::addSearchPath( "templates", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../templates" ) );
+	QDir::addSearchPath("templates", QDir(QApplication::applicationDirPath()).absoluteFilePath("../templates"));
 #ifndef Q_WS_WIN
-	QDir::addSearchPath( "templates", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../share/xinx/templates" ) );
+	QDir::addSearchPath("templates", QDir(QApplication::applicationDirPath()).absoluteFilePath("../share/xinx/templates"));
 #endif /* Q_WS_WIN */
 }
 
-void processSnipetArguments( const QStringList & args ) {
+void processSnipetArguments(const QStringList & args)
+{
 	initSearchPath();
-	for( int i = 0 ; i < args.count() ; i++ ) {
-		if( i + 1 >= args.count() ) break;
+	for (int i = 0 ; i < args.count() ; i++)
+	{
+		if (i + 1 >= args.count()) break;
 
-		const QString & arg = args.at( i );
-		const QString & filename = args.at( i + 1 );
+		const QString & arg = args.at(i);
+		const QString & filename = args.at(i + 1);
 
 
-		if( arg == "--import" ) {
+		if (arg == "--import")
+		{
 			SnipetList list;
-			list.loadFromFile( filename );
-			SnipetManager::self()->importSnipetList( list );
-		} else if( arg == "--export" ) {
+			list.loadFromFile(filename);
+			SnipetManager::self()->importSnipetList(list);
+		}
+		else if (arg == "--export")
+		{
 			QList<int> ids = SnipetManager::self()->snipets();
 
 			SnipetList list;
-			if( SnipetManager::self()->exportSnipetList( ids, &list ) )
-			list.saveToFile( filename );
+			if (SnipetManager::self()->exportSnipetList(ids, &list))
+				list.saveToFile(filename);
 		}
 	}
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
 	Q_INIT_RESOURCE(application);
-	qsrand( time( NULL ) );
+	qsrand(time(NULL));
 
 	std::signal(SIGSEGV, backup_appli_signal);
 	std::signal(SIGABRT, backup_appli_signal);
@@ -126,25 +136,28 @@ int main(int argc, char *argv[]) {
 	std::signal(SIGTERM, backup_appli_signal);
 
 #if defined(Q_WS_WIN)
-	if( QSysInfo::WindowsVersion >= QSysInfo::WV_VISTA && QSysInfo::WindowsVersion < QSysInfo::WV_NT_based )
+	if (QSysInfo::WindowsVersion >= QSysInfo::WV_VISTA && QSysInfo::WindowsVersion < QSysInfo::WV_NT_based)
 		QApplication::setStyle(QStyleFactory::create("Explorer"));
 #endif // Q_WS_WIN
 
-	UniqueApplication app( argc, argv );
-	try {
+	UniqueApplication app(argc, argv);
+	try
+	{
 		QStringList args = app.arguments();
 
-		app.setOrganizationName( "Shadoware" );
-		app.setOrganizationDomain( "Shadoware.Org" );
-		app.setApplicationName( "XINX" );
+		app.setOrganizationName("Shadoware");
+		app.setOrganizationDomain("Shadoware.Org");
+		app.setApplicationName("XINX");
 
-		if( args.contains( "--snipet" ) ) {
-			processSnipetArguments( args );
+		if (args.contains("--snipet"))
+		{
+			processSnipetArguments(args);
 			return 0;
 		}
 
 		// .. If application is not started
-		if( ! app.isRunning() ) {
+		if (! app.isRunning())
+		{
 			// Create the splash screen
 			QPixmap pixmap(":/images/splash.png");
 			QSplashScreen splash(pixmap);
@@ -153,74 +166,78 @@ int main(int argc, char *argv[]) {
 			app.processEvents();
 
 			/* Load the exception manager */
-			splash.showMessage( QApplication::translate("SplashScreen", "Install exception handler ...") );
+			splash.showMessage(QApplication::translate("SplashScreen", "Install exception handler ..."));
 			app.processEvents();
 			ExceptionManager::installExceptionHandler();
 
 			// Initialize search path for datas ...
-			splash.showMessage( QApplication::translate("SplashScreen", "Initialize search path ...") );
+			splash.showMessage(QApplication::translate("SplashScreen", "Initialize search path ..."));
 			app.processEvents();
 			initSearchPath();
-			app.addLibraryPath( "plugins:" );
+			app.addLibraryPath("plugins:");
 
 			/*
 			 * To have the lang and style loaded earlier in the process, we load configuration of XINX
 			 * XINX Config doens't have call to another Big instance (has XinxPluginsLoader)
 			 */
-			splash.showMessage( QApplication::translate("SplashScreen", "Load configuration ...") );
+			splash.showMessage(QApplication::translate("SplashScreen", "Load configuration ..."));
 			app.processEvents();
 
 			XINXConfig::self()->load();
-			if( ! XINXConfig::self()->config().style.isEmpty() ) {
-				QApplication::setStyle( XINXConfig::self()->config().style );
+			if (! XINXConfig::self()->config().style.isEmpty())
+			{
+				QApplication::setStyle(XINXConfig::self()->config().style);
 			}
 
 			// Now we know which lang use, we can load translations. We are not lost in translation ...
-			splash.showMessage( QApplication::translate("SplashScreen", "Load translations ...") );
+			splash.showMessage(QApplication::translate("SplashScreen", "Load translations ..."));
 			app.processEvents();
 
 			// ... load qt translation ...
 			QTranslator translator_xinx, translator_qt, translator_libxinx, tranlator_components;
-			translator_qt.load( QString(":/translations/qt_%1").arg( XINXConfig::self()->config().language ) );
+			translator_qt.load(QString(":/translations/qt_%1").arg(XINXConfig::self()->config().language));
 			app.installTranslator(&translator_qt);
 			// ... load xinx translation ...
-			translator_xinx.load( QString(":/translations/xinx_%1").arg( XINXConfig::self()->config().language ) );
+			translator_xinx.load(QString(":/translations/xinx_%1").arg(XINXConfig::self()->config().language));
 			app.installTranslator(&translator_xinx);
 			// ... load xinx library translation ...
-			translator_libxinx.load( QString(":/translations/libxinx_%1").arg( XINXConfig::self()->config().language ) );
+			translator_libxinx.load(QString(":/translations/libxinx_%1").arg(XINXConfig::self()->config().language));
 			app.installTranslator(&translator_libxinx);
 			// ... load components translations
-			tranlator_components.load( QString(":/translations/xinxcomponents_%1").arg( XINXConfig::self()->config().language ) );
+			tranlator_components.load(QString(":/translations/xinxcomponents_%1").arg(XINXConfig::self()->config().language));
 			app.installTranslator(&tranlator_components);
 
 			/* Load available marks (for QCodeEdit use) */
-			splash.showMessage( QApplication::translate("SplashScreen", "Load available marks ...") );
+			splash.showMessage(QApplication::translate("SplashScreen", "Load available marks ..."));
 			app.processEvents();
-			QLineMarksInfoCenter::instance()->loadMarkTypes( ":/qcodeedit/marks.qxm" );
+			QLineMarksInfoCenter::instance()->loadMarkTypes(":/qcodeedit/marks.qxm");
 
 			// Loads plugins
-			splash.showMessage( QApplication::translate("SplashScreen", "Load plugins ...") );
+			splash.showMessage(QApplication::translate("SplashScreen", "Load plugins ..."));
 			app.processEvents();
 			XinxPluginsLoader::self()->loadPlugins();
 
-			splash.showMessage( QApplication::translate("SplashScreen", "Load main window ...") );
+			splash.showMessage(QApplication::translate("SplashScreen", "Load main window ..."));
 			app.processEvents();
-			app.attachMainWindow( mainWin = new MainformImpl() );
+			app.attachMainWindow(mainWin = new MainformImpl());
 
-			if( ( args.count() == 1 ) && ( XINXConfig::self()->config().project.openTheLastProjectAtStart ) && (! XINXConfig::self()->config().project.lastOpenedProject.isEmpty()) ) {
-				splash.showMessage( QApplication::translate("SplashScreen", "Load last opened project ...") );
+			if ((args.count() == 1) && (XINXConfig::self()->config().project.openTheLastProjectAtStart) && (! XINXConfig::self()->config().project.lastOpenedProject.isEmpty()))
+			{
+				splash.showMessage(QApplication::translate("SplashScreen", "Load last opened project ..."));
 				app.processEvents();
-				mainWin->openProject( XINXConfig::self()->config().project.lastOpenedProject );
+				mainWin->openProject(XINXConfig::self()->config().project.lastOpenedProject);
 			}
 
-			if( args.count() > 1 ) {
-				splash.showMessage( QApplication::translate("SplashScreen", "Load arguments ...") );
+			if (args.count() > 1)
+			{
+				splash.showMessage(QApplication::translate("SplashScreen", "Load arguments ..."));
 				app.processEvents();
 
 				QStringList::iterator it = args.begin();
 				it++;
-				while (it != args.end()) {
-					if(QFile(*it).exists()) mainWin->openFile( *it );
+				while (it != args.end())
+				{
+					if (QFile(*it).exists()) mainWin->openFile(*it);
 					it++;
 				}
 			}
@@ -228,7 +245,8 @@ int main(int argc, char *argv[]) {
 			mainWin->show();
 			splash.finish(mainWin);
 
-			if(! ( ( args.count() == 1 ) && ( XINXConfig::self()->config().project.openTheLastProjectAtStart ) && (! XINXConfig::self()->config().project.lastOpenedProject.isEmpty()) ) ) {
+			if (!((args.count() == 1) && (XINXConfig::self()->config().project.openTheLastProjectAtStart) && (! XINXConfig::self()->config().project.lastOpenedProject.isEmpty())))
+			{
 				mainWin->openWelcomDialog();
 			}
 
@@ -239,23 +257,31 @@ int main(int argc, char *argv[]) {
 			delete XINXStaticDeleter::self();
 
 			return result;
-		} else {
+		}
+		else
+		{
 			// Send Parameter to open
-			if(args.count() > 0) {
+			if (args.count() > 0)
+			{
 				QStringList::iterator it = args.begin();
 				it++;
-				while (it != args.end()) {
-					if(QFile(*it).exists()) app.sendMessage(*it);
+				while (it != args.end())
+				{
+					if (QFile(*it).exists()) app.sendMessage(*it);
 					it++;
 				}
 			}
-	 		return 255;
+			return 255;
 		}
-	} catch( XinxException e ) {
-		qFatal( "In main : %s", qPrintable( e.getMessage() ) );
+	}
+	catch (XinxException e)
+	{
+		qFatal("In main : %s", qPrintable(e.getMessage()));
 		return false;
-	} catch( ... ) {
-		qFatal( "In main : Generic Exception" );
+	}
+	catch (...)
+	{
+		qFatal("In main : Generic Exception");
 		return 1;
 	}
 }

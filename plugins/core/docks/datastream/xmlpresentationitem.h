@@ -29,24 +29,25 @@
 #include <QModelIndex>
 #include <QVariant>
 
-class XmlPresentationItem {
+class XmlPresentationItem
+{
 public:
-	XmlPresentationItem( QDomNode node, int row, XmlPresentationItem * parent = 0 );
+	XmlPresentationItem(QDomNode node, int row, XmlPresentationItem * parent = 0);
 	virtual ~XmlPresentationItem();
-	
+
 	int count();
-	XmlPresentationItem * child( int i );
+	XmlPresentationItem * child(int i);
 	XmlPresentationItem * parent();
 	int row();
-	
-	QString xpath( bool unique = true ) const;
+
+	QString xpath(bool unique = true) const;
 	virtual QString tipsText() const;
-	virtual QString xpathName( bool unique = true ) const;
+	virtual QString xpathName(bool unique = true) const;
 
 	QString businessData() const;
 	QString screenData() const;
 	QString errorData() const;
-	
+
 	QDomNode node() const;
 protected:
 	QString m_businessData, m_screenData, m_error;
@@ -56,50 +57,54 @@ protected:
 	int m_rowNumber;
 };
 
-class XmlPresentationNodeItem : public XmlPresentationItem {
+class XmlPresentationNodeItem : public XmlPresentationItem
+{
 public:
-	XmlPresentationNodeItem( QDomNode node, int row, XmlPresentationItem * parent = 0 );
+	XmlPresentationNodeItem(QDomNode node, int row, XmlPresentationItem * parent = 0);
 	virtual ~XmlPresentationNodeItem();
 
 	virtual QString tipsText() const;
-	virtual QString xpathName( bool unique = true ) const;
+	virtual QString xpathName(bool unique = true) const;
 	bool isView() const;
 };
 
-class XmlPresentationParamItem : public XmlPresentationItem {
+class XmlPresentationParamItem : public XmlPresentationItem
+{
 public:
-	XmlPresentationParamItem( QDomNode node, int row, XmlPresentationItem * parent = 0 );
+	XmlPresentationParamItem(QDomNode node, int row, XmlPresentationItem * parent = 0);
 	virtual ~XmlPresentationParamItem();
 
-	virtual QString xpathName( bool unique = true ) const;
+	virtual QString xpathName(bool unique = true) const;
 	virtual QString tipsText() const;
 	QString value() const;
 };
 
-class XmlPresentationModel : public QAbstractItemModel {
+class XmlPresentationModel : public QAbstractItemModel
+{
 	Q_OBJECT
 public:
-	enum PresentationRole {
+	enum PresentationRole
+	{
 		XNamedPathRole = 32,
 		XPathRole = 33,
 		NamedViewRole = 34
 	};
-	
-	XmlPresentationModel( QDomDocument document, QObject *parent = 0 );
+
+	XmlPresentationModel(QDomDocument document, QObject *parent = 0);
 	~XmlPresentationModel();
 
-	QVariant data( const QModelIndex &index, int role ) const;
-	Qt::ItemFlags flags( const QModelIndex &index ) const;
-	QVariant headerData( int section, Qt::Orientation orientation,
-						 int role = Qt::DisplayRole ) const;
-	QModelIndex index( int row, int column,
-					   const QModelIndex &parent = QModelIndex() ) const;
-	QModelIndex parent( const QModelIndex &child ) const;
-	int rowCount( const QModelIndex &parent = QModelIndex() ) const;
-	int columnCount( const QModelIndex &parent = QModelIndex() ) const;
+	QVariant data(const QModelIndex &index, int role) const;
+	Qt::ItemFlags flags(const QModelIndex &index) const;
+	QVariant headerData(int section, Qt::Orientation orientation,
+	                    int role = Qt::DisplayRole) const;
+	QModelIndex index(int row, int column,
+	                  const QModelIndex &parent = QModelIndex()) const;
+	QModelIndex parent(const QModelIndex &child) const;
+	int rowCount(const QModelIndex &parent = QModelIndex()) const;
+	int columnCount(const QModelIndex &parent = QModelIndex()) const;
 
 	QStringList mimeTypes() const;
-	QMimeData * mimeData( const QModelIndexList &indexes ) const;
+	QMimeData * mimeData(const QModelIndexList &indexes) const;
 private:
 	QDomNode m_rootElement;
 	XmlPresentationItem * m_rootItem;

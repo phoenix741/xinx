@@ -26,22 +26,21 @@
 class XinxProject;
 class IXinxPluginProjectConfigurationPage;
 
-class ProjectPropertyImpl : public QDialog, public Ui::ProjectProperty {
+class ProjectPropertyImpl : public QDialog, public Ui::ProjectProperty
+{
 	Q_OBJECT
 public:
-	ProjectPropertyImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
+	ProjectPropertyImpl(QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint);
 	virtual ~ProjectPropertyImpl();
 
-	void loadFromProject( XinxProject * );
-	void saveToProject( XinxProject * );
+	void loadFromProject(XinxProject *);
+	void saveToProject(XinxProject *);
 private:
 	QList< IXinxPluginProjectConfigurationPage* > m_pluginPages;
 	QHash< QString, QTreeWidgetItem* > m_pluginsCheck;
 private slots:
 	void on_m_tree_currentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem* previous);
 	void updateOkButton();
-	void on_m_addPreloadedFile_clicked();
-	void on_m_preloadedFiles_itemSelectionChanged();
 };
 
 #endif

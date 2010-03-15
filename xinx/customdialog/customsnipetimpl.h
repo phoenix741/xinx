@@ -28,10 +28,11 @@
 class SnipetItemModel;
 class RecursiveSortFilterProxyModel;
 
-class CustomSnipetImpl : public QWidget, public Ui::CustomSnipet, public IXinxPluginConfigurationPage {
+class CustomSnipetImpl : public QWidget, public Ui::CustomSnipet, public IXinxPluginConfigurationPage
+{
 	Q_OBJECT
 public:
-	CustomSnipetImpl( QWidget * parent = 0 );
+	CustomSnipetImpl(QWidget * parent = 0);
 	~CustomSnipetImpl();
 
 	virtual QPixmap image();
@@ -54,10 +55,10 @@ private slots:
 	void on_m_duplicatePushButton_clicked();
 
 	void m_snipetTreeView_selectionChanged();
-	void on_m_snipetTreeView_doubleClicked( const QModelIndex & index );
-	void on_m_snipetFilterLineEdit_textChanged( const QString & filterText );
+	void on_m_snipetTreeView_doubleClicked(const QModelIndex & index);
+	void on_m_snipetFilterLineEdit_textChanged(const QString & filterText);
 private:
-	int getCategory( const QModelIndex & index );
+	int getCategory(const QModelIndex & index);
 
 	RecursiveSortFilterProxyModel * m_snipetFilterModel;
 	SnipetItemModel * m_snipetModel;

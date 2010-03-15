@@ -37,9 +37,10 @@ class WebServices;
 
 class PrivateParameter;
 
-class Parameter {
+class Parameter
+{
 public:
-	Parameter( QString paramString, QString paramType );
+	Parameter(QString paramString, QString paramType);
 	virtual ~Parameter();
 	const QString & paramString() const;
 	const QString & paramType() const;
@@ -50,9 +51,10 @@ private:
 
 class PrivateOperation;
 
-class Operation {
+class Operation
+{
 public:
-	Operation( QString name );
+	Operation(QString name);
 	virtual ~Operation();
 
 	QString name();
@@ -75,17 +77,18 @@ private:
 
 class PrivateWebServices;
 
-class WebServices : public QObject {
+class WebServices : public QObject
+{
 	Q_OBJECT
 public:
-	WebServices( const QString & wsdlLink, const QString & wsdlContent, QObject * parent = 0 );
+	WebServices(const QString & wsdlLink, const QString & wsdlContent, QObject * parent = 0);
 	virtual ~WebServices();
 
 	QString name();
 	const QList<Operation*> & operations();
 
-	void loadFromContent( const QString & wsdlContent );
-	void loadFromElement( const QDomElement & element );
+	void loadFromContent(const QString & wsdlContent);
+	void loadFromElement(const QDomElement & element);
 
 	const WSDL & wsdl() const;
 signals:
@@ -101,14 +104,15 @@ typedef QList<WebServices*> WebServicesList;
 
 class XinxProject;
 
-class WebServicesManager : public QObject, public WebServicesList {
+class WebServicesManager : public QObject, public WebServicesList
+{
 	Q_OBJECT
 public:
-	WebServicesManager( const WebServicesManager & manager );
+	WebServicesManager(const WebServicesManager & manager);
 	WebServicesManager();
 	virtual ~WebServicesManager();
 
-	void setProject( XinxProject * project );
+	void setProject(XinxProject * project);
 
 	static WebServicesManager * self();
 

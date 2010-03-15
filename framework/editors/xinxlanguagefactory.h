@@ -33,14 +33,15 @@ class XinxFormatScheme;
 /*!
  * This class used to create language definition for text editor in XINX.
  */
-class LIBEXPORT XinxLanguageFactory : public QLanguageFactory {
+class LIBEXPORT XinxLanguageFactory : public QLanguageFactory
+{
 	Q_OBJECT
 public:
 	//! Destroy the instance
 	virtual ~XinxLanguageFactory();
 private:
 	//! Create a new instance of XinxLanguageFactory
-	XinxLanguageFactory( XinxFormatScheme *fmt, XINXConfig *p = 0 );
+	XinxLanguageFactory(XinxFormatScheme *fmt, XINXConfig *p = 0);
 	friend class XINXConfig;
 };
 

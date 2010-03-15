@@ -29,11 +29,12 @@
 
 /* GceConfigurationParser */
 
-class GceConfigurationParser : public QXmlStreamReader {
+class GceConfigurationParser : public QXmlStreamReader
+{
 public:
 	GceConfigurationParser();
 
-	bool loadFromFile( const QString & filename );
+	bool loadFromFile(const QString & filename);
 
 	/* OUTPUT */
 	QString m_version, m_rootPath;
@@ -56,27 +57,32 @@ private:
 	QMultiHash<QString,QString> m_fileRefToName;
 };
 
-GceConfigurationParser::GceConfigurationParser() {
+GceConfigurationParser::GceConfigurationParser()
+{
 
 }
 
-bool GceConfigurationParser::loadFromFile( const QString & filename ) {
+bool GceConfigurationParser::loadFromFile(const QString & filename)
+{
 	m_fileRefToName.clear();
 	m_nameToInformation.clear();
 	m_configurationFileName = filename;
 
-	QFile device( filename );
-	if( ! device.open( QFile::ReadOnly ) ) {
+	QFile device(filename);
+	if (! device.open(QFile::ReadOnly))
+	{
 		return false;
 	}
 
-	setDevice( &device );
+	setDevice(&device);
 
-	while( ! atEnd() ) {
+	while (! atEnd())
+	{
 		readNext();
 
-		if( isStartElement() ) {
-			if( name() == "config" )
+		if (isStartElement())
+		{
+			if (name() == "config")
 				readConfigElement();
 			else
 				raiseError("The file is not a configuration file.");
@@ -84,44 +90,50 @@ bool GceConfigurationParser::loadFromFile( const QString & filename ) {
 	}
 
 	m_fileRefToInformation.clear();
-	foreach( const QString & bvName, m_fileRefToName.keys() ) {
-		foreach( const QString & fileRef, m_fileRefToName.values( bvName ) ) {
+	foreach(const QString & bvName, m_fileRefToName.keys())
+	{
+		foreach(const QString & fileRef, m_fileRefToName.values(bvName))
+		{
 			const QString ref = m_rootPath + "/" + fileRef;
-			m_fileRefToInformation.insert( ref, m_nameToInformation.value( bvName ) );
+			m_fileRefToInformation.insert(ref, m_nameToInformation.value(bvName));
 		}
 	}
 
 	return ! error();
 }
 
-void GceConfigurationParser::readUnknownElement() {
-	Q_ASSERT( isStartElement() );
+void GceConfigurationParser::readUnknownElement()
+{
+	Q_ASSERT(isStartElement());
 
-	while( !atEnd() ) {
+	while (!atEnd())
+	{
 		readNext();
 
-		if( isEndElement() )
+		if (isEndElement())
 			break;
 
-		if( isStartElement() )
+		if (isStartElement())
 			readUnknownElement();
 	}
 }
 
-void GceConfigurationParser::readConfigElement() {
-	Q_ASSERT( isStartElement() && ( QXmlStreamReader::name() == "config" ) );
+void GceConfigurationParser::readConfigElement()
+{
+	Q_ASSERT(isStartElement() && (QXmlStreamReader::name() == "config"));
 
-	while( !atEnd() ) {
+	while (!atEnd())
+	{
 		readNext();
 
-		if( isEndElement() )
+		if (isEndElement())
 			break;
 
-		if( isStartElement() ) {
-			if( QXmlStreamReader::name() == "version" )
+		if (isStartElement())
+		{
+			if (QXmlStreamReader::name() == "version")
 				readVersionElement();
-			else
-			if( QXmlStreamReader::name() == "application" )
+			else if (QXmlStreamReader::name() == "application")
 				readApplicationElement();
 			else
 				readUnknownElement();
@@ -129,20 +141,22 @@ void GceConfigurationParser::readConfigElement() {
 	}
 }
 
-void GceConfigurationParser::readVersionElement() {
-	Q_ASSERT( isStartElement() && ( QXmlStreamReader::name() == "version" ) );
+void GceConfigurationParser::readVersionElement()
+{
+	Q_ASSERT(isStartElement() && (QXmlStreamReader::name() == "version"));
 
-	while( !atEnd() ) {
+	while (!atEnd())
+	{
 		readNext();
 
-		if( isEndElement() )
+		if (isEndElement())
 			break;
 
-		if( isStartElement() ) {
-			if( QXmlStreamReader::name() == "numero" )
+		if (isStartElement())
+		{
+			if (QXmlStreamReader::name() == "numero")
 				m_version = readElementText();
-			else
-			if( QXmlStreamReader::name() == "edition_speciale" )
+			else if (QXmlStreamReader::name() == "edition_speciale")
 				m_edition = readElementText().toInt();
 			else
 				readUnknownElement();
@@ -150,124 +164,149 @@ void GceConfigurationParser::readVersionElement() {
 	}
 }
 
-void GceConfigurationParser::readApplicationElement() {
-	Q_ASSERT( isStartElement() && ( QXmlStreamReader::name() == "application" ) );
+void GceConfigurationParser::readApplicationElement()
+{
+	Q_ASSERT(isStartElement() && (QXmlStreamReader::name() == "application"));
 
-	while( !atEnd() ) {
+	while (!atEnd())
+	{
 		readNext();
 
-		if( isEndElement() )
+		if (isEndElement())
 			break;
 
-		if( isStartElement() ) {
-			if( QXmlStreamReader::name() == "businessview_def" ) {
+		if (isStartElement())
+		{
+			if (QXmlStreamReader::name() == "businessview_def")
+			{
 				readBusinessViewDef();
-			} else if( QXmlStreamReader::name() == "presentation" ) {
+			}
+			else if (QXmlStreamReader::name() == "presentation")
+			{
 				readPresentation();
-			} else
+			}
+			else
 				readUnknownElement();
 		}
 	}
 }
 
-void GceConfigurationParser::readBusinessViewDef() {
-	Q_ASSERT( isStartElement() && ( QXmlStreamReader::name() == "businessview_def" ) );
+void GceConfigurationParser::readBusinessViewDef()
+{
+	Q_ASSERT(isStartElement() && (QXmlStreamReader::name() == "businessview_def"));
 
-	while( !atEnd() ) {
+	while (!atEnd())
+	{
 		readNext();
 
-		if( isEndElement() )
+		if (isEndElement())
 			break;
 
-		if( isStartElement() ) {
-			if( QXmlStreamReader::name() == "businessview" ) {
+		if (isStartElement())
+		{
+			if (QXmlStreamReader::name() == "businessview")
+			{
 				readBusinessViewDefElement();
-			} else
+			}
+			else
 				readUnknownElement();
 		}
 	}
 }
 
-void GceConfigurationParser::readBusinessViewDefElement() {
-	Q_ASSERT( isStartElement() && ( QXmlStreamReader::name() == "businessview" ) );
+void GceConfigurationParser::readBusinessViewDefElement()
+{
+	Q_ASSERT(isStartElement() && (QXmlStreamReader::name() == "businessview"));
 
 	BusinessViewInformation information;
-	information.setBusinessViewName( attributes().value( "name" ).toString() );
-	information.setTargetName( attributes().value( "target" ).toString() );
-	information.setViewstructName( attributes().value( "viewstruct" ).toString() );
+	information.setBusinessViewName(attributes().value("name").toString());
+	information.setTargetName(attributes().value("target").toString());
+	information.setViewstructName(attributes().value("viewstruct").toString());
 
-	information.setConfigurationFileName( m_configurationFileName );
-	information.setConfigurationNumber( -1 );
+	information.setConfigurationFileName(m_configurationFileName);
+	information.setConfigurationNumber(-1);
 
-	m_nameToInformation.insert( information.businesViewName(), information );
+	m_nameToInformation.insert(information.businesViewName(), information);
 	readUnknownElement();
 }
 
-void GceConfigurationParser::readPresentation() {
-	Q_ASSERT( isStartElement() && ( QXmlStreamReader::name() == "presentation" ) );
-	if( ! attributes().value( "rootPath" ).isEmpty() )
-		m_rootPath = attributes().value( "rootPath" ).toString();
+void GceConfigurationParser::readPresentation()
+{
+	Q_ASSERT(isStartElement() && (QXmlStreamReader::name() == "presentation"));
+	if (! attributes().value("rootPath").isEmpty())
+		m_rootPath = attributes().value("rootPath").toString();
 
-	while( !atEnd() ) {
+	while (!atEnd())
+	{
 		readNext();
 
-		if( isEndElement() )
+		if (isEndElement())
 			break;
 
-		if( isStartElement() )
+		if (isStartElement())
 			readPresentationElement();
 	}
 }
 
-void GceConfigurationParser::readPresentationElement() {
-	Q_ASSERT( isStartElement() );
+void GceConfigurationParser::readPresentationElement()
+{
+	Q_ASSERT(isStartElement());
 
-	const QString bv = attributes().value( "businessview" ).toString();
-	const QString fr = attributes().value( "fileRef" ).toString();
+	const QString bv = attributes().value("businessview").toString();
+	const QString fr = attributes().value("fileRef").toString();
 
-	if( ! m_fileRefToName.values( bv ).contains( fr ) )
-		m_fileRefToName.insert( bv, fr );
+	if (! m_fileRefToName.values(bv).contains(fr))
+		m_fileRefToName.insert(bv, fr);
 
 	readUnknownElement();
 }
 
 /* GceConfiguration */
 
-GceConfiguration::GceConfiguration( const QString & filename ) : m_configurationFileName( filename ) {
+GceConfiguration::GceConfiguration(const QString & filename) : m_configurationFileName(filename)
+{
 	GceConfigurationParser parser;
-	parser.loadFromFile( filename );
+	parser.loadFromFile(filename);
 
 	m_fileToInformation = parser.m_fileRefToInformation;
-	m_version			= ConfigurationVersion( parser.m_version, parser.m_edition );
+	m_version			= ConfigurationVersion(parser.m_version, parser.m_edition);
 }
 
-GceConfiguration::~GceConfiguration() {
+GceConfiguration::~GceConfiguration()
+{
 }
 
-ConfigurationVersion GceConfiguration::version() {
+ConfigurationVersion GceConfiguration::version()
+{
 	return m_version;
 }
 
-QString GceConfiguration::rootFilename() {
+QString GceConfiguration::rootFilename()
+{
 	return m_configurationFileName;
 }
 
-QStringList GceConfiguration::filenames() {
+QStringList GceConfiguration::filenames()
+{
 	return QStringList() << m_configurationFileName;
 }
 
-QStringList GceConfiguration::dictionnaries() {
+QStringList GceConfiguration::dictionnaries()
+{
 	return QStringList();
 }
 
-QList<BusinessViewInformation> GceConfiguration::businessView( const QString & filename ) {
-	return m_fileToInformation.values( filename );
+QList<BusinessViewInformation> GceConfiguration::businessView(const QString & filename)
+{
+	return m_fileToInformation.values(filename);
 }
 
-QList<BusinessViewInformation> GceConfiguration::businessViews() {
+QList<BusinessViewInformation> GceConfiguration::businessViews()
+{
 	return m_fileToInformation.values();
 }
 
-QString GceConfiguration::resolveFileName( const QString & filename ) {
+QString GceConfiguration::resolveFileName(const QString & filename)
+{
 	return filename;
 }

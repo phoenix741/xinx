@@ -33,40 +33,41 @@
 
 class PluginSettings;
 
-class RCS_CVS : public RCS {
+class RCS_CVS : public RCS
+{
 	Q_OBJECT
 public:
-	RCS_CVS( const QString & base );
+	RCS_CVS(const QString & base);
 	virtual ~RCS_CVS();
 
-	virtual void update( const QStringList & path );
-	virtual void updateToRevision( const QString & path, const QString & revision, QByteArray * content = 0 );
-	virtual void commit( const QStringList & path, const QString & message );
+	virtual void update(const QStringList & path);
+	virtual void updateToRevision(const QString & path, const QString & revision, QByteArray * content = 0);
+	virtual void commit(const QStringList & path, const QString & message);
 
-	virtual void add( const QStringList & path );
-	virtual void remove( const QStringList & path );
-	virtual FilesOperation operations( const QStringList & path );
-	virtual struct_rcs_infos info( const QString & path );
-	virtual QList<struct_rcs_infos> infoList( const QString & path, const QStringList & nameFilters, QDir::Filters filters = QDir::NoFilter, QDir::SortFlags sort = QDir::NoSort );
+	virtual void add(const QStringList & path);
+	virtual void remove(const QStringList & path);
+	virtual FilesOperation operations(const QStringList & path);
+	virtual struct_rcs_infos info(const QString & path);
+	virtual QList<struct_rcs_infos> infoList(const QString & path, const QStringList & nameFilters, QDir::Filters filters = QDir::NoFilter, QDir::SortFlags sort = QDir::NoSort);
 
-	void setPluginSettings( PluginSettings * settings );
+	void setPluginSettings(PluginSettings * settings);
 	PluginSettings * pluginSettings() const;
 public slots:
 	virtual void abort();
 
 private slots:
-	void entriesStateChanged( const QString & path );
+	void entriesStateChanged(const QString & path);
 private:
-	void processLine( const QString & line );
+	void processLine(const QString & line);
 	void processReadOutput();
 
-	void callCVS( QStringList path, const QStringList & options );
+	void callCVS(QStringList path, const QStringList & options);
 
 	void updateEntries();
 
-	RCS::rcsOperation operationOfState( RCS::rcsState state );
-	RCS::FilesOperation operationOf( const QString & path );
-	RCS::FilesOperation recursiveOperationOf( const QString & path );
+	RCS::rcsOperation operationOfState(RCS::rcsState state);
+	RCS::FilesOperation operationOf(const QString & path);
+	RCS::FilesOperation recursiveOperationOf(const QString & path);
 
 
 	QByteArray * m_content;

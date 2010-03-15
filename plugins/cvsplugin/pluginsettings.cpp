@@ -6,25 +6,29 @@
 
 /* PluginSettingsSettings */
 
-PluginSettingsSettings::PluginSettingsSettings( const QString & organization, const QString & application ) : QSettings( organization, application ) {
+PluginSettingsSettings::PluginSettingsSettings(const QString & organization, const QString & application) : QSettings(organization, application)
+{
 }
 
-void PluginSettingsSettings::setValue( const QString & key, const QVariant & value, const QVariant & defaultValue ) {
-	if( value == defaultValue )
-		remove( key );
+void PluginSettingsSettings::setValue(const QString & key, const QVariant & value, const QVariant & defaultValue)
+{
+	if (value == defaultValue)
+		remove(key);
 	else
-		QSettings::setValue( key, value );
+		QSettings::setValue(key, value);
 }
 
-void PluginSettingsSettings::setValue( const QString & key, const QVariant & value ) {
-	QSettings::setValue( key, value );
+void PluginSettingsSettings::setValue(const QString & key, const QVariant & value)
+{
+	QSettings::setValue(key, value);
 }
 
 /* PrivatePluginSettings */
 
-class PrivatePluginSettings {
+class PrivatePluginSettings
+{
 public:
-	PrivatePluginSettings( PluginSettings * parent );
+	PrivatePluginSettings(PluginSettings * parent);
 
 	PluginSettingsSettings * m_settings;
 	void createSettings();
@@ -35,61 +39,73 @@ private:
 	PluginSettings * m_parent;
 };
 
-PrivatePluginSettings::PrivatePluginSettings( PluginSettings * parent ) {
+PrivatePluginSettings::PrivatePluginSettings(PluginSettings * parent)
+{
 	m_parent = parent;
 }
 
-void PrivatePluginSettings::createSettings() {
+void PrivatePluginSettings::createSettings()
+{
 	m_settings = new PluginSettingsSettings("Shadoware.Org", "XINX");
 }
 
-void PrivatePluginSettings::deleteSettings() {
-	if( m_settings )
+void PrivatePluginSettings::deleteSettings()
+{
+	if (m_settings)
 		delete m_settings;
 	m_settings = NULL;
 }
 
 /* PluginSettings */
 
-PluginSettings::PluginSettings( const PluginSettings & origine ) {
-	d = new PrivatePluginSettings( this );
+PluginSettings::PluginSettings(const PluginSettings & origine)
+{
+	d = new PrivatePluginSettings(this);
 	d->m_globals = origine.d->m_globals;
 }
 
-PluginSettings::PluginSettings() {
-	d = new PrivatePluginSettings( this );
+PluginSettings::PluginSettings()
+{
+	d = new PrivatePluginSettings(this);
 }
 
-PluginSettings::~PluginSettings() {
+PluginSettings::~PluginSettings()
+{
 	delete d;
 }
 
-PluginSettings&PluginSettings::operator=( const PluginSettings& p ) {
+PluginSettings&PluginSettings::operator=(const PluginSettings& p)
+{
 	d->m_globals = p.d->m_globals;
 	return *this;
 }
 
-PluginSettings::struct_globals & PluginSettings::config() {
+PluginSettings::struct_globals & PluginSettings::config()
+{
 	return d->m_globals;
 }
 
-void PluginSettings::setDefault() {
+void PluginSettings::setDefault()
+{
 	d->m_globals = getDefaultGlobals();
 }
 
-void PluginSettings::save() {
+void PluginSettings::save()
+{
 	d->createSettings();
-	setSettingsGlobals( d->m_settings, "PluginsSettings/cvsplugin", d->m_globals );
+	setSettingsGlobals(d->m_settings, "PluginsSettings/cvsplugin", d->m_globals);
 	d->deleteSettings();
 }
 
-void PluginSettings::load() {
+void PluginSettings::load()
+{
 	d->createSettings();
-	d->m_globals = getSettingsGlobals( d->m_settings, "PluginsSettings/cvsplugin", getDefaultGlobals() );
+	d->m_globals = getSettingsGlobals(d->m_settings, "PluginsSettings/cvsplugin", getDefaultGlobals());
 	d->deleteSettings();
 }
 
-PluginSettings::PluginSettings::struct_globals PluginSettings::getDefaultGlobals() {
+PluginSettings::PluginSettings::struct_globals PluginSettings::getDefaultGlobals()
+{
 	struct_globals value;
 
 	value.progressMessages = "-q";
@@ -100,27 +116,29 @@ PluginSettings::PluginSettings::struct_globals PluginSettings::getDefaultGlobals
 	return value;
 }
 
-PluginSettings::PluginSettings::struct_globals PluginSettings::getSettingsGlobals( PluginSettingsSettings * settings, const QString & path, PluginSettings::PluginSettings::struct_globals defaultValue ) {
+PluginSettings::PluginSettings::struct_globals PluginSettings::getSettingsGlobals(PluginSettingsSettings * settings, const QString & path, PluginSettings::PluginSettings::struct_globals defaultValue)
+{
 	struct_globals value;
-	settings->beginGroup( path );
+	settings->beginGroup(path);
 
-	value.progressMessages = settings->value( "Progress Messages", defaultValue.progressMessages ).toString();
-	value.compressionLevel = settings->value( "Compression Level", defaultValue.compressionLevel ).toInt();
-	value.pruneEmptyDirectories = settings->value( "Prune Empty Directories", defaultValue.pruneEmptyDirectories ).toBool();
-	value.createDirectories = settings->value( "Create Directories", defaultValue.createDirectories ).toBool();
+	value.progressMessages = settings->value("Progress Messages", defaultValue.progressMessages).toString();
+	value.compressionLevel = settings->value("Compression Level", defaultValue.compressionLevel).toInt();
+	value.pruneEmptyDirectories = settings->value("Prune Empty Directories", defaultValue.pruneEmptyDirectories).toBool();
+	value.createDirectories = settings->value("Create Directories", defaultValue.createDirectories).toBool();
 
 	settings->endGroup();
 	return value;
 }
 
-void PluginSettings::setSettingsGlobals( PluginSettingsSettings * settings, const QString & path, PluginSettings::PluginSettings::struct_globals value ) {
+void PluginSettings::setSettingsGlobals(PluginSettingsSettings * settings, const QString & path, PluginSettings::PluginSettings::struct_globals value)
+{
 	struct_globals defaultValue = getDefaultGlobals();
-	settings->beginGroup( path );
+	settings->beginGroup(path);
 
-	settings->setValue( "Progress Messages", value.progressMessages, defaultValue.progressMessages );
-	settings->setValue( "Compression Level", value.compressionLevel, defaultValue.compressionLevel );
-	settings->setValue( "Prune Empty Directories", value.pruneEmptyDirectories, defaultValue.pruneEmptyDirectories );
-	settings->setValue( "Create Directories", value.createDirectories, defaultValue.createDirectories );
+	settings->setValue("Progress Messages", value.progressMessages, defaultValue.progressMessages);
+	settings->setValue("Compression Level", value.compressionLevel, defaultValue.compressionLevel);
+	settings->setValue("Prune Empty Directories", value.pruneEmptyDirectories, defaultValue.pruneEmptyDirectories);
+	settings->setValue("Create Directories", value.createDirectories, defaultValue.createDirectories);
 
 	settings->endGroup();
 }

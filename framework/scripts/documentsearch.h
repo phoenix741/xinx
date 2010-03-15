@@ -30,22 +30,23 @@
 
 /* DocumentSearchOption */
 
-class LIBEXPORT DocumentSearchOption : public QObject {
+class LIBEXPORT DocumentSearchOption : public QObject
+{
 	Q_OBJECT
-	Q_PROPERTY( bool wholeWords READ isWholeWords WRITE setWholeWords )
-	Q_PROPERTY( bool caseSensitive READ isCaseSensitive WRITE setCaseSensitive )
-	Q_PROPERTY( bool regExp READ isRegExp WRITE setRegExp )
+	Q_PROPERTY(bool wholeWords READ isWholeWords WRITE setWholeWords)
+	Q_PROPERTY(bool caseSensitive READ isCaseSensitive WRITE setCaseSensitive)
+	Q_PROPERTY(bool regExp READ isRegExp WRITE setRegExp)
 public:
-	DocumentSearchOption( QDocumentSearch * search, QObject * parent = 0 );
+	DocumentSearchOption(QDocumentSearch * search, QObject * parent = 0);
 	virtual ~DocumentSearchOption();
 public slots:
-	void setWholeWords( bool value );
+	void setWholeWords(bool value);
 	bool isWholeWords() const;
 
-	void setCaseSensitive( bool value );
+	void setCaseSensitive(bool value);
 	bool isCaseSensitive() const;
 
-	void setRegExp( bool value );
+	void setRegExp(bool value);
 	bool isRegExp() const;
 private:
 	bool m_wholeWords, m_caseSensitive, m_regexp;
@@ -54,23 +55,24 @@ private:
 
 /* DocumentSearch */
 
-class LIBEXPORT DocumentSearch : public QObject {
+class LIBEXPORT DocumentSearch : public QObject
+{
 	Q_OBJECT
-	Q_PROPERTY( DocumentSearchOption * options READ getOptions WRITE setOptions )
-	Q_PROPERTY( QString searchText READ getSearchText WRITE setSearchText )
-	Q_PROPERTY( QString replaceText READ getReplaceText WRITE setReplaceText )
+	Q_PROPERTY(DocumentSearchOption * options READ getOptions WRITE setOptions)
+	Q_PROPERTY(QString searchText READ getSearchText WRITE setSearchText)
+	Q_PROPERTY(QString replaceText READ getReplaceText WRITE setReplaceText)
 public:
-	DocumentSearch( XinxCodeEdit * editor );
+	DocumentSearch(XinxCodeEdit * editor);
 	virtual ~DocumentSearch();
 
 public slots:
 	DocumentSearchOption * getOptions() const;
-	void setOptions( DocumentSearchOption * value );
+	void setOptions(DocumentSearchOption * value);
 
-	void setSearchText( const QString & text );
+	void setSearchText(const QString & text);
 	QString getSearchText() const;
 
-	void setReplaceText( const QString & text );
+	void setReplaceText(const QString & text);
 	QString getReplaceText() const;
 
 	bool next();

@@ -24,11 +24,12 @@
 // Xinx header
 #include <utils/xsltparser.h>
 
-class GenerixXsltParser : public XsltParser {
+class GenerixXsltParser : public XsltParser
+{
 public:
 	GenerixXsltParser();
 protected:
-	virtual void registerPlugin( void* ctxt );
+	virtual void registerPlugin(void* ctxt);
 };
 
 #endif // GENERIXXSLTPARSER_H

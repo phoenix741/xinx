@@ -22,33 +22,34 @@
 #pragma once
 
 // Xinx header
-#include <contentview/contentviewparser.h>
+#include <contentview2/contentview2parser.h>
 
 // Qt header
 #include <QApplication>
 
-class CSSFileContentParser : public ContentViewParser {
+class CSSFileContentParser : public ContentView2::Parser
+{
 	Q_DECLARE_TR_FUNCTIONS(CSSFileContentParser)
 public:
-	CSSFileContentParser( bool autoDelete = false );
+	CSSFileContentParser();
 	virtual ~CSSFileContentParser();
 
-protected:
-	virtual void loadFromDeviceImpl();
+	virtual void load();
 
 private:
-	enum ParsingState {
+	enum ParsingState
+	{
 		CssDefault,
 		CssIdentifier
 	};
 
 	int m_line;
 
-	ContentViewNode * attacheNewPropertyNode( ContentViewNode * parent, const QString & name, int line );
-	ContentViewNode * attacheNewIdentifierNode( ContentViewNode * parent, const QString & name, int line );
-	ContentViewNode * attacheNewClassNode( ContentViewNode * parent, const QString & name, int line );
-	ContentViewNode * attacheNewTagNode( ContentViewNode * parent, const QString & name, int line );
-	ContentViewNode * attacheNewIdNode( ContentViewNode * parent, const QString & name, int line );
+	ContentView2::Node attacheNewPropertyNode(ContentView2::Node parent, const QString & name, int line);
+	ContentView2::Node attacheNewIdentifierNode(ContentView2::Node parent, const QString & name, int line);
+	ContentView2::Node attacheNewClassNode(ContentView2::Node parent, const QString & name, int line);
+	ContentView2::Node attacheNewTagNode(ContentView2::Node parent, const QString & name, int line);
+	ContentView2::Node attacheNewIdNode(ContentView2::Node parent, const QString & name, int line);
 };
 
 #endif /*CSSMODELDATA_H_*/

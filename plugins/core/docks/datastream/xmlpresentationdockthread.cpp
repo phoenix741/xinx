@@ -36,178 +36,215 @@
 
 /* XmlPresentationDockThread */
 
-XmlPresentationDockThread::XmlPresentationDockThread( XmlPresentationDockWidget * parent ) : m_model(0), m_sortFilterModel(0), m_watcher(0), m_parent( parent ) {
-	qRegisterMetaType<QModelIndex>( "QModelIndex" );
+XmlPresentationDockThread::XmlPresentationDockThread(XmlPresentationDockWidget * parent) : m_model(0), m_sortFilterModel(0), m_watcher(0), m_parent(parent)
+{
+	qRegisterMetaType<QModelIndex>("QModelIndex");
 
-	QWidget * contentWidget = new QWidget( m_parent );
+	QWidget * contentWidget = new QWidget(m_parent);
 	m_xmlPresentationWidget = new Ui::XmlPresentationWidget();
-	m_xmlPresentationWidget->setupUi( contentWidget );
-	m_parent->setWidget( contentWidget );
+	m_xmlPresentationWidget->setupUi(contentWidget);
+	m_parent->setWidget(contentWidget);
 
 	m_xmlPresentationWidget->m_presentationProgressBar->hide();
 
-	m_timerTextChanged.setSingleShot( true );
-	m_timerTextChanged.setInterval( 1000 );
+	m_timerTextChanged.setSingleShot(true);
+	m_timerTextChanged.setInterval(1000);
 
-	m_xmlPresentationWidget->m_filterComboBox->setCurrentIndex( SelfWebPluginSettings::self()->config().xmlPres.showFilteredSubTree ? 0 : 1 );
+	m_xmlPresentationWidget->m_filterComboBox->setCurrentIndex(SelfWebPluginSettings::self()->config().xmlPres.showFilteredSubTree ? 0 : 1);
 
 	initXmlPresentationCombo();
 
-	connect( XINXProjectManager::self(), SIGNAL(changed()), this, SLOT(projectChanged()) );
-	connect( m_xmlPresentationWidget->m_refreshToolButton, SIGNAL(clicked()), this, SLOT(initXmlPresentationCombo()) );
-	connect( m_xmlPresentationWidget->m_evaluateToolButton, SIGNAL(clicked()), this, SLOT(evaluate()) );
+	connect(XINXProjectManager::self(), SIGNAL(changed()), this, SLOT(projectChanged()));
+	connect(m_xmlPresentationWidget->m_refreshToolButton, SIGNAL(clicked()), this, SLOT(initXmlPresentationCombo()));
+	connect(m_xmlPresentationWidget->m_evaluateToolButton, SIGNAL(clicked()), this, SLOT(evaluate()));
 
-	connect( m_xmlPresentationWidget->m_presentationComboBox, SIGNAL(activated(int)), this, SLOT(presentationActivated(int)) );
-	connect( m_xmlPresentationWidget->m_filtreLineEdit, SIGNAL(textChanged(QString)), this, SLOT(filterTextChanged(QString)) );
-	connect( this, SIGNAL(finished()), this, SLOT(threadTerminated()) );
+	connect(m_xmlPresentationWidget->m_presentationComboBox, SIGNAL(activated(int)), this, SLOT(presentationActivated(int)));
+	connect(m_xmlPresentationWidget->m_filtreLineEdit, SIGNAL(textChanged(QString)), this, SLOT(filterTextChanged(QString)));
+	connect(this, SIGNAL(finished()), this, SLOT(threadTerminated()));
 
-	connect( m_xmlPresentationWidget->m_presentationTreeView, SIGNAL(expanded(QModelIndex)), this, SLOT(adaptColumns()));
+	connect(m_xmlPresentationWidget->m_presentationTreeView, SIGNAL(expanded(QModelIndex)), this, SLOT(adaptColumns()));
 
-	connect( m_xmlPresentationWidget->m_filterComboBox, SIGNAL(activated(int)), this, SLOT(updateXinxConf(int)) );
-	connect( &m_timerTextChanged, SIGNAL(timeout()), this, SLOT(filterTextChangedTimer()) );
-	connect( SelfWebPluginSettings::self(), SIGNAL(changed()), this, SLOT(filterTextChangedTimer()) );
+	connect(m_xmlPresentationWidget->m_filterComboBox, SIGNAL(activated(int)), this, SLOT(updateXinxConf(int)));
+	connect(&m_timerTextChanged, SIGNAL(timeout()), this, SLOT(filterTextChangedTimer()));
+	connect(SelfWebPluginSettings::self(), SIGNAL(changed()), this, SLOT(filterTextChangedTimer()));
 
-	connect( dynamic_cast<QObject*>( EditorManager::self() ), SIGNAL(currentChanged(int)), this, SLOT(editorChanged()) );
+	connect(dynamic_cast<QObject*>(EditorManager::self()), SIGNAL(currentChanged(int)), this, SLOT(editorChanged()));
 }
 
 
-XmlPresentationDockThread::~XmlPresentationDockThread() {
-	presentationActivated( 0 );
+XmlPresentationDockThread::~XmlPresentationDockThread()
+{
+	presentationActivated(0);
 	delete m_xmlPresentationWidget;
 }
 
-void XmlPresentationDockThread::evaluate() {
-	XQueryDialogImpl dlg( m_parent );
-	dlg.setFileName( m_openingFile );
+void XmlPresentationDockThread::evaluate()
+{
+	XQueryDialogImpl dlg(m_parent);
+	dlg.setFileName(m_openingFile);
 
 	QString m_currentXpath;
-	if( m_sortFilterModel )
-		m_currentXpath = m_sortFilterModel->data( m_xmlPresentationWidget->m_presentationTreeView->currentIndex(), Qt::UserRole ).toString();
-	dlg.setCurrentXPath( m_currentXpath );
+	if (m_sortFilterModel)
+		m_currentXpath = m_sortFilterModel->data(m_xmlPresentationWidget->m_presentationTreeView->currentIndex(), Qt::UserRole).toString();
+	dlg.setCurrentXPath(m_currentXpath);
 
 	dlg.exec();
 }
 
-void XmlPresentationDockThread::adaptColumns() {
-  	m_xmlPresentationWidget->m_presentationTreeView->resizeColumnToContents(0);
+void XmlPresentationDockThread::adaptColumns()
+{
+	m_xmlPresentationWidget->m_presentationTreeView->resizeColumnToContents(0);
 }
 
-void XmlPresentationDockThread::projectChanged() {
+void XmlPresentationDockThread::projectChanged()
+{
 	QString dataStreamLocation;
-	if( XINXProjectManager::self()->project() ) {
-		const QString rel  = XINXProjectManager::self()->project()->readProperty( "dataStreamLocation" ).toString();
-		dataStreamLocation = QDir( XINXProjectManager::self()->project()->projectPath() ).absoluteFilePath( rel );
+	if (XINXProjectManager::self()->project())
+	{
+		const QString rel  = XINXProjectManager::self()->project()->readProperty("dataStreamLocation").toString();
+		dataStreamLocation = QDir(XINXProjectManager::self()->project()->projectPath()).absoluteFilePath(rel);
 	}
-	if( dataStreamLocation != m_dataStreamLocation ) {
+	if (dataStreamLocation != m_dataStreamLocation)
+	{
 		m_dataStreamLocation = dataStreamLocation;
 		initXmlPresentationCombo();
 	}
 }
 
-void XmlPresentationDockThread::initXmlPresentationCombo() {
+void XmlPresentationDockThread::initXmlPresentationCombo()
+{
 	int index;
 	QString filename = m_openingFile;
 
-	m_xmlPresentationWidget->m_presentationComboBox->blockSignals( true );
+	m_xmlPresentationWidget->m_presentationComboBox->blockSignals(true);
 	m_xmlPresentationWidget->m_presentationComboBox->clear();
 
-	m_xmlPresentationWidget->m_presentationComboBox->addItem( tr("<No presentation file>") );
-	m_xmlPresentationWidget->m_presentationComboBox->addItem( tr("<Choose an XML file ...>") );
+	m_xmlPresentationWidget->m_presentationComboBox->addItem(tr("<No presentation file>"));
+	m_xmlPresentationWidget->m_presentationComboBox->addItem(tr("<Choose an XML file ...>"));
 
-	if( XINXProjectManager::self()->project() ) {
-		QDir dataStreamDir( m_dataStreamLocation );
-		if( dataStreamDir.exists() ) {
-			QStringList files = dataStreamDir.entryList( QStringList() << "*.xml", QDir::Files | QDir::Readable );
-			foreach( const QString & file, files )
-				m_xmlPresentationWidget->m_presentationComboBox->addItem( file );
+	if (XINXProjectManager::self()->project())
+	{
+		QDir dataStreamDir(m_dataStreamLocation);
+		if (dataStreamDir.exists())
+		{
+			QStringList files = dataStreamDir.entryList(QStringList() << "*.xml", QDir::Files | QDir::Readable);
+			foreach(const QString & file, files)
+			m_xmlPresentationWidget->m_presentationComboBox->addItem(file);
 		}
 	}
 
-	if( filename.isEmpty() ) {
-		m_xmlPresentationWidget->m_presentationComboBox->blockSignals( false );
-		presentationActivated( 0 );
+	if (filename.isEmpty())
+	{
+		m_xmlPresentationWidget->m_presentationComboBox->blockSignals(false);
+		presentationActivated(0);
 		return;
 	}
 
-	if( ( index = m_xmlPresentationWidget->m_presentationComboBox->findText( QFileInfo( filename ).fileName() ) ) >= 0 ) {
-		m_xmlPresentationWidget->m_presentationComboBox->setCurrentIndex( index );
-	} else if( QFileInfo( filename ).exists() ) {
-		m_xmlPresentationWidget->m_presentationComboBox->setCurrentIndex( 1 );
-	} else
-		presentationActivated( 0 );
-	m_xmlPresentationWidget->m_presentationComboBox->blockSignals( false );
+	if ((index = m_xmlPresentationWidget->m_presentationComboBox->findText(QFileInfo(filename).fileName())) >= 0)
+	{
+		m_xmlPresentationWidget->m_presentationComboBox->setCurrentIndex(index);
+	}
+	else if (QFileInfo(filename).exists())
+	{
+		m_xmlPresentationWidget->m_presentationComboBox->setCurrentIndex(1);
+	}
+	else
+		presentationActivated(0);
+	m_xmlPresentationWidget->m_presentationComboBox->blockSignals(false);
 }
 
-void XmlPresentationDockThread::presentationActivated( int index ) {
-	if( index == 0 ) {
-		m_xmlPresentationWidget->m_presentationTreeView->setModel( NULL );
+void XmlPresentationDockThread::presentationActivated(int index)
+{
+	if (index == 0)
+	{
+		m_xmlPresentationWidget->m_presentationTreeView->setModel(NULL);
 		delete m_watcher;
 		delete m_sortFilterModel;
 		delete m_model;
 		m_openingFile = QString();
-		m_xmlPresentationWidget->m_evaluateToolButton->setEnabled( false );
-		emit m_parent->filenameChanged( QString() );
-		if( EditorManager::self() && EditorManager::self()->currentEditor() )
-			EditorManager::self()->currentEditor()->setProperty( "XmlPresentationDockThread_filename", QString() );
-	} else if( index == 1 ) {
+		m_xmlPresentationWidget->m_evaluateToolButton->setEnabled(false);
+		emit m_parent->filenameChanged(QString());
+		if (EditorManager::self() && EditorManager::self()->currentEditor())
+			EditorManager::self()->currentEditor()->setProperty("XmlPresentationDockThread_filename", QString());
+	}
+	else if (index == 1)
+	{
 		// Open a file
-		QString name = QFileDialog::getOpenFileName( m_parent,
-			tr("Open a presentation file"),
-			m_dataStreamLocation,
-			tr("Presentation XML File (*.xml)") );
-		if( name.isEmpty() ) {
-			m_xmlPresentationWidget->m_presentationComboBox->setCurrentIndex( 0 );
-		} else {
-			setComboToolTip( name );
-			open( name );
+		QString name = QFileDialog::getOpenFileName(m_parent,
+		               tr("Open a presentation file"),
+		               m_dataStreamLocation,
+		               tr("Presentation XML File (*.xml)"));
+		if (name.isEmpty())
+		{
+			m_xmlPresentationWidget->m_presentationComboBox->setCurrentIndex(0);
 		}
-	} else {
+		else
+		{
+			setComboToolTip(name);
+			open(name);
+		}
+	}
+	else
+	{
 		// Open the file
-		QString name = QDir( m_dataStreamLocation ).absoluteFilePath( m_xmlPresentationWidget->m_presentationComboBox->itemText( index ) );
-		setComboToolTip( name );
-		open( name );
+		QString name = QDir(m_dataStreamLocation).absoluteFilePath(m_xmlPresentationWidget->m_presentationComboBox->itemText(index));
+		setComboToolTip(name);
+		open(name);
 	}
 }
 
-void XmlPresentationDockThread::setComboToolTip( const QString & filename ) {
-	QFileInfo file( filename );
+void XmlPresentationDockThread::setComboToolTip(const QString & filename)
+{
+	QFileInfo file(filename);
 	char unite = ' ';
 	double filesize = file.size();
-	while ( filesize > 1024 ) {
+	while (filesize > 1024)
+	{
 		filesize /= 1024;
-		switch( unite ) {
-		case ' ' : unite = 'k'; break;
-		case 'k' : unite = 'm'; break;
-		case 'm' : unite = 'g'; break;
-		case 'g' : unite = 't'; break;
-		default: break;
+		switch (unite)
+		{
+		case ' ' :
+			unite = 'k';
+			break;
+		case 'k' :
+			unite = 'm';
+			break;
+		case 'm' :
+			unite = 'g';
+			break;
+		case 'g' :
+			unite = 't';
+			break;
+		default:
+			break;
 		}
 	}
 
 	m_xmlPresentationWidget->m_presentationComboBox->setToolTip(
-			tr( "File name : %1\n"
-				"Size : %2 %3b\n"
-				"File date : %4" )	.arg( file.canonicalFilePath() )
-									.arg( filesize, 0, 'f', 2 ).arg( unite )
-									.arg( file.lastModified().toString() )
-			);
+	    tr("File name : %1\n"
+	       "Size : %2 %3b\n"
+	       "File date : %4")	.arg(file.canonicalFilePath())
+	    .arg(filesize, 0, 'f', 2).arg(unite)
+	    .arg(file.lastModified().toString())
+	);
 }
 
-void XmlPresentationDockThread::open( const QString& filename ) {
-	Q_ASSERT( ! isRunning() );
+void XmlPresentationDockThread::open(const QString& filename)
+{
+	Q_ASSERT(! isRunning());
 
-	if( m_watcher ) m_watcher->desactivate();
+	if (m_watcher) m_watcher->desactivate();
 
 	m_xmlPresentationWidget->m_presentationProgressBar->show();
-	m_xmlPresentationWidget->m_presentationComboBox->setEnabled( false );
-	m_xmlPresentationWidget->m_filtreLineEdit->setEnabled( false );
-	m_xmlPresentationWidget->m_filterComboBox->setEnabled( false );
-	m_xmlPresentationWidget->m_refreshToolButton->setEnabled( false );
+	m_xmlPresentationWidget->m_presentationComboBox->setEnabled(false);
+	m_xmlPresentationWidget->m_filtreLineEdit->setEnabled(false);
+	m_xmlPresentationWidget->m_filterComboBox->setEnabled(false);
+	m_xmlPresentationWidget->m_refreshToolButton->setEnabled(false);
 
-	if( m_sortFilterModel && m_xmlPresentationWidget )
-		m_currentXpath = m_sortFilterModel->data( m_xmlPresentationWidget->m_presentationTreeView->currentIndex(), Qt::UserRole ).toString();
+	if (m_sortFilterModel && m_xmlPresentationWidget)
+		m_currentXpath = m_sortFilterModel->data(m_xmlPresentationWidget->m_presentationTreeView->currentIndex(), Qt::UserRole).toString();
 
-	m_xmlPresentationWidget->m_presentationTreeView->setModel( NULL );
+	m_xmlPresentationWidget->m_presentationTreeView->setModel(NULL);
 
 	m_openingFile = filename;
 
@@ -215,162 +252,196 @@ void XmlPresentationDockThread::open( const QString& filename ) {
 	m_filteredElement = SelfWebPluginSettings::self()->config().xmlPres.showFilteredSubTree;
 	m_filterHidePath = SelfWebPluginSettings::self()->config().xmlPres.hidePath;
 
-	delete m_sortFilterModel; delete m_model; delete m_watcher;
+	delete m_sortFilterModel;
+	delete m_model;
+	delete m_watcher;
 
-	if( !QFileInfo( filename ).exists() ) {
+	if (!QFileInfo(filename).exists())
+	{
 		m_openingFile = QString();
-		m_xmlPresentationWidget->m_presentationComboBox->setCurrentIndex( 0 );
+		m_xmlPresentationWidget->m_presentationComboBox->setCurrentIndex(0);
 		m_xmlPresentationWidget->m_presentationProgressBar->hide();
-		m_xmlPresentationWidget->m_presentationComboBox->setEnabled( true );
-		m_xmlPresentationWidget->m_filterComboBox->setEnabled( true );
-		m_xmlPresentationWidget->m_refreshToolButton->setEnabled( true );
-		m_xmlPresentationWidget->m_filtreLineEdit->setEnabled( true );
+		m_xmlPresentationWidget->m_presentationComboBox->setEnabled(true);
+		m_xmlPresentationWidget->m_filterComboBox->setEnabled(true);
+		m_xmlPresentationWidget->m_refreshToolButton->setEnabled(true);
+		m_xmlPresentationWidget->m_filtreLineEdit->setEnabled(true);
 		m_xmlPresentationWidget->m_filtreLineEdit->setFocus();
 		return;
 	}
 
 	m_threadAct = THREAD_OPENING;
-	start( QThread::IdlePriority );
+	start(QThread::IdlePriority);
 }
 
-void XmlPresentationDockThread::open() {
-	if( isRunning() ) return;
-	open( m_openingFile );
+void XmlPresentationDockThread::open()
+{
+	if (isRunning()) return;
+	open(m_openingFile);
 }
 
-void XmlPresentationDockThread::threadrun() {
+void XmlPresentationDockThread::threadrun()
+{
 	delete m_sortFilterModel;
-	if( m_threadAct == THREAD_OPENING ) {
-		QFile presentation( m_openingFile );
+	if (m_threadAct == THREAD_OPENING)
+	{
+		QFile presentation(m_openingFile);
 		QDomDocument document;
-		if( presentation.open( QIODevice::ReadOnly | QIODevice::Text ) && document.setContent( &presentation, false ) ) {
-			m_model = new XmlPresentationModel( document );
+		if (presentation.open(QIODevice::ReadOnly | QIODevice::Text) && document.setContent(&presentation, false))
+		{
+			m_model = new XmlPresentationModel(document);
 		}
 	}
-	if( m_model ) {
-		m_sortFilterModel = new RecursiveSortFilterProxyModel( m_model );
-		m_sortFilterModel->setSourceModel( m_model );
-		m_sortFilterModel->setHidePath( m_filterHidePath );
-		m_sortFilterModel->setShowAllChild( m_filteredElement );
-		m_sortFilterModel->setFilterRegExp( m_filteredText );
-		m_model->moveToThread( qApp->thread() );
+	if (m_model)
+	{
+		m_sortFilterModel = new RecursiveSortFilterProxyModel(m_model);
+		m_sortFilterModel->setSourceModel(m_model);
+		m_sortFilterModel->setHidePath(m_filterHidePath);
+		m_sortFilterModel->setShowAllChild(m_filteredElement);
+		m_sortFilterModel->setFilterRegExp(m_filteredText);
+		m_model->moveToThread(qApp->thread());
 	}
 }
 
-void XmlPresentationDockThread::threadTerminated() {
-	if( m_threadAct == THREAD_OPENING ) {
-		m_xmlPresentationWidget->m_evaluateToolButton->setEnabled( true );
-		m_watcher = new FileWatcher( m_openingFile );
-		connect( m_watcher, SIGNAL(fileChanged()), this, SLOT(open()) );
+void XmlPresentationDockThread::threadTerminated()
+{
+	if (m_threadAct == THREAD_OPENING)
+	{
+		m_xmlPresentationWidget->m_evaluateToolButton->setEnabled(true);
+		m_watcher = new FileWatcher(m_openingFile);
+		connect(m_watcher, SIGNAL(fileChanged()), this, SLOT(open()));
 
-		if( EditorManager::self() && EditorManager::self()->currentEditor() )
-			EditorManager::self()->currentEditor()->setProperty( "XmlPresentationDockThread_filename", m_openingFile );
-	} else if( m_threadAct == THREAD_FILTERED ) {
+		if (EditorManager::self() && EditorManager::self()->currentEditor())
+			EditorManager::self()->currentEditor()->setProperty("XmlPresentationDockThread_filename", m_openingFile);
 	}
-	m_xmlPresentationWidget->m_presentationTreeView->setModel( m_sortFilterModel );
+	else if (m_threadAct == THREAD_FILTERED)
+	{
+	}
+	m_xmlPresentationWidget->m_presentationTreeView->setModel(m_sortFilterModel);
 
 	/* Filter part */
 	QModelIndex expandIndex = QModelIndex();
-	if( !m_filteredText.isEmpty() ) {
-		while( m_sortFilterModel->rowCount( expandIndex ) > 0 ) {
-			m_xmlPresentationWidget->m_presentationTreeView->expand( expandIndex );
-			expandIndex = m_sortFilterModel->index( 0, 0, expandIndex );
+	if (!m_filteredText.isEmpty())
+	{
+		while (m_sortFilterModel->rowCount(expandIndex) > 0)
+		{
+			m_xmlPresentationWidget->m_presentationTreeView->expand(expandIndex);
+			expandIndex = m_sortFilterModel->index(0, 0, expandIndex);
 		}
-	} else {
-		QStringList xpath = m_currentXpath.isEmpty() ? SelfWebPluginSettings::self()->config().xmlPres.autoExpandedPath.split( '/' ) : m_currentXpath.split( '/' );
-		foreach( const QString & path, xpath ) {
-			m_xmlPresentationWidget->m_presentationTreeView->expand( expandIndex );
-			if( ! path.isEmpty() && m_sortFilterModel->rowCount( expandIndex ) ) {
-				QModelIndexList matchedIndex = m_sortFilterModel->match( m_sortFilterModel->index( 0, 0, expandIndex ), XmlPresentationModel::NamedViewRole, path, 1, Qt::MatchExactly );
-				if( matchedIndex.count() > 0 )
-					expandIndex = matchedIndex.at( 0 );
-				else {
-					matchedIndex = m_sortFilterModel->match( m_sortFilterModel->index( 0, 0, expandIndex ), Qt::DisplayRole, path, 1, Qt::MatchExactly );
-					if( matchedIndex.count() > 0 )
-						expandIndex = matchedIndex.at( 0 );
+	}
+	else
+	{
+		QStringList xpath = m_currentXpath.isEmpty() ? SelfWebPluginSettings::self()->config().xmlPres.autoExpandedPath.split('/') : m_currentXpath.split('/');
+		foreach(const QString & path, xpath)
+		{
+			m_xmlPresentationWidget->m_presentationTreeView->expand(expandIndex);
+			if (! path.isEmpty() && m_sortFilterModel->rowCount(expandIndex))
+			{
+				QModelIndexList matchedIndex = m_sortFilterModel->match(m_sortFilterModel->index(0, 0, expandIndex), XmlPresentationModel::NamedViewRole, path, 1, Qt::MatchExactly);
+				if (matchedIndex.count() > 0)
+					expandIndex = matchedIndex.at(0);
+				else
+				{
+					matchedIndex = m_sortFilterModel->match(m_sortFilterModel->index(0, 0, expandIndex), Qt::DisplayRole, path, 1, Qt::MatchExactly);
+					if (matchedIndex.count() > 0)
+						expandIndex = matchedIndex.at(0);
 				}
 			}
 		}
 	}
 
-	m_xmlPresentationWidget->m_presentationTreeView->expand( expandIndex );
-	m_xmlPresentationWidget->m_presentationTreeView->setCurrentIndex( expandIndex );
+	m_xmlPresentationWidget->m_presentationTreeView->expand(expandIndex);
+	m_xmlPresentationWidget->m_presentationTreeView->setCurrentIndex(expandIndex);
 	/* End of filter part */
 
 	m_xmlPresentationWidget->m_presentationProgressBar->hide();
-	m_xmlPresentationWidget->m_presentationComboBox->setEnabled( true );
-	m_xmlPresentationWidget->m_filterComboBox->setEnabled( true );
-	m_xmlPresentationWidget->m_refreshToolButton->setEnabled( true );
-	m_xmlPresentationWidget->m_filtreLineEdit->setText( m_filteredText ); // Au cas o� des caract�res n'ont pas �t� pris en compte
-	m_xmlPresentationWidget->m_filtreLineEdit->setEnabled( true );
+	m_xmlPresentationWidget->m_presentationComboBox->setEnabled(true);
+	m_xmlPresentationWidget->m_filterComboBox->setEnabled(true);
+	m_xmlPresentationWidget->m_refreshToolButton->setEnabled(true);
+	m_xmlPresentationWidget->m_filtreLineEdit->setText(m_filteredText);   // Au cas o� des caract�res n'ont pas �t� pris en compte
+	m_xmlPresentationWidget->m_filtreLineEdit->setEnabled(true);
 	m_xmlPresentationWidget->m_filtreLineEdit->setFocus();
 
-	emit m_parent->filenameChanged( m_openingFile );
+	emit m_parent->filenameChanged(m_openingFile);
 }
 
-void XmlPresentationDockThread::filterTextChanged( const QString & text ) {
-	Q_UNUSED( text );
-	if( m_sortFilterModel )
+void XmlPresentationDockThread::filterTextChanged(const QString & text)
+{
+	Q_UNUSED(text);
+	if (m_sortFilterModel)
 		m_timerTextChanged.start();
 }
 
-void XmlPresentationDockThread::filterTextChangedTimer() {
-	Q_ASSERT( ! isRunning() );
+void XmlPresentationDockThread::filterTextChangedTimer()
+{
+	Q_ASSERT(! isRunning());
 	m_timerTextChanged.stop();
 
-	if( m_sortFilterModel ) {
+	if (m_sortFilterModel)
+	{
 		// TODO: Delete this line in 4.4
 		m_xmlPresentationWidget->m_filtreLineEdit->clearFocus();
-		m_xmlPresentationWidget->m_filtreLineEdit->setEnabled( false );
-		m_xmlPresentationWidget->m_presentationComboBox->setEnabled( false );
-		m_xmlPresentationWidget->m_filterComboBox->setEnabled( false );
-		m_xmlPresentationWidget->m_refreshToolButton->setEnabled( false );
+		m_xmlPresentationWidget->m_filtreLineEdit->setEnabled(false);
+		m_xmlPresentationWidget->m_presentationComboBox->setEnabled(false);
+		m_xmlPresentationWidget->m_filterComboBox->setEnabled(false);
+		m_xmlPresentationWidget->m_refreshToolButton->setEnabled(false);
 
-		if( SelfWebPluginSettings::self()->config().xmlPres.showFilteredSubTree != ( m_xmlPresentationWidget->m_filterComboBox->currentIndex() == 0 ) ) {
-			m_xmlPresentationWidget->m_filterComboBox->setCurrentIndex( SelfWebPluginSettings::self()->config().xmlPres.showFilteredSubTree ? 0 : 1 );
+		if (SelfWebPluginSettings::self()->config().xmlPres.showFilteredSubTree != (m_xmlPresentationWidget->m_filterComboBox->currentIndex() == 0))
+		{
+			m_xmlPresentationWidget->m_filterComboBox->setCurrentIndex(SelfWebPluginSettings::self()->config().xmlPres.showFilteredSubTree ? 0 : 1);
 		}
 
-		m_currentXpath = m_sortFilterModel->data( m_xmlPresentationWidget->m_presentationTreeView->currentIndex(), Qt::UserRole ).toString();
+		m_currentXpath = m_sortFilterModel->data(m_xmlPresentationWidget->m_presentationTreeView->currentIndex(), Qt::UserRole).toString();
 
-		m_xmlPresentationWidget->m_presentationTreeView->setModel( NULL );
+		m_xmlPresentationWidget->m_presentationTreeView->setModel(NULL);
 		m_xmlPresentationWidget->m_presentationProgressBar->show();
 
 		m_filteredText = m_xmlPresentationWidget->m_filtreLineEdit->text();
 		m_filteredElement = SelfWebPluginSettings::self()->config().xmlPres.showFilteredSubTree;
 		m_filterHidePath = SelfWebPluginSettings::self()->config().xmlPres.hidePath;
 
-		m_model->moveToThread( this );
+		m_model->moveToThread(this);
 
 		m_threadAct = THREAD_FILTERED;
-		start( QThread::IdlePriority );
+		start(QThread::IdlePriority);
 	}
 }
 
-void XmlPresentationDockThread::updateXinxConf( int value ) {
+void XmlPresentationDockThread::updateXinxConf(int value)
+{
 	bool filteredElement = value == 0;
-	if( SelfWebPluginSettings::self()->config().xmlPres.showFilteredSubTree != filteredElement ) {
+	if (SelfWebPluginSettings::self()->config().xmlPres.showFilteredSubTree != filteredElement)
+	{
 		SelfWebPluginSettings::self()->config().xmlPres.showFilteredSubTree = filteredElement;
 		SelfWebPluginSettings::self()->save();
 	}
 }
 
-void XmlPresentationDockThread::editorChanged() {
+void XmlPresentationDockThread::editorChanged()
+{
 	QString filename;
-	if( EditorManager::self() && EditorManager::self()->currentEditor() && !( filename = EditorManager::self()->currentEditor()->property( "XmlPresentationDockThread_filename" ).toString() ).isEmpty() ) {
+	if (EditorManager::self() && EditorManager::self()->currentEditor() && !(filename = EditorManager::self()->currentEditor()->property("XmlPresentationDockThread_filename").toString()).isEmpty())
+	{
 		int index;
-		if( ( index = m_xmlPresentationWidget->m_presentationComboBox->findText( QFileInfo( filename ).fileName() ) ) >= 0 ) {
-			m_xmlPresentationWidget->m_presentationComboBox->setCurrentIndex( index );
-			presentationActivated( index );
-		} else if( QFileInfo( filename ).exists() ) {
-			m_xmlPresentationWidget->m_presentationComboBox->setCurrentIndex( 1 );
-			setComboToolTip( filename );
-			open( filename );
-		} else {
-			m_xmlPresentationWidget->m_presentationComboBox->setCurrentIndex( 0 );
-			presentationActivated( 0 );
+		if ((index = m_xmlPresentationWidget->m_presentationComboBox->findText(QFileInfo(filename).fileName())) >= 0)
+		{
+			m_xmlPresentationWidget->m_presentationComboBox->setCurrentIndex(index);
+			presentationActivated(index);
 		}
-	}  else {
-		m_xmlPresentationWidget->m_presentationComboBox->setCurrentIndex( 0 );
-		presentationActivated( 0 );
+		else if (QFileInfo(filename).exists())
+		{
+			m_xmlPresentationWidget->m_presentationComboBox->setCurrentIndex(1);
+			setComboToolTip(filename);
+			open(filename);
+		}
+		else
+		{
+			m_xmlPresentationWidget->m_presentationComboBox->setCurrentIndex(0);
+			presentationActivated(0);
+		}
+	}
+	else
+	{
+		m_xmlPresentationWidget->m_presentationComboBox->setCurrentIndex(0);
+		presentationActivated(0);
 	}
 }

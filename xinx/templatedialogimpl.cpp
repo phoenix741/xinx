@@ -25,74 +25,87 @@
 #include <QDir>
 #include <QFileInfoList>
 
-class TemplateWidgetItem : public QTreeWidgetItem {
+class TemplateWidgetItem : public QTreeWidgetItem
+{
 public:
-	TemplateWidgetItem( QTreeWidgetItem * parent ) : QTreeWidgetItem( parent ) {}
+	TemplateWidgetItem(QTreeWidgetItem * parent) : QTreeWidgetItem(parent) {}
 
 	NewProjectTemplate * m_projectTemplate;
 };
 
 /* TemplateDialogImpl */
 
-TemplateDialogImpl::TemplateDialogImpl() {
-	setupUi( this );
+TemplateDialogImpl::TemplateDialogImpl()
+{
+	setupUi(this);
 
-	loadDirectory( "templates:", m_template->invisibleRootItem() );
+	loadDirectory("templates:", m_template->invisibleRootItem());
 
-	connect( m_template, SIGNAL(itemSelectionChanged()), this, SIGNAL(completeChanged()) );
+	connect(m_template, SIGNAL(itemSelectionChanged()), this, SIGNAL(completeChanged()));
 	m_template->expandAll();
 }
 
-TemplateDialogImpl::~TemplateDialogImpl() {
+TemplateDialogImpl::~TemplateDialogImpl()
+{
 	m_template->clear();
-	qDeleteAll( m_templates );
+	qDeleteAll(m_templates);
 }
 
-bool TemplateDialogImpl::isComplete() const {
+bool TemplateDialogImpl::isComplete() const
+{
 	QTreeWidgetItem * currentItem = m_template->currentItem();
-	return dynamic_cast<TemplateWidgetItem*>( currentItem );
+	return dynamic_cast<TemplateWidgetItem*>(currentItem);
 }
 
-QString TemplateDialogImpl::pagePluginId() const {
+QString TemplateDialogImpl::pagePluginId() const
+{
 	return "StdTemplate";
 }
 
-bool TemplateDialogImpl::pageIsVisible() const {
+bool TemplateDialogImpl::pageIsVisible() const
+{
 	return true;
 }
 
-bool TemplateDialogImpl::saveSettingsDialog( XinxProject * project ) {
-	Q_UNUSED( project );
+bool TemplateDialogImpl::saveSettingsDialog(XinxProject * project)
+{
+	Q_UNUSED(project);
 	return true;
 }
 
-void TemplateDialogImpl::loadDirectory( const QString & directory, QTreeWidgetItem * item ) {
-	QDir templateDirectory( directory );
+void TemplateDialogImpl::loadDirectory(const QString & directory, QTreeWidgetItem * item)
+{
+	QDir templateDirectory(directory);
 
-	QFileInfoList files = templateDirectory.entryInfoList( QStringList() << "*.xml", QDir::Files | QDir::AllDirs | QDir::NoDotAndDotDot );
-	foreach( const QFileInfo & info, files ) {
-		if( info.isDir() ) {
-			QTreeWidgetItem * dirItem = new QTreeWidgetItem( item );
-			dirItem->setText( 0, info.baseName() );
-			dirItem->setIcon( 0, style()->standardIcon( QStyle::SP_DirIcon ) );
+	QFileInfoList files = templateDirectory.entryInfoList(QStringList() << "*.xml", QDir::Files | QDir::AllDirs | QDir::NoDotAndDotDot);
+	foreach(const QFileInfo & info, files)
+	{
+		if (info.isDir())
+		{
+			QTreeWidgetItem * dirItem = new QTreeWidgetItem(item);
+			dirItem->setText(0, info.baseName());
+			dirItem->setIcon(0, style()->standardIcon(QStyle::SP_DirIcon));
 
-			loadDirectory( info.absoluteFilePath(), dirItem );
-		} else {
-			NewProjectTemplate * projectTemplate = new NewProjectTemplate( info.absoluteFilePath() );
+			loadDirectory(info.absoluteFilePath(), dirItem);
+		}
+		else
+		{
+			NewProjectTemplate * projectTemplate = new NewProjectTemplate(info.absoluteFilePath());
 
-			TemplateWidgetItem * templateItem = new TemplateWidgetItem( item );
-			templateItem->setIcon( 0, QIcon( ":/images/filenew.png" ) );
-			templateItem->setText( 0, projectTemplate->projectName() );
+			TemplateWidgetItem * templateItem = new TemplateWidgetItem(item);
+			templateItem->setIcon(0, QIcon(":/images/filenew.png"));
+			templateItem->setText(0, projectTemplate->projectName());
 			templateItem->m_projectTemplate = projectTemplate;
 
-			m_templates.append( projectTemplate );
+			m_templates.append(projectTemplate);
 		}
 	}
 }
 
-NewProjectTemplate * TemplateDialogImpl::currentTemplate() const {
-	TemplateWidgetItem * currentItem = dynamic_cast<TemplateWidgetItem*>( m_template->currentItem() );
-	if( currentItem )
+NewProjectTemplate * TemplateDialogImpl::currentTemplate() const
+{
+	TemplateWidgetItem * currentItem = dynamic_cast<TemplateWidgetItem*>(m_template->currentItem());
+	if (currentItem)
 		return currentItem->m_projectTemplate;
 
 	return 0;

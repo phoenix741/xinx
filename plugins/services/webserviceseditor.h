@@ -40,10 +40,11 @@ class QComboBox;
 class QToolButton;
 class QPlainTextEdit;
 
-class WebServicesEditor : public TextFileEditor {
+class WebServicesEditor : public TextFileEditor
+{
 	Q_OBJECT
 public:
-	WebServicesEditor( QWidget *parent = 0 );
+	WebServicesEditor(QWidget *parent = 0);
 	~WebServicesEditor();
 
 	WebServices * service();
@@ -51,11 +52,11 @@ public:
 	const QHash<QString,QString> & values();
 	void run();
 
-	virtual void loadFromDevice( QIODevice & d );
-	virtual void saveToDevice( QIODevice & d );
+	virtual void loadFromDevice(QIODevice & d);
+	virtual void saveToDevice(QIODevice & d);
 
-	virtual void serialize( XinxProjectSessionEditor * data, bool content );
-	virtual void deserialize( XinxProjectSessionEditor * data );
+	virtual void serialize(XinxProjectSessionEditor * data, bool content);
+	virtual void deserialize(XinxProjectSessionEditor * data);
 
 	virtual bool autoIndent();
 
@@ -70,19 +71,19 @@ private slots:
 	void paramListEditingFinished();
 
 	void webServicesChanged();
-	void webServicesActivated( int );
-	void webServicesParamActivated( int );
+	void webServicesActivated(int);
+	void webServicesParamActivated(int);
 	void webServicesValueActivated();
 
 private:
 	void initObjects();
 
 	void loadServicesList();
-	void loadActionsList( int index );
-	void loadValuesList( int index );
+	void loadActionsList(int index);
+	void loadValuesList(int index);
 
-	void store( const QString & );
-	void restore( const QString & );
+	void store(const QString &);
+	void restore(const QString &);
 
 	QWidget * m_resultWidget;
 	QString m_serviceName, m_operationName, m_oldParamValue;

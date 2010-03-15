@@ -42,7 +42,8 @@ class AbstractEditor;
  * editors. This class is not a QObject class but the inherited class must emit
  * signal currentChanged(int) when the current editor changed.
  */
-class LIBEXPORT EditorManager {
+class LIBEXPORT EditorManager
+{
 public:
 	//! Create an EditorManager
 	EditorManager();
@@ -52,9 +53,9 @@ public:
 	//! Return the current editor
 	virtual AbstractEditor * currentEditor() const = 0;
 	//! Return the editor at index \e index
-	virtual AbstractEditor * editor( int index ) const = 0;
+	virtual AbstractEditor * editor(int index) const = 0;
 	//! Return the editor of name \e filename
-	virtual AbstractEditor * editor( const QString & filename ) const = 0;
+	virtual AbstractEditor * editor(const QString & filename) const = 0;
 	//! Return the list of editors
 	virtual QList<AbstractEditor*> editors() const = 0;
 
@@ -63,7 +64,7 @@ public:
 	//! Show the previous editor
 	virtual void changeToPreviousEditor() = 0;
 	//! Show to the editor \e index
-	virtual void changeToEditor( int index ) = 0;
+	virtual void changeToEditor(int index) = 0;
 
 	//! Return the number of editor
 	virtual int editorsCount() const = 0;

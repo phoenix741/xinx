@@ -3,15 +3,15 @@ TEMPLATE = lib
 VERSION = 1.0.0.1
 CONFIG += plugin
 QT += xml \
-	xmlpatterns \
-	sql
+    xmlpatterns \
+    sql
 DESTDIR += ../
 LIBS += -L../../components \
     -lxinxcmp \
     -L../../framework \
-	-lxinxframework \
-	-lxml2 \
-	-lxslt
+    -lxinxframework \
+    -lxml2 \
+    -lxslt
 TARGET = generix
 INCLUDEPATH += ../../framework \
     ../../components
@@ -44,7 +44,8 @@ HEADERS = config/generixsettings.h \
     configuration/configurationmanager.h \
     docks/project/generixprojectdock.h \
     savedialog/derivationdialogimpl.h \
-    parser/generixxsltparser.h
+    parser/generixxsltparser.h \
+    docks/dictionary/dictionarymodel.h
 SOURCES = config/generixsettings.cpp \
     config/selfgenerixsettings.cpp \
     plugindefinition/generix.cpp \
@@ -71,7 +72,8 @@ SOURCES = config/generixsettings.cpp \
     configuration/configurationmanager.cpp \
     docks/project/generixprojectdock.cpp \
     savedialog/derivationdialogimpl.cpp \
-    parser/generixxsltparser.cpp
+    parser/generixxsltparser.cpp \
+    docks/dictionary/dictionarymodel.cpp
 win32:RC_FILE += rc/plugin.rc
 FORMS += ui/dictionarydockwidget.ui \
     config/customgenerix.ui \
@@ -84,5 +86,4 @@ FORMS += ui/dictionarydockwidget.ui \
     projectproperty/wizard/newgenerixderivation3page.ui \
     docks/project/gnxprojectdock.ui \
     savedialog/derivationdialog.ui
-
 include(../../ext/qmodeltest/modeltest.pri)

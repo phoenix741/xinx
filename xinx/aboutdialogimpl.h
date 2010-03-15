@@ -27,10 +27,11 @@
 /*!
  * Implementation of about dialog containts informations as the version, the licence,
  * the logo, and authors.
- * The implementation containts only a constructor who defines default dialog 
+ * The implementation containts only a constructor who defines default dialog
  * presentation : Windows Style Dialog.
  */
-class AboutDialogImpl : public QDialog, public Ui::AboutDialog {
+class AboutDialogImpl : public QDialog, public Ui::AboutDialog
+{
 	Q_OBJECT
 public:
 	/*!
@@ -39,7 +40,7 @@ public:
 	 * \param parent The parent of the dialog
 	 * \param f Flags to use on Windows. By default, the dialog have a fixed size.
 	 */
-	AboutDialogImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
+	AboutDialogImpl(QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint);
 private slots:
 };
 

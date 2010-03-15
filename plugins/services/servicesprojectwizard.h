@@ -28,14 +28,15 @@
 #include <plugins/plugininterfaces.h>
 #include "ui_newprojectwizard_serviceslist.h"
 
-class ServicesListPageImpl : public IXinxPluginNewProjectConfigurationPage, public Ui::ServicesListPage {
+class ServicesListPageImpl : public IXinxPluginNewProjectConfigurationPage, public Ui::ServicesListPage
+{
 	Q_OBJECT
 public:
 	ServicesListPageImpl();
 
 	QVariant field(const QString &name) const;
 
-	virtual bool saveSettingsDialog( XinxProject * project );
+	virtual bool saveSettingsDialog(XinxProject * project);
 
 	virtual QString pagePluginId() const;
 	virtual bool pageIsVisible() const;

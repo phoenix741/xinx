@@ -26,26 +26,31 @@
 
 /* XQFileEditor */
 
-XQFileEditor::XQFileEditor( QWidget *parent ) : TextFileEditor( new XQTextEditor(), parent ) {
+XQFileEditor::XQFileEditor(QWidget *parent) : TextFileEditor(new XQTextEditor(), parent)
+{
 	m_completionModel = new XQModelCompleter();
 
-	QCompleter * completer = new QCompleter( textEdit() );
-	completer->setModel( m_completionModel );
-	textEdit()->setCompleter( completer );
+	QCompleter * completer = new QCompleter(textEdit());
+	completer->setModel(m_completionModel);
+	textEdit()->setCompleter(completer);
 }
 
-XQFileEditor::~XQFileEditor() {
+XQFileEditor::~XQFileEditor()
+{
 	delete m_completionModel;
 }
 
-QString XQFileEditor::defaultFileName() const {
-	return tr( "noname.xq" );
+QString XQFileEditor::defaultFileName() const
+{
+	return tr("noname.xq");
 }
 
-QIcon XQFileEditor::icon() const {
-	return QIcon( ":/images/typexq.png" );
+QIcon XQFileEditor::icon() const
+{
+	return QIcon(":/images/typexq.png");
 }
 
-XQModelCompleter * XQFileEditor::completionModel() const {
+XQModelCompleter * XQFileEditor::completionModel() const
+{
 	return m_completionModel;
 }

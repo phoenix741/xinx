@@ -4,7 +4,6 @@ SUBDIRS += external_qcodeedit \
 	xinx_library \
 	xinx_test1 \
 	xinx_test2 \
-	xinx_test3 \
 	xinx_test4 \
 	xinx_test5 \
 	xinx_test6 \
@@ -27,8 +26,6 @@ xinx_test1.subdir = unittest/guixinxcodeedit
 xinx_test1.depends = external_qcodeedit xinx_components xinx_library
 xinx_test2.subdir = unittest/testxinxcodeedit
 xinx_test2.depends = external_qcodeedit xinx_components xinx_library
-xinx_test3.subdir = unittest/testcontentview
-xinx_test3.depends = external_qcodeedit xinx_components xinx_library
 xinx_test4.subdir = unittest/testsnipets
 xinx_test4.depends = external_qcodeedit xinx_components xinx_library
 xinx_test5.subdir = unittest/testutils

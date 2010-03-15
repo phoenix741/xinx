@@ -23,69 +23,71 @@
 // QCodeEdit header
 #include <qformat.h>
 
-CssFormatScheme::CssFormatScheme( XINXConfig * config ) : XinxFormatScheme( config ) {
-	setNameSpace( "css" );
+CssFormatScheme::CssFormatScheme(XINXConfig * config) : XinxFormatScheme(config)
+{
+	setNameSpace("css");
 	createDefaultScheme();
 }
 
-void CssFormatScheme::createDefaultScheme() {
+void CssFormatScheme::createDefaultScheme()
+{
 	QFormat comment, string, escapeseq, numbers, attribute, classf, pseudoclass, directive, id, tag, identifier1, identifier2, value1, value2;
 
 	// Comment format
 	comment.foreground = Qt::darkGreen;
-	setFormat( "comment", comment );
+	setFormat("comment", comment);
 
 	// String format
 	string.foreground = Qt::red;
-	setFormat( "string", string );
+	setFormat("string", string);
 
 	// Escape Sequence format
-	escapeseq.foreground = QColor( 0xff, 0x14, 0x93 );
-	setFormat( "escapeseq", escapeseq );
+	escapeseq.foreground = QColor(0xff, 0x14, 0x93);
+	setFormat("escapeseq", escapeseq);
 
 	// Numbers format
 	numbers.foreground = Qt::blue;
-	setFormat( "numbers", numbers );
+	setFormat("numbers", numbers);
 
 	// Attribute format
 	attribute.foreground = Qt::blue;
-	setFormat( "attribute", attribute );
+	setFormat("attribute", attribute);
 
 	// Class format
 	classf.foreground = Qt::darkMagenta;
 	classf.weight = QFont::Bold;
-	setFormat( "class", classf );
+	setFormat("class", classf);
 
 	// Pseudo Class format
 	pseudoclass.foreground = Qt::blue;
-	setFormat( "pseudoclass", pseudoclass );
+	setFormat("pseudoclass", pseudoclass);
 
 	// Directive format
 	directive.foreground = Qt::blue;
-	setFormat( "directive", directive );
+	setFormat("directive", directive);
 
 	// Id format
 	id.foreground = Qt::blue;
-	setFormat( "id", id );
+	setFormat("id", id);
 
 	// Tag format
-	setFormat( "tag", tag );
+	setFormat("tag", tag);
 
 	// Reserved Word format
 	identifier1.weight = QFont::Bold;
-	setFormat( "identifier1", identifier1 );
+	setFormat("identifier1", identifier1);
 
 	// Reserved Word format
 	identifier2.weight = QFont::Bold;
-	setFormat( "identifier2", identifier2 );
+	setFormat("identifier2", identifier2);
 
 	// Reserved Word format
 	value1.foreground = Qt::darkRed;
 	value1.weight = QFont::Bold;
-	setFormat( "value1", value1 );
+	setFormat("value1", value1);
 
 	// Reserved Word format
 	value2.foreground = Qt::darkRed;
 	value2.weight = QFont::Bold;
-	setFormat( "value2", value2 );
+	setFormat("value2", value2);
 }

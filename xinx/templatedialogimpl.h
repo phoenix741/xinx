@@ -30,7 +30,8 @@
 
 class NewProjectTemplate;
 
-class TemplateDialogImpl : public IXinxPluginNewProjectConfigurationPage, public Ui::TemplateDialog {
+class TemplateDialogImpl : public IXinxPluginNewProjectConfigurationPage, public Ui::TemplateDialog
+{
 	Q_OBJECT
 public:
 	TemplateDialogImpl();
@@ -40,9 +41,9 @@ public:
 
 	virtual QString pagePluginId() const;
 	virtual bool pageIsVisible() const;
-	virtual bool saveSettingsDialog( XinxProject * project );
+	virtual bool saveSettingsDialog(XinxProject * project);
 
-	void loadDirectory( const QString & directory, QTreeWidgetItem * item );
+	void loadDirectory(const QString & directory, QTreeWidgetItem * item);
 
 	NewProjectTemplate * currentTemplate() const;
 private:

@@ -28,31 +28,36 @@
 
 /* EmptyPlugin */
 
-EmptyPlugin::EmptyPlugin() {
-    Q_INIT_RESOURCE(empty);
+EmptyPlugin::EmptyPlugin()
+{
+	Q_INIT_RESOURCE(empty);
 }
 
-EmptyPlugin::~EmptyPlugin() {
+EmptyPlugin::~EmptyPlugin()
+{
 }
 
-bool EmptyPlugin::initializePlugin( const QString & lang ) {
-	QTranslator * tranlator = new QTranslator( this );
-	tranlator->load( QString(":/empty/translations/empty_%1").arg( lang ) );
+bool EmptyPlugin::initializePlugin(const QString & lang)
+{
+	QTranslator * tranlator = new QTranslator(this);
+	tranlator->load(QString(":/empty/translations/empty_%1").arg(lang));
 	qApp->installTranslator(tranlator);
 
 	return true;
 }
 
-QVariant EmptyPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr ) {
-	switch( attr ) {
+QVariant EmptyPlugin::getPluginAttribute(const enum IXinxPlugin::PluginAttribute & attr)
+{
+	switch (attr)
+	{
 	case PLG_NAME:
 		return tr("XINX Demo Empty Plugin");
 	case PLG_DESCRIPTION:
 		return tr("This small plugin do nothing and is just a demo");
 	case PLG_AUTHOR:
 		return "Ulrich Van Den Hekke";
-    case PLG_ICON:
-		return QPixmap( ":/empty/images/empty.png" );
+	case PLG_ICON:
+		return QPixmap(":/empty/images/empty.png");
 	case PLG_EMAIL:
 		return "ulrich.vdh@shadoware.org";
 	case PLG_WEBSITE:

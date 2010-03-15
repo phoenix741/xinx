@@ -29,10 +29,11 @@
 #include <scripts/scriptmanager.h>
 #include <plugins/xinxpluginsloader.h>
 
-class ScriptElement : public PluginElement {
+class ScriptElement : public PluginElement
+{
 	Q_DECLARE_TR_FUNCTIONS(ScriptElement)
 public:
-	ScriptElement( const ScriptValue & script );
+	ScriptElement(const ScriptValue & script);
 
 	virtual bool isModifiable() const;
 	virtual bool isConfigurable() const;

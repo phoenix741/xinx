@@ -27,28 +27,33 @@ XmlPresentationDockWidget * XmlPresentationDockWidget::s_self = 0;
 
 /* XmlPresentationDockWidget */
 
-XmlPresentationDockWidget::XmlPresentationDockWidget( const QString & title, QWidget * parent, Qt::WindowFlags flags ) : QDockWidget( title, parent, flags ) {
-	if( ! s_self ) s_self = this;
+XmlPresentationDockWidget::XmlPresentationDockWidget(const QString & title, QWidget * parent, Qt::WindowFlags flags) : QDockWidget(title, parent, flags)
+{
+	if (! s_self) s_self = this;
 
-	d = new XmlPresentationDockThread( this );
+	d = new XmlPresentationDockThread(this);
 }
 
-XmlPresentationDockWidget::XmlPresentationDockWidget( QWidget * parent, Qt::WindowFlags flags ) : QDockWidget( tr("XML Presentation"), parent, flags ) {
-	if( ! s_self ) s_self = this;
+XmlPresentationDockWidget::XmlPresentationDockWidget(QWidget * parent, Qt::WindowFlags flags) : QDockWidget(tr("XML Presentation"), parent, flags)
+{
+	if (! s_self) s_self = this;
 
-	d = new XmlPresentationDockThread( this );
+	d = new XmlPresentationDockThread(this);
 }
 
-XmlPresentationDockWidget::~XmlPresentationDockWidget() {
-	if( s_self == this ) s_self = 0;
+XmlPresentationDockWidget::~XmlPresentationDockWidget()
+{
+	if (s_self == this) s_self = 0;
 	delete d;
 }
 
-const QString & XmlPresentationDockWidget::filename() const {
+const QString & XmlPresentationDockWidget::filename() const
+{
 	return d->m_openingFile;
 }
 
-XmlPresentationDockWidget * XmlPresentationDockWidget::self() {
+XmlPresentationDockWidget * XmlPresentationDockWidget::self()
+{
 	return s_self;
 }
 

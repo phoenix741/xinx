@@ -19,12 +19,16 @@
 
 // Xinx header
 #include <core/xinxconfig.h>
+#include <contentview2/contentview2project.h>
+#include <contentview2/contentview2file.h>
 #include <contentview2/contentview2node.h>
 #include <contentview2/contentview2cache.h>
 #include <contentview2/contentview2treemodel.h>
 #include <contentview2/contentview2completionmodel.h>
+#include <contentview2/contentview2manager.h>
 #include <project/xinxproject.h>
-#include <editors/models/xsl/xslcv2parser.h>
+#include <editors/models/xsl/xslcontentviewparser.h>
+#include <editors/models/xsl/xslcompletionnodemodel.h>
 #include <plugins/xinxpluginsloader.h>
 
 // Qt header
@@ -36,76 +40,186 @@
 
 Q_IMPORT_PLUGIN(coreplugin);
 
-class TestContentView2 : public QObject {
+class TestContentView2 : public QObject
+{
 	Q_OBJECT
 private slots:
 	void initTestCase();
 
-	void createCache();
-	void testParseRootFile_data();
-	void testParseRootFile();
-	void testParseImportsFile_data();
-	void testParseImportsFile();
-
-	void testTreeModel();
-	void testListModel();
-
-	void testContentViewCache();
+	void testProject_data();
+	void testProject();
+	void testFile();
+	void testNode();
+	void testParser_data();
+	void testParser();
 
 	void cleanupTestCase();
 private:
 	int m_rootId;
-	ContentView2::Cache * m_cache;
-	QStringList m_imports;
+	QString m_filename;
+
+	ContentView2::Node    m_root;
+	ContentView2::Project m_project;
+	ContentView2::File    m_file;
 };
 
-void TestContentView2::initTestCase() {
+void TestContentView2::initTestCase()
+{
+	qApp->setOrganizationName("Shadoware");
+	qApp->setOrganizationDomain("Shadoware.Org");
+	qApp->setApplicationName("XINX Testlib");
+
+	QString configDirectory = QString(".config/%1/%2").arg(qApp->organizationDomain()).arg(qApp->applicationName());
+	QDir::home().mkpath(configDirectory);
+
+	QDir    path            = QDir(QDir::home().absoluteFilePath(configDirectory));
+	QFile::remove( path.absoluteFilePath("session.db") );
+
 	// Init plugins
-	QDir::addSearchPath( "plugins", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../../plugins" ) );
+	QDir::addSearchPath("datas", QDir(QApplication::applicationDirPath()).absoluteFilePath("../../datas"));
+	QDir::addSearchPath("plugins", QDir(QApplication::applicationDirPath()).absoluteFilePath("../../plugins"));
 	XinxPluginsLoader::self()->loadPlugins();
 
 	// Init Project
-	QFile( "../doc/examples/imports1/imports.xinx_session2" ).remove();
-	XinxProject * project = new XinxProject( "../doc/examples/imports1/imports.xinx_project" );
-	XINXProjectManager::self()->setCurrentProject( project );
+	XinxProject * project = new XinxProject("../doc/examples/imports1/imports.xinx_project");
+	XINXProjectManager::self()->setCurrentProject(project);
 
-	m_rootId = -1;
+	m_filename = QFileInfo("../doc/examples/imports1/imports.xsl").canonicalFilePath();
 }
 
-void TestContentView2::createCache() {
-	m_cache = new ContentView2::Cache( XINXProjectManager::self()->project() );
+void TestContentView2::testProject_data()
+{
+	QTest::newRow("No project");
+	QTest::newRow("Have project");
 }
 
-void TestContentView2::testParseRootFile_data() {
-	QTest::newRow("Empty session file");
-	QTest::newRow("Existing session file");
+void TestContentView2::testProject()
+{
+	try
+	{
+		try
+		{
+			m_project = ContentView2::Project(ContentView2::Manager::self()->database(), XINXProjectManager::self()->project());
+		}
+		catch(ContentView2::ProjectException e)
+		{
+			m_project.setProjectName(XINXProjectManager::self()->project()->projectName());
+			m_project.setProjectPath(XINXProjectManager::self()->project()->fileName());
+			m_project.create(ContentView2::Manager::self()->database());
+
+			m_project.setProjectName( tr("My test project") );
+			m_project.update(ContentView2::Manager::self()->database());
+		}
+	}
+	catch(ContentView2::ProjectException e)
+	{
+		QFAIL(qPrintable(e.getMessage()));
+	}
 }
 
-void TestContentView2::testParseRootFile() {
-	QSqlDatabase db = XINXProjectManager::self()->session()->database();
+void TestContentView2::testFile()
+{
+	if(! m_project.isValid())
+		QSKIP("No project defined", SkipAll);
+
+	ContentView2::FileContainer container(XINXProjectManager::self()->project(), m_filename, true);
+	try
+	{
+		QVERIFY(!container.isValid(ContentView2::Manager::self()->database()));
+
+		m_file.setProject(m_project);
+		m_file.setPath(m_filename);
+		m_file.setIsCached(true);
+		m_file.setType("XSL");
+		m_file.create(ContentView2::Manager::self()->database());
+
+		QVERIFY(container.isValid(ContentView2::Manager::self()->database()));
+
+		m_file.destroyNodes(ContentView2::Manager::self()->database());
+		m_file.destroyImports(ContentView2::Manager::self()->database());
+
+		m_file.setIsLoaded(false);
+		m_file.setDatmod(QFileInfo(m_filename).lastModified());
+
+		m_file.update(ContentView2::Manager::self()->database());
+
+		container.reload(ContentView2::Manager::self()->database());
+	}
+	catch(ContentView2::FileException e)
+	{
+		QFAIL(qPrintable(e.getMessage()));
+	}
+}
+
+void TestContentView2::testNode()
+{
+	if(! m_file.isValid())
+		QSKIP("No file defined", SkipAll);
+
+	try
+	{
+		m_root.setFile(m_file);
+		m_root.setLine(15);
+		m_root.setData("NAME", ContentView2::Node::NODE_NAME);
+		m_root.setData("NAME", ContentView2::Node::NODE_DISPLAY_NAME);
+		m_root.setData("TYPE", ContentView2::Node::NODE_TYPE);
+		m_root.setData("UV01", ContentView2::Node::NODE_USER_VALUE);
+		m_root.setData("UV02", ContentView2::Node::NODE_USER_VALUE + 1);
+		m_root.setData("UV03", ContentView2::Node::NODE_USER_VALUE + 2);
+		m_root.setData("UV04", ContentView2::Node::NODE_USER_VALUE + 3);
+		m_root.setData("UV05", ContentView2::Node::NODE_USER_VALUE + 4);
+		m_root.setData("UV06", ContentView2::Node::NODE_USER_VALUE + 5);
+		m_root.setData("UV07", ContentView2::Node::NODE_USER_VALUE + 6);
+		m_root.setData("UV08", ContentView2::Node::NODE_USER_VALUE + 7);
+		m_root.setData("UV09", ContentView2::Node::NODE_USER_VALUE + 8);
+		m_root.setData("UV10", ContentView2::Node::NODE_USER_VALUE + 9);
+		m_root.setData("UV11", ContentView2::Node::NODE_USER_VALUE + 10);
+		m_root.create(ContentView2::Manager::self()->database());
+
+		m_file.setRoot(m_root);
+		m_file.update(ContentView2::Manager::self()->database());
+	}
+	catch(ContentView2::NodeException e)
+	{
+		QFAIL(qPrintable(e.getMessage()));
+	}
+	catch(ContentView2::FileException e)
+	{
+		QFAIL(qPrintable(e.getMessage()));
+	}
+}
+
+void TestContentView2::testParser_data()
+{
+	QTest::newRow("No project");
+	QTest::newRow("Have project");
+}
+
+void TestContentView2::testParser()
+{
+	if(! m_root.isValid())
+		QSKIP("No root defined", SkipAll);
+
+	QSqlDatabase db = ContentView2::Manager::self()->database();
 
 	XslContentView2Parser * parser = 0;
-	try {
+	try
+	{
 		db.transaction();
 
-		QString filename = QFileInfo( "../doc/examples/imports1/imports.xsl" ).canonicalFilePath();
-
-		m_rootId = m_cache->createRootId( filename, true, false );
-
 		parser = new XslContentView2Parser;
-		parser->setPersistent( true );
-		parser->setRootNode( ContentView2::Node( db, m_rootId ) );
-		parser->setFilename( filename );
+		parser->setRootNode(m_root);
+		parser->setFilename(m_filename);
+		parser->setDatabase(db);
+		parser->load();
+		delete parser;
+		parser = 0;
 
 		db.commit();
 
-		m_cache->addToCache( parser );
-		m_cache->wait();
-		m_imports = parser->imports();
+		m_root.reload(db);
 
-		ContentView2::Node rootNode( db, m_rootId );
-		QList<int> childs = rootNode.childs( db );
-
+		QList<int> childs = m_root.childs( db );
 		QCOMPARE( childs.size(), 2 );
 
 		int childId = childs.at( 0 );
@@ -113,126 +227,22 @@ void TestContentView2::testParseRootFile() {
 		QCOMPARE( childNode.data( ContentView2::Node::NODE_NAME ).toString(), QString( "/" ) );
 		QCOMPARE( childNode.childs( db ).size(), 0 );
 
-	} catch( ContentView2::ParserException e ) {
-		QFAIL( qPrintable( e.getMessage() ) );
+	}
+	catch(ContentView2::ParserException e)
+	{
+		QFAIL(qPrintable(e.getMessage()));
 		db.rollback();
+	}
+	catch(ContentView2::NodeException e)
+	{
+		QFAIL(qPrintable(e.getMessage()));
 	}
 	delete parser;
 }
 
-void TestContentView2::testParseImportsFile_data() {
-	QTest::newRow("Empty session file");
-	QTest::newRow("Existing session file");
-}
-
-void TestContentView2::testParseImportsFile() {
-	if( m_imports.isEmpty() ) {
-		QSKIP( "No import to test ...", SkipSingle );
-	}
-
-	foreach( const QString & import, m_imports ) {
-		QVERIFY2( QFileInfo( import ).exists(), "Import must exists: probleme in resolution of import" );
-	}
-	m_cache->loadCache( m_imports );
-	m_cache->wait();
-
-	try {
-		QSqlDatabase db = XINXProjectManager::self()->session()->database();
-		db.transaction();
-
-		QString filename = QFileInfo( "../doc/examples/imports1/patients.xsl" ).canonicalFilePath();
-		uint rootId = m_cache->createRootId( filename, true );
-
-		db.rollback();
-
-		ContentView2::Node rootNode( db, rootId );
-		QList<int> childs = rootNode.childs( db );
-
-		QCOMPARE( childs.size(), 3 );
-
-		foreach( int childId, childs ) {
-			ContentView2::Node childNode( db, childId );
-			QCOMPARE( childNode.childs( db ).size(), 0 );
-		}
-	} catch( ContentView2::NodeException e ) {
-		QFAIL( qPrintable( e.getMessage() ) );
-	}
-
-}
-
-void TestContentView2::testTreeModel() {
-	if( m_rootId == -1 ) {
-		QSKIP( "No root ID defined ...", SkipSingle );
-	}
-
-	QTreeView * tree = new QTreeView;
-	tree->setWindowTitle( QTreeView::tr("Content View 2 : Tree") );
-	tree->resize(640, 480);
-	tree->show();
-
-	ContentView2::TreeModel * model = new ContentView2::TreeModel( XINXProjectManager::self()->session()->database(), m_rootId, this );
-	tree->setModel( model );
-
-	new ModelTest( model , model );
-	model->select();
-
-	tree->expandAll();
-	qApp->processEvents();
-
-	delete tree;
-	delete model;
-}
-
-void TestContentView2::testListModel() {
-	if( m_rootId == -1 ) {
-		QSKIP( "No root ID defined ...", SkipSingle );
-	}
-
-	QListView * list = new QListView;
-	list->setWindowTitle( QListView::tr("Content View 2 : List") );
-	list->resize(640, 480);
-	list->show();
-
-	ContentView2::CompletionModel * model = new ContentView2::CompletionModel( XINXProjectManager::self()->session()->database(), this );
-	new ModelTest( model, model );
-	list->setModel( model );
-
-	model->addFile( m_rootId );
-	model->addWhereClause( "cv_node.type = 'XslTemplate'" );
-	model->select();
-
-	qApp->processEvents();
-
-	delete list;
-	delete model;
-}
-
-void TestContentView2::testContentViewCache() {
-	m_cache->initializeCache();
-	m_cache->wait();
-
-	QString filename = QFileInfo( "../doc/examples/imports1/patients.xsl" ).canonicalFilePath();
-	m_cache->refreshCache( filename );
-	m_cache->wait();
-
-	m_cache->destroyCache( filename );
-	try {
-		QSqlDatabase db = XINXProjectManager::self()->session()->database();
-		db.transaction();
-		uint rootId = m_cache->createRootId( filename, true );
-		db.rollback();
-
-		ContentView2::Node rootNode( db, rootId );
-
-		QFAIL( "An exception will be thrown in this case" );
-	} catch( ContentView2::NodeException e ) {
-	}
-}
-
-void TestContentView2::cleanupTestCase() {
-	delete m_cache;
+void TestContentView2::cleanupTestCase()
+{
 	XINXProjectManager::self()->deleteProject();
-	QFile( "../doc/examples/imports1/imports.xinx_session2" ).remove();
 }
 
 QTEST_MAIN(TestContentView2)

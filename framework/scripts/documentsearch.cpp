@@ -22,78 +22,95 @@
 
 /* DocumentSearchOption */
 
-DocumentSearchOption::DocumentSearchOption( QDocumentSearch * search, QObject * parent ) : QObject( parent ), m_search( search ) {
+DocumentSearchOption::DocumentSearchOption(QDocumentSearch * search, QObject * parent) : QObject(parent), m_search(search)
+{
 }
 
-DocumentSearchOption::~DocumentSearchOption() {
+DocumentSearchOption::~DocumentSearchOption()
+{
 }
 
-void DocumentSearchOption::setWholeWords( bool value ) {
+void DocumentSearchOption::setWholeWords(bool value)
+{
 	m_wholeWords = value;
-	m_search->setOption( QDocumentSearch::WholeWords, value );
+	m_search->setOption(QDocumentSearch::WholeWords, value);
 }
 
-bool DocumentSearchOption::isWholeWords() const {
+bool DocumentSearchOption::isWholeWords() const
+{
 	return m_wholeWords;
 }
 
-void DocumentSearchOption::setCaseSensitive( bool value ) {
+void DocumentSearchOption::setCaseSensitive(bool value)
+{
 	m_caseSensitive = value;
-	m_search->setOption( QDocumentSearch::CaseSensitive, value );
+	m_search->setOption(QDocumentSearch::CaseSensitive, value);
 }
 
-bool DocumentSearchOption::isCaseSensitive() const {
+bool DocumentSearchOption::isCaseSensitive() const
+{
 	return m_caseSensitive;
 }
 
-void DocumentSearchOption::setRegExp( bool value ) {
+void DocumentSearchOption::setRegExp(bool value)
+{
 	m_regexp = value;
-	m_search->setOption( QDocumentSearch::RegExp, value );
+	m_search->setOption(QDocumentSearch::RegExp, value);
 }
 
-bool DocumentSearchOption::isRegExp() const {
+bool DocumentSearchOption::isRegExp() const
+{
 	return m_regexp;
 }
 
 /* DocumentSearch */
 
-DocumentSearch::DocumentSearch( XinxCodeEdit * editor ) {
-	m_search  = new QDocumentSearch( editor->editor(), QString(), QDocumentSearch::Silent );
-	m_options = new DocumentSearchOption( m_search, this );
-	m_search->setCursor( QDocumentCursor( editor->document() ) );
+DocumentSearch::DocumentSearch(XinxCodeEdit * editor)
+{
+	m_search  = new QDocumentSearch(editor->editor(), QString(), QDocumentSearch::Silent);
+	m_options = new DocumentSearchOption(m_search, this);
+	m_search->setCursor(QDocumentCursor(editor->document()));
 }
 
-DocumentSearch::~DocumentSearch() {
+DocumentSearch::~DocumentSearch()
+{
 	delete m_search;
 }
 
-DocumentSearchOption * DocumentSearch::getOptions() const {
+DocumentSearchOption * DocumentSearch::getOptions() const
+{
 	return m_options;
 }
 
-void DocumentSearch::setOptions( DocumentSearchOption * value ) {
+void DocumentSearch::setOptions(DocumentSearchOption * value)
+{
 	m_options = value;
 }
 
-void DocumentSearch::setSearchText( const QString & text ) {
-	m_search->setSearchText( text );
+void DocumentSearch::setSearchText(const QString & text)
+{
+	m_search->setSearchText(text);
 }
 
-QString DocumentSearch::getSearchText() const {
+QString DocumentSearch::getSearchText() const
+{
 	return m_search->searchText();
 }
 
-void DocumentSearch::setReplaceText( const QString & text ) {
-	m_search->setReplaceText( text );
-	m_search->setOption( QDocumentSearch::Replace, ! text.isEmpty() );
+void DocumentSearch::setReplaceText(const QString & text)
+{
+	m_search->setReplaceText(text);
+	m_search->setOption(QDocumentSearch::Replace, ! text.isEmpty());
 }
 
-QString DocumentSearch::getReplaceText() const {
+QString DocumentSearch::getReplaceText() const
+{
 	return m_search->replaceText();
 }
 
-bool DocumentSearch::next() {
-	m_search->next( false );
+bool DocumentSearch::next()
+{
+	m_search->next(false);
 
 	QDocumentCursor cursor = m_search->cursor();
 

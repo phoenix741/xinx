@@ -19,50 +19,20 @@
 
 // Xinx header
 #include "dictionaryparser.h"
-#include <contentview/contentviewnode.h>
+#include <contentview2/contentview2cache.h>
+#include <contentview2/contentview2manager.h>
 
 // Qt header
 #include <QTextCodec>
 #include <QVariant>
-#include <QtConcurrentRun>
+#include <QFile>
 
-DictionaryParser::DictionaryParser() : ContentViewParser( true ), m_codec( 0 ) {
-	m_rootNode = new ContentViewNode( "dictionary", -1 );
-	m_rootNode->setAutoDelete( false );
-	setRootNode( m_rootNode );
-	setAttachId( (unsigned long)m_rootNode );
+DictionaryParser::DictionaryParser() : ContentView2::Parser(), m_codec(0)
+{
 }
 
-DictionaryParser::~DictionaryParser() {
-	setRootNode( 0 );
-	m_rootNode->setAutoDelete( true );
-}
-
-QString DictionaryParser::trad( const QString & text, const QString & lang ) const {
-}
-
-QString DictionaryParser::trad( const QString & text, const QString & lang, const QString & ctxt ) const {
-}
-
-void DictionaryParser::setFilename( const QString & filename ) {
-	m_files.clear();
-	m_files << filename;
-}
-
-void DictionaryParser::setFileList( const QStringList & files ) {
-	m_files = files;
-}
-
-void DictionaryParser::loads() {
-	try {
-		this->loadFromMember();
-	} catch( ContentViewException e ) {
-		qWarning() << e.getMessage();
-	}
-}
-
-void DictionaryParser::refresh() {
-	QFuture<void> f = QtConcurrent::run( this, &DictionaryParser::loads );
+DictionaryParser::~DictionaryParser()
+{
 }
 
 /*
@@ -74,104 +44,126 @@ void DictionaryParser::refresh() {
  *   </labels>
  * </root>
  */
-void DictionaryParser::loadFromDeviceImpl() {
-	rootNode()->setData( ":/images/typexml.png", ContentViewNode::NODE_ICON );
+void DictionaryParser::load()
+{
+	rootNode().setData(":/images/typexml.png", ContentView2::Node::NODE_ICON);
+	rootNode().update(database());
 
-	loadAttachedNode( rootNode() );
+	inputDevice()->reset();
+	setDevice(inputDevice());
 
-	foreach( const QString & filename, m_files ) {
-		ContentViewParser::setFilename( filename );
-		setDevice( inputDevice() );
+	loadAttachedNode(rootNode());
 
-		while( ! atEnd() ) {
-			readNext();
+	while (! atEnd())
+	{
+		readNext();
 
-			if( isStartDocument() ) {
-				m_codec = QTextCodec::codecForName( documentEncoding().toString().toLatin1() );
-			}
-
-			if( isStartElement() ) {
-				if( name() == "root" )
-					readRootNode();
-				else
-					raiseError(tr("The file is not an dictionary file."));
-			}
+		if (isStartDocument())
+		{
+			m_codec = QTextCodec::codecForName(documentEncoding().toString().toLatin1());
 		}
 
-		if( error() ) {
-			throw ContentViewException( errorString(), rootNode()->fileName(), lineNumber(), columnNumber() );
+		if (isStartElement())
+		{
+			if (name() == "root")
+				readRootNode();
+			else
+				raiseError(tr("The file is not an dictionary file."));
 		}
+	}
+
+	if (error())
+	{
+		throw ContentView2::ParserException(errorString(), rootNode().filename(database()), lineNumber(), columnNumber());
 	}
 
 	detachAttachedNode();
 }
 
 
-void DictionaryParser::readRootNode() {
-	Q_ASSERT( isStartElement() && QXmlStreamReader::name() == "root" );
+void DictionaryParser::readRootNode()
+{
+	Q_ASSERT(isStartElement() && QXmlStreamReader::name() == "root");
 
-	while( !atEnd() ) {
+	while (!atEnd())
+	{
 		readNext();
 
-		if( isEndElement() )
+		if (isEndElement())
 			break;
 
-		if( isStartElement() ) {
-			if( QXmlStreamReader::name() == "labels" )
+		if (isStartElement())
+		{
+			if (QXmlStreamReader::name() == "labels")
 				readLabelsNode();
 			else
-				raiseError( tr("Labels node expected. %1 found" ).arg( QXmlStreamReader::name().toString() ) );
+				raiseError(tr("Labels node expected. %1 found").arg(QXmlStreamReader::name().toString()));
 		}
 	}
 }
 
-void DictionaryParser::readLabelsNode() {
-	Q_ASSERT( isStartElement() && QXmlStreamReader::name() == "labels" );
+void DictionaryParser::readLabelsNode()
+{
+	Q_ASSERT(isStartElement() && QXmlStreamReader::name() == "labels");
 
-	QString code = attributes().value( "code" ).toString();
-	ContentViewNode * labels = new ContentViewNode( code, lineNumber() );
-	labels->setCompareData( ContentViewNode::NODE_DISPLAY_NAME );
-	labels->setData( "DICTIONARY_LABELS", ContentViewNode::NODE_TYPE );
-	labels->setData( ":/generix/images/dictionary16.png", ContentViewNode::NODE_ICON );
-	labels = attachNode( rootNode(), labels );
+	QString code  = attributes().value("code").toString();
 
-	while( !atEnd() ) {
+	ContentView2::Node labels;
+	labels.setFileId(rootNode().fileId());
+	labels.setLine(lineNumber());
+	labels.setData(code, ContentView2::Node::NODE_NAME);
+	labels.setData(code, ContentView2::Node::NODE_DISPLAY_NAME);
+	labels.setData("XslVariable", ContentView2::Node::NODE_TYPE);
+	labels.setData(":/generix/images/dictionary16.png", ContentView2::Node::NODE_ICON);
+	labels.setData("gnx:trad($LANGUAGE,'%1',$CTXTRD)", ContentView2::Node::NODE_COMPLETE_FORM);
+	attachNode(rootNode(), labels);
+
+	while (!atEnd())
+	{
 		readNext();
 
-		if( isEndElement() )
+		if (isEndElement())
 			break;
 
-		if( isStartElement() ) {
-			if( QXmlStreamReader::name() == "label" )
-				readLabelNode( labels );
+		if (isStartElement())
+		{
+			if (QXmlStreamReader::name() == "label")
+				readLabelNode(labels);
 			else
-				raiseError( tr("Labels node expected. %1 found" ).arg( QXmlStreamReader::name().toString() ) );
+				raiseError(tr("Labels node expected. %1 found").arg(QXmlStreamReader::name().toString()));
 		}
 	}
 }
 
-void DictionaryParser::readLabelNode( ContentViewNode * parent ) {
-	Q_ASSERT( isStartElement() && QXmlStreamReader::name() == "label" );
+void DictionaryParser::readLabelNode(ContentView2::Node parent)
+{
+	Q_ASSERT(isStartElement() && QXmlStreamReader::name() == "label");
 
-	QString lang  = attributes().value( "lang" ).toString(),
-					ctx   = attributes().value( "ctx" ).toString(),
-					value = attributes().value( "value" ).toString();
-	ContentViewNode * label = new ContentViewNode( value, lineNumber() );
-	label->setData( QString( "%1 [Langue=%2] [Ctx=%3]" ).arg( value ).arg( lang ).arg( ctx ), ContentViewNode::NODE_DISPLAY_NAME );
-	label->setData( "DICTIONARY_LABEL", ContentViewNode::NODE_TYPE );
-	label->setData( ":/generix/images/label.png", ContentViewNode::NODE_ICON );
-	label->setData( lang, ContentViewNode::NODE_USER_VALUE );
-	label->setData( ctx, ContentViewNode::NODE_USER_VALUE + 1 );
-	attachNode( parent, label );
+	QString lang  = attributes().value("lang").toString();
+	QString ctx   = attributes().value("ctx").toString();
+	QString value = attributes().value("value").toString();
+	ContentView2::Node label;
+	label.setFileId(rootNode().fileId());
+	label.setLine(lineNumber());
+	label.setData(value, ContentView2::Node::NODE_NAME);
+	label.setData(QString("%1 [Langue=%2] [Ctx=%3]").arg(value).arg(lang).arg(ctx), ContentView2::Node::NODE_DISPLAY_NAME);
+	label.setData("DICTIONARY_LABEL", ContentView2::Node::NODE_TYPE);
+	label.setData(":/generix/images/label.png", ContentView2::Node::NODE_ICON);
+	label.setData(lang, NODE_DICO_LANG);
+	label.setData(ctx, NODE_DICO_CTX);
+	label.setData(value, NODE_DICO_VALUE);
+	attachNode(parent, label);
 
-	while( !atEnd() ) {
+	while (!atEnd())
+	{
 		readNext();
 
-		if( isEndElement() )
+		if (isEndElement())
 			break;
 
-		if( isStartElement() ) {
-				raiseError( tr("Label node expected. %1 found" ).arg( QXmlStreamReader::name().toString() ) );
+		if (isStartElement())
+		{
+			raiseError(tr("Label node expected. %1 found").arg(QXmlStreamReader::name().toString()));
 		}
 	}
 }

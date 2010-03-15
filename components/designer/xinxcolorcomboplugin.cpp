@@ -26,54 +26,66 @@
 
 /* XinxColorComboPlugin */
 
-XinxColorComboPlugin::XinxColorComboPlugin( QObject *parent ) : QObject( parent ) {
+XinxColorComboPlugin::XinxColorComboPlugin(QObject *parent) : QObject(parent)
+{
 	m_initialized = false;
 }
 
-void XinxColorComboPlugin::initialize( QDesignerFormEditorInterface *core ) {
-	if( m_initialized )
+void XinxColorComboPlugin::initialize(QDesignerFormEditorInterface *core)
+{
+	if (m_initialized)
 		return;
 
 	m_initialized = true;
 }
 
-bool XinxColorComboPlugin::isInitialized() const {
+bool XinxColorComboPlugin::isInitialized() const
+{
 	return m_initialized;
 }
 
-bool XinxColorComboPlugin::isContainer() const {
+bool XinxColorComboPlugin::isContainer() const
+{
 	return false;
 }
 
-QIcon XinxColorComboPlugin::icon() const {
+QIcon XinxColorComboPlugin::icon() const
+{
 	return QIcon();
 }
 
-QString XinxColorComboPlugin::toolTip() const {
+QString XinxColorComboPlugin::toolTip() const
+{
 	return "";
 }
 
-QString XinxColorComboPlugin::whatsThis() const {
+QString XinxColorComboPlugin::whatsThis() const
+{
 	return "";
 }
 
-QString XinxColorComboPlugin::group() const {
+QString XinxColorComboPlugin::group() const
+{
 	return "XINX Widget";
 }
 
-QString XinxColorComboPlugin::name() const {
+QString XinxColorComboPlugin::name() const
+{
 	return "XinxColorCombo";
 }
 
-QString XinxColorComboPlugin::includeFile() const {
+QString XinxColorComboPlugin::includeFile() const
+{
 	return "xinxcolorcombo.h";
 }
 
-QString XinxColorComboPlugin::domXml() const {
+QString XinxColorComboPlugin::domXml() const
+{
 	return  "<widget class=\"XinxColorCombo\" name=\"xinxColorCombo\"/>";
 }
 
-QWidget * XinxColorComboPlugin::createWidget( QWidget *parent ) {
-	return new XinxColorCombo( parent );
+QWidget * XinxColorComboPlugin::createWidget(QWidget *parent)
+{
+	return new XinxColorCombo(parent);
 }
 

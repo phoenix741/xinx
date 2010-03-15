@@ -31,21 +31,22 @@
 #include <QDataWidgetMapper>
 #include <QSqlDatabase>
 
-class LIBEXPORT CategoryPropertyDlgImpl : public QDialog, private Ui::CategoryPropertyDialog {
+class LIBEXPORT CategoryPropertyDlgImpl : public QDialog, private Ui::CategoryPropertyDialog
+{
 	Q_OBJECT
 public:
 	virtual ~CategoryPropertyDlgImpl();
 
-	void setParentId( int id );
+	void setParentId(int id);
 protected:
-	CategoryPropertyDlgImpl( int categoryId, QSqlDatabase db, QWidget * parent = 0, Qt::WindowFlags f = Qt::MSWindowsFixedSizeDialogHint );
-	CategoryPropertyDlgImpl( QSqlDatabase db, QWidget * parent = 0, Qt::WindowFlags f = Qt::MSWindowsFixedSizeDialogHint );
+	CategoryPropertyDlgImpl(int categoryId, QSqlDatabase db, QWidget * parent = 0, Qt::WindowFlags f = Qt::MSWindowsFixedSizeDialogHint);
+	CategoryPropertyDlgImpl(QSqlDatabase db, QWidget * parent = 0, Qt::WindowFlags f = Qt::MSWindowsFixedSizeDialogHint);
 
 	void setupUi();
 	void createMapper();
-	void setCategoryAccess( bool value );
+	void setCategoryAccess(bool value);
 private slots:
-	void on_m_categoryTreeView_activated ( const QModelIndex & index );
+	void on_m_categoryTreeView_activated(const QModelIndex & index);
 	void on_m_addCategoryButton_clicked();
 	void on_m_removeCategoryButton_clicked();
 	void on_m_buttons_accepted();

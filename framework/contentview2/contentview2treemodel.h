@@ -26,32 +26,31 @@
 #include <core/lib-config.h>
 #include <utils/treeproxyitemmodel.h>
 #include <contentview2/contentview2node.h>
+#include <contentview2/contentview2file.h>
 
 // Qt header
 #include <QAbstractItemModel>
 
 class QSqlQueryModel;
 
-namespace ContentView2 {
+namespace ContentView2
+{
 
-class  LIBEXPORT TreeModel : public TreeProxyItemModel {
+class LIBEXPORT TreeModel : public TreeProxyItemModel
+{
 	Q_OBJECT
 public:
-	enum SnipetItemRole {
-		NodeIdRole = Qt::UserRole
-	};
-
-	TreeModel( QSqlDatabase db, uint fileId, QObject * parent = 0 );
+	TreeModel(QSqlDatabase db, FileContainer container, QObject * parent = 0);
 	virtual ~TreeModel();
 
-	virtual QModelIndex index( const ContentView2::Node & node ) const;
-	virtual QModelIndex index( int row, int column, const QModelIndex & parent = QModelIndex() ) const;
+	virtual QModelIndex index(const ContentView2::Node & node) const;
+	virtual QModelIndex index(int row, int column, const QModelIndex & parent = QModelIndex()) const;
 
-	virtual QVariant data( const QModelIndex & index, int role = Qt::DisplayRole ) const;
+	virtual QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
 
-	virtual int columnCount( const QModelIndex & parent = QModelIndex() ) const;
-	virtual QModelIndex mapFromSource ( const QModelIndex & sourceIndex ) const;
-	virtual QModelIndex mapToSource ( const QModelIndex & proxyIndex ) const;
+	virtual int columnCount(const QModelIndex & parent = QModelIndex()) const;
+	virtual QModelIndex mapFromSource(const QModelIndex & sourceIndex) const;
+	virtual QModelIndex mapToSource(const QModelIndex & proxyIndex) const;
 
 	QSqlQueryModel * sourceModel();
 	QSqlQueryModel * sourceModel() const;
@@ -59,10 +58,11 @@ public slots:
 	void select();
 
 protected:
-	virtual int getUniqueIdentifier( const QModelIndex & sourceIndex ) const;
-	virtual int getParentUniqueIdentifier( const QModelIndex & sourceIndex ) const;
+	virtual int getUniqueIdentifier(const QModelIndex & sourceIndex) const;
+	virtual int getParentUniqueIdentifier(const QModelIndex & sourceIndex) const;
 
-	enum {
+	enum
+	{
 		list_name         = 0,
 		list_type         = 1,
 		list_icon         = 2,
@@ -76,12 +76,13 @@ protected:
 	QSqlDatabase database();
 	QSqlDatabase database() const;
 private:
-	int proxyColumnToSource( int proxyColumn ) const;
-	int sourceColumnToProxy( int sourceColumn ) const;
+	int proxyColumnToSource(int proxyColumn) const;
+	int sourceColumnToProxy(int sourceColumn) const;
 
+	int m_rootId, m_fileId;
+	FileContainer m_container;
 	QSqlDatabase m_db;
 	QSqlQueryModel * m_sourceModel;
-	uint m_fileId;
 };
 
 } // namespace ContentView2

@@ -26,10 +26,11 @@
 #include "plugins/plugininterfaces.h"
 #include "pluginsettings.h"
 
-class CustomizePlugin : public QWidget, public Ui::CustomizePlugin, public IXinxPluginConfigurationPage {
+class CustomizePlugin : public QWidget, public Ui::CustomizePlugin, public IXinxPluginConfigurationPage
+{
 	Q_OBJECT
 public:
-	CustomizePlugin( PluginSettings * settings, QWidget * parent = 0 );
+	CustomizePlugin(PluginSettings * settings, QWidget * parent = 0);
 	virtual ~CustomizePlugin();
 
 	virtual QPixmap image();

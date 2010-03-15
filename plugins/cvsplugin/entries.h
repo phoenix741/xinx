@@ -29,11 +29,12 @@
 #include <QDateTime>
 #include <QHash>
 
-struct EntriesLine {
+struct EntriesLine
+{
 	EntriesLine();
-	EntriesLine( const QString & line );
+	EntriesLine(const QString & line);
 
-	RCS::rcsState status( const QString & path ) const;
+	RCS::rcsState status(const QString & path) const;
 
 	bool hasConflict;
 	QChar type; // D pour dossier
@@ -42,21 +43,23 @@ struct EntriesLine {
 	QDateTime date;
 };
 
-struct EntriesFile : public QHash<QString,EntriesLine> {
+struct EntriesFile : public QHash<QString,EntriesLine>
+{
 	EntriesFile();
-	EntriesFile( const QString & file );
+	EntriesFile(const QString & file);
 
-	const EntriesLine status( const QString & path ) const;
+	const EntriesLine status(const QString & path) const;
 
 	QString path;
 	QDateTime fileDate;
 };
 
-struct EntriesList : public QHash<QString,EntriesFile> {
-	const EntriesFile value( const QString & key );
-	const EntriesFile value( const QString & key, const EntriesFile & defaultValue );
+struct EntriesList : public QHash<QString,EntriesFile>
+{
+	const EntriesFile value(const QString & key);
+	const EntriesFile value(const QString & key, const EntriesFile & defaultValue);
 
-	const EntriesLine status( const QString & filename );
+	const EntriesLine status(const QString & filename);
 };
 
 #endif // _ENTRIES_H_

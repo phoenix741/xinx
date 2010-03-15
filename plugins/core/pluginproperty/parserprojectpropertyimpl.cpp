@@ -24,110 +24,126 @@
 
 /* ParserProjectPropertyImpl */
 
-ParserProjectPropertyImpl::ParserProjectPropertyImpl( QWidget * parent, Qt::WindowFlags f ) : QWidget( parent, f ) {
-	setupUi( this );
+ParserProjectPropertyImpl::ParserProjectPropertyImpl(QWidget * parent, Qt::WindowFlags f) : QWidget(parent, f)
+{
+	setupUi(this);
 	m_project = XINXProjectManager::self()->project();
-	m_dataStreamEdit->setDefaultValue( XINXConfig::self()->config().project.defaultPath );
+	m_dataStreamEdit->setDefaultValue(XINXConfig::self()->config().project.defaultPath);
 }
 
-ParserProjectPropertyImpl::~ParserProjectPropertyImpl() {
+ParserProjectPropertyImpl::~ParserProjectPropertyImpl()
+{
 }
 
-void ParserProjectPropertyImpl::setProject( XinxProject * project ) {
+void ParserProjectPropertyImpl::setProject(XinxProject * project)
+{
 	m_project = project;
 }
 
-QPixmap ParserProjectPropertyImpl::image() {
+QPixmap ParserProjectPropertyImpl::image()
+{
 	return QPixmap();
 }
 
-QString ParserProjectPropertyImpl::name() {
+QString ParserProjectPropertyImpl::name()
+{
 	return this->windowTitle();
 }
 
-bool ParserProjectPropertyImpl::loadSettingsDialog() {
-	const QString moduleAddress = m_project->readProperty( "moduleInternetAdresse" ).toString();
+bool ParserProjectPropertyImpl::loadSettingsDialog()
+{
+	const QString moduleAddress = m_project->readProperty("moduleInternetAdresse").toString();
 
-	if( QFileInfo( moduleAddress ).isRelative() )
-		m_urlLocationEdit->setText( QDir( m_project->projectPath() ).absoluteFilePath( moduleAddress ) );
+	if (QFileInfo(moduleAddress).isRelative())
+		m_urlLocationEdit->setText(QDir(m_project->projectPath()).absoluteFilePath(moduleAddress));
 	else
-		m_urlLocationEdit->setText( moduleAddress );
+		m_urlLocationEdit->setText(moduleAddress);
 
-	m_dataStreamEdit->lineEdit()->setText( QDir( m_project->projectPath() ).absoluteFilePath( m_project->readProperty( "dataStreamLocation" ).toString() ) );
+	m_dataStreamEdit->lineEdit()->setText(QDir(m_project->projectPath()).absoluteFilePath(m_project->readProperty("dataStreamLocation").toString()));
 	return true;
 }
 
-bool ParserProjectPropertyImpl::saveSettingsDialog() {
-	m_project->writeProperty( "moduleInternetAdresse", QDir( m_project->projectPath() ).relativeFilePath(  m_urlLocationEdit->text() ) );
-	m_project->writeProperty( "dataStreamLocation", QDir( m_project->projectPath() ).relativeFilePath( m_dataStreamEdit->lineEdit()->text() ) );
+bool ParserProjectPropertyImpl::saveSettingsDialog()
+{
+	m_project->writeProperty("moduleInternetAdresse", QDir(m_project->projectPath()).relativeFilePath(m_urlLocationEdit->text()));
+	m_project->writeProperty("dataStreamLocation", QDir(m_project->projectPath()).relativeFilePath(m_dataStreamEdit->lineEdit()->text()));
 	return true;
 }
 
-bool ParserProjectPropertyImpl::cancelSettingsDialog() {
+bool ParserProjectPropertyImpl::cancelSettingsDialog()
+{
 	return true;
 }
 
-QWidget * ParserProjectPropertyImpl::settingsDialog() {
+QWidget * ParserProjectPropertyImpl::settingsDialog()
+{
 	return this;
 }
 
-bool ParserProjectPropertyImpl::isSettingsValid() {
+bool ParserProjectPropertyImpl::isSettingsValid()
+{
 	return true;
 }
 
-bool ParserProjectPropertyImpl::isVisible() {
+bool ParserProjectPropertyImpl::isVisible()
+{
 	return true;
 }
 
 /* WebPluginProjectPropertyWizard */
 
-WebPluginProjectPropertyWizard::WebPluginProjectPropertyWizard() {
-	setTitle( tr("Web Module Property Page") );
-	setSubTitle( tr("Define information about the web module, like the adresse of the servlet control.") );
+WebPluginProjectPropertyWizard::WebPluginProjectPropertyWizard()
+{
+	setTitle(tr("Web Module Property Page"));
+	setSubTitle(tr("Define information about the web module, like the adresse of the servlet control."));
 
-	QGridLayout * gridLayout = new QGridLayout( this );
+	QGridLayout * gridLayout = new QGridLayout(this);
 
-	QLabel * labelUrl = new QLabel( this );
-	gridLayout->addWidget( labelUrl, 0, 0 );
+	QLabel * labelUrl = new QLabel(this);
+	gridLayout->addWidget(labelUrl, 0, 0);
 
-	m_urlLocationEdit = new QLineEdit( this );
-	gridLayout->addWidget( m_urlLocationEdit, 0, 1 );
+	m_urlLocationEdit = new QLineEdit(this);
+	gridLayout->addWidget(m_urlLocationEdit, 0, 1);
 
-	QLabel * labelDataStream = new QLabel( this );
-	gridLayout->addWidget( labelDataStream, 1, 0 );
+	QLabel * labelDataStream = new QLabel(this);
+	gridLayout->addWidget(labelDataStream, 1, 0);
 
-	m_dataStreamEdit = new DirectoryEditWidget( this );
-	gridLayout->addWidget( m_dataStreamEdit, 1, 1 );
+	m_dataStreamEdit = new DirectoryEditWidget(this);
+	gridLayout->addWidget(m_dataStreamEdit, 1, 1);
 
-	gridLayout->addItem( new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding), 2, 0 );
+	gridLayout->addItem(new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding), 2, 0);
 
 	labelUrl->setBuddy(m_urlLocationEdit);
-	labelUrl->setText( tr("Location of the &running page :") );
-	m_urlLocationEdit->setText( field( "project.path" ).toString() );
+	labelUrl->setText(tr("Location of the &running page :"));
+	m_urlLocationEdit->setText(field("project.path").toString());
 
 	labelDataStream->setBuddy(m_dataStreamEdit);
-	labelDataStream->setText( tr("Location of data stream :") );
-	m_dataStreamEdit->lineEdit()->setText( field( "project.path" ).toString() );
+	labelDataStream->setText(tr("Location of data stream :"));
+	m_dataStreamEdit->lineEdit()->setText(field("project.path").toString());
 
-	registerField( "webplugin.adresse", m_urlLocationEdit );
-	registerField( "webplugin.dataStream", m_urlLocationEdit );
+	registerField("webplugin.adresse", m_urlLocationEdit);
+	registerField("webplugin.dataStream", m_urlLocationEdit);
 }
 
-void WebPluginProjectPropertyWizard::initializePage() {
-	m_dataStreamEdit->lineEdit()->setText( field( "project.path" ).toString() );
+void WebPluginProjectPropertyWizard::initializePage()
+{
+	m_dataStreamEdit->lineEdit()->setText(field("project.path").toString());
 }
 
-QString WebPluginProjectPropertyWizard::pagePluginId() const {
+QString WebPluginProjectPropertyWizard::pagePluginId() const
+{
 	return "CoreInformation";
 }
 
-bool WebPluginProjectPropertyWizard::pageIsVisible() const {
+bool WebPluginProjectPropertyWizard::pageIsVisible() const
+{
 	return true;
 }
 
-bool WebPluginProjectPropertyWizard::saveSettingsDialog( XinxProject * project ) {
-	project->writeProperty( "dataStreamLocation", m_dataStreamEdit->lineEdit()->text() );
-	project->writeProperty( "moduleInternetAdresse", m_urlLocationEdit->text() );
+bool WebPluginProjectPropertyWizard::saveSettingsDialog(XinxProject * project)
+{
+	project->writeProperty("dataStreamLocation", m_dataStreamEdit->lineEdit()->text());
+	project->writeProperty("moduleInternetAdresse", m_urlLocationEdit->text());
 
 	return true;
 }

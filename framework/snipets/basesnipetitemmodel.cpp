@@ -53,14 +53,16 @@
  * \param db Base where BaseSnipetItemModel must load the content of it's structure.
  * \param parent Parent object of the new instance of BaseSnipetItemModel.
  */
-BaseSnipetItemModel::BaseSnipetItemModel( QSqlDatabase db, QObject * parent ) : TreeProxyItemModel( parent ), m_db( db ) {
+BaseSnipetItemModel::BaseSnipetItemModel(QSqlDatabase db, QObject * parent) : TreeProxyItemModel(parent), m_db(db)
+{
 	// This will be automatically deleted.
-	m_sourceModel = new QSqlQueryModel( this );
-	setSourceModel( m_sourceModel );
+	m_sourceModel = new QSqlQueryModel(this);
+	setSourceModel(m_sourceModel);
 }
 
 /// Destroy the BaseSnipetItemModel
-BaseSnipetItemModel::~BaseSnipetItemModel() {
+BaseSnipetItemModel::~BaseSnipetItemModel()
+{
 
 }
 
@@ -71,54 +73,59 @@ BaseSnipetItemModel::~BaseSnipetItemModel() {
  * and re-create the internal structure of the TreeProxyItemModel by calling
  * createMapping()
  */
-void BaseSnipetItemModel::select() {
-	QSqlQuery query( m_db );
+void BaseSnipetItemModel::select()
+{
+	QSqlQuery query(m_db);
 
 	// Set the query used all snipet
 	query.prepare(
-		"SELECT id, parent_id, ':/images/folder.png' as icon, name, ifnull(description,''), '' as shortcut, 'CATEGORY' as type, ifnull(available_script,'') "
-		"FROM categories "
-		"UNION ALL "
-		"SELECT id, category_id as parent_id, icon, name, ifnull(description,''), shortcut, 'SNIPET' as type, ifnull(available_script,'') "
-		"FROM snipets "
-		"ORDER BY type, name"
-			);
+	    "SELECT id, parent_id, ':/images/folder.png' as icon, name, ifnull(description,''), '' as shortcut, 'CATEGORY' as type, ifnull(available_script,'') "
+	    "FROM categories "
+	    "UNION ALL "
+	    "SELECT id, category_id as parent_id, icon, name, ifnull(description,''), shortcut, 'SNIPET' as type, ifnull(available_script,'') "
+	    "FROM snipets "
+	    "ORDER BY type, name"
+	);
 
 	bool result = query.exec();
-	Q_ASSERT( result );
-	m_sourceModel->setQuery( query );
+	Q_ASSERT(result);
+	m_sourceModel->setQuery(query);
 
 	// Define name for header column
-	m_sourceModel->setHeaderData( list_id, Qt::Horizontal, tr("Id") );
-	m_sourceModel->setHeaderData( list_parentid, Qt::Horizontal, tr("Parent") );
-	m_sourceModel->setHeaderData( list_icon, Qt::Horizontal, tr("Icon") );
-	m_sourceModel->setHeaderData( list_name, Qt::Horizontal, tr("Name") );
-	m_sourceModel->setHeaderData( list_description, Qt::Horizontal, tr("Description") );
-	m_sourceModel->setHeaderData( list_shortcut, Qt::Horizontal, tr("Shortcut") );
-	m_sourceModel->setHeaderData( list_type, Qt::Horizontal, tr("Type") );
-	m_sourceModel->setHeaderData( list_availablejs, Qt::Horizontal, tr("Available Script") );
+	m_sourceModel->setHeaderData(list_id, Qt::Horizontal, tr("Id"));
+	m_sourceModel->setHeaderData(list_parentid, Qt::Horizontal, tr("Parent"));
+	m_sourceModel->setHeaderData(list_icon, Qt::Horizontal, tr("Icon"));
+	m_sourceModel->setHeaderData(list_name, Qt::Horizontal, tr("Name"));
+	m_sourceModel->setHeaderData(list_description, Qt::Horizontal, tr("Description"));
+	m_sourceModel->setHeaderData(list_shortcut, Qt::Horizontal, tr("Shortcut"));
+	m_sourceModel->setHeaderData(list_type, Qt::Horizontal, tr("Type"));
+	m_sourceModel->setHeaderData(list_availablejs, Qt::Horizontal, tr("Available Script"));
 
 	// Initialize the mapping
 	createMapping();
 }
 
 /// Source model (methode provide for convenience)
-QSqlQueryModel * BaseSnipetItemModel::sourceModel() {
+QSqlQueryModel * BaseSnipetItemModel::sourceModel()
+{
 	return m_sourceModel;
 }
 
 /// Source model (methode provide for convenience)
-QSqlQueryModel * BaseSnipetItemModel::sourceModel() const {
+QSqlQueryModel * BaseSnipetItemModel::sourceModel() const
+{
 	return m_sourceModel;
 }
 
 /// Database where the model is connected (methode provide for convenience)
-QSqlDatabase BaseSnipetItemModel::database() {
+QSqlDatabase BaseSnipetItemModel::database()
+{
 	return m_db;
 }
 
 /// Database where the model is connected (methode provide for convenience)
-QSqlDatabase BaseSnipetItemModel::database() const {
+QSqlDatabase BaseSnipetItemModel::database() const
+{
 	return m_db;
 }
 
@@ -134,12 +141,16 @@ QSqlDatabase BaseSnipetItemModel::database() const {
  * \return a unique identifier for the tree model
  * \sa getUniqueIdentifier(), getParentUniqueIdentifier()
  */
-int BaseSnipetItemModel::getTreeModelIdentifier( QString type, int id ) const {
-	if( type == "CATEGORY" ) {
-		if( id == 0 ) return 0;
-		return qHash( QString("C%1").arg( id ) );
-	} else {
-		return qHash( QString("S%1").arg( id ) );
+int BaseSnipetItemModel::getTreeModelIdentifier(QString type, int id) const
+{
+	if (type == "CATEGORY")
+	{
+		if (id == 1) return 0;
+		return qHash(QString("C%1").arg(id));
+	}
+	else
+	{
+		return qHash(QString("S%1").arg(id));
 	}
 }
 
@@ -153,11 +164,12 @@ int BaseSnipetItemModel::getTreeModelIdentifier( QString type, int id ) const {
  * \return a unique identifier for the tree model
  * \sa getTreeModelIdentifier(), getParentUniqueIdentifier()
  */
-int BaseSnipetItemModel::getUniqueIdentifier( const QModelIndex & sourceIndex ) const {
-	QSqlRecord record = m_sourceModel->record( sourceIndex.row() );
-	QString type = record.value( list_type ).toString();
-	int id       = record.value( list_id ).toInt();
-	return getTreeModelIdentifier( type, id );
+int BaseSnipetItemModel::getUniqueIdentifier(const QModelIndex & sourceIndex) const
+{
+	QSqlRecord record = m_sourceModel->record(sourceIndex.row());
+	QString type = record.value(list_type).toString();
+	int id       = record.value(list_id).toInt();
+	return getTreeModelIdentifier(type, id);
 }
 
 /*!
@@ -170,12 +182,13 @@ int BaseSnipetItemModel::getUniqueIdentifier( const QModelIndex & sourceIndex ) 
  * \return a unique identifier for the parent of sourceIndex in the tree model
  * \sa getTreeModelIdentifier(), getUniqueIdentifier()
  */
-int BaseSnipetItemModel::getParentUniqueIdentifier( const QModelIndex & sourceIndex ) const {
-	QSqlRecord record = m_sourceModel->record( sourceIndex.row() );
-	int parentId = record.value( list_parentid ).toInt();
-	if( parentId == 0 ) return 0;
+int BaseSnipetItemModel::getParentUniqueIdentifier(const QModelIndex & sourceIndex) const
+{
+	QSqlRecord record = m_sourceModel->record(sourceIndex.row());
+	int parentId = record.value(list_parentid).toInt();
+	if (parentId == 1) return 0;
 
-	return getTreeModelIdentifier( "CATEGORY", parentId );
+	return getTreeModelIdentifier("CATEGORY", parentId);
 }
 
 /*!
@@ -188,16 +201,18 @@ int BaseSnipetItemModel::getParentUniqueIdentifier( const QModelIndex & sourceIn
  * \return An index in the tree model.
  * \sa getTreeModelIdentifier()
  */
-QModelIndex BaseSnipetItemModel::index( bool isCategory, int id ) const {
-	if( isCategory && ( id == 0 ) ) return QModelIndex();
+QModelIndex BaseSnipetItemModel::index(bool isCategory, int id) const
+{
+	if (isCategory && (id == 1)) return QModelIndex();
 
 	QString type = isCategory ? "CATEGORY" : "SNIPET";
-	return TreeProxyItemModel::index( getTreeModelIdentifier( type, id ) );
+	return TreeProxyItemModel::index(getTreeModelIdentifier(type, id));
 }
 
 /// Method provide for convenience (See QAbstractItemModel)
-QModelIndex BaseSnipetItemModel::index( int row, int column, const QModelIndex & parent ) const {
-	return TreeProxyItemModel::index( row, column, parent );
+QModelIndex BaseSnipetItemModel::index(int row, int column, const QModelIndex & parent) const
+{
+	return TreeProxyItemModel::index(row, column, parent);
 }
 
 /*!
@@ -213,31 +228,38 @@ QModelIndex BaseSnipetItemModel::index( int row, int column, const QModelIndex &
  * \param index The index where data must search information.
  * \return Information stored in a QVariant.
  */
-QVariant BaseSnipetItemModel::data( const QModelIndex & index, int role ) const {
-	if( ! index.isValid() ) return QVariant();
+QVariant BaseSnipetItemModel::data(const QModelIndex & index, int role) const
+{
+	if (! index.isValid())
+		return TreeProxyItemModel::data(index, role);
 
 
-	if( role == BaseSnipetItemModel::SnipetIdRole ) {
-		QModelIndex sourceIndex = mapToSource( index );
-		if( ! sourceIndex.isValid() ) return QVariant();
+	if (role == BaseSnipetItemModel::SnipetIdRole)
+	{
+		QModelIndex sourceIndex = mapToSource(index);
+		if (! sourceIndex.isValid()) return QVariant();
 
-		QSqlRecord record = m_sourceModel->record( sourceIndex.row() );
-		return record.value( list_id );
-	} else if( role == BaseSnipetItemModel::SnipetTypeRole ) {
-		QModelIndex sourceIndex = mapToSource( index );
-		if( ! sourceIndex.isValid() ) return QVariant();
+		QSqlRecord record = m_sourceModel->record(sourceIndex.row());
+		return record.value(list_id);
+	}
+	else if (role == BaseSnipetItemModel::SnipetTypeRole)
+	{
+		QModelIndex sourceIndex = mapToSource(index);
+		if (! sourceIndex.isValid()) return QVariant();
 
-		QSqlRecord record = m_sourceModel->record( sourceIndex.row() );
-		return record.value( list_type );
-	} else if( role == BaseSnipetItemModel::SnipetParentIdRole ) {
-		QModelIndex sourceIndex = mapToSource( index );
-		if( ! sourceIndex.isValid() ) return QVariant();
+		QSqlRecord record = m_sourceModel->record(sourceIndex.row());
+		return record.value(list_type);
+	}
+	else if (role == BaseSnipetItemModel::SnipetParentIdRole)
+	{
+		QModelIndex sourceIndex = mapToSource(index);
+		if (! sourceIndex.isValid()) return QVariant();
 
-		QSqlRecord record = m_sourceModel->record( sourceIndex.row() );
-		return record.value( list_parentid );
+		QSqlRecord record = m_sourceModel->record(sourceIndex.row());
+		return record.value(list_parentid);
 	}
 
-	return TreeProxyItemModel::data( index, role );
+	return TreeProxyItemModel::data(index, role);
 }
 
 /*!
@@ -249,16 +271,21 @@ QVariant BaseSnipetItemModel::data( const QModelIndex & index, int role ) const 
  * \param snipetIds list of id passed by reference
  * \param categoryIds list of id passed by reference
  */
-void BaseSnipetItemModel::indexesToIds( const QModelIndexList & indexes, QList<int> & snipetIds, QList<int> & categoryIds ) const {
-	foreach( const QModelIndex & index, indexes ) {
-		QString type = index.data( SnipetTypeRole ).toString();
+void BaseSnipetItemModel::indexesToIds(const QModelIndexList & indexes, QList<int> & snipetIds, QList<int> & categoryIds) const
+{
+	foreach(const QModelIndex & index, indexes)
+	{
+		QString type = index.data(SnipetTypeRole).toString();
 		bool isCategory = type == "CATEGORY";
-		int id = index.data( SnipetIdRole ).toInt();
+		int id = index.data(SnipetIdRole).toInt();
 
-		if( isCategory ) {
-			categoryIds.append( id );
-		} else {
-			snipetIds.append( id );
+		if (isCategory)
+		{
+			categoryIds.append(id);
+		}
+		else
+		{
+			snipetIds.append(id);
 		}
 
 	}
@@ -269,20 +296,25 @@ void BaseSnipetItemModel::indexesToIds( const QModelIndexList & indexes, QList<i
  * This method add in the ids list, all snipets of a category, and for the category
  * call it recursively to add all snipet of it's child category.
  */
-void BaseSnipetItemModel::addIndexToList( QModelIndex index, QList<int> * ids ) const {
-	QString type = index.data( SnipetTypeRole ).toString();
+void BaseSnipetItemModel::addIndexToList(QModelIndex index, QList<int> * ids) const
+{
+	QString type = index.data(SnipetTypeRole).toString();
 	bool isCategory = type == "CATEGORY";
-	int id = index.data( SnipetIdRole ).toInt();
+	int id = index.data(SnipetIdRole).toInt();
 
-	if( isCategory ) {
-		int row = index.model()->rowCount( index );
-		for( int i = 0 ; i < row ; i++ ) {
-			QModelIndex child = index.child( i, 0 );
-			addIndexToList( child, ids );
+	if (isCategory)
+	{
+		int row = index.model()->rowCount(index);
+		for (int i = 0 ; i < row ; i++)
+		{
+			QModelIndex child = index.child(i, 0);
+			addIndexToList(child, ids);
 		}
-	} else {
-		if( ! ids->contains( id ) )
-			ids->append( id );
+	}
+	else
+	{
+		if (! ids->contains(id))
+			ids->append(id);
 	}
 }
 
@@ -295,13 +327,15 @@ void BaseSnipetItemModel::addIndexToList( QModelIndex index, QList<int> * ids ) 
  * \param indexes List of index to convert
  * \return list of snipet identifier.
  */
-QList<int> BaseSnipetItemModel::indexesToIds( const QModelIndexList & indexes ) const {
+QList<int> BaseSnipetItemModel::indexesToIds(const QModelIndexList & indexes) const
+{
 	QList<int> ids;
-	foreach( const QModelIndex & index, indexes ) {
-		addIndexToList( index, &ids );
+	foreach(const QModelIndex & index, indexes)
+	{
+		addIndexToList(index, &ids);
 	}
 
-	qSort( ids );
+	qSort(ids);
 	return ids;
 }
 

@@ -43,134 +43,159 @@ WebServicesManager * WebServicesManager::s_self = 0;
 
 /* Parameter */
 
-Parameter::Parameter( QString paramString, QString paramType ) {
+Parameter::Parameter(QString paramString, QString paramType)
+{
 	m_paramString = paramString;
 	m_paramType = paramType;
 }
 
-Parameter::~Parameter() {
+Parameter::~Parameter()
+{
 
 }
 
-const QString & Parameter::paramString() const {
+const QString & Parameter::paramString() const
+{
 	return m_paramString;
 }
 
-const QString & Parameter::paramType() const {
+const QString & Parameter::paramType() const
+{
 	return m_paramType;
 }
 
 /* Operations */
 
-Operation::Operation( QString name ) {
+Operation::Operation(QString name)
+{
 	m_name = name;
 }
 
-Operation::~Operation() {
-	qDeleteAll( m_inputParam );
-	qDeleteAll( m_outputParam );
+Operation::~Operation()
+{
+	qDeleteAll(m_inputParam);
+	qDeleteAll(m_outputParam);
 }
 
-QString Operation::name() {
+QString Operation::name()
+{
 	return m_name;
 }
 
-const QList<Parameter*> & Operation::inputParam() {
+const QList<Parameter*> & Operation::inputParam()
+{
 	return m_inputParam;
 }
 
-const QList<Parameter*> & Operation::outputParam() {
+const QList<Parameter*> & Operation::outputParam()
+{
 	return m_outputParam;
 }
 
-QString Operation::encodingStyle() {
+QString Operation::encodingStyle()
+{
 	return m_encodingStyle;
 }
 
-QString Operation::namespaceString() {
+QString Operation::namespaceString()
+{
 	return m_namespaceString;
 }
 
 /* WebServices */
 
-WebServices::WebServices( const QString & wsdlLink, const QString & wsdlContent, QObject * parent ) : QObject( parent ), m_wsdlLink( wsdlLink ), m_wsdlContent( wsdlContent ) {
-	loadFromContent( wsdlContent );
+WebServices::WebServices(const QString & wsdlLink, const QString & wsdlContent, QObject * parent) : QObject(parent), m_wsdlLink(wsdlLink), m_wsdlContent(wsdlContent)
+{
+	loadFromContent(wsdlContent);
 }
 
-WebServices::~WebServices() {
-	qDeleteAll( m_list );
+WebServices::~WebServices()
+{
+	qDeleteAll(m_list);
 }
 
-QString WebServices::name() {
+QString WebServices::name()
+{
 	return m_wsdl.name();
 }
 
-const QList<Operation*> & WebServices::operations() {
+const QList<Operation*> & WebServices::operations()
+{
 	return m_list;
 }
 
-const WSDL & WebServices::wsdl() const {
+const WSDL & WebServices::wsdl() const
+{
 	return m_wsdl;
 }
 
-void WebServices::loadFromElement( const QDomElement & element ) {
-	qDeleteAll( m_list );
+void WebServices::loadFromElement(const QDomElement & element)
+{
+	qDeleteAll(m_list);
 	m_list.clear();
 
-	m_wsdl = WSDL( element );
+	m_wsdl = WSDL(element);
 
-	foreach( const WSDLService & service, m_wsdl.services() ) {
+	foreach(const WSDLService & service, m_wsdl.services())
+	{
 		QString tnsBinding = service.port().binding();
-		tnsBinding = tnsBinding.mid( tnsBinding.indexOf( ":" ) + 1 );
+		tnsBinding = tnsBinding.mid(tnsBinding.indexOf(":") + 1);
 
 		WSDLBinding binding = m_wsdl.bindings()[ tnsBinding ];
 		QString tnsType = binding.type();
-		tnsType = tnsType.mid( tnsType.indexOf( ":" ) + 1 );
+		tnsType = tnsType.mid(tnsType.indexOf(":") + 1);
 
 		WSDLPortType portType = m_wsdl.portTypes()[ tnsType ];
 
-		foreach( const WSDLOperation & operation, portType.operations() ) {
-			Operation * wsOperation = new Operation( operation.name() );
+		foreach(const WSDLOperation & operation, portType.operations())
+		{
+			Operation * wsOperation = new Operation(operation.name());
 
-			foreach( const WSDLOperation & bindingOperation, binding.operations() ) {
-				if( bindingOperation.name() == operation.name() ) {
+			foreach(const WSDLOperation & bindingOperation, binding.operations())
+			{
+				if (bindingOperation.name() == operation.name())
+				{
 					wsOperation->m_encodingStyle = bindingOperation.inputEncodingStyle();
 					wsOperation->m_namespaceString = bindingOperation.inputNamespace();
 				}
 			}
 
 			QString tnsInputMessage = operation.inputMessage();
-			tnsInputMessage = tnsInputMessage.mid( tnsInputMessage.indexOf( ":" ) + 1 );
+			tnsInputMessage = tnsInputMessage.mid(tnsInputMessage.indexOf(":") + 1);
 
 			WSDLMessage inputMessage = m_wsdl.messages()[ tnsInputMessage ];
-			foreach( const WSDLPart & part, inputMessage.parts() ) {
-				Parameter * param = new Parameter( part.name(), part.type() );
-				wsOperation->m_inputParam.append( param );
+			foreach(const WSDLPart & part, inputMessage.parts())
+			{
+				Parameter * param = new Parameter(part.name(), part.type());
+				wsOperation->m_inputParam.append(param);
 			}
 
 
 			QString tnsOutputMessage = operation.outputMessage();
-			tnsOutputMessage = tnsOutputMessage.mid( tnsOutputMessage.indexOf( ":" ) + 1 );
+			tnsOutputMessage = tnsOutputMessage.mid(tnsOutputMessage.indexOf(":") + 1);
 
 			WSDLMessage outputMessage = m_wsdl.messages()[ tnsOutputMessage ];
-			foreach( const WSDLPart & part, outputMessage.parts() ) {
-				Parameter * param = new Parameter( part.name(), part.type() );
-				wsOperation->m_outputParam.append( param );
+			foreach(const WSDLPart & part, outputMessage.parts())
+			{
+				Parameter * param = new Parameter(part.name(), part.type());
+				wsOperation->m_outputParam.append(param);
 			}
 
-			m_list.append( wsOperation );
+			m_list.append(wsOperation);
 		}
 	}
 
 	emit updated();
 }
 
-void WebServices::loadFromContent( const QString & wsdlContent ) {
+void WebServices::loadFromContent(const QString & wsdlContent)
+{
 	QDomDocument document;
 	QString errorStr;
 	int errorLine;
 	int errorColumn;
-	if (!document.setContent( wsdlContent, true, &errorStr, &errorLine, &errorColumn)) {
+	if (!document.setContent(wsdlContent, true, &errorStr, &errorLine, &errorColumn))
+	{
 		QMessageBox::information(qApp->activeWindow(), QObject::tr("WSDL WebServices file"), QObject::tr("Parse error at line %1, column %2:\n%3")
 		                         .arg(errorLine)
 		                         .arg(errorColumn)
@@ -178,83 +203,99 @@ void WebServices::loadFromContent( const QString & wsdlContent ) {
 		return;
 	}
 
-	loadFromElement( document.documentElement() );
+	loadFromElement(document.documentElement());
 }
 
 /* WebServicesManager */
 
-WebServicesManager::WebServicesManager() : QObject(), WebServicesList(), m_isUpdate( false ){
-	m_http = new QHttp( this );
-	m_httpDialog = new QProgressDialog( qApp->activeWindow() );
-	m_httpDialog->setLabelText( tr("Load Web Services List ...") );
-	connect( m_httpDialog, SIGNAL( canceled() ), m_http, SLOT( abort() ) );
-	connect( m_http, SIGNAL( done(bool) ), this, SLOT( responseReady() ) );
+WebServicesManager::WebServicesManager() : QObject(), WebServicesList(), m_isUpdate(false)
+{
+	m_http = new QHttp(this);
+	m_httpDialog = new QProgressDialog(qApp->activeWindow());
+	m_httpDialog->setLabelText(tr("Load Web Services List ..."));
+	connect(m_httpDialog, SIGNAL(canceled()), m_http, SLOT(abort()));
+	connect(m_http, SIGNAL(done(bool)), this, SLOT(responseReady()));
 }
 
-WebServicesManager::WebServicesManager( const WebServicesManager & manager ) : QObject(), WebServicesList( manager ), m_isUpdate( false ) {
+WebServicesManager::WebServicesManager(const WebServicesManager & manager) : QObject(), WebServicesList(manager), m_isUpdate(false)
+{
 	m_http = manager.m_http;
 	m_httpDialog = manager.m_httpDialog;
 }
 
-WebServicesManager::~WebServicesManager() {
-	if( this == s_self ) {
+WebServicesManager::~WebServicesManager()
+{
+	if (this == s_self)
+	{
 		s_self = 0;
-		qDeleteAll( *this );
+		qDeleteAll(*this);
 	}
 }
 
-WebServicesManager * WebServicesManager::self() {
-	if( s_self == 0 ) {
+WebServicesManager * WebServicesManager::self()
+{
+	if (s_self == 0)
+	{
 		s_self = new WebServicesManager();
-		connect( XINXProjectManager::self(), SIGNAL(changed()), s_self, SLOT(updateWebServicesList()) );
-		XINXStaticDeleter::self()->addObject( s_self );
+		connect(XINXProjectManager::self(), SIGNAL(changed()), s_self, SLOT(updateWebServicesList()));
+		XINXStaticDeleter::self()->addObject(s_self);
 	}
 	return s_self;
 }
 
-void WebServicesManager::setProject( XinxProject * project ) {
-	if( m_isUpdate ) return ;
-	bool enabled = project && project->activatedPlugin().contains( "ServicesPlugin" );
+void WebServicesManager::setProject(XinxProject * project)
+{
+	if (m_isUpdate) return ;
+	bool enabled = project && project->activatedPlugin().contains("ServicesPlugin");
 
-	qDeleteAll( *this );
+	qDeleteAll(*this);
 	clear();
 	emit changed();
 
-	if( enabled ) {
-		int version = XINXProjectManager::self()->project()->readProperty( "webServiceVersion" ).toInt();
+	if (enabled)
+	{
+		int version = XINXProjectManager::self()->project()->readProperty("webServiceVersion").toInt();
 		QHash<QString,QString> wsdlContent;
 
 		QStringList serveurWeb;
-		if( version < WEBSERVICE_VERSION_1 ) {
-			serveurWeb = XINXProjectManager::self()->project()->readProperty( "webServiceLink" ).toString().split( ";;", QString::SkipEmptyParts );
-		} else {
+		if (version < WEBSERVICE_VERSION_1)
+		{
+			serveurWeb = XINXProjectManager::self()->project()->readProperty("webServiceLink").toString().split(";;", QString::SkipEmptyParts);
+		}
+		else
+		{
 			int index = 0;
 			QString link;
-			while( ! ( link = XINXProjectManager::self()->project()->readProperty( QString( "webServiceLink_%1" ).arg( index ) ).toString() ).isEmpty() ) {
-				serveurWeb.append( link );
-				wsdlContent[ link ] = XINXProjectManager::self()->project()->readProperty( QString( "webServiceContent_%1" ).arg( index ) ).toString();
+			while (!(link = XINXProjectManager::self()->project()->readProperty(QString("webServiceLink_%1").arg(index)).toString()).isEmpty())
+			{
+				serveurWeb.append(link);
+				wsdlContent[ link ] = XINXProjectManager::self()->project()->readProperty(QString("webServiceContent_%1").arg(index)).toString();
 
 				index++;
 			}
 		}
 
-		m_httpDialog->setMaximum( serveurWeb.count() );
-		m_httpDialog->setValue( 0 );
+		m_httpDialog->setMaximum(serveurWeb.count());
+		m_httpDialog->setValue(0);
 		m_httpDialog->show();
 
 		m_isUpdate = true;
-		foreach( const QString & link, serveurWeb ) {
-			if( wsdlContent[ link ].isEmpty() ) {
+		foreach(const QString & link, serveurWeb)
+		{
+			if (wsdlContent[ link ].isEmpty())
+			{
 				m_hasFinished = false;
 				m_httpString = link;
-				QUrl queryUrl( link );
-				m_http->setHost( queryUrl.host(), queryUrl.port() );
-				m_http->get( queryUrl.toString( QUrl::RemoveScheme | QUrl::RemoveAuthority ) );
-				while( ! m_hasFinished )
+				QUrl queryUrl(link);
+				m_http->setHost(queryUrl.host(), queryUrl.port());
+				m_http->get(queryUrl.toString(QUrl::RemoveScheme | QUrl::RemoveAuthority));
+				while (! m_hasFinished)
 					qApp->processEvents();
-			} else {
-				append( new WebServices( link, wsdlContent[ link ], this ) );
-				m_httpDialog->setValue( m_httpDialog->value() + 1 );
+			}
+			else
+			{
+				append(new WebServices(link, wsdlContent[ link ], this));
+				m_httpDialog->setValue(m_httpDialog->value() + 1);
 			}
 		}
 		m_isUpdate = false;
@@ -264,26 +305,32 @@ void WebServicesManager::setProject( XinxProject * project ) {
 	emit changed();
 }
 
-void WebServicesManager::responseReady() {
-	if( m_http->error() == QHttp::NoError ) {
+void WebServicesManager::responseReady()
+{
+	if (m_http->error() == QHttp::NoError)
+	{
 		QString content = m_http->readAll();
-		if( ! content.isEmpty() ) {
-			XINXProjectManager::self()->project()->writeProperty( "webServiceVersion" , WEBSERVICE_VERSION_CURRENT );
-			XINXProjectManager::self()->project()->writeProperty( QString( "webServiceLink_%1" ).arg( m_httpDialog->value() ), m_httpString );
-			XINXProjectManager::self()->project()->writeProperty( QString( "webServiceContent_%1" ).arg( m_httpDialog->value() ), content );
+		if (! content.isEmpty())
+		{
+			XINXProjectManager::self()->project()->writeProperty("webServiceVersion" , WEBSERVICE_VERSION_CURRENT);
+			XINXProjectManager::self()->project()->writeProperty(QString("webServiceLink_%1").arg(m_httpDialog->value()), m_httpString);
+			XINXProjectManager::self()->project()->writeProperty(QString("webServiceContent_%1").arg(m_httpDialog->value()), content);
 			XINXProjectManager::self()->project()->saveToFile();
-			append( new WebServices( m_httpString, content, this ) );
+			append(new WebServices(m_httpString, content, this));
 		}
-	} else {
-		QMessageBox::critical( qApp->activeWindow(), tr( "WSDL WebServices file" ), tr( "Can't load WSDL of link %1 : %2" ).arg( m_httpString ).arg( m_http->errorString() ) );
+	}
+	else
+	{
+		QMessageBox::critical(qApp->activeWindow(), tr("WSDL WebServices file"), tr("Can't load WSDL of link %1 : %2").arg(m_httpString).arg(m_http->errorString()));
 	}
 
-	m_httpDialog->setValue( m_httpDialog->value() + 1 );
+	m_httpDialog->setValue(m_httpDialog->value() + 1);
 	m_hasFinished = true;
 }
 
-void WebServicesManager::updateWebServicesList() {
-	setProject( XINXProjectManager::self()->project() );
+void WebServicesManager::updateWebServicesList()
+{
+	setProject(XINXProjectManager::self()->project());
 }
 
 

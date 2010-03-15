@@ -26,71 +26,86 @@
 
 /* GenerixProjectPageFormImpl */
 
-GenerixProjectPageFormImpl::GenerixProjectPageFormImpl( QWidget * parent, Qt::WindowFlags f ) : QWidget( parent, f ) {
-	setupUi( this );
+GenerixProjectPageFormImpl::GenerixProjectPageFormImpl(QWidget * parent, Qt::WindowFlags f) : QWidget(parent, f)
+{
+	setupUi(this);
 
 	m_project = XINXProjectManager::self()->project();
 
-	qRegisterMetaType<ConfigurationVersion>( "ConfigurationVersion" );
-	connect( m_webModuleLocation->lineEdit(), SIGNAL(textChanged(QString)), this, SLOT(updateInformations()));
+	qRegisterMetaType<ConfigurationVersion>("ConfigurationVersion");
+	connect(m_webModuleLocation->lineEdit(), SIGNAL(textChanged(QString)), this, SLOT(updateInformations()));
 }
 
-GenerixProjectPageFormImpl::~GenerixProjectPageFormImpl() {
+GenerixProjectPageFormImpl::~GenerixProjectPageFormImpl()
+{
 }
 
-void GenerixProjectPageFormImpl::setProject( XinxProject * project ) {
+void GenerixProjectPageFormImpl::setProject(XinxProject * project)
+{
 	m_project = project;
 }
 
-QPixmap GenerixProjectPageFormImpl::image() {
+QPixmap GenerixProjectPageFormImpl::image()
+{
 	return QPixmap();
 }
 
-QString GenerixProjectPageFormImpl::name() {
+QString GenerixProjectPageFormImpl::name()
+{
 	return this->windowTitle();
 }
 
-bool GenerixProjectPageFormImpl::loadSettingsDialog() {
-	m_webModuleLocation->lineEdit()->setText( static_cast<GenerixProject*>( m_project )->webModuleLocation() );
+bool GenerixProjectPageFormImpl::loadSettingsDialog()
+{
+	m_webModuleLocation->lineEdit()->setText(static_cast<GenerixProject*>(m_project)->webModuleLocation());
 
 	return true;
 }
 
-bool GenerixProjectPageFormImpl::saveSettingsDialog() {
-	static_cast<GenerixProject*>( m_project )->setWebModuleLocation( m_webModuleLocation->lineEdit()->text() );
+bool GenerixProjectPageFormImpl::saveSettingsDialog()
+{
+	static_cast<GenerixProject*>(m_project)->setWebModuleLocation(m_webModuleLocation->lineEdit()->text());
 
 	return true;
 }
 
-bool GenerixProjectPageFormImpl::cancelSettingsDialog() {
+bool GenerixProjectPageFormImpl::cancelSettingsDialog()
+{
 	return true;
 }
 
-QWidget * GenerixProjectPageFormImpl::settingsDialog() {
+QWidget * GenerixProjectPageFormImpl::settingsDialog()
+{
 	return this;
 }
 
-bool GenerixProjectPageFormImpl::isSettingsValid() {
-	if( ! QDir( QDir::fromNativeSeparators( m_webModuleLocation->lineEdit()->text() ) ).exists() ) return false;
+bool GenerixProjectPageFormImpl::isSettingsValid()
+{
+	if (! QDir(QDir::fromNativeSeparators(m_webModuleLocation->lineEdit()->text())).exists()) return false;
 	return true;
 }
 
-bool GenerixProjectPageFormImpl::isVisible() {
+bool GenerixProjectPageFormImpl::isVisible()
+{
 	return true;
 }
 
 
-void GenerixProjectPageFormImpl::updateInformations() {
-	GceInterface * interface = ConfigurationManager::self()->getInterfaceOfDirectory( m_webModuleLocation->lineEdit()->text() );
-	if( interface ) {
-		m_propertyFileLabel->setText( QDir( m_webModuleLocation->lineEdit()->text() ).relativeFilePath( interface->rootFilename() ) );
-		m_configurationVersionLabel->setVersion( interface->version() );
-		m_dictionaryCount->setText( QString( "%1 dictionaries" ).arg( interface->dictionnaries().count() ) );
-		m_businessViewLabel->setText( QString( "%1 businessviews" ).arg( interface->businessViews().count() ) );
-	} else {
-		m_propertyFileLabel->setText( QString() );
-		m_configurationVersionLabel->setVersion( ConfigurationVersion() );
-		m_dictionaryCount->setText( QString() );
-		m_businessViewLabel->setText( QString() );
+void GenerixProjectPageFormImpl::updateInformations()
+{
+	GceInterface * interface = ConfigurationManager::self()->getInterfaceOfDirectory(m_webModuleLocation->lineEdit()->text());
+	if (interface)
+	{
+		m_propertyFileLabel->setText(QDir(m_webModuleLocation->lineEdit()->text()).relativeFilePath(interface->rootFilename()));
+		m_configurationVersionLabel->setVersion(interface->version());
+		m_dictionaryCount->setText(QString("%1 dictionaries").arg(interface->dictionnaries().count()));
+		m_businessViewLabel->setText(QString("%1 businessviews").arg(interface->businessViews().count()));
+	}
+	else
+	{
+		m_propertyFileLabel->setText(QString());
+		m_configurationVersionLabel->setVersion(ConfigurationVersion());
+		m_dictionaryCount->setText(QString());
+		m_businessViewLabel->setText(QString());
 	}
 }

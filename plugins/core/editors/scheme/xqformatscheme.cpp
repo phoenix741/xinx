@@ -23,72 +23,74 @@
 // QCodeEdit header
 #include <qformat.h>
 
-XqFormatScheme::XqFormatScheme( XINXConfig * config ) : XinxFormatScheme( config ) {
-	setNameSpace( "xq" );
+XqFormatScheme::XqFormatScheme(XINXConfig * config) : XinxFormatScheme(config)
+{
+	setNameSpace("xq");
 	createDefaultScheme();
 }
 
-void XqFormatScheme::createDefaultScheme() {
+void XqFormatScheme::createDefaultScheme()
+{
 	QFormat string, escapeseq, numbers, faccessors, fbuildin, fnumerical, fstring, fregular, fboolean, fdatetime, fsequence, faggregate, fcontext;
 
 	// String format
 	string.foreground = Qt::red;
-	setFormat( "string", string );
+	setFormat("string", string);
 
 	// Escape Sequence format
-	escapeseq.foreground = QColor( 0xff, 0x14, 0x93 );
-	setFormat( "escapeseq", escapeseq );
+	escapeseq.foreground = QColor(0xff, 0x14, 0x93);
+	setFormat("escapeseq", escapeseq);
 
 	// Numbers format
 	numbers.foreground = Qt::blue;
-	setFormat( "numbers", numbers );
+	setFormat("numbers", numbers);
 
 	// Accessors format
 	faccessors.foreground = Qt::darkGreen;
 	faccessors.weight = QFont::Bold;
-	setFormat( "xquery_accessors", faccessors );
+	setFormat("xquery_accessors", faccessors);
 
 	// Buid-In format
 	fbuildin.foreground = Qt::darkGreen;
 	fbuildin.weight = QFont::Bold;
-	setFormat( "xquery_buildin", fbuildin );
+	setFormat("xquery_buildin", fbuildin);
 
 	// Numerical format
 	fnumerical.foreground = Qt::darkGreen;
 	fnumerical.weight = QFont::Bold;
-	setFormat( "xquery_numerical", fnumerical );
+	setFormat("xquery_numerical", fnumerical);
 
 	// String format
 	fstring.foreground = Qt::red;
 	fstring.weight = QFont::Bold;
-	setFormat( "xquery_string", fstring );
+	setFormat("xquery_string", fstring);
 
 	// Regular format
 	fregular.foreground = Qt::darkGreen;
 	fregular.weight = QFont::Bold;
-	setFormat( "xquery_regular", fregular );
+	setFormat("xquery_regular", fregular);
 
 	// Boolean format
 	fboolean.foreground = Qt::darkGreen;
 	fboolean.weight = QFont::Bold;
-	setFormat( "xquery_boolean", fboolean );
+	setFormat("xquery_boolean", fboolean);
 
 	// Date Time format
 	fdatetime.weight = QFont::Bold;
-	setFormat( "xquery_datetime", fdatetime );
+	setFormat("xquery_datetime", fdatetime);
 
 	// Sequence format
 	fsequence.foreground = Qt::red;
 	fsequence.weight = QFont::Bold;
-	setFormat( "xquery_sequence", fsequence );
+	setFormat("xquery_sequence", fsequence);
 
 	// Aggrate format
 	faggregate.foreground = Qt::blue;
 	faggregate.weight = QFont::Bold;
-	setFormat( "xquery_aggregate", faggregate );
+	setFormat("xquery_aggregate", faggregate);
 
 	// Context format
 	fcontext.foreground = Qt::darkGreen;
 	fcontext.weight = QFont::Bold;
-	setFormat( "xquery_context", fcontext );
+	setFormat("xquery_context", fcontext);
 }

@@ -31,27 +31,29 @@
 
 class GenerixProject;
 
-class BusinessViewListDelegate : public QItemDelegate {
+class BusinessViewListDelegate : public QItemDelegate
+{
 	Q_OBJECT
 public:
-	BusinessViewListDelegate( QObject * parent );
+	BusinessViewListDelegate(QObject * parent);
 	virtual ~BusinessViewListDelegate();
 
 	void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 	QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
 };
 
-class GenerixProjectDockImpl : public QDockWidget, public Ui::GenerixProjectDockWidget {
+class GenerixProjectDockImpl : public QDockWidget, public Ui::GenerixProjectDockWidget
+{
 	Q_OBJECT
 public:
-	GenerixProjectDockImpl( QWidget * parent = 0 );
+	GenerixProjectDockImpl(QWidget * parent = 0);
 	virtual ~GenerixProjectDockImpl();
 
-	void setProject( XinxProject * project );
+	void setProject(XinxProject * project);
 private slots:
-	void on_m_prefixCombo_activated( QString text );
+	void on_m_prefixCombo_activated(QString text);
 	void projectChanged();
-	void editorChanged( int index );
+	void editorChanged(int index);
 private:
 	GenerixProject * m_gnxProject;
 	BusinessViewListDelegate * m_delegate;

@@ -33,29 +33,30 @@
 
 /* SnipetDockItemModel */
 
-class LIBEXPORT SnipetDockItemModel : public BaseSnipetItemModel {
+class LIBEXPORT SnipetDockItemModel : public BaseSnipetItemModel
+{
 	Q_OBJECT
 public:
 	virtual ~SnipetDockItemModel();
 
-	virtual int columnCount( const QModelIndex & parent = QModelIndex() ) const;
-	virtual QVariant data( const QModelIndex & index, int role = Qt::DisplayRole ) const;
-	virtual Qt::ItemFlags flags( const QModelIndex & index ) const;
+	virtual int columnCount(const QModelIndex & parent = QModelIndex()) const;
+	virtual QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
+	virtual Qt::ItemFlags flags(const QModelIndex & index) const;
 
 	virtual Qt::DropActions supportedDropActions() const;
 	virtual QStringList mimeTypes() const;
 	virtual QMimeData * mimeData(const QModelIndexList &indexes) const;
 
-	virtual QModelIndex mapFromSource ( const QModelIndex & sourceIndex ) const;
-	virtual QModelIndex mapToSource ( const QModelIndex & proxyIndex ) const;
+	virtual QModelIndex mapFromSource(const QModelIndex & sourceIndex) const;
+	virtual QModelIndex mapToSource(const QModelIndex & proxyIndex) const;
 
 protected:
 	friend class SnipetManager;
-	SnipetDockItemModel( QSqlDatabase db, QObject * parent = 0 );
+	SnipetDockItemModel(QSqlDatabase db, QObject * parent = 0);
 
 private:
-	int proxyColumnToSource( int proxyColumn ) const;
-	int sourceColumnToProxy( int sourceColumn ) const;
+	int proxyColumnToSource(int proxyColumn) const;
+	int sourceColumnToProxy(int sourceColumn) const;
 };
 
 #endif // SNIPETDOCKMODELINDEX_H

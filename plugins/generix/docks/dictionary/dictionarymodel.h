@@ -17,34 +17,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-// Xinx header
-#include "contentview/contentviewmodel.h"
-#include "contentview/contentviewnode.h"
+#ifndef DICTIONARYMODEL_H
+#define DICTIONARYMODEL_H
+#pragma once
 
 // Qt header
-#include <QMutexLocker>
+#include <QAbstractItemModel>
+#include <QSqlQuery>
+#include <QSqlError>
+#include <QSqlRecord>
+#include <QSqlDatabase>
 
-/* AbstractContentViewModel */
+class DictionaryModel : public QAbstractItemModel
+{
+	Q_OBJECT
+public:
+	DictionaryModel(QString uuid, QObject * parent = 0);
+	virtual ~DictionaryModel();
 
-AbstractContentViewModel::AbstractContentViewModel( ContentViewNode * root, QObject *parent ) : QAbstractItemModel( parent ), m_rootNode( root ) {
-	m_updateMutex = new QMutex( QMutex::Recursive );
-	QMutexLocker locker( m_updateMutex );
-	m_rootNode->addModel( this, (unsigned long)m_rootNode );
-}
+	virtual int columnCount(const QModelIndex & parent = QModelIndex()) const;
+	virtual QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
+	virtual QModelIndex index(int row, int column, const QModelIndex & parent = QModelIndex()) const;
+	virtual QModelIndex parent(const QModelIndex & index) const;
+	virtual int rowCount(const QModelIndex & parent = QModelIndex()) const;
 
-AbstractContentViewModel::~AbstractContentViewModel() {
-	{
-		QMutexLocker locker( m_updateMutex );
-		m_rootNode->removeModel( this, (unsigned long)m_rootNode );
-	}
-	delete m_updateMutex;
-}
+	void select( QSqlDatabase db, const QString & filter, const QString & order );
+private:
+	mutable QSqlQuery m_query;
+	int m_size;
 
-ContentViewNode * AbstractContentViewModel::rootNode() const {
-	return m_rootNode;
-}
+	QString m_uuid;
+};
 
-QMutex * AbstractContentViewModel::mutex() const {
-	return m_updateMutex;
-}
-
+#endif // DICTIONARYMODEL_H

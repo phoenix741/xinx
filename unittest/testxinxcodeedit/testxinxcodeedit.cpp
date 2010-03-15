@@ -30,7 +30,8 @@
 #include <QtTest/QtTest>
 #include <QRegExp>
 
-class TestXinxCodeEdit: public QObject {
+class TestXinxCodeEdit: public QObject
+{
 	Q_OBJECT
 private slots:
 	void initTestCase();
@@ -68,27 +69,30 @@ private:
 	XinxCodeEdit * m_edit;
 };
 
-void TestXinxCodeEdit::initTestCase() {
-	QLineMarksInfoCenter::instance()->loadMarkTypes( "../../libxinx/marks.qxm" );
-	QLineMarksInfoCenter::instance()->loadMarkTypes( "../libxinx/marks.qxm" );
-	QLineMarksInfoCenter::instance()->loadMarkTypes( "./libxinx/marks.qxm" );
+void TestXinxCodeEdit::initTestCase()
+{
+	QLineMarksInfoCenter::instance()->loadMarkTypes("../../libxinx/marks.qxm");
+	QLineMarksInfoCenter::instance()->loadMarkTypes("../libxinx/marks.qxm");
+	QLineMarksInfoCenter::instance()->loadMarkTypes("./libxinx/marks.qxm");
 
-	XINXConfig::self()->languageFactory()->addDefinitionPath( "../../libxinx" );
-	XINXConfig::self()->languageFactory()->addDefinitionPath( "../libxinx" );
-	XINXConfig::self()->languageFactory()->addDefinitionPath( "./libxinx" );
+	XINXConfig::self()->languageFactory()->addDefinitionPath("../../libxinx");
+	XINXConfig::self()->languageFactory()->addDefinitionPath("../libxinx");
+	XINXConfig::self()->languageFactory()->addDefinitionPath("./libxinx");
 
 	m_edit = new XinxCodeEdit;
 //	m_edit->show();
-	QVERIFY( m_edit != 0 );
+	QVERIFY(m_edit != 0);
 }
 
-void TestXinxCodeEdit::testGetSetPlainText() {
+void TestXinxCodeEdit::testGetSetPlainText()
+{
 	QString textDeTest = "Hello, ceci est un texte. Trop cool :)";
-	m_edit->setPlainText( textDeTest );
-	QCOMPARE( m_edit->toPlainText().trimmed(), textDeTest );
+	m_edit->setPlainText(textDeTest);
+	QCOMPARE(m_edit->toPlainText().trimmed(), textDeTest);
 }
 
-void TestXinxCodeEdit::testFindTextNormal_data() {
+void TestXinxCodeEdit::testFindTextNormal_data()
+{
 	QTest::addColumn<QString>("text");
 	QTest::addColumn<QString>("searchStr");
 
@@ -99,30 +103,34 @@ void TestXinxCodeEdit::testFindTextNormal_data() {
 	QTest::newRow("espcace") << "Il etait une fois dans un petit chateau ..." << " ";
 }
 
-void TestXinxCodeEdit::testFindTextNormal() {
+void TestXinxCodeEdit::testFindTextNormal()
+{
 	QFETCH(QString, text);
 	QFETCH(QString, searchStr);
 
 	int count = 0;
-	m_edit->setPlainText( text );
-	m_edit->moveCursor( QDocumentCursor::End, QDocumentCursor::MoveAnchor );
+	m_edit->setPlainText(text);
+	m_edit->moveCursor(QDocumentCursor::End, QDocumentCursor::MoveAnchor);
 
-	QDocumentCursor cursor = m_edit->find( searchStr, m_edit->textCursor(), XinxCodeEdit::FindBackward );
-	while( !cursor.isNull() ) {
+	QDocumentCursor cursor = m_edit->find(searchStr, m_edit->textCursor(), XinxCodeEdit::FindBackward);
+	while (!cursor.isNull())
+	{
 		count++;
 
-		cursor = m_edit->find( searchStr, cursor, XinxCodeEdit::FindBackward );
-		if( count >= 999 ) {
-			QWARN( qPrintable( QString("Position of cursor is %1").arg( cursor.position() ) ) );
+		cursor = m_edit->find(searchStr, cursor, XinxCodeEdit::FindBackward);
+		if (count >= 999)
+		{
+			QWARN(qPrintable(QString("Position of cursor is %1").arg(cursor.position())));
 			QFAIL("Infinit boucle");
 		}
 	}
 
 
-	QCOMPARE( count, text.count( searchStr, Qt::CaseInsensitive ) );
+	QCOMPARE(count, text.count(searchStr, Qt::CaseInsensitive));
 }
 
-void TestXinxCodeEdit::testFindTextRegExp_data() {
+void TestXinxCodeEdit::testFindTextRegExp_data()
+{
 	QTest::addColumn<QString>("text");
 	QTest::addColumn<QRegExp>("searchStr");
 
@@ -133,30 +141,34 @@ void TestXinxCodeEdit::testFindTextRegExp_data() {
 	QTest::newRow("espcace") << "Il etait une fois dans un petit chateau ..." << QRegExp("[^A-Za-z0-9_:\\-\\.]");
 }
 
-void TestXinxCodeEdit::testFindTextRegExp() {
+void TestXinxCodeEdit::testFindTextRegExp()
+{
 	QFETCH(QString, text);
 	QFETCH(QRegExp, searchStr);
 
 	int count = 0;
-	m_edit->setPlainText( text );
-	m_edit->moveCursor( QDocumentCursor::End, QDocumentCursor::MoveAnchor );
+	m_edit->setPlainText(text);
+	m_edit->moveCursor(QDocumentCursor::End, QDocumentCursor::MoveAnchor);
 
-	QDocumentCursor cursor = m_edit->find( searchStr, m_edit->textCursor(), XinxCodeEdit::FindBackward );
-	while( !cursor.isNull() ) {
+	QDocumentCursor cursor = m_edit->find(searchStr, m_edit->textCursor(), XinxCodeEdit::FindBackward);
+	while (!cursor.isNull())
+	{
 		count++;
 
-		cursor = m_edit->find( searchStr, cursor, XinxCodeEdit::FindBackward );
-		if( count >= 999 ) {
-			QWARN( qPrintable( QString("Position of cursor is %1").arg( cursor.position() ) ) );
+		cursor = m_edit->find(searchStr, cursor, XinxCodeEdit::FindBackward);
+		if (count >= 999)
+		{
+			QWARN(qPrintable(QString("Position of cursor is %1").arg(cursor.position())));
 			QFAIL("Infinit boucle");
 		}
 	}
 
 
-	QCOMPARE( count, text.count( searchStr ) );
+	QCOMPARE(count, text.count(searchStr));
 }
 
-void TestXinxCodeEdit::testTextUnderCursor_data() {
+void TestXinxCodeEdit::testTextUnderCursor_data()
+{
 	QTest::addColumn<QStringList>("text");
 	QTest::addColumn<int>("nextword");
 	QTest::addColumn<int>("right");
@@ -176,27 +188,30 @@ void TestXinxCodeEdit::testTextUnderCursor_data() {
 	QTest::newRow("cas 7") << list << 1 << 3 << "bbb";
 }
 
-void TestXinxCodeEdit::testTextUnderCursor() {
+void TestXinxCodeEdit::testTextUnderCursor()
+{
 	QFETCH(QStringList, text);
 	QFETCH(int, nextword);
 	QFETCH(int, right);
 	QFETCH(QString, result);
 
 	QString textDeTest = text.join(" ");
-	m_edit->setPlainText( textDeTest );
+	m_edit->setPlainText(textDeTest);
 
-	for( int i = 0 ; i < nextword; i++ ){
+	for (int i = 0 ; i < nextword; i++)
+	{
 		//		QWARN( qPrintable( m_edit->textUnderCursor( m_edit->textCursor() ) ) );
-		m_edit->moveCursor( QDocumentCursor::NextWord );
+		m_edit->moveCursor(QDocumentCursor::NextWord);
 	}
 
-	for( int i = 0 ; i < right; i++ )
-		m_edit->moveCursor( QDocumentCursor::Right );
+	for (int i = 0 ; i < right; i++)
+		m_edit->moveCursor(QDocumentCursor::Right);
 
-	QCOMPARE( m_edit->textUnderCursor( m_edit->textCursor() ), result );
+	QCOMPARE(m_edit->textUnderCursor(m_edit->textCursor()), result);
 }
 
-void TestXinxCodeEdit::testTabStop_data() {
+void TestXinxCodeEdit::testTabStop_data()
+{
 	QTest::addColumn<int>("tabulation");
 
 	QTest::newRow("tabulation de 1") << 1;
@@ -205,44 +220,48 @@ void TestXinxCodeEdit::testTabStop_data() {
 	QTest::newRow("tabulation de 8") << 8;
 }
 
-void TestXinxCodeEdit::testTabStop() {
+void TestXinxCodeEdit::testTabStop()
+{
 	QFETCH(int, tabulation);
 
-	m_edit->setTabStopWidth( tabulation );
-	QCOMPARE( m_edit->tabStopWidth(), tabulation );
+	m_edit->setTabStopWidth(tabulation);
+	QCOMPARE(m_edit->tabStopWidth(), tabulation);
 }
 
-void TestXinxCodeEdit::testUpperCase() {
+void TestXinxCodeEdit::testUpperCase()
+{
 	QString textOriginal    = "Il etait une fois, dans un petit pays, un editeur surper puissant pour editer un fichier texte.";
 	QString textDestination = "Il etait une fois, danS UN PETIT PAYs, un editeur surper puissant pour editer un fichier texte.";
 
-	m_edit->setPlainText( textOriginal );
-	QDocumentCursor cursor( m_edit->textCursor() );
-	cursor.moveTo( 0, 22 );
-	cursor.movePosition( 14, QDocumentCursor::NextCharacter, QDocumentCursor::KeepAnchor );
-	m_edit->setTextCursor( cursor );
+	m_edit->setPlainText(textOriginal);
+	QDocumentCursor cursor(m_edit->textCursor());
+	cursor.moveTo(0, 22);
+	cursor.movePosition(14, QDocumentCursor::NextCharacter, QDocumentCursor::KeepAnchor);
+	m_edit->setTextCursor(cursor);
 
 	m_edit->upperSelectedText();
 
-	QCOMPARE( m_edit->toPlainText().trimmed(), textDestination );
+	QCOMPARE(m_edit->toPlainText().trimmed(), textDestination);
 }
 
-void TestXinxCodeEdit::testLowerCase() {
+void TestXinxCodeEdit::testLowerCase()
+{
 	QString textOriginal    = "Il etait une fois, danS UN PETIT PAYs, un editeur surper puissant pour editer un fichier texte.";
 	QString textDestination = "Il etait une fois, dans un petit pays, un editeur surper puissant pour editer un fichier texte.";
 
-	m_edit->setPlainText( textOriginal );
-	QDocumentCursor cursor( m_edit->textCursor() );
-	cursor.moveTo( 0, 22 );
-	cursor.movePosition( 14, QDocumentCursor::NextCharacter, QDocumentCursor::KeepAnchor );
-	m_edit->setTextCursor( cursor );
+	m_edit->setPlainText(textOriginal);
+	QDocumentCursor cursor(m_edit->textCursor());
+	cursor.moveTo(0, 22);
+	cursor.movePosition(14, QDocumentCursor::NextCharacter, QDocumentCursor::KeepAnchor);
+	m_edit->setTextCursor(cursor);
 
 	m_edit->lowerSelectedText();
 
-	QCOMPARE( m_edit->toPlainText().trimmed(), textDestination );
+	QCOMPARE(m_edit->toPlainText().trimmed(), textDestination);
 }
 
-void TestXinxCodeEdit::testDuplicateLines_data() {
+void TestXinxCodeEdit::testDuplicateLines_data()
+{
 	QTest::addColumn<QString>("text");
 	QTest::addColumn<int>("selectionStart");
 	QTest::addColumn<int>("selectionLength");
@@ -252,26 +271,29 @@ void TestXinxCodeEdit::testDuplicateLines_data() {
 	QTest::newRow("Duplicate a selected part of line") << "aaa\nbxbb\nccc\nddd\neee"<< 5 << 1 << "aaa\nbxxbb\nccc\nddd\neee";
 }
 
-void TestXinxCodeEdit::testDuplicateLines() {
+void TestXinxCodeEdit::testDuplicateLines()
+{
 	QFETCH(QString, text);
 	QFETCH(int, selectionStart);
 	QFETCH(int, selectionLength);
 	QFETCH(QString, result);
 
-	m_edit->setPlainText( text );
-	QDocumentCursor cursor( m_edit->textCursor() );
-	cursor.movePosition( selectionStart, QDocumentCursor::NextCharacter );
-	for( int i = 0 ; i < selectionLength ; i++ ) {
-		cursor.movePosition( selectionLength, QDocumentCursor::NextCharacter, QDocumentCursor::KeepAnchor );
+	m_edit->setPlainText(text);
+	QDocumentCursor cursor(m_edit->textCursor());
+	cursor.movePosition(selectionStart, QDocumentCursor::NextCharacter);
+	for (int i = 0 ; i < selectionLength ; i++)
+	{
+		cursor.movePosition(selectionLength, QDocumentCursor::NextCharacter, QDocumentCursor::KeepAnchor);
 	}
-	m_edit->setTextCursor( cursor );
+	m_edit->setTextCursor(cursor);
 
 	m_edit->duplicateLines();
 
-	QCOMPARE( m_edit->toPlainText().trimmed(), result );
+	QCOMPARE(m_edit->toPlainText().trimmed(), result);
 }
 
-void TestXinxCodeEdit::testMoveLineUp_data() {
+void TestXinxCodeEdit::testMoveLineUp_data()
+{
 	QTest::addColumn<QString>("text");
 	QTest::addColumn<int>("selectionStart");
 	QTest::addColumn<int>("selectionLength");
@@ -283,24 +305,26 @@ void TestXinxCodeEdit::testMoveLineUp_data() {
 	QTest::newRow("Move selected lines") << "aaa\nbbb\nccc\nddd\neee"<< 9 << 4 << "aaa\nccc\nddd\nbbb\neee";
 }
 
-void TestXinxCodeEdit::testMoveLineUp() {
+void TestXinxCodeEdit::testMoveLineUp()
+{
 	QFETCH(QString, text);
 	QFETCH(int, selectionStart);
 	QFETCH(int, selectionLength);
 	QFETCH(QString, result);
 
-	m_edit->setPlainText( text );
-	QDocumentCursor cursor( m_edit->textCursor() );
-	cursor.movePosition( selectionStart, QDocumentCursor::NextCharacter );
-	cursor.movePosition( selectionLength, QDocumentCursor::NextCharacter, QDocumentCursor::KeepAnchor );
-	m_edit->setTextCursor( cursor );
+	m_edit->setPlainText(text);
+	QDocumentCursor cursor(m_edit->textCursor());
+	cursor.movePosition(selectionStart, QDocumentCursor::NextCharacter);
+	cursor.movePosition(selectionLength, QDocumentCursor::NextCharacter, QDocumentCursor::KeepAnchor);
+	m_edit->setTextCursor(cursor);
 
 	m_edit->moveLineUp();
 
-	QCOMPARE( m_edit->toPlainText().trimmed(), result );
+	QCOMPARE(m_edit->toPlainText().trimmed(), result);
 }
 
-void TestXinxCodeEdit::testMoveLineDown_data() {
+void TestXinxCodeEdit::testMoveLineDown_data()
+{
 	QTest::addColumn<QString>("text");
 	QTest::addColumn<int>("selectionStart");
 	QTest::addColumn<int>("selectionLength");
@@ -312,43 +336,47 @@ void TestXinxCodeEdit::testMoveLineDown_data() {
 	QTest::newRow("Move selected lines") << "aaa\nbbb\nccc\nddd\neee"<< 9 << 4 << "aaa\nbbb\neee\nccc\nddd";
 }
 
-void TestXinxCodeEdit::testMoveLineDown() {
+void TestXinxCodeEdit::testMoveLineDown()
+{
 	QFETCH(QString, text);
 	QFETCH(int, selectionStart);
 	QFETCH(int, selectionLength);
 	QFETCH(QString, result);
 
-	m_edit->setPlainText( text );
-	QDocumentCursor cursor( m_edit->textCursor() );
-	cursor.movePosition( selectionStart, QDocumentCursor::NextCharacter );
-	cursor.movePosition( selectionLength, QDocumentCursor::NextCharacter, QDocumentCursor::KeepAnchor );
-	m_edit->setTextCursor( cursor );
+	m_edit->setPlainText(text);
+	QDocumentCursor cursor(m_edit->textCursor());
+	cursor.movePosition(selectionStart, QDocumentCursor::NextCharacter);
+	cursor.movePosition(selectionLength, QDocumentCursor::NextCharacter, QDocumentCursor::KeepAnchor);
+	m_edit->setTextCursor(cursor);
 
 	m_edit->moveLineDown();
 
-	QCOMPARE( m_edit->toPlainText().trimmed(), result );
+	QCOMPARE(m_edit->toPlainText().trimmed(), result);
 }
 
-void TestXinxCodeEdit::testBookmark() {
-	m_edit->setPlainText( "aaa\nbbb\nccc\nddd\neee\nfff\nggg\nhhh\niii\njjj\nkkk\nlll\nmmm\nnnn\nooo\nppp" );
+void TestXinxCodeEdit::testBookmark()
+{
+	m_edit->setPlainText("aaa\nbbb\nccc\nddd\neee\nfff\nggg\nhhh\niii\njjj\nkkk\nlll\nmmm\nnnn\nooo\nppp");
 
-	m_edit->setBookmark( 2, true );
-	m_edit->setBookmark( 6, true );
-	m_edit->setBookmark( 6, false );
-	m_edit->setBookmark( 8, true );
-	m_edit->setBookmark( 11, true );
-	m_edit->setBookmark( 13, true );
+	m_edit->setBookmark(2, true);
+	m_edit->setBookmark(6, true);
+	m_edit->setBookmark(6, false);
+	m_edit->setBookmark(8, true);
+	m_edit->setBookmark(11, true);
+	m_edit->setBookmark(13, true);
 
-	QCOMPARE( m_edit->listOfBookmark(), QList<int>() << 2 << 8 << 11 << 13 );
+	QCOMPARE(m_edit->listOfBookmark(), QList<int>() << 2 << 8 << 11 << 13);
 }
 
-void TestXinxCodeEdit::testError() {
-	m_edit->setPlainText( "aaa\nbbb\nccc\nddd\neee\nfff\nggg\nhhh\niii\njjj\nkkk\nlll\nmmm\nnnn\nooo\nppp" );
+void TestXinxCodeEdit::testError()
+{
+	m_edit->setPlainText("aaa\nbbb\nccc\nddd\neee\nfff\nggg\nhhh\niii\njjj\nkkk\nlll\nmmm\nnnn\nooo\nppp");
 
-	m_edit->setErrors( QList<int>() << 5 << 12 << 44 );
+	m_edit->setErrors(QList<int>() << 5 << 12 << 44);
 }
 
-void TestXinxCodeEdit::cleanupTestCase() {
+void TestXinxCodeEdit::cleanupTestCase()
+{
 	delete m_edit;
 }
 

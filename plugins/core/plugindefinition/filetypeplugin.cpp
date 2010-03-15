@@ -19,295 +19,338 @@
 
 // Xinx header
 #include "filetypeplugin.h"
-#include "editors/models/xsl/xslcontentviewparser.h"
-#include "editors/models/xsl/xslcv2parser.h"
 #include "editors/widgeteditor/xml/xmltexteditor.h"
 #include "editors/widgeteditor/xsl/xsltexteditor.h"
-#include "editors/models/js/jscontentviewparser.h"
 
 /* TextFileType */
 
-QString TextFileType::description() {
-	return tr( "Text File" );
+QString TextFileType::description()
+{
+	return tr("Text File");
 }
 
-QString TextFileType::match() {
+QString TextFileType::match()
+{
 	return "*.txt *.log *.spl";
 }
 
-QString TextFileType::icon() {
+QString TextFileType::icon()
+{
 	return ":/images/typeunknown.png";
 }
 
-AbstractEditor * TextFileType::createEditor( const QString & filename ) {
+AbstractEditor * TextFileType::createEditor(const QString & filename)
+{
 	TextFileEditor * editor = new TextFileEditor();
 
-	if( ! filename.isEmpty() )
-		editor->loadFromFile( filename );
+	if (! filename.isEmpty())
+		editor->loadFromFile(filename);
 
 	return editor;
 }
 
-QString TextFileType::highlighterId() const {
+QString TextFileType::highlighterId() const
+{
 	return "TEXT";
 }
 
-XinxFormatScheme * TextFileType::createFormatScheme( XINXConfig * config ) const {
-	return new XinxFormatScheme( config );
+XinxFormatScheme * TextFileType::createFormatScheme(XINXConfig * config) const
+{
+	return new XinxFormatScheme(config);
 }
 
-QString TextFileType::createLanguageDescription() const {
+QString TextFileType::createLanguageDescription() const
+{
 	QString result;
-	QFile description( ":/qcodeedit/lan/none.qnfa" );
-	if( description.open( QIODevice::ReadOnly ) ) {
-		QTextStream textDescription( &description );
+	QFile description(":/qcodeedit/lan/none.qnfa");
+	if (description.open(QIODevice::ReadOnly))
+	{
+		QTextStream textDescription(&description);
 		result = textDescription.readAll();
 	}
 	return result;
 }
 
-QString TextFileType::fileExample() const {
+QString TextFileType::fileExample() const
+{
 	return "This is a small text.\nOn multiple line";
 }
 
-ContentViewParser * TextFileType::createParser() {
-	return 0;
+QString TextFileType::parserType()
+{
+	return QString();
 }
 
 /* XMLFileType */
 
-QString XMLFileType::description() {
-	return tr( "XML File" );
+QString XMLFileType::description()
+{
+	return tr("XML File");
 }
 
-QString XMLFileType::match() {
+QString XMLFileType::match()
+{
 	return "*.xml";
 }
 
-QString XMLFileType::icon() {
+QString XMLFileType::icon()
+{
 	return ":/images/typexml.png";
 }
 
-AbstractEditor * XMLFileType::createEditor( const QString & filename ) {
+AbstractEditor * XMLFileType::createEditor(const QString & filename)
+{
 	XmlFileEditor * editor = new XmlFileEditor();
 
-	if( ! filename.isEmpty() )
-		editor->loadFromFile( filename );
+	if (! filename.isEmpty())
+		editor->loadFromFile(filename);
 
 	return editor;
 }
 
-QString XMLFileType::highlighterId() const {
+QString XMLFileType::highlighterId() const
+{
 	return "XML";
 }
 
-XinxFormatScheme * XMLFileType::createFormatScheme( XINXConfig * config ) const {
-	return new XmlFormatScheme( config );
+XinxFormatScheme * XMLFileType::createFormatScheme(XINXConfig * config) const
+{
+	return new XmlFormatScheme(config);
 }
 
-QString XMLFileType::createLanguageDescription() const {
+QString XMLFileType::createLanguageDescription() const
+{
 	QString result;
-	QFile description( ":/qcodeedit/lan/xml.qnfa" );
-	if( description.open( QIODevice::ReadOnly ) ) {
-		QTextStream textDescription( &description );
+	QFile description(":/qcodeedit/lan/xml.qnfa");
+	if (description.open(QIODevice::ReadOnly))
+	{
+		QTextStream textDescription(&description);
 		result = textDescription.readAll();
 	}
 	return result;
 }
 
-QString XMLFileType::fileExample() const {
+QString XMLFileType::fileExample() const
+{
 	return
-		"<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n"
-		"<!-- This is a comment -->\n"
-		"<xsl:stylesheet version=\"1.0\">\n"
-		"\t<xsl:import href=\"myimport.xsl\"/>\n"
-		"\t<xsl:variable name=\"MYVARIABLE\"/>\n"
-		"\t<xsl:template match=\"/\">\n"
-		"\t\t<xsl:comment> This is a text </xsl:comment>\n"
-		"\n"
-		"\t\t<xsl:choose>\n"
-		"\t\t\t<xsl:when test=\"test\">\n"
-		"\t\t\t\t<input type=\"hidden\" value=\"{$MYVARIABLE}\"/>\n"
-		"\t\t\t</xsl:when>\n"
-		"\t\t\t<xsl:otherwise>Otherwise not</xsl:otherwise>\n"
-		"\t\t</xsl:choose>\n"
-		"\t</xsl:template>\n"
-		"</xsl:stylesheet>\n";
+	    "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n"
+	    "<!-- This is a comment -->\n"
+	    "<xsl:stylesheet version=\"1.0\">\n"
+	    "\t<xsl:import href=\"myimport.xsl\"/>\n"
+	    "\t<xsl:variable name=\"MYVARIABLE\"/>\n"
+	    "\t<xsl:template match=\"/\">\n"
+	    "\t\t<xsl:comment> This is a text </xsl:comment>\n"
+	    "\n"
+	    "\t\t<xsl:choose>\n"
+	    "\t\t\t<xsl:when test=\"test\">\n"
+	    "\t\t\t\t<input type=\"hidden\" value=\"{$MYVARIABLE}\"/>\n"
+	    "\t\t\t</xsl:when>\n"
+	    "\t\t\t<xsl:otherwise>Otherwise not</xsl:otherwise>\n"
+	    "\t\t</xsl:choose>\n"
+	    "\t</xsl:template>\n"
+	    "</xsl:stylesheet>\n";
 }
 
-ContentViewParser * XMLFileType::createParser() {
+QString XMLFileType::parserType()
+{
 	return 0;
 }
 
 /* XSLStyleSheetFileType */
 
-QString XSLStyleSheetFileType::description() {
-	return tr( "XSL Stylesheet" );
+QString XSLStyleSheetFileType::description()
+{
+	return tr("XSL Stylesheet");
 }
 
-QString XSLStyleSheetFileType::match() {
+QString XSLStyleSheetFileType::match()
+{
 	return "*.xsl";
 }
 
-QString XSLStyleSheetFileType::icon() {
+QString XSLStyleSheetFileType::icon()
+{
 	return ":/images/typexsl.png";
 }
 
-AbstractEditor * XSLStyleSheetFileType::createEditor( const QString & filename ) {
-  StyleSheetEditor * editor = new StyleSheetEditor();
+AbstractEditor * XSLStyleSheetFileType::createEditor(const QString & filename)
+{
+	StyleSheetEditor * editor = new StyleSheetEditor();
 
-	if( ! filename.isEmpty() )
-		editor->loadFromFile( filename );
+	if (! filename.isEmpty())
+		editor->loadFromFile(filename);
 
 	return editor;
 }
 
-ContentViewParser * XSLStyleSheetFileType::createParser() {
-	return new XslContentViewParser();
-}
-
-ContentView2::Parser * XSLStyleSheetFileType::createParser2() {
-	return new XslContentView2Parser();
+QString XSLStyleSheetFileType::parserType()
+{
+	return "XSL";
 }
 
 /* HTMLFileType */
 
-QString HTMLFileType::description() {
-	return tr( "HTML File" );
+QString HTMLFileType::description()
+{
+	return tr("HTML File");
 }
 
-QString HTMLFileType::match() {
+QString HTMLFileType::match()
+{
 	return "*.htm *.html *.xhtml";
 }
 
-QString HTMLFileType::icon() {
+QString HTMLFileType::icon()
+{
 	return ":/images/typehtml.png";
 }
 
-AbstractEditor * HTMLFileType::createEditor( const QString & filename ) {
+AbstractEditor * HTMLFileType::createEditor(const QString & filename)
+{
 	HtmlFileEditor * editor = new HtmlFileEditor();
 
-	if( ! filename.isEmpty() )
-		editor->loadFromFile( filename );
+	if (! filename.isEmpty())
+		editor->loadFromFile(filename);
 
 	return editor;
 }
 
 /* JSFileType */
 
-QString JSFileType::description() {
-	return tr( "JavaScript" );
+QString JSFileType::description()
+{
+	return tr("JavaScript");
 }
 
-QString JSFileType::match() {
+QString JSFileType::match()
+{
 	return "*.js";
 }
 
-QString JSFileType::icon() {
+QString JSFileType::icon()
+{
 	return ":/images/typejs.png";
 }
 
-AbstractEditor * JSFileType::createEditor( const QString & filename ) {
+AbstractEditor * JSFileType::createEditor(const QString & filename)
+{
 	JSFileEditor * editor = new JSFileEditor();
 
-	if( ! filename.isEmpty() )
-		editor->loadFromFile( filename );
+	if (! filename.isEmpty())
+		editor->loadFromFile(filename);
 
 	return editor;
 }
 
-QString JSFileType::highlighterId() const {
+QString JSFileType::highlighterId() const
+{
 	return "ECMAScript";
 }
 
-QString JSFileType::createLanguageDescription() const {
+QString JSFileType::createLanguageDescription() const
+{
 	QString result;
-	QFile description( ":/qcodeedit/lan/js.qnfa" );
-	if( description.open( QIODevice::ReadOnly ) ) {
-		QTextStream textDescription( &description );
+	QFile description(":/qcodeedit/lan/js.qnfa");
+	if (description.open(QIODevice::ReadOnly))
+	{
+		QTextStream textDescription(&description);
 		result = textDescription.readAll();
 	}
 	return result;
 }
 
-XinxFormatScheme * JSFileType::createFormatScheme( XINXConfig * config ) const {
-	return new JsFormatScheme( config );
+XinxFormatScheme * JSFileType::createFormatScheme(XINXConfig * config) const
+{
+	return new JsFormatScheme(config);
 }
 
-QString JSFileType::fileExample() const {
+QString JSFileType::fileExample() const
+{
 	return
-		"/**\n"
-		" * This is a comment\n"
-		"**/\n"
-		"\n"
-		"function myfunction( param1, param2, param3 ) {\n"
-		"	var variable = window.open('number' + 56 + \"othertext\",'frame','options');\n"
-		"	alert( param& );\n"
-		"	variable.close();\n"
-		"}\n";
+	    "/**\n"
+	    " * This is a comment\n"
+	    "**/\n"
+	    "\n"
+	    "function myfunction( param1, param2, param3 ) {\n"
+	    "	var variable = window.open('number' + 56 + \"othertext\",'frame','options');\n"
+	    "	alert( param& );\n"
+	    "	variable.close();\n"
+	    "}\n";
 }
 
-ContentViewParser * JSFileType::createParser() {
-	return new JsContentViewParser();
+QString JSFileType::parserType()
+{
+	return "JS";
 }
 
 /* CSSFileType */
 
 
-QString CSSFileType::description() {
-	return tr( "Cascading Style Sheet" );
+QString CSSFileType::description()
+{
+	return tr("Cascading Style Sheet");
 }
 
-QString CSSFileType::match() {
+QString CSSFileType::match()
+{
 	return "*.css";
 }
 
-QString CSSFileType::icon() {
+QString CSSFileType::icon()
+{
 	return ":/images/typecss.png";
 }
 
-AbstractEditor * CSSFileType::createEditor( const QString & filename ) {
+AbstractEditor * CSSFileType::createEditor(const QString & filename)
+{
 	CSSFileEditor * editor = new CSSFileEditor();
 
-	if( ! filename.isEmpty() )
-		editor->loadFromFile( filename );
+	if (! filename.isEmpty())
+		editor->loadFromFile(filename);
 
 	return editor;
 }
 
-QString CSSFileType::highlighterId() const {
+QString CSSFileType::highlighterId() const
+{
 	return "CSS";
 }
 
-QString CSSFileType::createLanguageDescription() const {
+QString CSSFileType::createLanguageDescription() const
+{
 	QString result;
-	QFile description( ":/qcodeedit/lan/css.qnfa" );
-	if( description.open( QIODevice::ReadOnly ) ) {
-		QTextStream textDescription( &description );
+	QFile description(":/qcodeedit/lan/css.qnfa");
+	if (description.open(QIODevice::ReadOnly))
+	{
+		QTextStream textDescription(&description);
 		result = textDescription.readAll();
 	}
 	return result;
 }
 
-XinxFormatScheme * CSSFileType::createFormatScheme( XINXConfig * config ) const {
-	return new CssFormatScheme( config );
+XinxFormatScheme * CSSFileType::createFormatScheme(XINXConfig * config) const
+{
+	return new CssFormatScheme(config);
 }
 
-QString CSSFileType::fileExample() const {
+QString CSSFileType::fileExample() const
+{
 	return
-		".test, #td, test2 {\n"
-		"\tbackground-color: red; /* Commentaire */\n"
-		"\tmargin: 8pt;\n"
-		"}\n";
+	    ".test, #td, test2 {\n"
+	    "\tbackground-color: red; /* Commentaire */\n"
+	    "\tmargin: 8pt;\n"
+	    "}\n";
 }
 
-ContentViewParser * CSSFileType::createParser() {
-	return 0;
+QString CSSFileType::parserType()
+{
+	return "CSS";
 }
 
 /* XQFileType */
 
-XQFileType::XQFileType() {
+XQFileType::XQFileType()
+{
 	/*
 		QLanguageFactory::LangData data;
 		QNFADefinition::load( temporaryXqFile.fileName(), &data, XINXConfig::self()->formatFactory() );
@@ -315,59 +358,68 @@ XQFileType::XQFileType() {
 	}*/
 }
 
-XQFileType::~XQFileType() {
+XQFileType::~XQFileType()
+{
 };
 
-QString XQFileType::description() {
-	return tr( "XQuery" );
+QString XQFileType::description()
+{
+	return tr("XQuery");
 }
 
-QString XQFileType::match() {
+QString XQFileType::match()
+{
 	return "*.xq";
 }
 
-QString XQFileType::icon() {
+QString XQFileType::icon()
+{
 	return ":/images/typexq.png";
 }
 
-AbstractEditor * XQFileType::createEditor( const QString & filename ) {
+AbstractEditor * XQFileType::createEditor(const QString & filename)
+{
 	XQFileEditor * editor = new XQFileEditor();
 
-	if( ! filename.isEmpty() )
-		editor->loadFromFile( filename );
+	if (! filename.isEmpty())
+		editor->loadFromFile(filename);
 
 	return editor;
 }
 
-QString XQFileType::highlighterId() const {
+QString XQFileType::highlighterId() const
+{
 	return "XQuery";
 }
 
-QString XQFileType::createLanguageDescription() const {
+QString XQFileType::createLanguageDescription() const
+{
 	QString result;
 	result
-		= "<!DOCTYPE QNFA>"
-		  "<QNFA language=\"XQuery\" extensions=\"xq\" defaultLineMark=\"bookmark\">"
-		  "	<word id=\"data/float\" format=\"numbers\">-?[0-9]*.[0-9]+</word>"
-		  "	<word id=\"data/decimal\" format=\"numbers\">-?[0-9]+</word>"
-		  "	<context id=\"data/string\" format=\"string\" >"
-		  "		<start>&quot;</start>"
-		  "		<stop>&quot;</stop>"
-		  "		<stop exclusive=\"false\">\n</stop>"
-		  "		<sequence id=\"escape\" format=\"escapeseq\" >\\\\[nrtvf\\\"'\n]</sequence>"
-		  "	</context>"
-		  "	<context id=\"data/chars\" format=\"string\" >"
-		  "		<start>'</start>"
-		  "		<stop>'</stop>"
-		  "		<stop exclusive=\"false\">\n</stop>"
-		  "		<sequence id=\"escape\" format=\"escapeseq\" >\\\\[nrtvf\\\"'\n]</sequence>"
-		  "	</context>";
+	= "<!DOCTYPE QNFA>"
+	  "<QNFA language=\"XQuery\" extensions=\"xq\" defaultLineMark=\"bookmark\">"
+	  "	<word id=\"data/float\" format=\"numbers\">-?[0-9]*.[0-9]+</word>"
+	  "	<word id=\"data/decimal\" format=\"numbers\">-?[0-9]+</word>"
+	  "	<context id=\"data/string\" format=\"string\" >"
+	  "		<start>&quot;</start>"
+	  "		<stop>&quot;</stop>"
+	  "		<stop exclusive=\"false\">\n</stop>"
+	  "		<sequence id=\"escape\" format=\"escapeseq\" >\\\\[nrtvf\\\"'\n]</sequence>"
+	  "	</context>"
+	  "	<context id=\"data/chars\" format=\"string\" >"
+	  "		<start>'</start>"
+	  "		<stop>'</stop>"
+	  "		<stop exclusive=\"false\">\n</stop>"
+	  "		<sequence id=\"escape\" format=\"escapeseq\" >\\\\[nrtvf\\\"'\n]</sequence>"
+	  "	</context>";
 
-	foreach( const QString & key, XQueryKeyword::self()->keywords().values() ) {
-		result += QString("<list id=\"keyword_/%1\" format=\"xquery_%1\">").arg( key );
+	foreach(const QString & key, XQueryKeyword::self()->keywords().values())
+	{
+		result += QString("<list id=\"keyword_/%1\" format=\"xquery_%1\">").arg(key);
 
-		foreach( QString value, XQueryKeyword::self()->keywords().keys( key ) ) {
-			result += QString("<word>%1</word>").arg( value.replace( "-", "\\-" ) );
+		foreach(QString value, XQueryKeyword::self()->keywords().keys(key))
+		{
+			result += QString("<word>%1</word>").arg(value.replace("-", "\\-"));
 		}
 
 		result += "</list>";
@@ -377,16 +429,19 @@ QString XQFileType::createLanguageDescription() const {
 	return result;
 }
 
-XinxFormatScheme * XQFileType::createFormatScheme( XINXConfig * config ) const {
-	return new XqFormatScheme( config );
+XinxFormatScheme * XQFileType::createFormatScheme(XINXConfig * config) const
+{
+	return new XqFormatScheme(config);
 }
 
-QString XQFileType::fileExample() const {
+QString XQFileType::fileExample() const
+{
 	return
-		"count(DynamicRow)\n"
-		"max(Qtecde)";
+	    "count(DynamicRow)\n"
+	    "max(Qtecde)";
 }
 
-ContentViewParser * XQFileType::createParser() {
-	return 0;
+QString XQFileType::parserType()
+{
+	return QString();
 }

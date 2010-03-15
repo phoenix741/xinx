@@ -24,10 +24,11 @@
 // Xinx header
 #include <editors/xinxformatscheme.h>
 
-class JsFormatScheme : public XinxFormatScheme {
+class JsFormatScheme : public XinxFormatScheme
+{
 	Q_OBJECT
 public:
-	JsFormatScheme( XINXConfig * config );
+	JsFormatScheme(XINXConfig * config);
 protected:
 	void createDefaultScheme();
 private:

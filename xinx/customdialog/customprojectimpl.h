@@ -25,10 +25,11 @@
 #include "ui_customproject.h"
 #include <plugins/plugininterfaces.h>
 
-class CustomProjectImpl : public QWidget, public Ui::CustomProject, public IXinxPluginConfigurationPage {
+class CustomProjectImpl : public QWidget, public Ui::CustomProject, public IXinxPluginConfigurationPage
+{
 	Q_OBJECT
 public:
-	CustomProjectImpl( QWidget * parent = 0 );
+	CustomProjectImpl(QWidget * parent = 0);
 	~CustomProjectImpl();
 
 	virtual QPixmap image();

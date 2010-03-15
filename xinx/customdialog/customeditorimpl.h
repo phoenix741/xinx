@@ -25,10 +25,11 @@
 #include "ui_customeditor.h"
 #include <plugins/plugininterfaces.h>
 
-class CustomEditorImpl : public QWidget, public Ui::CustomEditor, public IXinxPluginConfigurationPage {
+class CustomEditorImpl : public QWidget, public Ui::CustomEditor, public IXinxPluginConfigurationPage
+{
 	Q_OBJECT
 public:
-	CustomEditorImpl( QWidget * parent = 0 );
+	CustomEditorImpl(QWidget * parent = 0);
 	~CustomEditorImpl();
 
 	virtual QPixmap image();

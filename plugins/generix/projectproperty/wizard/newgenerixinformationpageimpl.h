@@ -27,17 +27,18 @@
 // Qt header
 #include <QWizardPage>
 
-class NewGenerixInformationPageImpl : public IXinxPluginNewProjectConfigurationPage, Ui::NewGenerixInformationPage {
+class NewGenerixInformationPageImpl : public IXinxPluginNewProjectConfigurationPage, Ui::NewGenerixInformationPage
+{
 	Q_OBJECT
 public:
 	NewGenerixInformationPageImpl();
 	virtual ~NewGenerixInformationPageImpl();
 
-	virtual bool isComplete () const;
+	virtual bool isComplete() const;
 
 	virtual QString pagePluginId() const;
 	virtual bool pageIsVisible() const;
-	virtual bool saveSettingsDialog( XinxProject * project );
+	virtual bool saveSettingsDialog(XinxProject * project);
 
 	virtual void initializePage();
 private slots:

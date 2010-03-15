@@ -30,14 +30,15 @@ class AbstractEditor;
 class IFileTypePlugin;
 class XinxProjectSessionEditor;
 
-class LIBEXPORT EditorFactory : public QObject {
+class LIBEXPORT EditorFactory : public QObject
+{
 	Q_OBJECT
 public:
 	virtual ~EditorFactory();
 
-	AbstractEditor * createEditor( IFileTypePlugin * interface = 0 );
-	AbstractEditor * createEditor( const QString & filename );
-	AbstractEditor * createEditor( XinxProjectSessionEditor * session = 0 );
+	AbstractEditor * createEditor(IFileTypePlugin * interface = 0);
+	AbstractEditor * createEditor(const QString & filename);
+	AbstractEditor * createEditor(XinxProjectSessionEditor * session = 0);
 
 	static EditorFactory * self();
 private:

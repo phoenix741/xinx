@@ -24,17 +24,21 @@
 
 XINXStaticDeleter * XINXStaticDeleter::s_self = 0;
 
-XINXStaticDeleter::XINXStaticDeleter() {
+XINXStaticDeleter::XINXStaticDeleter()
+{
 
 }
 
-XINXStaticDeleter::~XINXStaticDeleter() {
+XINXStaticDeleter::~XINXStaticDeleter()
+{
 	s_self = 0;
 	clear();
 }
 
-XINXStaticDeleter * XINXStaticDeleter::self() {
-	if( s_self == 0 ) {
+XINXStaticDeleter * XINXStaticDeleter::self()
+{
+	if (s_self == 0)
+	{
 		s_self = new XINXStaticDeleter();
 	}
 	return s_self;

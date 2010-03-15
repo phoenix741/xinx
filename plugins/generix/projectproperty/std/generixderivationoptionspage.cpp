@@ -24,68 +24,82 @@
 
 /* GenerixDerivationOptionsPageImpl */
 
-GenerixDerivationOptionsPageImpl::GenerixDerivationOptionsPageImpl( QWidget * parent, Qt::WindowFlags f ) : QWidget( parent, f ) {
-	setupUi( this );
+GenerixDerivationOptionsPageImpl::GenerixDerivationOptionsPageImpl(QWidget * parent, Qt::WindowFlags f) : QWidget(parent, f)
+{
+	setupUi(this);
 
 }
 
-GenerixDerivationOptionsPageImpl::~GenerixDerivationOptionsPageImpl() {
+GenerixDerivationOptionsPageImpl::~GenerixDerivationOptionsPageImpl()
+{
 }
 
-void GenerixDerivationOptionsPageImpl::setProject( XinxProject * project ) {
+void GenerixDerivationOptionsPageImpl::setProject(XinxProject * project)
+{
 	m_project = project;
 }
 
-QPixmap GenerixDerivationOptionsPageImpl::image() {
+QPixmap GenerixDerivationOptionsPageImpl::image()
+{
 	return QPixmap();
 }
 
-QString GenerixDerivationOptionsPageImpl::name() {
+QString GenerixDerivationOptionsPageImpl::name()
+{
 	return this->windowTitle();
 }
 
-bool GenerixDerivationOptionsPageImpl::loadSettingsDialog() {
-	GenerixProject * project = static_cast<GenerixProject*>( m_project );
-	if( ! project ) return false;
+bool GenerixDerivationOptionsPageImpl::loadSettingsDialog()
+{
+	GenerixProject * project = static_cast<GenerixProject*>(m_project);
+	if (! project) return false;
 
-	m_createMissingDirectoryChk->setChecked( project->createMissingDirectory() );
-	m_prefixDerivatedFileChk->setChecked( ! project->defaultPrefix().isEmpty() );
-	m_prefixList->setValues( project->prefixes() );
-	m_prefixList->setDefaultValue( project->defaultPrefix() );
-	m_copySourceFileChk->setChecked( project->copySourceFileInDerivationPath() );
+	m_createMissingDirectoryChk->setChecked(project->createMissingDirectory());
+	m_prefixDerivatedFileChk->setChecked(! project->defaultPrefix().isEmpty());
+	m_prefixList->setValues(project->prefixes());
+	m_prefixList->setDefaultValue(project->defaultPrefix());
+	m_copySourceFileChk->setChecked(project->copySourceFileInDerivationPath());
 
 	return true;
 }
 
-bool GenerixDerivationOptionsPageImpl::saveSettingsDialog() {
-	GenerixProject * project = static_cast<GenerixProject*>( m_project );
-	if( ! project ) return false;
+bool GenerixDerivationOptionsPageImpl::saveSettingsDialog()
+{
+	GenerixProject * project = static_cast<GenerixProject*>(m_project);
+	if (! project) return false;
 
-	project->setCreateMissingDirectory( m_createMissingDirectoryChk->isChecked() );
-	if( m_prefixDerivatedFileChk->isChecked() ) {
-		project->setDefaultPrefix( m_prefixList->defaultValue() );
-		project->setPrefixes( m_prefixList->values() );
-	} else {
-		project->setDefaultPrefix( QString() );
-		project->setPrefixes( QStringList() );
+	project->setCreateMissingDirectory(m_createMissingDirectoryChk->isChecked());
+	if (m_prefixDerivatedFileChk->isChecked())
+	{
+		project->setDefaultPrefix(m_prefixList->defaultValue());
+		project->setPrefixes(m_prefixList->values());
 	}
-	project->setCopySourceFileInDerivationPath( m_copySourceFileChk->isChecked() );
+	else
+	{
+		project->setDefaultPrefix(QString());
+		project->setPrefixes(QStringList());
+	}
+	project->setCopySourceFileInDerivationPath(m_copySourceFileChk->isChecked());
 
 	return true;
 }
 
-bool GenerixDerivationOptionsPageImpl::cancelSettingsDialog() {
+bool GenerixDerivationOptionsPageImpl::cancelSettingsDialog()
+{
 	return true;
 }
 
-QWidget * GenerixDerivationOptionsPageImpl::settingsDialog() {
+QWidget * GenerixDerivationOptionsPageImpl::settingsDialog()
+{
 	return this;
 }
 
-bool GenerixDerivationOptionsPageImpl::isSettingsValid() {
-	return ! (m_prefixDerivatedFileChk->isChecked() && m_prefixList->defaultValue().isEmpty());
+bool GenerixDerivationOptionsPageImpl::isSettingsValid()
+{
+	return !(m_prefixDerivatedFileChk->isChecked() && m_prefixList->defaultValue().isEmpty());
 }
 
-bool GenerixDerivationOptionsPageImpl::isVisible() {
+bool GenerixDerivationOptionsPageImpl::isVisible()
+{
 	return true;
 }

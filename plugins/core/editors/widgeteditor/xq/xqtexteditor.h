@@ -24,10 +24,11 @@
 // Xinx header
 #include <editors/xinxcodeedit.h>
 
-class XQTextEditor : public XinxCodeEdit {
+class XQTextEditor : public XinxCodeEdit
+{
 	Q_OBJECT
 public:
-	XQTextEditor( QWidget * parent = 0 );
+	XQTextEditor(QWidget * parent = 0);
 	virtual ~XQTextEditor();
 };
 

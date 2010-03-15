@@ -12,16 +12,19 @@
 
 class PrivateWebPluginSettings;
 
-class WebPluginSettingsSettings : public QSettings {
+class WebPluginSettingsSettings : public QSettings
+{
 public:
-	WebPluginSettingsSettings( const QString & organization, const QString & application );
-	void setValue( const QString & key, const QVariant & value, const QVariant & defaultValue );
-	void setValue( const QString & key, const QVariant & value );
+	WebPluginSettingsSettings(const QString & organization, const QString & application);
+	void setValue(const QString & key, const QVariant & value, const QVariant & defaultValue);
+	void setValue(const QString & key, const QVariant & value);
 };
 
-class WebPluginSettings {
+class WebPluginSettings
+{
 public:
-	struct struct_xmlpres {
+	struct struct_xmlpres
+	{
 		QString autoExpandedPath;
 		QStringList hidePath;
 		bool showFilteredSubTree;
@@ -31,44 +34,51 @@ public:
 		bool showNameAttributeIfExists;
 	};
 
-	struct struct_javascript {
+	struct struct_javascript
+	{
 		bool activeCompletion;
 	};
 
-	struct struct_oracleParser {
+	struct struct_oracleParser
+	{
 		QString classPath;
 		QString mainClass;
 	};
 
-	struct struct_viewerInformation {
+	struct struct_viewerInformation
+	{
 		QString type;
 	};
 
-	struct struct_xml {
+	struct struct_xml
+	{
 		bool activeCompletion;
 		bool addClosedBalise;
 		bool addDefaultAttribute;
 		bool addDefaultSubBalise;
 	};
 
-	struct struct_parserInformation {
+	struct struct_parserInformation
+	{
 		QString type;
 		struct_oracleParser oracleParser;
 	};
 
-	struct struct_stylesheetParsing {
+	struct struct_stylesheetParsing
+	{
 		struct_viewerInformation viewer;
 		struct_parserInformation parser;
 	};
 
-	struct struct_globals {
+	struct struct_globals
+	{
 		struct_xmlpres xmlPres;
 		struct_xml xml;
 		struct_stylesheetParsing stylesheetParsing;
 		struct_javascript javascript;
 	};
 
-	WebPluginSettings( const WebPluginSettings & origine );
+	WebPluginSettings(const WebPluginSettings & origine);
 	WebPluginSettings();
 	virtual ~WebPluginSettings();
 
@@ -81,36 +91,36 @@ public:
 	WebPluginSettings& operator=(const WebPluginSettings& p);
 protected:
 	virtual struct_javascript getDefaultJavascript();
-	virtual WebPluginSettings::struct_javascript getSettingsJavascript( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_javascript & defaultValue );
-	virtual void setSettingsJavascript( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_javascript & value );
+	virtual WebPluginSettings::struct_javascript getSettingsJavascript(WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_javascript & defaultValue);
+	virtual void setSettingsJavascript(WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_javascript & value);
 
 	virtual struct_stylesheetParsing getDefaultStylesheetParsing();
-	virtual WebPluginSettings::struct_stylesheetParsing getSettingsStylesheetParsing( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_stylesheetParsing & defaultValue );
-	virtual void setSettingsStylesheetParsing( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_stylesheetParsing & value );
+	virtual WebPluginSettings::struct_stylesheetParsing getSettingsStylesheetParsing(WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_stylesheetParsing & defaultValue);
+	virtual void setSettingsStylesheetParsing(WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_stylesheetParsing & value);
 
 	virtual struct_parserInformation getDefaultParserInformation();
-	virtual WebPluginSettings::struct_parserInformation getSettingsParserInformation( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_parserInformation & defaultValue );
-	virtual void setSettingsParserInformation( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_parserInformation & value );
+	virtual WebPluginSettings::struct_parserInformation getSettingsParserInformation(WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_parserInformation & defaultValue);
+	virtual void setSettingsParserInformation(WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_parserInformation & value);
 
 	virtual struct_oracleParser getDefaultOracleParser();
-	virtual WebPluginSettings::struct_oracleParser getSettingsOracleParser( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_oracleParser & defaultValue );
-	virtual void setSettingsOracleParser( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_oracleParser & value );
+	virtual WebPluginSettings::struct_oracleParser getSettingsOracleParser(WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_oracleParser & defaultValue);
+	virtual void setSettingsOracleParser(WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_oracleParser & value);
 
 	virtual struct_viewerInformation getDefaultViewerInformation();
-	virtual WebPluginSettings::struct_viewerInformation getSettingsViewerInformation( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_viewerInformation & defaultValue );
-	virtual void setSettingsViewerInformation( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_viewerInformation & value );
+	virtual WebPluginSettings::struct_viewerInformation getSettingsViewerInformation(WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_viewerInformation & defaultValue);
+	virtual void setSettingsViewerInformation(WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_viewerInformation & value);
 
 	virtual struct_xmlpres getDefaultXmlpres();
-	virtual WebPluginSettings::struct_xmlpres getSettingsXmlpres( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_xmlpres & defaultValue );
-	virtual void setSettingsXmlpres( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_xmlpres & value );
+	virtual WebPluginSettings::struct_xmlpres getSettingsXmlpres(WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_xmlpres & defaultValue);
+	virtual void setSettingsXmlpres(WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_xmlpres & value);
 
 	virtual struct_xml getDefaultXml();
-	virtual WebPluginSettings::struct_xml getSettingsXml( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_xml & defaultValue );
-	virtual void setSettingsXml( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_xml & value );
+	virtual WebPluginSettings::struct_xml getSettingsXml(WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_xml & defaultValue);
+	virtual void setSettingsXml(WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_xml & value);
 
 	virtual struct_globals getDefaultGlobals();
-	virtual WebPluginSettings::struct_globals getSettingsGlobals( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_globals & defaultValue );
-	virtual void setSettingsGlobals( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_globals & value );
+	virtual WebPluginSettings::struct_globals getSettingsGlobals(WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_globals & defaultValue);
+	virtual void setSettingsGlobals(WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_globals & value);
 
 private:
 	PrivateWebPluginSettings * d;

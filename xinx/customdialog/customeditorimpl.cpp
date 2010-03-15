@@ -26,65 +26,75 @@
 
 /* CustomEditorImpl */
 
-CustomEditorImpl::CustomEditorImpl( QWidget * parent ) : QWidget( parent ) {
-	setupUi( this );
+CustomEditorImpl::CustomEditorImpl(QWidget * parent) : QWidget(parent)
+{
+	setupUi(this);
 
 	// Font encodings
 	QList<QByteArray> encodings = QTextCodec::availableCodecs();
-	qSort( encodings );
-	foreach( const QByteArray & encoding, encodings ) {
-		m_encodingComboBox->addItem( encoding );
+	qSort(encodings);
+	foreach(const QByteArray & encoding, encodings)
+	{
+		m_encodingComboBox->addItem(encoding);
 	}
 
 #if QT_VERSION <= 0x040500
-	m_closeBtnGrp->setEnabled( false );
+	m_closeBtnGrp->setEnabled(false);
 #endif
 }
 
-CustomEditorImpl::~CustomEditorImpl() {
+CustomEditorImpl::~CustomEditorImpl()
+{
 }
 
-QPixmap CustomEditorImpl::image() {
-	return QPixmap( ":/images/preferences-editor.png" );
+QPixmap CustomEditorImpl::image()
+{
+	return QPixmap(":/images/preferences-editor.png");
 }
 
-QString CustomEditorImpl::name() {
+QString CustomEditorImpl::name()
+{
 	return windowTitle();
 }
 
-QWidget * CustomEditorImpl::settingsDialog() {
+QWidget * CustomEditorImpl::settingsDialog()
+{
 	return this;
 }
 
-bool CustomEditorImpl::loadSettingsDialog() {
+bool CustomEditorImpl::loadSettingsDialog()
+{
 	// Create backup file when saving
-	m_createBakCheckBox->setChecked( XINXConfig::self()->config().editor.createBackupFile );
+	m_createBakCheckBox->setChecked(XINXConfig::self()->config().editor.createBackupFile);
 
 	// Popup when file modified
-	m_popupWhenFileModifiedCheckBox->setChecked( XINXConfig::self()->config().editor.popupWhenFileModified );
+	m_popupWhenFileModifiedCheckBox->setChecked(XINXConfig::self()->config().editor.popupWhenFileModified);
 
 	// Pretty print on saving
-	m_prettyPrintOnSavingCheckBox->setChecked( XINXConfig::self()->config().editor.autoindentOnSaving );
+	m_prettyPrintOnSavingCheckBox->setChecked(XINXConfig::self()->config().editor.autoindentOnSaving);
 
 	// Tab close button
-	if( XINXConfig::self()->config().editor.closeButtonOnEachTab ) {
-		if( XINXConfig::self()->config().editor.hideCloseTab )
-			m_closeBtnRadioButton->setChecked( true );
+	if (XINXConfig::self()->config().editor.closeButtonOnEachTab)
+	{
+		if (XINXConfig::self()->config().editor.hideCloseTab)
+			m_closeBtnRadioButton->setChecked(true);
 		else
-			m_closeAndCornerBtnRadioButton->setChecked( true );
-	} else
-		m_cornerBtnRadioButton->setChecked( true );
+			m_closeAndCornerBtnRadioButton->setChecked(true);
+	}
+	else
+		m_cornerBtnRadioButton->setChecked(true);
 
 	// Default text encoding.
-	m_encodingComboBox->setCurrentIndex( m_encodingComboBox->findText( XINXConfig::self()->config().editor.defaultTextCodec ) );
+	m_encodingComboBox->setCurrentIndex(m_encodingComboBox->findText(XINXConfig::self()->config().editor.defaultTextCodec));
 
 	// Text content refresh
-	m_refreshContentTimeoutSpinBox->setValue( XINXConfig::self()->config().editor.automaticModelRefreshTimeout );
+	m_refreshContentTimeoutSpinBox->setValue(XINXConfig::self()->config().editor.automaticModelRefreshTimeout);
 
 	return true;
 }
 
-bool CustomEditorImpl::saveSettingsDialog() {
+bool CustomEditorImpl::saveSettingsDialog()
+{
 	// Create backup file when saving
 	XINXConfig::self()->config().editor.createBackupFile = m_createBakCheckBox->isChecked();
 
@@ -95,20 +105,24 @@ bool CustomEditorImpl::saveSettingsDialog() {
 	XINXConfig::self()->config().editor.autoindentOnSaving = m_prettyPrintOnSavingCheckBox->isChecked();
 
 	// Tab close button
-	if( m_closeBtnRadioButton->isChecked() ) {
+	if (m_closeBtnRadioButton->isChecked())
+	{
 		XINXConfig::self()->config().editor.closeButtonOnEachTab = true;
 		XINXConfig::self()->config().editor.hideCloseTab = true;
-	} else
-	if( m_cornerBtnRadioButton->isChecked() ) {
+	}
+	else if (m_cornerBtnRadioButton->isChecked())
+	{
 		XINXConfig::self()->config().editor.closeButtonOnEachTab = false;
 		XINXConfig::self()->config().editor.hideCloseTab = false;
-	} else {
+	}
+	else
+	{
 		XINXConfig::self()->config().editor.closeButtonOnEachTab = true;
 		XINXConfig::self()->config().editor.hideCloseTab = false;
 	}
 
 	// Default text encoding.
-	XINXConfig::self()->config().editor.defaultTextCodec = m_encodingComboBox->itemText( m_encodingComboBox->currentIndex() );
+	XINXConfig::self()->config().editor.defaultTextCodec = m_encodingComboBox->itemText(m_encodingComboBox->currentIndex());
 
 	// Text content refresh
 	XINXConfig::self()->config().editor.automaticModelRefreshTimeout = m_refreshContentTimeoutSpinBox->value();
@@ -116,14 +130,17 @@ bool CustomEditorImpl::saveSettingsDialog() {
 	return true;
 }
 
-bool CustomEditorImpl::cancelSettingsDialog() {
+bool CustomEditorImpl::cancelSettingsDialog()
+{
 	return true;
 }
 
-bool CustomEditorImpl::isSettingsValid() {
+bool CustomEditorImpl::isSettingsValid()
+{
 	return true;
 }
 
-bool CustomEditorImpl::isVisible() {
+bool CustomEditorImpl::isVisible()
+{
 	return true;
 }

@@ -25,10 +25,11 @@
 #include "ui_customgeneral.h"
 #include <plugins/plugininterfaces.h>
 
-class CustomGeneralImpl : public QWidget, public Ui::CustomGeneral, public IXinxPluginConfigurationPage {
+class CustomGeneralImpl : public QWidget, public Ui::CustomGeneral, public IXinxPluginConfigurationPage
+{
 	Q_OBJECT
 public:
-	CustomGeneralImpl( QWidget * parent = 0 );
+	CustomGeneralImpl(QWidget * parent = 0);
 	~CustomGeneralImpl();
 
 	virtual QPixmap image();

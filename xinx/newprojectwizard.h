@@ -33,31 +33,33 @@ class NewProjectWizard;
 class TemplateDialogImpl;
 class XinxProject;
 
-class ProjectPageImpl : public IXinxPluginNewProjectConfigurationPage, private Ui::ProjectPage {
+class ProjectPageImpl : public IXinxPluginNewProjectConfigurationPage, private Ui::ProjectPage
+{
 	Q_OBJECT
 public:
 	ProjectPageImpl();
 
-    virtual void setVisible( bool visible );
-	virtual bool isComplete () const;
+	virtual void setVisible(bool visible);
+	virtual bool isComplete() const;
 
 	virtual QString pagePluginId() const;
 	virtual bool pageIsVisible() const;
-	virtual bool saveSettingsDialog( XinxProject * project );
+	virtual bool saveSettingsDialog(XinxProject * project);
 private slots:
-    void on_m_projectPathBtn_clicked();
+	void on_m_projectPathBtn_clicked();
 
-    void on_m_projectNameEdit_textChanged( const QString & value );
+	void on_m_projectNameEdit_textChanged(const QString & value);
 };
 
-class VersionsPageImpl : public IXinxPluginNewProjectConfigurationPage {
+class VersionsPageImpl : public IXinxPluginNewProjectConfigurationPage
+{
 	Q_OBJECT
 public:
 	VersionsPageImpl();
 
 	virtual QString pagePluginId() const;
 	virtual bool pageIsVisible() const;
-	virtual bool saveSettingsDialog( XinxProject * project );
+	virtual bool saveSettingsDialog(XinxProject * project);
 private:
 	QRadioButton * m_noRevisionControl;
 	QList< QPair<QRadioButton*, QString> > m_revisionBtn;
@@ -65,25 +67,27 @@ private:
 	friend class NewProjectWizard;
 };
 
-class LastPageImpl : public IXinxPluginNewProjectConfigurationPage {
+class LastPageImpl : public IXinxPluginNewProjectConfigurationPage
+{
 	Q_OBJECT
 public:
 	LastPageImpl();
 
 	virtual QString pagePluginId() const;
 	virtual bool pageIsVisible() const;
-	virtual bool saveSettingsDialog( XinxProject * project );
+	virtual bool saveSettingsDialog(XinxProject * project);
 private:
 };
 
-class NewProjectWizard : public QWizard {
+class NewProjectWizard : public QWizard
+{
 	Q_OBJECT
 public:
-	NewProjectWizard( QWidget * widget = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
+	NewProjectWizard(QWidget * widget = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint);
 
 	XinxProject * createProject();
 
-	virtual int nextId () const;
+	virtual int nextId() const;
 private slots:
 	void on_customButton1_clicked();
 private:

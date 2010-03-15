@@ -26,54 +26,66 @@
 
 /* DirectoryEditPlugin */
 
-DirectoryEditPlugin::DirectoryEditPlugin( QObject *parent ) : QObject( parent ) {
+DirectoryEditPlugin::DirectoryEditPlugin(QObject *parent) : QObject(parent)
+{
 	m_initialized = false;
 }
 
-void DirectoryEditPlugin::initialize( QDesignerFormEditorInterface *core ) {
-	if( m_initialized )
+void DirectoryEditPlugin::initialize(QDesignerFormEditorInterface *core)
+{
+	if (m_initialized)
 		return;
 
 	m_initialized = true;
 }
 
-bool DirectoryEditPlugin::isInitialized() const {
+bool DirectoryEditPlugin::isInitialized() const
+{
 	return m_initialized;
 }
 
-bool DirectoryEditPlugin::isContainer() const {
+bool DirectoryEditPlugin::isContainer() const
+{
 	return false;
 }
 
-QIcon DirectoryEditPlugin::icon() const {
+QIcon DirectoryEditPlugin::icon() const
+{
 	return QIcon();
 }
 
-QString DirectoryEditPlugin::toolTip() const {
+QString DirectoryEditPlugin::toolTip() const
+{
 	return "";
 }
 
-QString DirectoryEditPlugin::whatsThis() const {
+QString DirectoryEditPlugin::whatsThis() const
+{
 	return "";
 }
 
-QString DirectoryEditPlugin::group() const {
+QString DirectoryEditPlugin::group() const
+{
 	return "XINX Widget";
 }
 
-QString DirectoryEditPlugin::name() const {
+QString DirectoryEditPlugin::name() const
+{
 	return "DirectoryEdit";
 }
 
-QString DirectoryEditPlugin::includeFile() const {
+QString DirectoryEditPlugin::includeFile() const
+{
 	return "directoryedit.h";
 }
 
-QString DirectoryEditPlugin::domXml() const {
+QString DirectoryEditPlugin::domXml() const
+{
 	return  "<widget class=\"DirectoryEdit\" name=\"directoryEdit\"/>";
 }
 
-QWidget * DirectoryEditPlugin::createWidget( QWidget *parent ) {
-	return new DirectoryEdit( parent );
+QWidget * DirectoryEditPlugin::createWidget(QWidget *parent)
+{
+	return new DirectoryEdit(parent);
 }
 

@@ -30,40 +30,43 @@
 
 /* XPathBalise */
 
-struct XPathBalise {
+struct XPathBalise
+{
 	QString name;
 	QHash<QString,QString> attributes;
 };
 
 /* XmlTextEditor */
 
-class XmlTextEditor : public XinxCodeEdit {
+class XmlTextEditor : public XinxCodeEdit
+{
 	Q_OBJECT
 public:
-	XmlTextEditor( QWidget * parent = 0 );
+	XmlTextEditor(QWidget * parent = 0);
 	virtual ~XmlTextEditor();
 
 	virtual QCompleter * completer();
 
-	QStringList paramOfNode( const QDocumentCursor & cursor );
-	QList<XPathBalise> xpath( const QDocumentCursor & cursor, const QStringList & includeOnly = QStringList(), const QString & prefix = QString(), const  QStringList & attributeName = QStringList() );
+	QStringList paramOfNode(const QDocumentCursor & cursor);
+	QList<XPathBalise> xpath(const QDocumentCursor & cursor, const QStringList & includeOnly = QStringList(), const QString & prefix = QString(), const  QStringList & attributeName = QStringList());
 
-	static QString xpathToString( const QList<XPathBalise> & xp );
+	static QString xpathToString(const QList<XPathBalise> & xp);
 
 	virtual bool isCommentAvailable();
 public slots:
-	virtual void commentSelectedText( bool uncomment = false );
+	virtual void commentSelectedText(bool uncomment = false);
 protected slots:
-	virtual void insertCompletion( const QModelIndex& index );
-	virtual void insertCompletionValue( QDocumentCursor & tc, QString node, QString param );
-	virtual QDocumentCursor insertCompletionParam( QDocumentCursor & tc, QString node, bool movePosition = true );
-	virtual QDocumentCursor insertCompletionBalises( QDocumentCursor & tc, QString node );
-	virtual void insertCompletionAccolade( QDocumentCursor & tc, QString node, QString param, QString value, const QModelIndex & index );
+	virtual void insertCompletion(const QModelIndex& index);
+	virtual void insertCompletionValue(QDocumentCursor & tc, QString node, QString param);
+	virtual QDocumentCursor insertCompletionParam(QDocumentCursor & tc, QString node, bool movePosition = true);
+	virtual QDocumentCursor insertCompletionBalises(QDocumentCursor & tc, QString node);
+	virtual void insertCompletionAccolade(QDocumentCursor & tc, QString node, QString param, QString value, const QModelIndex & index);
 protected:
-	virtual bool localKeyPressExecute( QKeyEvent * e );
-	virtual bool processKeyPress( QKeyEvent * );
+	virtual bool localKeyPressExecute(QKeyEvent * e);
+	virtual bool processKeyPress(QKeyEvent *);
 
-	enum cursorPosition {
+	enum cursorPosition
+	{
 		cpEditComment, // <!-- XXXXX  -->
 		cpEditNodeName, // <XXXXX>
 		cpEditParamName, // <..... XXXXX=".." XXXX=.. XXXX/>
@@ -71,9 +74,9 @@ protected:
 		cpNone
 	};
 
-	cursorPosition editPosition( const QDocumentCursor & cursor, QString & nodeName, QString & paramName );
+	cursorPosition editPosition(const QDocumentCursor & cursor, QString & nodeName, QString & paramName);
 private:
-	void key_shenter( bool back );
+	void key_shenter(bool back);
 };
 
 

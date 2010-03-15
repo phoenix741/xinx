@@ -37,14 +37,15 @@ class PrivateWatcher;
  * FileWatcher. The watcher can be desactivate and reactivate without delete the object.
  * When the object is reactivated, the file date, in memory, is updated.
  */
-class LIBEXPORT FileWatcher : public QObject {
+class LIBEXPORT FileWatcher : public QObject
+{
 	Q_OBJECT
 public:
 	/*!
 	 * Create a FileWatcher with a file name
 	 * \param filename The file name to watch.
 	 */
-	FileWatcher( const QString & filename );
+	FileWatcher(const QString & filename);
 	/*! Destroy the FileWatcher */
 	virtual ~FileWatcher();
 

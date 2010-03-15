@@ -20,16 +20,20 @@
 // Xinx header
 #include "stringcombobox.h"
 
-StringComboBox::StringComboBox( QWidget * parent ) : QComboBox( parent ) {
+StringComboBox::StringComboBox(QWidget * parent) : QComboBox(parent)
+{
 }
 
-StringComboBox::~StringComboBox() {
+StringComboBox::~StringComboBox()
+{
 }
 
-QString StringComboBox::value() const {
+QString StringComboBox::value() const
+{
 	return currentText();
 }
 
-void StringComboBox::setValue( const QString & value ) {
-	setCurrentIndex( findText( value ) );
+void StringComboBox::setValue(const QString & value)
+{
+	setCurrentIndex(findText(value));
 }

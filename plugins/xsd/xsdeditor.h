@@ -29,9 +29,10 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 
-class XsdEditor : public AbstractEditor {
+class XsdEditor : public AbstractEditor
+{
 public:
-	XsdEditor( QWidget * parent = 0 );
+	XsdEditor(QWidget * parent = 0);
 	virtual ~XsdEditor();
 
 	virtual QString defaultFileName() const;
@@ -42,19 +43,19 @@ public:
 	virtual bool canPaste();
 	virtual bool canUndo();
 	virtual bool canRedo();
-	virtual void loadFromDevice( QIODevice & d );
-	virtual void saveToDevice( QIODevice & d );
+	virtual void loadFromDevice(QIODevice & d);
+	virtual void saveToDevice(QIODevice & d);
 
 	virtual QAbstractItemModel * model() const;
 	virtual void updateModel();
 
-	virtual QString bookmarkAt( int i );
+	virtual QString bookmarkAt(int i);
 	virtual int bookmarkCount();
 
 public slots:
-	virtual void initSearch( SearchOptions & options );
-	virtual bool find( const QString & text, SearchOptions options );
-	virtual void replace( const QString & from, const QString & to, SearchOptions options );
+	virtual void initSearch(SearchOptions & options);
+	virtual bool find(const QString & text, SearchOptions options);
+	virtual void replace(const QString & from, const QString & to, SearchOptions options);
 	virtual void undo();
 	virtual void redo();
 	virtual void cut();
@@ -64,7 +65,7 @@ public slots:
 	virtual void clearAllBookmark();
 	virtual bool previousBookmark();
 	virtual bool nextBookmark();
-	virtual void gotoBookmarkAt( int );
+	virtual void gotoBookmarkAt(int);
 private:
 	QPointer<XmlSchemaFile> m_schema;
 	QGraphicsScene * m_scene;

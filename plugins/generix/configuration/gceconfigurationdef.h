@@ -28,23 +28,24 @@
 #include <QMultiHash>
 #include <QCoreApplication>
 
-class GceConfigurationDef : public GceInterface {
+class GceConfigurationDef : public GceInterface
+{
 	Q_DECLARE_TR_FUNCTIONS(GceConfigurationDef)
 public:
 	GceConfigurationDef();
-	GceConfigurationDef( const QString & filename );
+	GceConfigurationDef(const QString & filename);
 	virtual ~GceConfigurationDef();
 
 	virtual QString rootFilename();
 	virtual QStringList filenames();
 	virtual ConfigurationVersion version();
 	virtual QStringList dictionnaries();
-	virtual QList<BusinessViewInformation> businessView( const QString & filename );
+	virtual QList<BusinessViewInformation> businessView(const QString & filename);
 	virtual QList<BusinessViewInformation> businessViews();
-	virtual QString resolveFileName( const QString & filename );
+	virtual QString resolveFileName(const QString & filename);
 protected:
-	virtual void readConfigurationDef( const QString & configurationdefFileName );
-	virtual void readConfigurationFile( int configurationIndex, const QString & configurationFileName );
+	virtual void readConfigurationDef(const QString & configurationdefFileName);
+	virtual void readConfigurationFile(int configurationIndex, const QString & configurationFileName);
 
 	QStringList m_dictionnaries, m_filenames;
 	QString m_configurationFileName, m_directoryPath;

@@ -27,16 +27,17 @@
 // Qt header
 #include <QTreeView>
 
-class LIBEXPORT CategoryTreeView : public QTreeView {
+class LIBEXPORT CategoryTreeView : public QTreeView
+{
 	Q_OBJECT
-	Q_PROPERTY( int categoryId READ categoryId WRITE setCategoryId USER true )
+	Q_PROPERTY(int categoryId READ categoryId WRITE setCategoryId USER true)
 public:
-	CategoryTreeView( QWidget * parent = 0 );
+	CategoryTreeView(QWidget * parent = 0);
 	virtual ~CategoryTreeView();
 
 	int categoryId();
 public slots:
-	void setCategoryId( int id );
+	void setCategoryId(int id);
 };
 
 #endif // _CATEGORYLISTVIEW_H_

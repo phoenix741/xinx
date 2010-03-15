@@ -36,7 +36,8 @@
 class RCS;
 
 /*! The class XINX Plugins Loader is used to load all plugins and proposed some facilities method. */
-class LIBEXPORT XinxPluginsLoader : public QObject {
+class LIBEXPORT XinxPluginsLoader : public QObject
+{
 	Q_OBJECT
 public:
 	~XinxPluginsLoader();
@@ -46,7 +47,7 @@ public:
 	/*! List all the loaded plugins */
 	QList<XinxPluginElement*> plugins() const;
 	/*! Plugin of name \e name. */
-	XinxPluginElement * plugin( const QString & name );
+	XinxPluginElement * plugin(const QString & name);
 
 	/*!
 	 * List all the revision control that can be used. The Result is a list of
@@ -58,30 +59,30 @@ public:
 	 * \param revision The system to use.
 	 * \param basePath The path used in the constructor.
 	 */
-	RCS * createRevisionControl( QString revision, QString basePath ) const;
+	RCS * createRevisionControl(QString revision, QString basePath) const;
 
 	/*! Return all the file type knew by XINX. */
 	QList<IFileTypePlugin*> fileTypes() const;
 	/*! Search the file type for the corresponding filename  */
-	IFileTypePlugin * matchedFileType( const QString & filename ) const;
+	IFileTypePlugin * matchedFileType(const QString & filename) const;
 	/*! Return the filter for a given file type */
-	static QString fileTypeFilter( IFileTypePlugin * fileType );
+	static QString fileTypeFilter(IFileTypePlugin * fileType);
 	//! Return a list of filter that can be used open dialog box
 	QStringList openDialogBoxFilters() const;
 	//! Return a list of filter
 	QStringList managedFilters() const;
 
 	//! Return the exemple of an highlighter
-	QString exampleOfHighlighter( const QString & name ) const;
+	QString exampleOfHighlighter(const QString & name) const;
 	//! Create a format scheme for the given highlighter
-	XinxFormatScheme * scheme( const QString & highlighter, XINXConfig * config );
+	XinxFormatScheme * scheme(const QString & highlighter, XINXConfig * config);
 
 	/*! Create a plugin loader object */
 	static XinxPluginsLoader * self();
 private:
 	XinxPluginsLoader();
 
-	void addPlugin( QObject * plugin, bool staticLoaded = false );
+	void addPlugin(QObject * plugin, bool staticLoaded = false);
 	QString allManagedFileFilter() const;
 
 	QDir m_pluginsDir;
@@ -90,6 +91,6 @@ private:
 	static XinxPluginsLoader * s_self;
 };
 
-Q_DECLARE_METATYPE( IFileTypePlugin* );
+Q_DECLARE_METATYPE(IFileTypePlugin*);
 
 #endif /*XINXPLUGINSLOADER_H_*/

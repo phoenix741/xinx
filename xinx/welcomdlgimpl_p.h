@@ -23,7 +23,8 @@
 // Qt header
 #include <QListWidget>
 
-class WelcomTreeWidget : public QListWidget {
+class WelcomTreeWidget : public QListWidget
+{
 	Q_OBJECT
 public:
 	WelcomTreeWidget(QWidget *parent = 0);

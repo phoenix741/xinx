@@ -10,16 +10,19 @@
 
 class PrivatePluginSettings;
 
-class PluginSettingsSettings : public QSettings {
+class PluginSettingsSettings : public QSettings
+{
 public:
-	PluginSettingsSettings( const QString & organization, const QString & application );
-	void setValue( const QString & key, const QVariant & value, const QVariant & defaultValue );
-	void setValue( const QString & key, const QVariant & value );
+	PluginSettingsSettings(const QString & organization, const QString & application);
+	void setValue(const QString & key, const QVariant & value, const QVariant & defaultValue);
+	void setValue(const QString & key, const QVariant & value);
 };
 
-class PluginSettings {
+class PluginSettings
+{
 public:
-	struct struct_globals {
+	struct struct_globals
+	{
 		QString progressMessages;
 		int compressionLevel;
 		bool pruneEmptyDirectories;
@@ -27,7 +30,7 @@ public:
 	};
 
 
-	PluginSettings( const PluginSettings & origine );
+	PluginSettings(const PluginSettings & origine);
 	PluginSettings();
 	virtual ~PluginSettings();
 
@@ -40,8 +43,8 @@ public:
 	PluginSettings& operator=(const PluginSettings& p);
 protected:
 	virtual struct_globals getDefaultGlobals();
-	virtual PluginSettings::struct_globals getSettingsGlobals( PluginSettingsSettings * settings, const QString & path, PluginSettings::struct_globals defaultValue );
-	virtual void setSettingsGlobals( PluginSettingsSettings * settings, const QString & path, PluginSettings::struct_globals value );
+	virtual PluginSettings::struct_globals getSettingsGlobals(PluginSettingsSettings * settings, const QString & path, PluginSettings::struct_globals defaultValue);
+	virtual void setSettingsGlobals(PluginSettingsSettings * settings, const QString & path, PluginSettings::struct_globals value);
 
 private:
 	PrivatePluginSettings * d;

@@ -29,20 +29,28 @@
 class WebPluginSettings;
 class ManualFileResolver;
 
-class CorePlugin : public QObject, public IFilePlugin, public IResolverPlugin, public IXinxPluginConfiguration, public IXinxPluginProjectConfiguration, public IDockPlugin {
+class CorePlugin :	public QObject,
+					public IFilePlugin,
+					public IResolverPlugin,
+					public IXinxPluginConfiguration,
+					public IXinxPluginProjectConfiguration,
+					public IDockPlugin,
+					public IContentViewParserPlugin
+{
 	Q_OBJECT
 	Q_INTERFACES(IXinxPlugin)
 	Q_INTERFACES(IXinxPluginConfiguration)
 	Q_INTERFACES(IXinxPluginProjectConfiguration)
 	Q_INTERFACES(IResolverPlugin)
 	Q_INTERFACES(IFilePlugin)
-    Q_INTERFACES(IDockPlugin)
+	Q_INTERFACES(IDockPlugin)
+	Q_INTERFACES(IContentViewParserPlugin)
 public:
 	CorePlugin();
 	virtual ~CorePlugin();
 
-	virtual bool initializePlugin( const QString & lang );
-	virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr );
+	virtual bool initializePlugin(const QString & lang);
+	virtual QVariant getPluginAttribute(const enum IXinxPlugin::PluginAttribute & attr);
 
 	virtual QList<IFileTypePlugin*> fileTypes();
 
@@ -50,22 +58,24 @@ public:
 
 	virtual QList< QPair<QString,QString> > pluginTools();
 
-	virtual QList<IXinxPluginConfigurationPage*> createSettingsDialog( QWidget * parent );
-	virtual QList<IXinxPluginProjectConfigurationPage*> createProjectSettingsPage( QWidget * parent );
+	virtual QList<IXinxPluginConfigurationPage*> createSettingsDialog(QWidget * parent);
+	virtual QList<IXinxPluginProjectConfigurationPage*> createProjectSettingsPage(QWidget * parent);
 
 	virtual QList<IXinxPluginNewProjectConfigurationPage*> createNewProjectSettingsPages();
 
-	virtual QList<QDockWidget*> createDocksWidget( QWidget * parent );
+	virtual QList<QDockWidget*> createDocksWidget(QWidget * parent);
 
 	virtual QList<IFileResolverPlugin*> fileResolvers();
 
-    XmlPresentationDockWidget * dock();
+	virtual ContentView2::Parser * createParser( const QString & type );
+
+	XmlPresentationDockWidget * dock();
 private:
 	QList<IFileTypePlugin*> m_fileTypes;
 	XinxAction::MenuList m_menus;
 
 	ManualFileResolver * m_resolver;
-    XmlPresentationDockWidget * m_dock;
+	XmlPresentationDockWidget * m_dock;
 };
 
 #endif /* COREPLUGIN_H_*/

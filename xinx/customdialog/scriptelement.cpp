@@ -22,41 +22,51 @@
 
 /* ScriptElement */
 
-ScriptElement::ScriptElement( const ScriptValue & script ) : m_script( script ) {
+ScriptElement::ScriptElement(const ScriptValue & script) : m_script(script)
+{
 }
 
-bool ScriptElement::isModifiable() const {
+bool ScriptElement::isModifiable() const
+{
 	return false;
 }
 
-bool ScriptElement::isConfigurable() const {
+bool ScriptElement::isConfigurable() const
+{
 	return false;
 }
 
-QPixmap ScriptElement::pixmap() const {
-	return QPixmap( ":/images/ecmascript.png" );
+QPixmap ScriptElement::pixmap() const
+{
+	return QPixmap(":/images/ecmascript.png");
 }
 
-QString ScriptElement::name() const {
-	return m_script.text().replace( "&", "" );
+QString ScriptElement::name() const
+{
+	return m_script.text().replace("&", "");
 }
 
-QString ScriptElement::author() const {
-	return m_script.value().property( "author" ).toString();
+QString ScriptElement::author() const
+{
+	return m_script.value().property("author").toString();
 }
 
-QString ScriptElement::version() const {
-	return m_script.value().property( "version" ).toString();
+QString ScriptElement::version() const
+{
+	return m_script.value().property("version").toString();
 }
 
-QString ScriptElement::licence() const {
-	return m_script.value().property( "licence" ).toString();
+QString ScriptElement::licence() const
+{
+	return m_script.value().property("licence").toString();
 }
 
-QString ScriptElement::description() const {
-	return tr("Author : ") + m_script.value().property( "author" ).toString();
+QString ScriptElement::description() const
+{
+	return tr("Author : ") + m_script.value().property("author").toString();
 }
 
-ScriptValue & ScriptElement::script() {
+ScriptValue & ScriptElement::script()
+{
 	return m_script;
 }

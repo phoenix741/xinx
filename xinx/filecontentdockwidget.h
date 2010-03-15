@@ -33,25 +33,26 @@ class QTreeView;
  * This dock contains the content of the current file editor in a tree.
  * This dock permit the user to brownse the content of the file, and go inside import.
  */
-class FileContentDockWidget : public QDockWidget {
+class FileContentDockWidget : public QDockWidget
+{
 	Q_OBJECT
 public:
-	FileContentDockWidget( const QString & title, QWidget * parent = 0, Qt::WindowFlags flags = 0 );
-	FileContentDockWidget( QWidget * parent = 0, Qt::WindowFlags flags = 0 );
+	FileContentDockWidget(const QString & title, QWidget * parent = 0, Qt::WindowFlags flags = 0);
+	FileContentDockWidget(QWidget * parent = 0, Qt::WindowFlags flags = 0);
 	virtual ~FileContentDockWidget();
 public slots:
 	/*!
 	 * Update the tree with this model. The model comes from the editor
 	 * \param model Model contains the content of the editor. If NULL, the editor is deleted.
 	 */
-	void updateModel( QAbstractItemModel * model );
+	void updateModel(QAbstractItemModel * model);
 
 	/*!
 	 * When the position in the editor change this slot can be used to tell what
 	 * index must be selected.
 	 * \param index the index in the ContentViewModel that must be selected.
 	 */
-	void positionChanged( const QModelIndex & index );
+	void positionChanged(const QModelIndex & index);
 signals:
 	/*!
 	 * Signal emited when the user double-click on the editor. The goal is open the file
@@ -59,10 +60,10 @@ signals:
 	 * \param name Name of the file to open
 	 * \param line Line to change.
 	 */
-	void open( const QString & name, int line );
+	void open(const QString & name, int line);
 
 private slots:
-	void contentTreeViewDblClick( QModelIndex index );
+	void contentTreeViewDblClick(QModelIndex index);
 private:
 	void init();
 

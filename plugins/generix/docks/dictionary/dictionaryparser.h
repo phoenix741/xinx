@@ -22,37 +22,37 @@
 #pragma once
 
 // Xinx header
-#include <contentview/contentviewparser.h>
+#include <contentview2/contentview2parser.h>
 
 // Qt header
 #include <QXmlStreamReader>
 
-class DictionaryParser : public ContentViewParser, private QXmlStreamReader {
+class DictionaryParser : public ContentView2::Parser, private QXmlStreamReader
+{
 	Q_DECLARE_TR_FUNCTIONS(DictionaryParser)
 public:
+	enum XmlCompletionRoleIndex
+	{
+		NODE_DICO_LANG  = ContentView2::Node::NODE_USER_VALUE,
+		NODE_DICO_CTX   = ContentView2::Node::NODE_USER_VALUE + 1,
+		NODE_DICO_VALUE = ContentView2::Node::NODE_USER_VALUE + 2,
+	};
+
 	DictionaryParser();
 	virtual ~DictionaryParser();
 
-	QTextCodec * codec() { return m_codec; }
+	virtual QTextCodec * codec()
+	{
+		return m_codec;
+	}
 
-	QString trad( const QString & text, const QString & lang ) const;
-	QString trad( const QString & text, const QString & lang, const QString & ctxt ) const;
-
-	void setFileList( const QStringList & files );
-	virtual void setFilename( const QString & filename );
-
-	void refresh();
-protected:
-	virtual void loadFromDeviceImpl();
+	virtual void load();
 private:
-	void loads();
 	void readRootNode();
 	void readLabelsNode();
-	void readLabelNode( ContentViewNode * parent );
+	void readLabelNode(ContentView2::Node parent);
 
 	QTextCodec * m_codec;
-	QStringList m_files;
-	ContentViewNode * m_rootNode;
 };
 
 #endif // DICTIONARYPARSER_H

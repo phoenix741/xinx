@@ -27,25 +27,31 @@
 
 SelfGenerixSettings * SelfGenerixSettings::s_self = 0;
 
-SelfGenerixSettings::SelfGenerixSettings() : GenerixSettings() {
+SelfGenerixSettings::SelfGenerixSettings() : GenerixSettings()
+{
 	load();
 }
 
-SelfGenerixSettings::~SelfGenerixSettings() {
-	if( s_self == this ) {
+SelfGenerixSettings::~SelfGenerixSettings()
+{
+	if (s_self == this)
+	{
 		s_self = 0;
 	}
 }
 
-SelfGenerixSettings * SelfGenerixSettings::self() {
-	if( ! s_self ) {
+SelfGenerixSettings * SelfGenerixSettings::self()
+{
+	if (! s_self)
+	{
 		s_self = new SelfGenerixSettings();
-		XINXStaticDeleter::self()->add( s_self );
+		XINXStaticDeleter::self()->add(s_self);
 	}
 	return s_self;
 }
 
-void SelfGenerixSettings::save() {
+void SelfGenerixSettings::save()
+{
 	GenerixSettings::save();
 	emit changed();
 }
