@@ -134,7 +134,7 @@ protected:
 	QString locationOf(const QString & relativeFilename);
 
 	//! Add the import to the list
-	void addImport(const QString & import);
+	QString addImport(const QString & import);
 private:
 	QList< QPair<uint,uint> > m_attachedNode;
 	unsigned long m_decaledLine;

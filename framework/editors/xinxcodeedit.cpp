@@ -539,8 +539,19 @@ void XinxCodeEdit::insertSnipet(const QString & snipet)
 
 void XinxCodeEdit::gotoLine(int line)
 {
+	/* Five line before */
+	QDocumentCursor cursorB(m_editor->editor()->document(), line - 5);
+	if(!cursorB.isNull())
+		m_editor->editor()->setCursor(cursorB);
+
+	/* Five line after */
+	QDocumentCursor cursorA(m_editor->editor()->document(), line + 5);
+	if(!cursorA.isNull())
+		m_editor->editor()->setCursor(cursorA);
+
 	QDocumentCursor cursor(m_editor->editor()->document(), line - 1);
-	m_editor->editor()->setCursor(cursor);
+	if(!cursor.isNull())
+		m_editor->editor()->setCursor(cursor);
 }
 
 void XinxCodeEdit::duplicateLines()

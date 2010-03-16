@@ -118,9 +118,11 @@ QSqlDatabase Parser::database() const
 	return m_db;
 }
 
-void Parser::addImport(const QString & import)
+QString Parser::addImport(const QString & import)
 {
-	m_imports.append(locationOf(import));
+	QString calculateImport = locationOf(import);
+	m_imports.append(calculateImport);
+	return calculateImport;
 }
 
 const QStringList & Parser::imports() const

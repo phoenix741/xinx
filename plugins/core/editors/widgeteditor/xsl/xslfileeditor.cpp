@@ -270,28 +270,40 @@ void StyleSheetEditor::cursorPositionChanged()
 			XPathBalise b = p.last();
 			p.removeLast();
 
-			foreach(uint childId, n.childs(ContentView2::Manager::self()->database()))
+			const QString baliseName  = b.name;
+			const QString baliseAttributeName  = b.attributes["name"];
+			const QString baliseAttributeMatch = b.attributes["match"];
+			const QString baliseAttributeMode  = b.attributes["mode"];
+
+			const QList<int> childs = n.childs(ContentView2::Manager::self()->database());
+
+			foreach(uint childId, childs)
 			{
 				ContentView2::Node child(ContentView2::Manager::self()->database(), childId);
-				if ((b.name == "xsl:template") && (child.data(ContentView2::Node::NODE_TYPE).toString() == "XslTemplate"))
+
+				const QString childName  = child.data().toString();
+				const QString childType  = child.data(ContentView2::Node::NODE_TYPE).toString();
+				const QString childMode  = child.data(ContentView2::Node::NODE_USER_VALUE).toString();
+
+				if ((baliseName == "xsl:template") && (childType == "XslTemplate"))
 				{
-					if (((child.data().toString() == b.attributes["name"]) || (child.data().toString() == b.attributes["match"])) && (child.data(ContentView2::Node::NODE_USER_VALUE).toString() == b.attributes["mode"]))
+					if (((childName == baliseAttributeName) || (childName == baliseAttributeMatch)) && (childMode == baliseAttributeMode))
 					{
 						n = child;
 						break;
 					}
 				}
-				else if ((b.name == "xsl:variable") && (child.data(ContentView2::Node::NODE_TYPE).toString() == "XslVariable"))
+				else if ((baliseName == "xsl:variable") && (childType == "XslVariable"))
 				{
-					if (child.data().toString() == b.attributes["name"])
+					if (childName == baliseAttributeName)
 					{
 						n = child;
 						break;
 					}
 				}
-				else if ((b.name == "xsl:param") && (child.data(ContentView2::Node::NODE_TYPE).toString() == "XslParam"))
+				else if ((baliseName == "xsl:param") && (childType == "XslParam"))
 				{
-					if (child.data().toString() == b.attributes["name"])
+					if (childName == baliseAttributeName)
 					{
 						n = child;
 						break;

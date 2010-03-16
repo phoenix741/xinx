@@ -20,12 +20,16 @@
 // Xinx header
 #include "filecontentdockwidget.h"
 #include <contentview2/contentview2treemodel.h>
+#include <contentview2/contentview2manager.h>
+#include <contentview2/contentview2file.h>
+#include <contentview2/contentview2node.h>
 
 // Qt header
 #include <QVBoxLayout>
 #include <QTreeView>
 #include <QAbstractItemModel>
 #include <QDebug>
+#include <QFileInfo>
 
 //#include <modeltest.h>
 
@@ -64,13 +68,17 @@ void FileContentDockWidget::init()
 
 void FileContentDockWidget::contentTreeViewDblClick(QModelIndex index)
 {
-	/*
-	struct ContentViewModel::struct_file_content data = m_model->data( index, Qt::UserRole ).value<ContentViewModel::struct_file_content>();
-	int line = data.line;
-	QString name = data.filename;
+	ContentView2::Node node(ContentView2::Manager::self()->database(), index.data(ContentView2::Node::NODE_ID).toInt());
+	const QString nodeName = node.data(ContentView2::Node::NODE_NAME).toString();
 
-	emit open( data.filename, line );*/
-	qWarning() << "No implementation";
+	if(QFileInfo(nodeName).exists())
+	{
+		emit open(nodeName, 1);
+	}
+	else
+	{
+		emit open(QString(), node.line());
+	}
 }
 
 void FileContentDockWidget::updateModel(QAbstractItemModel * model)

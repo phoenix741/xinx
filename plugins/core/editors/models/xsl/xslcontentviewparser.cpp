@@ -138,12 +138,12 @@ void XslContentView2Parser::readStyleSheet()
 			else if ((QXmlStreamReader::name() == "import") || (QXmlStreamReader::name() == "include"))
 			{
 				const QString import = attributes().value("href").toString();
-				addImport(import);
+				const QString calculateImport = addImport(import);
 
 				ContentView2::Node node;
 				node.setLine(lineNumber());
 				node.setFileId(rootNode().fileId());
-				node.setData(import, ContentView2::Node::NODE_NAME);
+				node.setData(calculateImport, ContentView2::Node::NODE_NAME);
 				node.setData(QFileInfo(import).fileName(), ContentView2::Node::NODE_DISPLAY_NAME);
 				node.setData("Import", ContentView2::Node::NODE_TYPE);
 
@@ -170,6 +170,7 @@ void XslContentView2Parser::readVariable()
 {
 	Q_ASSERT(isStartElement() && ((QXmlStreamReader::name() == "param") || (QXmlStreamReader::name() == "variable")));
 
+	int ln = lineNumber();
 	QString name  = attributes().value("name").toString();
 	QString value;
 	if (attributes().value("select").isEmpty())
@@ -185,9 +186,9 @@ void XslContentView2Parser::readVariable()
 	if (rootNode().isValid())
 	{
 		if (QXmlStreamReader::name() == "param")
-			attacheNewParamsNode(rootNode(), name.trimmed(), value, lineNumber());
+			attacheNewParamsNode(rootNode(), name.trimmed(), value, ln);
 		else
-			attacheNewVariableNode(rootNode(), name.trimmed(), value, lineNumber());
+			attacheNewVariableNode(rootNode(), name.trimmed(), value, ln);
 	}
 }
 
