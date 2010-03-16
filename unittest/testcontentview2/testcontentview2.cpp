@@ -222,7 +222,7 @@ void TestContentView2::testParser()
 		QList<int> childs = m_root.childs( db );
 		QCOMPARE( childs.size(), 3 );
 
-		int childId = childs.at( 0 );
+		int childId = childs.at( 1 );
 		ContentView2::Node childNode( db, childId );
 		QCOMPARE( childNode.data( ContentView2::Node::NODE_NAME ).toString(), QString( "/" ) );
 		QCOMPARE( childNode.childs( db ).size(), 0 );

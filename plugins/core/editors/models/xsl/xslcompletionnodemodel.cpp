@@ -92,8 +92,15 @@ QStringList XslCompletionNodeModel::params(QString templateName) const
 
 ContentView2::Node XslCompletionNodeModel::nodeOfWord(const QString & name) const
 {
-	QSqlQuery q(QString("SELECT cv_node.id FROM cv_node %1 AND cv_node.name = :name").arg(whereClause()), database());
+	// ContentView2::CompletionModel::
+	QSqlQuery q(QString("SELECT cv_node.id FROM cv_file, cv_node %1 AND cv_node.name = :name").arg(whereClause()), database());
+	q.bindValue(":project_id", file().file(database()).projectId());
+	q.bindValue(":id1", file().file(database()).fileId());
+	q.bindValue(":id2", file().file(database()).fileId());
 	q.bindValue(":name", name);
+	bool result = q.exec();
+	Q_ASSERT_X(result, "XslCompletionNodeModel::nodeOfWord", qPrintable(q.lastError().text()));
+
 	if (q.first())
 	{
 		uint id = q.value(0).toUInt();

@@ -137,6 +137,7 @@ QIcon StyleSheetEditor::icon() const
 
 void StyleSheetEditor::searchWord(const QString & word)
 {
+	textEdit()->completer();
 	ContentView2::Node n = m_completionModel->nodeOfWord(word);
 	if (n.isValid())
 	{
