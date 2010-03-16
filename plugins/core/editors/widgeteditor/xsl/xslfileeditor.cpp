@@ -141,7 +141,11 @@ void StyleSheetEditor::searchWord(const QString & word)
 	ContentView2::Node n = m_completionModel->nodeOfWord(word);
 	if (n.isValid())
 	{
-		emit open(n.filename(ContentView2::Manager::self()->database()), n.line());
+		ContentView2::File file = n.file(ContentView2::Manager::self()->database());
+		if(file.isCached())
+			emit open(file.path(), n.line());
+		else
+			emit open(QString(), n.line());
 		return;
 	}
 	QMessageBox::information(this, tr("Search Word"), tr("Word %1 not found").arg(word));

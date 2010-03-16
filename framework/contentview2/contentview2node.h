@@ -157,6 +157,8 @@ public:
 	void setFileId(int value);
 	//! Set the file to use with the node.
 	void setFile(const File & file);
+	//! Return the file the use the node
+	File file(QSqlDatabase db);
 
 	//! Return the data stored in the node for the given \e index
 	QVariant data(int index = Node::NODE_NAME) const;

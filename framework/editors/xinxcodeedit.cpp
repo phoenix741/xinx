@@ -870,7 +870,7 @@ void XinxCodeEdit::postMousePressEvent(QMouseEvent *event, QEditor * editor)
 {
 	if ((event->type() == QEvent::MouseButtonPress) && (event->button() == Qt::LeftButton) && (event->modifiers() == Qt::ControlModifier))
 	{
-		QDocumentCursor cur = editor->cursorForPosition(event->pos());
+		QDocumentCursor cur = editor->cursor();
 		editor->setCursor(cur);
 		QMetaObject::invokeMethod(this, "searchWord", Qt::QueuedConnection, Q_ARG(QString, textUnderCursor(textCursor(), false)));
 	}

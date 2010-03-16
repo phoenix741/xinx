@@ -435,6 +435,18 @@ void Node::setFile(const File & file)
 	d->m_fileId = file.fileId();
 }
 
+File Node::file(QSqlDatabase db)
+{
+	d->load();
+	if(d->m_fileId >= 0)
+	{
+		return File(db, d->m_fileId);
+	}
+	else
+	{
+		return File();
+	}
+}
 
 QVariant Node::data(int index) const
 {
