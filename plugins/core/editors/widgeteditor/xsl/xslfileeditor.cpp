@@ -168,7 +168,7 @@ bool StyleSheetEditor::autoIndent()
 	}
 	catch (XMLPrettyPrinterException e)
 	{
-		addNewErrorMessages(e.m_line, e.getMessage(), ERROR_MESSAGE);
+		ErrorManager::self()->addMessage(lastFileName(), e.m_line, ErrorManager::MessageError, e);
 		return false;
 	}
 	return true;
@@ -222,7 +222,7 @@ void StyleSheetEditor::launchStylesheetParsing(const QString & xmlfile)
 	QString utf8Text = textEdit()->toPlainText();
 	QByteArray byte  = codec()->fromUnicode(utf8Text);
 
-	clearErrorMessages();
+	ErrorManager::self()->clearMessages(textEdit()->filename());
 
 	if (! xsltParser->loadStylesheet(textEdit()->filename())) goto error;
 	if (! xsltParser->loadXmlFile(xmlfile)) goto error;
@@ -235,7 +235,7 @@ void StyleSheetEditor::launchStylesheetParsing(const QString & xmlfile)
 error:
 	foreach(const XsltParser::ErrorMessage & e, xsltParser->errors())
 	{
-		addNewErrorMessages(e.line, e.message, e.isWarning ? AbstractEditor::WARNING_MESSAGE : AbstractEditor::ERROR_MESSAGE);
+		ErrorManager::self()->addMessage(textEdit()->filename(), e.line, e.isWarning ? ErrorManager::MessageWarning : ErrorManager::MessageError, e.message);
 	}
 
 	delete xsltParser;

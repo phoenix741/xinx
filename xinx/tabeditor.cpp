@@ -123,8 +123,6 @@ void TabEditor::addTab(AbstractEditor * editor)
 	connect(editor, SIGNAL(pasteAvailable(bool)), this, SIGNAL(pasteAvailable(bool)));
 	connect(editor, SIGNAL(undoAvailable(bool)), this, SIGNAL(undoAvailable(bool)));
 	connect(editor, SIGNAL(redoAvailable(bool)), this, SIGNAL(redoAvailable(bool)));
-	connect(editor, SIGNAL(message(QString,int,QString,AbstractEditor::LevelMessage)), this, SIGNAL(messageTranslation(QString,int,QString,AbstractEditor::LevelMessage)));
-	connect(editor, SIGNAL(clearMessages(QString)), this, SIGNAL(clearMessagesTranslation(QString)));
 
 	if (isTextFileEditor(editor))
 	{

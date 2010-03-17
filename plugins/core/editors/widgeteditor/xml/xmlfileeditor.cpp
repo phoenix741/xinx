@@ -95,7 +95,7 @@ bool XmlFileEditor::autoIndent()
 	}
 	catch (XMLPrettyPrinterException e)
 	{
-		addNewErrorMessages(e.m_line, e.getMessage(), ERROR_MESSAGE);
+		ErrorManager::self()->addMessage(lastFileName(), e.m_line, ErrorManager::MessageError, e);
 		return false;
 	}
 	return true;

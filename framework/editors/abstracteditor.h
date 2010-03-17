@@ -53,13 +53,6 @@ class LIBEXPORT AbstractEditor : public QFrame
 	Q_PROPERTY(bool isModified READ isModified WRITE setModified)
 	Q_PROPERTY(QString filename READ lastFileName WRITE setWatcher)
 public:
-	enum LevelMessage
-	{
-		ERROR_MESSAGE = 0,
-		WARNING_MESSAGE = 1,
-		INFORMATION_MESSAGE = 2
-	};
-
 	/*! Options used for search text in the editor. */
 	enum SearchOption
 	{
@@ -315,29 +308,12 @@ signals:
 	 * Signal emited when the content of the editor change.
 	 */
 	void contentChanged();
-
-	/*!
-	 * Need to show a message for the editor
-	 * \param filename the name of the file
-	 * \param message the message to show
-	 * \param level the level error of the message
-	 */
-	void message(const QString & filename, int line, const QString & message, AbstractEditor::LevelMessage level);
-
-	/*!
-	 * Clear message
-	 * \param filename the name of the file
-	 */
-	void clearMessages(const QString & filename);
 protected:
 	/*! Constructor used to copy the editor content. This constructor must exist for serialization works. */
 	AbstractEditor(const AbstractEditor & editor);
 
 	virtual void initLayout();
 	friend class EditorFactory;
-
-	void clearErrorMessages();
-	void addNewErrorMessages(int line, const QString & message, AbstractEditor::LevelMessage level);
 protected slots:
 	/*!
 	 * Set the modified attribute in local.

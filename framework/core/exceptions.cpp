@@ -248,16 +248,16 @@ void ErrorManager::clearMessages(const QString & context)
 	emit changed();
 }
 
-void ErrorManager::addMessage(const QString & context, MessageType t, const QString & message, const QStringList & parameters)
+void ErrorManager::addMessage(const QString & context, int line, MessageType t, const QString & message, const QStringList & parameters)
 {
-	struct Error e = {t, message, parameters};
+	struct Error e = {line, t, message, parameters};
 	m_errors[context].append(e);
 	emit changed();
 }
 
-void ErrorManager::addMessage(const QString & context, MessageType t, const XinxException & exception)
+void ErrorManager::addMessage(const QString & context, int line, MessageType t, const XinxException & exception)
 {
-	struct Error e = {t, exception.getMessage(), QStringList()};
+	struct Error e = {line, t, exception.getMessage(), QStringList()};
 	m_errors[context].append(e);
 	emit changed();
 }

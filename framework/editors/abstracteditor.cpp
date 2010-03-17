@@ -81,7 +81,6 @@ void AbstractEditor::initLayout()
 
 AbstractEditor::~AbstractEditor()
 {
-	clearErrorMessages();
 	desactivateWatcher();
 	delete m_watcher;
 
@@ -231,16 +230,6 @@ void AbstractEditor::setModified(bool isModified)
 const QString & AbstractEditor::lastFileName() const
 {
 	return m_lastFileName;
-}
-
-void AbstractEditor::clearErrorMessages()
-{
-	emit clearMessages(lastFileName());
-}
-
-void AbstractEditor::addNewErrorMessages(int line, const QString & msg, AbstractEditor::LevelMessage level)
-{
-	emit message(lastFileName(), line, msg, level);
 }
 
 void AbstractEditor::serialize(XinxProjectSessionEditor * data, bool content)

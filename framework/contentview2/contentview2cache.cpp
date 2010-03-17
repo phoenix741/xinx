@@ -399,10 +399,12 @@ void Cache::run()
 						result = db.commit();
 						Q_ASSERT_X(result, "Cache::run", qPrintable(db.lastError().text()));
 
+						ErrorManager::self()->clearMessages(file.path());
 						emit cacheLoaded(file);
 					}
 					catch(ParserException e)
 					{
+						ErrorManager::self()->addMessage(file.path(), e.getLine(), ErrorManager::MessageError, e);
 						result = db.rollback();
 						Q_ASSERT_X(result, "Cache::run", qPrintable(db.lastError().text()));
 					}

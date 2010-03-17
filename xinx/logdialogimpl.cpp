@@ -157,7 +157,7 @@ void LogDockWidget::find(const QString & filename, const QString & text, int lin
 	m_logwidget->m_searchTreeWidget->scrollToItem(item);
 	m_logwidget->m_tabWidget->setCurrentWidget(m_logwidget->m_searchTab);
 }
-
+/*
 void LogDockWidget::clearMessages(const QString & file)
 {
 	QTreeWidgetItem * item = m_messageItemFile.value(file);
@@ -197,7 +197,7 @@ void LogDockWidget::addMessage(const QString & file, int line, const QString & m
 	m_logwidget->m_tabWidget->setCurrentWidget(m_logwidget->m_messageTab);
 	setVisible(true);
 }
-
+*/
 void LogDockWidget::on_m_searchTreeWidget_doubleClicked(const QModelIndex & index)
 {
 	QTreeWidgetItem * item = static_cast<SearchLogWidget*>(m_logwidget->m_searchTreeWidget)->itemFromIndex(index);

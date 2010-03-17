@@ -45,8 +45,8 @@ public slots:
 	void log(RCS::rcsLog niveau, const QString & info);
 	void find(const QString & filename, const QString & text, int line);
 
-	void clearMessages(const QString & file);
-	void addMessage(const QString & file, int line, const QString & message, AbstractEditor::LevelMessage level);
+//	void clearMessages(const QString & file);
+//	void addMessage(const QString & file, int line, const QString & message, AbstractEditor::LevelMessage level);
 signals:
 	void open(const QString & filename, int line);
 protected slots:

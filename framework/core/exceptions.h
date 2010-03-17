@@ -122,6 +122,7 @@ public:
 	};
 	struct Error
 	{
+		int line;
 		MessageType type;
 		QString message;
 		QStringList parameters;
@@ -132,8 +133,8 @@ public:
 	static ErrorManager * self();
 
 	void clearMessages(const QString & context);
-	void addMessage(const QString & context, MessageType t, const QString & message, const QStringList & parameters);
-	void addMessage(const QString & context, MessageType t, const XinxException & exception);
+	void addMessage(const QString & context, int line, MessageType t, const QString & message, const QStringList & parameters);
+	void addMessage(const QString & context, int line, MessageType t, const XinxException & exception);
 
 	const QMap<QString, QList<Error> > & errors() const;
 signals:
