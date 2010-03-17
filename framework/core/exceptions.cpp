@@ -42,9 +42,10 @@
 #	include <cxxabi.h>
 #endif
 
-/* Log Variable */
+/* Static member */
 
 ExceptionManager * ExceptionManager::s_self = 0;
+ErrorManager     * ErrorManager::s_self     = 0;
 
 /* Message Handler */
 
@@ -106,11 +107,6 @@ ExceptionManager::~ExceptionManager()
 void ExceptionManager::installExceptionHandler()
 {
 	qInstallMsgHandler(xinxMessageHandler);
-}
-
-QHash<unsigned long,QStringList> & ExceptionManager::xinxStackTrace()
-{
-	return m_stackTrace;
 }
 
 QStringList ExceptionManager::stackTrace() const
@@ -220,4 +216,53 @@ const QString & XinxException::getMessage() const
 const QStringList & XinxException::getStack() const
 {
 	return m_stack;
+}
+
+/* ErrorManager */
+
+ErrorManager::ErrorManager()
+{
+}
+
+ErrorManager::~ErrorManager()
+{
+	if(this == s_self)
+	{
+		s_self = 0;
+	}
+}
+
+ErrorManager * ErrorManager::self()
+{
+	if (! s_self)
+	{
+		s_self = new ErrorManager();
+		XINXStaticDeleter::self()->addObject(s_self);
+	}
+	return s_self;
+}
+
+void ErrorManager::clearMessages(const QString & context)
+{
+	m_errors.remove(context);
+	emit changed();
+}
+
+void ErrorManager::addMessage(const QString & context, MessageType t, const QString & message, const QStringList & parameters)
+{
+	struct Error e = {t, message, parameters};
+	m_errors[context].append(e);
+	emit changed();
+}
+
+void ErrorManager::addMessage(const QString & context, MessageType t, const XinxException & exception)
+{
+	struct Error e = {t, exception.getMessage(), QStringList()};
+	m_errors[context].append(e);
+	emit changed();
+}
+
+const QMap<QString, QList<ErrorManager::Error> > & ErrorManager::errors() const
+{
+	return m_errors;
 }
