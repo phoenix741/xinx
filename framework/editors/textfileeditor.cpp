@@ -75,6 +75,8 @@ TextFileEditor::~TextFileEditor()
 {
 	ContentView2::Manager::self()->cache()->unregisterPath(m_uuid);
 	ContentView2::Manager::self()->cache()->wait();
+	ErrorManager::self()->clearMessages(m_uuid);
+	ErrorManager::self()->removeContextTranslation(m_uuid);
 	delete m_model;
 }
 
@@ -118,6 +120,7 @@ void TextFileEditor::initObjects()
 	m_model = new ContentView2::TreeModel(ContentView2::Manager::self()->database(), m_file, this);
 
 	connect(ContentView2::Manager::self()->cache(), SIGNAL(cacheLoaded(ContentView2::File)), this, SLOT(updateImports(ContentView2::File)));
+	connect(ErrorManager::self(), SIGNAL(changed()), this, SLOT(errorChanged()));
 }
 
 ContentView2::CompletionModel * TextFileEditor::createModel(QSqlDatabase db, QObject * parent)
@@ -172,12 +175,14 @@ void TextFileEditor::selectAll()
 
 void TextFileEditor::loadFromFile(const QString & fileName)
 {
+	ErrorManager::self()->addContextTranslation(m_uuid, fileName);
 	AbstractEditor::loadFromFile(fileName);
 	textEdit()->setFilename(fileName);
 }
 
 void TextFileEditor::saveToFile(const QString & fileName)
 {
+	ErrorManager::self()->addContextTranslation(m_uuid, fileName);
 	AbstractEditor::saveToFile(fileName);
 	textEdit()->setFilename(fileName);
 }
@@ -217,6 +222,7 @@ void TextFileEditor::loadFromDevice(QIODevice & d)
 		textBuffer.replace("\r", "\n");
 	}
 	m_view->setPlainText(textBuffer);
+	m_keyTimer->stop();
 
 	updateModel();
 }
@@ -388,6 +394,18 @@ void TextFileEditor::updateModel()
 void TextFileEditor::textChanged()
 {
 	m_keyTimer->start();
+}
+
+void TextFileEditor::errorChanged()
+{
+	QList<int> lines;
+	const QString ctxt = lastFileName().isEmpty() ? m_uuid : lastFileName();
+	foreach(ErrorManager::Error err, ErrorManager::self()->errors().value(ctxt))
+	{
+		if(! lines.contains(err.line))
+			lines << err.line - 1;
+	}
+	textEdit()->setErrors(lines);
 }
 
 void TextFileEditor::updateImports(const ContentView2::File & file)

@@ -185,6 +185,7 @@ protected:
 private slots:
 	void textChanged();
 	void updateImports(const ContentView2::File & file);
+	void errorChanged();
 private:
 	void initObjects();
 

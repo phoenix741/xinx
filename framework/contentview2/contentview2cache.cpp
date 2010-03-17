@@ -122,7 +122,7 @@ void Cache::addToCache(XinxProject * project, const QString & path, const QStrin
 	if (QFileInfo(path).exists() && ! m_watcher->files().contains(path))
 		m_watcher->addPath(path);
 
-	startTimer(500);
+	startTimer(100);
 }
 
 void Cache::addToCache(XinxProject * project, const QString & path, const QString & type, const QString & selection, Parser * parser)
@@ -369,6 +369,7 @@ void Cache::run()
 					parser->setDatabase(db);
 					try
 					{
+						ErrorManager::self()->clearMessages(file.path());
 						parser->load();
 						if(parser->codec())
 							file.setEncoding(parser->codec()->name());
@@ -399,7 +400,6 @@ void Cache::run()
 						result = db.commit();
 						Q_ASSERT_X(result, "Cache::run", qPrintable(db.lastError().text()));
 
-						ErrorManager::self()->clearMessages(file.path());
 						emit cacheLoaded(file);
 					}
 					catch(ParserException e)

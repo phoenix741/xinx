@@ -19,6 +19,8 @@
 
 // Xinx header
 #include "logdialogimpl.h"
+#include <core/exceptions.h>
+#include <plugins/xinxpluginsloader.h>
 
 // Qt header
 #include <QFileInfo>
@@ -84,7 +86,8 @@ LogDockWidget::LogDockWidget(const QString & title, QWidget * parent, Qt::Window
 	m_logwidget->setupUi(contentWidget);
 	setWidget(contentWidget);
 
-	connect(m_logwidget->m_searchTreeWidget, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(on_m_searchTreeWidget_doubleClicked(QModelIndex)));
+	connect(m_logwidget->m_searchTreeWidget, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(doubleClicked(QModelIndex)));
+	connect(m_logwidget->m_messagesWidget,   SIGNAL(doubleClicked(QModelIndex)), this, SLOT(doubleClicked(QModelIndex)));
 	m_logwidget->m_searchTreeWidget->setItemDelegate(new SearchLogWidgetDelegate);
 
 	m_logwidget->m_progressBar->hide();
@@ -97,7 +100,8 @@ LogDockWidget::LogDockWidget(QWidget * parent, Qt::WindowFlags flags) : QDockWid
 	m_logwidget->setupUi(contentWidget);
 	setWidget(contentWidget);
 
-	connect(m_logwidget->m_searchTreeWidget, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(on_m_searchTreeWidget_doubleClicked(QModelIndex)));
+	connect(m_logwidget->m_searchTreeWidget, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(doubleClicked(QModelIndex)));
+	connect(m_logwidget->m_messagesWidget,   SIGNAL(doubleClicked(QModelIndex)), this, SLOT(doubleClicked(QModelIndex)));
 	m_logwidget->m_searchTreeWidget->setItemDelegate(new SearchLogWidgetDelegate);
 
 	m_logwidget->m_progressBar->hide();
@@ -153,57 +157,76 @@ void LogDockWidget::find(const QString & filename, const QString & text, int lin
 	QTreeWidgetItem * item = new QTreeWidgetItem(QStringList() << emplacement << text);
 	item->setData(0, Qt::UserRole, filename);
 	item->setData(0, Qt::UserRole + 1, line);
+	item->setData(1, Qt::UserRole, filename);
+	item->setData(1, Qt::UserRole + 1, line);
 	m_logwidget->m_searchTreeWidget->addTopLevelItem(item);
 	m_logwidget->m_searchTreeWidget->scrollToItem(item);
 	m_logwidget->m_tabWidget->setCurrentWidget(m_logwidget->m_searchTab);
 }
-/*
-void LogDockWidget::clearMessages(const QString & file)
+
+void LogDockWidget::updateErrors()
 {
-	QTreeWidgetItem * item = m_messageItemFile.value(file);
-	if (item)
+	m_logwidget->m_messagesWidget->clear();
+
+	QMap<QString, QList<ErrorManager::Error> > errors = ErrorManager::self()->errors();
+	foreach(QString context, errors.keys())
 	{
-		m_messageItemFile.remove(file);
-		delete item;
+		QTreeWidgetItem * fileItem = new QTreeWidgetItem(m_logwidget->m_messagesWidget);
+		fileItem->setText(0, context);
+		IFileTypePlugin * fileType = XinxPluginsLoader::self()->matchedFileType(context);
+		if( fileType )
+		{
+			fileItem->setIcon(0, QIcon(fileType->icon()));
+		}
+
+		foreach(ErrorManager::Error err, errors.value(context))
+		{
+			QString message = err.message;
+			foreach(QString arg, err.parameters)
+			{
+				message = message.arg(arg);
+			}
+
+			QTreeWidgetItem * msgItem = new QTreeWidgetItem(fileItem);
+			msgItem->setText(0, tr("%1: %2").arg(err.line, 4, 10, QChar('0')).arg(message));
+			msgItem->setData(0, Qt::UserRole, context);
+			msgItem->setData(0, Qt::UserRole + 1, err.line);
+			switch (err.type)
+			{
+			case ErrorManager::MessageError:
+				msgItem->setIcon(0, style()->standardIcon(QStyle::SP_MessageBoxCritical));
+				break;
+			case ErrorManager::MessageWarning:
+				msgItem->setIcon(0, style()->standardIcon(QStyle::SP_MessageBoxWarning));
+				break;
+			case ErrorManager::MessageInformation:
+				msgItem->setIcon(0, style()->standardIcon(QStyle::SP_MessageBoxInformation));
+				break;
+			}
+		}
+
+		m_logwidget->m_messagesWidget->expandItem(fileItem);
+	}
+
+	if(m_logwidget->m_messagesWidget->invisibleRootItem()->childCount())
+	{
+		m_logwidget->m_tabWidget->setCurrentWidget(m_logwidget->m_messageTab);
+		setVisible(true);
+	}
+	else
+	{
+		setVisible(false);
 	}
 }
 
-void LogDockWidget::addMessage(const QString & file, int line, const QString & message, AbstractEditor::LevelMessage level)
+void LogDockWidget::doubleClicked(const QModelIndex & index)
 {
-	QTreeWidgetItem * fileItem = m_messageItemFile.value(file);
-	if (! fileItem)
+	QString filename = index.data(Qt::UserRole).toString();
+	int line         = index.data(Qt::UserRole + 1).toInt();
+
+	if(!filename.isEmpty())
 	{
-		fileItem = new QTreeWidgetItem(m_logwidget->m_messagesWidget);
-		fileItem->setText(0, file);
-		m_messageItemFile.insert(file, fileItem);
+		emit open(filename, line);
 	}
-
-	QTreeWidgetItem * msgItem = new QTreeWidgetItem(fileItem);
-	msgItem->setText(0, tr("%1: %2").arg(line, 4, 10, QChar('0')).arg(message));
-	switch (level)
-	{
-	case AbstractEditor::ERROR_MESSAGE:
-		msgItem->setIcon(0, style()->standardIcon(QStyle::SP_MessageBoxCritical));
-		break;
-	case AbstractEditor::WARNING_MESSAGE:
-		msgItem->setIcon(0, style()->standardIcon(QStyle::SP_MessageBoxWarning));
-		break;
-	case AbstractEditor::INFORMATION_MESSAGE:
-		msgItem->setIcon(0, style()->standardIcon(QStyle::SP_MessageBoxInformation));
-		break;
-	}
-
-	m_logwidget->m_messagesWidget->expandItem(fileItem);
-	m_logwidget->m_tabWidget->setCurrentWidget(m_logwidget->m_messageTab);
-	setVisible(true);
-}
-*/
-void LogDockWidget::on_m_searchTreeWidget_doubleClicked(const QModelIndex & index)
-{
-	QTreeWidgetItem * item = static_cast<SearchLogWidget*>(m_logwidget->m_searchTreeWidget)->itemFromIndex(index);
-	QString filename = item->data(0, Qt::UserRole).toString();
-	int line = item->data(0, Qt::UserRole + 1).toInt();
-
-	emit open(filename, line);
 }
 

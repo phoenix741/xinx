@@ -242,23 +242,39 @@ ErrorManager * ErrorManager::self()
 	return s_self;
 }
 
+void ErrorManager::addContextTranslation(const QString & context, const QString & translation)
+{
+	m_contextTranslation.insert(context, translation);
+}
+
+void ErrorManager::removeContextTranslation(const QString & context)
+{
+	m_contextTranslation.remove(context);
+}
+
 void ErrorManager::clearMessages(const QString & context)
 {
-	m_errors.remove(context);
+	const QString ctxt = m_contextTranslation.value(context).isEmpty() ? context : m_contextTranslation.value(context);
+
+	m_errors.remove(ctxt);
 	emit changed();
 }
 
 void ErrorManager::addMessage(const QString & context, int line, MessageType t, const QString & message, const QStringList & parameters)
 {
+	const QString ctxt = m_contextTranslation.value(context).isEmpty() ? context : m_contextTranslation.value(context);
+
 	struct Error e = {line, t, message, parameters};
-	m_errors[context].append(e);
+	m_errors[ctxt].append(e);
 	emit changed();
 }
 
 void ErrorManager::addMessage(const QString & context, int line, MessageType t, const XinxException & exception)
 {
+	const QString ctxt = m_contextTranslation.value(context).isEmpty() ? context : m_contextTranslation.value(context);
+
 	struct Error e = {line, t, exception.getMessage(), QStringList()};
-	m_errors[context].append(e);
+	m_errors[ctxt].append(e);
 	emit changed();
 }
 

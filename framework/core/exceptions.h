@@ -132,6 +132,9 @@ public:
 
 	static ErrorManager * self();
 
+	void addContextTranslation(const QString & context, const QString & translation);
+	void removeContextTranslation(const QString & context);
+
 	void clearMessages(const QString & context);
 	void addMessage(const QString & context, int line, MessageType t, const QString & message, const QStringList & parameters);
 	void addMessage(const QString & context, int line, MessageType t, const XinxException & exception);
@@ -144,6 +147,7 @@ private:
 
 	static ErrorManager * s_self;
 
+	QHash<QString,QString> m_contextTranslation;
 	QMap<QString, QList<Error> > m_errors;
 };
 

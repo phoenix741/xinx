@@ -56,6 +56,8 @@ AbstractEditor * EditorFactory::createEditor(IFileTypePlugin * interface)
 	AbstractEditor * editor = interface ? interface->createEditor() : new TextFileEditor(new XinxCodeEdit());
 
 	editor->initLayout();
+	if (qobject_cast<TextFileEditor*>(editor))
+		qobject_cast<TextFileEditor*>(editor)->initCompleter();
 
 	Q_ASSERT_X(editor, "EditorFactory::createEditor", "The interface can't create editor");
 

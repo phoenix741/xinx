@@ -67,7 +67,7 @@ void JsContentViewParser::load()
 				else if (function.isValid())
 					loadVariables(function, inputDevice());
 				else
-					throw ContentView2::ParserException(tr("Can't attach variable to function ?"), rootNode().filename(database()), m_line);
+					throw ContentView2::ParserException(tr("Can't attach variable to function ?"), m_line);
 			}
 			else if (name == "function")
 			{
@@ -78,7 +78,7 @@ void JsContentViewParser::load()
 				{
 					nextIdentifier(inputDevice(), type, name);
 					if (type == TOKEN_EOF)
-						throw ContentView2::ParserException(tr("End of file is prematured"), rootNode().filename(database()), m_line);
+						throw ContentView2::ParserException(tr("End of file is prematured"), m_line);
 				}
 				while ((type != TOKEN_PONCTUATION) || ((name != ";") && (name != "{") && (name != "}")));
 
@@ -99,11 +99,11 @@ void JsContentViewParser::load()
 				bloc --;
 			}
 			if (bloc < 0)
-				throw ContentView2::ParserException(tr("Too many '}'"), rootNode().filename(database()), m_line);
+				throw ContentView2::ParserException(tr("Too many '}'"), m_line);
 		case TOKEN_EOF:
 			break;
 		default:
-			throw ContentView2::ParserException(tr("I wait something but i don't know what !"), rootNode().filename(database()), m_line);
+			throw ContentView2::ParserException(tr("I wait something but i don't know what !"), m_line);
 		}
 	}
 	while (! inputDevice()->atEnd());
@@ -297,7 +297,7 @@ void JsContentViewParser::loadInstruction(QIODevice * buffer, QString & name, JA
 			crochet--;
 		nextIdentifier(buffer, type, name);
 		if (type == TOKEN_EOF)
-			throw ContentView2::ParserException(tr("End of file is prematured"), rootNode().filename(database()), m_line);
+			throw ContentView2::ParserException(tr("End of file is prematured"), m_line);
 	};
 }
 
@@ -309,7 +309,7 @@ void JsContentViewParser::loadVariables(ContentView2::Node parent, QIODevice * b
 
 	nextIdentifier(buffer, type, name);
 	if (type != TOKEN_IDENTIFIER)
-		throw ContentView2::ParserException(tr("I wait an identifier"), rootNode().filename(database()), m_line);
+		throw ContentView2::ParserException(tr("I wait an identifier"), m_line);
 
 	attacheNewVariableNode(parent, name, m_line);
 	//variables << new JavaScriptVariables( this, name, m_line );
@@ -322,7 +322,7 @@ void JsContentViewParser::loadVariables(ContentView2::Node parent, QIODevice * b
 		loadIdentifier = true;
 
 		if (type == TOKEN_EOF)
-			throw ContentView2::ParserException(tr("End of file is prematured"), rootNode().filename(database()), m_line);
+			throw ContentView2::ParserException(tr("End of file is prematured"), m_line);
 
 		if ((type == TOKEN_PONCTUATION) && (name == ";"))
 			cont = false;
@@ -331,7 +331,7 @@ void JsContentViewParser::loadVariables(ContentView2::Node parent, QIODevice * b
 			nextIdentifier(buffer, type, name);
 
 			if (type != TOKEN_IDENTIFIER)
-				throw ContentView2::ParserException(tr("I wait an identifier."), rootNode().filename(database()), m_line);
+				throw ContentView2::ParserException(tr("I wait an identifier."), m_line);
 
 			attacheNewVariableNode(parent, name, m_line);
 		}
@@ -351,7 +351,7 @@ ContentView2::Node JsContentViewParser::loadFunction(ContentView2::Node parent, 
 
 	nextIdentifier(buffer, type, name);
 	if (type != TOKEN_IDENTIFIER)
-		throw ContentView2::ParserException(tr("I wait an identifier."), rootNode().filename(database()), m_line);
+		throw ContentView2::ParserException(tr("I wait an identifier."), m_line);
 
 	ContentView2::Node function = attacheNewFunctionNode(parent, name, m_line);
 	loadAttachedNode(function);
@@ -359,13 +359,13 @@ ContentView2::Node JsContentViewParser::loadFunction(ContentView2::Node parent, 
 	nextIdentifier(buffer, type, name);
 
 	if (!((type == TOKEN_PONCTUATION) && (name == "(")))
-		throw ContentView2::ParserException(tr("I wait a '('"), rootNode().filename(database()), m_line);
+		throw ContentView2::ParserException(tr("I wait a '('"), m_line);
 
 	do
 	{
 		nextIdentifier(buffer, type, name);
 		if (type == TOKEN_EOF)
-			throw ContentView2::ParserException(tr("End of file is prematured"), rootNode().filename(database()), m_line);
+			throw ContentView2::ParserException(tr("End of file is prematured"), m_line);
 
 		if (type == TOKEN_IDENTIFIER)
 			attacheNewParamNode(function, name, m_line);
@@ -374,7 +374,7 @@ ContentView2::Node JsContentViewParser::loadFunction(ContentView2::Node parent, 
 		{
 			nextIdentifier(buffer, type, name);
 			if (type == TOKEN_EOF)
-				throw ContentView2::ParserException(tr("End of file is prematured"), rootNode().filename(database()), m_line);
+				throw ContentView2::ParserException(tr("End of file is prematured"), m_line);
 		}
 	}
 	while ((type != TOKEN_PONCTUATION) || (name != ")"));

@@ -74,7 +74,7 @@ void DictionaryParser::load()
 
 	if (error())
 	{
-		throw ContentView2::ParserException(errorString(), rootNode().filename(database()), lineNumber(), columnNumber());
+		throw ContentView2::ParserException(errorString(), lineNumber(), columnNumber());
 	}
 
 	detachAttachedNode();

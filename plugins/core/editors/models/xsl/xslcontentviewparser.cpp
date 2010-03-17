@@ -84,7 +84,7 @@ void XslContentView2Parser::load()
 	}
 	else
 	{
-		throw ContentView2::ParserException(errorString(), filename(), lineNumber(), columnNumber());
+		throw ContentView2::ParserException(errorString(), lineNumber(), columnNumber());
 	}
 }
 

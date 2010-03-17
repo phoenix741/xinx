@@ -831,8 +831,7 @@ void MainformImpl::createDockWidget()
 
 	m_logDock = new LogDockWidget(tr("Log"), this);
 	connect(m_logDock, SIGNAL(open(QString,int)), this, SLOT(openFile(QString,int)));
-	connect(m_tabEditors, SIGNAL(messageTranslation(QString,int,QString,AbstractEditor::LevelMessage)), m_logDock, SLOT(addMessage(QString,int,QString,AbstractEditor::LevelMessage)));
-	connect(m_tabEditors, SIGNAL(clearMessagesTranslation(QString)), m_logDock, SLOT(clearMessages(QString)));
+	connect(ErrorManager::self(), SIGNAL(changed()), m_logDock, SLOT(updateErrors()));
 	m_logDock->setObjectName(QString::fromUtf8("m_logDock"));
 	addDockWidget(Qt::BottomDockWidgetArea, m_logDock);
 	action = m_logDock->toggleViewAction();

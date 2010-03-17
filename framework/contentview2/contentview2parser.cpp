@@ -31,7 +31,7 @@ namespace ContentView2
 
 /* ParserException */
 
-ParserException::ParserException(QString message, QString filename, int line, int column) : XinxException(QString("Error : %1 at line %2:%3 of file %4").arg(message).arg(line).arg(column).arg(QFileInfo(filename).fileName())), m_line(line), m_column(column), m_filename(filename)
+ParserException::ParserException(QString message, int line, int column) : XinxException(message), m_line(line), m_column(column)
 {
 
 }
@@ -85,7 +85,7 @@ void Parser::setFilename(const QString & filename)
 	{
 		QString errorString = file->errorString();
 		delete file;
-		throw ParserException(tr("Cannot read file %1:%2.").arg(filename).arg(errorString), filename, 0, 0);
+		throw ParserException(errorString, -1);
 	}
 
 	delete m_device;

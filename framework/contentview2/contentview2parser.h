@@ -50,7 +50,7 @@ public:
 	 * \param message Error of the exception.
 	 * \param line Line where the error is.
 	 */
-	ParserException(QString message, QString filename, int line, int column = 0);
+	ParserException(QString message, int line, int column = 0);
 
 	/*!
 	 * Return the line where the error is.
@@ -70,7 +70,6 @@ public:
 	 */
 private:
 	int m_line, m_column;
-	QString m_filename;
 };
 
 /*!
