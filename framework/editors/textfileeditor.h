@@ -191,7 +191,6 @@ private:
 
 	QTimer * m_keyTimer;
 
-	QTextCodec * m_codec;
 	QBuffer * m_buffer;
 	XinxCodeEdit * m_view;
 	EndOfLineType m_eol;

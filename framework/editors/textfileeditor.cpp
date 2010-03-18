@@ -66,7 +66,7 @@
 #endif
 #endif
 
-TextFileEditor::TextFileEditor(XinxCodeEdit * editor, QWidget *parent) : AbstractEditor(parent), m_codec(0), m_view(editor), m_eol(DEFAULT_EOL), m_completionModel(0)
+TextFileEditor::TextFileEditor(XinxCodeEdit * editor, QWidget *parent) : AbstractEditor(parent), m_view(editor), m_eol(DEFAULT_EOL), m_completionModel(0)
 {
 	initObjects();
 }
@@ -424,9 +424,16 @@ ContentView2::FileContainer TextFileEditor::fileContainer() const
 
 QTextCodec * TextFileEditor::codec() const
 {
-	if (m_codec)
+	QTextCodec * codec = 0;
+	if (m_file.isValid(ContentView2::Manager::self()->database()))
 	{
-		return m_codec;
+		const QByteArray codecStr = m_file.file(ContentView2::Manager::self()->database()).encoding().toLatin1();
+		codec = QTextCodec::codecForName(codecStr);
+	}
+
+	if (codec)
+	{
+		return codec;
 	}
 	else
 	{
