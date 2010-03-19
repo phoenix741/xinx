@@ -22,10 +22,12 @@
 
 // Qt header
 #include <QDebug>
+#include <QStack>
 
 // Libxml2
 #include <libxslt/extensions.h>
 #include <libxml/xpathInternals.h>
+#include <libxslt/xsltutils.h>
 
 /* Static methode */
 
@@ -34,19 +36,29 @@ namespace Gnx
 namespace XsltExtention
 {
 
+static void convertToString(xmlXPathParserContextPtr ctxt, xmlXPathObjectPtr ptr)
+{
+	if (ptr->type != XPATH_STRING) {
+		valuePush(ctxt, ptr);
+		xmlXPathStringFunction(ctxt, 1);
+		ptr = valuePop(ctxt);
+	}
+}
+
 static void trad(xmlXPathParserContextPtr ctxt, int nargs)
 {
 	if (nargs != 3)
 	{
-		//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
+		xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
 		return;
 	}
 
 	xmlXPathObjectPtr lang = valuePop(ctxt);
 	xmlXPathObjectPtr label = valuePop(ctxt);
 	xmlXPathObjectPtr context = valuePop(ctxt);
-
-	qDebug() << "Lang: " << lang->stringval << ", label: " << label->stringval << ", context: " << context->stringval;
+	convertToString(ctxt, lang);
+	convertToString(ctxt, label);
+	convertToString(ctxt, context);
 
 	valuePush(ctxt, label);
 
@@ -56,16 +68,52 @@ static void trad(xmlXPathParserContextPtr ctxt, int nargs)
 
 static void tradJS(xmlXPathParserContextPtr ctxt, int nargs)
 {
-	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
+	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
 	return;
 }
 
 
 static void message(xmlXPathParserContextPtr ctxt, int nargs)
 {
-	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
-//				remplace les différents @ par les paramètres (@ ou @1, @2, @3, @4)
-//				De 1 à 4 @
+	if (nargs == 0)
+	{
+		xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
+		return;
+	}
+
+	QStack<QString> stack;
+	for(int i = 0; i < nargs; i++)
+	{
+		xmlXPathObjectPtr str = valuePop(ctxt);
+		convertToString(ctxt, str);
+		stack.push(QLatin1String((char*)str->stringval));
+		xmlXPathFreeObject(str);
+	}
+
+	QString message = stack.pop();
+
+	for(int i = 1; i < nargs; i++)
+	{
+		const QString p = stack.pop();
+
+		int pos = message.indexOf(QString("@%1").arg(i));
+		if(pos >= 0)
+		{
+			message.replace(pos, 2, p);
+		}
+		else
+		{
+			pos = message.indexOf("@");
+			if(pos >= 0)
+			{
+				message.replace(pos, 1, p);
+			}
+		}
+	}
+
+	xmlXPathObjectPtr result = xmlXPathNewCString(qPrintable(message));
+	valuePush(ctxt, result);
+
 	return;
 }
 
@@ -74,6 +122,7 @@ static void time(xmlXPathParserContextPtr ctxt, int nargs)
 	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
 //			  Aucun paramètre:
 //			  Retourne System.nanoTime()
+	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
 	return;
 }
 
@@ -82,6 +131,7 @@ static void timeMs(xmlXPathParserContextPtr ctxt, int nargs)
 	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
 //			  Aucun paramètre:
 //			  Retourne System.nanoTime() convertit en ms
+	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
 	return;
 }
 
@@ -92,6 +142,7 @@ static void encode(xmlXPathParserContextPtr ctxt, int nargs)
 //				2nd paramètre = UTF-8 par défaut
 //
 //				Appel java.net.URLEncoder.encode(s, cs);
+	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
 	return;
 }
 
@@ -102,6 +153,7 @@ static void decode(xmlXPathParserContextPtr ctxt, int nargs)
 //				2nd paramètre = UTF-8 par défaut
 //
 //				Appel java.net.URLEncoder.decode(s, cs);
+	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
 	return;
 }
 
@@ -113,6 +165,7 @@ static void replace(xmlXPathParserContextPtr ctxt, int nargs)
 //				dans s remplace toutes les expressions de regexp par replacement
 //
 //				retourne le résultat
+	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
 	return;
 }
 
@@ -121,96 +174,113 @@ static void match(xmlXPathParserContextPtr ctxt, int nargs)
 	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
 //			  2 paramètre :
 //				vrai si on trouve le second paramétre (regexp) dans le premier
+	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
 	return;
 }
 
 static void replaceQuote(xmlXPathParserContextPtr ctxt, int nargs)
 {
 //			 retourn en chaine le premier parametre avec ' remplacé par ¤
+	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
+	return;
 }
 
 
 static void normalizeJS(xmlXPathParserContextPtr ctxt, int nargs)
 {
 	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
+	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
 	return;
 }
 
 static void trim(xmlXPathParserContextPtr ctxt, int nargs)
 {
 	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
+	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
 	return;
 }
 
 static void rtrim(xmlXPathParserContextPtr ctxt, int nargs)
 {
 	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
+	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
 	return;
 }
 
 static void ltrim(xmlXPathParserContextPtr ctxt, int nargs)
 {
 	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
+	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
 	return;
 }
 
 static void lpad(xmlXPathParserContextPtr ctxt, int nargs)
 {
 	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
+	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
 	return;
 }
 
 static void rpad(xmlXPathParserContextPtr ctxt, int nargs)
 {
 	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
+	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
 	return;
 }
 
 static void formatNumber(xmlXPathParserContextPtr ctxt, int nargs)
 {
 	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
+	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
 	return;
 }
 
 static void formatDate(xmlXPathParserContextPtr ctxt, int nargs)
 {
 	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
+	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
 	return;
 }
 
 static void formatDateToGce(xmlXPathParserContextPtr ctxt, int nargs)
 {
 	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
+	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
 	return;
 }
 
 static void format2Number(xmlXPathParserContextPtr ctxt, int nargs)
 {
 	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
+	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
 	return;
 }
 
 static void createMask(xmlXPathParserContextPtr ctxt, int nargs)
 {
 	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
+	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
 	return;
 }
 
 static void toUpperCase(xmlXPathParserContextPtr ctxt, int nargs)
 {
 	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
+	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
 	return;
 }
 
 static void toLowerCase(xmlXPathParserContextPtr ctxt, int nargs)
 {
 	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
+	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
 	return;
 }
 
 static void getScreenValue(xmlXPathParserContextPtr ctxt, int nargs)
 {
 	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
+	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
 	return;
 }
 
