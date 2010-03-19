@@ -1,6 +1,6 @@
-/* *********************************************************************** *
+ /* *********************************************************************** *
  * XINX                                                                    *
- * Copyright (C) 2009 by Ulrich Van Den Hekke                              *
+ * Copyright (C) 2010 by Ulrich Van Den Hekke                              *
  * ulrich.vdh@shadoware.org                                                *
  *                                                                         *
  * This program is free software: you can redistribute it and/or modify    *
@@ -23,11 +23,19 @@
 // Qt header
 #include <QDebug>
 #include <QStack>
+#include <QUrl>
+#include <QRegExp>
+#include <QLocale>
+#include <QDateTime>
 
 // Libxml2
 #include <libxslt/extensions.h>
 #include <libxml/xpathInternals.h>
 #include <libxslt/xsltutils.h>
+#include <libxml/globals.h>
+
+// Std header
+#include <ctime>
 
 /* Static methode */
 
@@ -36,7 +44,7 @@ namespace Gnx
 namespace XsltExtention
 {
 
-static void convertToString(xmlXPathParserContextPtr ctxt, xmlXPathObjectPtr ptr)
+static void convertToString(xmlXPathParserContextPtr ctxt, xmlXPathObjectPtr & ptr)
 {
 	if (ptr->type != XPATH_STRING) {
 		valuePush(ctxt, ptr);
@@ -45,49 +53,98 @@ static void convertToString(xmlXPathParserContextPtr ctxt, xmlXPathObjectPtr ptr
 	}
 }
 
+static QString qtValuePopString(xmlXPathParserContextPtr ctxt)
+{
+	xmlXPathObjectPtr str = valuePop(ctxt);
+	convertToString(ctxt, str);
+	QString result = QString::fromUtf8((char*)str->stringval);
+	xmlXPathFreeObject(str);
+	return result;
+}
+
+static void qtValuePush(xmlXPathParserContextPtr ctxt, QString value)
+{
+	valuePush(ctxt, xmlXPathNewString((xmlChar*)value.toUtf8().data()));
+}
+
+static void convertToNumber(xmlXPathParserContextPtr ctxt, xmlXPathObjectPtr & ptr)
+{
+	if (ptr->type != XPATH_NUMBER) {
+		valuePush(ctxt, ptr);
+		xmlXPathNumberFunction(ctxt, 1);
+		ptr = valuePop(ctxt);
+	}
+}
+
+static double qtValuePopNumber(xmlXPathParserContextPtr ctxt)
+{
+	xmlXPathObjectPtr str = valuePop(ctxt);
+	convertToNumber(ctxt, str);
+	double result = str->floatval;
+	xmlXPathFreeObject(str);
+	return result;
+}
+
+static void qtValuePush(xmlXPathParserContextPtr ctxt, double value)
+{
+	valuePush(ctxt, xmlXPathNewFloat(value));
+}
+
+static void convertToBool(xmlXPathParserContextPtr ctxt, xmlXPathObjectPtr & ptr)
+{
+	if (ptr->type != XPATH_BOOLEAN) {
+		valuePush(ctxt, ptr);
+		xmlXPathNumberFunction(ctxt, 1);
+		ptr = valuePop(ctxt);
+	}
+}
+
+static bool qtValuePopBoolean(xmlXPathParserContextPtr ctxt)
+{
+	xmlXPathObjectPtr str = valuePop(ctxt);
+	convertToBool(ctxt, str);
+	bool result = str->boolval;
+	xmlXPathFreeObject(str);
+	return result;
+}
+
+static void qtValuePush(xmlXPathParserContextPtr ctxt, bool value)
+{
+	valuePush(ctxt, xmlXPathNewBoolean(value));
+}
+
 static void trad(xmlXPathParserContextPtr ctxt, int nargs)
 {
 	if (nargs != 3)
 	{
-		xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
+		xsltGenericError(xsltGenericErrorContext, "trad: number of argument incorrect\n");
 		return;
 	}
 
-	xmlXPathObjectPtr lang = valuePop(ctxt);
-	xmlXPathObjectPtr label = valuePop(ctxt);
-	xmlXPathObjectPtr context = valuePop(ctxt);
-	convertToString(ctxt, lang);
-	convertToString(ctxt, label);
-	convertToString(ctxt, context);
+	QString lang = qtValuePopString(ctxt);
+	QString label = qtValuePopString(ctxt);
+	QString context = qtValuePopString(ctxt);
 
-	valuePush(ctxt, label);
-
-	xmlXPathFreeObject(lang);
-	xmlXPathFreeObject(context);
+	qtValuePush(ctxt, label);
 }
 
 static void tradJS(xmlXPathParserContextPtr ctxt, int nargs)
 {
 	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
-	return;
 }
-
 
 static void message(xmlXPathParserContextPtr ctxt, int nargs)
 {
 	if (nargs == 0)
 	{
-		xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
+		xsltGenericError(xsltGenericErrorContext, "message: number of argument incorrect\n");
 		return;
 	}
 
 	QStack<QString> stack;
 	for(int i = 0; i < nargs; i++)
 	{
-		xmlXPathObjectPtr str = valuePop(ctxt);
-		convertToString(ctxt, str);
-		stack.push(QLatin1String((char*)str->stringval));
-		xmlXPathFreeObject(str);
+		stack.push(qtValuePopString(ctxt));
 	}
 
 	QString message = stack.pop();
@@ -111,177 +168,559 @@ static void message(xmlXPathParserContextPtr ctxt, int nargs)
 		}
 	}
 
-	xmlXPathObjectPtr result = xmlXPathNewCString(qPrintable(message));
-	valuePush(ctxt, result);
-
-	return;
+	qtValuePush(ctxt, message);
 }
 
 static void time(xmlXPathParserContextPtr ctxt, int nargs)
 {
-	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
-//			  Aucun paramètre:
-//			  Retourne System.nanoTime()
-	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
-	return;
+	if (nargs > 0)
+	{
+		xsltGenericError(xsltGenericErrorContext, "time: number of argument incorrect\n");
+		return;
+	}
+
+	#define rdtsc(low, high) __asm__ __volatile__("rdtsc" : "=a" (low), "=d" (high))
+
+	uint32_t low, high;
+	uint64_t result;
+	rdtsc(low, high);
+	result = ((uint64_t)high << 32) | low;
+
+	qtValuePush(ctxt, (double)result);
 }
 
 static void timeMs(xmlXPathParserContextPtr ctxt, int nargs)
 {
-	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
-//			  Aucun paramètre:
-//			  Retourne System.nanoTime() convertit en ms
-	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
-	return;
+	if (nargs == 0)
+	{
+		xsltGenericError(xsltGenericErrorContext, "timeMs: number of argument incorrect\n");
+		return;
+	}
+
+	clock_t c = clock();
+	qtValuePush(ctxt, (double)c);
 }
 
 static void encode(xmlXPathParserContextPtr ctxt, int nargs)
 {
-	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
-//				1 ou 2 paramètre.
-//				2nd paramètre = UTF-8 par défaut
-//
-//				Appel java.net.URLEncoder.encode(s, cs);
-	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
-	return;
+	if (!(nargs == 1 || nargs == 2))
+	{
+		xsltGenericError(xsltGenericErrorContext, "encode: number of argument incorrect\n");
+		return;
+	}
+
+	QString encoding = "UTF-8";
+	if (nargs == 2)
+	{
+		encoding = qtValuePopString(ctxt);
+	}
+	if (encoding != "UTF-8")
+	{
+		xsltGenericError(xsltGenericErrorContext, "encode: can't encode another encoding that UTF-8\n");
+		return;
+	}
+
+	QString text = qtValuePopString(ctxt);
+	QByteArray ba = QUrl::toPercentEncoding(text);
+
+	qtValuePush(ctxt, QString(ba));
 }
 
 static void decode(xmlXPathParserContextPtr ctxt, int nargs)
 {
-	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
-//				1 ou 2 paramètre.
-//				2nd paramètre = UTF-8 par défaut
-//
-//				Appel java.net.URLEncoder.decode(s, cs);
-	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
-	return;
+	if (!(nargs == 1 || nargs == 2))
+	{
+		xsltGenericError(xsltGenericErrorContext, "decode: number of argument incorrect\n");
+		return;
+	}
+
+	QString encoding = "UTF-8";
+	if (nargs == 2)
+	{
+		encoding = qtValuePopString(ctxt);
+	}
+	if (encoding != "UTF-8")
+	{
+		xsltGenericError(xsltGenericErrorContext, "decode: can't encode another encoding that UTF-8\n");
+		return;
+	}
+
+	QString text   = qtValuePopString(ctxt);
+	QString result = QUrl::fromPercentEncoding(text.toAscii());
+
+	qtValuePush(ctxt, result);
 }
 
 static void replace(xmlXPathParserContextPtr ctxt, int nargs)
 {
-	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
-//			  3 paramètre :
-//				s, regexp, replacement
-//				dans s remplace toutes les expressions de regexp par replacement
-//
-//				retourne le résultat
-	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
-	return;
+	if (nargs != 3)
+	{
+		xsltGenericError(xsltGenericErrorContext, "replace: number of argument incorrect\n");
+		return;
+	}
+
+	QString replacement = qtValuePopString(ctxt);
+	QString regexpStr   = qtValuePopString(ctxt);
+	QString text        = qtValuePopString(ctxt);
+
+	text.replace(QRegExp(regexpStr), replacement);
+
+	qtValuePush(ctxt, text);
 }
 
 static void match(xmlXPathParserContextPtr ctxt, int nargs)
 {
-	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
-//			  2 paramètre :
-//				vrai si on trouve le second paramétre (regexp) dans le premier
-	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
-	return;
+	if (nargs != 2)
+	{
+		xsltGenericError(xsltGenericErrorContext, "match: number of argument incorrect\n");
+		return;
+	}
+
+	QString regexpStr   = qtValuePopString(ctxt);
+	QString text        = qtValuePopString(ctxt);
+
+	if (text.contains(QRegExp(regexpStr)))
+	{
+		qtValuePush(ctxt, true);
+	}
+	else
+	{
+		qtValuePush(ctxt, false);
+	}
 }
 
 static void replaceQuote(xmlXPathParserContextPtr ctxt, int nargs)
 {
-//			 retourn en chaine le premier parametre avec ' remplacé par ¤
-	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
-	return;
+	if (nargs != 1)
+	{
+		xsltGenericError(xsltGenericErrorContext, "replaceQuote: number of argument incorrect\n");
+		return;
+	}
+
+	QString text = qtValuePopString(ctxt);
+	text.replace('\'', '¤');
+	qtValuePush(ctxt, text);
 }
 
 
 static void normalizeJS(xmlXPathParserContextPtr ctxt, int nargs)
 {
-	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
-	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
-	return;
+	if (nargs != 1)
+	{
+		xsltGenericError(xsltGenericErrorContext, "normalizeJS: number of argument incorrect\n");
+		return;
+	}
+
+	QString text = qtValuePopString(ctxt);
+	text.replace(QRegExp("[^\\]\""), "\\\"");
+	text.replace(QRegExp("[^\\]\'"), "\\\'");
+	qtValuePush(ctxt, text);
 }
 
 static void trim(xmlXPathParserContextPtr ctxt, int nargs)
 {
-	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
-	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
-	return;
+	if (nargs != 1)
+	{
+		xsltGenericError(xsltGenericErrorContext, "trim: number of argument incorrect\n");
+		return;
+	}
+
+	QString text = qtValuePopString(ctxt);
+	text = text.trimmed();
+	qtValuePush(ctxt, text);
 }
 
 static void rtrim(xmlXPathParserContextPtr ctxt, int nargs)
 {
-	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
-	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
-	return;
+	if (nargs != 1)
+	{
+		xsltGenericError(xsltGenericErrorContext, "rtrim: number of argument incorrect\n");
+		return;
+	}
+
+	QString text = qtValuePopString(ctxt);
+
+	while(text.count() && (text.endsWith(' ') || text.endsWith('\t')))
+	{
+		text.remove(text.size() - 1, 1);
+	}
+
+	qtValuePush(ctxt, text);
 }
 
 static void ltrim(xmlXPathParserContextPtr ctxt, int nargs)
 {
-	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
-	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
-	return;
+	if (nargs != 1)
+	{
+		xsltGenericError(xsltGenericErrorContext, "ltrim: number of argument incorrect\n");
+		return;
+	}
+
+	QString text = qtValuePopString(ctxt);
+
+	while(text.count() && (text.startsWith(' ') || text.startsWith('\t')))
+	{
+		text.remove(0, 1);
+	}
+
+	qtValuePush(ctxt, text);
 }
 
 static void lpad(xmlXPathParserContextPtr ctxt, int nargs)
 {
-	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
-	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
-	return;
+	if (nargs != 3 && nargs != 2)
+	{
+		xsltGenericError(xsltGenericErrorContext, "lpad: number of argument incorrect\n");
+		return;
+	}
+
+	const QString completion = nargs == 3 ? qtValuePopString(ctxt) : " ";
+	const int     len        = qtValuePopNumber(ctxt);
+	const QString s          = qtValuePopString(ctxt);
+		  QString result     = s;
+
+	while (result.size() < len)
+		result = completion + result;
+
+	qtValuePush(ctxt, result);
 }
 
 static void rpad(xmlXPathParserContextPtr ctxt, int nargs)
 {
-	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
-	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
-	return;
+	if (nargs != 3 && nargs != 2)
+	{
+		xsltGenericError(xsltGenericErrorContext, "rpad: number of argument incorrect\n");
+		return;
+	}
+
+	const QString completion = nargs == 3 ? qtValuePopString(ctxt) : " ";
+	const int     len        = qtValuePopNumber(ctxt);
+	const QString s          = qtValuePopString(ctxt);
+		  QString result     = s;
+
+	while (result.size() < len)
+		result = result + completion;
+
+	qtValuePush(ctxt, result);
 }
 
 static void formatNumber(xmlXPathParserContextPtr ctxt, int nargs)
 {
-	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
-	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
-	return;
-}
+	if (nargs != 3)
+	{
+		xsltGenericError(xsltGenericErrorContext, "formatNumber: number of argument incorrect\n");
+		return;
+	}
 
-static void formatDate(xmlXPathParserContextPtr ctxt, int nargs)
-{
-	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
-	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
-	return;
-}
+	const QString locale  = qtValuePopString(ctxt);
+	const QString format  = qtValuePopString(ctxt);
+	const QString value   = qtValuePopString(ctxt);
+	QString result        = value;
 
-static void formatDateToGce(xmlXPathParserContextPtr ctxt, int nargs)
-{
-	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
-	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
-	return;
+	if(value == "NaN")
+	{
+		qtValuePush(ctxt, value);
+		return;
+	}
+
+	int intValue = 0;
+	if(!value.isEmpty())
+	{
+		result.replace(",", ".");
+		result.replace(" ", "");
+		intValue = result.toInt();
+	}
+
+	result = QLocale::c().toString(intValue);
+
+	qtValuePush(ctxt, result);
 }
 
 static void format2Number(xmlXPathParserContextPtr ctxt, int nargs)
 {
-	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
-	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
-	return;
+	if (nargs != 5)
+	{
+		xsltGenericError(xsltGenericErrorContext, "format2Number: number of argument incorrect\n");
+		return;
+	}
+
+	const QString locale  = qtValuePopString(ctxt);
+	const QString gs      = qtValuePopString(ctxt);
+	const QString dc      = qtValuePopString(ctxt);
+	const QString format  = qtValuePopString(ctxt);
+	const QString value   = qtValuePopString(ctxt);
+
+	if(value == "NaN")
+	{
+		qtValuePush(ctxt, value);
+		return;
+	}
+
+	int intValue = value.toInt();
+
+	QString result = QLocale::system().toString(intValue);
+
+	qtValuePush(ctxt, result);
+}
+
+static void formatNumericToGCE(xmlXPathParserContextPtr ctxt, int nargs)
+{
+	if (nargs != 3)
+	{
+		xsltGenericError(xsltGenericErrorContext, "formatNumericToGCE: number of argument incorrect\n");
+		return;
+	}
+
+	const QString decimalSymbol = qtValuePopString(ctxt);
+	const bool    dec           = qtValuePopBoolean(ctxt);
+	const QString value         = qtValuePopString(ctxt);
+		  QString result;
+
+	if (! value.isEmpty())
+	{
+		bool dot = false;
+
+		for (int i = value.size() - 1; i >= 0; i--)
+		{
+			QChar c = value.at(i);
+
+			if (c == '.' || c == ',')
+			{
+				if (!dot && c == decimalSymbol.at(0))
+				{
+					dot = true;
+
+					if (dec)
+					{
+						result.insert(0, '.');
+					}
+					else
+					{
+						result.clear();
+					}
+				}
+			}
+			else if (c == ' ')
+			{
+			}
+			else if (c >= '0' && c <= '9')
+			{
+				result.insert(0, c);
+			}
+			else if ((c == '+' || c == '-') && i == 0)
+			{
+				// Pas la peine d'ajouter le plus
+				if (c == '-')
+				{
+					result.insert(0, c);
+				}
+			}
+			else
+			{
+				xsltGenericError(xsltGenericErrorContext, "formatNumericToGCE: character incorrect\n");
+				return;
+			}
+		}
+	}
+	else
+	{
+		result = "0";
+	}
+
+
+	qtValuePush(ctxt, result);
+}
+
+static void formatDate(xmlXPathParserContextPtr ctxt, int nargs)
+{
+	if (nargs != 3)
+	{
+		xsltGenericError(xsltGenericErrorContext, "formatDate: number of argument incorrect\n");
+		return;
+	}
+
+	const QString internalFormat = qtValuePopString(ctxt);
+	const QString format         = qtValuePopString(ctxt).trimmed();
+	const QString date           = qtValuePopString(ctxt).trimmed();
+		  QString result;
+
+	if(!date.isEmpty() && !format.isEmpty())
+	{
+		QDateTime dt = QDateTime::fromString(date, internalFormat);
+		result       = dt.toString(format);
+	}
+
+	qtValuePush(ctxt, result);
+}
+
+static void formatDateToGce(xmlXPathParserContextPtr ctxt, int nargs)
+{
+	if (nargs != 3)
+	{
+		xsltGenericError(xsltGenericErrorContext, "formatDateToGce: number of argument incorrect\n");
+		return;
+	}
+
+	const QString format         = qtValuePopString(ctxt).trimmed();
+	const QString date           = qtValuePopString(ctxt).trimmed();
+		  QString result;
+
+	if(!date.isEmpty() && !format.isEmpty())
+	{
+		QDateTime dt = QDateTime::fromString(date, format);
+		result       = dt.toString("yyyyMMdd");
+	}
+
+	qtValuePush(ctxt, result);
+}
+
+static void formatTime(xmlXPathParserContextPtr ctxt, int nargs)
+{
+	if (nargs != 3)
+	{
+		xsltGenericError(xsltGenericErrorContext, "formatTime: number of argument incorrect\n");
+		return;
+	}
+
+	const QString internalFormat = qtValuePopString(ctxt);
+	const QString format         = qtValuePopString(ctxt).trimmed();
+	const QString date           = qtValuePopString(ctxt).trimmed();
+		  QString result;
+
+	if(!date.isEmpty() && !format.isEmpty())
+	{
+		QDateTime dt = QDateTime::fromString(date, internalFormat);
+		result       = dt.toString(format);
+	}
+
+	qtValuePush(ctxt, result);
 }
 
 static void createMask(xmlXPathParserContextPtr ctxt, int nargs)
 {
-	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
-	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
-	return;
+	if (nargs != 5)
+	{
+		xsltGenericError(xsltGenericErrorContext, "createMask: number of argument incorrect\n");
+		return;
+	}
+
+	const QString groupingSymbol = qtValuePopString(ctxt);
+	const QString decimalSymbol  = qtValuePopString(ctxt);
+	const int nbZero             = qtValuePopNumber(ctxt);
+	const int lgDec              = qtValuePopNumber(ctxt);
+	const int lgInt              = qtValuePopNumber(ctxt);
+	QString result;
+
+	// Construction de la partie décimale
+	for (int i = 0; i < lgDec; i++)
+	{
+		result.insert(0, '0');
+	}
+
+	if (lgDec > 0)
+	{
+		result.insert(0, decimalSymbol);
+	}
+
+	// Construction de la partie entière
+	int lgMax = lgInt;
+	int zero = 0;
+
+	for (int i = 0; i < lgMax; i++)
+	{
+		if (((i + 1) % 4 == 0) && !groupingSymbol.isEmpty() && groupingSymbol != "s")
+		{
+			result.insert(0, groupingSymbol);
+			lgMax++;
+		}
+		else if (zero < nbZero)
+		{
+			result.insert(0, '0');
+			zero++;
+		}
+		else
+		{
+			result.insert(0, '#');
+		}
+	}
+
+	qtValuePush(ctxt, result);
 }
 
 static void toUpperCase(xmlXPathParserContextPtr ctxt, int nargs)
 {
-	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
-	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
-	return;
+	if (nargs != 1)
+	{
+		xsltGenericError(xsltGenericErrorContext, "toUpperCase: number of argument incorrect\n");
+		return;
+	}
+
+	QString text = qtValuePopString(ctxt);
+	text = text.toUpper();
+	qtValuePush(ctxt, text);
 }
 
 static void toLowerCase(xmlXPathParserContextPtr ctxt, int nargs)
 {
-	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
-	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
-	return;
+	if (nargs != 1)
+	{
+		xsltGenericError(xsltGenericErrorContext, "toLowerCase: number of argument incorrect\n");
+		return;
+	}
+
+	QString text = qtValuePopString(ctxt);
+	text = text.toLower();
+	qtValuePush(ctxt, text);
 }
 
 static void getScreenValue(xmlXPathParserContextPtr ctxt, int nargs)
 {
-	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
-	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
-	return;
+	QString screen_data, business_data, result;
+
+	xmlXPathObjectPtr nodeList = valuePop(ctxt);
+	if(nodeList->type == XPATH_NODESET) {
+		xmlNodeSetPtr nodes = nodeList->nodesetval;
+		int size = nodes ? nodes->nodeNr : 0;
+		for(int i = 0; i < size; i++)
+		{
+			if(nodes->nodeTab[i]->type == XML_ELEMENT_NODE)
+			{
+				xmlElementPtr node = (xmlElementPtr)nodes->nodeTab[i];
+				xmlNodePtr child   = node->children;
+
+				while(child != NULL)
+				{
+					if(child->type == XML_ELEMENT_NODE)
+					{
+						const QString name = QString::fromUtf8((char*)child->name);
+						xmlChar* content = xmlNodeGetContent(child);
+						if(name == "screen_data")
+						{
+							screen_data += QString::fromUtf8((char*)content);
+						}
+						if(name == "business_data")
+						{
+							business_data += QString::fromUtf8((char*)content);
+						}
+						xmlFree(content);
+					}
+
+					child = child->next;
+				}
+				if(! (screen_data.isEmpty() && business_data.isEmpty())) break;
+			}
+		}
+	}
+	if(!screen_data.isEmpty())
+	{
+		result = screen_data;
+	}
+	else if(!business_data.isEmpty())
+	{
+		result = business_data;
+	}
+
+	qtValuePush(ctxt, result);
 }
 
 }
@@ -317,6 +756,8 @@ void* xsltExtInitFunc(xsltTransformContextPtr ctxt, const xmlChar *URI)
 	xsltRegisterExtFunction(ctxt, (xmlChar*)"formatNumber", URI, Gnx::XsltExtention::formatNumber);
 	xsltRegisterExtFunction(ctxt, (xmlChar*)"formatDate", URI, Gnx::XsltExtention::formatDate);
 	xsltRegisterExtFunction(ctxt, (xmlChar*)"formatDateToGce", URI, Gnx::XsltExtention::formatDateToGce);
+	xsltRegisterExtFunction(ctxt, (xmlChar*)"formatTime", URI, Gnx::XsltExtention::formatTime);
+	xsltRegisterExtFunction(ctxt, (xmlChar*)"formatNumericToGce", URI, Gnx::XsltExtention::formatNumericToGCE);
 
 	xsltRegisterExtFunction(ctxt, (xmlChar*)"getScreenValue", URI, Gnx::XsltExtention::getScreenValue);
 
