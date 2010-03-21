@@ -10,8 +10,9 @@ LIBS += -L../../components \
     -lxinxcmp \
     -L../../framework \
     -lxinxframework \
-    -lxml2 \
-    -lxslt
+	-lwsock32 \
+    -llibxml2 \
+    -llibxslt
 TARGET = generix
 INCLUDEPATH += ../../framework \
     ../../components

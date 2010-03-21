@@ -17,10 +17,11 @@ INCLUDEPATH += ./ \
     ../ext/qcodeedit/lib/widgets
 LIBS = -L../components \
     -L../ext/qcodeedit \
+	-lwsock32 \
+    -llibxml2 \
+    -llibxslt \
     -lxinxcmp \
-    -lqcodeedit \
-    -lxml2 \
-    -lxslt
+    -lqcodeedit
 win32:RC_FILE += rc/libxinx.rc
 unix:INCLUDEPATH += /usr/include/libxml2
 DEFINES += _LIB_BUILD_
