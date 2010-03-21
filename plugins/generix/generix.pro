@@ -9,10 +9,9 @@ DESTDIR += ../
 LIBS += -L../../components \
     -lxinxcmp \
     -L../../framework \
-    -lxinxframework \
-	-lwsock32 \
-    -llibxml2 \
-    -llibxslt
+	-lxinxframework
+win32:LIBS += -lwsock32 -llibxml2 -llibxslt
+unix:LIBS += -lxml2 -lxslt
 TARGET = generix
 INCLUDEPATH += ../../framework \
     ../../components

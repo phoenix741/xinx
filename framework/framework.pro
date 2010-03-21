@@ -16,11 +16,10 @@ INCLUDEPATH += ./ \
     ../ext/qcodeedit/lib/qnfa \
     ../ext/qcodeedit/lib/widgets
 LIBS = -L../components \
-    -L../ext/qcodeedit \
-	-lwsock32 \
-    -llibxml2 \
-    -llibxslt \
-    -lxinxcmp \
+	-L../ext/qcodeedit
+win32:LIBS += -lwsock32 -llibxml2 -llibxslt
+unix:LIBS += -lxml2 -lxslt
+LIBS += -lxinxcmp \
     -lqcodeedit
 win32:RC_FILE += rc/libxinx.rc
 unix:INCLUDEPATH += /usr/include/libxml2

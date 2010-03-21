@@ -181,10 +181,10 @@ static void time(xmlXPathParserContextPtr ctxt, int nargs)
 
 	#define rdtsc(low, high) __asm__ __volatile__("rdtsc" : "=a" (low), "=d" (high))
 
-	uint32_t low, high;
-	uint64_t result;
+	quint32 low, high;
+	quint64 result;
 	rdtsc(low, high);
-	result = ((uint64_t)high << 32) | low;
+	result = ((quint64)high << 32) | low;
 
 	qtValuePush(ctxt, (double)result);
 }
