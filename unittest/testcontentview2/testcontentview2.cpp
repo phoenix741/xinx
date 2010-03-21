@@ -73,7 +73,7 @@ void TestContentView2::initTestCase()
 	QDir::home().mkpath(configDirectory);
 
 	QDir    path            = QDir(QDir::home().absoluteFilePath(configDirectory));
-	QFile::remove( path.absoluteFilePath("session.db") );
+	QFile::remove(path.absoluteFilePath("session.db"));
 
 	// Init plugins
 	QDir::addSearchPath("datas", QDir(QApplication::applicationDirPath()).absoluteFilePath("../../datas"));
@@ -101,17 +101,17 @@ void TestContentView2::testProject()
 		{
 			m_project = ContentView2::Project(ContentView2::Manager::self()->database(), XINXProjectManager::self()->project());
 		}
-		catch(ContentView2::ProjectException e)
+		catch (ContentView2::ProjectException e)
 		{
 			m_project.setProjectName(XINXProjectManager::self()->project()->projectName());
 			m_project.setProjectPath(XINXProjectManager::self()->project()->fileName());
 			m_project.create(ContentView2::Manager::self()->database());
 
-			m_project.setProjectName( tr("My test project") );
+			m_project.setProjectName(tr("My test project"));
 			m_project.update(ContentView2::Manager::self()->database());
 		}
 	}
-	catch(ContentView2::ProjectException e)
+	catch (ContentView2::ProjectException e)
 	{
 		QFAIL(qPrintable(e.getMessage()));
 	}
@@ -119,7 +119,7 @@ void TestContentView2::testProject()
 
 void TestContentView2::testFile()
 {
-	if(! m_project.isValid())
+	if (! m_project.isValid())
 		QSKIP("No project defined", SkipAll);
 
 	ContentView2::FileContainer container(XINXProjectManager::self()->project(), m_filename, true);
@@ -145,7 +145,7 @@ void TestContentView2::testFile()
 
 		container.reload(ContentView2::Manager::self()->database());
 	}
-	catch(ContentView2::FileException e)
+	catch (ContentView2::FileException e)
 	{
 		QFAIL(qPrintable(e.getMessage()));
 	}
@@ -153,7 +153,7 @@ void TestContentView2::testFile()
 
 void TestContentView2::testNode()
 {
-	if(! m_file.isValid())
+	if (! m_file.isValid())
 		QSKIP("No file defined", SkipAll);
 
 	try
@@ -179,11 +179,11 @@ void TestContentView2::testNode()
 		m_file.setRoot(m_root);
 		m_file.update(ContentView2::Manager::self()->database());
 	}
-	catch(ContentView2::NodeException e)
+	catch (ContentView2::NodeException e)
 	{
 		QFAIL(qPrintable(e.getMessage()));
 	}
-	catch(ContentView2::FileException e)
+	catch (ContentView2::FileException e)
 	{
 		QFAIL(qPrintable(e.getMessage()));
 	}
@@ -197,7 +197,7 @@ void TestContentView2::testParser_data()
 
 void TestContentView2::testParser()
 {
-	if(! m_root.isValid())
+	if (! m_root.isValid())
 		QSKIP("No root defined", SkipAll);
 
 	QSqlDatabase db = ContentView2::Manager::self()->database();
@@ -219,21 +219,21 @@ void TestContentView2::testParser()
 
 		m_root.reload(db);
 
-		QList<int> childs = m_root.childs( db );
-		QCOMPARE( childs.size(), 3 );
+		QList<int> childs = m_root.childs(db);
+		QCOMPARE(childs.size(), 3);
 
-		int childId = childs.at( 1 );
-		ContentView2::Node childNode( db, childId );
-		QCOMPARE( childNode.data( ContentView2::Node::NODE_NAME ).toString(), QString( "/" ) );
-		QCOMPARE( childNode.childs( db ).size(), 0 );
+		int childId = childs.at(1);
+		ContentView2::Node childNode(db, childId);
+		QCOMPARE(childNode.data(ContentView2::Node::NODE_NAME).toString(), QString("/"));
+		QCOMPARE(childNode.childs(db).size(), 0);
 
 	}
-	catch(ContentView2::ParserException e)
+	catch (ContentView2::ParserException e)
 	{
 		QFAIL(qPrintable(e.getMessage()));
 		db.rollback();
 	}
-	catch(ContentView2::NodeException e)
+	catch (ContentView2::NodeException e)
 	{
 		QFAIL(qPrintable(e.getMessage()));
 	}

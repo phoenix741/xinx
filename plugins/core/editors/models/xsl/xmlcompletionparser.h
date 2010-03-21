@@ -55,17 +55,17 @@ public:
 
 	static XmlCompletionParser * self();
 
-	ContentView2::Node			balise(const QString & name) const;
-	QList<ContentView2::Node>	balises() const;
-	ContentView2::Node			baliseAttribute(const QString & name, const QString & attribute) const;
-	ContentView2::Node			baliseOfBalise(const QString & name, const QString & baliseName) const;
-	QList<ContentView2::Node>	baliseAttributes(const QString & name) const;
-	ContentView2::Node			baliseAttributeValue(const QString & name, const QString & attribute, const QString & value) const;
-	QList<ContentView2::Node>	baliseAttributeValues(const QString & name, const QString & attribute) const;
+	ContentView2::Node          balise(const QString & name) const;
+	QList<ContentView2::Node>   balises() const;
+	ContentView2::Node          baliseAttribute(const QString & name, const QString & attribute) const;
+	ContentView2::Node          baliseOfBalise(const QString & name, const QString & baliseName) const;
+	QList<ContentView2::Node>   baliseAttributes(const QString & name) const;
+	ContentView2::Node          baliseAttributeValue(const QString & name, const QString & attribute, const QString & value) const;
+	QList<ContentView2::Node>   baliseAttributeValues(const QString & name, const QString & attribute) const;
 
-	ContentView2::Node			defaultValue(ContentView2::Node node) const;
-	QList<ContentView2::Node>	defaultAttributes(ContentView2::Node node) const;
-	QList<ContentView2::Node>	defaultBalises(ContentView2::Node node) const;
+	ContentView2::Node          defaultValue(ContentView2::Node node) const;
+	QList<ContentView2::Node>   defaultAttributes(ContentView2::Node node) const;
+	QList<ContentView2::Node>   defaultBalises(ContentView2::Node node) const;
 
 	XmlCompletionParser * clone();
 private:

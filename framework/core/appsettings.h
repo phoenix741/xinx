@@ -101,6 +101,7 @@ public:
 		struct_snipets snipets;
 		QHash<QString,QString> tools;
 		QHash<QString,struct_qformat> formats;
+		QString version;
 	};
 
 

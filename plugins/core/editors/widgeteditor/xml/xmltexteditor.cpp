@@ -42,7 +42,7 @@
 #include <QModelIndex>
 
 // Define
-#define EOWREGEXP	"[~!@\\$#%\\^&\\*\\(\\)\\+\\{\\}|\"<>,/;'\\[\\]\\\\=\\s]"
+#define EOWREGEXP   "[~!@\\$#%\\^&\\*\\(\\)\\+\\{\\}|\"<>,/;'\\[\\]\\\\=\\s]"
 #define isEditBalise(value) ((value == cpEditNodeName) || (value == cpEditParamName) || (value == cpEditParamValue))
 
 /* XmlTextEditor */
@@ -387,8 +387,8 @@ void XmlTextEditor::insertCompletionAccolade(QDocumentCursor & tc, QString node,
 		{
 			if (insertCompletion && !completionForm.isEmpty())
 			{
-				tc2.insertText("{" + completionFormStart );
-				tc.insertText( completionFormEnd + "}");
+				tc2.insertText("{" + completionFormStart);
+				tc.insertText(completionFormEnd + "}");
 			}
 			else
 			{

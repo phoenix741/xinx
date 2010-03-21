@@ -27,7 +27,8 @@
 #include <QSqlError>
 #include <QVariant>
 
-namespace ContentView2 {
+namespace ContentView2
+{
 
 /* ProjectException */
 
@@ -128,7 +129,7 @@ void Project::load(QSqlDatabase db, XinxProject * project)
 
 void Project::reload(QSqlDatabase db)
 {
-	if(d->m_id >= 0)
+	if (d->m_id >= 0)
 		load(db, d->m_id);
 }
 

@@ -66,7 +66,7 @@ void Cache::initializeCache()
 
 	try
 	{
-		Project project( Manager::self()->database(), XINXProjectManager::self()->project() );
+		Project project(Manager::self()->database(), XINXProjectManager::self()->project());
 
 		QSqlQuery cacheQuery("SELECT path, type, selection FROM cv_file WHERE project_id=:project and cached = :cached", Manager::self()->database());
 		cacheQuery.bindValue(":project", project.projectId());
@@ -89,11 +89,11 @@ void Cache::initializeCache()
 			fileCache.parser       = 0;
 
 			m_parsers.append(fileCache);
-			if(QFileInfo(path).exists())
+			if (QFileInfo(path).exists())
 				m_watcher->addPath(path);
 		}
 	}
-	catch(...)
+	catch (...)
 	{
 		// In case of error, make nothing
 	}
@@ -158,7 +158,7 @@ void Cache::deleteFromCache(XinxProject * project, const QString & path, bool is
 
 void Cache::registerPath(const QString & path)
 {
-	if(! m_registeredFile.contains(path))
+	if (! m_registeredFile.contains(path))
 		m_registeredFile.append(path);
 }
 
@@ -180,19 +180,19 @@ Project Cache::getProject(QSqlDatabase db, XinxProject * p)
 	Project project;
 	try
 	{
-		project = Project( db, p );
+		project = Project(db, p);
 	}
-	catch(ProjectException e)
+	catch (ProjectException e)
 	{
-		if( p )
+		if (p)
 		{
-			project.setProjectName( p->projectName() );
-			project.setProjectPath( p->fileName() );
+			project.setProjectName(p->projectName());
+			project.setProjectPath(p->fileName());
 		}
 		else
 		{
-			project.setProjectName( "/" );
-			project.setProjectPath( "/" );
+			project.setProjectName("/");
+			project.setProjectPath("/");
 		}
 		project.create(db);
 	}
@@ -205,9 +205,9 @@ File Cache::getFile(QSqlDatabase db, struct_cache p)
 	try
 	{
 		/* Lecture du fichier */
-		file = File( db, p.project, p.path, p.cached );
+		file = File(db, p.project, p.path, p.cached);
 	}
-	catch(FileException e)
+	catch (FileException e)
 	{
 		/* Lecture/Création du projet */
 		Project project = getProject(db, p.project);
@@ -265,7 +265,7 @@ void Cache::regenerateImport(QSqlDatabase db)
 		result = selectImportQuery.exec();
 		Q_ASSERT_X(result, "Cache::regenerateImport", qPrintable(selectImportQuery.lastError().text()));
 
-		while(selectImportQuery.next())
+		while (selectImportQuery.next())
 		{
 			imports.insert(selectImportQuery.value(0).toInt(), selectImportQuery.value(1).toInt());
 		}
@@ -276,7 +276,7 @@ void Cache::regenerateImport(QSqlDatabase db)
 			{
 				foreach(int node, imports.keys(key))
 				{
-					if(!imports.contains(node, value))
+					if (!imports.contains(node, value))
 					{
 						imports.insert(node, value);
 						QSqlQuery insertImportQuery("INSERT INTO cv_import(parent_id, child_id, automatic_import) VALUES(:parent_id, :child_id, :automatic)", db);
@@ -293,7 +293,7 @@ void Cache::regenerateImport(QSqlDatabase db)
 		result = db.commit();
 		Q_ASSERT_X(result, "Cache::regenerateImport", qPrintable(db.lastError().text()));
 	}
-	catch(FileException e)
+	catch (FileException e)
 	{
 		result = db.rollback();
 		Q_ASSERT_X(result, "Cache::regenerateImport", qPrintable(db.lastError().text()));
@@ -349,9 +349,9 @@ void Cache::run()
 						}
 					}
 
-					if( ! parser )
+					if (! parser)
 						parser = ParserFactory::getParserByType(file.type());
-					if( ! parser )
+					if (! parser)
 					{
 						result = db.commit();
 						Q_ASSERT_X(result, "Cache::run", qPrintable(db.lastError().text()));
@@ -371,7 +371,7 @@ void Cache::run()
 					{
 						ErrorManager::self()->clearMessages(file.path());
 						parser->load();
-						if(parser->codec())
+						if (parser->codec())
 							file.setEncoding(parser->codec()->name());
 
 						file.destroyImports(db);
@@ -393,7 +393,7 @@ void Cache::run()
 						file.setIsLoaded(true);
 						if (lastModified.isValid())
 						{
-							file.setDatmod (lastModified);
+							file.setDatmod(lastModified);
 						}
 						file.update(db);
 
@@ -402,7 +402,7 @@ void Cache::run()
 
 						emit cacheLoaded(file);
 					}
-					catch(ParserException e)
+					catch (ParserException e)
 					{
 						ErrorManager::self()->addMessage(file.path(), e.getLine(), ErrorManager::MessageError, e);
 						result = db.rollback();
@@ -414,7 +414,7 @@ void Cache::run()
 					result = db.rollback();
 					Q_ASSERT_X(result, "Cache::run", qPrintable(db.lastError().text()));
 
-					if( file.isValid() )
+					if (file.isValid())
 					{
 						struct_cache fileCache;
 						fileCache.project      = XINXProjectManager::self()->project();
@@ -459,7 +459,7 @@ void Cache::run()
 			}
 
 			/* Delete file not registered */
-			if(deleteNotRegistered)
+			if (deleteNotRegistered)
 			{
 				deleteNotRegistered = false;
 				try
@@ -472,12 +472,12 @@ void Cache::run()
 					bool result = query.exec();
 					Q_ASSERT_X(result, "Cache::run", qPrintable(query.lastError().text()));
 
-					while(query.next())
+					while (query.next())
 					{
 						const QString path = query.value(0).toString();
 						const int     id   = query.value(1).toInt();
 
-						if(! m_registeredFile.contains(path))
+						if (! m_registeredFile.contains(path))
 						{
 							bool result = db.transaction();
 							Q_ASSERT_X(result, "Cache::run", qPrintable(db.lastError().text()));
@@ -490,7 +490,7 @@ void Cache::run()
 								result = db.commit();
 								Q_ASSERT_X(result, "Cache::run", qPrintable(db.lastError().text()));
 							}
-							catch(FileException e)
+							catch (FileException e)
 							{
 								result = db.rollback();
 								Q_ASSERT_X(result, "Cache::run", qPrintable(db.lastError().text()));
@@ -498,7 +498,7 @@ void Cache::run()
 						}
 					}
 				}
-				catch(ProjectException e)
+				catch (ProjectException e)
 				{
 				}
 

@@ -43,7 +43,7 @@ bool NewGenerixDerivation1Page::pageIsVisible() const
 
 bool NewGenerixDerivation1Page::saveSettingsDialog(XinxProject * project)
 {
-//	static_cast<GenerixProject*>( project )->setDerivationOption( m_derivationRadio->isChecked() );
+//  static_cast<GenerixProject*>( project )->setDerivationOption( m_derivationRadio->isChecked() );
 
 	return true;
 }

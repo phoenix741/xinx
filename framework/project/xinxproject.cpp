@@ -303,9 +303,9 @@ PrivateXinxProject::~PrivateXinxProject()
 
 PrivateXinxProject& PrivateXinxProject::operator=(const PrivateXinxProject& p)
 {
-	m_projectName			= p.m_projectName;
-	m_projectPath			= p.m_projectPath;
-	m_projectRCS			= p.m_projectRCS;
+	m_projectName           = p.m_projectName;
+	m_projectPath           = p.m_projectPath;
+	m_projectRCS            = p.m_projectRCS;
 
 	return *this;
 }
@@ -436,7 +436,7 @@ void XinxProject::loadFromFile(const QString & filename)
 		throw XinxProjectException(tr("The project can't be opened. Please use the XINX Project Wizard."), true);
 
 
-	if( QFileInfo(filename).isRelative() )
+	if (QFileInfo(filename).isRelative())
 	{
 		d->m_fileName = QDir(QDir::current().absoluteFilePath(filename)).canonicalPath();
 	}
@@ -448,8 +448,8 @@ void XinxProject::loadFromFile(const QString & filename)
 	// Load values
 	d->m_projectName         = PrivateXinxProject::getValue(document, "name");
 	d->m_projectPath         = QFileInfo(d->m_fileName).absoluteDir().absoluteFilePath(PrivateXinxProject::getValue(document, "project"));
-	d->m_projectRCS 		 = PrivateXinxProject::getValue(document, "rcs");
-	d->m_activatedPlugin	 = PrivateXinxProject::loadList(document, "activatedPlugin", "name");
+	d->m_projectRCS          = PrivateXinxProject::getValue(document, "rcs");
+	d->m_activatedPlugin     = PrivateXinxProject::loadList(document, "activatedPlugin", "name");
 
 	QDomElement propertiesElement = root.firstChildElement("properties");
 

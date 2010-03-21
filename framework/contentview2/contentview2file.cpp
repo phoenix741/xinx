@@ -28,7 +28,8 @@
 #include <QSqlError>
 #include <QVariant>
 
-namespace ContentView2 {
+namespace ContentView2
+{
 
 /* FileException */
 
@@ -74,13 +75,13 @@ PrivateFileContainer::~PrivateFileContainer()
 
 void PrivateFileContainer::load(QSqlDatabase db)
 {
-	if(! m_file.isValid())
+	if (! m_file.isValid())
 	{
 		try
 		{
 			m_file = File(db, m_project, m_path, m_cached);
 		}
-		catch(FileException e)
+		catch (FileException e)
 		{
 
 		}
@@ -107,8 +108,8 @@ PrivateFile::PrivateFile() : m_id(-1), m_projectId(-1), m_rootId(-1), m_cached(f
 }
 
 PrivateFile::PrivateFile(const PrivateFile &other) : QSharedData(other), m_id(other.m_id), m_projectId(other.m_projectId), m_rootId(other.m_rootId),
-	m_path(other.m_path), m_type(other.m_type), m_selection(other.m_selection), m_encoding(other.m_encoding), m_datmod(other.m_datmod),
-	m_cached(other.m_cached), m_loaded(other.m_loaded)
+		m_path(other.m_path), m_type(other.m_type), m_selection(other.m_selection), m_encoding(other.m_encoding), m_datmod(other.m_datmod),
+		m_cached(other.m_cached), m_loaded(other.m_loaded)
 {
 }
 
@@ -148,7 +149,7 @@ File FileContainer::file(QSqlDatabase db) const
 
 void FileContainer::reload(QSqlDatabase db)
 {
-	if(isValid(db))
+	if (isValid(db))
 	{
 		d->m_file.reload(db);
 	}
@@ -197,7 +198,7 @@ File::~File()
 void File::load(QSqlDatabase db, uint id)
 {
 	QSqlQuery selectQuery("SELECT project_id, path, cached, type, datmod, loaded, root_id, selection, encoding "
-						  "FROM cv_file WHERE id=:id", db);
+	                      "FROM cv_file WHERE id=:id", db);
 	selectQuery.bindValue(":id", QVariant::fromValue(id));
 	bool result = selectQuery.exec();
 	Q_ASSERT_X(result, "File::load", qPrintable(selectQuery.lastError().text()));
@@ -232,7 +233,7 @@ void File::load(QSqlDatabase db, XinxProject * project, const QString & path, bo
 	d->m_projectId = projectQuery.value(0).toInt();
 
 	QSqlQuery selectQuery("SELECT id, type, datmod, loaded, root_id, selection, encoding "
-						  "FROM cv_file WHERE project_id=:project_id and path=:path and cached=:cached", db);
+	                      "FROM cv_file WHERE project_id=:project_id and path=:path and cached=:cached", db);
 	selectQuery.bindValue(":project_id", QVariant::fromValue(d->m_projectId));
 	selectQuery.bindValue(":path", QVariant::fromValue(path));
 	selectQuery.bindValue(":cached", QVariant::fromValue(isCached));
@@ -256,7 +257,7 @@ void File::load(QSqlDatabase db, XinxProject * project, const QString & path, bo
 
 void File::reload(QSqlDatabase db)
 {
-	if(d->m_id >= 0)
+	if (d->m_id >= 0)
 		load(db, d->m_id);
 }
 
@@ -275,7 +276,7 @@ uint File::create(QSqlDatabase db)
 
 	QSqlQuery insertQuery(db);
 	insertQuery.prepare("INSERT INTO cv_file(project_id, path, cached, type, datmod, loaded, root_id, selection, encoding) "
-						"VALUES(:project_id, :path, :cached, :type, :datmod, :loaded, :root_id, :selection, :encoding)");
+	                    "VALUES(:project_id, :path, :cached, :type, :datmod, :loaded, :root_id, :selection, :encoding)");
 
 	insertQuery.bindValue(":project_id", QVariant::fromValue(d->m_projectId));
 	insertQuery.bindValue(":path",       QVariant::fromValue(d->m_path));
@@ -300,11 +301,11 @@ void File::update(QSqlDatabase db)
 	Q_ASSERT_X(d->m_id >= 0, "File::update", "The file must be initialized");
 
 	QSqlQuery updateQuery("UPDATE cv_file "
-						  "SET	datmod=:datmod , "
-						  "		loaded=:loaded , "
-						  "		root_id=:root_id , "
-						  "		encoding=:encoding "
-						  "WHERE id=:id", db);
+	                      "SET	datmod=:datmod , "
+	                      "		loaded=:loaded , "
+	                      "		root_id=:root_id , "
+	                      "		encoding=:encoding "
+	                      "WHERE id=:id", db);
 	updateQuery.bindValue(":datmod",   QVariant::fromValue(d->m_datmod));
 	updateQuery.bindValue(":loaded",   QVariant::fromValue(d->m_loaded));
 	updateQuery.bindValue(":root_id",  QVariant::fromValue(d->m_rootId));
@@ -333,7 +334,8 @@ void File::destroy(QSqlDatabase db)
 	d->m_id = -1;
 }
 
-void File::destroyNodes(QSqlDatabase db) {
+void File::destroyNodes(QSqlDatabase db)
+{
 	if ((d->m_id == -1) || (d->m_rootId == -1)) return ;
 
 	Node node(db, d->m_rootId);

@@ -115,7 +115,8 @@ class LIBEXPORT ErrorManager : public QObject
 {
 	Q_OBJECT
 public:
-	enum MessageType {
+	enum MessageType
+	{
 		MessageInformation = 0x01,
 		MessageWarning     = 0x02,
 		MessageError       = 0x04

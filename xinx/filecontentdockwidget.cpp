@@ -71,7 +71,7 @@ void FileContentDockWidget::contentTreeViewDblClick(QModelIndex index)
 	ContentView2::Node node(ContentView2::Manager::self()->database(), index.data(ContentView2::Node::NODE_ID).toInt());
 	const QString nodeName = node.data(ContentView2::Node::NODE_NAME).toString();
 
-	if(QFileInfo(nodeName).exists())
+	if (QFileInfo(nodeName).exists())
 	{
 		emit open(nodeName, 1);
 	}
@@ -84,9 +84,9 @@ void FileContentDockWidget::contentTreeViewDblClick(QModelIndex index)
 void FileContentDockWidget::updateModel(QAbstractItemModel * model)
 {
 	if (model == m_model) return;
-// 	if( model ) {
-// 		new ModelTest(model, this);
-// 	}
+//  if( model ) {
+//      new ModelTest(model, this);
+//  }
 	m_contentTreeView->setModel(model);
 	m_model = model;
 }

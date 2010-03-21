@@ -80,8 +80,8 @@ void PrivateNode::load()
 	if ((m_id == -1) || (m_isLoaded)) return;
 
 	QSqlQuery selectQuery("SELECT name, type, icon, display_name, tips, completion_value, line, file_id, hash, "
-						  "property1, property2, property3, property4, property5, property6, "
-						  "property7, property8, property9, property10 "
+	                      "property1, property2, property3, property4, property5, property6, "
+	                      "property7, property8, property9, property10 "
 	                      "FROM cv_node WHERE id=:id", m_db);
 	selectQuery.bindValue(":id", QVariant::fromValue(m_id));
 	bool result = selectQuery.exec();
@@ -155,7 +155,7 @@ void Node::load(QSqlDatabase db, uint id)
 
 void Node::reload(QSqlDatabase db)
 {
-	if(d->m_id >= 0)
+	if (d->m_id >= 0)
 		load(db, d->m_id);
 }
 
@@ -176,12 +176,12 @@ uint Node::create(QSqlDatabase db, int forcedId)
 	if (forcedId == -1)
 	{
 		insertQuery.prepare("INSERT INTO cv_node(name, type, icon, display_name, tips, completion_value, line, file_id, hash, property1, property2, property3, property4, property5, property6, property7, property8, property9, property10) "
-							"VALUES(:name, :type, :icon, :display_name, :tips, :completion_value, :line, :file_id, :hash, :property1, :property2, :property3, :property4, :property5, :property6, :property7, :property8, :property9, :property10)");
+		                    "VALUES(:name, :type, :icon, :display_name, :tips, :completion_value, :line, :file_id, :hash, :property1, :property2, :property3, :property4, :property5, :property6, :property7, :property8, :property9, :property10)");
 	}
 	else
 	{
 		insertQuery.prepare("INSERT INTO cv_node(id, name, type, icon, display_name, tips, completion_value, line, file_id, hash, property1, property2, property3, property4, property5, property6, property7, property8, property9, property10) "
-							"VALUES(:forced_id, :name, :type, :icon, :display_name, :tips, :completion_value, :line, :file_id, :hash, :property1, :property2, :property3, :property4, :property5, :property6, :property7, :property8, :property9, :property10)");
+		                    "VALUES(:forced_id, :name, :type, :icon, :display_name, :tips, :completion_value, :line, :file_id, :hash, :property1, :property2, :property3, :property4, :property5, :property6, :property7, :property8, :property9, :property10)");
 		insertQuery.bindValue(":forced_id", forcedId);
 	}
 
@@ -256,20 +256,20 @@ void Node::update(QSqlDatabase db)
 	                      "		icon=:icon , "
 	                      "		display_name=:display_name , "
 	                      "		tips=:tips , "
-						  "		completion_value=:completion_value , "
+	                      "		completion_value=:completion_value , "
 	                      "		line=:line , "
 	                      "		hash=:hash , "
-						  "		property1=:property1, "
-						  "		property2=:property2, "
-						  "		property3=:property3, "
-						  "		property4=:property4, "
-						  "		property5=:property5, "
-						  "		property6=:property6, "
-						  "		property7=:property7, "
-						  "		property8=:property8, "
-						  "		property9=:property9, "
-						  "		property10=:property10 "
-						  "WHERE id=:id", db);
+	                      "		property1=:property1, "
+	                      "		property2=:property2, "
+	                      "		property3=:property3, "
+	                      "		property4=:property4, "
+	                      "		property5=:property5, "
+	                      "		property6=:property6, "
+	                      "		property7=:property7, "
+	                      "		property8=:property8, "
+	                      "		property9=:property9, "
+	                      "		property10=:property10 "
+	                      "WHERE id=:id", db);
 	updateQuery.bindValue(":name", d->m_datas.value(Node::NODE_NAME));
 	updateQuery.bindValue(":type", d->m_datas.value(Node::NODE_TYPE));
 	updateQuery.bindValue(":icon", d->m_datas.value(Node::NODE_ICON));
@@ -438,7 +438,7 @@ void Node::setFile(const File & file)
 File Node::file(QSqlDatabase db)
 {
 	d->load();
-	if(d->m_fileId >= 0)
+	if (d->m_fileId >= 0)
 	{
 		return File(db, d->m_fileId);
 	}

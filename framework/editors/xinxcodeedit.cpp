@@ -52,9 +52,9 @@
 /*!
  * Definition of the characters that can't be in a word.
  */
-#define EOW				"~!@$#%^&*()+{}|\"<>?,/;'[]\\="
-#define EOWREGEXP		"[^A-Za-z0-9_:\\-]"
-#define EOWREGEXPDOT	"[^A-Za-z0-9_:\\-\\.]"
+#define EOW             "~!@$#%^&*()+{}|\"<>?,/;'[]\\="
+#define EOWREGEXP       "[^A-Za-z0-9_:\\-]"
+#define EOWREGEXPDOT    "[^A-Za-z0-9_:\\-\\.]"
 
 
 /* XinxCodeEdit */
@@ -541,16 +541,16 @@ void XinxCodeEdit::gotoLine(int line)
 {
 	/* Five line before */
 	QDocumentCursor cursorB(m_editor->editor()->document(), line - 5);
-	if(!cursorB.isNull())
+	if (!cursorB.isNull())
 		m_editor->editor()->setCursor(cursorB);
 
 	/* Five line after */
 	QDocumentCursor cursorA(m_editor->editor()->document(), line + 5);
-	if(!cursorA.isNull())
+	if (!cursorA.isNull())
 		m_editor->editor()->setCursor(cursorA);
 
 	QDocumentCursor cursor(m_editor->editor()->document(), line - 1);
-	if(!cursor.isNull())
+	if (!cursor.isNull())
 		m_editor->editor()->setCursor(cursor);
 }
 
@@ -583,8 +583,8 @@ void XinxCodeEdit::moveLineUp()
 	QDocumentCursor cursor(textCursor());
 
 	int selectionLength = 0;
-	QDocumentCursor selectionStart 		= cursor.selectionStart(),
-	                                   selectionEnd   		= cursor.selectionEnd();
+	QDocumentCursor selectionStart      = cursor.selectionStart(),
+	                                      selectionEnd         = cursor.selectionEnd();
 	selectionStart.setAutoUpdated(false);
 	selectionEnd.setAutoUpdated(false);
 
@@ -626,8 +626,8 @@ void XinxCodeEdit::moveLineDown()
 	QDocumentCursor cursor(textCursor());
 
 	int selectionLength = 0;
-	QDocumentCursor selectionStart 		= cursor.selectionStart(),
-	                                   selectionEnd   		= cursor.selectionEnd();
+	QDocumentCursor selectionStart      = cursor.selectionStart(),
+	                                      selectionEnd         = cursor.selectionEnd();
 	if (selectionEnd.isValid()) selectionLength = cursor.selectedText().length();
 
 	if (selectionEnd.columnNumber() == 0) selectionEnd.movePosition(1, QDocumentCursor::Left);

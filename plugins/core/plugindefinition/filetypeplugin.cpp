@@ -352,9 +352,9 @@ QString CSSFileType::parserType()
 XQFileType::XQFileType()
 {
 	/*
-		QLanguageFactory::LangData data;
-		QNFADefinition::load( temporaryXqFile.fileName(), &data, XINXConfig::self()->formatFactory() );
-		XINXConfig::self()->languageFactory()->addLanguage(data);
+	    QLanguageFactory::LangData data;
+	    QNFADefinition::load( temporaryXqFile.fileName(), &data, XINXConfig::self()->formatFactory() );
+	    XINXConfig::self()->languageFactory()->addLanguage(data);
 	}*/
 }
 

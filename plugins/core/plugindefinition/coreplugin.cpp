@@ -122,25 +122,25 @@ QList<IFileTypePlugin*> CorePlugin::fileTypes()
 	return m_fileTypes;
 }
 
-ContentView2::Parser * CorePlugin::createParser( const QString & type )
+ContentView2::Parser * CorePlugin::createParser(const QString & type)
 {
-	if( type == "XSL" )
+	if (type == "XSL")
 	{
 		return new XslContentView2Parser();
 	}
-	else if( type == "JS" )
+	else if (type == "JS")
 	{
 		return new JsContentViewParser();
 	}
-	else if( type == "CSS" )
+	else if (type == "CSS")
 	{
 		return new CSSFileContentParser();
 	}
-	else if( type == "Snipet" )
+	else if (type == "Snipet")
 	{
 		return new SnipetCompletionParser();
 	}
-	else if( type == "XmlCompletion" )
+	else if (type == "XmlCompletion")
 	{
 		return XmlCompletionParser::self()->clone();
 	}

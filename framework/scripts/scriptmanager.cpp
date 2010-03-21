@@ -40,9 +40,9 @@
 /* Constante */
 
 #if QT_VERSION <= 0x040500
-#	define UndefinedValue QScriptValue()
+#   define UndefinedValue QScriptValue()
 #else
-#	define UndefinedValue QScriptValue::UndefinedValue
+#   define UndefinedValue QScriptValue::UndefinedValue
 #endif
 
 

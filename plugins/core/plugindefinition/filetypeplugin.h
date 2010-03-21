@@ -53,19 +53,19 @@
 
 /* Constantes */
 
-static const QColor DEFAULT_COMMENT			= Qt::darkGreen;
-static const QColor DEFAULT_ERROR			= Qt::darkMagenta;
-static const QColor DEFAULT_OTHER			= Qt::black;
+static const QColor DEFAULT_COMMENT         = Qt::darkGreen;
+static const QColor DEFAULT_ERROR           = Qt::darkMagenta;
+static const QColor DEFAULT_OTHER           = Qt::black;
 
-static const QColor DEFAULT_SYNTAX_CHAR		= Qt::blue;
-static const QColor DEFAULT_ELEMENT_NAME	= Qt::darkRed;
-static const QColor DEFAULT_ATTRIBUTE_NAME	= Qt::red;
-static const QColor DEFAULT_ATTRIBUTE_VALUE	= Qt::blue;
-static const QColor DEFAULT_XPATH_VALUE		= Qt::darkMagenta;
+static const QColor DEFAULT_SYNTAX_CHAR     = Qt::blue;
+static const QColor DEFAULT_ELEMENT_NAME    = Qt::darkRed;
+static const QColor DEFAULT_ATTRIBUTE_NAME  = Qt::red;
+static const QColor DEFAULT_ATTRIBUTE_VALUE = Qt::blue;
+static const QColor DEFAULT_XPATH_VALUE     = Qt::darkMagenta;
 
-static const QColor DEFAULT_RESERVEDWORD	= Qt::black;
-static const QColor DEFAULT_NUMBER			= Qt::blue;
-static const QColor DEFAULT_STRING			= Qt::red;
+static const QColor DEFAULT_RESERVEDWORD    = Qt::black;
+static const QColor DEFAULT_NUMBER          = Qt::blue;
+static const QColor DEFAULT_STRING          = Qt::red;
 
 /* TextFileType */
 

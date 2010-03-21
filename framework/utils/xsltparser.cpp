@@ -174,10 +174,10 @@ const QList<XsltParser::ErrorMessage> & XsltParser::errors() const
 }
 
 /*bool XsltParser::loadStylesheet( const QByteArray & data ) {
-	xmlDocPtr xslDoc = xmlParseMemory( data, data.size() );
-	d->m_stylesheet = xsltParseStylesheetDoc( xslDoc );
+    xmlDocPtr xslDoc = xmlParseMemory( data, data.size() );
+    d->m_stylesheet = xsltParseStylesheetDoc( xslDoc );
 
-	return d->m_stylesheet;
+    return d->m_stylesheet;
 }*/
 
 bool XsltParser::loadStylesheet(const QString & filename)

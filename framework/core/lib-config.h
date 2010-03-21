@@ -24,21 +24,21 @@
 #include <qglobal.h>
 
 /*!
-	\macro LIBEXPORT
-	\brief Macro needed for cross-platform shared libraries creation
+    \macro LIBEXPORT
+    \brief Macro needed for cross-platform shared libraries creation
 */
 #ifdef LIBEXPORT
 #error LIBEXPORT already defined...
 #endif
 
 #ifdef Q_WS_WIN
-#	ifdef _LIB_BUILD_
-#		define LIBEXPORT Q_DECL_EXPORT
-#	else
-#		define LIBEXPORT Q_DECL_IMPORT
-#	endif
+#   ifdef _LIB_BUILD_
+#       define LIBEXPORT Q_DECL_EXPORT
+#   else
+#       define LIBEXPORT Q_DECL_IMPORT
+#   endif
 #else
-#	define LIBEXPORT
+#   define LIBEXPORT
 #endif
 
 #endif // !_LIB_CONFIG_H_

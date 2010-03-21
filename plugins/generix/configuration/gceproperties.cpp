@@ -346,7 +346,7 @@ void GceProperties::readConfigurationFile(int configurationIndex, const QString 
 	m_filenames.append(configurationFileName);
 
 	m_fileToInformation += parser.m_fileRefToInformation;
-	m_version			 = ConfigurationVersion(parser.m_version, parser.m_edition);
+	m_version            = ConfigurationVersion(parser.m_version, parser.m_edition);
 }
 
 QStringList GceProperties::generateFileName(const QString & filename)

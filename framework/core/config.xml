@@ -61,4 +61,6 @@
 
 	<value name="Tools" type="hash:string" default="QString()"/>
 	<value name="Formats" type="hash:QFormat"/>
+
+	<value name="Version" type="string"/>
 </config>

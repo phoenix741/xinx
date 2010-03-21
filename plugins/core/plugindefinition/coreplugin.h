@@ -29,13 +29,13 @@
 class WebPluginSettings;
 class ManualFileResolver;
 
-class CorePlugin :	public QObject,
-					public IFilePlugin,
-					public IResolverPlugin,
-					public IXinxPluginConfiguration,
-					public IXinxPluginProjectConfiguration,
-					public IDockPlugin,
-					public IContentViewParserPlugin
+class CorePlugin :  public QObject,
+		public IFilePlugin,
+		public IResolverPlugin,
+		public IXinxPluginConfiguration,
+		public IXinxPluginProjectConfiguration,
+		public IDockPlugin,
+		public IContentViewParserPlugin
 {
 	Q_OBJECT
 	Q_INTERFACES(IXinxPlugin)
@@ -67,7 +67,7 @@ public:
 
 	virtual QList<IFileResolverPlugin*> fileResolvers();
 
-	virtual ContentView2::Parser * createParser( const QString & type );
+	virtual ContentView2::Parser * createParser(const QString & type);
 
 	XmlPresentationDockWidget * dock();
 private:

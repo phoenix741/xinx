@@ -1,21 +1,21 @@
- /* *********************************************************************** *
- * XINX                                                                    *
- * Copyright (C) 2010 by Ulrich Van Den Hekke                              *
- * ulrich.vdh@shadoware.org                                                *
- *                                                                         *
- * This program is free software: you can redistribute it and/or modify    *
- * it under the terms of the GNU General Public License as published by    *
- * the Free Software Foundation, either version 3 of the License, or       *
- * (at your option) any later version.                                     *
- *                                                                         *
- * This program is distributed in the hope that it will be useful,         *
- * but WITHOUT ANY WARRANTY; without even the implied warranty of          *
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *
- * GNU General Public License for more details.                            *
- *                                                                         *
- * You should have received a copy of the GNU General Public License       *
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
- * *********************************************************************** */
+/* *********************************************************************** *
+* XINX                                                                    *
+* Copyright (C) 2010 by Ulrich Van Den Hekke                              *
+* ulrich.vdh@shadoware.org                                                *
+*                                                                         *
+* This program is free software: you can redistribute it and/or modify    *
+* it under the terms of the GNU General Public License as published by    *
+* the Free Software Foundation, either version 3 of the License, or       *
+* (at your option) any later version.                                     *
+*                                                                         *
+* This program is distributed in the hope that it will be useful,         *
+* but WITHOUT ANY WARRANTY; without even the implied warranty of          *
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *
+* GNU General Public License for more details.                            *
+*                                                                         *
+* You should have received a copy of the GNU General Public License       *
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
+* *********************************************************************** */
 
 // Xinx header
 #include "generixxsltparser.h"
@@ -46,7 +46,8 @@ namespace XsltExtention
 
 static void convertToString(xmlXPathParserContextPtr ctxt, xmlXPathObjectPtr & ptr)
 {
-	if (ptr->type != XPATH_STRING) {
+	if (ptr->type != XPATH_STRING)
+	{
 		valuePush(ctxt, ptr);
 		xmlXPathStringFunction(ctxt, 1);
 		ptr = valuePop(ctxt);
@@ -69,7 +70,8 @@ static void qtValuePush(xmlXPathParserContextPtr ctxt, QString value)
 
 static void convertToNumber(xmlXPathParserContextPtr ctxt, xmlXPathObjectPtr & ptr)
 {
-	if (ptr->type != XPATH_NUMBER) {
+	if (ptr->type != XPATH_NUMBER)
+	{
 		valuePush(ctxt, ptr);
 		xmlXPathNumberFunction(ctxt, 1);
 		ptr = valuePop(ctxt);
@@ -92,7 +94,8 @@ static void qtValuePush(xmlXPathParserContextPtr ctxt, double value)
 
 static void convertToBool(xmlXPathParserContextPtr ctxt, xmlXPathObjectPtr & ptr)
 {
-	if (ptr->type != XPATH_BOOLEAN) {
+	if (ptr->type != XPATH_BOOLEAN)
+	{
 		valuePush(ctxt, ptr);
 		xmlXPathNumberFunction(ctxt, 1);
 		ptr = valuePop(ctxt);
@@ -142,26 +145,26 @@ static void message(xmlXPathParserContextPtr ctxt, int nargs)
 	}
 
 	QStack<QString> stack;
-	for(int i = 0; i < nargs; i++)
+	for (int i = 0; i < nargs; i++)
 	{
 		stack.push(qtValuePopString(ctxt));
 	}
 
 	QString message = stack.pop();
 
-	for(int i = 1; i < nargs; i++)
+	for (int i = 1; i < nargs; i++)
 	{
 		const QString p = stack.pop();
 
 		int pos = message.indexOf(QString("@%1").arg(i));
-		if(pos >= 0)
+		if (pos >= 0)
 		{
 			message.replace(pos, 2, p);
 		}
 		else
 		{
 			pos = message.indexOf("@");
-			if(pos >= 0)
+			if (pos >= 0)
 			{
 				message.replace(pos, 1, p);
 			}
@@ -179,7 +182,7 @@ static void time(xmlXPathParserContextPtr ctxt, int nargs)
 		return;
 	}
 
-	#define rdtsc(low, high) __asm__ __volatile__("rdtsc" : "=a" (low), "=d" (high))
+#define rdtsc(low, high) __asm__ __volatile__("rdtsc" : "=a" (low), "=d" (high))
 
 	quint32 low, high;
 	quint64 result;
@@ -340,7 +343,7 @@ static void rtrim(xmlXPathParserContextPtr ctxt, int nargs)
 
 	QString text = qtValuePopString(ctxt);
 
-	while(text.count() && (text.endsWith(' ') || text.endsWith('\t')))
+	while (text.count() && (text.endsWith(' ') || text.endsWith('\t')))
 	{
 		text.remove(text.size() - 1, 1);
 	}
@@ -358,7 +361,7 @@ static void ltrim(xmlXPathParserContextPtr ctxt, int nargs)
 
 	QString text = qtValuePopString(ctxt);
 
-	while(text.count() && (text.startsWith(' ') || text.startsWith('\t')))
+	while (text.count() && (text.startsWith(' ') || text.startsWith('\t')))
 	{
 		text.remove(0, 1);
 	}
@@ -377,7 +380,7 @@ static void lpad(xmlXPathParserContextPtr ctxt, int nargs)
 	const QString completion = nargs == 3 ? qtValuePopString(ctxt) : " ";
 	const int     len        = qtValuePopNumber(ctxt);
 	const QString s          = qtValuePopString(ctxt);
-		  QString result     = s;
+	QString result     = s;
 
 	while (result.size() < len)
 		result = completion + result;
@@ -396,7 +399,7 @@ static void rpad(xmlXPathParserContextPtr ctxt, int nargs)
 	const QString completion = nargs == 3 ? qtValuePopString(ctxt) : " ";
 	const int     len        = qtValuePopNumber(ctxt);
 	const QString s          = qtValuePopString(ctxt);
-		  QString result     = s;
+	QString result     = s;
 
 	while (result.size() < len)
 		result = result + completion;
@@ -417,14 +420,14 @@ static void formatNumber(xmlXPathParserContextPtr ctxt, int nargs)
 	const QString value   = qtValuePopString(ctxt);
 	QString result        = value;
 
-	if(value == "NaN")
+	if (value == "NaN")
 	{
 		qtValuePush(ctxt, value);
 		return;
 	}
 
 	int intValue = 0;
-	if(!value.isEmpty())
+	if (!value.isEmpty())
 	{
 		result.replace(",", ".");
 		result.replace(" ", "");
@@ -450,7 +453,7 @@ static void format2Number(xmlXPathParserContextPtr ctxt, int nargs)
 	const QString format  = qtValuePopString(ctxt);
 	const QString value   = qtValuePopString(ctxt);
 
-	if(value == "NaN")
+	if (value == "NaN")
 	{
 		qtValuePush(ctxt, value);
 		return;
@@ -474,7 +477,7 @@ static void formatNumericToGCE(xmlXPathParserContextPtr ctxt, int nargs)
 	const QString decimalSymbol = qtValuePopString(ctxt);
 	const bool    dec           = qtValuePopBoolean(ctxt);
 	const QString value         = qtValuePopString(ctxt);
-		  QString result;
+	QString result;
 
 	if (! value.isEmpty())
 	{
@@ -542,9 +545,9 @@ static void formatDate(xmlXPathParserContextPtr ctxt, int nargs)
 	const QString internalFormat = qtValuePopString(ctxt);
 	const QString format         = qtValuePopString(ctxt).trimmed();
 	const QString date           = qtValuePopString(ctxt).trimmed();
-		  QString result;
+	QString result;
 
-	if(!date.isEmpty() && !format.isEmpty())
+	if (!date.isEmpty() && !format.isEmpty())
 	{
 		QDateTime dt = QDateTime::fromString(date, internalFormat);
 		result       = dt.toString(format);
@@ -563,9 +566,9 @@ static void formatDateToGce(xmlXPathParserContextPtr ctxt, int nargs)
 
 	const QString format         = qtValuePopString(ctxt).trimmed();
 	const QString date           = qtValuePopString(ctxt).trimmed();
-		  QString result;
+	QString result;
 
-	if(!date.isEmpty() && !format.isEmpty())
+	if (!date.isEmpty() && !format.isEmpty())
 	{
 		QDateTime dt = QDateTime::fromString(date, format);
 		result       = dt.toString("yyyyMMdd");
@@ -585,9 +588,9 @@ static void formatTime(xmlXPathParserContextPtr ctxt, int nargs)
 	const QString internalFormat = qtValuePopString(ctxt);
 	const QString format         = qtValuePopString(ctxt).trimmed();
 	const QString date           = qtValuePopString(ctxt).trimmed();
-		  QString result;
+	QString result;
 
-	if(!date.isEmpty() && !format.isEmpty())
+	if (!date.isEmpty() && !format.isEmpty())
 	{
 		QDateTime dt = QDateTime::fromString(date, internalFormat);
 		result       = dt.toString(format);
@@ -678,27 +681,28 @@ static void getScreenValue(xmlXPathParserContextPtr ctxt, int nargs)
 	QString screen_data, business_data, result;
 
 	xmlXPathObjectPtr nodeList = valuePop(ctxt);
-	if(nodeList->type == XPATH_NODESET) {
+	if (nodeList->type == XPATH_NODESET)
+	{
 		xmlNodeSetPtr nodes = nodeList->nodesetval;
 		int size = nodes ? nodes->nodeNr : 0;
-		for(int i = 0; i < size; i++)
+		for (int i = 0; i < size; i++)
 		{
-			if(nodes->nodeTab[i]->type == XML_ELEMENT_NODE)
+			if (nodes->nodeTab[i]->type == XML_ELEMENT_NODE)
 			{
 				xmlElementPtr node = (xmlElementPtr)nodes->nodeTab[i];
 				xmlNodePtr child   = node->children;
 
-				while(child != NULL)
+				while (child != NULL)
 				{
-					if(child->type == XML_ELEMENT_NODE)
+					if (child->type == XML_ELEMENT_NODE)
 					{
 						const QString name = QString::fromUtf8((char*)child->name);
 						xmlChar* content = xmlNodeGetContent(child);
-						if(name == "screen_data")
+						if (name == "screen_data")
 						{
 							screen_data += QString::fromUtf8((char*)content);
 						}
-						if(name == "business_data")
+						if (name == "business_data")
 						{
 							business_data += QString::fromUtf8((char*)content);
 						}
@@ -707,15 +711,15 @@ static void getScreenValue(xmlXPathParserContextPtr ctxt, int nargs)
 
 					child = child->next;
 				}
-				if(! (screen_data.isEmpty() && business_data.isEmpty())) break;
+				if (!(screen_data.isEmpty() && business_data.isEmpty())) break;
 			}
 		}
 	}
-	if(!screen_data.isEmpty())
+	if (!screen_data.isEmpty())
 	{
 		result = screen_data;
 	}
-	else if(!business_data.isEmpty())
+	else if (!business_data.isEmpty())
 	{
 		result = business_data;
 	}

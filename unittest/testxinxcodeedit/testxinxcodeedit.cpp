@@ -80,7 +80,7 @@ void TestXinxCodeEdit::initTestCase()
 	XINXConfig::self()->languageFactory()->addDefinitionPath("./libxinx");
 
 	m_edit = new XinxCodeEdit;
-//	m_edit->show();
+//  m_edit->show();
 	QVERIFY(m_edit != 0);
 }
 
@@ -200,7 +200,7 @@ void TestXinxCodeEdit::testTextUnderCursor()
 
 	for (int i = 0 ; i < nextword; i++)
 	{
-		//		QWARN( qPrintable( m_edit->textUnderCursor( m_edit->textCursor() ) ) );
+		//      QWARN( qPrintable( m_edit->textUnderCursor( m_edit->textCursor() ) ) );
 		m_edit->moveCursor(QDocumentCursor::NextWord);
 	}
 

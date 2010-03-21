@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * XINX                                                                    *
- * Copyright (C) 2009 by Ulrich Van Den Hekke                              *
+ * Copyright (C) 2010 by Ulrich Van Den Hekke                              *
  * ulrich.vdh@shadoware.org                                                *
  *                                                                         *
  * This program is free software: you can redistribute it and/or modify    *
@@ -17,28 +17,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-#ifndef PARSERFACTORY_H
-#define PARSERFACTORY_H
-#pragma once
+#include "newversionwizardimpl.h"
 
-// Xinx header
-#include <core/lib-config.h>
-#include <contentview2/contentview2parser.h>
-
-namespace ContentView2
+NewVersionWizardImpl::NewVersionWizardImpl()
 {
+	setupUi(this);
+}
 
-class LIBEXPORT ParserFactory
+NewVersionWizardImpl::NewVersionWizardImpl(QWidget * parent) : QWizard(parent)
 {
-public:
-	ParserFactory();
+	setupUi(this);
+}
 
-	static QString getParserTypeByFilename(const QString & filename);
-	static Parser * getParserByFilename(const QString & filename);
-	static Parser * getParserByType(const QString & type);
+NewVersionWizardImpl::~NewVersionWizardImpl()
+{
+}
 
-};
+void NewVersionWizardImpl::loadFromConfig()
+{
 
 }
 
-#endif // PARSERFACTORY_H
+void NewVersionWizardImpl::saveToConfig()
+{
+}

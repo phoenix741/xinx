@@ -47,14 +47,14 @@
  * \code
  *
  * class FooPlugin : public QObject, public IXinxPlugin {
- *	Q_OBJECT
- *	Q_INTERFACES(IXinxPlugin)
+ *  Q_OBJECT
+ *  Q_INTERFACES(IXinxPlugin)
  * public:
- * 	FooPlugin();
- *	virtual ~FooPlugin();
+ *  FooPlugin();
+ *  virtual ~FooPlugin();
  *
- *	virtual bool initializePlugin( const QString & lang );
- *	virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr );
+ *  virtual bool initializePlugin( const QString & lang );
+ *  virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr );
  * };
  * \endcode
  *
@@ -62,32 +62,32 @@
  *
  * \code
  * FooPlugin::FooPlugin() {
- *	// Make some initialization
+ *  // Make some initialization
  * }
  *
  * FooPlugin::~FooPlugin() {
- *	// Make some cleanup
+ *  // Make some cleanup
  * }
  *
  * bool FooPlugin::initializePlugin( const QString & lang ) {
- *	// Make some initialization about the localization
- *	return true;
+ *  // Make some initialization about the localization
+ *  return true;
  * }
 
  * QVariant FooPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr ) {
- *	switch( attr ) {
- *	case PLG_NAME:
- *		return tr("A foo plugins");
- *	case PLG_DESCRIPTION:
- *		return tr("Just a foo plugins that do nothing.");
- *	case PLG_AUTHOR:
- *		return "Ulrich Van Den Hekke";
- *	case PLG_VERSION:
- *		return "0.1";
- *	case PLG_LICENCE:
- *		return "GPL v2.0 or later";
- *	}
- *	return QVariant();
+ *  switch( attr ) {
+ *  case PLG_NAME:
+ *      return tr("A foo plugins");
+ *  case PLG_DESCRIPTION:
+ *      return tr("Just a foo plugins that do nothing.");
+ *  case PLG_AUTHOR:
+ *      return "Ulrich Van Den Hekke";
+ *  case PLG_VERSION:
+ *      return "0.1";
+ *  case PLG_LICENCE:
+ *      return "GPL v2.0 or later";
+ *  }
+ *  return QVariant();
  * }
  * Q_EXPORT_PLUGIN2(fooplugin, FooPlugin)
  * \endcode
@@ -104,13 +104,13 @@
  *
  * \code
  * QList&lt; QPair&lt;QString,QString&gt; &gt; CVSPlugin::pluginTools() {
- *	QList&lt; QPair&lt;QString,QString&gt; &gt; tools;
+ *  QList&lt; QPair&lt;QString,QString&gt; &gt; tools;
  * #ifdef Q_WS_WIN
- * 	tools.append( qMakePair( QString("mytool"), QString("%1/Tool/mytool.exe").arg( "C:/Program Files" ) ) );
+ *  tools.append( qMakePair( QString("mytool"), QString("%1/Tool/mytool.exe").arg( "C:/Program Files" ) ) );
  * #else
- * 	tools.append( qMakePair( QString("cvs"), QString("/usr/bin/mytool") ) );
+ *  tools.append( qMakePair( QString("cvs"), QString("/usr/bin/mytool") ) );
  * #endif // Q_WS_WIN
- * 	return tools;
+ *  return tools;
  * }
  * \endcode
  *
@@ -126,19 +126,19 @@
  *
  * \code
  * class FooPlugin : public QObject, public IRCSPlugin {
- *	Q_OBJECT
- *	Q_INTERFACES(IXinxPlugin)
- *	Q_INTERFACES(IRCSPlugin)
+ *  Q_OBJECT
+ *  Q_INTERFACES(IXinxPlugin)
+ *  Q_INTERFACES(IRCSPlugin)
  * public:
- * 	FooPlugin();
- *	virtual ~FooPlugin();
+ *  FooPlugin();
+ *  virtual ~FooPlugin();
  *
- *	virtual bool initializePlugin( const QString & lang );
- *	virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr );
+ *  virtual bool initializePlugin( const QString & lang );
+ *  virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr );
  *
- *	virtual QStringList rcs();
- *	virtual QString descriptionOfRCS( const QString & rcs );
- *	virtual RCS * createRCS( const QString & rcs, const QString & basePath );
+ *  virtual QStringList rcs();
+ *  virtual QString descriptionOfRCS( const QString & rcs );
+ *  virtual RCS * createRCS( const QString & rcs, const QString & basePath );
  * };
  * \endcode
  *
@@ -146,20 +146,20 @@
  *
  * \code
  * QStringList FooPlugin::rcs() {
- * 	return QStringList() << "foo";
+ *  return QStringList() << "foo";
  * }
  *
  * QString FooPlugin::descriptionOfRCS( const QString & rcs ) {
- * 	if( rcs.toLower() == "foo" )
- *		return tr( "Foo - Foo Version System" );
- *	return QString();
+ *  if( rcs.toLower() == "foo" )
+ *      return tr( "Foo - Foo Version System" );
+ *  return QString();
  * }
 
  * RCS * FooPlugin::createRCS( const QString & rcs, const QString & basePath ) {
- *	if( rcs.toLower() == "foo" ) {
- *		return new RCS_Foo( basePath );
- *	}
- *	return NULL;
+ *  if( rcs.toLower() == "foo" ) {
+ *      return new RCS_Foo( basePath );
+ *  }
+ *  return NULL;
  * }
  * \endcode
  *
@@ -167,20 +167,20 @@
  *
  * \code
  * class RCS_Foo : public RCS {
- *	Q_OBJECT
+ *  Q_OBJECT
  * public:
- *	RCS_Foo( const QString & base );
- *	virtual ~RCS_Foo();
+ *  RCS_Foo( const QString & base );
+ *  virtual ~RCS_Foo();
  *
- *	virtual struct_rcs_infos infos( const QString & path );
- *	virtual RCS::FilesOperation operations( const QStringList & path );
- *	virtual void update( const QStringList & path );
- *	virtual void commit( const FilesOperation & path, const QString & message );
- *	virtual void add( const QStringList & path );
- *	virtual void remove( const QStringList & path );
- *	virtual void updateToRevision( const QString & path, const QString & revision, QString * content = 0 );
+ *  virtual struct_rcs_infos infos( const QString & path );
+ *  virtual RCS::FilesOperation operations( const QStringList & path );
+ *  virtual void update( const QStringList & path );
+ *  virtual void commit( const FilesOperation & path, const QString & message );
+ *  virtual void add( const QStringList & path );
+ *  virtual void remove( const QStringList & path );
+ *  virtual void updateToRevision( const QString & path, const QString & revision, QString * content = 0 );
  * public slots:
- *	virtual void abort();
+ *  virtual void abort();
  * private slots:
  * private:
  * };
@@ -199,13 +199,13 @@
  *
  * \code
  * class FooPlugin : public QObject, public IRCSPlugin, public IRCSPluginProjectConfiguration {
- *	Q_OBJECT
- *	Q_INTERFACES(IXinxPlugin)
- *	Q_INTERFACES(IRCSPlugin)
- *	Q_INTERFACES(IRCSPluginProjectConfiguration)
+ *  Q_OBJECT
+ *  Q_INTERFACES(IXinxPlugin)
+ *  Q_INTERFACES(IRCSPlugin)
+ *  Q_INTERFACES(IRCSPluginProjectConfiguration)
  * public:
- * 	FooPlugin();
- *	virtual ~FooPlugin();
+ *  FooPlugin();
+ *  virtual ~FooPlugin();
  * \endcode
  *
  * Methods \e IXinxPluginConfiguration::createSettingsDialog() and \e IXinxPluginProjectConfiguration::createProjectSettingsPage()
@@ -226,25 +226,25 @@
  *
  * \code
  * bool loadProjectSettingsPage( QWidget * widget ) {
- *	FooProjectImpl * page = qobject_cast<FooProjectImpl*>( widget );
- *	Q_ASSERT( page );
+ *  FooProjectImpl * page = qobject_cast<FooProjectImpl*>( widget );
+ *  Q_ASSERT( page );
  *
- *	XinxProject::ProjectOptions options = XINXProjectManager::self()->project()->options();
- *	page->m_monoption->setChecked( options.testFlag( XinxProject::hasSpecifiques ) );
- *	return true;
+ *  XinxProject::ProjectOptions options = XINXProjectManager::self()->project()->options();
+ *  page->m_monoption->setChecked( options.testFlag( XinxProject::hasSpecifiques ) );
+ *  return true;
  * }
  *
  * bool saveProjectSettingsPage( QWidget * widget ) {
- * 	FooProjectImpl * page = qobject_cast<FooProjectImpl*>( widget );
- * 	Q_ASSERT( page );
+ *  FooProjectImpl * page = qobject_cast<FooProjectImpl*>( widget );
+ *  Q_ASSERT( page );
  *
- * 	XinxProject::ProjectOptions options = XINXProjectManager::self()->project()->options();
- * 	if( page->m_monoption->isChecked() )
- * 		options |= XinxProject::hasSpecifiques;
- * 	else
- * 		options &= ~XinxProject::hasSpecifiques;
- * 	XINXProjectManager::self()->project()->setOptions( options );
- * 	return true;
+ *  XinxProject::ProjectOptions options = XINXProjectManager::self()->project()->options();
+ *  if( page->m_monoption->isChecked() )
+ *      options |= XinxProject::hasSpecifiques;
+ *  else
+ *      options &= ~XinxProject::hasSpecifiques;
+ *  XINXProjectManager::self()->project()->setOptions( options );
+ *  return true;
  * }
  * \endcode
  *
@@ -304,6 +304,10 @@ public:
 private:
 	static XINXStaticDeleter * s_self;
 };
+
+#define STRINGIFY(x) #x
+#define TOSTRING(x) STRINGIFY(x)
+#define VERSION_STRING "v" TOSTRING(VERSION_MAJOR) "." TOSTRING(VERSION_MINOR) "." TOSTRING(VERSION_RELEASE)
 
 /*!
  * Numbre of maximum recent file that can be opened

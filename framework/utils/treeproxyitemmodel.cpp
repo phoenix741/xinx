@@ -69,7 +69,7 @@
 TreeProxyItemModel::TreeProxyItemModel(QObject * parent) : QAbstractProxyModel(parent), m_sourceColumnCount(0), m_resetModel(false)
 {
 #ifndef _XINX_RELEASE_MODE_
-//	connect( ExceptionManager::self(), SIGNAL(errorTriggered()), this, SLOT(printMapping()) );
+//  connect( ExceptionManager::self(), SIGNAL(errorTriggered()), this, SLOT(printMapping()) );
 #endif
 }
 
@@ -365,8 +365,8 @@ QModelIndex TreeProxyItemModel::mapFromSource(const QModelIndex & sourceIndex) c
 	Mapping * parentMapping = getMapping(parentId);
 	Q_ASSERT(parentMapping);
 
-	int 	proxyRow = parentMapping->childs.indexOf(id),
-	                proxyColumn = sourceIndex.column();
+	int     proxyRow = parentMapping->childs.indexOf(id),
+	                   proxyColumn = sourceIndex.column();
 
 	return createIndex(proxyRow, proxyColumn, parentMapping);
 }

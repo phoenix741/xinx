@@ -47,7 +47,7 @@ XQueryKeyword::XQueryKeyword() : QObject()
 	m_keywords.insert("xs:string",       "buildin");
 	m_keywords.insert("xs:boolean",      "buildin");
 	m_keywords.insert("xs:decimal",      "buildin");
-	m_keywords.insert("xs:float", 	     "buildin");
+	m_keywords.insert("xs:float",        "buildin");
 	m_keywords.insert("xs:double",       "buildin");
 	m_keywords.insert("xs:duration",     "buildin");
 	m_keywords.insert("xs:dateTime",     "buildin");

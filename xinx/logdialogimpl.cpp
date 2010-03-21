@@ -174,7 +174,7 @@ void LogDockWidget::updateErrors()
 		QTreeWidgetItem * fileItem = new QTreeWidgetItem(m_logwidget->m_messagesWidget);
 		fileItem->setText(0, context);
 		IFileTypePlugin * fileType = XinxPluginsLoader::self()->matchedFileType(context);
-		if( fileType )
+		if (fileType)
 		{
 			fileItem->setIcon(0, QIcon(fileType->icon()));
 		}
@@ -208,7 +208,7 @@ void LogDockWidget::updateErrors()
 		m_logwidget->m_messagesWidget->expandItem(fileItem);
 	}
 
-	if(m_logwidget->m_messagesWidget->invisibleRootItem()->childCount())
+	if (m_logwidget->m_messagesWidget->invisibleRootItem()->childCount())
 	{
 		m_logwidget->m_tabWidget->setCurrentWidget(m_logwidget->m_messageTab);
 		setVisible(true);
@@ -224,7 +224,7 @@ void LogDockWidget::doubleClicked(const QModelIndex & index)
 	QString filename = index.data(Qt::UserRole).toString();
 	int line         = index.data(Qt::UserRole + 1).toInt();
 
-	if(!filename.isEmpty())
+	if (!filename.isEmpty())
 	{
 		emit open(filename, line);
 	}

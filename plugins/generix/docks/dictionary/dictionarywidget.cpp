@@ -39,27 +39,27 @@ void DictionaryWidget::loadDictionaries(const QString & prefix)
 	try
 	{
 		ContentView2::Project project(ContentView2::Manager::self()->database(),
-									XINXProjectManager::self()->project());
+		                              XINXProjectManager::self()->project());
 
 		QSqlQuery query(ContentView2::Manager::self()->database());
 
-		QString whereClause =	"SELECT distinct display_name, name, icon "
-								"FROM cv_node, cv_file "
-								"WHERE cv_file.project_id=:project_id "
-								"  AND cv_node.file_id=cv_file.id "
-								"  AND cv_node.type = 'XslVariable' "
-								"  AND cv_file.type = 'GNX_DICO' %1 "
-								"ORDER BY lower(display_name) LIMIT 200";
+		QString whereClause =   "SELECT distinct display_name, name, icon "
+		                        "FROM cv_node, cv_file "
+		                        "WHERE cv_file.project_id=:project_id "
+		                        "  AND cv_node.file_id=cv_file.id "
+		                        "  AND cv_node.type = 'XslVariable' "
+		                        "  AND cv_file.type = 'GNX_DICO' %1 "
+		                        "ORDER BY lower(display_name) LIMIT 200";
 
-		if(!prefix.isEmpty())
+		if (!prefix.isEmpty())
 		{
 			whereClause = whereClause.arg(
-						"  AND (cv_node.name like '%'||ifnull(:prefix1, '')||'%' "
-						"   OR EXISTS (SELECT 1 FROM cv_link, cv_node cv_node2 "
-									 " WHERE cv_link.child_id=cv_node2.id "
-									 "   AND cv_link.parent_id=cv_node.id "
-									 "   AND cv_node2.name like '%'||ifnull(:prefix2, '')||'%')) "
-						);
+			                  "  AND (cv_node.name like '%'||ifnull(:prefix1, '')||'%' "
+			                  "   OR EXISTS (SELECT 1 FROM cv_link, cv_node cv_node2 "
+			                  " WHERE cv_link.child_id=cv_node2.id "
+			                  "   AND cv_link.parent_id=cv_node.id "
+			                  "   AND cv_node2.name like '%'||ifnull(:prefix2, '')||'%')) "
+			              );
 		}
 		else
 		{
@@ -69,7 +69,7 @@ void DictionaryWidget::loadDictionaries(const QString & prefix)
 		query.prepare(whereClause);
 		query.bindValue(":project_id", project.projectId());
 
-		if(!prefix.isEmpty())
+		if (!prefix.isEmpty())
 		{
 			query.bindValue(":prefix1", prefix);
 			query.bindValue(":prefix2", prefix);
@@ -78,7 +78,7 @@ void DictionaryWidget::loadDictionaries(const QString & prefix)
 		Q_ASSERT_X(result, "DictionaryWidget::exec", qPrintable(query.lastError().text()));
 
 		clear();
-		while(query.next())
+		while (query.next())
 		{
 			QTreeWidgetItem * label = new QTreeWidgetItem(this);
 			label->setText(0, query.value(0).toString());
@@ -86,16 +86,16 @@ void DictionaryWidget::loadDictionaries(const QString & prefix)
 
 			QSqlQuery childQuery(ContentView2::Manager::self()->database());
 			childQuery.prepare("SELECT distinct cv_node2.property1, cv_node2.property2, cv_node2.name, cv_node2.icon "
-							   "FROM cv_file, cv_node, cv_link, cv_node cv_node2 "
-								"WHERE cv_file.project_id=:project_id "
-								"  AND cv_node.file_id=cv_file.id "
-								"  AND cv_node.type = 'XslVariable' "
-								"  AND cv_node.name = :node_name "
-								"  AND cv_file.type = 'GNX_DICO' "
-								"  AND cv_link.parent_id = cv_node.id "
-								"  AND cv_link.child_id = cv_node2.id "
-								"  AND cv_node2.type = 'DICTIONARY_LABEL' "
-								"ORDER BY cv_node2.property1, cv_node2.property2, lower(cv_node2.name) ");
+			                   "FROM cv_file, cv_node, cv_link, cv_node cv_node2 "
+			                   "WHERE cv_file.project_id=:project_id "
+			                   "  AND cv_node.file_id=cv_file.id "
+			                   "  AND cv_node.type = 'XslVariable' "
+			                   "  AND cv_node.name = :node_name "
+			                   "  AND cv_file.type = 'GNX_DICO' "
+			                   "  AND cv_link.parent_id = cv_node.id "
+			                   "  AND cv_link.child_id = cv_node2.id "
+			                   "  AND cv_node2.type = 'DICTIONARY_LABEL' "
+			                   "ORDER BY cv_node2.property1, cv_node2.property2, lower(cv_node2.name) ");
 			childQuery.bindValue(":project_id", project.projectId());
 			childQuery.bindValue(":node_name", label->text(0));
 			bool result = childQuery.exec();
@@ -104,16 +104,16 @@ void DictionaryWidget::loadDictionaries(const QString & prefix)
 			QTreeWidgetItem * langue = 0;
 			QTreeWidgetItem * context = 0;
 
-			while(childQuery.next())
+			while (childQuery.next())
 			{
 				const QString langueStr  = childQuery.value(0).toString();
 				const QString contextStr = childQuery.value(1).toString();
 				const QString nameStr    = childQuery.value(2).toString();
 				const QString iconStr    = childQuery.value(3).toString();
 
-				if((langue == 0) || (langue->text(0) != langueStr))
+				if ((langue == 0) || (langue->text(0) != langueStr))
 				{
-					if(langueStr.isEmpty())
+					if (langueStr.isEmpty())
 					{
 						langue = label;
 					}
@@ -121,41 +121,36 @@ void DictionaryWidget::loadDictionaries(const QString & prefix)
 					{
 						langue = new QTreeWidgetItem(label);
 						langue->setText(0, langueStr);
-						if(langueStr == "FRA")
+						if (langueStr == "FRA")
 						{
 							langue->setIcon(0, QIcon(":/generix/images/france.png"));
 						}
-						else
-						if(langueStr == "ENG")
+						else if (langueStr == "ENG")
 						{
 							langue->setIcon(0, QIcon(":/generix/images/usa.png"));
 						}
-						else
-						if(langueStr == "ESP")
+						else if (langueStr == "ESP")
 						{
 							langue->setIcon(0, QIcon(":/generix/images/spain.png"));
 						}
-						else
-						if(langueStr == "POR")
+						else if (langueStr == "POR")
 						{
 							langue->setIcon(0, QIcon(":/generix/images/portugal.png"));
 						}
-						else
-						if(langueStr == "DEU")
+						else if (langueStr == "DEU")
 						{
 							langue->setIcon(0, QIcon(":/generix/images/germany.png"));
 						}
-						else
-						if(langueStr == "ITA")
+						else if (langueStr == "ITA")
 						{
 							langue->setIcon(0, QIcon(":/generix/images/italy.png"));
 						}
 					}
 				}
 
-				if((context == 0) || (context->text(0) != contextStr))
+				if ((context == 0) || (context->text(0) != contextStr))
 				{
-					if(contextStr.isEmpty())
+					if (contextStr.isEmpty())
 					{
 						context = langue;
 					}
@@ -173,7 +168,7 @@ void DictionaryWidget::loadDictionaries(const QString & prefix)
 			}
 		}
 	}
-	catch(ContentView2::ProjectException e)
+	catch (ContentView2::ProjectException e)
 	{
 
 	}

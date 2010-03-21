@@ -148,7 +148,7 @@ void XslContentView2Parser::readStyleSheet()
 				node.setData("Import", ContentView2::Node::NODE_TYPE);
 
 				IFileTypePlugin * fileType = XinxPluginsLoader::self()->matchedFileType(import);
-				if( fileType )
+				if (fileType)
 				{
 					node.setData(fileType->icon(), ContentView2::Node::NODE_ICON);
 				}

@@ -223,7 +223,7 @@ void XmlPresentationDockThread::setComboToolTip(const QString & filename)
 	m_xmlPresentationWidget->m_presentationComboBox->setToolTip(
 	    tr("File name : %1\n"
 	       "Size : %2 %3b\n"
-	       "File date : %4")	.arg(file.canonicalFilePath())
+	       "File date : %4")    .arg(file.canonicalFilePath())
 	    .arg(filesize, 0, 'f', 2).arg(unite)
 	    .arg(file.lastModified().toString())
 	);

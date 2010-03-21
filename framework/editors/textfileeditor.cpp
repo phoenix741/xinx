@@ -57,12 +57,12 @@
 /* TextFileEditor */
 
 #ifdef Q_WS_X11
-#	define DEFAULT_EOL TextFileEditor::UnixEndOfLine
+#   define DEFAULT_EOL TextFileEditor::UnixEndOfLine
 #else
 #ifdef Q_WS_MAC
-#	define DEFAULT_EOL TextFileEditor::MacEndOfLine
+#   define DEFAULT_EOL TextFileEditor::MacEndOfLine
 #else
-#	define DEFAULT_EOL TextFileEditor::WindowsEndOfLine
+#   define DEFAULT_EOL TextFileEditor::WindowsEndOfLine
 #endif
 #endif
 
@@ -344,7 +344,7 @@ void TextFileEditor::replace(const QString & from, const QString & to, SearchOpt
 		return;
 	}
 
-	QRegExp	expression(from);
+	QRegExp expression(from);
 	expression.indexIn(m_cursorStart.selectedText());
 	QStringList list = expression.capturedTexts();
 	QString result(to);
@@ -402,7 +402,7 @@ void TextFileEditor::errorChanged()
 	const QString ctxt = lastFileName().isEmpty() ? m_uuid : lastFileName();
 	foreach(ErrorManager::Error err, ErrorManager::self()->errors().value(ctxt))
 	{
-		if(! lines.contains(err.line))
+		if (! lines.contains(err.line))
 			lines << err.line - 1;
 	}
 	textEdit()->setErrors(lines);
@@ -456,7 +456,7 @@ bool TextFileEditor::autoIndent()
 
 ContentView2::Node TextFileEditor::rootNode() const
 {
-	if(m_file.isValid(ContentView2::Manager::self()->database()))
+	if (m_file.isValid(ContentView2::Manager::self()->database()))
 	{
 		int rootId = m_file.file(ContentView2::Manager::self()->database()).rootId();
 		return ContentView2::Node(ContentView2::Manager::self()->database(), rootId);
@@ -544,7 +544,7 @@ void TextFileEditor::searchWord(const QString & word)
 	if (n.isValid())
 	{
 		ContentView2::File file = n.file(ContentView2::Manager::self()->database());
-		if(file.isCached())
+		if (file.isCached())
 			emit open(file.path(), n.line());
 		else
 			emit open(QString(), n.line());

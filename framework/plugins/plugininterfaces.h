@@ -110,7 +110,7 @@ public:
 	 * Create a content view parser, this content view parser will any file (of the correct type of course)
 	 * If the parser is null, no content view will be load.
 	 */
-	virtual ContentView2::Parser * createParser( const QString & type ) = 0;
+	virtual ContentView2::Parser * createParser(const QString & type) = 0;
 };
 
 /*!

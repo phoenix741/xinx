@@ -91,9 +91,9 @@ QVariant GenerixPlugin::getPluginAttribute(const enum IXinxPlugin::PluginAttribu
 	return QVariant();
 }
 
-ContentView2::Parser * GenerixPlugin::createParser( const QString & type )
+ContentView2::Parser * GenerixPlugin::createParser(const QString & type)
 {
-	if( type == "GNX_DICO" )
+	if (type == "GNX_DICO")
 	{
 		return new DictionaryParser();
 	}

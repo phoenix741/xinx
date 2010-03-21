@@ -220,11 +220,11 @@ QModelIndex BaseSnipetItemModel::index(int row, int column, const QModelIndex & 
  *
  * This method return more information that the default implementation in QAbstractItemModel.
  * \param role If the role have BaseSnipetItemModel::SnipetIdRole, data() returns the id of the snipet
-			   or id of the category.
-			   If the role have BaseSnipetItemModel::SnipetTypeRole, data() returns \e CATEGORY or
-			   \e SNIPET to tell if the index is a Category or a Snipet.(String form)
-			   If the role have BaseSnipetItemModel::SnipetParentIdRole, data() returns the parent
-			   identifier of the index.
+               or id of the category.
+               If the role have BaseSnipetItemModel::SnipetTypeRole, data() returns \e CATEGORY or
+               \e SNIPET to tell if the index is a Category or a Snipet.(String form)
+               If the role have BaseSnipetItemModel::SnipetParentIdRole, data() returns the parent
+               identifier of the index.
  * \param index The index where data must search information.
  * \return Information stored in a QVariant.
  */

@@ -292,7 +292,7 @@ void PluginDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
 	QString display = index.model()->data(index, PluginModel::PLG_NAME).toString();
 	QString description = index.model()->data(index, PluginModel::PLG_DESCRIPTION).toString();
 
-#	define LeftPosition( text, metrics ) myOption.direction == Qt::LeftToRight ? \
+#   define LeftPosition( text, metrics ) myOption.direction == Qt::LeftToRight ? \
 	pixmapLeftPosition + iconPixmap.width() + m_separatorPixels * 2 : \
 	pixmapLeftPosition - iconPixmap.width() - m_separatorPixels * 2 - metrics.width( text )
 

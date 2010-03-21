@@ -25,6 +25,7 @@
 #include <core/xinxconfig.h>
 #include <core/exceptions.h>
 #include <plugins/xinxpluginsloader.h>
+#include "newversionwizardimpl.h"
 
 // QCodeEdit header
 #include <qlinemarksinfocenter.h>
@@ -244,6 +245,14 @@ int main(int argc, char *argv[])
 
 			mainWin->show();
 			splash.finish(mainWin);
+
+			if ((XINXConfig::self()->config().version != VERSION_STRING) || (args.contains("--newversion")))
+			{
+				NewVersionWizardImpl dlg;
+				dlg.exec();
+
+				XINXConfig::self()->config().version = VERSION_STRING;
+			}
 
 			if (!((args.count() == 1) && (XINXConfig::self()->config().project.openTheLastProjectAtStart) && (! XINXConfig::self()->config().project.lastOpenedProject.isEmpty())))
 			{

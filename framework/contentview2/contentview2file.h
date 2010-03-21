@@ -34,7 +34,8 @@
 
 class XinxProject;
 
-namespace ContentView2 {
+namespace ContentView2
+{
 
 /*!
  * \class FileException

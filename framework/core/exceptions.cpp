@@ -36,10 +36,10 @@
 #include <iostream>
 #include <csignal>
 #ifndef Q_WS_WIN
-#	include <execinfo.h>
-#	include <stdio.h>
-#	include <stdlib.h>
-#	include <cxxabi.h>
+#   include <execinfo.h>
+#   include <stdio.h>
+#   include <stdlib.h>
+#   include <cxxabi.h>
 #endif
 
 /* Static member */
@@ -226,7 +226,7 @@ ErrorManager::ErrorManager()
 
 ErrorManager::~ErrorManager()
 {
-	if(this == s_self)
+	if (this == s_self)
 	{
 		s_self = 0;
 	}

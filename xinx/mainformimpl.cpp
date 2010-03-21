@@ -1524,8 +1524,8 @@ void MainformImpl::findFirst(const QString & chaine, const QString & dest, const
 	m_replaceExpression = dest;
 	m_findOptions       = options;
 	m_yesToAllReplace   = false;
-	m_nbFindedText		= 0;
-	m_searchInverse		= false;
+	m_nbFindedText      = 0;
+	m_searchInverse     = false;
 
 	editor->initSearch(m_findOptions);
 	findNext();
@@ -1634,8 +1634,8 @@ void MainformImpl::findNext()
 				if (ret == QMessageBox::Yes)
 				{
 					m_findOptions   &= ~ AbstractEditor::SearchOptions(AbstractEditor::ONLY_SELECTION);
-					options			&= ~ AbstractEditor::SearchOptions(AbstractEditor::ONLY_SELECTION);
-					options 		|= AbstractEditor::SEARCH_FROM_START;
+					options         &= ~ AbstractEditor::SearchOptions(AbstractEditor::ONLY_SELECTION);
+					options         |= AbstractEditor::SEARCH_FROM_START;
 					editor->initSearch(options);
 
 					continuer = true;

@@ -366,6 +366,7 @@ AppSettings::AppSettings::struct_globals AppSettings::getSettingsGlobals(AppSett
 	value.snipets = getSettingsSnipets(settings, "Snipets", defaultValue.snipets);
 	value.tools = getSettingsHash_QString(settings, "Tools", defaultValue.tools);
 	value.formats = getSettingsHash_struct_qformat(settings, "Formats", defaultValue.formats);
+	value.version = settings->value("Version", defaultValue.version).toString();
 
 	settings->endGroup();
 	return value;
@@ -390,6 +391,7 @@ void AppSettings::setSettingsGlobals(AppSettingsSettings * settings, const QStri
 	setSettingsSnipets(settings, "Snipets", value.snipets);
 	setSettingsHash_QString(settings, "Tools", value.tools);
 	setSettingsHash_struct_qformat(settings, "Formats", value.formats);
+	settings->setValue("Version", value.version, defaultValue.version);
 
 	settings->endGroup();
 }

@@ -124,7 +124,7 @@ int DerivationPathTableModel::columnCount(const QModelIndex & parent) const
 	return 4;
 }
 
-int	DerivationPathTableModel::rowCount(const QModelIndex & parent) const
+int DerivationPathTableModel::rowCount(const QModelIndex & parent) const
 {
 	Q_UNUSED(parent)
 	return m_paths.size();

@@ -99,12 +99,12 @@ void ReplaceDialogImpl::m_findButton_clicked()
 		m_comboReplace->addItem(m_comboReplace->lineEdit()->text());
 
 	AbstractEditor::SearchOptions options;
-	if (m_searchSelectionRadioButton->isChecked())					options |= AbstractEditor::ONLY_SELECTION;
-	if (m_UpRadioButton->isChecked())								options |= AbstractEditor::BACKWARD;
-	if (m_caseCheckBox->checkState() == Qt::Checked)				options |= AbstractEditor::MATCH_CASE;
-	if (m_fromStartCheckBox->checkState() == Qt::Checked)			options |= AbstractEditor::SEARCH_FROM_START;
-	if (m_wholeWordsCheckBox->checkState() == Qt::Checked)			options |= AbstractEditor::WHOLE_WORDS;
-	if (m_regularExpressionCheckBox->checkState() == Qt::Checked)	options |= AbstractEditor::REGULAR_EXPRESSION;
+	if (m_searchSelectionRadioButton->isChecked())                  options |= AbstractEditor::ONLY_SELECTION;
+	if (m_UpRadioButton->isChecked())                               options |= AbstractEditor::BACKWARD;
+	if (m_caseCheckBox->checkState() == Qt::Checked)                options |= AbstractEditor::MATCH_CASE;
+	if (m_fromStartCheckBox->checkState() == Qt::Checked)           options |= AbstractEditor::SEARCH_FROM_START;
+	if (m_wholeWordsCheckBox->checkState() == Qt::Checked)          options |= AbstractEditor::WHOLE_WORDS;
+	if (m_regularExpressionCheckBox->checkState() == Qt::Checked)   options |= AbstractEditor::REGULAR_EXPRESSION;
 
 	if (!(m_projectFilesRadioButton->isChecked() || m_customFilesRadioButton->isChecked()))
 	{

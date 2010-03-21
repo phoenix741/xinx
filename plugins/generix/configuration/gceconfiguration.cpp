@@ -269,7 +269,7 @@ GceConfiguration::GceConfiguration(const QString & filename) : m_configurationFi
 	parser.loadFromFile(filename);
 
 	m_fileToInformation = parser.m_fileRefToInformation;
-	m_version			= ConfigurationVersion(parser.m_version, parser.m_edition);
+	m_version           = ConfigurationVersion(parser.m_version, parser.m_edition);
 }
 
 GceConfiguration::~GceConfiguration()

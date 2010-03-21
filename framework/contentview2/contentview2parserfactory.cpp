@@ -21,21 +21,22 @@
 #include "contentview2/contentview2parserfactory.h"
 #include "plugins/xinxpluginsloader.h"
 
-namespace ContentView2 {
+namespace ContentView2
+{
 
 ParserFactory::ParserFactory()
 {
 }
 
-QString ParserFactory::getParserTypeByFilename( const QString & filename )
+QString ParserFactory::getParserTypeByFilename(const QString & filename)
 {
 	if (! QFileInfo(filename).exists()) return QString();
 
 	IFileTypePlugin * fileType = XinxPluginsLoader::self()->matchedFileType(filename);
-	if( fileType )
+	if (fileType)
 	{
 		QString parserType = fileType->parserType();
-		if( ! parserType.isEmpty() )
+		if (! parserType.isEmpty())
 		{
 			return parserType;
 		}
@@ -43,29 +44,29 @@ QString ParserFactory::getParserTypeByFilename( const QString & filename )
 	return QString();
 }
 
-Parser * ParserFactory::getParserByFilename( const QString & filename )
+Parser * ParserFactory::getParserByFilename(const QString & filename)
 {
-	QString parserType = getParserTypeByFilename( filename );
-	if( ! parserType.isEmpty() )
+	QString parserType = getParserTypeByFilename(filename);
+	if (! parserType.isEmpty())
 	{
-		return getParserByType( parserType );
+		return getParserByType(parserType);
 	}
 	return 0;
 }
 
-Parser * ParserFactory::getParserByType( const QString & type )
+Parser * ParserFactory::getParserByType(const QString & type)
 {
 	Parser * parser = 0;
 
-	foreach( XinxPluginElement * e, XinxPluginsLoader::self()->plugins() )
+	foreach(XinxPluginElement * e, XinxPluginsLoader::self()->plugins())
 	{
-		if( e->isActivated() )
+		if (e->isActivated())
 		{
-			IContentViewParserPlugin * plugin = qobject_cast<IContentViewParserPlugin*>( e->plugin() );
-			if( plugin )
+			IContentViewParserPlugin * plugin = qobject_cast<IContentViewParserPlugin*>(e->plugin());
+			if (plugin)
 			{
-				parser = plugin->createParser( type );
-				if( parser )
+				parser = plugin->createParser(type);
+				if (parser)
 				{
 					break;
 				}

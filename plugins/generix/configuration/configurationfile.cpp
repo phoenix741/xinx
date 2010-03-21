@@ -115,7 +115,7 @@ QString ConfigurationVersion::toString() const
 	                  .arg(m_minor, 2, 10, QLatin1Char('0'))
 	                  .arg(m_release, 2, 10, QLatin1Char('0'));
 	if (m_build > 0)
-		version += QString(" (%1)")		.arg(m_build, 2, 10, QLatin1Char('0'));
+		version += QString(" (%1)")     .arg(m_build, 2, 10, QLatin1Char('0'));
 
 	return version;
 }
