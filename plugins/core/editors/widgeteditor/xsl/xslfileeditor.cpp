@@ -135,22 +135,6 @@ QIcon StyleSheetEditor::icon() const
 	return QIcon(":/images/typexsl.png");
 }
 
-void StyleSheetEditor::searchWord(const QString & word)
-{
-	textEdit()->completer();
-	ContentView2::Node n = m_completionModel->nodeOfWord(word);
-	if (n.isValid())
-	{
-		ContentView2::File file = n.file(ContentView2::Manager::self()->database());
-		if(file.isCached())
-			emit open(file.path(), n.line());
-		else
-			emit open(QString(), n.line());
-		return;
-	}
-	QMessageBox::information(this, tr("Search Word"), tr("Word %1 not found").arg(word));
-}
-
 bool StyleSheetEditor::autoIndent()
 {
 	try

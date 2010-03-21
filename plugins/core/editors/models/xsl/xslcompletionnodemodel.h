@@ -57,7 +57,6 @@ public:
 
 	QStringList modes(QString templateName) const;
 	QStringList params(QString templateName) const;
-	ContentView2::Node nodeOfWord(const QString & name) const;
 protected:
 	virtual QString whereClause() const;
 private:

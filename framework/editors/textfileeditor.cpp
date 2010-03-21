@@ -537,9 +537,20 @@ void TextFileEditor::contextMenuEvent(QContextMenuEvent * contextMenuEvent)
 	delete menu;
 }
 
-void TextFileEditor::searchWord(const QString &)
+void TextFileEditor::searchWord(const QString & word)
 {
-	ErrorManager::self()->addMessage(lastFileName(), -1, ErrorManager::MessageWarning, tr("Not implemented"), QStringList());
+	textEdit()->completer();
+	ContentView2::Node n = m_completionModel->nodeOfWord(word);
+	if (n.isValid())
+	{
+		ContentView2::File file = n.file(ContentView2::Manager::self()->database());
+		if(file.isCached())
+			emit open(file.path(), n.line());
+		else
+			emit open(QString(), n.line());
+		return;
+	}
+	QMessageBox::information(this, tr("Search Word"), tr("Word %1 not found").arg(word));
 }
 
 void TextFileEditor::serialize(XinxProjectSessionEditor * data, bool content)

@@ -49,8 +49,6 @@ public:
 
 	virtual QIcon icon() const;
 
-	virtual void searchWord(const QString & word);
-
 	void launchStylesheetParsing(const QString & xmlfile);
 	static XmlPresentationDockWidget * xmlPresentationDockWidget();
 
