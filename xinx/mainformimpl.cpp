@@ -1128,15 +1128,7 @@ void MainformImpl::customize()
 
 	if (custom.exec())
 	{
-		custom.saveConfig();
-		XINXConfig::self()->updateFormatsSchemeFromConfig();
-		XINXConfig::self()->save();
 		createPluginsActions();
-
-		if (! XINXConfig::self()->config().style.isEmpty())
-		{
-			QApplication::setStyle(XINXConfig::self()->config().style);
-		}
 	}
 }
 

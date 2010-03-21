@@ -114,3 +114,18 @@ void CustomDialogImpl::updateOkButton()
 
 	m_buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
 }
+
+void CustomDialogImpl::accept()
+{
+	saveConfig();
+
+	XINXConfig::self()->updateFormatsSchemeFromConfig();
+	XINXConfig::self()->save();
+
+	if (! XINXConfig::self()->config().style.isEmpty())
+	{
+		QApplication::setStyle(XINXConfig::self()->config().style);
+	}
+
+	QDialog::accept();
+}

@@ -41,4 +41,8 @@
 #   define LIBEXPORT
 #endif
 
-#endif // !_LIB_CONFIG_H_
+#define str(s) #s
+#define xstr(s) str(s)
+#define VERSION_STRING "v" xstr(VERSION_MAJOR) "." xstr(VERSION_MINOR) "." xstr(VERSION_RELEASE)
+
+#endif // _LIB_CONFIG_H_

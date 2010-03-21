@@ -305,10 +305,6 @@ private:
 	static XINXStaticDeleter * s_self;
 };
 
-#define STRINGIFY(x) #x
-#define TOSTRING(x) STRINGIFY(x)
-#define VERSION_STRING "v" TOSTRING(VERSION_MAJOR) "." TOSTRING(VERSION_MINOR) "." TOSTRING(VERSION_RELEASE)
-
 /*!
  * Numbre of maximum recent file that can be opened
  */

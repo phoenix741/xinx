@@ -47,6 +47,8 @@ public:
 
 	void loadConfig();
 	void saveConfig();
+public slots:
+	virtual void accept();
 
 private slots:
 	void updateOkButton();

@@ -36,6 +36,14 @@ public:
 
 	void loadFromConfig();
 	void saveToConfig();
+public slots:
+	virtual void accept();
+
+private:
+	QHash<QString,QString> m_tools;
+
+private slots:
+	void on_m_listSlider_valueChanged(int value);
 };
 
 #endif // NEWVERSIONWIZARDIMPL_H

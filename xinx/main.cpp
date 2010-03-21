@@ -249,7 +249,9 @@ int main(int argc, char *argv[])
 			if ((XINXConfig::self()->config().version != VERSION_STRING) || (args.contains("--newversion")))
 			{
 				NewVersionWizardImpl dlg;
+				dlg.loadFromConfig();
 				dlg.exec();
+				dlg.saveToConfig();
 
 				XINXConfig::self()->config().version = VERSION_STRING;
 			}
