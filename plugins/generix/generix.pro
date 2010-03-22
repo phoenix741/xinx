@@ -6,15 +6,19 @@ QT += xml \
     xmlpatterns \
     sql
 DESTDIR += ../
+PRE_TARGETDEPS = ../../ext/ideality/lib/libideality.a
 LIBS += -L../../components \
     -lxinxcmp \
     -L../../framework \
-	-lxinxframework
+	-lxinxframework \
+	-L../../ext/ideality/lib/ \
+	-lideality
 win32:LIBS += -lwsock32 -llibxml2 -llibxslt
 unix:LIBS += -lxml2 -lxslt
 TARGET = generix
 INCLUDEPATH += ../../framework \
-    ../../components
+	../../components \
+	../../ext/ideality/lib
 unix:INCLUDEPATH += /usr/include/libxml2
 RESOURCES = plugindefinition/generix.qrc
 TRANSLATIONS += plugindefinition/translations/dictionary_fr.ts

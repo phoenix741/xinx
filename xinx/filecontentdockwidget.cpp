@@ -35,12 +35,7 @@
 
 /* ContentDockWidget */
 
-FileContentDockWidget::FileContentDockWidget(const QString & title, QWidget * parent, Qt::WindowFlags flags) : QDockWidget(title, parent, flags), m_model(0)
-{
-	init();
-}
-
-FileContentDockWidget::FileContentDockWidget(QWidget * parent, Qt::WindowFlags flags) : QDockWidget(parent, flags), m_model(0)
+FileContentDockWidget::FileContentDockWidget(QWidget * parent) : DToolView(tr("File Content"), QIcon(), parent), m_model(0)
 {
 	init();
 }

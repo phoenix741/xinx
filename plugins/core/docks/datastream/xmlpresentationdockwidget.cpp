@@ -27,14 +27,7 @@ XmlPresentationDockWidget * XmlPresentationDockWidget::s_self = 0;
 
 /* XmlPresentationDockWidget */
 
-XmlPresentationDockWidget::XmlPresentationDockWidget(const QString & title, QWidget * parent, Qt::WindowFlags flags) : QDockWidget(title, parent, flags)
-{
-	if (! s_self) s_self = this;
-
-	d = new XmlPresentationDockThread(this);
-}
-
-XmlPresentationDockWidget::XmlPresentationDockWidget(QWidget * parent, Qt::WindowFlags flags) : QDockWidget(tr("XML Presentation"), parent, flags)
+XmlPresentationDockWidget::XmlPresentationDockWidget(QWidget * parent) : DToolView(tr("XML Presentation"), QIcon(), parent)
 {
 	if (! s_self) s_self = this;
 

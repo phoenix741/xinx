@@ -1,0 +1,47 @@
+iDeality
+
+Version 0.1.0:
+
+2006-09-12 David Cuadrado <krawek [at] gmailREMOVE [dot] com>:
+	* Update to Qt 4.2 rc1
+	* Improved exclusion when Tool view is floating
+	* Disable autohide property if Qt < 4.2
+
+2006-08-29 David Cuadrado <krawek [at] gmailREMOVE [dot] com>:
+	* Fixed button exclusion 
+	* Code cleanup and optimization
+
+2006-08-20 David Cuadrado <krawek [at] gmailREMOVE [dot] com>:
+	* Added DWorkspaceMainWindow and DStackedMainWindow
+
+2006-08-19 David Cuadrado <krawek [at] gmailREMOVE [dot] com>:
+	* Change 'workspace' concept to 'perspective'
+
+2006-08-14 David Cuadrado <krawek [at] gmailREMOVE [dot] com>:
+	* Multiplatform support
+
+
+Version 0.0.2:
+
+2006-08-13 David Cuadrado <krawek [at] gmailREMOVE [dot] com>:
+	* Added 'auto-hide' property to Button Bar.
+	* Added a DMainWindow factory.
+	* Fixed flicker in buttons with certain palette configuration.
+
+2006-08-12 David Cuadrado <krawek [at] gmailREMOVE [dot] com>:
+	* Create popup menu dinamically in DButtonBar and DViewButton.
+	* Added function for disable button blending.
+
+2006-08-11 David Cuadrado <krawek [at] gmailREMOVE [dot] com>:
+	* Do not add widget to DTabbedMainWindow if workspace is different
+	* Improved 'exclusion' property
+	* Small fixes
+
+
+Version 0.0.1:
+2006-08-10 David Cuadrado <krawek [at] gmailREMOVE [dot] com>:
+	* Initial release
+
+2006-08-04 David Cuadrado <krawek [at] gmailREMOVE [dot] com>:
+	* Genesis
+

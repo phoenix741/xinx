@@ -45,12 +45,7 @@
 
 /* ProjectDirectoryDockWidget */
 
-ProjectDirectoryDockWidget::ProjectDirectoryDockWidget(const QString & title, QWidget * parent, Qt::WindowFlags flags) : QDockWidget(title, parent, flags), m_iconProvider(0)
-{
-	init();
-}
-
-ProjectDirectoryDockWidget::ProjectDirectoryDockWidget(QWidget * parent, Qt::WindowFlags flags) : QDockWidget(parent, flags), m_iconProvider(0)
+ProjectDirectoryDockWidget::ProjectDirectoryDockWidget(QWidget * parent) : DToolView(tr("Project Directory"), QIcon(), parent), m_iconProvider(0)
 {
 	init();
 }

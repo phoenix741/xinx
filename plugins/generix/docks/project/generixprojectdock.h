@@ -29,6 +29,9 @@
 #include <QDockWidget>
 #include <QItemDelegate>
 
+// Dock
+#include <dtoolview.h>
+
 class GenerixProject;
 
 class BusinessViewListDelegate : public QItemDelegate
@@ -42,7 +45,7 @@ public:
 	QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
 };
 
-class GenerixProjectDockImpl : public QDockWidget, public Ui::GenerixProjectDockWidget
+class GenerixProjectDockImpl : public DToolView, public Ui::GenerixProjectDockWidget
 {
 	Q_OBJECT
 public:

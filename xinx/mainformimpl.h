@@ -26,6 +26,7 @@
 #include <core/xinxconfig.h>
 #include <editors/abstracteditor.h>
 #include "tabeditor.h"
+#include <dmainwindow.h>
 
 // Qt header
 #include <QMainWindow>
@@ -51,11 +52,11 @@ class QAction;
 class QToolButton;
 class SnipetMenu;
 
-class MainformImpl : public QMainWindow
+class MainformImpl : public DMainWindow
 {
 	Q_OBJECT
 public:
-	MainformImpl(QWidget * parent = 0, Qt::WFlags f = 0);
+	MainformImpl(QWidget * parent = 0);
 	virtual ~MainformImpl();
 public slots:
 	void newFile(const QString &filename);

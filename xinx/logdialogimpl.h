@@ -29,14 +29,16 @@
 // Qt header
 #include <QDockWidget>
 
+// Dock
+#include <dtoolview.h>
+
 class PrivateLogDockWidget;
 
-class LogDockWidget : public QDockWidget
+class LogDockWidget : public DToolView
 {
 	Q_OBJECT
 public:
-	LogDockWidget(const QString & title, QWidget * parent = 0, Qt::WindowFlags flags = 0);
-	LogDockWidget(QWidget * parent = 0, Qt::WindowFlags flags = 0);
+	LogDockWidget(QWidget * parent = 0);
 	virtual ~LogDockWidget();
 
 	void init();

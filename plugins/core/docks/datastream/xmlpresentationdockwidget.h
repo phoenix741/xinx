@@ -24,6 +24,9 @@
 #include <QDockWidget>
 #include <QString>
 
+// Dock
+#include <dtoolview.h>
+
 class XmlPresentationDockThread;
 
 /*!
@@ -31,12 +34,11 @@ class XmlPresentationDockThread;
  * The log directory can be modified, and the presentation file can be choosen.
  * Some feature as drag & drop must be added in future.
  */
-class XmlPresentationDockWidget : public QDockWidget
+class XmlPresentationDockWidget : public DToolView
 {
 	Q_OBJECT
 public:
-	XmlPresentationDockWidget(const QString & title, QWidget * parent = 0, Qt::WindowFlags flags = 0);
-	XmlPresentationDockWidget(QWidget * parent = 0, Qt::WindowFlags flags = 0);
+	XmlPresentationDockWidget(QWidget * parent = 0);
 
 	virtual ~XmlPresentationDockWidget();
 

@@ -212,9 +212,9 @@ QList<IXinxPluginNewProjectConfigurationPage*> CorePlugin::createNewProjectSetti
 	return pages;
 }
 
-QList<QDockWidget*> CorePlugin::createDocksWidget(QWidget * parent)
+QList<DToolView*> CorePlugin::createDocksWidget(QWidget * parent)
 {
-	QList<QDockWidget*> docks;
+	QList<DToolView*> docks;
 	if (! m_dock)
 	{
 		m_dock = new XmlPresentationDockWidget(parent);

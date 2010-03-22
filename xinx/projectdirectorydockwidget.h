@@ -30,18 +30,20 @@
 #include <QPointer>
 #include <QDirModel>
 
+// Dock
+#include <dtoolview.h>
+
 class QAbstractItemModel;
 class QAction;
 class XinxProject;
 class RCS;
 class IconProjectProvider;
 
-class ProjectDirectoryDockWidget : public QDockWidget
+class ProjectDirectoryDockWidget : public DToolView
 {
 	Q_OBJECT
 public:
-	ProjectDirectoryDockWidget(const QString & title, QWidget * parent = 0, Qt::WindowFlags flags = 0);
-	ProjectDirectoryDockWidget(QWidget * parent = 0, Qt::WindowFlags flags = 0);
+	ProjectDirectoryDockWidget(QWidget * parent = 0);
 	virtual ~ProjectDirectoryDockWidget();
 
 	void setToggledViewAction(QAction * action);

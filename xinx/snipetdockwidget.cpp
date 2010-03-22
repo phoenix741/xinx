@@ -35,12 +35,7 @@
 
 /* SnipetDockWidget */
 
-SnipetDockWidget::SnipetDockWidget(const QString & title, QWidget * parent, Qt::WindowFlags flags) : QDockWidget(title, parent, flags)
-{
-	init();
-}
-
-SnipetDockWidget::SnipetDockWidget(QWidget * parent, Qt::WindowFlags flags) : QDockWidget(parent, flags)
+SnipetDockWidget::SnipetDockWidget(QWidget * parent) : DToolView(tr("Snipets"), QIcon(), parent)
 {
 	init();
 }

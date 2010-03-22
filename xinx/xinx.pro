@@ -12,9 +12,9 @@ QT += xml \
     script \
     xmlpatterns \
     webkit \
-    sql
+	sql
 DESTDIR += ./
-PRE_TARGETDEPS = ../plugins/libcoreplugin.a
+PRE_TARGETDEPS = ../plugins/libcoreplugin.a ../ext/ideality/lib/libideality.a
 INCLUDEPATH += ../framework \
     ../components \
     ../ext/qcodeedit/lib \
@@ -22,16 +22,19 @@ INCLUDEPATH += ../framework \
     ../ext/qcodeedit/lib/document \
     ../ext/qcodeedit/lib/language \
     ../ext/qcodeedit/lib/qnfa \
-    ../ext/qcodeedit/lib/widgets
+	../ext/qcodeedit/lib/widgets \
+	../ext/ideality/lib
 LIBS += -L../framework \
     -L../plugins \
     -L../components \
     -L../ext/qcodeedit \
+	-L../framework/ \
+	-L../ext/ideality/lib/ \
     -lcoreplugin \
     -lxinxframework \
     -lxinxcmp \
     -lqcodeedit \
-    -L../framework/
+	-lideality
 RESOURCES += application.qrc
 FORMS += ui/about.ui \
     ui/projectdirectorywidget.ui \

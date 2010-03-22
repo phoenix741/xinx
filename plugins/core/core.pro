@@ -17,7 +17,8 @@ INCLUDEPATH += ./ \
     ../../ext/qcodeedit/lib/document \
     ../../ext/qcodeedit/lib/language \
     ../../ext/qcodeedit/lib/qnfa \
-    ../../ext/qcodeedit/lib/widgets
+	../../ext/qcodeedit/lib/widgets \
+	../../ext/ideality/lib/
 HEADERS = docks/datastream/xmlpresentationdockwidget.h \
     docks/datastream/xquerydialogimpl.h \
     docks/datastream/xmlpresentationdockthread.h \

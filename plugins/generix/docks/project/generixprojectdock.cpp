@@ -132,7 +132,7 @@ QSize BusinessViewListDelegate::sizeHint(const QStyleOptionViewItem &option, con
 
 /* GenerixProjectDockImpl */
 
-GenerixProjectDockImpl::GenerixProjectDockImpl(QWidget * parent) : QDockWidget(parent)
+GenerixProjectDockImpl::GenerixProjectDockImpl(QWidget * parent) : DToolView(tr("Dictionary"), QIcon(), parent)
 {
 	setupUi(this);
 

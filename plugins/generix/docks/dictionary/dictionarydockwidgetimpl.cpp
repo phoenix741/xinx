@@ -27,7 +27,7 @@
 
 /* DictionaryDockWidgetImpl */
 
-DictionaryDockWidgetImpl::DictionaryDockWidgetImpl(QWidget * parent) : QDockWidget(parent)
+DictionaryDockWidgetImpl::DictionaryDockWidgetImpl(QWidget * parent) : DToolView(tr("Generix Business View"), QIcon(), parent)
 {
 	setupUi(this);
 

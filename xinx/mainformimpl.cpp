@@ -46,6 +46,7 @@
 #include <project/externalfileresolver.h>
 #include <contentview2/contentview2cache.h>
 #include <contentview2/contentview2manager.h>
+#include <dtoolview.h>
 
 // Qt header
 #include <QObject>
@@ -79,7 +80,7 @@
 
 /* MainformImpl */
 
-MainformImpl::MainformImpl(QWidget * parent, Qt::WFlags f) : QMainWindow(parent, f),  m_lastFileName(QDir::currentPath()), m_lastProjectOpenedPlace(QDir::currentPath()), m_closeTabBtn(0)
+MainformImpl::MainformImpl(QWidget * parent) : DMainWindow(parent),  m_lastFileName(QDir::currentPath()), m_lastProjectOpenedPlace(QDir::currentPath()), m_closeTabBtn(0)
 {
 	createMainForm();
 	createMenus();
@@ -783,20 +784,20 @@ void MainformImpl::registerTypes()
 
 void MainformImpl::createDockWidget()
 {
-	m_projectDock = new ProjectDirectoryDockWidget(tr("Project Directory"), this);
+	m_projectDock = new ProjectDirectoryDockWidget(this);
 	m_projectDock->setObjectName(QString::fromUtf8("m_projectDock"));
 
 	m_projectDock->setToggledViewAction(m_toggledFlatView);
-	addDockWidget(Qt::LeftDockWidgetArea, m_projectDock);
+	addToolView(m_projectDock, Qt::LeftDockWidgetArea);
 	QAction * action = m_projectDock->toggleViewAction();
 	action->setShortcut(QKeySequence("Alt+1"));
 	m_menus["windows"]->addAction(action);
 	connect(m_toggledFlatView, SIGNAL(toggled(bool)), m_projectDock, SLOT(toggledView(bool)));
 	connect(m_projectDock, SIGNAL(open(QString)), this, SLOT(openFile(QString)));
 
-	m_contentDock = new FileContentDockWidget(tr("File Content"), this);
+	m_contentDock = new FileContentDockWidget(this);
 	m_contentDock->setObjectName(QString::fromUtf8("m_contentDock"));
-	addDockWidget(Qt::LeftDockWidgetArea, m_contentDock);
+	addToolView(m_contentDock, Qt::LeftDockWidgetArea);
 	action = m_contentDock->toggleViewAction();
 	action->setShortcut(QKeySequence("Alt+2"));
 	m_menus["windows"]->addAction(action);
@@ -804,9 +805,9 @@ void MainformImpl::createDockWidget()
 	connect(m_tabEditors, SIGNAL(modelChanged(QAbstractItemModel*)), m_contentDock, SLOT(updateModel(QAbstractItemModel*)));
 	connect(m_tabEditors, SIGNAL(positionChanged(QModelIndex)), m_contentDock, SLOT(positionChanged(QModelIndex)));
 
-	m_snipetsDock = new SnipetDockWidget(tr("Snipets"), this);
+	m_snipetsDock = new SnipetDockWidget(this);
 	m_snipetsDock->setObjectName(QString::fromUtf8("m_snipetsDock"));
-	addDockWidget(Qt::RightDockWidgetArea, m_snipetsDock);
+	addToolView(m_snipetsDock, Qt::RightDockWidgetArea);
 	action = m_snipetsDock->toggleViewAction();
 	action->setShortcut(QKeySequence("Alt+3"));
 	m_menus["windows"]->addAction(action);
@@ -818,10 +819,10 @@ void MainformImpl::createDockWidget()
 		IDockPlugin * dockPlugin = qobject_cast<IDockPlugin*>(pluginElement->plugin());
 		if (pluginElement->isActivated() && dockPlugin)
 		{
-			QList<QDockWidget*> docks = dockPlugin->createDocksWidget(this);
-			foreach(QDockWidget * dock, docks)
+			QList<DToolView*> docks = dockPlugin->createDocksWidget(this);
+			foreach(DToolView * dock, docks)
 			{
-				addDockWidget(Qt::RightDockWidgetArea, dock);
+				addToolView(dock, Qt::RightDockWidgetArea);
 				action = dock->toggleViewAction();
 				action->setShortcut(QString("Alt+%1").arg(dockShortcut++));
 				m_menus["windows"]->addAction(action);
@@ -829,13 +830,15 @@ void MainformImpl::createDockWidget()
 		}
 	}
 
-	m_logDock = new LogDockWidget(tr("Log"), this);
+	m_logDock = new LogDockWidget(this);
 	connect(m_logDock, SIGNAL(open(QString,int)), this, SLOT(openFile(QString,int)));
 	connect(ErrorManager::self(), SIGNAL(changed()), m_logDock, SLOT(updateErrors()));
 	m_logDock->setObjectName(QString::fromUtf8("m_logDock"));
-	addDockWidget(Qt::BottomDockWidgetArea, m_logDock);
+	addToolView(m_logDock, Qt::BottomDockWidgetArea);
 	action = m_logDock->toggleViewAction();
 	m_menus["windows"]->addAction(action);
+
+	setCurrentPerspective( DMainWindow::DefaultPerspective );
 }
 
 void MainformImpl::createNewSubMenu()

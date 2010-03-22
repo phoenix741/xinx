@@ -1,0 +1,12 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="/">
+  <file>images/home.png</file>
+  <file>images/next.png</file>
+  <file>images/prev.png</file>
+  <file>images/book.png</file>
+  <file>images/designer.png</file>
+  <file>images/assistant.png</file>
+  <file>images/qt.png</file>
+  <file>images/close.png</file>
+</qresource>
+</RCC>

@@ -1,5 +1,6 @@
 TEMPLATE = subdirs
 SUBDIRS += external_qcodeedit \
+	external_ideality \
 	xinx_components \
 	xinx_library \
 	xinx_test1 \
@@ -15,12 +16,13 @@ SUBDIRS += external_qcodeedit \
 	xinx_application
 	
 external_qcodeedit.subdir = ext/qcodeedit
+external_ideality.subdir = ext/ideality
 
 xinx_components.subdir = components
 xinx_components.depends = external_qcodeedit
 
 xinx_library.subdir = framework
-xinx_library.depends = external_qcodeedit xinx_components
+xinx_library.depends = external_qcodeedit external_ideality xinx_components
 
 xinx_test1.subdir = unittest/guixinxcodeedit
 xinx_test1.depends = external_qcodeedit xinx_components xinx_library
@@ -43,10 +45,10 @@ plugins_svnplugin.depends = xinx_components xinx_library
 plugins_services.subdir = plugins/services
 plugins_services.depends = external_qcodeedit xinx_components xinx_library plugins_core
 plugins_generix.subdir = plugins/generix
-plugins_generix.depends = xinx_components xinx_library
+plugins_generix.depends = external_ideality xinx_components xinx_library
 
 xinx_application.subdir = xinx
-xinx_application.depends = external_qcodeedit xinx_components xinx_library plugins_core
+xinx_application.depends = external_qcodeedit external_ideality xinx_components xinx_library plugins_core
 
 dox.target = doc
 dox.commands = doxygen Doxyfile
