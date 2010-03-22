@@ -40,10 +40,8 @@ XmlPresentationDockThread::XmlPresentationDockThread(XmlPresentationDockWidget *
 {
 	qRegisterMetaType<QModelIndex>("QModelIndex");
 
-	QWidget * contentWidget = new QWidget(m_parent);
 	m_xmlPresentationWidget = new Ui::XmlPresentationWidget();
-	m_xmlPresentationWidget->setupUi(contentWidget);
-	m_parent->setWidget(contentWidget);
+	m_xmlPresentationWidget->setupUi(m_parent);
 
 	m_xmlPresentationWidget->m_presentationProgressBar->hide();
 

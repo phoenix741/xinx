@@ -30,16 +30,13 @@
 #include <QPointer>
 #include <QDirModel>
 
-// Dock
-#include <dtoolview.h>
-
 class QAbstractItemModel;
 class QAction;
 class XinxProject;
 class RCS;
 class IconProjectProvider;
 
-class ProjectDirectoryDockWidget : public DToolView
+class ProjectDirectoryDockWidget : public QWidget
 {
 	Q_OBJECT
 public:
@@ -54,6 +51,7 @@ public:
 	void refreshPath(const QString & path);
 	bool removeFile(const QString & path);
 
+	void setDock(QDockWidget * dock);
 public slots:
 	void toggledView();
 	void toggledView(bool flat);

@@ -35,8 +35,10 @@
 
 /* ContentDockWidget */
 
-FileContentDockWidget::FileContentDockWidget(QWidget * parent) : DToolView(tr("File Content"), QIcon(), parent), m_model(0)
+FileContentDockWidget::FileContentDockWidget(QWidget * parent) : QWidget(parent), m_model(0)
 {
+	setWindowTitle(tr("File Content"));
+	setWindowIcon(QIcon(":/images/listbox.png"));
 	init();
 }
 
@@ -54,10 +56,7 @@ void FileContentDockWidget::init()
 	vlayout->setMargin(0);
 	vlayout->addWidget(m_contentTreeView);
 
-	QWidget * m_contentWidget = new QWidget(this);
-	m_contentWidget->setLayout(vlayout);
-
-	setWidget(m_contentWidget);
+	setLayout(vlayout);
 	connect(m_contentTreeView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(contentTreeViewDblClick(QModelIndex)));
 }
 

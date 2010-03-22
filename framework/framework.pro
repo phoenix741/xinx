@@ -1,5 +1,4 @@
 include(../project_mode.pri)
-include(../ext/ideality/lib/ideality.pro)
 TEMPLATE = lib
 unix:VERSION = 0.9.0.0
 CONFIG += dll
@@ -9,23 +8,19 @@ QT += xml \
     script
 TARGET = xinxframework
 DESTDIR += ./
-PRE_TARGETDEPS = ../ext/ideality/lib/libideality.a
 INCLUDEPATH += ./ \
     ../components \
     ../ext/qcodeedit/lib \
     ../ext/qcodeedit/lib/document \
     ../ext/qcodeedit/lib/language \
     ../ext/qcodeedit/lib/qnfa \
-	../ext/qcodeedit/lib/widgets \
-	../ext/ideality/lib
+	../ext/qcodeedit/lib/widgets
 LIBS = -L../components \
-	-L../ext/qcodeedit \
-	-L../ext/ideality/lib/
+	-L../ext/qcodeedit
 win32:LIBS += -lwsock32 -llibxml2 -llibxslt
 unix:LIBS += -lxml2 -lxslt
 LIBS += -lxinxcmp \
-	-lqcodeedit \
-	-lideality
+	-lqcodeedit
 win32:RC_FILE += rc/libxinx.rc
 unix:INCLUDEPATH += /usr/include/libxml2
 DEFINES += _LIB_BUILD_

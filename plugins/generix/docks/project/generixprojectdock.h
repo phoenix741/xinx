@@ -26,11 +26,9 @@
 #include <project/xinxproject.h>
 
 // Qt header
-#include <QDockWidget>
+#include <QWidget>
 #include <QItemDelegate>
 
-// Dock
-#include <dtoolview.h>
 
 class GenerixProject;
 
@@ -45,7 +43,7 @@ public:
 	QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
 };
 
-class GenerixProjectDockImpl : public DToolView, public Ui::GenerixProjectDockWidget
+class GenerixProjectDockImpl : public QWidget, public Ui::GenerixProjectDockWidget
 {
 	Q_OBJECT
 public:

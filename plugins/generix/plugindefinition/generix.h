@@ -65,7 +65,7 @@ public:
 	virtual QIODevice * saveFile(const QString & filename, const QString & oldfilename);
 	virtual QString getFilename(const QString & filename, const QString & filter, bool saveAs, bool & accept, QWidget * widget = 0);
 
-	virtual QList<DToolView*> createDocksWidget(QWidget * parent);
+	virtual QList<QWidget*> createDocksWidget(QWidget * parent);
 
 	virtual QList<IXinxPluginConfigurationPage*> createSettingsDialog(QWidget * parent);
 

@@ -3,6 +3,8 @@
 # Subdir relative project main directory: ./lib
 # Target is a library:  ideality
 
+INCLUDEPATH += ./
+
 HEADERS += dmainwindow.h \
            dbuttonbar.h \
            dviewbutton.h \
@@ -23,4 +25,9 @@ SOURCES += dmainwindow.cpp \
            dworkspacemainwindow.cpp 
 TARGET = ideality
 TEMPLATE = lib
-CONFIG += static release
+CONFIG += debug
+
+MOC_DIR = ./
+OBJECTS_DIR = ./
+RCC_DIR = ./
+DESTDIR = ./

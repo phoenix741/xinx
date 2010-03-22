@@ -35,8 +35,10 @@
 
 /* SnipetDockWidget */
 
-SnipetDockWidget::SnipetDockWidget(QWidget * parent) : DToolView(tr("Snipets"), QIcon(), parent)
+SnipetDockWidget::SnipetDockWidget(QWidget * parent) : QWidget(parent)
 {
+	setWindowTitle(tr("Snipets"));
+	setWindowIcon(QIcon(":/images/template.png"));
 	init();
 }
 
@@ -48,10 +50,8 @@ SnipetDockWidget::~SnipetDockWidget()
 
 void SnipetDockWidget::init()
 {
-	QWidget * contentWidget = new QWidget(this);
 	m_dock = new Ui::SnipetsDockWidget();
-	m_dock->setupUi(contentWidget);
-	setWidget(contentWidget);
+	m_dock->setupUi(this);
 
 	/* Snipets Tree */
 	m_snipetFilterModel = new RecursiveSortFilterProxyModel(m_dock->m_snipetTreeView);

@@ -32,8 +32,6 @@
 #include <QToolBox>
 #include <QHash>
 
-// Dock
-#include <dtoolview.h>
 
 class RecursiveSortFilterProxyModel;
 class SnipetDockItemModel;
@@ -42,7 +40,7 @@ class SnipetDockItemModel;
  * This dock represent a Snipet Dock Widget to search and place snipet
  * in XINX.
  */
-class SnipetDockWidget : public DToolView
+class SnipetDockWidget : public QWidget
 {
 	Q_OBJECT
 public:

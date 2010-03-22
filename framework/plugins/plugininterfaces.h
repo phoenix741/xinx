@@ -43,7 +43,6 @@ class AbstractEditor;
 class QWizardPage;
 class XinxProject;
 class XinxFormatScheme;
-class DToolView;
 class XsltParser;
 
 namespace ContentView2
@@ -256,7 +255,7 @@ public:
 	 * This method is call when the main form is created to create new
 	 * dock widget. A number (for quick access) is associate if free.
 	 */
-	virtual QList<DToolView*> createDocksWidget(QWidget * parent) = 0;
+	virtual QList<QWidget*> createDocksWidget(QWidget * parent) = 0;
 };
 
 /*!

@@ -22,12 +22,9 @@
 #pragma once
 
 // Qt header
-#include <QDockWidget>
 #include <QString>
 #include <QModelIndex>
-
-// Dock
-#include <dtoolview.h>
+#include <QWidget>
 
 class QAbstractItemModel;
 class QTreeView;
@@ -36,7 +33,7 @@ class QTreeView;
  * This dock contains the content of the current file editor in a tree.
  * This dock permit the user to brownse the content of the file, and go inside import.
  */
-class FileContentDockWidget : public DToolView
+class FileContentDockWidget : public QWidget
 {
 	Q_OBJECT
 public:

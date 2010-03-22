@@ -16,7 +16,7 @@ SUBDIRS += external_qcodeedit \
 	xinx_application
 	
 external_qcodeedit.subdir = ext/qcodeedit
-external_ideality.subdir = ext/ideality
+external_ideality.subdir = ext/ideality/lib
 
 xinx_components.subdir = components
 xinx_components.depends = external_qcodeedit

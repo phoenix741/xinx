@@ -79,12 +79,12 @@ void SearchLogWidgetDelegate::paint(QPainter * painter, const QStyleOptionViewIt
 
 /* LogDockWidget */
 
-LogDockWidget::LogDockWidget(QWidget * parent) : DToolView(tr("Log"), QIcon(), parent)
+LogDockWidget::LogDockWidget(QWidget * parent) : QWidget(parent)
 {
-	QWidget * contentWidget = new QWidget(this);
+	setWindowTitle(tr("Log"));
+
 	m_logwidget = new Ui::LogWidget();
-	m_logwidget->setupUi(contentWidget);
-	setWidget(contentWidget);
+	m_logwidget->setupUi(this);
 
 	connect(m_logwidget->m_searchTreeWidget, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(doubleClicked(QModelIndex)));
 	connect(m_logwidget->m_messagesWidget,   SIGNAL(doubleClicked(QModelIndex)), this, SLOT(doubleClicked(QModelIndex)));

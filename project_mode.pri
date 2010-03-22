@@ -1,5 +1,3 @@
-IDEALITY_DIR=../ext/ideality/lib/
-
 CONFIG += debug
 unix {
     QMAKE_LFLAGS = -rdynamic

@@ -25,10 +25,7 @@
 #include <ui_dictionarydockwidget.h>
 
 // Qt header
-#include <QDockWidget>
-
-// Dock
-#include <dtoolview.h>
+#include <QWidget>
 
 class DictionaryModel;
 namespace ContentView2
@@ -37,7 +34,7 @@ class Parser;
 class File;
 }
 
-class DictionaryDockWidgetImpl : public DToolView, private Ui::DictionaryDockWidget
+class DictionaryDockWidgetImpl : public QWidget, private Ui::DictionaryDockWidget
 {
 	Q_OBJECT
 public:

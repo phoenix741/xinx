@@ -189,9 +189,9 @@ QString GenerixPlugin::getFilename(const QString & filename, const QString & fil
 	return filename;
 }
 
-QList<DToolView*> GenerixPlugin::createDocksWidget(QWidget * parent)
+QList<QWidget*> GenerixPlugin::createDocksWidget(QWidget * parent)
 {
-	QList<DToolView*> docks;
+	QList<QWidget*> docks;
 	if (! m_dock)
 	{
 		m_dock = new DictionaryDockWidgetImpl(parent);

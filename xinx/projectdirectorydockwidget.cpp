@@ -45,8 +45,10 @@
 
 /* ProjectDirectoryDockWidget */
 
-ProjectDirectoryDockWidget::ProjectDirectoryDockWidget(QWidget * parent) : DToolView(tr("Project Directory"), QIcon(), parent), m_iconProvider(0)
+ProjectDirectoryDockWidget::ProjectDirectoryDockWidget(QWidget * parent) : QWidget(parent), m_iconProvider(0)
 {
+	setWindowTitle(tr("Project Directory"));
+	setWindowIcon(QIcon(":/images/project_open.png"));
 	init();
 }
 
@@ -73,10 +75,8 @@ void ProjectDirectoryDockWidget::init()
 	connect(RCSManager::self(), SIGNAL(operationStarted()), this, SLOT(updateActions()));
 	connect(RCSManager::self(), SIGNAL(operationTerminated()), this, SLOT(updateActions()));
 
-	QWidget * contentWidget = new QWidget(this);
 	m_projectDirWidget = new Ui::ProjectDirectoryWidget();
-	m_projectDirWidget->setupUi(contentWidget);
-	setWidget(contentWidget);
+	m_projectDirWidget->setupUi(this);
 
 	m_modelTimer = new QTimer(this);
 	connect(m_modelTimer, SIGNAL(timeout()), this, SLOT(filtreChange()));
@@ -89,8 +89,6 @@ void ProjectDirectoryDockWidget::init()
 
 	connect(m_copyFileNameAction, SIGNAL(triggered()), this, SLOT(copyFileNameTriggered()));
 	connect(m_copyPathNameAction, SIGNAL(triggered()), this, SLOT(copyPathNameTriggered()));
-	connect(this, SIGNAL(visibilityChanged(bool)), m_projectDirWidget->m_filtreLineEdit, SLOT(setFocus()));
-	connect(this, SIGNAL(visibilityChanged(bool)), m_projectDirWidget->m_filtreLineEdit, SLOT(selectAll()));
 	connect(m_projectDirWidget->m_filtreLineEdit, SIGNAL(textChanged(QString)), this, SLOT(on_m_filtreLineEdit_textChanged(QString)));
 	connect(m_projectDirWidget->m_filtreLineEdit, SIGNAL(clearButtonClicked()), this, SLOT(on_m_filtreLineEdit_returnPressed()));
 	connect(m_projectDirWidget->m_filtreLineEdit, SIGNAL(returnPressed()), this, SLOT(on_m_filtreLineEdit_returnPressed()));
@@ -104,6 +102,11 @@ ProjectDirectoryDockWidget::~ProjectDirectoryDockWidget()
 	delete m_projectDirWidget;
 }
 
+void ProjectDirectoryDockWidget::setDock(QDockWidget * dock)
+{
+	connect(dock, SIGNAL(visibilityChanged(bool)), m_projectDirWidget->m_filtreLineEdit, SLOT(setFocus()));
+	connect(dock, SIGNAL(visibilityChanged(bool)), m_projectDirWidget->m_filtreLineEdit, SLOT(selectAll()));
+}
 
 void ProjectDirectoryDockWidget::setToggledViewAction(QAction * action)
 {

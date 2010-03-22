@@ -132,9 +132,10 @@ QSize BusinessViewListDelegate::sizeHint(const QStyleOptionViewItem &option, con
 
 /* GenerixProjectDockImpl */
 
-GenerixProjectDockImpl::GenerixProjectDockImpl(QWidget * parent) : DToolView(tr("Dictionary"), QIcon(), parent)
+GenerixProjectDockImpl::GenerixProjectDockImpl(QWidget * parent) : QWidget(parent)
 {
 	setupUi(this);
+	setWindowTitle(tr("Dictionary"));
 
 	m_businessViewList->setItemDelegate(m_delegate = new BusinessViewListDelegate(m_businessViewList));
 

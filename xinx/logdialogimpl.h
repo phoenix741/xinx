@@ -27,14 +27,11 @@
 #include "ui_logform.h"
 
 // Qt header
-#include <QDockWidget>
-
-// Dock
-#include <dtoolview.h>
+#include <QWidget>
 
 class PrivateLogDockWidget;
 
-class LogDockWidget : public DToolView
+class LogDockWidget : public QWidget
 {
 	Q_OBJECT
 public:

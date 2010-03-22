@@ -27,9 +27,10 @@
 
 /* DictionaryDockWidgetImpl */
 
-DictionaryDockWidgetImpl::DictionaryDockWidgetImpl(QWidget * parent) : DToolView(tr("Generix Business View"), QIcon(), parent)
+DictionaryDockWidgetImpl::DictionaryDockWidgetImpl(QWidget * parent) : QWidget(parent)
 {
 	setupUi(this);
+	setWindowTitle(tr("Generix Business View"));
 
 	connect(XINXProjectManager::self(), SIGNAL(changed()), this, SLOT(projectChanged()));
 	connect(ContentView2::Manager::self()->cache(), SIGNAL(cacheLoaded(ContentView2::File)), this, SLOT(update(ContentView2::File)));

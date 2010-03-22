@@ -784,21 +784,24 @@ void MainformImpl::registerTypes()
 
 void MainformImpl::createDockWidget()
 {
-	m_projectDock = new ProjectDirectoryDockWidget(this);
-	m_projectDock->setObjectName(QString::fromUtf8("m_projectDock"));
 
+	m_projectDock = new ProjectDirectoryDockWidget(this);
 	m_projectDock->setToggledViewAction(m_toggledFlatView);
-	addToolView(m_projectDock, Qt::LeftDockWidgetArea);
-	QAction * action = m_projectDock->toggleViewAction();
+	DToolView * view = addToolView(m_projectDock, Qt::LeftDockWidgetArea);
+	view->setObjectName(QString::fromUtf8("m_projectDock"));
+	m_projectDock->setDock(view);
+
+	QAction * action = view->toggleViewAction();
 	action->setShortcut(QKeySequence("Alt+1"));
 	m_menus["windows"]->addAction(action);
 	connect(m_toggledFlatView, SIGNAL(toggled(bool)), m_projectDock, SLOT(toggledView(bool)));
 	connect(m_projectDock, SIGNAL(open(QString)), this, SLOT(openFile(QString)));
 
+
 	m_contentDock = new FileContentDockWidget(this);
-	m_contentDock->setObjectName(QString::fromUtf8("m_contentDock"));
-	addToolView(m_contentDock, Qt::LeftDockWidgetArea);
-	action = m_contentDock->toggleViewAction();
+	view = addToolView(m_contentDock, Qt::LeftDockWidgetArea);
+	view->setObjectName(QString::fromUtf8("m_contentDock"));
+	action = view->toggleViewAction();
 	action->setShortcut(QKeySequence("Alt+2"));
 	m_menus["windows"]->addAction(action);
 	connect(m_contentDock, SIGNAL(open(QString,int)), this, SLOT(openFile(QString,int)));
@@ -806,10 +809,19 @@ void MainformImpl::createDockWidget()
 	connect(m_tabEditors, SIGNAL(positionChanged(QModelIndex)), m_contentDock, SLOT(positionChanged(QModelIndex)));
 
 	m_snipetsDock = new SnipetDockWidget(this);
-	m_snipetsDock->setObjectName(QString::fromUtf8("m_snipetsDock"));
-	addToolView(m_snipetsDock, Qt::RightDockWidgetArea);
-	action = m_snipetsDock->toggleViewAction();
+	view = addToolView(m_snipetsDock, Qt::RightDockWidgetArea);
+	view->setObjectName(QString::fromUtf8("m_snipetsDock"));
+	action = view->toggleViewAction();
 	action->setShortcut(QKeySequence("Alt+3"));
+	m_menus["windows"]->addAction(action);
+
+
+	m_logDock = new LogDockWidget(this);
+	connect(m_logDock, SIGNAL(open(QString,int)), this, SLOT(openFile(QString,int)));
+	connect(ErrorManager::self(), SIGNAL(changed()), m_logDock, SLOT(updateErrors()));
+	view = addToolView(m_logDock, Qt::BottomDockWidgetArea);
+	view->setObjectName(QString::fromUtf8("m_logDock"));
+	action = view->toggleViewAction();
 	m_menus["windows"]->addAction(action);
 
 	// Load dock from plugins and assign automatic shortcut
@@ -829,16 +841,6 @@ void MainformImpl::createDockWidget()
 			}
 		}
 	}
-
-	m_logDock = new LogDockWidget(this);
-	connect(m_logDock, SIGNAL(open(QString,int)), this, SLOT(openFile(QString,int)));
-	connect(ErrorManager::self(), SIGNAL(changed()), m_logDock, SLOT(updateErrors()));
-	m_logDock->setObjectName(QString::fromUtf8("m_logDock"));
-	addToolView(m_logDock, Qt::BottomDockWidgetArea);
-	action = m_logDock->toggleViewAction();
-	m_menus["windows"]->addAction(action);
-
-	setCurrentPerspective( DMainWindow::DefaultPerspective );
 }
 
 void MainformImpl::createNewSubMenu()
