@@ -831,11 +831,11 @@ void MainformImpl::createDockWidget()
 		IDockPlugin * dockPlugin = qobject_cast<IDockPlugin*>(pluginElement->plugin());
 		if (pluginElement->isActivated() && dockPlugin)
 		{
-			QList<DToolView*> docks = dockPlugin->createDocksWidget(this);
-			foreach(DToolView * dock, docks)
+			QList<QWidget*> docks = dockPlugin->createDocksWidget(this);
+			foreach(QWidget * dock, docks)
 			{
-				addToolView(dock, Qt::RightDockWidgetArea);
-				action = dock->toggleViewAction();
+				view = addToolView(dock, Qt::RightDockWidgetArea);
+				action = view->toggleViewAction();
 				action->setShortcut(QString("Alt+%1").arg(dockShortcut++));
 				m_menus["windows"]->addAction(action);
 			}
