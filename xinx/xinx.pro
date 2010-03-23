@@ -14,7 +14,7 @@ QT += xml \
     webkit \
 	sql
 DESTDIR += ./
-PRE_TARGETDEPS = ../plugins/libcoreplugin.a ../ext/ideality/lib/libideality.a
+PRE_TARGETDEPS = ../plugins/libcoreplugin.a
 INCLUDEPATH += ../framework \
     ../components \
     ../ext/qcodeedit/lib \
