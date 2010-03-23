@@ -165,10 +165,7 @@ uint Node::create(QSqlDatabase db, int forcedId)
 	bool result = selectQuery.exec();
 	Q_ASSERT_X(result, "Node::create", qPrintable(selectQuery.lastError().text()));
 
-	if (! selectQuery.first())
-	{
-		throw NodeException(tr("Can't find the file node %1"), d->m_datas.value(Node::NODE_NAME).toString());
-	}
+	EXCEPT_ELSE(selectQuery.first(), NodeException, "Node::create", "Can't find the file node %1", d->m_datas.value(Node::NODE_NAME).toString());
 
 	QSqlQuery insertQuery(db);
 	if (forcedId == -1)
@@ -238,10 +235,7 @@ void Node::update(QSqlDatabase db)
 	bool result = select.exec();
 	Q_ASSERT_X(result, "Node::update", qPrintable(select.lastError().text()));
 
-	if (! select.next())
-	{
-		throw NodeException(tr("Can't find the node %1 (%2)").arg(d->m_id), d->m_datas.value(Node::NODE_NAME).toString());
-	}
+	EXCEPT_ELSE(select.next(), NodeException, "Node::update", QString("Can't find the node %1 (%2)").arg(d->m_id), d->m_datas.value(Node::NODE_NAME).toString());
 
 	uint hash    = select.value(0).toUInt();
 	uint newHash = qHash(*this);

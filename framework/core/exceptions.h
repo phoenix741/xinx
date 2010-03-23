@@ -51,7 +51,7 @@ public:
 	 * Return the location (method name) of the error
 	 */
 	const QString & locationFile() const;
-	const int locationLine() const;
+	int locationLine() const;
 	const QString & locationMethod() const;
 	/*!
 	 * Return the message.

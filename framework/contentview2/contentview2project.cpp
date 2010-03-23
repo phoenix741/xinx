@@ -101,10 +101,7 @@ void Project::load(QSqlDatabase db, uint id)
 	selectQuery.bindValue(":id", QVariant::fromValue(id));
 	bool result = selectQuery.exec();
 	Q_ASSERT_X(result, "Project::load", qPrintable(selectQuery.lastError().text()));
-	if (! selectQuery.first())
-	{
-		throw ProjectException(tr("Can't find the node %1"), QString("%1").arg(id));
-	}
+	EXCEPT_ELSE(selectQuery.first(), ProjectException, "Project::Load", "Can't find the node %1", QString("%1").arg(id));
 
 	d->m_id   = id;
 	d->m_path = selectQuery.value(0).toString();
@@ -119,10 +116,7 @@ void Project::load(QSqlDatabase db, XinxProject * project)
 	selectQuery.bindValue(":path", QVariant::fromValue(d->m_path));
 	bool result = selectQuery.exec();
 	Q_ASSERT_X(result, "Project::load", qPrintable(selectQuery.lastError().text()));
-	if (! selectQuery.first())
-	{
-		throw ProjectException(tr("Can't find the project %1"), d->m_path);
-	}
+	EXCEPT_ELSE(selectQuery.first(), ProjectException, "Project::load", "Can't find the project %1", d->m_path);
 
 	d->m_id   = selectQuery.value(0).toInt();
 	d->m_name = selectQuery.value(1).toString();

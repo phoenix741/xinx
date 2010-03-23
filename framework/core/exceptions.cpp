@@ -229,7 +229,7 @@ const QString & XinxException::locationFile() const
 	return m_locationFile;
 }
 
-const int XinxException::locationLine() const
+int XinxException::locationLine() const
 {
 	return m_locationLine;
 }

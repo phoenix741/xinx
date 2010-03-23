@@ -203,10 +203,7 @@ void File::load(QSqlDatabase db, uint id)
 	selectQuery.bindValue(":id", QVariant::fromValue(id));
 	bool result = selectQuery.exec();
 	Q_ASSERT_X(result, "File::load", qPrintable(selectQuery.lastError().text()));
-	if (! selectQuery.first())
-	{
-		throw FileException(tr("Can't find the node %1"), QString("%1").arg(id));
-	}
+	EXCEPT_ELSE(selectQuery.first(), FileException, "File::load", "Can't find the node %1", QString("%1").arg(id));
 
 	d->m_id        = id;
 	d->m_projectId = selectQuery.value(0).toInt();
@@ -226,10 +223,7 @@ void File::load(QSqlDatabase db, XinxProject * project, const QString & path, bo
 	projectQuery.bindValue(":project_path", project ? project->fileName() : "/");
 	bool result = projectQuery.exec();
 	Q_ASSERT_X(result, "File::load", qPrintable(projectQuery.lastError().text()));
-	if (! projectQuery.first())
-	{
-		throw FileException(tr("Can't find the project %1"), project->fileName());
-	}
+	EXCEPT_ELSE(projectQuery.first(), FileException, "File::load", "Can't find the project %1", project->fileName());
 
 	d->m_projectId = projectQuery.value(0).toInt();
 
@@ -240,10 +234,7 @@ void File::load(QSqlDatabase db, XinxProject * project, const QString & path, bo
 	selectQuery.bindValue(":cached", QVariant::fromValue(isCached));
 	result = selectQuery.exec();
 	Q_ASSERT_X(result, "File::load", qPrintable(selectQuery.lastError().text()));
-	if (! selectQuery.first())
-	{
-		throw FileException(tr("Can't find the node for path %1"), path);
-	}
+	EXCEPT_ELSE(selectQuery.first(), FileException, "File::load", "Can't find the node for path %1", path);
 
 	d->m_path      = path;
 	d->m_cached    = isCached;
@@ -269,11 +260,7 @@ uint File::create(QSqlDatabase db)
 
 	bool result = selectQuery.exec();
 	Q_ASSERT_X(result, "File::create", qPrintable(selectQuery.lastError().text()));
-
-	if (! selectQuery.first())
-	{
-		throw FileException(tr("Can't find the project %1"), d->m_path);
-	}
+	EXCEPT_ELSE(selectQuery.first(), FileException, "File::create", "Can't find the project %1", d->m_path);
 
 	QSqlQuery insertQuery(db);
 	insertQuery.prepare("INSERT INTO cv_file(project_id, path, cached, type, datmod, loaded, root_id, selection, encoding) "
