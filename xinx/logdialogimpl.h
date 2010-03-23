@@ -27,7 +27,7 @@
 #include "ui_logform.h"
 
 // Qt header
-#include <QWidget>
+#include <QDockWidget>
 
 class PrivateLogDockWidget;
 
@@ -40,6 +40,8 @@ public:
 
 	void init();
 	void end();
+
+	void setDock(QDockWidget * dock);
 public slots:
 	void log(RCS::rcsLog niveau, const QString & info);
 	void find(const QString & filename, const QString & text, int line);
@@ -50,6 +52,7 @@ protected slots:
 	void doubleClicked(const QModelIndex & index);;
 private:
 	Ui::LogWidget * m_logwidget;
+	QDockWidget * m_dock;
 };
 #endif
 

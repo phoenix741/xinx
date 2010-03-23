@@ -29,10 +29,11 @@ XmlPresentationDockWidget * XmlPresentationDockWidget::s_self = 0;
 
 XmlPresentationDockWidget::XmlPresentationDockWidget(QWidget * parent) : QWidget(parent)
 {
-	setWindowTitle(tr("Xml Presentation"));
 	if (! s_self) s_self = this;
 
 	d = new XmlPresentationDockThread(this);
+	setWindowTitle(tr("Xml Presentation"));
+	setWindowIcon(QIcon(":/images/preferences-xmlpres.png"));
 }
 
 XmlPresentationDockWidget::~XmlPresentationDockWidget()

@@ -116,8 +116,8 @@ private:
 	FileContentDockWidget * m_contentDock;
 	ProjectDirectoryDockWidget * m_projectDock;
 	LogDockWidget * m_logDock;
-	XmlPresentationDockWidget * m_xmlpresentationdock;
 	SnipetDockWidget * m_snipetsDock;
+	QDockWidget * m_logDockView;
 
 	// RCS
 	bool m_rcsVisible;

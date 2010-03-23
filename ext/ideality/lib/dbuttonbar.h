@@ -65,6 +65,7 @@ class D_IDEAL_EXPORT DButtonBar : public QToolBar
 		
 		void setExclusive(bool excl);
 		void setAutoHide(bool autohide);
+		void setShowTextsAndIcons();
 		void setShowOnlyIcons();
 		void setShowOnlyTexts();
 		

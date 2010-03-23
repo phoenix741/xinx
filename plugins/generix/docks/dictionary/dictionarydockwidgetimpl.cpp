@@ -30,7 +30,9 @@
 DictionaryDockWidgetImpl::DictionaryDockWidgetImpl(QWidget * parent) : QWidget(parent)
 {
 	setupUi(this);
-	setWindowTitle(tr("Generix Business View"));
+	setWindowTitle(tr("Dictionary"));
+	setWindowIcon(QIcon(":/generix/images/dictionary16.png"));
+
 
 	connect(XINXProjectManager::self(), SIGNAL(changed()), this, SLOT(projectChanged()));
 	connect(ContentView2::Manager::self()->cache(), SIGNAL(cacheLoaded(ContentView2::File)), this, SLOT(update(ContentView2::File)));

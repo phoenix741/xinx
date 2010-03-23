@@ -72,19 +72,22 @@ class DViewButton::Animator
 		bool isEnter;
 };
 
-DViewButton::DViewButton(Qt::ToolBarArea area, DToolView *toolView, QWidget * parent) : QToolButton(parent), m_area(area), m_toolView(toolView)
+DViewButton::DViewButton(Qt::ToolBarArea area, DToolView *toolView, QWidget * parent) : QToolButton(parent), m_area(area), m_isClicked(false), m_toolView(toolView)
 {
 	setup();
 }
 
 
-DViewButton::DViewButton(DToolView *toolView, QWidget *parent) : QToolButton(parent), m_area(Qt::LeftToolBarArea), m_toolView(toolView)
+DViewButton::DViewButton(DToolView *toolView, QWidget *parent) : QToolButton(parent), m_area(Qt::LeftToolBarArea), m_isClicked(false), m_toolView(toolView)
 {
 	setup();
 }
 
 void DViewButton::setup()
 {
+	connect(m_toolView->toggleViewAction(), SIGNAL(triggered()), this, SLOT(viewtoggled()));
+
+	setIconText();
 // 	setAutoExclusive(true);
 	setCheckable( true );
 	setAutoRaise(true);
@@ -117,6 +120,11 @@ void DViewButton::setup()
 DViewButton::~DViewButton()
 {
 	delete m_animator;
+}
+
+void DViewButton::setIconText()
+{
+	setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 }
 
 void DViewButton::setOnlyText()
@@ -327,6 +335,7 @@ QMenu *DViewButton::createMenu()
 	QMenu *menu = new QMenu(tr("Menu"), this);
 	menu->addAction(tr("Only icon"), this, SLOT(setOnlyIcon()) );
 	menu->addAction(tr("Only text"), this, SLOT(setOnlyText()) );
+	menu->addAction(tr("Text && Icon"), this, SLOT(setIconText()) );
 	menu->addSeparator();
 	
 	QAction *a = menu->addAction(tr("Mouse sensibility")/*, this, SLOT(toggleSensibility())*/);
@@ -436,6 +445,7 @@ bool DViewButton::blending() const
 
 void DViewButton::toggleView()
 {
+
 	QMainWindow *mw = static_cast<QMainWindow *>(m_toolView->parentWidget());
 	
 	m_toolView->setUpdatesEnabled(false);
@@ -444,7 +454,10 @@ void DViewButton::toggleView()
 		mw->setUpdatesEnabled( false );
 	}
 	
-	m_toolView->toggleViewAction()->trigger();
+	if (!m_isClicked)
+	{
+		m_toolView->toggleViewAction()->trigger();
+	}
 	setChecked( m_toolView->isVisible() );
 	
 	
@@ -455,6 +468,15 @@ void DViewButton::toggleView()
 	}
 }
 
+void DViewButton::viewtoggled()
+{
+	if (! m_isClicked)
+	{
+		m_isClicked = true;
+		click();
+		m_isClicked = false;
+	}
+}
 
 DToolView *DViewButton::toolView() const
 {

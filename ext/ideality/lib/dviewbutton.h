@@ -64,6 +64,7 @@ class D_IDEAL_EXPORT DViewButton : public QToolButton
 		virtual void leaveEvent( QEvent* );
 		
 	public slots:
+		void setIconText();
 		void setOnlyText();
 		void setOnlyIcon();
 		
@@ -72,6 +73,7 @@ class D_IDEAL_EXPORT DViewButton : public QToolButton
 	private slots:
 		void animate();
 		void toggleSensibility();
+		void viewtoggled();
 		
 	private:
 		Qt::ToolBarArea m_area;
@@ -84,6 +86,7 @@ class D_IDEAL_EXPORT DViewButton : public QToolButton
 		bool m_blending;
 		
 		QPalette m_palette;
+		bool m_isClicked;
 		
 		DToolView *m_toolView;
 };

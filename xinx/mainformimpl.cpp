@@ -47,6 +47,7 @@
 #include <contentview2/contentview2cache.h>
 #include <contentview2/contentview2manager.h>
 #include <dtoolview.h>
+#include <dviewbutton.h>
 
 // Qt header
 #include <QObject>
@@ -819,10 +820,11 @@ void MainformImpl::createDockWidget()
 	m_logDock = new LogDockWidget(this);
 	connect(m_logDock, SIGNAL(open(QString,int)), this, SLOT(openFile(QString,int)));
 	connect(ErrorManager::self(), SIGNAL(changed()), m_logDock, SLOT(updateErrors()));
-	view = addToolView(m_logDock, Qt::BottomDockWidgetArea);
-	view->setObjectName(QString::fromUtf8("m_logDock"));
+	m_logDockView = addToolView(m_logDock, Qt::BottomDockWidgetArea);
+	m_logDockView->setObjectName(QString::fromUtf8("m_logDock"));
 	action = view->toggleViewAction();
 	m_menus["windows"]->addAction(action);
+	m_logDock->setDock(m_logDockView);
 
 	// Load dock from plugins and assign automatic shortcut
 	int dockShortcut = 4;
@@ -1216,6 +1218,7 @@ void MainformImpl::readWindowSettings()
 		if (! restoreState(XINXConfig::self()->config().state))
 			qWarning("Can't restore windows state.\n");
 	}
+	restoreGUI();
 }
 
 void MainformImpl::storeWindowSettings()
@@ -1227,6 +1230,7 @@ void MainformImpl::storeWindowSettings()
 	XINXConfig::self()->config().maximized = isMaximized();
 
 	XINXConfig::self()->save();
+	saveGUI();
 }
 
 void MainformImpl::createTabEditorButton()
@@ -1436,19 +1440,19 @@ void MainformImpl::logStart()
 {
 	m_logDock->init();
 	m_rcsVisible = m_logDock->isVisible();
-	m_logDock->show();
+	m_logDockView->show();
 }
 
 void MainformImpl::logTimeout()
 {
 	m_timer->stop();
-	m_logDock->setVisible(false);
+	m_logDockView->setVisible(false);
 }
 
 void MainformImpl::rcsLogTerminated()
 {
 	m_logDock->end();
-	if ((!m_rcsVisible) && m_logDock->isVisible() && XINXConfig::self()->config().project.closeVersionManagementLog)
+	if ((!m_rcsVisible) && m_logDockView->isVisible() && XINXConfig::self()->config().project.closeVersionManagementLog)
 		m_timer->start(5000);
 }
 
@@ -1535,7 +1539,7 @@ void MainformImpl::findInFiles(const QString & directory, const QString & from, 
 	m_searchPreviousAct->setEnabled(false);
 	m_replaceAct->setEnabled(false);
 	m_logDock->init();
-	m_logDock->setVisible(true);
+	m_logDockView->setVisible(true);
 
 	SearchFileThread * threadSearch = new SearchFileThread();
 	connect(threadSearch, SIGNAL(find(QString,QString,int)), m_logDock, SLOT(find(QString,QString,int)), Qt::BlockingQueuedConnection);

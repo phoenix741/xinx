@@ -79,9 +79,10 @@ void SearchLogWidgetDelegate::paint(QPainter * painter, const QStyleOptionViewIt
 
 /* LogDockWidget */
 
-LogDockWidget::LogDockWidget(QWidget * parent) : QWidget(parent)
+LogDockWidget::LogDockWidget(QWidget * parent) : QWidget(parent), m_dock(0)
 {
-	setWindowTitle(tr("Log"));
+	setWindowTitle(tr("Logs"));
+	setWindowIcon(QIcon(":/images/ecmascript.png"));
 
 	m_logwidget = new Ui::LogWidget();
 	m_logwidget->setupUi(this);
@@ -197,11 +198,11 @@ void LogDockWidget::updateErrors()
 	if (m_logwidget->m_messagesWidget->invisibleRootItem()->childCount())
 	{
 		m_logwidget->m_tabWidget->setCurrentWidget(m_logwidget->m_messageTab);
-		setVisible(true);
+		if (m_dock) m_dock->setVisible(true);
 	}
 	else
 	{
-		setVisible(false);
+		if (m_dock) m_dock->setVisible(false);
 	}
 }
 
@@ -216,3 +217,7 @@ void LogDockWidget::doubleClicked(const QModelIndex & index)
 	}
 }
 
+void LogDockWidget::setDock(QDockWidget * dock)
+{
+	m_dock = dock;
+}

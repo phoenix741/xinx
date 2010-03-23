@@ -37,8 +37,6 @@
 
 SnipetDockWidget::SnipetDockWidget(QWidget * parent) : QWidget(parent)
 {
-	setWindowTitle(tr("Snipets"));
-	setWindowIcon(QIcon(":/images/template.png"));
 	init();
 }
 
@@ -52,6 +50,8 @@ void SnipetDockWidget::init()
 {
 	m_dock = new Ui::SnipetsDockWidget();
 	m_dock->setupUi(this);
+	setWindowTitle(tr("Snipets"));
+	setWindowIcon(QIcon(":/images/template.png"));
 
 	/* Snipets Tree */
 	m_snipetFilterModel = new RecursiveSortFilterProxyModel(m_dock->m_snipetTreeView);

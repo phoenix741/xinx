@@ -91,7 +91,10 @@ QMenu *DButtonBar::createMenu()
 	
 	a = menu->addAction(tr("Only texts"));
 	connect(a, SIGNAL(triggered()), this, SLOT(setShowOnlyTexts()));
-	
+
+	a = menu->addAction(tr("Texts && Icons"));
+	connect(a, SIGNAL(triggered()), this, SLOT(setShowTextsAndIcons()));
+
 	menu->addSeparator();
 	
 	a = menu->addAction(tr("Exclusive"));
@@ -175,6 +178,15 @@ void DButtonBar::setAutoHide(bool autohide)
 bool DButtonBar::autohide() const
 {
 	return m_autoHide;
+}
+
+void DButtonBar::setShowTextsAndIcons()
+{
+	foreach(QAbstractButton *b, m_buttons.buttons() )
+	{
+		DViewButton *viewButton = static_cast<DViewButton *>(b);
+		viewButton->setIconText();
+	}
 }
 
 void DButtonBar::setShowOnlyIcons()

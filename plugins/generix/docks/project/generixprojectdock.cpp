@@ -135,7 +135,8 @@ QSize BusinessViewListDelegate::sizeHint(const QStyleOptionViewItem &option, con
 GenerixProjectDockImpl::GenerixProjectDockImpl(QWidget * parent) : QWidget(parent)
 {
 	setupUi(this);
-	setWindowTitle(tr("Dictionary"));
+	setWindowTitle(tr("Generix Business View"));
+	setWindowIcon(QIcon(":/generix/images/logo_gce32.png"));
 
 	m_businessViewList->setItemDelegate(m_delegate = new BusinessViewListDelegate(m_businessViewList));
 
