@@ -33,7 +33,8 @@ namespace ContentView2
 
 /* NodeException */
 
-NodeException::NodeException(QString message, QString nodeName) : XinxException(QString(message).arg(nodeName)), m_nodeName(nodeName)
+NodeException::NodeException(const QString & assertion, const QString & locationFile, int locationLine, const QString & locationMethod, QString message, QString nodeName)
+	: XinxException(assertion, locationFile, locationLine, locationMethod, QString(message).arg(nodeName)), m_nodeName(nodeName)
 {
 }
 
@@ -86,10 +87,7 @@ void PrivateNode::load()
 	selectQuery.bindValue(":id", QVariant::fromValue(m_id));
 	bool result = selectQuery.exec();
 	Q_ASSERT_X(result, "PrivateNode::load", qPrintable(selectQuery.lastError().text()));
-	if (! selectQuery.first())
-	{
-		throw NodeException(Node::tr("Can't find the node %1"), QString("%1").arg(m_id));
-	}
+	EXCEPT_ELSE(selectQuery.first(), NodeException, "PrivateNode::load", "Can't find the node %1", QString("%1").arg(m_id));
 
 	m_datas.clear();
 

@@ -52,7 +52,7 @@ public:
 	 * \param message Error of the exception.
 	 * \param line Line where the error is.
 	 */
-	NodeException(QString message, QString nodeName);
+	NodeException(const QString & assertion, const QString & locationFile, int locationLine, const QString & locationMethod, QString message, QString nodeName);
 
 	/*!
 	 * Return the line where the error is.

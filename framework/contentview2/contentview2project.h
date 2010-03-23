@@ -47,7 +47,7 @@ public:
 	 * \param message Error of the exception.
 	 * \param line Line where the error is.
 	 */
-	ProjectException(QString message, QString fileName);
+	ProjectException(const QString & assertion, const QString & locationFile, int locationLine, const QString & locationMethod, QString message, QString fileName);
 
 	/*!
 	 * Return the line where the error is.

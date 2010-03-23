@@ -41,7 +41,18 @@ class XinxErrorMessage;
 class LIBEXPORT XinxException
 {
 public:
-	XinxException(QString message);
+	XinxException(const QString & message);
+	XinxException(const QString & assertion, const QString & locationFile, int locationLine, const QString & locationMethod, const QString & message);
+	/*!
+	 * Return the test made that made the error
+	 */
+	const QString & assertion() const;
+	/*!
+	 * Return the location (method name) of the error
+	 */
+	const QString & locationFile() const;
+	const int locationLine() const;
+	const QString & locationMethod() const;
 	/*!
 	 * Return the message.
 	 * \return The message of the error.
@@ -53,9 +64,13 @@ public:
 	 */
 	const QStringList & getStack() const;
 private:
-	QString m_message;
+	QString m_message, m_assertion, m_locationFile, m_locationMethod;
+	int m_locationLine;
 	QStringList m_stack;
 };
+
+#define EXCEPT_ELSE(assertion, Exception, method, ...) \
+	(assertion ? qt_noop() : throw Exception(#assertion, __FILE__,__LINE__, method, __VA_ARGS__));
 
 /*!
  * The Exception manager contains an error dialog that can be used when a error occure or when we

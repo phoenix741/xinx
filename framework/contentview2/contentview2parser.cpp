@@ -31,7 +31,8 @@ namespace ContentView2
 
 /* ParserException */
 
-ParserException::ParserException(QString message, int line, int column) : XinxException(message), m_line(line), m_column(column)
+ParserException::ParserException(const QString & assertion, const QString & locationFile, int locationLine, const QString & locationMethod, QString message, int line, int column)
+	: XinxException(assertion, locationFile, locationLine, locationMethod, message), m_line(line), m_column(column)
 {
 
 }

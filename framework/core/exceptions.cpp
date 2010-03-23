@@ -203,7 +203,13 @@ ExceptionManager * ExceptionManager::self()
 
 /* XinxException */
 
-XinxException::XinxException(QString message) : m_message(message)
+XinxException::XinxException(const QString & message) : m_message(message), m_locationLine(-1)
+{
+
+}
+
+XinxException::XinxException(const QString & assertion, const QString & locationFile, int locationLine, const QString & locationMethod, const QString & message)
+	: m_message(message), m_assertion(assertion), m_locationFile(locationFile), m_locationMethod(locationMethod), m_locationLine(locationLine)
 {
 	m_stack = ExceptionManager::self()->stackTrace(); //[ (unsigned long)QThread::currentThreadId() ];
 }
@@ -211,6 +217,26 @@ XinxException::XinxException(QString message) : m_message(message)
 const QString & XinxException::getMessage() const
 {
 	return m_message;
+}
+
+const QString & XinxException::assertion() const
+{
+	return m_assertion;
+}
+
+const QString & XinxException::locationFile() const
+{
+	return m_locationFile;
+}
+
+const int XinxException::locationLine() const
+{
+	return m_locationLine;
+}
+
+const QString & XinxException::locationMethod() const
+{
+	return m_locationMethod;
 }
 
 const QStringList & XinxException::getStack() const

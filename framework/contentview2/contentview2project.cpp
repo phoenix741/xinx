@@ -32,7 +32,8 @@ namespace ContentView2
 
 /* ProjectException */
 
-ProjectException::ProjectException(QString message, QString fileName) : XinxException(QString(message).arg(fileName)), m_fileName(fileName)
+ProjectException::ProjectException(const QString & assertion, const QString & locationFile, int locationLine, const QString & locationMethod, QString message, QString fileName)
+	: XinxException(assertion, locationFile, locationLine, locationMethod, QString(message).arg(fileName)), m_fileName(fileName)
 {
 }
 

@@ -49,7 +49,7 @@ public:
 	 * \param message Error of the exception.
 	 * \param line Line where the error is.
 	 */
-	FileException(QString message, QString fileName);
+	FileException(const QString & assertion, const QString & locationFile, int locationLine, const QString & locationMethod, QString message, QString fileName);
 
 	/*!
 	 * Return the line where the error is.

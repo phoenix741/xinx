@@ -50,7 +50,7 @@ public:
 	 * \param message Error of the exception.
 	 * \param line Line where the error is.
 	 */
-	ParserException(QString message, int line, int column = 0);
+	ParserException(const QString & assertion, const QString & locationFile, int locationLine, const QString & locationMethod, QString message, int line, int column = 0);
 
 	/*!
 	 * Return the line where the error is.
