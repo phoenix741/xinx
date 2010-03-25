@@ -134,7 +134,7 @@ public:
 class IProjectInitialisationStep {
 public:
 	//! Destroy the step
-	virtual ~IProjectInitialisationStep() {};
+	virtual ~IProjectInitialisationStep() {}
 
 	virtual QString name() = 0;
 	virtual bool process() = 0;
@@ -161,7 +161,7 @@ public:
 	 * the accept boolean is true, XINX don't call other plugin. If the file
 	 * return false, the save is cancelled, else, the save is called.
 	 */
-	virtual QString getFilename(const QString & filename, const QString & filter, bool saveAs, bool & accept, QWidget * widget = 0) = 0;
+	virtual QString getFilename(const QString & filename, const QString & defaultFilename, const QString & filter, bool saveAs, bool & accept, QWidget * widget = 0) = 0;
 	//! Call when a file is saved
 	virtual QIODevice * saveFile(const QString & filename, const QString & oldfilename) = 0;
 };

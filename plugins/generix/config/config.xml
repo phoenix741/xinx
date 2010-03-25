@@ -1,11 +1,6 @@
 <config classname="Generix Settings" organization="Shadoware.Org" application="XINX" path="PluginsSettings/generix">
     <include>#include &lt;QStringList&gt;</include>
-    <type name="Extentions">
-        <value name="Specifique Sub Directory" type="string"/>
-        <value name="Can Be Save As Specifique" type="bool" default="yes"/>
-        <value name="Can Be Find In Configuration" type="bool" default="no"/>
-    </type>
 
-    <value name="Default Project Path Name" type="string" default="projet"/>
-    <value name="Files" type="hash:Extentions"/>
+	<value name="Default Project Path Name" type="string" default="projet"/>
+    <value name="Files" type="hash:string"/>
 </config>

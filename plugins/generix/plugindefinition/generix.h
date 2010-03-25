@@ -64,7 +64,7 @@ public:
 
 	virtual QIODevice * loadFile(const QString & filename);
 	virtual QIODevice * saveFile(const QString & filename, const QString & oldfilename);
-	virtual QString getFilename(const QString & filename, const QString & filter, bool saveAs, bool & accept, QWidget * widget = 0);
+	virtual QString getFilename(const QString & filename, const QString & defaultFilename, const QString & filter, bool saveAs, bool & accept, QWidget * widget = 0);
 
 	virtual QList<QWidget*> createDocksWidget(QWidget * parent);
 

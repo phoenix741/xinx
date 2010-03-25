@@ -1364,7 +1364,7 @@ void MainformImpl::fileEditorSave(int index, bool saveAs)
 
 		if (e->isActivated() && plugin)
 		{
-			newFilename = plugin->getFilename(filename, filter, saveAs, accept, this);
+			newFilename = plugin->getFilename(filename, deffilename, filter, saveAs, accept, this);
 			if (accept) break;
 		}
 	}

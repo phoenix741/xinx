@@ -31,7 +31,7 @@ class SpecifiqueModelIndex : public QAbstractTableModel
 {
 	Q_OBJECT
 public:
-	SpecifiqueModelIndex(QHash<QString,GenerixSettings::struct_extentions> * extentions, QObject * parent = 0);
+	SpecifiqueModelIndex(QHash<QString,QString> * extentions, QObject * parent = 0);
 	virtual ~SpecifiqueModelIndex();
 
 	virtual int rowCount(const QModelIndex & parent = QModelIndex()) const;
@@ -41,7 +41,7 @@ public:
 	virtual QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
 	virtual Qt::ItemFlags flags(const QModelIndex & index) const;
 private:
-	QHash<QString,GenerixSettings::struct_extentions> * m_extentions;
+	QHash<QString,QString> * m_extentions;
 };
 
 #endif /* SPECIFIQUEMODELINDEX_H_ */

@@ -60,15 +60,12 @@ bool CustomGenerixImpl::loadSettingsDialog()
 	m_specifiqueTableView->resizeColumnsToContents();
 	QObject::connect(specifiqueModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), m_specifiqueTableView, SLOT(resizeColumnsToContents()));
 
-	m_lineEditDefaultProjectPathName->setText(SelfGenerixSettings::self()->config().defaultProjectPathName);
-
 	return true;
 }
 
 bool CustomGenerixImpl::saveSettingsDialog()
 {
 	SelfGenerixSettings::self()->config().files = m_extentions;
-	SelfGenerixSettings::self()->config().defaultProjectPathName = m_lineEditDefaultProjectPathName->text();
 
 	SelfGenerixSettings::self()->save();
 

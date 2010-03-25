@@ -43,7 +43,7 @@ public:
 	virtual bool isSettingsValid();
 	virtual bool isVisible();
 private:
-	QHash<QString,GenerixSettings::struct_extentions> m_extentions;
+	QHash<QString,QString> m_extentions;
 };
 
 #endif /* CUSTOMGENERIXIMPL_H */

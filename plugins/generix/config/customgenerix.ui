@@ -14,39 +14,27 @@
    <string>Generix</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
-    <widget class="QLabel" name="label_11">
-     <property name="text">
-      <string>Default &amp;specifique path name :</string>
-     </property>
-     <property name="buddy">
-      <cstring>m_lineEditDefaultProjectPathName</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1">
-    <widget class="QLineEdit" name="m_lineEditDefaultProjectPathName">
-     <property name="whatsThis">
-      <string>&lt;p&gt;This is the path where derivated files are stored in derivated project mode.&lt;/p&gt;
-&lt;p&gt;&lt;i&gt;In &lt;b&gt;Generix&lt;/b&gt;, this is a sub-directory of langue/fra/nav/&lt;/i&gt;&lt;/p&gt;</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0" colspan="2">
+   <item row="0" column="0" colspan="2">
     <widget class="QLabel" name="label_16">
      <property name="text">
-      <string>&amp;Specifique file :</string>
+      <string>&amp;Location of specifique file :</string>
      </property>
      <property name="buddy">
       <cstring>m_specifiqueTableView</cstring>
      </property>
     </widget>
    </item>
-   <item row="2" column="0" colspan="2">
+   <item row="1" column="0" colspan="2">
     <widget class="QTableView" name="m_specifiqueTableView">
      <property name="whatsThis">
       <string>For each type of files, you can choose a sub-directory of the default specifique path name (ie. &lt;i&gt;langue/fra/nav/projet/js&lt;/i&gt;). You can choose if the type of file can be Specifique or not. If not, the sub-directory is ignored.</string>
      </property>
+     <attribute name="horizontalHeaderStretchLastSection">
+      <bool>true</bool>
+     </attribute>
+     <attribute name="horizontalHeaderStretchLastSection">
+      <bool>true</bool>
+     </attribute>
     </widget>
    </item>
   </layout>

@@ -27,26 +27,23 @@
 
 /* SpecifiqueModelIndex */
 
-SpecifiqueModelIndex::SpecifiqueModelIndex(QHash<QString,GenerixSettings::struct_extentions> * extentions, QObject * parent) : QAbstractTableModel(parent)
+SpecifiqueModelIndex::SpecifiqueModelIndex(QHash<QString,QString> * extentions, QObject * parent) : QAbstractTableModel(parent)
 {
 	m_extentions = extentions;
 
 	foreach(IFileTypePlugin * plugin, XinxPluginsLoader::self()->fileTypes())
 	{
 		QStringList matchingValues = plugin->match().split(" ");
-
-		GenerixSettings::struct_extentions defaultStructure;
-		defaultStructure.canBeFindInConfiguration     = plugin->match().contains("*.xsl");
-		defaultStructure.canBeSaveAsSpecifique        = plugin->match().contains("*.xsl") || plugin->match().contains("*.js") || plugin->match().contains("*.css");
+		QString value;
 
 		if (matchingValues.size() && ! plugin->match().contains("*.xsl"))
 		{
 			QString matchingValue = matchingValues.at(0);
-			defaultStructure.specifiqueSubDirectory   = matchingValue.remove("*.") + "/";
+			value = matchingValue.remove("*.") + "/";
 		}
 
 		if (! m_extentions->contains(plugin->description()))
-			m_extentions->insert(plugin->description(), extentions->value(plugin->description(), defaultStructure));
+			m_extentions->insert(plugin->description(), extentions->value(plugin->description(), value));
 	}
 }
 
@@ -64,7 +61,7 @@ int SpecifiqueModelIndex::rowCount(const QModelIndex & parent) const
 int SpecifiqueModelIndex::columnCount(const QModelIndex & parent) const
 {
 	Q_UNUSED(parent);
-	return 3;
+	return 1;
 }
 
 QVariant SpecifiqueModelIndex::headerData(int section, Qt::Orientation orientation, int role) const
@@ -74,11 +71,7 @@ QVariant SpecifiqueModelIndex::headerData(int section, Qt::Orientation orientati
 		switch (section)
 		{
 		case 0 :
-			return tr("Can be save as specifique");
-		case 1 :
 			return tr("Sub-directory");
-		case 2 :
-			return tr("Is in configuration.xml");
 		}
 	}
 	if ((orientation == Qt::Vertical) && (role == Qt::DisplayRole))
@@ -93,17 +86,11 @@ bool SpecifiqueModelIndex::setData(const QModelIndex & index, const QVariant & v
 	if (index.isValid() && (role == Qt::EditRole))
 	{
 		QString key = m_extentions->keys().at(index.row());
-		GenerixSettings::struct_extentions ext = m_extentions->value(key);
+		QString ext = m_extentions->value(key);
 		switch (index.column())
 		{
 		case 1:
-			ext.canBeSaveAsSpecifique = value.toBool();
-			break;
-		case 2:
-			ext.specifiqueSubDirectory = value.toString();
-			break;
-		case 3:
-			ext.canBeFindInConfiguration = value.toBool();
+			ext = value.toString();
 			break;
 		}
 		m_extentions->insert(key, ext);
@@ -120,11 +107,7 @@ QVariant SpecifiqueModelIndex::data(const QModelIndex & index, int role) const
 		switch (index.column())
 		{
 		case 0 :
-			return m_extentions->values().at(index.row()).canBeSaveAsSpecifique;
-		case 1 :
-			return m_extentions->values().at(index.row()).specifiqueSubDirectory;
-		case 2 :
-			return m_extentions->values().at(index.row()).canBeFindInConfiguration;
+			return m_extentions->values().at(index.row());
 		}
 	}
 

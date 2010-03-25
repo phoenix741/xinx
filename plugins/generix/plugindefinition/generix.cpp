@@ -36,6 +36,7 @@
 #include <savedialog/derivationdialogimpl.h>
 #include <rcs/rcsmanager.h>
 #include "parser/generixxsltparser.h"
+#include <plugins/xinxpluginsloader.h>
 
 // Qt header
 #include <QString>
@@ -236,7 +237,7 @@ QIODevice * GenerixPlugin::saveFile(const QString & filename, const QString & ol
 	return 0;
 }
 
-QString GenerixPlugin::getFilename(const QString & filename, const QString & filter, bool saveAs, bool & accept, QWidget * widget)
+QString GenerixPlugin::getFilename(const QString & filename, const QString & defaultFilename, const QString & filter, bool saveAs, bool & accept, QWidget * widget)
 {
 	GenerixProject * gnxProject = static_cast<GenerixProject*>(XINXProjectManager::self()->project().data());
 	if (!(gnxProject && gnxProject->isGenerixActivated()))
@@ -249,7 +250,25 @@ QString GenerixPlugin::getFilename(const QString & filename, const QString & fil
 	if (saveAs || DerivationDialogImpl::isDerivableFile(filename))
 	{
 		DerivationDialogImpl dlg(widget);
-		dlg.load(filename, filter);
+		if (!filename.isEmpty())
+		{
+			dlg.load(filename, filter);
+		}
+		else
+		{
+			QString newFilename = defaultFilename;
+			IFileTypePlugin * plugin = XinxPluginsLoader::self()->matchedFileType(defaultFilename);
+			if (plugin)
+			{
+				QString pathname = SelfGenerixSettings::self()->config().files.value(plugin->description());
+				if(! pathname.endsWith(QDir::separator()))
+				{
+					pathname = pathname + "/";
+				}
+				newFilename = pathname + newFilename;
+			}
+			dlg.load(newFilename, filter);
+		}
 		if (dlg.exec() == QDialog::Accepted)
 		{
 			const QString filename = dlg.getNewPath();

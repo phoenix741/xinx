@@ -73,11 +73,11 @@ void DerivationDialogImpl::load(const QString & filename, const QString & filter
 	}
 	m_derivationPathList->setCurrentRow(0);
 
+	int prefixIndex = 0, index = 1;
 	QListWidgetItem * noprefix = new QListWidgetItem(tr("<No prefix>"), m_prefixList);
 	noprefix->setSelected(true);
 	noprefix->setData(Qt::UserRole, true);
 
-	QListWidgetItem * defaultItem = 0;
 	if (! gnxProject->defaultPrefix().isEmpty())
 	{
 		QStringList prefixes = gnxProject->prefixes();
@@ -87,11 +87,12 @@ void DerivationDialogImpl::load(const QString & filename, const QString & filter
 			if (gnxProject->defaultPrefix() == prefix)
 			{
 				item->setData(Qt::UserRole, false);
-				defaultItem = item;
+				prefixIndex = index;
 			}
+			index++;
 		}
 	}
-	m_prefixList->setCurrentItem(defaultItem);
+	m_prefixList->setCurrentRow(prefixIndex);
 
 	changePath();
 }
@@ -149,6 +150,7 @@ void DerivationDialogImpl::changePath()
 		if (gnxProject->createMissingDirectory())
 			QDir::current().mkpath(pathname);
 		m_directoryEdit->lineEdit()->setText(pathname + filename);
+		m_directoryEdit->lineEdit()->setSelection(pathname.length(), QFileInfo(filename).baseName().length());
 	}
 	else
 	{
