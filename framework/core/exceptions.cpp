@@ -205,7 +205,7 @@ ExceptionManager * ExceptionManager::self()
 
 XinxException::XinxException(const QString & message) : m_message(message), m_locationLine(-1)
 {
-
+	m_stack = ExceptionManager::self()->stackTrace(); //[ (unsigned long)QThread::currentThreadId() ];
 }
 
 XinxException::XinxException(const QString & assertion, const QString & locationFile, int locationLine, const QString & locationMethod, const QString & message)

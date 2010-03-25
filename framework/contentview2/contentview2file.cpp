@@ -137,6 +137,21 @@ FileContainer::~FileContainer()
 {
 }
 
+XinxProject * FileContainer::project() const
+{
+	return d->m_project;
+}
+
+const QString & FileContainer::path() const
+{
+	return d->m_path;
+}
+
+bool FileContainer::isCached() const
+{
+	return d->m_cached;
+}
+
 File FileContainer::file(QSqlDatabase db) const
 {
 	d->load(db);

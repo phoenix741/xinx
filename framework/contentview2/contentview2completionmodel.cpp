@@ -128,27 +128,32 @@ QString CompletionModel::whereClause() const
 
 void CompletionModel::select()
 {
-	if (m_file.isValid(m_db))
+	m_file.reload(m_db);
+	QSqlQuery query(m_db);
+
+	// Order by clause
+	QString queryStr =
+		"SELECT cv_node.display_name, cv_node.name, cv_node.icon, cv_node.id, cv_node.type, cv_node.completion_value "
+		"FROM cv_node, cv_file " + whereClause() + " AND cv_node.display_name like ifnull(:prefix,'')||'%' "
+		"ORDER BY lower(cv_node.display_name) LIMIT 5";
+
+	// Set the query used all snipet
+	query.prepare(queryStr);
+	query.bindValue(":project_id", m_file.file(m_db).projectId());
+	query.bindValue(":id1", m_file.file(m_db).fileId());
+	query.bindValue(":id2", m_file.file(m_db).fileId());
+	query.bindValue(":prefix", m_prefix);
+
+	bool result = query.exec();
+	if (result)
 	{
-		m_file.reload(m_db);
-		QSqlQuery query(m_db);
-
-		// Order by clause
-		QString queryStr =
-		    "SELECT cv_node.display_name, cv_node.name, cv_node.icon, cv_node.id, cv_node.type, cv_node.completion_value "
-		    "FROM cv_node, cv_file " + whereClause() + " AND cv_node.display_name like ifnull(:prefix,'')||'%' "
-			"ORDER BY lower(cv_node.display_name) LIMIT 5";
-
-		// Set the query used all snipet
-		query.prepare(queryStr);
-		query.bindValue(":project_id", m_file.file(m_db).projectId());
-		query.bindValue(":id1", m_file.file(m_db).fileId());
-		query.bindValue(":id2", m_file.file(m_db).fileId());
-		query.bindValue(":prefix", m_prefix);
-
-		bool result = query.exec();
-		Q_ASSERT_X(result, "CompletionModel::select", qPrintable(query.lastError().text()));
 		setQuery(query);
+	}
+	else
+	{
+		ErrorManager::self()->addMessage(m_file.path(), -1, ErrorManager::MessageInformation, tr("Completion not ready"));
+		Q_ASSERT_X(result, "CompletionModel::select", qPrintable(query.lastError().text()));
+
 	}
 }
 

@@ -9,12 +9,15 @@ DESTDIR += ../
 LIBS += -L../../components \
     -lxinxcmp \
     -L../../framework \
-	-lxinxframework
-win32:LIBS += -lwsock32 -llibxml2 -llibxslt
-unix:LIBS += -lxml2 -lxslt
+    -lxinxframework
+win32:LIBS += -lwsock32 \
+    -llibxml2 \
+    -llibxslt
+unix:LIBS += -lxml2 \
+    -lxslt
 TARGET = generix
 INCLUDEPATH += ../../framework \
-	../../components
+    ../../components
 unix:INCLUDEPATH += /usr/include/libxml2
 RESOURCES = plugindefinition/generix.qrc
 TRANSLATIONS += plugindefinition/translations/dictionary_fr.ts
@@ -45,7 +48,8 @@ HEADERS = config/generixsettings.h \
     docks/project/generixprojectdock.h \
     savedialog/derivationdialogimpl.h \
     parser/generixxsltparser.h \
-    docks/dictionary/dictionarywidget.h
+    docks/dictionary/dictionarywidget.h \
+    configuration/gceconfigurationxmlparser.h
 SOURCES = config/generixsettings.cpp \
     config/selfgenerixsettings.cpp \
     plugindefinition/generix.cpp \
@@ -73,7 +77,8 @@ SOURCES = config/generixsettings.cpp \
     docks/project/generixprojectdock.cpp \
     savedialog/derivationdialogimpl.cpp \
     parser/generixxsltparser.cpp \
-    docks/dictionary/dictionarywidget.cpp
+    docks/dictionary/dictionarywidget.cpp \
+    configuration/gceconfigurationxmlparser.cpp
 win32:RC_FILE += rc/plugin.rc
 FORMS += ui/dictionarydockwidget.ui \
     config/customgenerix.ui \

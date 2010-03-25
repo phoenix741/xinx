@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * XINX                                                                    *
- * Copyright (C) 2009 by Ulrich Van Den Hekke                              *
+ * Copyright (C) 2010 by Ulrich Van Den Hekke                              *
  * ulrich.vdh@shadoware.org                                                *
  *                                                                         *
  * This program is free software: you can redistribute it and/or modify    *
@@ -16,37 +16,57 @@
  * You should have received a copy of the GNU General Public License       *
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
-
-#ifndef GCEPROPERTIES_H
-#define GCEPROPERTIES_H
+#pragma once
+#ifndef GCECONFIGURATIONXMLPARSER_H
+#define GCECONFIGURATIONXMLPARSER_H
 
 // Xinx header
-#include "gceinterface.h"
-#include "gceconfigurationdef.h"
+#include "configurationfile.h"
 
 // Qt header
-#include <QString>
-#include <QMultiHash>
-#include <QCoreApplication>
+#include <QXmlStreamReader>
+#include <QIODevice>
+#include <QDebug>
+#include <QDomDocument>
+#include <QFileInfo>
+#include <QDir>
+#include <QFile>
 
-class GceProperties : public GceConfigurationDef
+class GceConfigurationDef;
+
+class GceConfigurationXmlParser : public QXmlStreamReader
 {
-	Q_DECLARE_TR_FUNCTIONS(GceProperties)
 public:
-	GceProperties(const QString & filename);
-	virtual ~GceProperties();
+	GceConfigurationXmlParser();
 
-	QStringList generateFileName(const QString & filename);
-	virtual QString rootFilename();
-	virtual QStringList filenames();
-	virtual QString resolveFileName(const QString & filename);
-protected:
-	virtual void readGceProperties(const QString & propertiesFileName);
+	bool loadFromFile(const QString & filename);
 
-	QStringList m_dictionnaries, m_filenames;
-	QString m_propertiesFilename, m_configurationDef;
+	/* INPUT */
+	GceConfigurationDef * m_parent;
+	int m_configurationNumber;
 
-	QHash<QString,QStringList> m_policy;
+	/* OUTPUT */
+	QString m_version, m_rootPath;
+	int m_edition;
+	QMultiHash<QString,BusinessViewInformation> m_fileRefToInformation;
+
+private:
+	void readUnknownElement();
+	void readConfigElement();
+	void readVersionElement();
+	void readApplicationElement();
+
+	void readBusinessViewDef();
+	void readBusinessViewDefElement();
+	void readPresentationElement(const BusinessViewInformation & information);
+
+	void readPresentation();
+	void readPresentationElement();
+
+	QString m_configurationFileName;
+
+	QHash<QString,BusinessViewInformation> m_nameToInformation;
+	QMultiHash<QString,QString> m_fileRefToName;
 };
 
-#endif // GCEPROPERTIES_H
+#endif // GCECONFIGURATIONXMLPARSER_H

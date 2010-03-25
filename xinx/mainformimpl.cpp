@@ -1952,6 +1952,7 @@ void MainformImpl::openProject(const QString & filename)
 		progressDlg.setMinimumWidth(300);
 		progressDlg.setMaximum(2 + steps.size());
 		progressDlg.setValue(0);
+		progressDlg.show();
 		progressDlg.setLabelText(tr("Close previous project"));
 		qApp->processEvents();
 

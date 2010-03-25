@@ -68,6 +68,10 @@ public:
 	FileContainer(QPointer<XinxProject> project, const QString & path, bool isCached);
 	~FileContainer();
 
+	XinxProject * project() const;
+	const QString & path() const;
+	bool isCached() const;
+
 	File file(QSqlDatabase db) const;
 	void reload(QSqlDatabase db);
 	bool isValid(QSqlDatabase db) const;

@@ -28,6 +28,8 @@
 #include <QMultiHash>
 #include <QCoreApplication>
 
+class GceConfigurationXmlParser;
+
 class GceConfigurationDef : public GceInterface
 {
 	Q_DECLARE_TR_FUNCTIONS(GceConfigurationDef)
@@ -51,6 +53,8 @@ protected:
 	QString m_configurationFileName, m_directoryPath;
 	ConfigurationVersion m_version;
 	QMultiHash<QString,BusinessViewInformation> m_fileToInformation;
+
+	friend class GceConfigurationXmlParser;
 };
 
 #endif // GCECONFIGURATIONDEF_H
