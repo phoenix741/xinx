@@ -34,7 +34,6 @@ class GenerixPlugin :   public QObject,
 		public IXinxInputOutputPlugin,
 		public IDockPlugin,
 		public IResolverPlugin,
-		public IXinxPluginConfiguration,
 		public IXinxPluginProjectConfiguration,
 		public IXinxXsltParser,
 		public IContentViewParserPlugin
@@ -44,7 +43,6 @@ class GenerixPlugin :   public QObject,
 	Q_INTERFACES(IXinxInputOutputPlugin)
 	Q_INTERFACES(IDockPlugin)
 	Q_INTERFACES(IResolverPlugin)
-	Q_INTERFACES(IXinxPluginConfiguration)
 	Q_INTERFACES(IXinxPluginProjectConfiguration)
 	Q_INTERFACES(IXinxXsltParser)
 	Q_INTERFACES(IContentViewParserPlugin)
@@ -67,8 +65,6 @@ public:
 	virtual QString getFilename(const QString & filename, const QString & defaultFilename, const QString & filter, bool saveAs, bool & accept, QWidget * widget = 0);
 
 	virtual QList<QWidget*> createDocksWidget(QWidget * parent);
-
-	virtual QList<IXinxPluginConfigurationPage*> createSettingsDialog(QWidget * parent);
 
 	virtual QList<IFileResolverPlugin*> fileResolvers();
 

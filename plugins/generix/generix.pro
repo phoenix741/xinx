@@ -28,8 +28,6 @@ HEADERS = config/generixsettings.h \
     docks/dictionary/dictionaryparser.h \
     pluginresolver/gce150fileresolver.h \
     configuration/configurationfile.h \
-    config/customgeneriximpl.h \
-    config/specifiquemodelindex.h \
     configuration/gceinterface.h \
     configuration/gceinterfacefactory.h \
     configuration/gceconfiguration.h \
@@ -57,8 +55,6 @@ SOURCES = config/generixsettings.cpp \
     docks/dictionary/dictionaryparser.cpp \
     pluginresolver/gce150fileresolver.cpp \
     configuration/configurationfile.cpp \
-    config/customgeneriximpl.cpp \
-    config/specifiquemodelindex.cpp \
     configuration/gceinterface.cpp \
     configuration/gceinterfacefactory.cpp \
     configuration/gceconfiguration.cpp \
@@ -81,7 +77,6 @@ SOURCES = config/generixsettings.cpp \
     configuration/gceconfigurationxmlparser.cpp
 win32:RC_FILE += rc/plugin.rc
 FORMS += ui/dictionarydockwidget.ui \
-    config/customgenerix.ui \
     projectproperty/std/generixprojectpageform.ui \
     projectproperty/std/generixderivationpage.ui \
     projectproperty/std/generixderivationoptionspage.ui \

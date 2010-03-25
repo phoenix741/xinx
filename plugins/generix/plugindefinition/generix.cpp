@@ -23,7 +23,6 @@
 #include "docks/dictionary/dictionaryparser.h"
 #include <project/xinxproject.h>
 #include "pluginresolver/gce150fileresolver.h"
-#include <config/customgeneriximpl.h>
 #include "projectproperty/wizard/newgenerixinformationpageimpl.h"
 #include "projectproperty/wizard/newgenerixderivation1page.h"
 #include "projectproperty/wizard/newgenerixderivation2page.h"
@@ -257,17 +256,11 @@ QString GenerixPlugin::getFilename(const QString & filename, const QString & def
 		else
 		{
 			QString newFilename = defaultFilename;
-			IFileTypePlugin * plugin = XinxPluginsLoader::self()->matchedFileType(defaultFilename);
-			if (plugin)
+			if (!QDir::match("*.xsl", defaultFilename))
 			{
-				QString pathname = SelfGenerixSettings::self()->config().files.value(plugin->description());
-				if(! pathname.endsWith(QDir::separator()))
-				{
-					pathname = pathname + "/";
-				}
-				newFilename = pathname + newFilename;
+				newFilename = QFileInfo(defaultFilename).suffix() + "/" + newFilename;
 			}
-			dlg.load(newFilename, filter);
+			dlg.load(QDir(gnxProject->webModuleLocation()).absoluteFilePath(newFilename), filter);
 		}
 		if (dlg.exec() == QDialog::Accepted)
 		{
@@ -305,13 +298,6 @@ QList<QWidget*> GenerixPlugin::createDocksWidget(QWidget * parent)
 QList<IFileResolverPlugin*> GenerixPlugin::fileResolvers()
 {
 	return QList<IFileResolverPlugin*>() << m_resolver;
-}
-
-QList<IXinxPluginConfigurationPage*> GenerixPlugin::createSettingsDialog(QWidget * parent)
-{
-	QList<IXinxPluginConfigurationPage*> pages;
-	pages << new CustomGenerixImpl(parent);
-	return pages;
 }
 
 QList<IXinxPluginProjectConfigurationPage*> GenerixPlugin::createProjectSettingsPage(QWidget * parent)
