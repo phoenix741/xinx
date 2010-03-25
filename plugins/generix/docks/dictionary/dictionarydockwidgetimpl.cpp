@@ -34,7 +34,6 @@ DictionaryDockWidgetImpl::DictionaryDockWidgetImpl(QWidget * parent) : QWidget(p
 	setWindowIcon(QIcon(":/generix/images/dictionary16.png"));
 
 
-	connect(XINXProjectManager::self(), SIGNAL(changed()), this, SLOT(projectChanged()));
 	connect(ContentView2::Manager::self()->cache(), SIGNAL(cacheLoaded(ContentView2::File)), this, SLOT(update(ContentView2::File)));
 }
 
@@ -48,16 +47,6 @@ void DictionaryDockWidgetImpl::update(const ContentView2::File & file)
 	if (file.type() == "GNX_DICO")
 	{
 		startTimer(500);
-	}
-}
-
-void DictionaryDockWidgetImpl::projectChanged()
-{
-	// Create the new dictionary
-	GenerixProject * project = static_cast<GenerixProject*>(XINXProjectManager::self()->project().data());
-	if (project && project->isGenerixActivated())
-	{
-		ConfigurationManager::self()->loadDictionary(project);
 	}
 }
 

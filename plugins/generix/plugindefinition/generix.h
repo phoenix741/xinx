@@ -58,8 +58,9 @@ public:
 	ContentView2::Parser * createParser(const QString & type);
 	virtual XsltParser * createXsltParser();
 
-	virtual bool loadProject(XinxProject * project);
-	virtual bool closeProject(XinxProject * project);
+	virtual QList<IProjectInitialisationStep*> loadProjectStep(XinxProject * project);
+	virtual QList<IProjectInitialisationStep*> closeProjectStep(XinxProject * project);
+
 
 	virtual QIODevice * loadFile(const QString & filename);
 	virtual QIODevice * saveFile(const QString & filename, const QString & oldfilename);

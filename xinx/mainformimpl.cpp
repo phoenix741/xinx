@@ -78,6 +78,7 @@
 #include <QIcon>
 #include <QThreadPool>
 #include <QDebug>
+#include <QProgressDialog>
 
 /* MainformImpl */
 
@@ -93,6 +94,9 @@ MainformImpl::MainformImpl(QWidget * parent) : DMainWindow(parent),  m_lastFileN
 	createFindReplace();
 	createTools();
 	createRCS();
+
+	connectSignals();
+
 	updateActions();
 	updateRecentFiles();
 	updateRecentProjects();
@@ -698,6 +702,14 @@ void MainformImpl::createActions()
 	m_alwaysShowRunDialog->setCheckable(true);
 	m_alwaysShowRunDialog->setChecked(XINXConfig::self()->config().snipets.alwaysShowDialog);
 	connect(m_alwaysShowRunDialog, SIGNAL(triggered()), this, SLOT(changeShowSnipetDialogAction()));
+}
+
+void MainformImpl::connectSignals()
+{
+	connect(ContentView2::Manager::self()->cache(), SIGNAL(cacheLoaded()), m_indexingBar, SLOT(hide()));
+	connect(ContentView2::Manager::self()->cache(), SIGNAL(progressRangeChanged(int,int)), m_indexingBar, SLOT(setRange(int,int)));
+	connect(ContentView2::Manager::self()->cache(), SIGNAL(progressValueChanged(int)), m_indexingBar, SLOT(setValue(int)));
+	connect(ContentView2::Manager::self()->cache(), SIGNAL(progressValueChanged(int)), m_indexingBar, SLOT(show()));
 }
 
 void MainformImpl::createPluginsActions()
@@ -1920,6 +1932,14 @@ void MainformImpl::openProject(const QString & filename)
 	try
 	{
 		project = new XinxProject(filename);
+		QList<IProjectInitialisationStep*> steps;
+		foreach(XinxPluginElement * e, XinxPluginsLoader::self()->plugins())
+		{
+			if (e->isActivated() && qobject_cast<IXinxInputOutputPlugin*>(e->plugin()))
+			{
+				steps << qobject_cast<IXinxInputOutputPlugin*>(e->plugin())->loadProjectStep(project);
+			}
+		}
 
 		m_lastProjectOpenedPlace = QFileInfo(filename).absolutePath();
 		m_lastFileName           = m_lastProjectOpenedPlace;
@@ -1928,19 +1948,29 @@ void MainformImpl::openProject(const QString & filename)
 		while (XINXConfig::self()->config().project.recentProjectFiles.size() > MAXRECENTFILES)
 			XINXConfig::self()->config().project.recentProjectFiles.removeLast();
 
+		QProgressDialog progressDlg;
+		progressDlg.setMinimumWidth(300);
+		progressDlg.setMaximum(2 + steps.size());
+		progressDlg.setValue(0);
+		progressDlg.setLabelText(tr("Close previous project"));
+		qApp->processEvents();
+
 		XINXProjectManager::self()->deleteProject();
+		progressDlg.setValue(progressDlg.value() + 1);
 
-		connect(ContentView2::Manager::self()->cache(), SIGNAL(cacheLoaded()), m_indexingBar, SLOT(hide()));
-		connect(ContentView2::Manager::self()->cache(), SIGNAL(progressRangeChanged(int,int)), m_indexingBar, SLOT(setRange(int,int)));
-		connect(ContentView2::Manager::self()->cache(), SIGNAL(progressValueChanged(int)), m_indexingBar, SLOT(setValue(int)));
-		connect(ContentView2::Manager::self()->cache(), SIGNAL(progressValueChanged(int)), m_indexingBar, SLOT(show()));
-
+		progressDlg.setLabelText(tr("Set the current project of <b>XINX</b>."));
+		qApp->processEvents();
 		XINXProjectManager::self()->setCurrentProject(project);
+		progressDlg.setValue(progressDlg.value() + 1);
+		qApp->processEvents();
 
-		foreach(XinxPluginElement * e, XinxPluginsLoader::self()->plugins())
+		foreach(IProjectInitialisationStep* step, steps)
 		{
-			if (e->isActivated() && qobject_cast<IXinxInputOutputPlugin*>(e->plugin()) && (! qobject_cast<IXinxInputOutputPlugin*>(e->plugin())->loadProject(XINXProjectManager::self()->project())))
-				qWarning(qPrintable(tr("Can't start a project for plugin \"%1\"").arg(qobject_cast<IXinxPlugin*>(e->plugin())->getPluginAttribute(IXinxPlugin::PLG_NAME).toString())));
+			progressDlg.setLabelText(step->name());
+			qApp->processEvents();
+			if(! step->process())
+				qWarning() << tr("Can't start a project at the step \"%1\"").arg(step->name());
+			progressDlg.setValue(progressDlg.value() + 1);
 		}
 
 		m_tabEditors->setUpdatesEnabled(false);

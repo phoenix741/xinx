@@ -326,7 +326,11 @@ void Cache::run()
 			for (int i = 0 ; i < parsers.size() ; i++)
 			{
 				bool result = db.transaction();
-				Q_ASSERT_X(result, "Cache::run", qPrintable(db.lastError().text()));
+				if(! result)
+				{
+					sleep(500);
+					i--;
+				}
 
 				Parser * parser = parsers.at(i).parser;
 				File file;
@@ -398,7 +402,11 @@ void Cache::run()
 						file.update(db);
 
 						result = db.commit();
-						Q_ASSERT_X(result, "Cache::run", qPrintable(db.lastError().text()));
+						while(! result)
+						{
+							result = db.commit();
+							sleep(500);
+						}
 
 						emit cacheLoaded(file);
 					}

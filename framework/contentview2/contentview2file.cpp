@@ -33,14 +33,9 @@ namespace ContentView2
 
 /* FileException */
 
-FileException::FileException(const QString & assertion, const QString & locationFile, int locationLine, const QString & locationMethod, QString message, QString fileName)
-	: XinxException(assertion, locationFile, locationLine, locationMethod, QString(message).arg(fileName)), m_fileName(fileName)
+FileException::FileException(const QString & assertion, const QString & locationFile, int locationLine, const QString & locationMethod, QString message)
+	: XinxException(assertion, locationFile, locationLine, locationMethod, message)
 {
-}
-
-const QString & FileException::getFileName() const
-{
-	return m_fileName;
 }
 
 /* PrivateFileContainer */
@@ -202,8 +197,8 @@ void File::load(QSqlDatabase db, uint id)
 	                      "FROM cv_file WHERE id=:id", db);
 	selectQuery.bindValue(":id", QVariant::fromValue(id));
 	bool result = selectQuery.exec();
-	Q_ASSERT_X(result, "File::load", qPrintable(selectQuery.lastError().text()));
-	EXCEPT_ELSE(selectQuery.first(), FileException, "File::load", "Can't find the node %1", QString("%1").arg(id));
+	EXCEPT_ELSE(result, FileException, "File::load", selectQuery.lastError().text());
+	EXCEPT_ELSE(selectQuery.first(), FileException, "File::load", tr("Can't find the node %1").arg(id));
 
 	d->m_id        = id;
 	d->m_projectId = selectQuery.value(0).toInt();
@@ -222,8 +217,8 @@ void File::load(QSqlDatabase db, XinxProject * project, const QString & path, bo
 	QSqlQuery projectQuery("SELECT id, name, path FROM cv_project WHERE path=:project_path", db);
 	projectQuery.bindValue(":project_path", project ? project->fileName() : "/");
 	bool result = projectQuery.exec();
-	Q_ASSERT_X(result, "File::load", qPrintable(projectQuery.lastError().text()));
-	EXCEPT_ELSE(projectQuery.first(), FileException, "File::load", "Can't find the project %1", project->fileName());
+	EXCEPT_ELSE(result, FileException, "File::load", projectQuery.lastError().text());
+	EXCEPT_ELSE(projectQuery.first(), FileException, "File::load", tr("Can't find the project %1").arg(project->fileName()));
 
 	d->m_projectId = projectQuery.value(0).toInt();
 
@@ -233,8 +228,8 @@ void File::load(QSqlDatabase db, XinxProject * project, const QString & path, bo
 	selectQuery.bindValue(":path", QVariant::fromValue(path));
 	selectQuery.bindValue(":cached", QVariant::fromValue(isCached));
 	result = selectQuery.exec();
-	Q_ASSERT_X(result, "File::load", qPrintable(selectQuery.lastError().text()));
-	EXCEPT_ELSE(selectQuery.first(), FileException, "File::load", "Can't find the node for path %1", path);
+	EXCEPT_ELSE(result, FileException, "File::load", qPrintable(selectQuery.lastError().text()));
+	EXCEPT_ELSE(selectQuery.first(), FileException, "File::load", tr("Can't find the node for path %1").arg(path));
 
 	d->m_path      = path;
 	d->m_cached    = isCached;
@@ -259,8 +254,8 @@ uint File::create(QSqlDatabase db)
 	selectQuery.bindValue(":project_id", QVariant::fromValue(d->m_projectId));
 
 	bool result = selectQuery.exec();
-	Q_ASSERT_X(result, "File::create", qPrintable(selectQuery.lastError().text()));
-	EXCEPT_ELSE(selectQuery.first(), FileException, "File::create", "Can't find the project %1", d->m_path);
+	EXCEPT_ELSE(result, FileException, "File::create", qPrintable(selectQuery.lastError().text()));
+	EXCEPT_ELSE(selectQuery.first(), FileException, "File::create", tr("Can't find the project %1").arg(d->m_path));
 
 	QSqlQuery insertQuery(db);
 	insertQuery.prepare("INSERT INTO cv_file(project_id, path, cached, type, datmod, loaded, root_id, selection, encoding) "
@@ -277,7 +272,7 @@ uint File::create(QSqlDatabase db)
 	insertQuery.bindValue(":encoding",   QVariant::fromValue(d->m_encoding));
 
 	result = insertQuery.exec();
-	Q_ASSERT_X(result, "File::create", qPrintable(insertQuery.lastError().text()));
+	EXCEPT_ELSE(result, FileException, "File::create", qPrintable(insertQuery.lastError().text()));
 
 	uint newId = insertQuery.lastInsertId().toInt();
 	d->m_id = newId;
@@ -301,7 +296,7 @@ void File::update(QSqlDatabase db)
 	updateQuery.bindValue(":id",       QVariant::fromValue(d->m_id));
 
 	bool result = updateQuery.exec();
-	Q_ASSERT_X(result, "Node::update", qPrintable(updateQuery.lastError().text()));
+	EXCEPT_ELSE(result, FileException, "Node::update", qPrintable(updateQuery.lastError().text()));
 }
 
 void File::destroy(QSqlDatabase db)
@@ -312,12 +307,12 @@ void File::destroy(QSqlDatabase db)
 	QSqlQuery deleteQuery1("DELETE FROM cv_import WHERE parent_id = :id", db);
 	deleteQuery1.bindValue(":id", QVariant::fromValue(d->m_id));
 	bool result = deleteQuery1.exec();
-	Q_ASSERT_X(result, "File::destroye", qPrintable(deleteQuery1.lastError().text()));
+	EXCEPT_ELSE(result, FileException, "File::destroye", qPrintable(deleteQuery1.lastError().text()));
 
 	QSqlQuery deleteQuery2("DELETE FROM cv_file WHERE id=:id", db);
 	deleteQuery2.bindValue(":id", QVariant::fromValue(d->m_id));
 	result = deleteQuery2.exec();
-	Q_ASSERT_X(result, "File::destroy", qPrintable(deleteQuery2.lastError().text()));
+	EXCEPT_ELSE(result, FileException, "File::destroy", qPrintable(deleteQuery2.lastError().text()));
 
 	d->m_id = -1;
 }
@@ -364,7 +359,7 @@ void File::addImport(QSqlDatabase db, const File & file, bool automatic)
 	createQuery.bindValue(":childId",   QVariant::fromValue(file.fileId()));
 	createQuery.bindValue(":automatic", QVariant::fromValue(automatic));
 	bool result = createQuery.exec();
-	Q_ASSERT_X(result, "File::addImport", qPrintable(createQuery.lastError().text()));
+	EXCEPT_ELSE(result, FileException, "File::addImport", qPrintable(createQuery.lastError().text()));
 }
 
 QList<int> File::imports(QSqlDatabase db)
@@ -390,7 +385,7 @@ void File::destroyImports(QSqlDatabase db)
 	QSqlQuery q("DELETE FROM cv_import WHERE parent_id=:id", db);
 	q.bindValue(":id", QVariant::fromValue(d->m_id));
 	bool result = q.exec();
-	Q_ASSERT_X(result, "File::destroyImports", qPrintable(q.lastError().text()));
+	EXCEPT_ELSE(result, FileException, "File::destroyImports", qPrintable(q.lastError().text()));
 }
 
 void File::destroyAutomaticImports(QSqlDatabase db)
@@ -399,7 +394,7 @@ void File::destroyAutomaticImports(QSqlDatabase db)
 	q.bindValue(":id", QVariant::fromValue(d->m_id));
 	q.bindValue(":automatic", QVariant::fromValue(true));
 	bool result = q.exec();
-	Q_ASSERT_X(result, "File::destroyAutomaticImports", qPrintable(q.lastError().text()));
+	EXCEPT_ELSE(result, FileException, "File::destroyAutomaticImports", qPrintable(q.lastError().text()));
 }
 
 uint File::projectId() const

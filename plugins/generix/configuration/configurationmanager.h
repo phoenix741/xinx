@@ -38,7 +38,7 @@ public:
 	GceInterface * getInterfaceOfProject(XinxProject * project);
 	GceInterface * getInterfaceOfDirectory(const QString & directory);
 
-	DictionaryParser * loadDictionary(XinxProject * project);
+	void loadDictionary(XinxProject * project);
 
 	void cleanCache();
 

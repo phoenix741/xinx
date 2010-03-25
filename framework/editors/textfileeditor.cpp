@@ -414,6 +414,13 @@ void TextFileEditor::updateImports(const ContentView2::File & file)
 	{
 		m_file.reload(ContentView2::Manager::self()->database());
 		m_model->select();
+
+		QCompleter * c = textEdit()->completer();
+
+		if (c && c->completionModel()->rowCount())
+		{
+			c->popup()->setCurrentIndex(c->completionModel()->index(0, 0));
+		}
 	}
 }
 

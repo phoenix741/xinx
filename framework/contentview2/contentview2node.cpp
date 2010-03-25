@@ -33,14 +33,9 @@ namespace ContentView2
 
 /* NodeException */
 
-NodeException::NodeException(const QString & assertion, const QString & locationFile, int locationLine, const QString & locationMethod, QString message, QString nodeName)
-	: XinxException(assertion, locationFile, locationLine, locationMethod, QString(message).arg(nodeName)), m_nodeName(nodeName)
+NodeException::NodeException(const QString & assertion, const QString & locationFile, int locationLine, const QString & locationMethod, QString message)
+	: XinxException(assertion, locationFile, locationLine, locationMethod, message)
 {
-}
-
-const QString & NodeException::getNodeName() const
-{
-	return m_nodeName;
 }
 
 /* PrivateNode */
@@ -86,8 +81,8 @@ void PrivateNode::load()
 	                      "FROM cv_node WHERE id=:id", m_db);
 	selectQuery.bindValue(":id", QVariant::fromValue(m_id));
 	bool result = selectQuery.exec();
-	Q_ASSERT_X(result, "PrivateNode::load", qPrintable(selectQuery.lastError().text()));
-	EXCEPT_ELSE(selectQuery.first(), NodeException, "PrivateNode::load", "Can't find the node %1", QString("%1").arg(m_id));
+	EXCEPT_ELSE(result, NodeException, "PrivateNode::load", qPrintable(selectQuery.lastError().text()));
+	EXCEPT_ELSE(selectQuery.first(), NodeException, "PrivateNode::load", Node::tr("Can't find the node %1").arg(m_id));
 
 	m_datas.clear();
 
@@ -111,7 +106,7 @@ void PrivateNode::load()
 	QSqlQuery selectPropertiesQuery("SELECT ord, value FROM cv_node_property WHERE node_id=:node_id", m_db);
 	selectPropertiesQuery.bindValue(":node_id", QVariant::fromValue(m_id));
 	result = selectPropertiesQuery.exec();
-	Q_ASSERT_X(result, "PrivateNode::load", qPrintable(selectPropertiesQuery.lastError().text()));
+	EXCEPT_ELSE(result, NodeException, "PrivateNode::load", qPrintable(selectPropertiesQuery.lastError().text()));
 
 	while (selectPropertiesQuery.next())
 	{
@@ -163,9 +158,9 @@ uint Node::create(QSqlDatabase db, int forcedId)
 	selectQuery.bindValue(":file_id", d->m_fileId);
 
 	bool result = selectQuery.exec();
-	Q_ASSERT_X(result, "Node::create", qPrintable(selectQuery.lastError().text()));
+	EXCEPT_ELSE(result, NodeException, "Node::create", qPrintable(selectQuery.lastError().text()));
 
-	EXCEPT_ELSE(selectQuery.first(), NodeException, "Node::create", "Can't find the file node %1", d->m_datas.value(Node::NODE_NAME).toString());
+	EXCEPT_ELSE(selectQuery.first(), NodeException, "Node::create", tr("Can't find the file node %1").arg(d->m_datas.value(Node::NODE_NAME).toString()));
 
 	QSqlQuery insertQuery(db);
 	if (forcedId == -1)
@@ -201,7 +196,7 @@ uint Node::create(QSqlDatabase db, int forcedId)
 	insertQuery.bindValue(":property10", d->m_datas.value(Node::NODE_USER_VALUE + 9).toString());
 
 	result = insertQuery.exec();
-	Q_ASSERT_X(result, "Node::create", qPrintable(insertQuery.lastError().text()));
+	EXCEPT_ELSE(result, NodeException, "Node::create", qPrintable(insertQuery.lastError().text()));
 
 	uint newId = insertQuery.lastInsertId().toInt();
 
@@ -217,7 +212,7 @@ uint Node::create(QSqlDatabase db, int forcedId)
 		insertPropertyQuery.bindValue(":value", d->m_datas.value(ord));
 
 		result = insertPropertyQuery.exec();
-		Q_ASSERT_X(result, "Node::create", qPrintable(insertPropertyQuery.lastError().text()));
+		EXCEPT_ELSE(result, NodeException, "Node::create", qPrintable(insertPropertyQuery.lastError().text()));
 	}
 
 	d->m_id       = newId;
@@ -233,9 +228,8 @@ void Node::update(QSqlDatabase db)
 	QSqlQuery select("SELECT hash FROM cv_node WHERE id=:id", db);
 	select.bindValue(":id", QVariant::fromValue(d->m_id));
 	bool result = select.exec();
-	Q_ASSERT_X(result, "Node::update", qPrintable(select.lastError().text()));
-
-	EXCEPT_ELSE(select.next(), NodeException, "Node::update", QString("Can't find the node %1 (%2)").arg(d->m_id), d->m_datas.value(Node::NODE_NAME).toString());
+	EXCEPT_ELSE(result, NodeException, "Node::update", qPrintable(select.lastError().text()));
+	EXCEPT_ELSE(select.next(), NodeException, "Node::update", QString("Can't find the node %1 (%2)").arg(d->m_id).arg(d->m_datas.value(Node::NODE_NAME).toString()));
 
 	uint hash    = select.value(0).toUInt();
 	uint newHash = qHash(*this);
@@ -283,12 +277,12 @@ void Node::update(QSqlDatabase db)
 	updateQuery.bindValue(":property10", d->m_datas.value(Node::NODE_USER_VALUE + 9).toString());
 
 	result = updateQuery.exec();
-	Q_ASSERT_X(result, "Node::update", qPrintable(updateQuery.lastError().text()));
+	EXCEPT_ELSE(result, NodeException, "Node::update", qPrintable(updateQuery.lastError().text()));
 
 	QSqlQuery deleteQuery("DELETE FROM cv_node_property WHERE node_id=:id", db);
 	deleteQuery.bindValue(":id", QVariant::fromValue(d->m_id));
 	result = deleteQuery.exec();
-	Q_ASSERT_X(result, "Node::update", qPrintable(deleteQuery.lastError().text()));
+	EXCEPT_ELSE(result, NodeException, "Node::update", qPrintable(deleteQuery.lastError().text()));
 
 	QSqlQuery insertPropertyQuery("INSERT INTO cv_node_property(node_id, ord, value) "
 	                              "VALUES(:node_id, :ord, :value)", db);
@@ -302,7 +296,7 @@ void Node::update(QSqlDatabase db)
 		insertPropertyQuery.bindValue(":value", d->m_datas.value(ord));
 
 		result = insertPropertyQuery.exec();
-		Q_ASSERT_X(result, "Node::update", qPrintable(insertPropertyQuery.lastError().text()));
+		EXCEPT_ELSE(result, NodeException, "Node::update", qPrintable(insertPropertyQuery.lastError().text()));
 	}
 }
 
@@ -314,18 +308,18 @@ void Node::destroy(QSqlDatabase db)
 	QSqlQuery deleteQuery1("DELETE FROM cv_node WHERE id=:id", db);
 	deleteQuery1.bindValue(":id", QVariant::fromValue(d->m_id));
 	bool result = deleteQuery1.exec();
-	Q_ASSERT_X(result, "Node::destroy", qPrintable(deleteQuery1.lastError().text()));
+	EXCEPT_ELSE(result, NodeException, "Node::destroy", qPrintable(deleteQuery1.lastError().text()));
 
 	QSqlQuery deleteQuery2("DELETE FROM cv_node_property WHERE node_id=:id", db);
 	deleteQuery2.bindValue(":id", QVariant::fromValue(d->m_id));
 	result = deleteQuery2.exec();
-	Q_ASSERT_X(result, "Node::destroy", qPrintable(deleteQuery2.lastError().text()));
+	EXCEPT_ELSE(result, NodeException, "Node::destroy", qPrintable(deleteQuery2.lastError().text()));
 
 	QSqlQuery deleteQuery3("DELETE FROM cv_link WHERE parent_id=:id1 or child_id=:id2", db);
 	deleteQuery3.bindValue(":id1", QVariant::fromValue(d->m_id));
 	deleteQuery3.bindValue(":id2", QVariant::fromValue(d->m_id));
 	result = deleteQuery3.exec();
-	Q_ASSERT_X(result, "Node::destroy", qPrintable(deleteQuery3.lastError().text()));
+	EXCEPT_ELSE(result, NodeException, "Node::destroy", qPrintable(deleteQuery3.lastError().text()));
 
 	d->m_id = -1;
 }
@@ -343,7 +337,7 @@ bool Node::attach(QSqlDatabase db, uint parentId)
 	checkId.bindValue(":parent", QVariant::fromValue(parentId));
 	checkId.bindValue(":child", QVariant::fromValue(d->m_id));
 	bool result = checkId.exec();
-	Q_ASSERT_X(result, "Node::attach", qPrintable(checkId.lastError().text()));
+	EXCEPT_ELSE(result, NodeException, "Node::attach", qPrintable(checkId.lastError().text()));
 
 	if (checkId.next())
 		return false;
@@ -352,7 +346,7 @@ bool Node::attach(QSqlDatabase db, uint parentId)
 	insert.bindValue(":parent", QVariant::fromValue(parentId));
 	insert.bindValue(":child", QVariant::fromValue(d->m_id));
 	result = insert.exec();
-	Q_ASSERT_X(result, "Node::attach", qPrintable(insert.lastError().text()));
+	EXCEPT_ELSE(result, NodeException, "Node::attach", qPrintable(insert.lastError().text()));
 
 	return true;
 }
@@ -365,7 +359,7 @@ void Node::detach(QSqlDatabase db, uint parentId)
 	remove.bindValue(":parent", QVariant::fromValue(parentId));
 	remove.bindValue(":child", QVariant::fromValue(d->m_id));
 	bool result = remove.exec();
-	Q_ASSERT_X(result, "Node::detach", qPrintable(remove.lastError().text()));
+	EXCEPT_ELSE(result, NodeException, "Node::detach", qPrintable(remove.lastError().text()));
 }
 
 void Node::destroyChilds(QSqlDatabase db)
@@ -397,7 +391,7 @@ QString Node::filename(QSqlDatabase db) const
 	selectQuery.bindValue(":file_id", d->m_fileId);
 
 	bool result = selectQuery.exec();
-	Q_ASSERT_X(result, "Node::filename", qPrintable(selectQuery.lastError().text()));
+	EXCEPT_ELSE(result, NodeException, "Node::filename", qPrintable(selectQuery.lastError().text()));
 
 	if (selectQuery.first())
 	{
@@ -462,8 +456,7 @@ QList<int> Node::childs(QSqlDatabase db) const
 
 	QSqlQuery select("SELECT child_id FROM cv_link WHERE parent_id=:parent_id", db);
 	select.bindValue(":parent_id", QVariant::fromValue(d->m_id));
-	bool r = select.exec();
-	Q_ASSERT_X(r, "Node::childs", qPrintable(select.lastError().text()));
+	EXCEPT_ELSE(select.exec(), NodeException, "Node::childs", qPrintable(select.lastError().text()));
 
 	while (select.next())
 	{
@@ -499,7 +492,7 @@ int Node::indexOfChild(QSqlDatabase db, const Node & node) const
 	select.bindValue(":parent_id", QVariant::fromValue(d->m_id));
 	select.bindValue(":hash", QVariant::fromValue(qHash(node)));
 	bool result = select.exec();
-	Q_ASSERT_X(result, "Node::attach", qPrintable(select.lastError().text()));
+	EXCEPT_ELSE(result, NodeException, "Node::attach", qPrintable(select.lastError().text()));
 
 	if (select.next())
 	{

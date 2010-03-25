@@ -92,6 +92,7 @@ private:
 	void createTools();
 	void createRCS();
 	void registerTypes();
+	void connectSignals();
 
 	// Editor
 	QString m_lastFileName;

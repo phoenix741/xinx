@@ -129,7 +129,7 @@ GceInterface * ConfigurationManager::getInterfaceOfProject(XinxProject * project
 	}
 }
 
-DictionaryParser * ConfigurationManager::loadDictionary(XinxProject * project)
+void ConfigurationManager::loadDictionary(XinxProject * project)
 {
 	QStringList dictionaries = getInterfaceOfProject(project)->dictionnaries();
 	foreach(const QString & filename, dictionaries)

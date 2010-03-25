@@ -30,7 +30,7 @@
 #include <QMultiHash>
 #include <QVariant>
 
-// TODO: Changer complétement le fonctionnement de la gestion du fichier de configuration. Voir ticket #291
+// TODO: Changer completement le fonctionnement de la gestion du fichier de configuration. Voir ticket #291
 
 // TODO: Delete this workaround
 #undef major

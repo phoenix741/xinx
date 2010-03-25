@@ -85,7 +85,7 @@ void Manager::openDatabase()
 	bool result = db.open();
 	Q_ASSERT_X(result, "Manager::openDatabase", qPrintable(db.lastError().text()));
 	db.exec("PRAGMA synchronous = OFF");
-	db.setConnectOptions("QSQLITE_BUSY_TIMEOUT=60000");
+	//db.setConnectOptions("QSQLITE_BUSY_TIMEOUT=5000");
 
 	// Check the content
 	QStringList tables = db.tables();

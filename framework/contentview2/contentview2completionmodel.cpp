@@ -137,7 +137,7 @@ void CompletionModel::select()
 		QString queryStr =
 		    "SELECT cv_node.display_name, cv_node.name, cv_node.icon, cv_node.id, cv_node.type, cv_node.completion_value "
 		    "FROM cv_node, cv_file " + whereClause() + " AND cv_node.display_name like ifnull(:prefix,'')||'%' "
-		    "ORDER BY lower(cv_node.display_name) LIMIT 100";
+			"ORDER BY lower(cv_node.display_name) LIMIT 5";
 
 		// Set the query used all snipet
 		query.prepare(queryStr);

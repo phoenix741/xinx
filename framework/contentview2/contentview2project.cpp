@@ -32,14 +32,9 @@ namespace ContentView2
 
 /* ProjectException */
 
-ProjectException::ProjectException(const QString & assertion, const QString & locationFile, int locationLine, const QString & locationMethod, QString message, QString fileName)
-	: XinxException(assertion, locationFile, locationLine, locationMethod, QString(message).arg(fileName)), m_fileName(fileName)
+ProjectException::ProjectException(const QString & assertion, const QString & locationFile, int locationLine, const QString & locationMethod, QString message)
+	: XinxException(assertion, locationFile, locationLine, locationMethod, message)
 {
-}
-
-const QString & ProjectException::getFileName() const
-{
-	return m_fileName;
 }
 
 /* PrivateProject */
@@ -100,8 +95,8 @@ void Project::load(QSqlDatabase db, uint id)
 	QSqlQuery selectQuery("SELECT path, name FROM cv_project WHERE id=:id", db);
 	selectQuery.bindValue(":id", QVariant::fromValue(id));
 	bool result = selectQuery.exec();
-	Q_ASSERT_X(result, "Project::load", qPrintable(selectQuery.lastError().text()));
-	EXCEPT_ELSE(selectQuery.first(), ProjectException, "Project::Load", "Can't find the node %1", QString("%1").arg(id));
+	EXCEPT_ELSE(result, ProjectException, "Project::load", selectQuery.lastError().text());
+	EXCEPT_ELSE(selectQuery.first(), ProjectException, "Project::Load", tr("Can't find the node %1").arg(id));
 
 	d->m_id   = id;
 	d->m_path = selectQuery.value(0).toString();
@@ -115,8 +110,8 @@ void Project::load(QSqlDatabase db, XinxProject * project)
 	QSqlQuery selectQuery("SELECT id, name FROM cv_project WHERE path=:path", db);
 	selectQuery.bindValue(":path", QVariant::fromValue(d->m_path));
 	bool result = selectQuery.exec();
-	Q_ASSERT_X(result, "Project::load", qPrintable(selectQuery.lastError().text()));
-	EXCEPT_ELSE(selectQuery.first(), ProjectException, "Project::load", "Can't find the project %1", d->m_path);
+	EXCEPT_ELSE(result, ProjectException, "Project::load", selectQuery.lastError().text());
+	EXCEPT_ELSE(selectQuery.first(), ProjectException, "Project::load", tr("Can't find the project %1").arg(d->m_path));
 
 	d->m_id   = selectQuery.value(0).toInt();
 	d->m_name = selectQuery.value(1).toString();
@@ -136,7 +131,7 @@ int Project::create(QSqlDatabase db)
 	insertQuery.bindValue(":name",       d->m_name);
 
 	bool result = insertQuery.exec();
-	Q_ASSERT_X(result, "Project::create", qPrintable(insertQuery.lastError().text()));
+	EXCEPT_ELSE(result, ProjectException, "Project::create", qPrintable(insertQuery.lastError().text()));
 
 	uint newId = insertQuery.lastInsertId().toInt();
 	d->m_id = newId;
@@ -152,7 +147,7 @@ void Project::update(QSqlDatabase db)
 	updateQuery.bindValue(":id",   QVariant::fromValue(d->m_id));
 
 	bool result = updateQuery.exec();
-	Q_ASSERT_X(result, "Project::update", qPrintable(updateQuery.lastError().text()));
+	EXCEPT_ELSE(result, ProjectException, "Project::update", qPrintable(updateQuery.lastError().text()));
 }
 
 void Project::destroy(QSqlDatabase db)
@@ -164,7 +159,7 @@ void Project::destroy(QSqlDatabase db)
 	QSqlQuery deleteQuery1("DELETE FROM cv_project WHERE id=:id", db);
 	deleteQuery1.bindValue(":id", QVariant::fromValue(d->m_id));
 	bool result = deleteQuery1.exec();
-	Q_ASSERT_X(result, "Project::destroy", qPrintable(deleteQuery1.lastError().text()));
+	EXCEPT_ELSE(result, ProjectException, "Project::destroy", qPrintable(deleteQuery1.lastError().text()));
 }
 
 void Project::destroyFiles(QSqlDatabase db)

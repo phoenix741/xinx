@@ -42,7 +42,6 @@ public:
 	virtual ~DictionaryDockWidgetImpl();
 private slots:
 	void on_m_filterLine_textChanged(QString filter);
-	void projectChanged();
 	void update(const ContentView2::File & file);
 private:
 	virtual void timerEvent(QTimerEvent * event);

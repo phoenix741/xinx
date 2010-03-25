@@ -129,6 +129,18 @@ public:
 };
 
 /*!
+ * A project initialisation step
+ */
+class IProjectInitialisationStep {
+public:
+	//! Destroy the step
+	virtual ~IProjectInitialisationStep() {};
+
+	virtual QString name() = 0;
+	virtual bool process() = 0;
+};
+
+/*!
  * This interface is used to change the input/output of XINX
  */
 class IXinxInputOutputPlugin : public virtual IXinxPlugin
@@ -137,10 +149,10 @@ public:
 	//! Destroy a Input/Output plugin
 	virtual ~IXinxInputOutputPlugin() {}
 
-	//! Call when a new project is created or opened
-	virtual bool loadProject(XinxProject * project) = 0;
-	//! Call before the project is closed
-	virtual bool closeProject(XinxProject * project) = 0;
+	//! List of step of initialisation of XINX project
+	virtual QList<IProjectInitialisationStep*> loadProjectStep(XinxProject * project) = 0;
+	//! List of step of deinitialisation of XINX project
+	virtual QList<IProjectInitialisationStep*> closeProjectStep(XinxProject * project) = 0;
 
 	//! Call when a file is loaded
 	virtual QIODevice * loadFile(const QString & filename) = 0;
