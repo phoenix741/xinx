@@ -49,13 +49,18 @@ Name: assofws; Description: Associate WebServices stream with {#AppName}; Flags:
 Source: ..\COPYING; DestDir: {app}; Components: application
 
 Source: ..\xinx\xinx.exe; DestDir: {app}\bin; Components: application; Flags: replacesameversion
-Source: ..\xinxprojectwizard\xinxprojectwizard.exe; DestDir: {app}\bin; Components: application; Flags: replacesameversion
-
 Source: ..\components\xinxcmp.dll; DestDir: {app}\bin; Components: application; Flags: replacesameversion
-Source: ..\libxinx\sharedxinx.dll; DestDir: {app}\bin; Components: application; Flags: replacesameversion
+Source: ..\framework\xinxframework.dll; DestDir: {app}\bin; Components: application; Flags: replacesameversion
 Source: ..\ext\qcodeedit\qcodeedit.dll; DestDir: {app}\bin; Components: application; Flags: replacesameversion
+Source: ..\ext\ideality\lib\ideality.dll; DestDir: {app}\bin; Components: application; Flags: replacesameversion
 
 Source: {#QTDIR}\bin\mingwm10.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile
+Source: {#QTDIR}\..\mingw\bin\libxml2.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile
+Source: {#QTDIR}\..\mingw\bin\libxslt.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile
+Source: {#QTDIR}\..\mingw\bin\iconv.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile
+Source: {#QTDIR}\..\mingw\bin\iconv.exe; DestDir: {app}\bin; Components: application; Flags: sharedfile
+Source: {#QTDIR}\..\mingw\bin\libexslt.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile
+Source: {#QTDIR}\..\mingw\bin\xsltproc.exe; DestDir: {app}\bin; Components: application; Flags: sharedfile
 
 Source: {#QTDIR}\bin\QtCore4.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile; Tasks: ; Languages: 
 Source: {#QTDIR}\bin\QtGui4.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile
@@ -64,17 +69,21 @@ Source: {#QTDIR}\bin\QtScript4.dll; DestDir: {app}\bin; Components: application;
 Source: {#QTDIR}\bin\QtWebKit4.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile
 Source: {#QTDIR}\bin\QtXml4.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile
 Source: {#QTDIR}\bin\QtXmlPatterns4.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile
+Source: {#QTDIR}\bin\QtSql4.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile
 
-Source: ..\xml\*.xml; DestDir: {app}\xml; Components: application
 DestDir: {app}\scripts; Source: ..\scripts\*.xq; Components: application
+DestDir: {app}\datas; Source: ..\datas\*.xml; Components: application
+DestDir: {app}\datas; Source: ..\datas\*.db; Components: application
+DestDir: {app}\templates; Source: ..\templates\*.xml; Components: application
+DestDir: {app}\templates\Generix; Source: ..\templates\Generix\*.xml; Components: application
 
-Source: ..\src.7z; DestDir: {app}; Components: source; Flags: replacesameversion;
+Source: ..\src.7z; DestDir: {app}; Components: source; Flags: replacesameversion
 Source: ..\doc\html\*.*; DestDir: {app}\doc\api; Components: documentation; Flags: replacesameversion
 
-DestDir: {app}\plugins; Source: ..\plugins\services.dll; Components: services
-DestDir: {app}\plugins; Source: ..\plugins\cvsplugin.dll; Components: cvsplugin
-DestDir: {app}\plugins; Source: ..\plugins\svnplugin.dll; Components: svnplugin
-DestDir: {app}\plugins; Source: ..\plugins\dictionary.dll; Components: dictionaryplugin
+DestDir: {app}\plugins; Source: ..\plugins\services1.dll; Components: services
+DestDir: {app}\plugins; Source: ..\plugins\cvsplugin0.dll; Components: cvsplugin
+DestDir: {app}\plugins; Source: ..\plugins\svnplugin0.dll; Components: svnplugin
+DestDir: {app}\plugins; Source: ..\plugins\generix1.dll; Components: dictionaryplugin
 
 DestDir: {app}\scripts; Source: ..\scripts\*.js; Components: scripts
 
@@ -90,15 +99,11 @@ Name: {group}\style\{#AppName} (CDE); Filename: {app}\bin\xinx.exe; Components: 
 Name: {group}\style\{#AppName} (Motif); Filename: {app}\bin\xinx.exe; Components: application; Tasks: ; Parameters: -style motif; IconIndex: 0
 Name: {group}\style\{#AppName} (Float); Filename: {app}\bin\xinx.exe; Components: application; Tasks: ; Parameters: -style Float; IconIndex: 0
 Name: {group}\style\{#AppName} (Explorer); Filename: {app}\bin\xinx.exe; Components: application; Tasks: ; Parameters: -style Explorer; IconIndex: 0
-Name: {group}\{#AppName} Project Wizard; Filename: {app}\bin\xinxprojectwizard.exe; Components: application; Tasks: 
 Name: {group}\{cm:UninstallProgram,XINX}; Filename: {uninstallexe}
 Name: {userdesktop}\{#AppName}; Filename: {app}\bin\xinx.exe; Tasks: desktopicon; Components: application
 Name: {group}\Documentation (API); Filename: {app}\doc\api\index.html; Comment: Documentation API de XINX; Components: documentation
 
 [Registry]
-Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\App Paths\xinxprojectwizard.exe; ValueType: string; ValueName: Path; ValueData: "{app}\bin;"
-Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\App Paths\xinxprojectwizard.exe; ValueType: string; ValueData: {app}\bin\xinxprojectwizard.exe
-
 Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\App Paths\xinx.exe; ValueType: string; ValueName: Path; ValueData: {app}\bin
 Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\App Paths\xinx.exe; ValueType: string; ValueData: {app}\bin\xinx.exe
 
@@ -159,4 +164,3 @@ begin
 			Exec( '>', UninstallString, '', 1, ewWaitUntilTerminated, ResultCode );
 	end;
 end;
-
