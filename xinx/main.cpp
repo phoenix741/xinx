@@ -73,19 +73,32 @@ void backup_appli_signal(int signal)
 
 void initSearchPath()
 {
+	const QString configDirectory = QString(".config/%1/%2").arg(qApp->organizationDomain()).arg(qApp->applicationName());
+	const QString homeDirectory   = QDir::home().absoluteFilePath(configDirectory);
+	const QString datasDirectory  = QDir(homeDirectory).absoluteFilePath("datas");
+	const QString scriptDirectory  = QDir(homeDirectory).absoluteFilePath("scripts");
+	const QString pluginsDirectory  = QDir(homeDirectory).absoluteFilePath("plugins");
+
+	QDir::home().mkpath(datasDirectory);
+	QDir::home().mkpath(scriptDirectory);
+	QDir::home().mkpath(pluginsDirectory);
+
 	// .. for datas ...
+	QDir::addSearchPath("datas", datasDirectory);
 	QDir::addSearchPath("datas", QDir(QApplication::applicationDirPath()).absoluteFilePath("../datas"));
 #ifndef Q_WS_WIN
 	QDir::addSearchPath("datas", QDir(QApplication::applicationDirPath()).absoluteFilePath("../share/xinx/datas"));
 #endif /* Q_WS_WIN */
 
 	// ... for scripts ...
+	QDir::addSearchPath("scripts", datasDirectory);
 	QDir::addSearchPath("scripts", QDir(QApplication::applicationDirPath()).absoluteFilePath("../scripts"));
 #ifndef Q_WS_WIN
 	QDir::addSearchPath("scripts", QDir(QApplication::applicationDirPath()).absoluteFilePath("../share/xinx/scripts"));
 #endif /* Q_WS_WIN */
 
 	// ... for plugins ...
+	QDir::addSearchPath("plugins", datasDirectory);
 	QDir::addSearchPath("plugins", QDir(QApplication::applicationDirPath()).absoluteFilePath("../plugins"));
 #ifndef Q_WS_WIN
 	QDir::addSearchPath("plugins", QDir(QApplication::applicationDirPath()).absoluteFilePath("../share/xinx/plugins"));
@@ -111,6 +124,8 @@ void processSnipetArguments(const QStringList & args)
 
 		if (arg == "--init")
 		{
+			QFileInfo fileInfo("datas:snipets.db");
+			if (fileInfo.exists()) return; /* In init mode the file must not exist */
 			SnipetList list;
 			list.loadFromFile(filename);
 			SnipetManager::self()->importSnipetList(list, false);

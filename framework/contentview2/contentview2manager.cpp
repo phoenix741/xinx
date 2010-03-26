@@ -79,9 +79,14 @@ void Manager::openDatabase()
 {
 	// Create the db object
 	QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", "CONTENTVIEW_SESSION");
-	QString configDirectory = QString(".config/%1/%2").arg(qApp->organizationDomain()).arg(qApp->applicationName());
-	QDir::home().mkpath(configDirectory);
-	db.setDatabaseName(QDir(QDir::home().absoluteFilePath(configDirectory)).absoluteFilePath("session.db"));
+	QFileInfo fileInfo("datas:session.db");
+	QString databaseFileName = fileInfo.absoluteFilePath();
+	if (! fileInfo.exists())
+	{
+		databaseFileName = QDir(QDir::searchPaths("datas").at(0)).absoluteFilePath("session.db");
+	}
+
+	db.setDatabaseName(databaseFileName);
 	bool result = db.open();
 	Q_ASSERT_X(result, "Manager::openDatabase", qPrintable(db.lastError().text()));
 	db.exec("PRAGMA synchronous = OFF");
