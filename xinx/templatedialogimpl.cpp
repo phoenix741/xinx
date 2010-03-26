@@ -39,7 +39,10 @@ TemplateDialogImpl::TemplateDialogImpl()
 {
 	setupUi(this);
 
-	loadDirectory("templates:", m_template->invisibleRootItem());
+	foreach(const QString & directory, QDir::searchPaths("templates"))
+	{
+		loadDirectory(directory, m_template->invisibleRootItem());
+	}
 
 	connect(m_template, SIGNAL(itemSelectionChanged()), this, SIGNAL(completeChanged()));
 	m_template->expandAll();

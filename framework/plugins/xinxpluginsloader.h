@@ -85,7 +85,6 @@ private:
 	void addPlugin(QObject * plugin, bool staticLoaded = false);
 	QString allManagedFileFilter() const;
 
-	QDir m_pluginsDir;
 	QMap<QString, XinxPluginElement*> m_plugins;
 
 	static XinxPluginsLoader * s_self;
