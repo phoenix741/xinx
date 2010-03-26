@@ -371,7 +371,7 @@ bool SnipetManager::exportSnipetList(const QList<int> & list, SnipetList * snipe
 	return true;
 }
 
-bool SnipetManager::importSnipetList(const SnipetList & list, QWidget * parent)
+bool SnipetManager::importSnipetList(const SnipetList & list, bool imported, QWidget * parent)
 {
 	QSqlQuery insertSnipetQuery("INSERT INTO snipets(name, description, shortcut, icon, auto, show_dialog, text, available_script, category_id) "
 	                            "VALUES(:name, :description, :shortcut, :icon, :auto, :dialog, :text, :available_script, :category_id)", database());
@@ -380,7 +380,11 @@ bool SnipetManager::importSnipetList(const SnipetList & list, QWidget * parent)
 
 	foreach(const Snipet & s, list)
 	{
-		int categoryId = getCategoryId(QStringList() << tr("Imported Snipets") << s.categories());
+		QStringList categories;
+		if (imported)
+			categories << tr("Imported Snipets");
+		categories << s.categories();
+		int categoryId = getCategoryId(categories);
 
 		insertSnipetQuery.bindValue(":name", s.name());
 		insertSnipetQuery.bindValue(":description", s.description());

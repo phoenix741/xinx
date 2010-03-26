@@ -1,4 +1,4 @@
-<config classname="App Settings" organization="Shadoware.Org" application="XINX" path="0.9">
+<config classname="App Settings" organization="Shadoware.Org" application="XINX">
 	<include>#include &lt;QLocale&gt;</include>
 	<include>#include &lt;QDir&gt;</include>
 	<include>#include &lt;QApplication&gt;</include>

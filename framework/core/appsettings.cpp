@@ -96,14 +96,14 @@ void AppSettings::setDefault()
 void AppSettings::save()
 {
 	d->createSettings();
-	setSettingsGlobals(d->m_settings, "0.9", d->m_globals);
+	setSettingsGlobals(d->m_settings, "", d->m_globals);
 	d->deleteSettings();
 }
 
 void AppSettings::load()
 {
 	d->createSettings();
-	d->m_globals = getSettingsGlobals(d->m_settings, "0.9", getDefaultGlobals());
+	d->m_globals = getSettingsGlobals(d->m_settings, "", getDefaultGlobals());
 	d->deleteSettings();
 }
 

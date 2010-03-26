@@ -20,7 +20,7 @@ UninstallDisplayIcon={app}\xinx.exe
 LicenseFile=..\COPYING
 VersionInfoVersion={#AppVersion}
 VersionInfoCompany=Ulrich Van Den Hekke
-VersionInfoDescription=Stylesheet editor
+VersionInfoDescription=XSL Stylesheet Editor
 ChangesAssociations=true
 AppVersion={#AppVersion}
 UninstallDisplayName={#AppName}
@@ -33,7 +33,8 @@ AppPublisherURL=http://xinx.shadoware.org/
 AppSupportURL=http://xinx.shadoware.org/newticket
 AppUpdatesURL=http://xinx.shadoware.org/downloads
 AppContact=xinx@shadoware.org
-VersionInfoCopyright=2009 (c) Ulrich VANDENHEKKE
+VersionInfoCopyright=2010 (c) Ulrich VANDENHEKKE
+InfoBeforeFile=..\README
 
 [Languages]
 Name: english; MessagesFile: compiler:Default.isl
@@ -44,6 +45,9 @@ Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:Ad
 Name: assoxml; Description: Associate XSL stylesheet with {#AppName}; Flags: unchecked
 Name: assojs; Description: Associate JS with {#AppName}; Flags: unchecked
 Name: assofws; Description: Associate WebServices stream with {#AppName}; Flags: unchecked
+
+[Run]
+Filename: {app}\bin\xinx.exe; Parameters: --init {app}\datas\template.xml; WorkingDir: {app}; Components: application
 
 [Files]
 Source: ..\COPYING; DestDir: {app}; Components: application
@@ -73,7 +77,6 @@ Source: {#QTDIR}\bin\QtSql4.dll; DestDir: {app}\bin; Components: application; Fl
 
 DestDir: {app}\scripts; Source: ..\scripts\*.xq; Components: application
 DestDir: {app}\datas; Source: ..\datas\*.xml; Components: application
-DestDir: {app}\datas; Source: ..\datas\*.db; Components: application
 DestDir: {app}\templates; Source: ..\templates\*.xml; Components: application
 DestDir: {app}\templates\Generix; Source: ..\templates\Generix\*.xml; Components: application
 
@@ -104,8 +107,9 @@ Name: {userdesktop}\{#AppName}; Filename: {app}\bin\xinx.exe; Tasks: desktopicon
 Name: {group}\Documentation (API); Filename: {app}\doc\api\index.html; Comment: Documentation API de XINX; Components: documentation
 
 [Registry]
-Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\App Paths\xinx.exe; ValueType: string; ValueName: Path; ValueData: {app}\bin
-Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\App Paths\xinx.exe; ValueType: string; ValueData: {app}\bin\xinx.exe
+
+Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\App Paths\xinx.exe; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey
+Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\App Paths\xinx.exe; ValueType: string; ValueData: {app}\bin\xinx.exe; Flags: uninsdeletekey
 
 Root: HKCR; SubKey: .xsl; ValueType: string; ValueData: Fichier XSL; Flags: uninsdeletekey; Tasks: assoxml
 Root: HKCR; SubKey: Fichier XSL; ValueType: string; ValueData: Feuille de style XML; Flags: uninsdeletekey; Tasks: assoxml
@@ -121,6 +125,7 @@ Root: HKCR; SubKey: .fws; ValueType: string; ValueData: Fichier FWS; Flags: unin
 Root: HKCR; SubKey: Fichier FWS; ValueType: string; ValueData: Fichier WebServices; Flags: uninsdeletekey; Tasks: assofws
 Root: HKCR; SubKey: Fichier FWS\Shell\Open\Command; ValueType: string; ValueData: """{app}\bin\xinx.exe"" ""%1"""; Flags: uninsdeletevalue; Tasks: assofws
 Root: HKCR; Subkey: Fichier FWS\DefaultIcon; ValueType: string; ValueData: {app}\bin\xinx.exe,0; Flags: uninsdeletevalue; Tasks: assofws
+Root: HKCU; Subkey: Software\Shadoware.Org\XINX; Flags: uninsdeletekey deletekey; Components: ; Tasks: ; Languages: 
 
 [Components]
 Name: application; Description: Application; Flags: fixed; Types: custom compact full; Languages: 
@@ -136,6 +141,8 @@ Name: styles; Description: Styles Supplémentaires (Vista only); Types: full; Min
 [CustomMessages]
 UNINSTALL_XINX=Il est necessaire de désinstaller l'ancienne version de XINX avant d'installer cette nouvelle version. Voulez-vous désinstaller XINX ?
 UNINSTALL_DBUS=Il est necessaire de désinstaller l'ancienne version de D-BUS avant d'installer cette nouvelle version. Voulez-vous désinstaller D-BUS ?
+UNINSTALL_REGISTERY=Voulez-vous supprimer les entrées de XINX dans la base de registre ?
+
 [Code]
 function InitializeSetup(): Boolean;
 var UninstallXinxMsg, UninstallDbusMsg: String;
@@ -164,3 +171,5 @@ begin
 			Exec( '>', UninstallString, '', 1, ewWaitUntilTerminated, ResultCode );
 	end;
 end;
+[InstallDelete]
+Name: {app}\plugins\services.dll; Type: files; Components: services; Tasks: 

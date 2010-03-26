@@ -109,7 +109,13 @@ void processSnipetArguments(const QStringList & args)
 		const QString & filename = args.at(i + 1);
 
 
-		if (arg == "--import")
+		if (arg == "--init")
+		{
+			SnipetList list;
+			list.loadFromFile(filename);
+			SnipetManager::self()->importSnipetList(list, false);
+		}
+		else if (arg == "--import")
 		{
 			SnipetList list;
 			list.loadFromFile(filename);

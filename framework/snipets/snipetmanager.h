@@ -65,7 +65,7 @@ public:
 
 	QList<int> snipets() const;
 	QList<int> snipets(int categoryId) const;
-	bool importSnipetList(const SnipetList & list, QWidget * parent = 0);
+	bool importSnipetList(const SnipetList & list, bool imported = true, QWidget * parent = 0);
 	bool exportSnipetList(const QList<int> & list, SnipetList * snipets, QWidget * parent = 0);
 
 	bool callSnipet(int id, QString * result, QWidget * parent = 0);
