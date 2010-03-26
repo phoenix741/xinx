@@ -73,15 +73,17 @@ void backup_appli_signal(int signal)
 
 void initSearchPath()
 {
-	const QString configDirectory = QString(".config/%1/%2").arg(qApp->organizationDomain()).arg(qApp->applicationName());
-	const QString homeDirectory   = QDir::home().absoluteFilePath(configDirectory);
-	const QString datasDirectory  = QDir(homeDirectory).absoluteFilePath("datas");
-	const QString scriptDirectory  = QDir(homeDirectory).absoluteFilePath("scripts");
-	const QString pluginsDirectory  = QDir(homeDirectory).absoluteFilePath("plugins");
+	const QString configDirectory    = QString(".config/%1/%2").arg(qApp->organizationDomain()).arg(qApp->applicationName());
+	const QString homeDirectory      = QDir::home().absoluteFilePath(configDirectory);
+	const QString datasDirectory     = QDir(homeDirectory).absoluteFilePath("datas");
+	const QString scriptDirectory    = QDir(homeDirectory).absoluteFilePath("scripts");
+	const QString pluginsDirectory   = QDir(homeDirectory).absoluteFilePath("plugins");
+	const QString templatesDirectory = QDir(homeDirectory).absoluteFilePath("templates");
 
 	QDir::home().mkpath(datasDirectory);
 	QDir::home().mkpath(scriptDirectory);
 	QDir::home().mkpath(pluginsDirectory);
+	QDir::home().mkpath(templatesDirectory);
 
 	// .. for datas ...
 	QDir::addSearchPath("datas", datasDirectory);
@@ -91,20 +93,21 @@ void initSearchPath()
 #endif /* Q_WS_WIN */
 
 	// ... for scripts ...
-	QDir::addSearchPath("scripts", datasDirectory);
+	QDir::addSearchPath("scripts", scriptDirectory);
 	QDir::addSearchPath("scripts", QDir(QApplication::applicationDirPath()).absoluteFilePath("../scripts"));
 #ifndef Q_WS_WIN
 	QDir::addSearchPath("scripts", QDir(QApplication::applicationDirPath()).absoluteFilePath("../share/xinx/scripts"));
 #endif /* Q_WS_WIN */
 
 	// ... for plugins ...
-	QDir::addSearchPath("plugins", datasDirectory);
+	QDir::addSearchPath("plugins", pluginsDirectory);
 	QDir::addSearchPath("plugins", QDir(QApplication::applicationDirPath()).absoluteFilePath("../plugins"));
 #ifndef Q_WS_WIN
 	QDir::addSearchPath("plugins", QDir(QApplication::applicationDirPath()).absoluteFilePath("../share/xinx/plugins"));
 #endif /* Q_WS_WIN */
 
 	// ... for tempalte ...
+	QDir::addSearchPath("templates", templatesDirectory);
 	QDir::addSearchPath("templates", QDir(QApplication::applicationDirPath()).absoluteFilePath("../templates"));
 #ifndef Q_WS_WIN
 	QDir::addSearchPath("templates", QDir(QApplication::applicationDirPath()).absoluteFilePath("../share/xinx/templates"));
