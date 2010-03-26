@@ -1,29 +1,366 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE SnipetList>
 <SnipetList>
-  <Snipet category="Buttons Widgets" key="delete" icon=":/images/pushbutton.png" type="xsl" name="Delete button" >
-    <Description>Show a delete button in a table.</Description>
-    <Text>&lt;td class="supprimer">
-	&lt;input xsl:use-attribute-sets="BTN_DELETE" title="{$LBL.SUPPRIMER}"/>
-&lt;/td>
+  <Snipet showDialog="1" key="WS1" icon="" automatique="1" name="Agil - WS1 - Interrogation vente comptoir">
+    <Description>Interroge les ventes comptoir, CrudManager retreive.</Description>
+    <Text>&lt;egx_ws>
+&lt;bean_in>
+	&lt;CRUDManagerretrieveIn xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common"
+xsi:schemaLocation="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common CRUDManagerretrieveIn.xsd" 
+viewObjectName="DEve">
+&lt;retrieve key="WS1">
+&lt;!-- Interrogation d'une vente comptoir -->
+&lt;param num="1" value="%1"/> &lt;!-- Code Entité -->
+&lt;param num="2" value="V"/> &lt;!-- Code achat-vente -->
+&lt;param num="3" value="CDV"/> &lt;!-- Type d'événement -->
+&lt;param num="4" value="%2"/> &lt;!-- n° de la commande de vente comptoir -->
+&lt;/retrieve>
+&lt;/CRUDManagerretrieveIn>
+&lt;/bean_in>
+&lt;/egx_ws>
 </Text>
+    <AvailableScript></AvailableScript>
+    <Category name="Webservices"/>
+    <Param defaultValue="" name="Entité magasin (exemple 3001)"/>
+    <Param defaultValue="" name="Numéro de commande (exemple 200006)"/>
+    <Extention value="*.fws"/>
   </Snipet>
-  <Snipet category="Buttons Widgets" key="delete140" icon=":/images/pushbutton.png" type="xsl" name="Delete button (GCE140)" >
-    <Description>Show a delete button in a table (GCE140).</Description>
-    <Text>&lt;td class="supprimer">
-	&lt;input xsl:use-attribute-sets="BTN_DELETE" title="{gnx:trad($LANGUAGE,'LBL.SUPPRIMER',$CTXTRD)}"/>
-&lt;/td>
+  <Snipet showDialog="1" key="WS2" icon="" automatique="1" name="Agil - WS2 - Ajout de réglement">
+    <Description>Ajoute un réglement dans Agil. CrudManager Create.</Description>
+    <Text>&lt;egx_ws>
+&lt;ctx language="FRA" user="%6" password="%7" target="VFAV" entity="%1"/>
+&lt;bean_in>
+&lt;CRUDManagercreateIn viewObjectName="JEvmView"
+xmlns="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common CRUDManagercreateIn.xsd">
+&lt;!-- Ajout d'un règlement -->
+&lt;row num="1">
+&lt;field name="Codsoc1" value="%1"/> &lt;!-- Entité : récupéré de l'interrogation de la facture -->
+&lt;field name="Achvte" value="V"/> &lt;!-- Achat/vente : récupéré de l'interrogation de la facture -->
+&lt;field name="Typeve" value="FAV"/> &lt;!-- Type événément : récupéré de l'interrogation de la facture -->
+&lt;field name="Numeve" value="%2"/> &lt;!-- N° fa cture : récupéré de l'interrogation de la facture -->
+&lt;field name="Numpos" value="0"/> &lt;!-- N° d e poste réglement : constante 0 -->
+&lt;field name="Typenr" value="R"/> &lt;!-- Type enregistrement : constante R -->
+&lt;field name="Monrgl" value="%3"/> &lt;!-- Montant réglé : montant réglé de la facture -->
+&lt;field name="Modrgl" value="%4"/> &lt;!-- Mode réglement : code qui doit exister dans les modes de reglement de GCE -->
+&lt;field name="Coddev" value="%5"/> &lt;!-- Devise du règlement -->
+&lt;field name="Cletec" value="Manuel par XINX"/> &lt;!-- Référence technique du règlement -->
+&lt;/row>
+&lt;/CRUDManagercreateIn>
+&lt;/bean_in>
+&lt;/egx_ws>
 </Text>
+    <AvailableScript></AvailableScript>
+    <Category name="Webservices"/>
+    <Param defaultValue="" name="Entité magasin (exemple 3001)"/>
+    <Param defaultValue="" name="Numéro de facture (exemple 400002)"/>
+    <Param defaultValue="" name="Montant du réglement (exemple 1)"/>
+    <Param defaultValue="" name="Mode de réglement (exemple ES)"/>
+    <Param defaultValue="" name="Devise du réglement (exemple EUR)"/>
+    <Param defaultValue="" name="Utilisateur qui fait la mise a jour (exemple DEMO)"/>
+    <Param defaultValue="" name="Mot de passe du user (exemple DEMO)"/>
+    <Extention value="*.fws"/>
   </Snipet>
-  <Snipet category="Buttons Widgets" key="modif" icon=":/images/pushbutton.png" type="xsl" name="Modifier" >
-    <Description>Sumbit a form. Show the label 'LBL.MODIFIER'</Description>
-    <Text>&lt;input class="bouton" type="submit" value="{$LBL.MODIFIER}"/></Text>
+  <Snipet showDialog="1" key="WS3" icon="" automatique="1" name="Agil - WS3 - Interrogation facture accompte">
+    <Description>Interrogation facture accompte, CrudManager retreive.</Description>
+    <Text>&lt;egx_ws>
+&lt;bean_in>
+&lt;CRUDManagerretrieveIn xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common"
+xsi:schemaLocation="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common CRUDManagerretrieveIn.xsd" 
+viewObjectName="DEve">
+&lt;retrieve key="WS3">
+&lt;!-- Interrogation d'une facture d'acompte -->
+&lt;param num="1" value="%1"/> &lt;!-- Code entité -->
+&lt;param num="2" value="V"/> &lt;!-- Code achat-vente -->
+&lt;param num="3" value="ACO"/> &lt;!-- Type d'événement -->
+&lt;param num="4" value="%2"/> &lt;!-- N° de la facture d'acompte -->
+&lt;/retrieve>
+&lt;/CRUDManagerretrieveIn>
+&lt;/bean_in>
+&lt;/egx_ws>
+</Text>
+    <AvailableScript></AvailableScript>
+    <Category name="Webservices"/>
+    <Param defaultValue="" name="Entité magasin (exemple 3001)"/>
+    <Param defaultValue="" name="Numéro d'accompte (exemple 400001)"/>
+    <Extention value="*.fws"/>
   </Snipet>
-  <Snipet category="Buttons Widgets" key="modif140" icon=":/images/pushbutton.png" type="xsl" name="Modifier (GCE140)" >
-    <Description>Sumbit a form. Show the label 'LBL.MODIFIER' (GCE140)</Description>
-    <Text>&lt;input class="bouton" type="submit" value="{gnx:trad($LANGUAGE,'LBL.MODIFIER',$CTXTRD)}"/></Text>
+  <Snipet showDialog="1" key="WS4" icon="" automatique="1" name="Agil - WS4 - Création événement débit">
+    <Description>Création d'un événement de débit (target pev VDEB). Le code produit dédié est AG2GC, en quantité 1.
+Valide l'événement créé dans la foulée.</Description>
+    <Text>&lt;egx_ws>
+	&lt;bean_in>
+		&lt;GCEServiceassimilateIn versionImplementation="1" versionSpecification="1.0" xsi:schemaLocation="http://www.generix.fr/metier/bc4j/integration/common GCEServiceassimilateIn.xsd" xmlns="http://www.generix.fr/metier/bc4j/integration/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			&lt;transaction>
+				&lt;context>
+					&lt;entity>%1&lt;/entity>
+					&lt;identification>
+						&lt;code>DEMO&lt;/code>
+					&lt;/identification>
+					&lt;target>VDEB&lt;/target>
+				&lt;/context>
+				&lt;businessEvent>
+					&lt;header>
+						&lt;info>
+							&lt;thirdparty>
+								&lt;key>
+									&lt;type>CLI&lt;/type>
+									&lt;identifier>%2&lt;/identifier>
+								&lt;/key>
+							&lt;/thirdparty>
+							&lt;item>
+								&lt;info>
+									&lt;product>
+										&lt;key>
+											&lt;code>AG2GC&lt;/code>
+										&lt;/key>
+									&lt;/product>
+									&lt;quantity>1&lt;/quantity>
+									&lt;price>%3&lt;/price>
+								&lt;/info>
+							&lt;/item>
+						&lt;/info>
+					&lt;/header>
+					&lt;services service="validate"/>
+				&lt;/businessEvent>
+			&lt;/transaction>
+		&lt;/GCEServiceassimilateIn>
+	&lt;/bean_in>
+&lt;/egx_ws>
+</Text>
+    <AvailableScript></AvailableScript>
+    <Category name="Webservices"/>
+    <Param defaultValue="" name="Entité magasin (exemple 3001)"/>
+    <Param defaultValue="" name="Code Client (exemple AGCLI001)"/>
+    <Param defaultValue="" name="Montant du débit (exemple 100)"/>
+    <Extention value="*.fws"/>
   </Snipet>
-  <Snipet category="Displays Widgets" key="codzn140" icon="" type="xsl" name="Codzn" >
+  <Snipet showDialog="1" key="WS5" icon="" automatique="1" name="Agil - WS5 - Interrogation facture de vente">
+    <Description>Interroge les factures de vente. CrudManager retreive.</Description>
+    <Text>&lt;egx_ws>
+&lt;bean_in>
+&lt;CRUDManagerretrieveIn xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common"
+xsi:schemaLocation="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common CRUDManagerretrieveIn.xsd" 
+viewObjectName="DEve">
+&lt;retrieve key="WS5">
+&lt;!-- Interrogation d'une facture d'enlèvement -->
+&lt;param num="1" value="%1"/> &lt;!-- Code entité -->
+&lt;param num="2" value="V"/> &lt;!-- Code achat-vente -->
+&lt;param num="3" value="FAV"/> &lt;!-- Type d'événement -->
+&lt;param num="4" value="%2"/> &lt;!-- N° de la facture d'enlèvement -->
+&lt;/retrieve>
+&lt;/CRUDManagerretrieveIn>
+&lt;/bean_in>
+&lt;/egx_ws>
+</Text>
+    <AvailableScript></AvailableScript>
+    <Category name="Webservices"/>
+    <Param defaultValue="" name="Entité magasin (exemple 3001)"/>
+    <Param defaultValue="" name="Numéro de facture (exemple 400002)"/>
+    <Extention value="*.fws"/>
+  </Snipet>
+  <Snipet showDialog="1" key="WS7" icon="" automatique="1" name="Agil - WS7 - Interrogation compte client">
+    <Description>Interroge un compte client. CrudManager retreive.</Description>
+    <Text>&lt;egx_ws>
+&lt;bean_in>
+&lt;CRUDManagerretrieveIn xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common"
+xsi:schemaLocation="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common CRUDManagerretrieveIn.xsd" 
+viewObjectName="DTie">
+&lt;retrieve key="WS7">
+&lt;!-- Interrogation d'un compte client -->
+&lt;param num="1" value="%1"/> &lt;!-- Code entité -->
+&lt;param num="2" value="CLI"/> &lt;!-- Type du tiers client -->
+&lt;param num="3" value="%2"/> &lt;!-- Code du tiers client -->
+&lt;/retrieve>
+&lt;/CRUDManagerretrieveIn>
+&lt;/bean_in>
+&lt;/egx_ws>
+</Text>
+    <AvailableScript></AvailableScript>
+    <Category name="Webservices"/>
+    <Param defaultValue="" name="Entité magasin (exemple 3001)"/>
+    <Param defaultValue="" name="Compte client (exemple AGCLI001)"/>
+    <Extention value="*.fws"/>
+  </Snipet>
+  <Snipet showDialog="1" key="WS9" icon="" automatique="1" name="Agil - WS9 - Interrogation des factures d'un compte client">
+    <Description>Interrogation des factures d'un compte client. CrudManager Retreive.</Description>
+    <Text>&lt;egx_ws>
+&lt;bean_in>
+&lt;CRUDManagerretrieveIn xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common"
+xsi:schemaLocation="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common CRUDManagerretrieveIn.xsd" viewObjectName="DEve">
+&lt;retrieve key="WS9">
+&lt;!-- Interrogation des factures d'un compte client -->
+&lt;param num="1" value="%1"/> &lt;!-- Code entité -->
+&lt;param num="2" value="CLI"/> &lt;!-- Type du tiers client -->
+&lt;param num="3" value="%2"/> &lt;!-- Code du tiers client -->
+&lt;/retrieve>
+&lt;/CRUDManagerretrieveIn>
+&lt;/bean_in>
+&lt;/egx_ws>
+</Text>
+    <AvailableScript></AvailableScript>
+    <Category name="Webservices"/>
+    <Param defaultValue="" name="Entité magasin (exemple 3001)"/>
+    <Param defaultValue="" name="Compte client (exemple AGCLI001)"/>
+    <Extention value="*.fws"/>
+  </Snipet>
+  <Snipet showDialog="1" key="createtims" icon="" automatique="1" name="Ajout de plusieurs lignes dans TIM">
+    <Description>Ajout de plusieurs lignes dans TIM</Description>
+    <Text>&lt;egx_ws>
+&lt;bean_in>
+	&lt;CRUDManagercreateIn viewObjectName="JTimView" xmlns="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common CRUDManagercreateIn.xsd">
+	&lt;dataSet>
+		&lt;header>
+			&lt;name>Codsoc1&lt;/name>
+			&lt;name>Typtie&lt;/name>
+			&lt;name>Sigtie&lt;/name>
+			&lt;name>Typact&lt;/name>
+			&lt;name>Destcod&lt;/name>
+			&lt;name>Codeta&lt;/name>
+			&lt;name>Dat1&lt;/name>
+		&lt;/header>
+		&lt;line>
+			&lt;value>%1&lt;/value>
+			&lt;value>%2&lt;/value>
+			&lt;value>%3&lt;/value>
+			&lt;value>%4&lt;/value>
+			&lt;value>%5&lt;/value>
+			&lt;value>%6&lt;/value>
+			&lt;value>%7&lt;/value>
+		&lt;/line>
+		&lt;line>
+			&lt;value>%1&lt;/value>
+			&lt;value>%2&lt;/value>
+			&lt;value>%3&lt;/value>
+			&lt;value>%4&lt;/value>
+			&lt;value>%5&lt;/value>
+			&lt;value>%6&lt;/value>
+			&lt;value>%7&lt;/value>
+		&lt;/line>		
+	&lt;/dataSet>
+&lt;/CRUDManagercreateIn>
+&lt;/bean_in>
+&lt;/egx_ws>
+</Text>
+    <AvailableScript></AvailableScript>
+    <Category name="Webservices"/>
+    <Param defaultValue="" name="Codsoc1"/>
+    <Param defaultValue="" name="Typtie"/>
+    <Param defaultValue="" name="Sigtie"/>
+    <Param defaultValue="" name="Typact"/>
+    <Param defaultValue="" name="Destcod"/>
+    <Param defaultValue="" name="Codeta"/>
+    <Param defaultValue="" name="Dat1"/>
+    <Extention value="*.fws"/>
+  </Snipet>
+  <Snipet showDialog="1" key="ajoutmvt" icon="" automatique="1" name="Ajouter un mouvement de stock">
+    <Description>Ajouter un mouvement de stock a un contexte déjà créé.</Description>
+    <Text>
+&lt;inventoryTurnover>
+	&lt;movement>%1&lt;/movement>
+	&lt;depot>%2&lt;/depot>
+	&lt;product>
+		&lt;key>
+			&lt;code>%3&lt;/code>
+		&lt;/key>
+	&lt;/product>
+	&lt;quantity>%4&lt;/quantity>
+	&lt;price>%5&lt;/price>
+&lt;/inventoryTurnover>
+</Text>
+    <AvailableScript></AvailableScript>
+    <Category name="Webservices"/>
+    <Param defaultValue="" name="Code mouvement de stock (exemple : ENTREE)"/>
+    <Param defaultValue="" name="Sigle du dépôt (exemple : LILLE)"/>
+    <Param defaultValue="" name="Code produit (exemple : BR101)"/>
+    <Param defaultValue="" name="Quantité (exemple : 3)"/>
+    <Param defaultValue="" name="Prix (exemple : 12)"/>
+    <Extention value="*.fws"/>
+  </Snipet>
+  <Snipet showDialog="0" key="xslbase" icon="" automatique="1" name="Base for GCE Stylesheet">
+    <Description>Base used for GCE Stylesheet with e-Gx.xsl inclusion and habilitation test.</Description>
+    <Text>&lt;xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+	&lt;xsl:import href="langue/fra/e-GX.xsl"/>
+
+	&lt;xsl:template match="/">
+		&lt;html>
+			&lt;xsl:call-template name="GnxHead"/>
+			&lt;body>
+				&lt;xsl:choose>
+					&lt;xsl:when test="/layout_data/VueUtilisateurCourantSociete/JUt_UtiView/JUt_UtiViewRow">
+						&lt;xsl:apply-templates select="/layout_data/VueUtilisateurCourantSociete/JUt_UtiView/JUt_UtiViewRow"/>
+					&lt;/xsl:when>
+					&lt;xsl:otherwise>
+						&lt;xsl:call-template name="GnxHabilitation"/>
+					&lt;/xsl:otherwise>
+				&lt;/xsl:choose>
+			&lt;/body>
+		&lt;/html>
+	&lt;/xsl:template>
+	
+	&lt;xsl:template match="JUt_UtiViewRow">
+	&lt;/xsl:template>
+&lt;/xsl:stylesheet>
+</Text>
+    <AvailableScript></AvailableScript>
+    <Category name="GCE130">
+      <Category name="Stylesheet"/>
+    </Category>
+    <Extention value="*.xsl"/>
+  </Snipet>
+  <Snipet showDialog="0" key="xslbase140" icon="" automatique="1" name="Base for GCE Stylesheet (GCE140)">
+    <Description>Base used for GCE Stylesheet with e-Gx.xsl inclusion and habilitation test (GCE140)</Description>
+    <Text>&lt;?xml version="1.0" encoding="ISO-8859-1"?>
+&lt;xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:gnx="http://www.oracle.com/XSL/Transform/java/fr.generix.technicalframework.application.translation.ParserTraduc" exclude-result-prefixes="gnx">
+	&lt;xsl:import href="langue/fra/e-GX.xsl"/>
+	&lt;!-- Définition du nom de la feuille de style -->
+	&lt;xsl:variable name="CTXTRD">xxx.xsl&lt;/xsl:variable>
+	&lt;!--
+		Import des JS spécifiques à la page
+	&lt;-->
+	&lt;xsl:template match="/" mode="js">
+		&lt;script type="text/javascript" src="../langue/fra/nav/js/xxx.js" charset="iso-8859-1"> &lt;/script>
+	&lt;/xsl:template>
+	&lt;!--
+		Règle principale
+	&lt;-->
+	&lt;xsl:template match="/">
+		&lt;xsl:comment> $RCSfile: xxx.xsl,v $ &lt;/xsl:comment>
+		&lt;html>
+			&lt;xsl:call-template name="GnxHead"/>
+			&lt;body>
+				&lt;xsl:choose>
+					&lt;xsl:when test="/layout_data/VueUtilisateurCourantSociete/JUt_UtiView/JUt_UtiViewRow">
+						&lt;xsl:apply-templates select="/layout_data/VueUtilisateurCourantSociete/JUt_UtiView/JUt_UtiViewRow"/>
+					&lt;/xsl:when>
+					&lt;xsl:otherwise>
+						&lt;xsl:call-template name="GnxHabilitation"/>
+					&lt;/xsl:otherwise>
+				&lt;/xsl:choose>
+			&lt;/body>
+		&lt;/html>
+	&lt;/xsl:template>
+	&lt;!--
+		Règle sur l'utilisateur
+	&lt;-->
+	&lt;xsl:template match="JUt_UtiViewRow">
+
+	&lt;/xsl:template>
+&lt;/xsl:stylesheet>
+</Text>
+    <AvailableScript></AvailableScript>
+    <Category name="GCE140">
+      <Category name="Stylesheet"/>
+    </Category>
+    <Extention value="*.xsl"/>
+  </Snipet>
+  <Snipet showDialog="1" key="codzn140" icon=":/images/lineedit.png" automatique="1" name="Call Codzn template">
     <Description>Template to manage Codzn.</Description>
     <Text>&lt;!-- Don't forget to import right xsl templates files
 &lt;xsl:import href="langue/fra/e-GX.xsl"/>
@@ -39,11 +376,141 @@ You may have to change min and max value !!!
 	&lt;xsl:with-param name="champ" select="'%3'"/>
 &lt;/xsl:call-template>
 </Text>
-    <Param name="Typzod" />
-    <Param name="Form name" />
-    <Param name="Prefix field" />
+    <AvailableScript></AvailableScript>
+    <Category name="GCE140">
+      <Category name="Display Widget"/>
+    </Category>
+    <Param defaultValue="" name="Typzod"/>
+    <Param defaultValue="" name="Form name"/>
+    <Param defaultValue="" name="Prefix field"/>
+    <Extention value="*.xsl"/>
   </Snipet>
-  <Snipet category="Displays Widgets" key="href" icon="" type="xsl" name="GnxPopup" >
+  <Snipet showDialog="1" key="form140" icon="" automatique="1" name="Complete form">
+    <Description>Complete form with mandatory hidden fields</Description>
+    <Text>&lt;form action="{$SERVLET}" name="%3" method="post" onsubmit="return validform(this);">
+	&lt;?= '%1' == '' ? '' : '&lt;input type="hidden" name="sourceview" value="%1"/>' ?>
+	&lt;input type="hidden" name="cinematic" value="&lt;?= ( '%1' == '' ) ? "propose(0);assimilate();" : "" ?>%2"/>
+	&lt;input type="hidden" name="entity" value="{$ENTITY}"/>
+	&lt;input type="hidden" name="id" value="{$ID}"/>
+	&lt;input type="hidden" name="frame" value="{$FRAME}"/>
+&lt;form>
+		</Text>
+    <AvailableScript></AvailableScript>
+    <Category name="GCE140">
+      <Category name="Input Widgets"/>
+    </Category>
+    <Param defaultValue="" name="Sourceview"/>
+    <Param defaultValue="" name="Cinematic"/>
+    <Param defaultValue="" name="FormName"/>
+    <Extention value="*.xsl"/>
+  </Snipet>
+  <Snipet showDialog="1" key="createeve" icon="" automatique="1" name="Créer un évènement">
+    <Description>Créer un évènement avec un seul poste (possibiliter d'en rajouter). La valorisation est incluse.</Description>
+    <Text>
+&lt;egx_ws>
+	&lt;bean_in>
+	&lt;GCEServiceassimilateIn versionImplementation="1" versionSpecification="1.0" xmlns="http://www.generix.fr/metier/bc4j/integration/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.generix.fr/metier/bc4j/integration/common">
+		&lt;transaction>
+			&lt;context>
+				&lt;entity>%1&lt;/entity>
+				&lt;identification>
+					&lt;code>DEMO&lt;/code>
+				&lt;/identification>
+				&lt;target>%2&lt;/target>
+			&lt;/context>
+			&lt;businessEvent>
+				&lt;header>
+					&lt;info>
+						&lt;thirdparty>
+							&lt;key>
+								&lt;type>%3&lt;/type>
+								&lt;identifier>%4&lt;/identifier>
+							&lt;/key>
+						&lt;/thirdparty>
+						&lt;depot>%5&lt;/depot>
+						&lt;item>
+							&lt;info>
+								&lt;product>
+									&lt;key>
+										&lt;code>%6&lt;/code>
+									&lt;/key>
+								&lt;/product>
+								&lt;quantity>%7&lt;/quantity>
+							&lt;/info>
+						&lt;/item>
+					&lt;/info>
+				&lt;/header>
+				&lt;services service="valueAmount"/>
+				&lt;services service="validate"/>
+				&lt;services service="edit"/>
+			&lt;/businessEvent>
+		&lt;/transaction>
+	&lt;/GCEServiceassimilateIn>
+	&lt;/bean_in>
+&lt;/egx_ws>
+		</Text>
+    <AvailableScript></AvailableScript>
+    <Category name="Webservices"/>
+    <Param defaultValue="" name="Code societe (exemple : 1221)"/>
+    <Param defaultValue="" name="Target : code pev (exemple : ACDA)"/>
+    <Param defaultValue="" name="Type tiers (exemple : FOU)"/>
+    <Param defaultValue="" name="Sigle du tiers (exemple : BRFOU101)"/>
+    <Param defaultValue="" name="Depot (exemple : ROISSY)"/>
+    <Param defaultValue="" name="Code produit (exemple : AG101)"/>
+    <Param defaultValue="" name="Quantite (exemple : 3)"/>
+    <Extention value="*.fws"/>
+  </Snipet>
+  <Snipet showDialog="1" key="createtim" icon="" automatique="1" name="Créer une action TIM">
+    <Description>Création d'une action</Description>
+    <Text>
+&lt;egx_ws>
+	&lt;bean_in>
+		&lt;CRUDManagercreateIn viewObjectName="JTimView" xmlns="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common CRUDManagercreateIn.xsd">
+		&lt;row num="1">
+			&lt;field name="Codsoc1" value="%1"/>
+			&lt;field name="Typtie" value="%2"/>
+			&lt;field name="Sigtie" value="%3"/>
+			&lt;field name="Typact" value="%4"/>
+			&lt;field name="Dat1" value="%5"/>
+		&lt;/row>
+	&lt;/CRUDManagercreateIn>
+	&lt;/bean_in>
+&lt;/egx_ws>
+		</Text>
+    <AvailableScript></AvailableScript>
+    <Category name="Webservices"/>
+    <Param defaultValue="" name="Codsoc"/>
+    <Param defaultValue="" name="Type de tiers"/>
+    <Param defaultValue="" name="Sigle du tiers"/>
+    <Param defaultValue="" name="Type action"/>
+    <Param defaultValue="" name="Date de réalisation (format YYYYMMJJ)"/>
+    <Extention value="*.fws"/>
+  </Snipet>
+  <Snipet showDialog="0" key="delete" icon=":/images/pushbutton.png" automatique="1" name="Delete button">
+    <Description>Show a delete button in a table.</Description>
+    <Text>&lt;td class="supprimer">
+	&lt;input xsl:use-attribute-sets="BTN_DELETE" title="{$LBL.SUPPRIMER}"/>
+&lt;/td>
+</Text>
+    <AvailableScript></AvailableScript>
+    <Category name="GCE130">
+      <Category name="Buttons Widget"/>
+    </Category>
+    <Extention value="*.xsl"/>
+  </Snipet>
+  <Snipet showDialog="0" key="delete140" icon=":/images/pushbutton.png" automatique="1" name="Delete button (GCE140)">
+    <Description>Show a delete button in a table (GCE140).</Description>
+    <Text>&lt;td class="supprimer">
+	&lt;input xsl:use-attribute-sets="BTN_DELETE" title="{gnx:trad($LANGUAGE,'LBL.SUPPRIMER',$CTXTRD)}"/>
+&lt;/td>
+</Text>
+    <AvailableScript></AvailableScript>
+    <Category name="GCE140">
+      <Category name="Buttons Widget"/>
+    </Category>
+    <Extention value="*.xsl"/>
+  </Snipet>
+  <Snipet showDialog="1" key="CallGnxPopup" icon="" automatique="1" name="Add a GnxPopup ...">
     <Description>Display a link to another page.</Description>
     <Text>&lt;td align="right" class="pop1">&amp;#160;
     &lt;a href="?sourceview=%1&amp;amp;cinematic=%2&amp;amp;%3&amp;amp;frame=%4" target="%4" title="{$%5}">
@@ -55,14 +522,19 @@ You may have to change min and max value !!!
     &lt;/a>
 &lt;/td>
 </Text>
-    <Param name="Sourceview" />
-    <Param name="Cinematic" />
-    <Param name="Fields" />
-    <Param name="Frame" />
-    <Param name="Title" />
-    <Param name="Caption" />
+    <AvailableScript></AvailableScript>
+    <Category name="Common">
+      <Category name="Displays Widget"/>
+    </Category>
+    <Param defaultValue="" name="Sourceview"/>
+    <Param defaultValue="" name="Cinematic"/>
+    <Param defaultValue="" name="Fields"/>
+    <Param defaultValue="" name="Frame"/>
+    <Param defaultValue="" name="Title"/>
+    <Param defaultValue="" name="Caption"/>
+    <Extention value="*.xsl"/>
   </Snipet>
-  <Snipet category="Displays Widgets" key="sort" icon="" type="xsl" name="GnxSort" >
+  <Snipet showDialog="1" key="sort" icon="" automatique="1" name="GnxSort">
     <Description>Template for sort a title with two sort key (to define in ViewStruct)</Description>
     <Text>&lt;xsl:call-template name="GnxSort">
 	&lt;xsl:with-param name="title">%1&lt;/xsl:with-param>
@@ -71,11 +543,16 @@ You may have to change min and max value !!!
 	&lt;xsl:with-param name="multisort">%3&lt;/xsl:with-param>
 &lt;/xsl:call-template>
 </Text>
-    <Param name="Title" />
-    <Param name="Sort key" />
-    <Param name="Multisort (true/false)" />
+    <AvailableScript></AvailableScript>
+    <Category name="GCE130">
+      <Category name="Displays Widget"/>
+    </Category>
+    <Param defaultValue="" name="Title"/>
+    <Param defaultValue="" name="Sort key"/>
+    <Param defaultValue="" name="Multisort (true/false)"/>
+    <Extention value="*.xsl"/>
   </Snipet>
-  <Snipet category="Displays Widgets" key="sort140" icon="" type="xsl" name="GnxSort (GCE140)" >
+  <Snipet showDialog="1" key="sort140" icon="" automatique="1" name="GnxSort (GCE140)">
     <Description>Template for column sorting with two sort key (to define in ViewStruct)</Description>
     <Text>&lt;xsl:call-template name="GnxSort">
 	&lt;xsl:with-param name="title">
@@ -85,13 +562,19 @@ You may have to change min and max value !!!
 	&lt;xsl:with-param name="sortkey_desc">-%2&lt;/xsl:with-param>
 	&lt;xsl:with-param name="multisort">%3&lt;/xsl:with-param>
 &lt;/xsl:call-template>
-		</Text>
-    <Param name="Label code" />
-    <Param name="Sort key" />
-    <Param name="Multisort" />
+		
+</Text>
+    <AvailableScript></AvailableScript>
+    <Category name="GCE140">
+      <Category name="Display Widget"/>
+    </Category>
+    <Param defaultValue="" name="Label code"/>
+    <Param defaultValue="" name="Sort key"/>
+    <Param defaultValue="" name="Multisort"/>
+    <Extention value="*.xsl"/>
   </Snipet>
-  <Snipet category="Displays Widgets" key="table" icon="" type="xsl" name="GnxTable" >
-    <Description>Template to manage page cinematics.</Description>
+  <Snipet showDialog="1" key="CreateTable" icon="" automatique="1" name="Add a table text to manage GnxTable">
+    <Description>Add text information in case of no row, and call GnxTable template.</Description>
     <Text>&lt;xsl:choose>
 	&lt;xsl:when test="../@total_business_row=0">
 		&lt;center>
@@ -113,16 +596,298 @@ You may have to change min and max value !!!
 		&lt;/xsl:call-template>
 	&lt;/xsl:otherwise>
 &lt;/xsl:choose>
+		
+</Text>
+    <AvailableScript></AvailableScript>
+    <Category name="Common">
+      <Category name="Displays Widget"/>
+    </Category>
+    <Param defaultValue="" name="ViewObject name"/>
+    <Param defaultValue="" name="ViewStruct composite View name"/>
+    <Extention value="*.xsl"/>
+  </Snipet>
+  <Snipet showDialog="1" key="GnxCinematic" icon="" automatique="1" name="Add Hidden fields (Cinematic, Entity, ...)">
+    <Description>Add all hidden field of a formular as cinematic, entity, id, frame, and sourceview. If sourceview is not tell, propose(0);assimilate() is automatically added to the cinematic</Description>
+    <Text>&lt;?= '%1' == '' ? '' : '&lt;input type="hidden" name="sourceview" value="%1"/>' ?>
+&lt;input type="hidden" name="cinematic" value="&lt;?= ( '%1' == '' ) ? "propose(0);assimilate();" : "" ?>%2"/>
+&lt;input type="hidden" name="entity" value="{$ENTITY}"/>
+&lt;input type="hidden" name="id" value="{$ID}"/>
+&lt;input type="hidden" name="frame" value="{$FRAME}"/>
+		
+</Text>
+    <AvailableScript></AvailableScript>
+    <Category name="Common">
+      <Category name="Input Widgets"/>
+    </Category>
+    <Param defaultValue="" name="Sourceview"/>
+    <Param defaultValue="" name="Cinematic"/>
+    <Extention value="*.xsl"/>
+  </Snipet>
+  <Snipet showDialog="0" key="upper" icon="" automatique="1" name="Add style and script to force input text upper">
+    <Description>Add style and script to force input text upper</Description>
+    <Text>style="text-transform:uppercase;" onchange="this.value=this.value.toUpperCase()"
+</Text>
+    <AvailableScript></AvailableScript>
+    <Category name="Common">
+      <Category name="Input Widgets"/>
+    </Category>
+    <Extention value="*.xsl"/>
+  </Snipet>
+  <Snipet showDialog="1" key="InputDate" icon="" automatique="1" name="Add an =iInput field date into form">
+    <Description>HTML and XSL according to date field</Description>
+    <Text>
+&lt;td class="champ">
+	&lt;xsl:value-of select="gnx:trad($LANGUAGE,'%1',$CTXTRD)"/>
+&lt;/td>
+&lt;td nowrap="nowrap">
+	&lt;input type="hidden" name="chp:%2" id="chp:%2"/>
+	&lt;input type="text" name="d08:%2" id="d08:%2" size="10" maxlength="10" onblur="return isDate(this);">
+		&lt;xsl:call-template name="ChpModifDate">
+			&lt;xsl:with-param name="Node" select="%2"/>
+		&lt;/xsl:call-template>
+	&lt;/input>
+	&lt;xsl:if test="$MODIFICATION='true'">
+		&lt;a href="javascript:PopupCentrer('../langue/fra/nav/calendrier.html?form=%3&amp;public_field=%2',210,165,'menubar=no,scrollbars=no,resizable=no,statusbar=no')" class="picto">
+			&lt;img xsl:use-attribute-sets="IMG_CALENDAR"/>
+		&lt;/a>
+	&lt;/xsl:if>
+&lt;/td>
+		
+</Text>
+    <AvailableScript></AvailableScript>
+    <Category name="Common">
+      <Category name="Input Widgets"/>
+    </Category>
+    <Param defaultValue="" name="Label code"/>
+    <Param defaultValue="" name="Field name"/>
+    <Param defaultValue="" name="Form name"/>
+    <Extention value="*.xsl"/>
+  </Snipet>
+  <Snipet showDialog="1" key="inputNumericPrice" icon=":/images/lineedit.png" automatique="1" name="Input field numeric (price) into form">
+    <Description>HTML and XSL according to numeric field (price format)</Description>
+    <Text>
+&lt;td class="champ">
+	&lt;xsl:value-of select="gnx:trad($LANGUAGE,'%1',$CTXTRD)"/>
+&lt;/td>
+&lt;td nowrap="nowrap">
+	&lt;input type="text" name="chp:%2-{@index}" id="chp:%2-{@index}" size="{$MSQAFF_MNT}" maxlength="{$MSQSAI_MNT}" class="numeric" onblur="return isDouble(this);">
+		&lt;xsl:call-template name="ChpModifMnt">
+			&lt;xsl:with-param name="Node" select="%2"/>
+		&lt;/xsl:call-template>
+	&lt;/input>
+&lt;/td>
+		
+</Text>
+    <AvailableScript></AvailableScript>
+    <Category name="Common">
+      <Category name="Input Widgets"/>
+    </Category>
+    <Param defaultValue="" name="Label code"/>
+    <Param defaultValue="" name="Field name"/>
+    <Extention value="*.xsl"/>
+  </Snipet>
+  <Snipet showDialog="1" key="inputNumericQte" icon=":/images/lineedit.png" automatique="1" name="Input field numeric (quantity) into form">
+    <Description>HTML and XSL according to numeric field (quantity format)</Description>
+    <Text>
+&lt;td class="champ">
+	&lt;xsl:value-of select="gnx:trad($LANGUAGE,'%1',$CTXTRD)"/>
+&lt;/td>
+&lt;td nowrap="nowrap">
+	&lt;input type="text" name="chp:%2-{@index}" id="chp:%2-{@index}" size="{$MSQAFF_QTECDE}" maxlength="{$MSQSAI_QTECDE}" class="numeric" onblur="return isDouble(this);">
+		&lt;xsl:call-template name="ChpModifQte">
+			&lt;xsl:with-param name="Node" select="%2"/>
+		&lt;/xsl:call-template>
+	&lt;/input>
+&lt;/td>
+		
+</Text>
+    <AvailableScript></AvailableScript>
+    <Category name="Common">
+      <Category name="Input Widgets"/>
+    </Category>
+    <Param defaultValue="" name="Label code"/>
+    <Param defaultValue="" name="Field name"/>
+    <Extention value="*.xsl"/>
+  </Snipet>
+  <Snipet showDialog="1" key="inputText" icon=":/images/lineedit.png" automatique="1" name="Input text field into form">
+    <Description>HTML and XSL according to text field</Description>
+    <Text>
+&lt;td class="champ">
+	&lt;xsl:value-of select="gnx:trad($LANGUAGE,'%1',$CTXTRD)"/>
+&lt;/td>
+&lt;td nowarap="nowrap">
+	&lt;input type="text" name="chp:%2-{@index}" id="chp:%2-{@index}" maxlength="{%2/@precision}" size="{%2/@precision}">
+		&lt;xsl:call-template name="ChpModif">
+			&lt;xsl:with-param name="Node" select="%2"/>
+		&lt;/xsl:call-template>
+	&lt;/input>
+&lt;/td>
+		
+</Text>
+    <AvailableScript></AvailableScript>
+    <Category name="Common">
+      <Category name="Input Widgets"/>
+    </Category>
+    <Param defaultValue="" name="Label code"/>
+    <Param defaultValue="" name="Field name"/>
+    <Extention value="*.xsl"/>
+  </Snipet>
+  <Snipet showDialog="1" key="stock" icon="" automatique="1" name="Interroger le stock">
+    <Description>Permet d'interroger le stock pour un produit.</Description>
+    <Text>
+&lt;egx_ws>
+	&lt;bean_in>
+	&lt;CRUDManagerretrieveIn viewObjectName="JDskAskView" xmlns="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common CRUDManagerretrieveIn.xsd">
+		&lt;retrieve key="ONE">
+		  &lt;param num="1" value="%1"/>
+			&lt;param num="2" value="%2"/>
+			&lt;param num="3" value="%3"/>
+			&lt;param num="4" value="%4"/>
+		&lt;/retrieve>
+	&lt;/CRUDManagerretrieveIn>
+	&lt;/bean_in>
+&lt;/egx_ws>
 		</Text>
-    <Param name="ViewObject name" />
-    <Param name="ViewStruct composite View name" />
+    <AvailableScript></AvailableScript>
+    <Category name="Webservices"/>
+    <Param defaultValue="" name="Code société (exemple : 1)"/>
+    <Param defaultValue="" name="Code produit (exemple : AG101)"/>
+    <Param defaultValue="" name="Code dépôt (exemple : LILLE)"/>
+    <Param defaultValue="" name="Code affichage ask  (exemple : TOUS)"/>
+    <Extention value="*.fws"/>
   </Snipet>
-  <Snipet category="Displays Widgets" key="variable" icon=":/images/label.png" type="xsl" name="Label" >
+  <Snipet showDialog="1" key="Label" icon=":/images/label.png" automatique="1" name="Add a variable for a text label">
     <Description>Create a variable in a XSL stylesheet. This variable is a label show in the page. To call this variable use the balise &lt;i>xsl:value-of&lt;/i> and select the variable which the name is &lt;i>LBL.NAME&lt;/i>.</Description>
-    <Text>&lt;xsl:variable name="LBL.&lt;?= "%1".replace(/[éèêë]/gi,'e').replace(/[à]/gi,'a').replace(/[îï]/gi,'i').replace(/[ù]/gi,'u').replace(/[ôö]/gi,'o').toUpperCase().replace(/\W/g, '') ?>">%1&lt;/xsl:variable></Text>
-    <Param name="Text" />
+    <Text>&lt;xsl:variable name="LBL.&lt;?= "%1".replace(/[éèêë]/gi,'e').replace(/[à]/gi,'a').replace(/[îï]/gi,'i').replace(/[ù]/gi,'u').replace(/[ôö]/gi,'o').toUpperCase().replace(/\W/g, '') ?>">%1&lt;/xsl:variable>
+</Text>
+    <AvailableScript></AvailableScript>
+    <Category name="Common">
+      <Category name="Displays Widget"/>
+    </Category>
+    <Param defaultValue="" name="Text"/>
+    <Extention value="*.xsl"/>
   </Snipet>
-  <Snipet category="Displays Widgets" key="displayList" icon="" type="xsl" name="XSL code for a list" >
+  <Snipet showDialog="0" key="modif" icon=":/images/pushbutton.png" automatique="1" name="Modifier">
+    <Description>Sumbit a form. Show the label 'LBL.MODIFIER'</Description>
+    <Text>&lt;input class="bouton" type="submit" value="{$LBL.MODIFIER}"/>
+</Text>
+    <AvailableScript></AvailableScript>
+    <Category name="GCE130">
+      <Category name="Buttons Widget"/>
+    </Category>
+    <Extention value="*.xsl"/>
+  </Snipet>
+  <Snipet showDialog="0" key="modif140" icon=":/images/pushbutton.png" automatique="1" name="Modifier (GCE140)">
+    <Description>Sumbit a form. Show the label 'LBL.MODIFIER' (GCE140)</Description>
+    <Text>&lt;input class="bouton" type="submit" value="{gnx:trad($LANGUAGE,'LBL.MODIFIER',$CTXTRD)}"/>
+</Text>
+    <AvailableScript></AvailableScript>
+    <Category name="GCE140">
+      <Category name="Buttons Widget"/>
+    </Category>
+    <Extention value="*.xsl"/>
+  </Snipet>
+  <Snipet showDialog="1" key="param140" icon="" automatique="1" name="Parameter from URL">
+    <Description>Define a stylesheet parameter from an URL value (GCE140)</Description>
+    <Text>&lt;xsl:param name="&lt;?= '%1'.toUpperCase().replace(/\W/g, '')?>">
+	&lt;xsl:value-of select="/layout_data/application_data/temporaire/param[@name='%1']/@value"/>
+&lt;/xsl:param>
+</Text>
+    <AvailableScript></AvailableScript>
+    <Category name="GCE140">
+      <Category name="Global Input"/>
+    </Category>
+    <Param defaultValue="" name="Param"/>
+    <Extention value="*.xsl"/>
+  </Snipet>
+  <Snipet showDialog="1" key="select" icon=":/images/combobox.png" automatique="1" name="Select box (LibOnly)">
+    <Description>Present a select box with differente choice.</Description>
+    <Text>
+&lt;select name="chp:%1" size="1">
+	&lt;xsl:call-template name="ChpModifSelect">
+		&lt;xsl:with-param name="Node" select="%1"/>
+		&lt;xsl:with-param name="NodeLib" select="%2"/>
+		&lt;xsl:with-param name="Mode" select="'LibOnly'"/>
+	&lt;/xsl:call-template>
+	&lt;option/>
+	&lt;xsl:apply-templates select="%3"/>
+&lt;/select>
+		
+</Text>
+    <AvailableScript></AvailableScript>
+    <Category name="Common">
+      <Category name="Input Widgets"/>
+    </Category>
+    <Param defaultValue="" name="Field"/>
+    <Param defaultValue="" name="Label"/>
+    <Param defaultValue="" name="List"/>
+    <Extention value="*.xsl"/>
+  </Snipet>
+  <Snipet showDialog="1" key="selectText" icon=":/images/combobox.png" automatique="1" name="Select field into form (eg. for TBL with BF provider)">
+    <Description>HTML and XSL according to SELECT field populated by TBL BusinessFlow</Description>
+    <Text>
+&lt;td class="champ">
+	&lt;xsl:value-of select="gnx:trad($LANGUAGE,'%1',$CTXTRD)"/>
+&lt;/td>
+&lt;td>
+	&lt;select name="chp:%2" size="1" class="obligatoire">
+		&lt;xsl:call-template name="ChpModifSelect">
+			&lt;xsl:with-param name="Node" select="%2"/>
+			&lt;xsl:with-param name="NodeLib" select="/layout_data/businessFlow/TBL[@name='%3']/JTblViewRow[Cletbl=current()/%2/business_data]/Lir"/>
+			&lt;xsl:with-param name="Mode" select="'LibOnly'"/>
+		&lt;/xsl:call-template>
+		&lt;xsl:apply-templates select="/layout_data/businessFlow/TBL[@name='%3']/JTblViewRow"/>
+	&lt;/select>
+&lt;/td>
+		
+</Text>
+    <AvailableScript></AvailableScript>
+    <Category name="Common">
+      <Category name="Input Widgets"/>
+    </Category>
+    <Param defaultValue="" name="Label code"/>
+    <Param defaultValue="" name="Field name"/>
+    <Param defaultValue="" name="TBL name"/>
+    <Extention value="*.xsl"/>
+  </Snipet>
+  <Snipet showDialog="1" key="param" icon="" automatique="1" name="Url Parameter">
+    <Description>Param passed by Url (post and get)</Description>
+    <Text>&lt;xsl:value-of select="/layout_data/application_data/temporaire/param[@name='%1']/@value"/>
+</Text>
+    <AvailableScript></AvailableScript>
+    <Category name="GCE130">
+      <Category name="Global Input"/>
+    </Category>
+    <Param defaultValue="" name="Param"/>
+    <Extention value="*.xsl"/>
+  </Snipet>
+  <Snipet showDialog="1" key="pev140" icon="" automatique="1" name="Variable from PEV value (BusinessFlow)">
+    <Description>Define a stylesheet variable from a PEV value (GCE140)</Description>
+    <Text>&lt;xsl:variable name="PEV.%1">
+	&lt;xsl:value-of select="/layout_data/businessFlow/PEV/general/%1/@value"/>
+&lt;/xsl:variable>
+		</Text>
+    <AvailableScript></AvailableScript>
+    <Category name="GCE140">
+      <Category name="Global Input"/>
+    </Category>
+    <Param defaultValue="" name="Attribute name"/>
+    <Extention value="*.xsl"/>
+  </Snipet>
+  <Snipet showDialog="1" key="ppe140" icon="" automatique="1" name="Variable from PPE value (BusinessFlow)">
+    <Description>Define a stylesheet variable from a PPE value (GCE140)</Description>
+    <Text>&lt;xsl:variable name="PPE.%1">
+	&lt;xsl:value-of select="/layout_data/businessFlow/PPE/parametre[@name='%1']/Para1/@value"/>
+&lt;/xsl:variable>
+		</Text>
+    <AvailableScript></AvailableScript>
+    <Category name="GCE140">
+      <Category name="Global Input"/>
+    </Category>
+    <Param defaultValue="" name="PPE name"/>
+    <Extention value="*.xsl"/>
+  </Snipet>
+  <Snipet showDialog="1" key="GnxList" icon="" automatique="1" name="List of ...">
     <Description>Display a list with header and detail tree for 2 columns</Description>
     <Text>&lt;!--
 	Définition des entêtes de colonnes
@@ -186,597 +951,14 @@ You may have to change min and max value !!!
 			&lt;xsl:value-of select="LIBELLE"/>
 		&lt;/td>
 	&lt;/tr>
-&lt;/xsl:template></Text>
-    <Param name="ViewObject name" />
-    <Param name="Composite View name" />
-  </Snipet>
-  <Snipet category="Global Input" key="param140" icon="" type="xml" name="Parameter from URL" >
-    <Description>Define a stylesheet parameter from an URL value (GCE140)</Description>
-    <Text>&lt;xsl:param name="&lt;?= '%1'.toUpperCase().replace(/\W/g, '')?>">
-	&lt;xsl:value-of select="/layout_data/application_data/temporaire/param[@name='%1']/@value"/>
-&lt;/xsl:param>
+&lt;/xsl:template>
 </Text>
-    <Param name="Param" />
-  </Snipet>
-  <Snipet category="Global Input" key="param" icon="" type="xsl" name="Url Parameter" >
-    <Description>Param passed by Url (post and get)</Description>
-    <Text>&lt;xsl:value-of select="/layout_data/application_data/temporaire/param[@name='%1']/@value"/></Text>
-    <Param name="Param" />
-  </Snipet>
-  <Snipet category="Global Input" key="pev140" icon="" type="xsl" name="Variable from PEV value (BusinessFlow)" >
-    <Description>Define a stylesheet variable from a PEV value (GCE140)</Description>
-    <Text>&lt;xsl:variable name="PEV.%1">
-	&lt;xsl:value-of select="/layout_data/businessFlow/PEV/general/%1/@value"/>
-&lt;/xsl:variable>
-		</Text>
-    <Param name="Attribute name" />
-  </Snipet>
-  <Snipet category="Global Input" key="ppe140" icon="" type="xsl" name="Variable from PPE value (BusinessFlow)" >
-    <Description>Define a stylesheet variable from a PPE value (GCE140)</Description>
-    <Text>&lt;xsl:variable name="PPE.%1">
-	&lt;xsl:value-of select="/layout_data/businessFlow/PPE/parametre[@name='%1']/Para1/@value"/>
-&lt;/xsl:variable>
-		</Text>
-    <Param name="PPE name" />
-  </Snipet>
-  <Snipet category="Input Widgets" key="form140" icon="" type="xsl" name="Complete form" >
-    <Description>Complete form with mandatory hidden fields</Description>
-    <Text>&lt;form action="{$SERVLET}" name="%3" method="post" onsubmit="return validform(this);">
-	&lt;?= '%1' == '' ? '' : '&lt;input type="hidden" name="sourceview" value="%1"/>' ?>
-	&lt;input type="hidden" name="cinematic" value="&lt;?= ( '%1' == '' ) ? "propose(0);assimilate();" : "" ?>%2"/>
-	&lt;input type="hidden" name="entity" value="{$ENTITY}"/>
-	&lt;input type="hidden" name="id" value="{$ID}"/>
-	&lt;input type="hidden" name="frame" value="{$FRAME}"/>
-&lt;form>
-		</Text>
-    <Param name="Sourceview" />
-    <Param name="Cinematic" />
-    <Param name="FormName" />
-  </Snipet>
-  <Snipet category="Input Widgets" key="cine" icon="" type="xsl" name="Hidden fields" >
-    <Description>Hidden fields for GCE forms</Description>
-    <Text>&lt;?= '%1' == '' ? '' : '&lt;input type="hidden" name="sourceview" value="%1"/>' ?>
-&lt;input type="hidden" name="cinematic" value="&lt;?= ( '%1' == '' ) ? "propose(0);assimilate();" : "" ?>%2"/>
-&lt;input type="hidden" name="entity" value="{$ENTITY}"/>
-&lt;input type="hidden" name="id" value="{$ID}"/>
-&lt;input type="hidden" name="frame" value="{$FRAME}"/>
-		</Text>
-    <Param name="Sourceview" />
-    <Param name="Cinematic" />
-  </Snipet>
-  <Snipet category="Input Widgets" key="upper" icon="" type="xsl" name="Input Uppercase" >
-    <Description>Add attribute for INPUT Uppercase</Description>
-    <Text>style="text-transform:uppercase;" onchange="this.value=this.value.toUpperCase()"</Text>
-  </Snipet>
-  <Snipet category="Input Widgets" key="inputDate" icon="" type="xsl" name="Input field date into form" >
-    <Description>HTML and XSL according to date field</Description>
-    <Text>
-&lt;td class="champ">
-	&lt;xsl:value-of select="gnx:trad($LANGUAGE,'%1',$CTXTRD)"/>
-&lt;/td>
-&lt;td nowrap="nowrap">
-	&lt;input type="hidden" name="chp:%2" id="chp:%2"/>
-	&lt;input type="text" name="d08:%2" id="d08:%2" size="10" maxlength="10" onblur="return isDate(this);">
-		&lt;xsl:call-template name="ChpModifDate">
-			&lt;xsl:with-param name="Node" select="%2"/>
-		&lt;/xsl:call-template>
-	&lt;/input>
-	&lt;xsl:if test="$MODIFICATION='true'">
-		&lt;a href="javascript:PopupCentrer('../langue/fra/nav/calendrier.html?form=%3&amp;public_field=%2',210,165,'menubar=no,scrollbars=no,resizable=no,statusbar=no')" class="picto">
-			&lt;img xsl:use-attribute-sets="IMG_CALENDAR"/>
-		&lt;/a>
-	&lt;/xsl:if>
-&lt;/td>
-		</Text>
-    <Param name="Label code" />
-    <Param name="Field name" />
-    <Param name="Form name" />
-  </Snipet>
-  <Snipet category="Input Widgets" key="inputNumericPrice" icon=":/images/lineedit.png" type="xsl" name="Input field numeric (price) into form" >
-    <Description>HTML and XSL according to numeric field (price format)</Description>
-    <Text>
-&lt;td class="champ">
-	&lt;xsl:value-of select="gnx:trad($LANGUAGE,'%1',$CTXTRD)"/>
-&lt;/td>
-&lt;td nowrap="nowrap">
-	&lt;input type="text" name="chp:%2-{@index}" id="chp:%2-{@index}" size="{$MSQAFF_MNT}" maxlength="{$MSQSAI_MNT}" class="numeric" onblur="return isDouble(this);">
-		&lt;xsl:call-template name="ChpModifMnt">
-			&lt;xsl:with-param name="Node" select="%2"/>
-		&lt;/xsl:call-template>
-	&lt;/input>
-&lt;/td>
-		</Text>
-    <Param name="Label code" />
-    <Param name="Field name" />
-  </Snipet>
-  <Snipet category="Input Widgets" key="inputNumericQte" icon=":/images/lineedit.png" type="xsl" name="Input field numeric (quantity) into form" >
-    <Description>HTML and XSL according to numeric field (quantity format)</Description>
-    <Text>
-&lt;td class="champ">
-	&lt;xsl:value-of select="gnx:trad($LANGUAGE,'%1',$CTXTRD)"/>
-&lt;/td>
-&lt;td nowrap="nowrap">
-	&lt;input type="text" name="chp:%2-{@index}" id="chp:%2-{@index}" size="{$MSQAFF_QTECDE}" maxlength="{$MSQSAI_QTECDE}" class="numeric" onblur="return isDouble(this);">
-		&lt;xsl:call-template name="ChpModifQte">
-			&lt;xsl:with-param name="Node" select="%2"/>
-		&lt;/xsl:call-template>
-	&lt;/input>
-&lt;/td>
-		</Text>
-    <Param name="Label code" />
-    <Param name="Field name" />
-  </Snipet>
-  <Snipet category="Input Widgets" key="inputText" icon=":/images/lineedit.png" type="xsl" name="Input text field into form" >
-    <Description>HTML and XSL according to text field</Description>
-    <Text>
-&lt;td class="champ">
-	&lt;xsl:value-of select="gnx:trad($LANGUAGE,'%1',$CTXTRD)"/>
-&lt;/td>
-&lt;td nowarap="nowrap">
-	&lt;input type="text" name="chp:%2-{@index}" id="chp:%2-{@index}" maxlength="{%2/@precision}" size="{%2/@precision}">
-		&lt;xsl:call-template name="ChpModif">
-			&lt;xsl:with-param name="Node" select="%2"/>
-		&lt;/xsl:call-template>
-	&lt;/input>
-&lt;/td>
-		</Text>
-    <Param name="Label code" />
-    <Param name="Field name" />
-  </Snipet>
-  <Snipet category="Input Widgets" key="select" icon=":/images/combobox.png" type="xsl" name="Select box (LibOnly)" >
-    <Description>Present a select box with differente choice.</Description>
-    <Text>
-&lt;select name="chp:%1" size="1">
-	&lt;xsl:call-template name="ChpModifSelect">
-		&lt;xsl:with-param name="Node" select="%1"/>
-		&lt;xsl:with-param name="NodeLib" select="%2"/>
-		&lt;xsl:with-param name="Mode" select="'LibOnly'"/>
-	&lt;/xsl:call-template>
-	&lt;option/>
-	&lt;xsl:apply-templates select="%3"/>
-&lt;/select>
-		</Text>
-    <Param name="Field" />
-    <Param name="Label" />
-    <Param name="List" />
-  </Snipet>
-  <Snipet category="Input Widgets" key="selectText" icon=":/images/combobox.png" type="xsl" name="Select field into form (eg. for TBL with BF provider)" >
-    <Description>HTML and XSL according to SELECT field populated by TBL BusinessFlow</Description>
-    <Text>
-&lt;td class="champ">
-	&lt;xsl:value-of select="gnx:trad($LANGUAGE,'%1',$CTXTRD)"/>
-&lt;/td>
-&lt;td>
-	&lt;select name="chp:%2" size="1" class="obligatoire">
-		&lt;xsl:call-template name="ChpModifSelect">
-			&lt;xsl:with-param name="Node" select="%2"/>
-			&lt;xsl:with-param name="NodeLib" select="/layout_data/businessFlow/TBL[@name='%3']/JTblViewRow[Cletbl=current()/%2/business_data]/Lir"/>
-			&lt;xsl:with-param name="Mode" select="'LibOnly'"/>
-		&lt;/xsl:call-template>
-		&lt;xsl:apply-templates select="/layout_data/businessFlow/TBL[@name='%3']/JTblViewRow"/>
-	&lt;/select>
-&lt;/td>
-		</Text>
-    <Param name="Label code" />
-    <Param name="Field name" />
-    <Param name="TBL name" />
-  </Snipet>
-  <Snipet category="Stylesheet" key="xslbase" icon="" type="xsl" name="Base for GCE Stylesheet" >
-    <Description>Base used for GCE Stylesheet with e-Gx.xsl inclusion and habilitation test.</Description>
-    <Text>&lt;xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-	&lt;xsl:import href="langue/fra/e-GX.xsl"/>
-
-	&lt;xsl:template match="/">
-		&lt;html>
-			&lt;xsl:call-template name="GnxHead"/>
-			&lt;body>
-				&lt;xsl:choose>
-					&lt;xsl:when test="/layout_data/VueUtilisateurCourantSociete/JUt_UtiView/JUt_UtiViewRow">
-						&lt;xsl:apply-templates select="/layout_data/VueUtilisateurCourantSociete/JUt_UtiView/JUt_UtiViewRow"/>
-					&lt;/xsl:when>
-					&lt;xsl:otherwise>
-						&lt;xsl:call-template name="GnxHabilitation"/>
-					&lt;/xsl:otherwise>
-				&lt;/xsl:choose>
-			&lt;/body>
-		&lt;/html>
-	&lt;/xsl:template>
-	
-	&lt;xsl:template match="JUt_UtiViewRow">
-	&lt;/xsl:template>
-&lt;/xsl:stylesheet>
-</Text>
-  </Snipet>
-  <Snipet category="Stylesheet" key="xslbase140" icon="" type="xsl" name="Base for GCE Stylesheet (GCE140)" >
-    <Description>Base used for GCE Stylesheet with e-Gx.xsl inclusion and habilitation test (GCE140)</Description>
-    <Text>&lt;xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:gnx="http://www.oracle.com/XSL/Transform/java/fr.generix.technicalframework.application.translation.ParserTraduc" exclude-result-prefixes="gnx">
-	&lt;xsl:import href="langue/fra/e-GX.xsl"/>
-	&lt;!-- Définition du nom de la feuille de style -->
-	&lt;xsl:variable name="CTXTRD">xxx.xsl&lt;/xsl:variable>
-	&lt;!--
-		Import des JS spécifiques à la page
-	&lt;-->
-	&lt;xsl:template match="/" mode="js">
-		&lt;script type="text/javascript" src="../langue/fra/nav/js/xxx.js" charset="iso-8859-1"> &lt;/script>
-	&lt;/xsl:template>
-	&lt;!--
-		Règle principale
-	&lt;-->
-	&lt;xsl:template match="/">
-		&lt;xsl:comment> $RCSfile: xxx.xsl,v $ &lt;/xsl:comment>
-		&lt;html>
-			&lt;xsl:call-template name="GnxHead"/>
-			&lt;body>
-				&lt;xsl:choose>
-					&lt;xsl:when test="/layout_data/VueUtilisateurCourantSociete/JUt_UtiView/JUt_UtiViewRow">
-						&lt;xsl:apply-templates select="/layout_data/VueUtilisateurCourantSociete/JUt_UtiView/JUt_UtiViewRow"/>
-					&lt;/xsl:when>
-					&lt;xsl:otherwise>
-						&lt;xsl:call-template name="GnxHabilitation"/>
-					&lt;/xsl:otherwise>
-				&lt;/xsl:choose>
-			&lt;/body>
-		&lt;/html>
-	&lt;/xsl:template>
-	&lt;!--
-		Règle sur l'utilisateur
-	&lt;-->
-	&lt;xsl:template match="JUt_UtiViewRow">
-
-	&lt;/xsl:template>
-&lt;/xsl:stylesheet>
-</Text>
-  </Snipet>
-  <Snipet category="Webservices" key="ajoutmvt" icon="" type="fws" name="Ajouter un mouvement de stock" >
-    <Description>Ajouter un mouvement de stock a un contexte déjà créé.</Description>
-    <Text>
-&lt;inventoryTurnover>
-	&lt;movement>%1&lt;/movement>
-	&lt;depot>%2&lt;/depot>
-	&lt;product>
-		&lt;key>
-			&lt;code>%3&lt;/code>
-		&lt;/key>
-	&lt;/product>
-	&lt;quantity>%4&lt;/quantity>
-	&lt;price>%5&lt;/price>
-&lt;/inventoryTurnover>
-</Text>
-    <Param name="Code mouvement de stock (exemple : ENTREE)" />
-    <Param name="Sigle du dépôt (exemple : LILLE)" />
-    <Param name="Code produit (exemple : BR101)" />
-    <Param name="Quantité (exemple : 3)" />
-    <Param name="Prix (exemple : 12)" />
-  </Snipet>
-  <Snipet category="Webservices" key="createeve" icon="" type="fws" name="Créer un évènement" >
-    <Description>Créer un évènement avec un seul poste (possibiliter d'en rajouter). La valorisation est incluse.</Description>
-    <Text>
-&lt;egx_ws>
-	&lt;bean_in>
-	&lt;GCEServiceassimilateIn versionImplementation="1" versionSpecification="1.0" xmlns="http://www.generix.fr/metier/bc4j/integration/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.generix.fr/metier/bc4j/integration/common">
-		&lt;transaction>
-			&lt;context>
-				&lt;entity>%1&lt;/entity>
-				&lt;identification>
-					&lt;code>DEMO&lt;/code>
-				&lt;/identification>
-				&lt;target>%2&lt;/target>
-			&lt;/context>
-			&lt;businessEvent>
-				&lt;header>
-					&lt;info>
-						&lt;thirdparty>
-							&lt;key>
-								&lt;type>%3&lt;/type>
-								&lt;identifier>%4&lt;/identifier>
-							&lt;/key>
-						&lt;/thirdparty>
-						&lt;depot>%5&lt;/depot>
-						&lt;item>
-							&lt;info>
-								&lt;product>
-									&lt;key>
-										&lt;code>%6&lt;/code>
-									&lt;/key>
-								&lt;/product>
-								&lt;quantity>%7&lt;/quantity>
-							&lt;/info>
-						&lt;/item>
-					&lt;/info>
-				&lt;/header>
-				&lt;services service="valueAmount"/>
-				&lt;services service="validate"/>
-				&lt;services service="edit"/>
-			&lt;/businessEvent>
-		&lt;/transaction>
-	&lt;/GCEServiceassimilateIn>
-	&lt;/bean_in>
-&lt;/egx_ws>
-		</Text>
-    <Param name="Code societe (exemple : 1221)" />
-    <Param name="Target : code pev (exemple : ACDA)" />
-    <Param name="Type tiers (exemple : FOU)" />
-    <Param name="Sigle du tiers (exemple : BRFOU101)" />
-    <Param name="Depot (exemple : ROISSY)" />
-    <Param name="Code produit (exemple : AG101)" />
-    <Param name="Quantite (exemple : 3)" />
-  </Snipet>
-  <Snipet category="Webservices" key="createtim" icon="" type="fws" name="Créer une action TIM" >
-    <Description>Création d'une action</Description>
-    <Text>
-&lt;egx_ws>
-	&lt;bean_in>
-		&lt;CRUDManagercreateIn viewObjectName="JTimView" xmlns="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common CRUDManagercreateIn.xsd">
-		&lt;row num="1">
-			&lt;field name="Codsoc1" value="%1"/>
-			&lt;field name="Typtie" value="%2"/>
-			&lt;field name="Sigtie" value="%3"/>
-			&lt;field name="Typact" value="%4"/>
-			&lt;field name="Dat1" value="%5"/>
-		&lt;/row>
-	&lt;/CRUDManagercreateIn>
-	&lt;/bean_in>
-&lt;/egx_ws>
-		</Text>
-    <Param name="Codsoc" />
-    <Param name="Type de tiers" />
-    <Param name="Sigle du tiers" />
-    <Param name="Type action" />
-    <Param name="Date de réalisation (format YYYYMMJJ)" />
-  </Snipet>
-  <Snipet category="Webservices" key="stock" icon="" type="fws" name="Interroger le stock" >
-    <Description>Permet d'interroger le stock pour un produit.</Description>
-    <Text>
-&lt;egx_ws>
-	&lt;bean_in>
-	&lt;CRUDManagerretrieveIn viewObjectName="JDskAskView" xmlns="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common CRUDManagerretrieveIn.xsd">
-		&lt;retrieve key="ONE">
-		  &lt;param num="1" value="%1"/>
-			&lt;param num="2" value="%2"/>
-			&lt;param num="3" value="%3"/>
-			&lt;param num="4" value="%4"/>
-		&lt;/retrieve>
-	&lt;/CRUDManagerretrieveIn>
-	&lt;/bean_in>
-&lt;/egx_ws>
-		</Text>
-    <Param name="Code société (exemple : 1)" />
-    <Param name="Code produit (exemple : AG101)" />
-    <Param name="Code dépôt (exemple : LILLE)" />
-    <Param name="Code affichage ask  (exemple : TOUS)" />
-  </Snipet>
-  <Snipet category="Webservices" key="WS1" icon="" type="fws" name="Agil - WS1 - Interrogation vente comptoir" >
-    <Description>Interroge les ventes comptoir, CrudManager retreive.</Description>
-    <Text>&lt;egx_ws>
-&lt;bean_in>
-	&lt;CRUDManagerretrieveIn xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xmlns="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common"
-xsi:schemaLocation="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common CRUDManagerretrieveIn.xsd" 
-viewObjectName="DEve">
-&lt;retrieve key="WS1">
-&lt;!-- Interrogation d'une vente comptoir -->
-&lt;param num="1" value="%1"/> &lt;!-- Code Entité -->
-&lt;param num="2" value="V"/> &lt;!-- Code achat-vente -->
-&lt;param num="3" value="CDV"/> &lt;!-- Type d'événement -->
-&lt;param num="4" value="%2"/> &lt;!-- n° de la commande de vente comptoir -->
-&lt;/retrieve>
-&lt;/CRUDManagerretrieveIn>
-&lt;/bean_in>
-&lt;/egx_ws>
-</Text>
-    <Param name="Entité magasin (exemple 3001)" />
-    <Param name="Numéro de commande (exemple 200006)" />
-  </Snipet>
-  <Snipet category="Webservices" key="WS3" icon="" type="fws" name="Agil - WS3 - Interrogation facture accompte" >
-    <Description>Interrogation facture accompte, CrudManager retreive.</Description>
-    <Text>&lt;egx_ws>
-&lt;bean_in>
-&lt;CRUDManagerretrieveIn xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xmlns="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common"
-xsi:schemaLocation="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common CRUDManagerretrieveIn.xsd" 
-viewObjectName="DEve">
-&lt;retrieve key="WS3">
-&lt;!-- Interrogation d'une facture d'acompte -->
-&lt;param num="1" value="%1"/> &lt;!-- Code entité -->
-&lt;param num="2" value="V"/> &lt;!-- Code achat-vente -->
-&lt;param num="3" value="ACO"/> &lt;!-- Type d'événement -->
-&lt;param num="4" value="%2"/> &lt;!-- N° de la facture d'acompte -->
-&lt;/retrieve>
-&lt;/CRUDManagerretrieveIn>
-&lt;/bean_in>
-&lt;/egx_ws>
-</Text>
-    <Param name="Entité magasin (exemple 3001)" />
-    <Param name="Numéro d'accompte (exemple 400001)" />
-  </Snipet>
-  <Snipet category="Webservices" key="WS4" icon="" type="fws" name="Agil - WS4 - Création événement débit" >
-    <Description>Création d'un événement de débit (target pev VDEB). Le code produit dédié est AG2GC, en quantité 1.
-Valide l'événement créé dans la foulée.</Description>
-    <Text>&lt;egx_ws>
-	&lt;bean_in>
-		&lt;GCEServiceassimilateIn versionImplementation="1" versionSpecification="1.0" xsi:schemaLocation="http://www.generix.fr/metier/bc4j/integration/common GCEServiceassimilateIn.xsd" xmlns="http://www.generix.fr/metier/bc4j/integration/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-			&lt;transaction>
-				&lt;context>
-					&lt;entity>%1&lt;/entity>
-					&lt;identification>
-						&lt;code>DEMO&lt;/code>
-					&lt;/identification>
-					&lt;target>VDEB&lt;/target>
-				&lt;/context>
-				&lt;businessEvent>
-					&lt;header>
-						&lt;info>
-							&lt;thirdparty>
-								&lt;key>
-									&lt;type>CLI&lt;/type>
-									&lt;identifier>%2&lt;/identifier>
-								&lt;/key>
-							&lt;/thirdparty>
-							&lt;item>
-								&lt;info>
-									&lt;product>
-										&lt;key>
-											&lt;code>AG2GC&lt;/code>
-										&lt;/key>
-									&lt;/product>
-									&lt;quantity>1&lt;/quantity>
-									&lt;price>%3&lt;/price>
-								&lt;/info>
-							&lt;/item>
-						&lt;/info>
-					&lt;/header>
-					&lt;services service="validate"/>
-				&lt;/businessEvent>
-			&lt;/transaction>
-		&lt;/GCEServiceassimilateIn>
-	&lt;/bean_in>
-&lt;/egx_ws>
-</Text>
-    <Param name="Entité magasin (exemple 3001)" />
-    <Param name="Code Client (exemple AGCLI001)" />
-    <Param name="Montant du débit (exemple 100)" />
-  </Snipet>
-  <Snipet category="Webservices" key="WS5" icon="" type="fws" name="Agil - WS5 - Interrogation facture de vente" >
-    <Description>Interroge les factures de vente. CrudManager retreive.</Description>
-    <Text>&lt;egx_ws>
-&lt;bean_in>
-&lt;CRUDManagerretrieveIn xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xmlns="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common"
-xsi:schemaLocation="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common CRUDManagerretrieveIn.xsd" 
-viewObjectName="DEve">
-&lt;retrieve key="WS5">
-&lt;!-- Interrogation d'une facture d'enlèvement -->
-&lt;param num="1" value="%1"/> &lt;!-- Code entité -->
-&lt;param num="2" value="V"/> &lt;!-- Code achat-vente -->
-&lt;param num="3" value="FAV"/> &lt;!-- Type d'événement -->
-&lt;param num="4" value="%2"/> &lt;!-- N° de la facture d'enlèvement -->
-&lt;/retrieve>
-&lt;/CRUDManagerretrieveIn>
-&lt;/bean_in>
-&lt;/egx_ws>
-</Text>
-    <Param name="Entité magasin (exemple 3001)" />
-    <Param name="Numéro de facture (exemple 400002)" />
-  </Snipet>
-  <Snipet category="Webservices" key="WS7" icon="" type="fws" name="Agil - WS7 - Interrogation compte client" >
-    <Description>Interroge un compte client. CrudManager retreive.</Description>
-    <Text>&lt;egx_ws>
-&lt;bean_in>
-&lt;CRUDManagerretrieveIn xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xmlns="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common"
-xsi:schemaLocation="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common CRUDManagerretrieveIn.xsd" 
-viewObjectName="DTie">
-&lt;retrieve key="WS7">
-&lt;!-- Interrogation d'un compte client -->
-&lt;param num="1" value="%1"/> &lt;!-- Code entité -->
-&lt;param num="2" value="CLI"/> &lt;!-- Type du tiers client -->
-&lt;param num="3" value="%2"/> &lt;!-- Code du tiers client -->
-&lt;/retrieve>
-&lt;/CRUDManagerretrieveIn>
-&lt;/bean_in>
-&lt;/egx_ws>
-</Text>
-    <Param name="Entité magasin (exemple 3001)" />
-    <Param name="Compte client (exemple AGCLI001)" />
-  </Snipet>
-  <Snipet category="Webservices" key="WS9" icon="" type="fws" name="Agil - WS9 - Interrogation des factures d'un compte client" >
-    <Description>Interrogation des factures d'un compte client. CrudManager Retreive.</Description>
-    <Text>&lt;egx_ws>
-&lt;bean_in>
-&lt;CRUDManagerretrieveIn xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xmlns="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common"
-xsi:schemaLocation="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common CRUDManagerretrieveIn.xsd" viewObjectName="DEve">
-&lt;retrieve key="WS9">
-&lt;!-- Interrogation des factures d'un compte client -->
-&lt;param num="1" value="%1"/> &lt;!-- Code entité -->
-&lt;param num="2" value="CLI"/> &lt;!-- Type du tiers client -->
-&lt;param num="3" value="%2"/> &lt;!-- Code du tiers client -->
-&lt;/retrieve>
-&lt;/CRUDManagerretrieveIn>
-&lt;/bean_in>
-&lt;/egx_ws>
-</Text>
-    <Param name="Entité magasin (exemple 3001)" />
-    <Param name="Compte client (exemple AGCLI001)" />
-  </Snipet>
-  <Snipet category="Webservices" key="WS2" icon="" type="fws" name="Agil - WS2 - Ajout de réglement" >
-    <Description>Ajoute un réglement dans Agil. CrudManager Create.</Description>
-    <Text>&lt;egx_ws>
-&lt;ctx language="FRA" user="%6" password="%7" target="VFAV" entity="%1"/>
-&lt;bean_in>
-&lt;CRUDManagercreateIn viewObjectName="JEvmView"
-xmlns="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common"
-xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xsi:schemaLocation="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common CRUDManagercreateIn.xsd">
-&lt;!-- Ajout d'un règlement -->
-&lt;row num="1">
-&lt;field name="Codsoc1" value="%1"/> &lt;!-- Entité : récupéré de l'interrogation de la facture -->
-&lt;field name="Achvte" value="V"/> &lt;!-- Achat/vente : récupéré de l'interrogation de la facture -->
-&lt;field name="Typeve" value="FAV"/> &lt;!-- Type événément : récupéré de l'interrogation de la facture -->
-&lt;field name="Numeve" value="%2"/> &lt;!-- N° fa cture : récupéré de l'interrogation de la facture -->
-&lt;field name="Numpos" value="0"/> &lt;!-- N° d e poste réglement : constante 0 -->
-&lt;field name="Typenr" value="R"/> &lt;!-- Type enregistrement : constante R -->
-&lt;field name="Monrgl" value="%3"/> &lt;!-- Montant réglé : montant réglé de la facture -->
-&lt;field name="Modrgl" value="%4"/> &lt;!-- Mode réglement : code qui doit exister dans les modes de reglement de GCE -->
-&lt;field name="Coddev" value="%5"/> &lt;!-- Devise du règlement -->
-&lt;field name="Cletec" value="Manuel par XINX"/> &lt;!-- Référence technique du règlement -->
-&lt;/row>
-&lt;/CRUDManagercreateIn>
-&lt;/bean_in>
-&lt;/egx_ws>
-</Text>
-    <Param name="Entité magasin (exemple 3001)" />
-    <Param name="Numéro de facture (exemple 400002)" />
-    <Param name="Montant du réglement (exemple 1)" />
-    <Param name="Mode de réglement (exemple ES)" />
-    <Param name="Devise du réglement (exemple EUR)" />
-    <Param name="Utilisateur qui fait la mise a jour (exemple DEMO)" />
-    <Param name="Mot de passe du user (exemple DEMO)" />
-  </Snipet>
-  <Snipet category="Webservices" key="createtims" icon="" type="fws" name="Ajout de plusieurs lignes dans TIM" >
-    <Description>Ajout de plusieurs lignes dans TIM</Description>
-    <Text>&lt;egx_ws>
-&lt;bean_in>
-	&lt;CRUDManagercreateIn viewObjectName="JTimView" xmlns="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common CRUDManagercreateIn.xsd">
-	&lt;dataSet>
-		&lt;header>
-			&lt;name>Codsoc1&lt;/name>
-			&lt;name>Typtie&lt;/name>
-			&lt;name>Sigtie&lt;/name>
-			&lt;name>Typact&lt;/name>
-			&lt;name>Destcod&lt;/name>
-			&lt;name>Codeta&lt;/name>
-			&lt;name>Dat1&lt;/name>
-		&lt;/header>
-		&lt;line>
-			&lt;value>%1&lt;/value>
-			&lt;value>%2&lt;/value>
-			&lt;value>%3&lt;/value>
-			&lt;value>%4&lt;/value>
-			&lt;value>%5&lt;/value>
-			&lt;value>%6&lt;/value>
-			&lt;value>%7&lt;/value>
-		&lt;/line>
-		&lt;line>
-			&lt;value>%1&lt;/value>
-			&lt;value>%2&lt;/value>
-			&lt;value>%3&lt;/value>
-			&lt;value>%4&lt;/value>
-			&lt;value>%5&lt;/value>
-			&lt;value>%6&lt;/value>
-			&lt;value>%7&lt;/value>
-		&lt;/line>		
-	&lt;/dataSet>
-&lt;/CRUDManagercreateIn>
-&lt;/bean_in>
-&lt;/egx_ws>
-</Text>
-    <Param name="Codsoc1" />
-    <Param name="Typtie" />
-    <Param name="Sigtie" />
-    <Param name="Typact" />
-    <Param name="Destcod" />
-    <Param name="Codeta" />
-    <Param name="Dat1" />
+    <AvailableScript></AvailableScript>
+    <Category name="Common">
+      <Category name="Displays Widget"/>
+    </Category>
+    <Param defaultValue="" name="ViewObject name"/>
+    <Param defaultValue="" name="Composite View name"/>
+    <Extention value="*.xsl"/>
   </Snipet>
 </SnipetList>

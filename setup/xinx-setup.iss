@@ -47,7 +47,7 @@ Name: assojs; Description: Associate JS with {#AppName}; Flags: unchecked
 Name: assofws; Description: Associate WebServices stream with {#AppName}; Flags: unchecked
 
 [Run]
-Filename: {app}\bin\xinx.exe; Parameters: --init {app}\datas\template.xml; WorkingDir: {app}; Components: application
+Filename: {app}\bin\xinx.exe; Parameters: "--snipet --init ""{app}\datas\template.xml"""; WorkingDir: {app}; Components: application
 
 [Files]
 Source: ..\COPYING; DestDir: {app}; Components: application
@@ -173,3 +173,5 @@ begin
 end;
 [InstallDelete]
 Name: {app}\plugins\services.dll; Type: files; Components: services; Tasks: 
+[UninstallDelete]
+Name: {app}\datas\snipets.db; Type: files
