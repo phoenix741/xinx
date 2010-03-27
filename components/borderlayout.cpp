@@ -41,10 +41,64 @@
  **
  ****************************************************************************/
 
+// Qt header
 #include <QtGui>
 
+// Components header
 #include "borderlayout.h"
 
+/*!
+ * \class BorderLayout
+ * This layout is decomposed with a center widget and four border.
+ *
+ * \code
+ *    +---------------------------+
+ *    |           NORTH           |
+ *    +------+-------------+------+
+ *    |      |             |      |
+ *    |      |             |      |
+ *    | WEST |   CENTER    | EAST |
+ *    |      |             |      |
+ *    |      |             |      |
+ *    +------+-------------+------+
+ *    |           SOUTH           |
+ *    +---------------------------+
+ * \endcode
+ *
+ * Please read the doc of trolltech for the example.
+ */
+
+/*!
+ * \enum BorderLayout::Position
+ * Position of the widget
+ */
+/*!
+ * \var BorderLayout::Position BorderLayout::West
+ * The widget is placed at left
+ */
+/*!
+ * \var BorderLayout::Position BorderLayout::North
+ * The widget is placed in top
+ */
+/*!
+ * \var BorderLayout::Position BorderLayout::South
+ * The widget is placed in bottom
+ */
+/*!
+ * \var BorderLayout::Position BorderLayout::East
+ * The widget is placed in right
+ */
+/*!
+ * \var BorderLayout::Position BorderLayout::Center
+ * The widget is placed in center
+ */
+
+/*!
+ * Create the \e BorderLayout
+ * \param parent The parent widget
+ * \param margin The marge arround the layout
+ * \param spacing The space between widgets
+ */
 BorderLayout::BorderLayout(QWidget *parent, int margin, int spacing) :
 		QLayout(parent)
 {
@@ -52,11 +106,16 @@ BorderLayout::BorderLayout(QWidget *parent, int margin, int spacing) :
 	setSpacing(spacing);
 }
 
+/*!
+ * Create the \e BorderLayout
+ * \param spacing The space between the widget
+ */
 BorderLayout::BorderLayout(int spacing)
 {
 	setSpacing(spacing);
 }
 
+//! Destroy the layout
 BorderLayout::~BorderLayout()
 {
 	QLayoutItem *l;

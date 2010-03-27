@@ -38,11 +38,8 @@ public:
 	virtual void setRootIndex(const QModelIndex & index);
 	QModelIndex rootIndex() const;
 protected:
-	// add any actions before the tree, return true if any actions are added.
 	virtual bool prePopulated();
-	// add any actions after the tree
 	virtual void postPopulated();
-	// put all of the children of parent into menu
 	void createMenu(const QModelIndex &parent, QMenu *parentMenu = 0, QMenu *menu = 0);
 signals:
 	void hovered(const QString &text) const;

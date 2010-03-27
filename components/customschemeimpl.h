@@ -17,9 +17,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
+#pragma once
 #ifndef _CUSTOMSCHEMEIMPL_H_
 #define _CUSTOMSCHEMEIMPL_H_
-#pragma once
 
 // Xinx header
 #include "ui_customscheme.h"
@@ -29,9 +29,6 @@ class QFormatScheme;
 class QFormat;
 class QLanguageFactory;
 
-/*!
- * Create a widget that permit to personalize the editor.
- */
 class CustomSchemeImpl : public QWidget, public Ui::CustomScheme
 {
 	Q_OBJECT
@@ -43,39 +40,22 @@ class CustomSchemeImpl : public QWidget, public Ui::CustomScheme
 	Q_PROPERTY(QString languageDefinition READ languageDefinition WRITE setLanguageDefinition)
 	Q_PROPERTY(QStringList hiddenFormat READ hiddenFormat WRITE setHiddenFormat)
 public:
-	/*!
-	 * Construct the widget.
-	 * \param parent The parent widget
-	 * \param f Flags for the widget
-	 */
 	CustomSchemeImpl(QWidget * parent = 0, Qt::WindowFlags f = 0);
-	//! Destroy the widget
 	virtual ~CustomSchemeImpl();
 
-	//! Set a new format scheme in the widget and configure it.
 	void setFormatScheme(QFormatScheme * formats);
-
-	//! Return the current format scheme.
 	QFormatScheme * formatScheme() const;
 
-	//! Set the exemple in the custom widget \e value
 	void setExample(const QString & value);
-	//! Return the exemple set
 	const QString & example() const;
 
-	//! Set the language definition to \e value
 	void setLanguageDefinition(const QString & value);
-	//! Return the language definition set.
 	QString languageDefinition() const;
 
-	//! Set the language factory used in the custom editor \e value
 	void setLanguageFactory(QLanguageFactory * value);
-	//! Return the language factory set.
 	QLanguageFactory * languageFactory() const;
 
-	//! Set the list of format that the widget musn't be show.
 	void setHiddenFormat(const QStringList & value);
-	//! Return the list of format to hide.
 	const QStringList & hiddenFormat() const;
 private slots:
 	void on_m_formatsListView_currentItemChanged(QListWidgetItem * current, QListWidgetItem * previous);

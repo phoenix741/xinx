@@ -41,57 +41,21 @@
  **
  ****************************************************************************/
 
+#pragma once
 #ifndef BORDERLAYOUT_H
 #define BORDERLAYOUT_H
-#pragma once
 
 #include <QLayout>
 #include <QRect>
 #include <QWidgetItem>
 
-/*!
- * This layout is decomposed with a center widget and four border.
- *
- *    +---------------------------+<br/>
- *    |           NORTH           |<br/>
- *    +------+-------------+------+<br/>
- *    |      |             |      |<br/>
- *    |      |             |      |<br/>
- *    | WEST |   CENTER    | EAST |<br/>
- *    |      |             |      |<br/>
- *    |      |             |      |<br/>
- *    +------+-------------+------+<br/>
- *    |           SOUTH           |<br/>
- *    +---------------------------+<br/>
- *
- * Please read the doc of trolltech for the example.
- */
 class BorderLayout : public QLayout
 {
 public:
-	/*! Position of the widget */
-	enum Position
-	{
-		West,   //!< The widget is placed at left
-		North,  //!< The widget is placed in top
-		South,  //!< The widget is placed in bottom
-		East,   //!< The widget is placed in right
-		Center  //!< The widget is placed in center
-	};
+	enum Position {West, North, South, East, Center	};
 
-	/*!
-	 * Create the \e BorderLayout
-	 * \param parent The parent widget
-	 * \param margin The marge arround the layout
-	 * \param spacing The space between the widget
-	 */
 	BorderLayout(QWidget *parent, int margin = 0, int spacing = -1);
-	/*!
-	 * Create the \e BorderLayout
-	 * \param spacing The space between the widget
-	 */
 	BorderLayout(int spacing = -1);
-	//! Destroy the layout
 	~BorderLayout();
 
 	void addItem(QLayoutItem *item);

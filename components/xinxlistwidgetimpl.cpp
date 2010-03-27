@@ -22,6 +22,18 @@
 
 /* XinxListWidgetImpl */
 
+/*!
+ * \class XinxListWidgetImpl
+ * This widget is a list of value (exemple: list of path, list of urls, list of prefix) with
+ * a button to add an value, a button to delete a value, and a button to make a value the
+ * default.
+ */
+
+/*!
+ * Construct the widget with a default, add and remove button.
+ * \param parent The parent widget
+ * \param f Flags for the widget
+ */
 XinxListWidgetImpl::XinxListWidgetImpl(QWidget * parent, Qt::WindowFlags f) : QWidget(parent, f)
 {
 	setupUi(this);
@@ -34,10 +46,32 @@ XinxListWidgetImpl::XinxListWidgetImpl(QWidget * parent, Qt::WindowFlags f) : QW
 	m_btnDown->setEnabled((m_list->currentRow() >= 0) && (m_list->currentRow() < m_list->count() - 1));
 }
 
+//! Destroy the widget
 XinxListWidgetImpl::~XinxListWidgetImpl()
 {
 
 }
+
+/*!
+ * \fn void XinxListWidgetImpl::defaultValueChanged(QString value);
+ * This signal is emited when the user change the value \e value.
+ */
+
+/*!
+ * \fn void XinxListWidgetImpl::currentRowChanged(int value);
+ * The signal is emited when the user change the current row in
+ * the list.
+ * \param value the index of the new row
+ * \sa itemChanged()
+ */
+
+/*!
+ * \fn void XinxListWidgetImpl::itemChanged(const QString & text);
+ * The signal is emited when the user change the current row in
+ * the list.
+ * \param text The text of the new selected item.
+ * \sa currentRowChanged()
+ */
 
 void XinxListWidgetImpl::updateDefault(const QString & def)
 {
@@ -68,6 +102,7 @@ void XinxListWidgetImpl::updateDefault(const QString & def)
 	}
 }
 
+//! Retrieve the default value selected by the user.
 QString XinxListWidgetImpl::defaultValue() const
 {
 	if (m_list->item(m_defaultValue))
@@ -76,21 +111,31 @@ QString XinxListWidgetImpl::defaultValue() const
 		return QString();
 }
 
+/*!
+ * Change the default value.
+ * If \e value isn't in the list, the value is added.
+ */
 void XinxListWidgetImpl::setDefaultValue(const QString & value)
 {
 	updateDefault(value);
 }
 
+//! Retrieve the visibility of the default button.
 bool XinxListWidgetImpl::defaultVisible() const
 {
 	return m_btnDef->isVisible();
 }
 
+/*!
+ * Set the visibility of the default button. If \e visible is set to false,
+ * the default button is hidden and the user can't choose a default value.
+ */
 void XinxListWidgetImpl::setDefaultVisible(bool visible)
 {
 	m_btnDef->setVisible(visible);
 }
 
+//! Return the list of value used by the widget.
 QStringList XinxListWidgetImpl::values() const
 {
 	QStringList result;
@@ -101,6 +146,10 @@ QStringList XinxListWidgetImpl::values() const
 	return result;
 }
 
+/*!
+ * Change the list of value used by the widget. If the defaultValue isn't in
+ * the list, the default value is added.
+ */
 void XinxListWidgetImpl::setValues(const QStringList & values)
 {
 	QString def = m_list->item(m_defaultValue) ? m_list->item(m_defaultValue)->text() : QString();
@@ -120,6 +169,7 @@ void XinxListWidgetImpl::setValues(const QStringList & values)
 	updateDefault(def);
 }
 
+//! Add a value in the list
 void XinxListWidgetImpl::add(const QString & value)
 {
 	QListWidgetItem * item = new QListWidgetItem(value, m_list);
@@ -133,11 +183,13 @@ void XinxListWidgetImpl::add(const QString & value)
 	m_btnDown->setEnabled((m_list->currentRow() >= 0) && (m_list->currentRow() < m_list->count() - 1));
 }
 
+//! Retrieve the default value proposed to the user, when the add a value to the list.
 QString XinxListWidgetImpl::defaultProposedValue() const
 {
 	return m_defaultProposedValue;
 }
 
+//! Set the default value proposed to the user.
 void XinxListWidgetImpl::setDefaultProposedValue(const QString & value)
 {
 	m_defaultProposedValue = value;

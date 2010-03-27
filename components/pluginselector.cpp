@@ -28,6 +28,8 @@
 
 Q_DECLARE_METATYPE(PluginElement*);
 
+/*! \cond private */
+
 /* PrivateXinxPluginSelector */
 
 PrivatePluginSelector::PrivatePluginSelector(PluginSelector * parent) : m_parent(parent)
@@ -424,9 +426,32 @@ QSize PluginDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelI
 	return QSize(m_minimumItemWidth, height);
 }
 
+/*! \endcond */
 
 /* PluginSelector */
 
+/*!
+ * \class PluginSelector
+ * This class show to the user the list of plugins with foreach
+ * plugins a configure button and a about button.
+ *
+ * If the plugins propose one, the list can also show an icon.
+ */
+
+/*!
+ * \fn void PluginSelector::configurePlugin(PluginElement * plugin);
+ * This signal is emited when the plugin request to be configured.
+ */
+
+/*!
+ * \fn void PluginSelector::aboutPlugin(PluginElement * plugin);
+ * The signal is emited when the plugin request to show a description.
+ */
+
+/*!
+ * Create the plugin selector widget.
+ * \param parent The parent widget.
+ */
 PluginSelector::PluginSelector(QWidget *parent) : QListView(parent)
 {
 	Q_INIT_RESOURCE(xinxpluginselector);
@@ -442,26 +467,31 @@ PluginSelector::PluginSelector(QWidget *parent) : QListView(parent)
 	setMouseTracking(true);
 }
 
+//! Destroy the plugin selector.
 PluginSelector::~PluginSelector()
 {
 	delete d;
 }
 
+//! Add a plugin to the list. The plugin must be a XinxPluginElement.
 void PluginSelector::addPlugin(PluginElement * plugin)
 {
 	d->m_model->addPlugin(plugin);
 }
 
+//! List of plugins add in the PluginSelector
 const QList<PluginElement*> & PluginSelector::plugins() const
 {
 	return d->m_model->plugins();
 }
 
+//! Clear the list of PluginElement
 void PluginSelector::clear()
 {
 	d->m_model->clear();
 }
 
+//! \internal
 QStyleOptionViewItem PluginSelector::viewOptions() const
 {
 	return QListView::viewOptions();

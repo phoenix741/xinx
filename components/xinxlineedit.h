@@ -60,53 +60,16 @@ class XinxLineEdit : public QLineEdit
 {
 	Q_OBJECT
 public:
-
-	/**
-	 * Constructs a XinxLineEdit object with a default text, a parent,
-	 * and a name.
-	 *
-	 * @param string Text to be shown in the edit widget.
-	 * @param parent The parent widget of the line edit.
-	 */
 	explicit XinxLineEdit(const QString &string, QWidget *parent = 0);
-
-	/**
-	 * Constructs a line edit
-	 * @param parent The parent widget of the line edit.
-	 */
 	explicit XinxLineEdit(QWidget *parent = 0);
-
-	/**
-	 *  Destructor.
-	 */
 	virtual ~XinxLineEdit();
 
 
 Q_SIGNALS:
-	/**
-	 * Emitted when the user clicked on the clear button
-	 */
 	void clearButtonClicked();
 protected:
-	/**
-	* Re-implemented for internal reasons.  API not affected.
-	*
-	* See QLineEdit::resizeEvent().
-	*/
 	virtual void resizeEvent(QResizeEvent *);
-
-	/**
-	* Re-implemented for internal reasons.  API not affected.
-	*
-	* See QLineEdit::mousePressEvent().
-	*/
 	virtual void mousePressEvent(QMouseEvent *);
-
-	/**
-	* Re-implemented for internal reasons.  API not affected.
-	*
-	* See QLineEdit::mouseReleaseEvent().
-	*/
 	virtual void mouseReleaseEvent(QMouseEvent *);
 
 private Q_SLOTS:

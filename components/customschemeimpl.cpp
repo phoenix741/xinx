@@ -32,6 +32,20 @@
 // Qt header
 #include <QHBoxLayout>
 
+/*!
+ * \class CustomSchemeImpl
+ * Create a widget that permit to personalize the QCodeEdit editor. This use
+ * QLanguageFactory and QFormatScheme to show the list of available format to
+ * change.
+ * The method setHiddenFormat is used to hide some format of the list to forbide
+ * the user to change it.
+ */
+
+/*!
+ * Construct the widget.
+ * \param parent The parent widget
+ * \param f Flags for the widget
+ */
 CustomSchemeImpl::CustomSchemeImpl(QWidget * parent, Qt::WindowFlags f) : QWidget(parent, f), m_languageFactory(0), m_formats(0), m_currentFormat(0), m_currentItem(0)
 {
 	setupUi(this);
@@ -43,29 +57,12 @@ CustomSchemeImpl::CustomSchemeImpl(QWidget * parent, Qt::WindowFlags f) : QWidge
 	m_exampleGroupBox->setVisible(false);
 }
 
+//! Destroy the widget
 CustomSchemeImpl::~CustomSchemeImpl()
 {
 }
 
-void CustomSchemeImpl::updateFormatList()
-{
-	m_formatsListView->clear();
-
-	if (m_formats)
-		foreach(const QString & f, m_formats->formats())
-	{
-		QFormat format = m_formats->format(f);
-		QListWidgetItem * item = new QListWidgetItem(f, m_formatsListView);
-		if (format.background.isValid()) item->setBackground(format.background);
-		if (format.foreground.isValid()) item->setForeground(format.foreground);
-		item->setFont(format.toTextCharFormat().font());
-		item->setHidden(m_hiddenFormat.contains(f));
-	}
-
-	if (m_formatsListView->count())
-		m_formatsListView->setCurrentRow(0);
-}
-
+//! Set a new format scheme in the widget and configure it.
 void CustomSchemeImpl::setFormatScheme(QFormatScheme * formats)
 {
 	if (formats != m_formats)
@@ -76,11 +73,13 @@ void CustomSchemeImpl::setFormatScheme(QFormatScheme * formats)
 	}
 }
 
+//! Return the current format scheme.
 QFormatScheme * CustomSchemeImpl::formatScheme() const
 {
 	return m_formats;
 }
 
+//! Set the exemple in the custom widget \e value
 void CustomSchemeImpl::setExample(const QString & value)
 {
 	if (m_example != value)
@@ -91,11 +90,13 @@ void CustomSchemeImpl::setExample(const QString & value)
 	}
 }
 
+//! Return the exemple set
 const QString & CustomSchemeImpl::example() const
 {
 	return m_example;
 }
 
+//! Set the language factory used in the custom editor \e value
 void CustomSchemeImpl::setLanguageFactory(QLanguageFactory * value)
 {
 	if (value != m_languageFactory)
@@ -104,11 +105,13 @@ void CustomSchemeImpl::setLanguageFactory(QLanguageFactory * value)
 	}
 }
 
+//! Return the language factory set.
 QLanguageFactory * CustomSchemeImpl::languageFactory() const
 {
 	return m_languageFactory;
 }
 
+//! Set the language definition to \e value
 void CustomSchemeImpl::setLanguageDefinition(const QString & value)
 {
 	if (m_languageFactory)
@@ -117,6 +120,7 @@ void CustomSchemeImpl::setLanguageDefinition(const QString & value)
 	}
 }
 
+//! Return the language definition set.
 QString CustomSchemeImpl::languageDefinition() const
 {
 	if (m_exampleEditor->editor()->languageDefinition())
@@ -125,6 +129,7 @@ QString CustomSchemeImpl::languageDefinition() const
 		return QString();
 }
 
+//! Set the list of format that the widget musn't be show.
 void CustomSchemeImpl::setHiddenFormat(const QStringList & value)
 {
 	if (m_hiddenFormat != value)
@@ -134,6 +139,7 @@ void CustomSchemeImpl::setHiddenFormat(const QStringList & value)
 	}
 }
 
+//! Return the list of format to hide.
 const QStringList & CustomSchemeImpl::hiddenFormat() const
 {
 	return m_hiddenFormat;
@@ -224,6 +230,25 @@ void CustomSchemeImpl::on_m_backGroundComboBox_activated(const QColor &col)
 	m_currentFormat->background = col;
 	if (m_currentFormat->foreground.isValid()) m_currentItem->setForeground(m_currentFormat->foreground);
 	m_exampleEditor->editor()->document()->setFormatScheme(m_formats);
+}
+
+void CustomSchemeImpl::updateFormatList()
+{
+	m_formatsListView->clear();
+
+	if (m_formats)
+		foreach(const QString & f, m_formats->formats())
+	{
+		QFormat format = m_formats->format(f);
+		QListWidgetItem * item = new QListWidgetItem(f, m_formatsListView);
+		if (format.background.isValid()) item->setBackground(format.background);
+		if (format.foreground.isValid()) item->setForeground(format.foreground);
+		item->setFont(format.toTextCharFormat().font());
+		item->setHidden(m_hiddenFormat.contains(f));
+	}
+
+	if (m_formatsListView->count())
+		m_formatsListView->setCurrentRow(0);
 }
 
 

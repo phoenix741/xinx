@@ -94,6 +94,8 @@ static void createStandardPalette()
 	standardPalette[i++] = Qt::black;
 }
 
+/* XinxColorCombo::XinxColorComboPrivate */
+
 class XinxColorCombo::XinxColorComboPrivate
 {
 public:
@@ -103,6 +105,23 @@ public:
 	bool showEmptyList;
 };
 
+/* XinxColorCombo */
+
+/*!
+ * \class XinxColorCombo
+ * Combo box to choose a color. The combo box show you the color
+ * and an associate text to the color. The showed color, is standard Qt color.
+ * The user can also change, and use a custom color. In this case a dialog
+ * is open to allow the user to make his choice.
+ *
+ * This component is originally written for KDE3. He was adapt to turn on Qt4.
+ */
+
+
+/*!
+ * Create a color combo box
+ * \param parent The parent widget of the color combo box.
+ */
 XinxColorCombo::XinxColorCombo(QWidget *parent)
 		: QComboBox(parent)
 {
@@ -121,12 +140,28 @@ XinxColorCombo::XinxColorCombo(QWidget *parent)
 	connect(this, SIGNAL(highlighted(int)), SLOT(slotHighlighted(int)));
 }
 
-
+/*!
+* Destroy the ColorComboBox
+*/
 XinxColorCombo::~XinxColorCombo()
 {
 	delete d;
 }
 
+/*!
+ * \fn void XinxColorCombo::activated(const QColor &col);
+ * Signal emited when a color is activated by the user.
+ */
+
+/*!
+ * \fn void XinxColorCombo::highlighted(const QColor &col);
+ * Signal emited when a color is highlighted by the user.
+ */
+
+/*!
+* Change the value of the ComboBox to the color define in bracket.
+* \param col The new color to use.
+*/
 void XinxColorCombo::setColor(const QColor &col)
 {
 	internalcolor = col;
@@ -134,7 +169,10 @@ void XinxColorCombo::setColor(const QColor &col)
 	addColors();
 }
 
-
+/*!
+* Return the color selected in the ComboBox.
+* \return The color selected
+*/
 QColor XinxColorCombo::color() const
 {
 	return internalcolor;
@@ -146,6 +184,9 @@ void XinxColorCombo::resizeEvent(QResizeEvent *re)
 	addColors();
 }
 
+/*!
+* Show an empty color combo box.
+*/
 void XinxColorCombo::showEmptyList()
 {
 	d->showEmptyList=true;

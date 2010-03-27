@@ -28,6 +28,17 @@ Q_DECLARE_METATYPE(QModelIndex);
 
 /* QMenuView */
 
+/*!
+ * \class QMenuView
+ * This class is used to transform a hierarchical model based on the class
+ * QAbstractItemModel into a menu. It can be used to create an action, history,
+ * or snipets menu.
+ */
+
+/*!
+ * Create the new menu view based on a QMenu object.
+ * \param parent The parent object of the menu.
+ */
 QMenuView::QMenuView(QWidget * parent) : QMenu(parent)
 {
 	connect(this, SIGNAL(triggered(QAction*)), this, SLOT(triggered(QAction*)));
@@ -35,35 +46,79 @@ QMenuView::QMenuView(QWidget * parent) : QMenu(parent)
 	connect(this, SIGNAL(aboutToShow()), this, SLOT(aboutToShow()));
 }
 
+/*!
+ * Destroy the menu.
+ */
 QMenuView::~QMenuView()
 {
 	setModel(0);
 }
 
+/*!
+ * \fn void QMenuView::hovered(const QString &text) const
+ * This signal is emitted when a menu action is highlighted; \e text is the
+ * Qt::StatusTipRole of the index that caused the signal to be emitted.
+ *
+ * Often this is used to update status information.
+ *
+ * \sa triggered()
+ */
+
+/*!
+ * \fn void QMenuView::triggered(const QModelIndex & index) const
+ * This signal is emitted when an action in this menu is triggered.
+ * index is the index's action that caused the signal to be emitted.
+ *
+ * \sa hovered()
+ */
+
+/*!
+ * Add any actions before the tree, return true if any actions are added.
+ */
 bool QMenuView::prePopulated()
 {
 	return false;
 }
 
+/*!
+ * Add any actions after the tree
+ */
 void QMenuView::postPopulated()
 {
 }
 
+/*!
+ * Set the new model to \e model.
+ * \param model The new model to use for the creation of menus.
+ */
 void QMenuView::setModel(QAbstractItemModel * model)
 {
 	m_model = model;
 }
 
+/*!
+ * Return the current model of the menu.
+ */
 QAbstractItemModel * QMenuView::model() const
 {
 	return m_model;
 }
 
+/*!
+ * Change the root index to \e index. This can be used to show only
+ * a part of the QAbstractItemModel.
+ * \param index The index to use to show the menu. if QModelIndex(), all the model is show.
+ */
 void QMenuView::setRootIndex(const QModelIndex & index)
 {
 	m_root = index;
 }
 
+/*!
+ * Return the current root index.
+ *
+ * Default root index is QModelIndex()
+ */
 QModelIndex QMenuView::rootIndex() const
 {
 	return m_root;
@@ -116,6 +171,7 @@ void QMenuView::aboutToShow()
 	postPopulated();
 }
 
+//! put all of the children of parent into menu
 void QMenuView::createMenu(const QModelIndex &parent, QMenu *parentMenu, QMenu *menu)
 {
 	if (! menu)
