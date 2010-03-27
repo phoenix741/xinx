@@ -99,7 +99,8 @@ void GceConfigurationDef::readConfigurationFile(int configurationIndex, const QS
 	m_filenames.append(configurationFileName);
 
 	m_fileToInformation += parser.m_fileRefToInformation;
-	m_version            = ConfigurationVersion(parser.m_version, parser.m_edition);
+	if (!parser.m_version.isEmpty())
+		m_version            = ConfigurationVersion(parser.m_version, parser.m_edition);
 }
 
 ConfigurationVersion GceConfigurationDef::version()

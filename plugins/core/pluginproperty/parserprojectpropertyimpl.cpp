@@ -27,6 +27,7 @@
 ParserProjectPropertyImpl::ParserProjectPropertyImpl(QWidget * parent, Qt::WindowFlags f) : QWidget(parent, f)
 {
 	setupUi(this);
+	m_labelDataStream->setBuddy(m_dataStreamEdit->lineEdit());
 	m_project = XINXProjectManager::self()->project();
 	m_dataStreamEdit->setDefaultValue(XINXConfig::self()->config().project.defaultPath);
 }
@@ -122,7 +123,7 @@ WebPluginProjectPropertyWizard::WebPluginProjectPropertyWizard()
 	m_dataStreamEdit->lineEdit()->setText(field("project.path").toString());
 
 	registerField("webplugin.adresse", m_urlLocationEdit);
-	registerField("webplugin.dataStream", m_urlLocationEdit);
+	registerField("webplugin.dataStream", m_dataStreamEdit);
 }
 
 void WebPluginProjectPropertyWizard::initializePage()

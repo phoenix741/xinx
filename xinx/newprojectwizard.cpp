@@ -97,12 +97,13 @@ XinxProject * NewProjectWizard::createProject()
 			{
 				m_project->writeProperty(p.first, p.second);
 			}
-		}
 
-		foreach(IXinxPluginNewProjectConfigurationPage * page, m_wizardPages)
-		{
-			if (! page->saveSettingsDialog(m_project))
-				qWarning(qPrintable(tr("Can't save \"%1\" page").arg(page->windowTitle())));
+			foreach(IXinxPluginNewProjectConfigurationPage * page, m_wizardPages)
+			{
+				if (templateProject->wizardPages().contains(page->pagePluginId()))
+					if (! page->saveSettingsDialog(m_project))
+						qWarning(qPrintable(tr("Can't save \"%1\" page").arg(page->windowTitle())));
+			}
 		}
 	}
 	return m_project;

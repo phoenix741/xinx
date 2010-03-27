@@ -12,6 +12,5 @@
         <Page name="GenerixDerivation2"/>
         <Page name="GenerixDerivation3"/>
         <Page name="StdProjectRevision"/>
-        <Page name="CoreInformation"/>
     </WizardPage>
 </ProjectTemplate>

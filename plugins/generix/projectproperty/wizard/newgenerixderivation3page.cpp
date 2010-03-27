@@ -20,7 +20,6 @@
 // Xinx header
 #include "newgenerixderivation3page.h"
 #include "projectproperty/generixproject.h"
-#include "config/selfgenerixsettings.h"
 
 /* NewGenerixDerivation3Page */
 
@@ -40,7 +39,10 @@ QString NewGenerixDerivation3Page::pagePluginId() const
 
 bool NewGenerixDerivation3Page::pageIsVisible() const
 {
-	return field("generix.derivation").toBool();
+	ConfigurationVersion version = field("generix.version").value<ConfigurationVersion>();
+	ConfigurationVersion version150(6, 1, 50);
+
+	return field("generix.derivation").toBool() || (version >= version150);
 }
 
 bool NewGenerixDerivation3Page::saveSettingsDialog(XinxProject * project)
@@ -57,22 +59,24 @@ bool NewGenerixDerivation3Page::saveSettingsDialog(XinxProject * project)
 
 void NewGenerixDerivation3Page::initializePage()
 {
+	m_createMissingMessage->setVisible(false);
+	m_prefixMessage->setVisible(false);
+
 	IXinxPluginNewProjectConfigurationPage::initializePage();
 
 	ConfigurationVersion version = field("generix.version").value<ConfigurationVersion>();
 	ConfigurationVersion version150(6, 1, 50);
 
-	QString projet = SelfGenerixSettings::self()->config().defaultProjectPathName;
-
-	m_addPrefixChk->setChecked(true);
+	m_prefixEdit->setText(QString("%1").arg(field("project.name").toString().left(3)).toUpper());
 	m_missingDirChk->setChecked(true);
-	m_prefixEdit->setText(QString("P%1").arg(field("project.name").toString().left(2)).toUpper());
-	if (version <= version150)
+	if (version < version150)
 	{
+		m_addPrefixChk->setChecked(true);
 		m_copyToChk->setChecked(true);
 	}
 	else
 	{
+		m_addPrefixChk->setChecked(false);
 		m_copyToChk->setChecked(false);
 	}
 }
@@ -81,4 +85,17 @@ bool NewGenerixDerivation3Page::isComplete() const
 {
 	if (! IXinxPluginNewProjectConfigurationPage::isComplete()) return false;
 	return !(m_addPrefixChk->isChecked() && m_prefixEdit->text().isEmpty());
+}
+
+void NewGenerixDerivation3Page::on_m_missingDirChk_stateChanged(int value)
+{
+	m_createMissingMessage->setVisible(field("generix.derivation").toBool() && (value == Qt::Unchecked));
+}
+
+void NewGenerixDerivation3Page::on_m_addPrefixChk_stateChanged(int value)
+{
+	ConfigurationVersion version = field("generix.version").value<ConfigurationVersion>();
+	ConfigurationVersion version140(6, 1, 40);
+
+	m_prefixMessage->setVisible((version < version140) && (value == Qt::Unchecked));
 }

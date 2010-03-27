@@ -14,7 +14,7 @@
    <string>WizardPage</string>
   </property>
   <property name="title">
-   <string>Define option for derivation project</string>
+   <string>Define option for derivation</string>
   </property>
   <property name="subTitle">
    <string>In this page you can define a prefix to use in your derivation path and the possibility to copy the original file in the destination path too.</string>
@@ -24,6 +24,13 @@
     <widget class="QCheckBox" name="m_missingDirChk">
      <property name="text">
       <string>&amp;Create automatically missing directory</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="m_createMissingMessage">
+     <property name="text">
+      <string>&lt;span style=&quot;color: red&quot;&gt;&lt;b&gt;!!! WARNING !!!&lt;/b&gt; : You should check this box, if you don't want have problem.</string>
      </property>
     </widget>
    </item>
@@ -60,6 +67,13 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QLabel" name="m_prefixMessage">
+     <property name="text">
+      <string>&lt;span style=&quot;color: red&quot;&gt;&lt;b&gt;!!! WARNING !!!&lt;/b&gt; : You should define a prefix, in derivation project mode on this version of GCE.</string>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QCheckBox" name="m_copyToChk">

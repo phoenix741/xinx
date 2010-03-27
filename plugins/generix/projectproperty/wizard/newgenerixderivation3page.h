@@ -40,6 +40,10 @@ public:
 
 	virtual void initializePage();
 	virtual bool isComplete() const;
+
+private slots:
+	void on_m_addPrefixChk_stateChanged(int);
+	void on_m_missingDirChk_stateChanged(int);
 };
 
 #endif // NEWGENERIXDERIVATION3PAGE_H

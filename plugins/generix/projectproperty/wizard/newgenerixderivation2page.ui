@@ -14,59 +14,70 @@
    <string>WizardPage</string>
   </property>
   <property name="title">
-   <string>Define the source and destination path</string>
+   <string>Define path that should be read only</string>
   </property>
   <property name="subTitle">
-   <string>In derivation mode you must define the path where the new file are stored. You can define the source path, as the start of the tree to copy.</string>
+   <string>Define the path you want to make read only in your web module. Generally, you should have one path not readonly and all other read only.</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLabel" name="m_derivationLabel">
+    <widget class="QLabel" name="label">
      <property name="text">
-      <string>&amp;Derivation path :</string>
+      <string>In this list you have all directory detected by &lt;b&gt;XINX&lt;/b&gt;. If the list isn't complete, you can add or modify the list, later, in the project property.</string>
      </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="DirectoryEditWidget" name="m_derivationPath" native="true"/>
-   </item>
-   <item>
-    <widget class="QLabel" name="m_sourceLabel">
-     <property name="text">
-      <string>&amp;Source path :</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="DirectoryEditWidget" name="m_sourcePath" native="true"/>
-   </item>
-   <item>
-    <widget class="QTableWidget" name="tableWidget_2">
-     <attribute name="horizontalHeaderStretchLastSection">
+     <property name="wordWrap">
       <bool>true</bool>
-     </attribute>
-     <column>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>In the list, please check directory that you want make read-only (While modify a file in this directory, this will open a dialog to derive the fie. You always can force to save the file in the original directory.</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Fixed</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <widget class="QListWidget" name="m_directoryList">
+     <item>
       <property name="text">
-       <string>Name</string>
+       <string>langue/fra/nav</string>
       </property>
-     </column>
-     <column>
+      <property name="checkState">
+       <enum>Checked</enum>
+      </property>
+     </item>
+     <item>
       <property name="text">
-       <string>Path</string>
+       <string>langue/fra/nav/project</string>
       </property>
-     </column>
+      <property name="checkState">
+       <enum>Unchecked</enum>
+      </property>
+     </item>
     </widget>
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>DirectoryEditWidget</class>
-   <extends>QWidget</extends>
-   <header>directoryedit.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

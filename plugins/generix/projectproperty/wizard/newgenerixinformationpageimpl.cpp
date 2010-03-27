@@ -31,15 +31,13 @@
 NewGenerixInformationPageImpl::NewGenerixInformationPageImpl()
 {
 	setupUi(this);
-
-	foreach(QString resolver, ExternalFileResolver::self()->externalFileResoverNames())
-	{
-		m_resolverList->addItem(resolver);
-	}
+	labelDataStream->setBuddy(m_dataStreamEdit->lineEdit());
 
 	qRegisterMetaType<ConfigurationVersion>("ConfigurationVersion");
 	registerField("generix.webmodule*", m_webModuleLocation->lineEdit());
 	registerField("generix.version", m_configurationVersionLabel, "version");
+	registerField("generix.adresse", m_urlLocationEdit);
+	registerField("generix.dataStream", m_dataStreamEdit->lineEdit());
 	connect(m_webModuleLocation->lineEdit(), SIGNAL(textChanged(QString)), this, SLOT(updateInformations()));
 }
 
@@ -67,32 +65,46 @@ bool NewGenerixInformationPageImpl::pageIsVisible() const
 bool NewGenerixInformationPageImpl::saveSettingsDialog(XinxProject * project)
 {
 	static_cast<GenerixProject*>(project)->setWebModuleLocation(m_webModuleLocation->lineEdit()->text());
+	project->writeProperty("dataStreamLocation", m_dataStreamEdit->lineEdit()->text());
+	project->writeProperty("moduleInternetAdresse", m_urlLocationEdit->text());
 
 	return true;
 }
 
 void NewGenerixInformationPageImpl::initializePage()
 {
+	m_messageLabel->setVisible(false);
 	m_webModuleLocation->lineEdit()->setText(field("project.path").toString());
 }
 
 void NewGenerixInformationPageImpl::updateInformations()
 {
-	GceInterface * interface = GceInterfaceFactory::createGceInterface(m_webModuleLocation->lineEdit()->text());
+	const QString webModuleLocation     = m_webModuleLocation->lineEdit()->text();
+	const QString dataStreamLocation    = QDir(QDir(webModuleLocation).absoluteFilePath("../../../log")).canonicalPath();
+	QString moduleInternetAdresse = QDir(QDir(webModuleLocation).absoluteFilePath("presentation")).canonicalPath();
+	if(!QDir(moduleInternetAdresse).exists())
+	{
+		moduleInternetAdresse = QDir(QDir(webModuleLocation).absoluteFilePath("langue")).canonicalPath();
+	}
+	setField("generix.adresse", moduleInternetAdresse);
+	setField("generix.dataStream", dataStreamLocation);
+
+	GceInterface * interface = GceInterfaceFactory::createGceInterface(webModuleLocation);
 	if (interface)
 	{
 		setField("generix.version", QVariant::fromValue(interface->version()));
 		ConfigurationVersion version = interface->version();
 		ConfigurationVersion version150(6, 1, 50);
 
-		if (version <= version150)
+		const bool presentationDirectoryExist = QDir(QDir(webModuleLocation).absoluteFilePath("presentation")).exists();
+		const bool langueFraNavDirectoryExist = QDir(QDir(webModuleLocation).absoluteFilePath("langue/fra/nav")).exists();
+
+		m_messageLabel->setVisible(false);
+		if (((version >= version150) && !presentationDirectoryExist) || ((version < version150) && !langueFraNavDirectoryExist))
 		{
-			m_resolverList->setCurrentIndex(0);
-		}
-		else
-		{
-			int index = m_resolverList->findText(ExternalFileResolver::self()->externalFileResover("gce150resolver")->name());
-			m_resolverList->setCurrentIndex(index);
+			m_messageLabel->setVisible(true);
+			m_messageLabel->setText(tr("<p style=\"color: red\"><b>!!! WARNING !!!</b> : The expected folder structure doesn't match with the selected version of the web module. "
+									   "Please check in the project property the configuration of dervication's path.</p>"));
 		}
 	}
 	else

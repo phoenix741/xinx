@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>444</width>
     <height>300</height>
    </rect>
   </property>
@@ -17,25 +17,69 @@
    <string>Do you want derivate or edit a standard project</string>
   </property>
   <property name="subTitle">
-   <string>Choose to derivate from a standard project, offer you to copy file in another tree.</string>
+   <string>Choose to derivate from a standard project, offer you to copy file in another tree automatically.</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>Please tell me, if you want to modify all part of the web module, or prevent the modification of orignal files and derive file in special directory.
+In &lt;b&gt;GCE 150&lt;/b&gt; or later, the choice has few impact</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QRadioButton" name="m_editorRadio">
      <property name="text">
-      <string>&amp;No derivation (editor project)</string>
+      <string>&amp;No derivation (editor)</string>
      </property>
     </widget>
    </item>
    <item>
     <widget class="QRadioButton" name="m_derivationRadio">
      <property name="text">
-      <string>&amp;Derivation in a given directory (integration)</string>
+      <string>Derivation in a &amp;project directory (integration)</string>
      </property>
      <property name="checked">
       <bool>true</bool>
      </property>
     </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Fixed</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>&amp;Name of the project directory : </string>
+       </property>
+       <property name="buddy">
+        <cstring>m_projectPathEdit</cstring>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="m_projectPathEdit"/>
+     </item>
+    </layout>
    </item>
    <item>
     <spacer name="verticalSpacer">
@@ -53,5 +97,38 @@
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>m_derivationRadio</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>label</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>58</x>
+     <y>70</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>61</x>
+     <y>97</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_derivationRadio</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>m_projectPathEdit</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>223</x>
+     <y>69</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>229</x>
+     <y>88</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

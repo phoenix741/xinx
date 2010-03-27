@@ -17,13 +17,9 @@
    <item row="0" column="0" colspan="3">
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;This wizard will help you to create a &lt;span style=&quot; font-weight:600;&quot;&gt;XINX&lt;/span&gt; project and define some important variables.&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;In &lt;span style=&quot; font-weight:600;&quot;&gt;XINX&lt;/span&gt;, a project is used to use the &lt;span style=&quot; font-style:italic;&quot;&gt;file research &lt;/span&gt;in a project, use a &lt;span style=&quot; font-style:italic;&quot;&gt;revision control system&lt;/span&gt;, or use for other purpose in the &lt;span style=&quot; font-weight:600;&quot;&gt;XINX&lt;/span&gt; modules.&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;A project can define web services too.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>This wizard will help you to create a &lt;b&gt;XINX&lt;/b&gt; project and define some important variables.&lt;br/&gt;&lt;br/&gt;
+In &lt;b&gt;XINX&lt;/b&gt;, a project is used to use the &lt;i&gt;file research&lt;/i&gt;in a project, use a &lt;i&gt;revision control system&lt;/i&gt;, or use for other purpose in the &lt;b&gt;XINX&lt;/b&gt; modules.&lt;br/&gt;&lt;br/&gt;
+A project can define web services too.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -99,7 +95,6 @@ p, li { white-space: pre-wrap; }
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../application.qrc"/>
   <include location="../application.qrc"/>
  </resources>
  <connections/>

@@ -21,9 +21,7 @@ INCLUDEPATH += ../../framework \
 unix:INCLUDEPATH += /usr/include/libxml2
 RESOURCES = plugindefinition/generix.qrc
 TRANSLATIONS += plugindefinition/translations/dictionary_fr.ts
-HEADERS = config/generixsettings.h \
-    config/selfgenerixsettings.h \
-    plugindefinition/generix.h \
+HEADERS = plugindefinition/generix.h \
     docks/dictionary/dictionarydockwidgetimpl.h \
     docks/dictionary/dictionaryparser.h \
     pluginresolver/gce150fileresolver.h \
@@ -48,9 +46,7 @@ HEADERS = config/generixsettings.h \
     parser/generixxsltparser.h \
     docks/dictionary/dictionarywidget.h \
     configuration/gceconfigurationxmlparser.h
-SOURCES = config/generixsettings.cpp \
-    config/selfgenerixsettings.cpp \
-    plugindefinition/generix.cpp \
+SOURCES = plugindefinition/generix.cpp \
     docks/dictionary/dictionarydockwidgetimpl.cpp \
     docks/dictionary/dictionaryparser.cpp \
     pluginresolver/gce150fileresolver.cpp \

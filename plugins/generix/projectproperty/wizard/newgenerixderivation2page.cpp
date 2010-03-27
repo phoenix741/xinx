@@ -21,7 +21,6 @@
 #include "newgenerixderivation2page.h"
 #include "projectproperty/generixproject.h"
 #include "configuration/configurationfile.h"
-#include "config/selfgenerixsettings.h"
 
 // Qt header
 #include <QDir>
@@ -31,35 +30,58 @@
 NewGenerixDerivation2Page::NewGenerixDerivation2Page()
 {
 	setupUi(this);
-
-	registerField("generix.derivationPath", m_derivationPath);
-	registerField("generix.sourcePath",     m_sourcePath);
-
-	m_derivationLabel->setBuddy(m_derivationPath);
-	m_sourceLabel->setBuddy(m_sourcePath);
 }
 
 void NewGenerixDerivation2Page::initializePage()
 {
 	ConfigurationVersion version = field("generix.version").value<ConfigurationVersion>();
-	ConfigurationVersion version140(6, 1, 40);
+	ConfigurationVersion version150(6, 1, 50);
+	const bool isDerivation = field("generix.derivation").toBool();
+	const QString projectPath = field("generix.projectPath").toString();
 
-	QString projet = SelfGenerixSettings::self()->config().defaultProjectPathName;
+	m_directoryList->clear();
+	if (isDerivation && (version < version150))
+	{
+		QListWidgetItem * navPathItem = new QListWidgetItem(m_directoryList);
+		navPathItem->setText("langue/fra/nav");
+		navPathItem->setCheckState(Qt::Checked);
 
-	QString destPath, srcPath;
-	destPath = srcPath = field("generix.webmodule").toString();
-	if (version <= version140)
-	{
-		srcPath = QDir(srcPath).absoluteFilePath("langue/fra/nav/");
-		destPath = QDir(srcPath).absoluteFilePath(projet);
+		QListWidgetItem * projectPathItem = new QListWidgetItem(m_directoryList);
+		projectPathItem->setText("langue/fra/nav/" + projectPath);
+		projectPathItem->setCheckState(Qt::Unchecked);
 	}
-	else
+	if (version >= version150)
 	{
-		srcPath = QDir(srcPath).absoluteFilePath("presentation/.*");
-		destPath = QDir(destPath).absoluteFilePath("presentation/" + projet);
+		const QString webModuleLocation = field("generix.webmodule").toString();
+		bool projectPathAdded = false;
+		foreach (const QString & p, QDir(QDir(webModuleLocation).absoluteFilePath("presentation")).entryList(QDir::Dirs | QDir::NoDotAndDotDot))
+		{
+			QListWidgetItem * pitem = new QListWidgetItem(m_directoryList);
+			pitem->setText("presentation/" + p);
+			if (isDerivation)
+			{
+				if (projectPath == p)
+				{
+					projectPathAdded = true;
+					pitem->setCheckState(Qt::Unchecked);
+				}
+				else
+				{
+					pitem->setCheckState(Qt::Checked);
+				}
+			}
+			else
+			{
+				pitem->setCheckState(Qt::Unchecked);
+			}
+		}
+		if (isDerivation && !projectPathAdded)
+		{
+			QListWidgetItem * pitem = new QListWidgetItem(m_directoryList);
+			pitem->setText("presentation/" + projectPath);
+			pitem->setCheckState(Qt::Unchecked);
+		}
 	}
-	m_derivationPath->lineEdit()->setText(destPath);
-	m_sourcePath->lineEdit()->setText(srcPath);
 }
 
 QString NewGenerixDerivation2Page::pagePluginId() const
@@ -69,13 +91,33 @@ QString NewGenerixDerivation2Page::pagePluginId() const
 
 bool NewGenerixDerivation2Page::pageIsVisible() const
 {
-	return field("generix.derivation").toBool();
+	ConfigurationVersion version = field("generix.version").value<ConfigurationVersion>();
+	ConfigurationVersion version150(6, 1, 50);
+
+	return field("generix.derivation").toBool() || (version >= version150);
 }
 
 bool NewGenerixDerivation2Page::saveSettingsDialog(XinxProject * project)
 {
-	QDir path;
-	path.mkpath(m_derivationPath->lineEdit()->text());
-	//static_cast<GenerixProject*>( project )->setDerivationPath( m_derivationPath->lineEdit()->text() );
+	const bool isDerivation = field("generix.derivation").toBool();
+
+	QList<GenerixProject::DerivationPath> paths;
+	for (int i = 0; i < m_directoryList->count(); i++)
+	{
+		GenerixProject::DerivationPath dp;
+		dp.name = m_directoryList->item(i)->text().section(QDir::separator(), -1);
+		dp.path = m_directoryList->item(i)->text();
+		dp.derivation = m_directoryList->item(i)->checkState() == Qt::Checked;
+		if (isDerivation)
+		{
+			dp.visible = m_directoryList->item(i)->checkState() == Qt::Unchecked;
+		}
+		else
+		{
+			dp.visible = true;
+		}
+		paths << dp;
+	}
+	static_cast<GenerixProject*>(project)->setDerivationsPath(paths);
 	return true;
 }

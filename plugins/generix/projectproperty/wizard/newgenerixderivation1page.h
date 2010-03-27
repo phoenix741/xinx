@@ -36,6 +36,7 @@ public:
 	virtual QString pagePluginId() const;
 	virtual bool pageIsVisible() const;
 	virtual bool saveSettingsDialog(XinxProject * project);
+	virtual bool isComplete() const;
 };
 
 #endif // NEWGENERIXDERIVATION1PAGE_H

@@ -17,58 +17,149 @@
    <string>Define informations used by the Generix module of XINX</string>
   </property>
   <property name="subTitle">
-   <string>In this page, youcan define the webmodule location (by default the project path). With this webmodule location, the Generix module can determine, the version, and the resolver to use.</string>
+   <string>In this page, you can define the webmodule location (by default the project path). With this webmodule location, the Generix module can determine, the version and the default parameters to use.</string>
   </property>
-  <layout class="QFormLayout" name="formLayout">
-   <item row="0" column="0">
-    <widget class="QLabel" name="label">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="label_2">
      <property name="text">
-      <string>&amp;Webmodule location :</string>
+      <string>In this page, you choose, the location of the Webmodule. This path should be the same of the project path, unless you know what you do.</string>
      </property>
-     <property name="buddy">
-      <cstring>m_webModuleLocation</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1">
-    <widget class="DirectoryEditWidget" name="m_webModuleLocation" native="true">
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="directory" stdset="0">
+     <property name="wordWrap">
       <bool>true</bool>
      </property>
     </widget>
    </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="label_8">
+   <item>
+    <widget class="QLabel" name="label_3">
      <property name="text">
-      <string>Version :</string>
+      <string>The WebModule location is usually the place where you find the gce.properties file or the configuration file. It will be use to know the version of the WebModule, the content of the configuration file, and where find dictionaries. Then &lt;b&gt;XINX&lt;/b&gt; will be able to complete on dictionaries label.</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
-   <item row="1" column="1">
-	<widget class="ConfigurationVersionLabel" name="m_configurationVersionLabel">
-    </widget>
+   <item>
+    <spacer name="verticalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Fixed</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
    </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="label_2">
+   <item>
+    <layout class="QFormLayout" name="formLayout">
+     <property name="fieldGrowthPolicy">
+      <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>&amp;Webmodule location :</string>
+       </property>
+       <property name="buddy">
+        <cstring>m_webModuleLocation</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="DirectoryEditWidget" name="m_webModuleLocation" native="true">
+       <property name="focusPolicy">
+        <enum>Qt::TabFocus</enum>
+       </property>
+       <property name="directory" stdset="0">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_8">
+       <property name="text">
+        <string>Version :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="ConfigurationVersionLabel" name="m_configurationVersionLabel"/>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="labelDataStream">
+       <property name="text">
+        <string>Location of the &amp;data stream :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="DirectoryEditWidget" name="m_dataStreamEdit" native="true"/>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLineEdit" name="m_urlLocationEdit"/>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Location of the &amp;running page :</string>
+       </property>
+       <property name="buddy">
+        <cstring>m_urlLocationEdit</cstring>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <spacer name="verticalSpacer_3">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Fixed</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <widget class="QLabel" name="m_messageLabel">
      <property name="text">
-      <string>&amp;Resolver :</string>
+      <string>&lt;p style=&quot;color: red&quot;&gt;&lt;b&gt;!!! WARNING !!!&lt;/b&gt; : The directory structure doesn't match with the version of the GCE module.&lt;/p&gt;</string>
      </property>
-     <property name="buddy">
-      <cstring>m_resolverList</cstring>
+     <property name="wordWrap">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
-   <item row="2" column="1">
-    <widget class="QComboBox" name="m_resolverList"/>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>170</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>

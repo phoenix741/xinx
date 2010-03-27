@@ -28,7 +28,8 @@ NewGenerixDerivation1Page::NewGenerixDerivation1Page()
 {
 	setupUi(this);
 
-	registerField("generix.derivation", m_derivationRadio);
+	registerField("generix.derivation*", m_derivationRadio);
+	registerField("generix.projectPath*", m_projectPathEdit);
 }
 
 QString NewGenerixDerivation1Page::pagePluginId() const
@@ -41,9 +42,13 @@ bool NewGenerixDerivation1Page::pageIsVisible() const
 	return true;
 }
 
+bool NewGenerixDerivation1Page::isComplete() const
+{
+	if (m_derivationRadio->isChecked() && m_projectPathEdit->text().isEmpty()) return false;
+	return true;
+}
+
 bool NewGenerixDerivation1Page::saveSettingsDialog(XinxProject * project)
 {
-//  static_cast<GenerixProject*>( project )->setDerivationOption( m_derivationRadio->isChecked() );
-
 	return true;
 }
