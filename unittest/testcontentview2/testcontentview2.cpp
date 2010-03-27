@@ -69,15 +69,25 @@ void TestContentView2::initTestCase()
 	qApp->setOrganizationDomain("Shadoware.Org");
 	qApp->setApplicationName("XINX Testlib");
 
-	QString configDirectory = QString(".config/%1/%2").arg(qApp->organizationDomain()).arg(qApp->applicationName());
-	QDir::home().mkpath(configDirectory);
+	const QString configDirectory    = QString(".config/%1/%2").arg(qApp->organizationDomain()).arg(qApp->applicationName());
+	const QString homeDirectory      = QDir::home().absoluteFilePath(configDirectory);
+	const QString datasDirectory     = QDir(homeDirectory).absoluteFilePath("datas");
+	const QString pluginsDirectory   = QDir(homeDirectory).absoluteFilePath("plugins");
 
-	QDir    path            = QDir(QDir::home().absoluteFilePath(configDirectory));
-	QFile::remove(path.absoluteFilePath("session.db"));
+	QDir::home().mkpath(datasDirectory);
+	QDir::home().mkpath(pluginsDirectory);
+
+	// .. for datas ...
+	QDir::addSearchPath("datas", datasDirectory);
+	QDir::addSearchPath("datas", QDir(QApplication::applicationDirPath()).absoluteFilePath("../../datas"));
+
+	// ... for plugins ...
+	QDir::addSearchPath("plugins", pluginsDirectory);
+	QDir::addSearchPath("plugins", QDir(QApplication::applicationDirPath()).absoluteFilePath("../../plugins"));
+
+	QFile::remove("datas:session.db");
 
 	// Init plugins
-	QDir::addSearchPath("datas", QDir(QApplication::applicationDirPath()).absoluteFilePath("../../datas"));
-	QDir::addSearchPath("plugins", QDir(QApplication::applicationDirPath()).absoluteFilePath("../../plugins"));
 	XinxPluginsLoader::self()->loadPlugins();
 
 	// Init Project
