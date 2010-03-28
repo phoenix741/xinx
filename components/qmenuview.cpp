@@ -32,13 +32,14 @@ Q_DECLARE_METATYPE(QModelIndex);
  * \ingroup Components
  * \class QMenuView
  * \brief The QMenuView provide a menu based view on a QAbstractItemModel class.
+ *
  * This class is used to transform a hierarchical model based on the class
  * QAbstractItemModel into a menu. It can be used to create an action, history,
  * or snipets menu.
  */
 
 /*!
- * Create the new menu view based on a QMenu object.
+ * \brief Create the new menu view based on a QMenu object.
  * \param parent The parent object of the menu.
  */
 QMenuView::QMenuView(QWidget * parent) : QMenu(parent)
@@ -48,9 +49,7 @@ QMenuView::QMenuView(QWidget * parent) : QMenu(parent)
 	connect(this, SIGNAL(aboutToShow()), this, SLOT(aboutToShow()));
 }
 
-/*!
- * Destroy the menu.
- */
+//! Destroy the menu.
 QMenuView::~QMenuView()
 {
 	setModel(0);
@@ -58,8 +57,9 @@ QMenuView::~QMenuView()
 
 /*!
  * \fn void QMenuView::hovered(const QString &text) const
- * This signal is emitted when a menu action is highlighted; \e text is the
- * Qt::StatusTipRole of the index that caused the signal to be emitted.
+ * \brief The signal when a menu action is highlighted.
+ *
+ * \e text is the Qt::StatusTipRole of the index that caused the signal to be emitted.
  *
  * Often this is used to update status information.
  *
@@ -68,29 +68,26 @@ QMenuView::~QMenuView()
 
 /*!
  * \fn void QMenuView::triggered(const QModelIndex & index) const
- * This signal is emitted when an action in this menu is triggered.
- * index is the index's action that caused the signal to be emitted.
+ * \brief This signal is emitted when an action in this menu is triggered.
+ *
+ * \e index is the index's action that caused the signal to be emitted.
  *
  * \sa hovered()
  */
 
-/*!
- * Add any actions before the tree, return true if any actions are added.
- */
+//! Add any actions before the tree, return true if any actions are added.
 bool QMenuView::prePopulated()
 {
 	return false;
 }
 
-/*!
- * Add any actions after the tree
- */
+//! Add any actions after the tree
 void QMenuView::postPopulated()
 {
 }
 
 /*!
- * Set the new model to \e model.
+ * \brief Set the new model to \e model.
  * \param model The new model to use for the creation of menus.
  */
 void QMenuView::setModel(QAbstractItemModel * model)
@@ -99,7 +96,7 @@ void QMenuView::setModel(QAbstractItemModel * model)
 }
 
 /*!
- * Return the current model of the menu.
+ * \brief Return the current model of the menu.
  */
 QAbstractItemModel * QMenuView::model() const
 {
@@ -107,8 +104,9 @@ QAbstractItemModel * QMenuView::model() const
 }
 
 /*!
- * Change the root index to \e index. This can be used to show only
- * a part of the QAbstractItemModel.
+ * \brief Change the root index to \e index.
+ *
+ * This can be used to show only a part of the QAbstractItemModel.
  * \param index The index to use to show the menu. if QModelIndex(), all the model is show.
  */
 void QMenuView::setRootIndex(const QModelIndex & index)
@@ -117,7 +115,7 @@ void QMenuView::setRootIndex(const QModelIndex & index)
 }
 
 /*!
- * Return the current root index.
+ * \brief Return the current root index.
  *
  * Default root index is QModelIndex()
  */

@@ -51,6 +51,7 @@
 
 class BorderLayout : public QLayout
 {
+	Q_OBJECT
 public:
 	enum Position {West, North, South, East, Center	};
 

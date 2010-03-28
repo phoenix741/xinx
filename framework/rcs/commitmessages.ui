@@ -61,16 +61,14 @@
       <item row="0" column="0">
        <widget class="QListWidget" name="m_fileListWidget">
         <property name="whatsThis">
-         <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;This is the list of the file to commit. Only known files are listed here (.xsl, .html, .css, .js, ...).&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;In the list &lt;span style=&quot; font-weight:600;&quot;&gt;XINX&lt;/span&gt; presents three actions : &lt;/p&gt;
-&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Add and Commit&lt;/span&gt; : If the file doesn't exist in the repository but may be commited.&lt;/li&gt;
-&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Remove and Commit&lt;/span&gt; : If the file is deleted from the disk but not from the repository&lt;/li&gt;
-&lt;li style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Commit&lt;/span&gt; : If the file exists and is modified (checked by default).&lt;/li&gt;&lt;/ul&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Only checked files are commited.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>This is the list of the file to commit. Only known files are listed here (&lt;i&gt;.xsl, .html, .css, .js, ...&lt;/i&gt;).&lt;br/&gt;
+In the list &lt;b&gt;XINX&lt;/b&gt; presents three actions : 
+&lt;ul&gt;
+&lt;li&gt;&lt;i&gt;Add and Commit&lt;/i&gt; : If the file doesn't exist in the repository but may be commited.&lt;/li&gt;
+&lt;li&gt;&lt;i&gt;Remove and Commit&lt;/i&gt; : If the file is deleted from the disk but not from the repository&lt;/li&gt;
+&lt;li&gt;&lt;i&gt;Commit&lt;/i&gt; : If the file exists and is modified (checked by default).&lt;/li&gt;
+&lt;/ul&gt;
+Only checked files are commited.</string>
         </property>
        </widget>
       </item>

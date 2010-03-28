@@ -26,13 +26,14 @@
  * \ingroup Components
  * \class XinxListWidgetImpl
  * \brief The class XinxListWidgetImpl provide a widget to create, and sort a list.
+ *
  * This widget is a list of value (exemple: list of path, list of urls, list of prefix) with
  * a button to add an value, a button to delete a value, and a button to make a value the
- * default.
+ * default (this button can be cached the property defaultVisible()).
  */
 
 /*!
- * Construct the widget with a default, add and remove button.
+ * \brief Construct the widget with a default, add and remove button.
  * \param parent The parent widget
  * \param f Flags for the widget
  */
@@ -55,22 +56,21 @@ XinxListWidgetImpl::~XinxListWidgetImpl()
 }
 
 /*!
- * \fn void XinxListWidgetImpl::defaultValueChanged(QString value);
- * This signal is emited when the user change the value \e value.
+ * \fn void XinxListWidgetImpl::defaultValueChanged(QString value)
+ * \brief This signal is emited when the user change the value \e value.
+ * \param value Contains the default value, choose by the user.
  */
 
 /*!
- * \fn void XinxListWidgetImpl::currentRowChanged(int value);
- * The signal is emited when the user change the current row in
- * the list.
+ * \fn void XinxListWidgetImpl::currentRowChanged(int value)
+ * \brief The signal is emited when the user change the current row in the list.
  * \param value the index of the new row
  * \sa itemChanged()
  */
 
 /*!
- * \fn void XinxListWidgetImpl::itemChanged(const QString & text);
- * The signal is emited when the user change the current row in
- * the list.
+ * \fn void XinxListWidgetImpl::itemChanged(const QString & text)
+ * \brief The signal is emited when the user change the current row in the list.
  * \param text The text of the new selected item.
  * \sa currentRowChanged()
  */
@@ -114,7 +114,8 @@ QString XinxListWidgetImpl::defaultValue() const
 }
 
 /*!
- * Change the default value.
+ * \brief Change the default value.
+ *
  * If \e value isn't in the list, the value is added.
  */
 void XinxListWidgetImpl::setDefaultValue(const QString & value)
@@ -129,8 +130,9 @@ bool XinxListWidgetImpl::defaultVisible() const
 }
 
 /*!
- * Set the visibility of the default button. If \e visible is set to false,
- * the default button is hidden and the user can't choose a default value.
+ * \brief Set the visibility of the default button.
+ *
+ * If \e visible is set to false, the default button is hidden and the user can't choose a default value.
  */
 void XinxListWidgetImpl::setDefaultVisible(bool visible)
 {
@@ -149,8 +151,9 @@ QStringList XinxListWidgetImpl::values() const
 }
 
 /*!
- * Change the list of value used by the widget. If the defaultValue isn't in
- * the list, the default value is added.
+ * \brief Change the list of value used by the widget.
+ *
+ * If the defaultValue isn't in the list, the default value is added.
  */
 void XinxListWidgetImpl::setValues(const QStringList & values)
 {

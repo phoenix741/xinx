@@ -26,49 +26,53 @@
  * \ingroup Components
  * \class PluginElement
  * \brief The PluginElement class provides an item for use with the PluginSelector view class.
+ *
  * The PluginElement is used by the PluginSelector to show information in the list.
  */
 
-/*! Initialise the plugin element */
+//! Initialise the plugin element
 PluginElement::PluginElement() : m_isActivated(true)
 {
 
 }
 
-/*! Destroy the plugin element */
+//! Destroy the plugin element
 PluginElement::~PluginElement() {
 }
 
 
 /*!
  * \fn virtual bool PluginElement::isModifiable() const = 0
- * If the plugin element is modifiable a checkbox is showed at the right
+ * \brief If the plugin element is modifiable a checkbox is showed at the right
  */
 
 /*!
  * \fn virtual bool PluginElement::isConfigurable() const = 0;
- * If the plugin is configurable a button "Configured ..." is showed.
+ * \brief If the plugin is configurable a button "Configured ..." is showed.
  */
 
 /*!
  * \fn virtual QString PluginElement::name() const = 0;
- * Return the name of the plugin
+ * \brief Return the name of the plugin
  */
 
 /*!
  * \fn virtual QString PluginElement::description() const = 0;
- * Return the description of the plugin
+ * \brief Return the description of the plugin
  */
 
-/*! If the plugin is activated the checkbox is checked */
+/*!
+ * \brief If the plugin is activated the checkbox is checked.
+ * \sa setActivated(), setDesactivated()
+ */
 bool PluginElement::isActivated() const
 {
 	return m_isActivated || (! isModifiable());
 }
 
 /*!
- * Activate the plugin if \e activated is true
- * \sa setDesactivated()
+ * \brief Activate the plugin if \e activated is true
+ * \sa setDesactivated(), isActivated()
  */
 void PluginElement::setActivated(bool activated)
 {
@@ -79,15 +83,15 @@ void PluginElement::setActivated(bool activated)
 }
 
 /*!
- * Desactivate the plugin if \e desactivated is true.
- * \sa setActivated()
+ * \brief Desactivate the plugin if \e desactivated is true.
+ * \sa setActivated(), isActivated()
  */
 void PluginElement::setDesactivated(bool desactivated)
 {
 	setActivated(! desactivated);
 }
 
-/*! Return the pixmap of the plugin */
+//! Return the pixmap of the plugin
 QPixmap PluginElement::pixmap() const
 {
 	return QPixmap(":/images/unknown.png");

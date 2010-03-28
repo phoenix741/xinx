@@ -36,19 +36,18 @@
 /* XinxLineEditButton */
 
 /*!
+ * \ingroup Components
  * \class XinxLineEditButton
- * Button use in the XinxLineEdit.
+ * \brief Button use in the XinxLineEdit.
  */
 
-/*!
- * Create the button with the parent \e parent.
- */
+//! Create the button with the parent \e parent.
 XinxLineEditButton::XinxLineEditButton(QWidget *parent) : QWidget(parent)
 {
 }
 
 /*!
- * Return the sizeHint of the button. This is the same that the size
+ * \brief Return the sizeHint of the button. This is the same that the size
  * of the pixmap.
  */
 QSize XinxLineEditButton::sizeHint() const
@@ -57,7 +56,8 @@ QSize XinxLineEditButton::sizeHint() const
 }
 
 /*!
- * Set the pixmap of the button.
+ * \brief Set the pixmap of the button.
+ * \sa pixmap()
  */
 void XinxLineEditButton::setPixmap(const QPixmap & p)
 {
@@ -65,7 +65,8 @@ void XinxLineEditButton::setPixmap(const QPixmap & p)
 }
 
 /*!
- * Return the pixmap of the button.
+ * \brief Return the pixmap of the button.
+ * \sa setPixmap()
  */
 QPixmap XinxLineEditButton::pixmap()
 {
@@ -73,7 +74,7 @@ QPixmap XinxLineEditButton::pixmap()
 }
 
 /*!
- * Paint the pixmap on the button.
+ * \brief Paint the pixmap on the button.
  */
 void XinxLineEditButton::paintEvent(QPaintEvent *event)
 {
@@ -89,26 +90,26 @@ void XinxLineEditButton::paintEvent(QPaintEvent *event)
 /*!
  * \ingroup Components
  * \class XinxLineEdit
- * \brief The class XinxLineEdit provide a lineedit with a clear button.
- * QLineEdit with an include button to clear the line edit.
- * This class is inspired from the class of the KDE project.
+ * \brief The class XinxLineEdit provide a line edit with a clear button.
+ *
+ * QLineEdit with an include button to clear the line edit.This class is inspired
+ * from the class of the KDE project.
  */
 
-/**
- * Constructs a XinxLineEdit object with a default text, a parent,
- * and a name.
+/*!
+ * \brief Constructs a XinxLineEdit object with a default text, a parent, and a name.
  *
- * @param string Text to be shown in the edit widget.
- * @param parent The parent widget of the line edit.
+ * \param string Text to be shown in the edit widget.
+ * \param parent The parent widget of the line edit.
  */
 XinxLineEdit::XinxLineEdit(const QString &string, QWidget *parent) : QLineEdit(string, parent)
 {
 	init();
 }
 
-/**
- * Constructs a line edit
- * @param parent The parent widget of the line edit.
+/*!
+ * \brief Constructs a line edit
+ * \param parent The parent widget of the line edit.
  */
 XinxLineEdit::XinxLineEdit(QWidget *parent) : QLineEdit(parent)
 {
@@ -116,9 +117,7 @@ XinxLineEdit::XinxLineEdit(QWidget *parent) : QLineEdit(parent)
 }
 
 
-/**
- *  Destroy the object
- */
+//! Destroy the object
 XinxLineEdit::~XinxLineEdit()
 {
 
@@ -215,22 +214,20 @@ void XinxLineEdit::updateClearButton()
 	}
 }
 
-/**
-* Re-implemented for internal reasons.  API not affected.
-*
-* \sa QLineEdit::resizeEvent().
-*/
+/*!
+ * Re-implemented for internal reasons.  API not affected.
+ * \sa QLineEdit::resizeEvent().
+ */
 void XinxLineEdit::resizeEvent(QResizeEvent * ev)
 {
 	updateClearButton();
 	QLineEdit::resizeEvent(ev);
 }
 
-/**
-* Re-implemented for internal reasons.  API not affected.
-*
-* \sa QLineEdit::mousePressEvent().
-*/
+/*!
+ * Re-implemented for internal reasons.  API not affected.
+ * \sa QLineEdit::mousePressEvent().
+ */
 void XinxLineEdit::mousePressEvent(QMouseEvent* e)
 {
 	if ((e->button() == Qt::LeftButton || e->button() == Qt::MidButton) && clearButton)
@@ -241,11 +238,10 @@ void XinxLineEdit::mousePressEvent(QMouseEvent* e)
 	QLineEdit::mousePressEvent(e);
 }
 
-/**
-* Re-implemented for internal reasons.  API not affected.
-*
-* \sa QLineEdit::mouseReleaseEvent().
-*/
+/*!
+ * Re-implemented for internal reasons.  API not affected.
+ * \sa QLineEdit::mouseReleaseEvent().
+ */
 void XinxLineEdit::mouseReleaseEvent(QMouseEvent* e)
 {
 	if (clickInClear)

@@ -434,6 +434,7 @@ QSize PluginDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelI
  * \ingroup Components
  * \class PluginSelector
  * \brief The PluginSelector provide a list of configurable plugin element.
+ *
  * This class show to the user the list of plugins with foreach
  * plugins a configure button and a about button.
  *
@@ -451,7 +452,7 @@ QSize PluginDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelI
  */
 
 /*!
- * Create the plugin selector widget.
+ * \brief Create the plugin selector widget.
  * \param parent The parent widget.
  */
 PluginSelector::PluginSelector(QWidget *parent) : QListView(parent)

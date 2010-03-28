@@ -111,6 +111,7 @@ public:
  * \ingroup Components
  * \class XinxColorCombo
  * \brief The XinxColorCombo provide a QComboBox used to select color.
+ *
  * Combo box to choose a color. The combo box show you the color
  * and an associate text to the color. The showed color, is standard Qt color.
  * The user can also change, and use a custom color. In this case a dialog
@@ -121,7 +122,7 @@ public:
 
 
 /*!
- * Create a color combo box
+ * \brief Create a color combo box
  * \param parent The parent widget of the color combo box.
  */
 XinxColorCombo::XinxColorCombo(QWidget *parent)
@@ -142,9 +143,7 @@ XinxColorCombo::XinxColorCombo(QWidget *parent)
 	connect(this, SIGNAL(highlighted(int)), SLOT(slotHighlighted(int)));
 }
 
-/*!
-* Destroy the ColorComboBox
-*/
+//! Destroy the ColorComboBox
 XinxColorCombo::~XinxColorCombo()
 {
 	delete d;
@@ -161,9 +160,10 @@ XinxColorCombo::~XinxColorCombo()
  */
 
 /*!
-* Change the value of the ComboBox to the color define in bracket.
-* \param col The new color to use.
-*/
+ * \brief Change the value of the ComboBox to the color define in bracket.
+ * \param col The new color to use.
+ * \sa color()
+ */
 void XinxColorCombo::setColor(const QColor &col)
 {
 	internalcolor = col;
@@ -172,23 +172,26 @@ void XinxColorCombo::setColor(const QColor &col)
 }
 
 /*!
-* Return the color selected in the ComboBox.
-* \return The color selected
-*/
+ * \brief Return the color selected in the ComboBox.
+ * \return The color selected
+ * \sa setColor()
+ */
 QColor XinxColorCombo::color() const
 {
 	return internalcolor;
 }
 
+/*!
+ * Re-implemented for internal reasons.  API not affected.
+ * \sa QComboBox::resizeEvent().
+ */
 void XinxColorCombo::resizeEvent(QResizeEvent *re)
 {
 	QComboBox::resizeEvent(re);
 	addColors();
 }
 
-/*!
-* Show an empty color combo box.
-*/
+//! Show an empty color combo box.
 void XinxColorCombo::showEmptyList()
 {
 	d->showEmptyList=true;
@@ -297,5 +300,4 @@ void XinxColorCombo::addColors()
 			setCurrentIndex(i + 1);
 	}
 }
-
 

@@ -60,18 +60,20 @@
  * add() and addWidget() as a second parameter \e position used to define
  * where you place your widget.
  *
+ * You can add multiple widget at the same position.
+ *
  * \code
- *    +---------------------------+
- *    |           NORTH           |
- *    +------+-------------+------+
- *    |      |             |      |
- *    |      |             |      |
- *    | WEST |   CENTER    | EAST |
- *    |      |             |      |
- *    |      |             |      |
- *    +------+-------------+------+
- *    |           SOUTH           |
- *    +---------------------------+
+ * +---------------------------+
+ * |           NORTH           |
+ * +------+-------------+------+
+ * |      |             |      |
+ * |      |             |      |
+ * | WEST |   CENTER    | EAST |
+ * |      |             |      |
+ * |      |             |      |
+ * +------+-------------+------+
+ * |           SOUTH           |
+ * +---------------------------+
  * \endcode
  *
  * For more detail on this class, you can read the documentation of trolltech/nokia.
@@ -79,31 +81,31 @@
 
 /*!
  * \enum BorderLayout::Position
- * Position of the widget
+ * Position of the widget in the layout
  */
 /*!
  * \var BorderLayout::Position BorderLayout::West
- * The widget is placed at left
+ * The widget is placed at the left
  */
 /*!
  * \var BorderLayout::Position BorderLayout::North
- * The widget is placed in top
+ * The widget is placed at the top
  */
 /*!
  * \var BorderLayout::Position BorderLayout::South
- * The widget is placed in bottom
+ * The widget is placed at the bottom
  */
 /*!
  * \var BorderLayout::Position BorderLayout::East
- * The widget is placed in right
+ * The widget is placed at the right
  */
 /*!
  * \var BorderLayout::Position BorderLayout::Center
- * The widget is placed in center
+ * The widget is placed in the center
  */
 
 /*!
- * Create the \e BorderLayout
+ * \brief Create the \e BorderLayout
  * \param parent The parent widget
  * \param margin The marge arround the layout
  * \param spacing The space between widgets
@@ -116,8 +118,8 @@ BorderLayout::BorderLayout(QWidget *parent, int margin, int spacing) :
 }
 
 /*!
- * Create the \e BorderLayout
- * \param spacing The space between the widget
+ * \brief Create the \e BorderLayout
+ * \param spacing The space between widgets
  */
 BorderLayout::BorderLayout(int spacing)
 {
@@ -132,31 +134,57 @@ BorderLayout::~BorderLayout()
 		delete l;
 }
 
+/*!
+ * \brief Add item \e item to the position BorderLayout::West
+ * \sa addWidget(), add()
+ */
 void BorderLayout::addItem(QLayoutItem *item)
 {
 	add(item, West);
 }
 
+/*!
+ * \brief Add the widget \e widget at the position \e position.
+ * \sa add(), addItem()
+ */
 void BorderLayout::addWidget(QWidget *widget, Position position)
 {
 	add(new QWidgetItem(widget), position);
 }
 
+/*!
+ * \brief Add the item \e item at the position \e position in this layout.
+ * \sa addWidget(), addItem()
+ */
+void BorderLayout::add(QLayoutItem *item, Position position)
+{
+	list.append(new ItemWrapper(item, position));
+}
+
+/*!
+ * \brief Returns whether this layout item can make use of more space than sizeHint().
+ *
+ * Returns Qt::Vertical | Qt::Horizontal to tell that the layout can grow in both
+ * dimensions.
+ */
 Qt::Orientations BorderLayout::expandingDirections() const
 {
 	return Qt::Horizontal | Qt::Vertical;
 }
 
+//! Returns false to tell that this layout's preferred width depends on its height
 bool BorderLayout::hasHeightForWidth() const
 {
 	return false;
 }
 
+//! Number of layout added in the BorderLayout
 int BorderLayout::count() const
 {
 	return list.size();
 }
 
+//! Return the \e index item of the list.
 QLayoutItem *BorderLayout::itemAt(int index) const
 {
 	ItemWrapper *wrapper = list.value(index);
@@ -166,11 +194,18 @@ QLayoutItem *BorderLayout::itemAt(int index) const
 		return 0;
 }
 
+/*!
+ * \brief Return the minimum size of the widget.
+ *
+ * This method use the minimum size of the different elements added to the layout
+ * to known the minimum size.
+ */
 QSize BorderLayout::minimumSize() const
 {
 	return calculateSize(MinimumSize);
 }
 
+//! Set this item's geometry to r.
 void BorderLayout::setGeometry(const QRect &rect)
 {
 	ItemWrapper *center = 0;
@@ -193,8 +228,7 @@ void BorderLayout::setGeometry(const QRect &rect)
 
 		if (position == North)
 		{
-			item->setGeometry(QRect(rect.x(), northHeight, rect.width(),
-			                        item->sizeHint().height()));
+			item->setGeometry(QRect(rect.x(), northHeight, rect.width(), item->sizeHint().height()));
 
 			northHeight += item->geometry().height() + spacing();
 		}
@@ -204,8 +238,7 @@ void BorderLayout::setGeometry(const QRect &rect)
 
 			southHeight += item->geometry().height() + spacing();
 
-			item->setGeometry(QRect(rect.x(), rect.y() + rect.height()
-			                        - southHeight + spacing(), item->geometry().width(), item->geometry().height()));
+			item->setGeometry(QRect(rect.x(), rect.y() + rect.height() - southHeight + spacing(), item->geometry().width(), item->geometry().height()));
 		}
 		else if (position == Center)
 		{
@@ -225,8 +258,7 @@ void BorderLayout::setGeometry(const QRect &rect)
 
 		if (position == West)
 		{
-			item->setGeometry(QRect(rect.x() + westWidth, northHeight,
-			                        item->sizeHint().width(), centerHeight));
+			item->setGeometry(QRect(rect.x() + westWidth, northHeight, item->sizeHint().width(), centerHeight));
 
 			westWidth += item->geometry().width() + spacing();
 		}
@@ -236,21 +268,26 @@ void BorderLayout::setGeometry(const QRect &rect)
 
 			eastWidth += item->geometry().width() + spacing();
 
-			item->setGeometry(QRect(rect.x() + rect.width() - eastWidth
-			                        + spacing(), northHeight, item->geometry().width(), item->geometry().height()));
+			item->setGeometry(QRect(rect.x() + rect.width() - eastWidth + spacing(), northHeight, item->geometry().width(), item->geometry().height()));
 		}
 	}
 
 	if (center)
-		center->item->setGeometry(QRect(westWidth, northHeight, rect.width()
-		                                - eastWidth - westWidth, centerHeight));
+		center->item->setGeometry(QRect(westWidth, northHeight, rect.width() - eastWidth - westWidth, centerHeight));
 }
 
+/*!
+ * \brief Return the hint size of the widget.
+ *
+ * This method use the hint size of the different elements added to the layout
+ * to known the hint size.
+ */
 QSize BorderLayout::sizeHint() const
 {
 	return calculateSize(SizeHint);
 }
 
+//! Return the item at the index \e index in the list and remove it.
 QLayoutItem *BorderLayout::takeAt(int index)
 {
 	if (index >= 0 && index < list.size())
@@ -259,11 +296,6 @@ QLayoutItem *BorderLayout::takeAt(int index)
 		return layoutStruct->item;
 	}
 	return 0;
-}
-
-void BorderLayout::add(QLayoutItem *item, Position position)
-{
-	list.append(new ItemWrapper(item, position));
 }
 
 QSize BorderLayout::calculateSize(SizeType sizeType) const

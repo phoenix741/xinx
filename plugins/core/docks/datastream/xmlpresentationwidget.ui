@@ -22,12 +22,11 @@
    </property>
    <item row="0" column="0">
     <widget class="QToolButton" name="m_refreshToolButton">
+     <property name="toolTip">
+      <string>Refresh</string>
+     </property>
      <property name="whatsThis">
-      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Refresh the list of files present in the &lt;span style=&quot; font-style:italic;&quot;&gt;log&lt;/span&gt; directory.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>Refresh the list of files present in the &lt;i&gt;log&lt;/i&gt; directory.</string>
      </property>
      <property name="text">
       <string>...</string>
@@ -40,6 +39,12 @@ p, li { white-space: pre-wrap; }
    </item>
    <item row="0" column="4">
     <widget class="QToolButton" name="m_evaluateToolButton">
+     <property name="toolTip">
+      <string>Run X-Query</string>
+     </property>
+     <property name="whatsThis">
+      <string>Click on this button to open &lt;i&gt;X-Query&lt;/i&gt; dialog and query the XML document.</string>
+     </property>
      <property name="text">
       <string>Evaluate</string>
      </property>
@@ -62,23 +67,15 @@ p, li { white-space: pre-wrap; }
    <item row="2" column="0" colspan="3">
     <widget class="XinxLineEdit" name="m_filtreLineEdit">
      <property name="whatsThis">
-      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Filter to use in the view. &lt;span style=&quot; font-weight:600;&quot;&gt;XINX&lt;/span&gt; searches the node where the name matches the filter (literal or regular expression).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>Filter to use in the view. &lt;b&gt;XINX&lt;/b&gt; searches the node where the name matches the filter (literal or regular expression).</string>
      </property>
     </widget>
    </item>
    <item row="2" column="3" colspan="2">
     <widget class="QComboBox" name="m_filterComboBox">
      <property name="whatsThis">
-      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If &lt;span style=&quot; font-style:italic;&quot;&gt;Sub-element&lt;/span&gt; is selected when an element is found, all sub-elements are showed. &lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If &lt;span style=&quot; font-style:italic;&quot;&gt;None&lt;/span&gt; is selected only matched elements is showed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>If &lt;i&gt;Sub-element&lt;/i&gt; is selected when an element is found, all sub-elements are showed. &lt;br/&gt;
+If &lt;i&gt;None&lt;/i&gt; is selected only matched elements is showed.</string>
      </property>
      <item>
       <property name="text">
@@ -105,12 +102,9 @@ p, li { white-space: pre-wrap; }
    <item row="0" column="1" colspan="3">
     <widget class="QComboBox" name="m_presentationComboBox">
      <property name="whatsThis">
-      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;List of file in the &lt;span style=&quot; font-style:italic;&quot;&gt;log&lt;/span&gt; directory. If you select a file, the view is updated with the content of the file. &lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;You can open a file of the list, or a file in another directory.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>List of file in the &lt;i&gt;log&lt;/i&gt; directory. If you select a file, the view is updated with the content of the file. &lt;br/&gt;
+
+You can open a file of the list, or a file in another directory.</string>
      </property>
     </widget>
    </item>
@@ -120,7 +114,7 @@ p, li { white-space: pre-wrap; }
       <number>0</number>
      </property>
      <property name="value">
-      <number>326</number>
+      <number>11072</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>

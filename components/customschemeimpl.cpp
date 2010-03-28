@@ -36,15 +36,17 @@
  * \ingroup Components
  * \class CustomSchemeImpl
  * \brief Class to help the user to customize the QCodeEdit editor.
+ *
  * Create a widget that permit to personalize the QCodeEdit editor. This use
  * QLanguageFactory and QFormatScheme to show the list of available format to
  * change.
- * The method setHiddenFormat is used to hide some format of the list to forbide
+ *
+ * The method setHiddenFormat() is used to hide some format of the list to forbide
  * the user to change it.
  */
 
 /*!
- * Construct the widget.
+ * \brief Construct the widget.
  * \param parent The parent widget
  * \param f Flags for the widget
  */
@@ -64,7 +66,10 @@ CustomSchemeImpl::~CustomSchemeImpl()
 {
 }
 
-//! Set a new format scheme in the widget and configure it.
+/*!
+ * \brief Set a new format scheme in the widget and configure it.
+ * \sa formatScheme()
+ */
 void CustomSchemeImpl::setFormatScheme(QFormatScheme * formats)
 {
 	if (formats != m_formats)
@@ -75,13 +80,19 @@ void CustomSchemeImpl::setFormatScheme(QFormatScheme * formats)
 	}
 }
 
-//! Return the current format scheme.
+/*!
+ * \brief Return the current format scheme.
+ * \sa setFormatScheme()
+ */
 QFormatScheme * CustomSchemeImpl::formatScheme() const
 {
 	return m_formats;
 }
 
-//! Set the exemple in the custom widget \e value
+/*!
+ * \brief Set the exemple in the custom widget to \e value.
+ * \sa example()
+ */
 void CustomSchemeImpl::setExample(const QString & value)
 {
 	if (m_example != value)
@@ -92,13 +103,20 @@ void CustomSchemeImpl::setExample(const QString & value)
 	}
 }
 
-//! Return the exemple set
+/*!
+ * \property CustomSchemeImpl::example
+ * \brief Return the exemple defined in the object.
+ * \sa setExample(), example
+ */
 const QString & CustomSchemeImpl::example() const
 {
 	return m_example;
 }
 
-//! Set the language factory used in the custom editor \e value
+/*!
+ * \brief Set the language factory used in the custom editor to \e value
+ * \sa languageFactory()
+ */
 void CustomSchemeImpl::setLanguageFactory(QLanguageFactory * value)
 {
 	if (value != m_languageFactory)
@@ -107,13 +125,19 @@ void CustomSchemeImpl::setLanguageFactory(QLanguageFactory * value)
 	}
 }
 
-//! Return the language factory set.
+/*!
+ * \brief Return the language factory defined in the object.
+ * \sa setLanguageFactory()
+ */
 QLanguageFactory * CustomSchemeImpl::languageFactory() const
 {
 	return m_languageFactory;
 }
 
-//! Set the language definition to \e value
+/*!
+ * \brief Set the language definition to \e value.
+ * \sa languageDefinition()
+ */
 void CustomSchemeImpl::setLanguageDefinition(const QString & value)
 {
 	if (m_languageFactory)
@@ -122,7 +146,11 @@ void CustomSchemeImpl::setLanguageDefinition(const QString & value)
 	}
 }
 
-//! Return the language definition set.
+/*!
+ * \property CustomSchemeImpl::languageDefinition
+ * \brief Return the language definition defined in the object.
+ * \sa setLanguageDefinition()
+ */
 QString CustomSchemeImpl::languageDefinition() const
 {
 	if (m_exampleEditor->editor()->languageDefinition())
@@ -131,7 +159,10 @@ QString CustomSchemeImpl::languageDefinition() const
 		return QString();
 }
 
-//! Set the list of format that the widget musn't be show.
+/*!
+ * \brief Set the list of format that the widget to not show.
+ * \sa hiddenFormat()
+ */
 void CustomSchemeImpl::setHiddenFormat(const QStringList & value)
 {
 	if (m_hiddenFormat != value)
@@ -141,7 +172,11 @@ void CustomSchemeImpl::setHiddenFormat(const QStringList & value)
 	}
 }
 
-//! Return the list of format to hide.
+/*!
+ * \property CustomSchemeImpl::hiddenFormat
+ * \brief Return the list of format to hide.
+ * \sa setHiddenFormat()
+ */
 const QStringList & CustomSchemeImpl::hiddenFormat() const
 {
 	return m_hiddenFormat;
