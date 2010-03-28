@@ -33,7 +33,9 @@
 #include <QHBoxLayout>
 
 /*!
+ * \ingroup Components
  * \class CustomSchemeImpl
+ * \brief Class to help the user to customize the QCodeEdit editor.
  * Create a widget that permit to personalize the QCodeEdit editor. This use
  * QLanguageFactory and QFormatScheme to show the list of available format to
  * change.

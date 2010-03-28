@@ -108,7 +108,9 @@ public:
 /* XinxColorCombo */
 
 /*!
+ * \ingroup Components
  * \class XinxColorCombo
+ * \brief The XinxColorCombo provide a QComboBox used to select color.
  * Combo box to choose a color. The combo box show you the color
  * and an associate text to the color. The showed color, is standard Qt color.
  * The user can also change, and use a custom color. In this case a dialog

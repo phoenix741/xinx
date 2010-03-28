@@ -32,7 +32,9 @@
 /* CompleterDirModel */
 
 /*!
+ * \ingroup Components
  * \class CompleterDirModel
+ * \brief Class used by DirectoryEdit to complete on path.
  * Completer model class based on a QDirModel which permit to propose a completion on
  * the path.
  * The QDir model convert the slash on native separtor. If the path end with a separator,
@@ -69,7 +71,9 @@ QVariant CompleterDirModel::data(const QModelIndex &index, int role) const
 /* DirectoryEdit */
 
 /*!
+ * \ingroup Components
  * \class DirectoryEdit
+ * \brief A line edit to edit, file or path.
  * A line editor using the QCompleter \e CompleterDirModel to simplify the editing of
  * the path.
  * If the path is wrong, he's writing in red.
@@ -214,7 +218,9 @@ PrivateDirectoryEditWidget::PrivateDirectoryEditWidget(QWidget * o)
 /* DirectoryEditWidget */
 
 /*!
+ * \ingroup Components
  * \class DirectoryEditWidget
+ * \brief A widget to edit a path. This widget have button attached to open a dialog.
  * This class is an association of a Directory Line editor and a button.
  * The button call the \e changePath slot from the \e DirectoryEdit class.
  */

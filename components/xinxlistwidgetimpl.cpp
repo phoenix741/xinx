@@ -23,7 +23,9 @@
 /* XinxListWidgetImpl */
 
 /*!
+ * \ingroup Components
  * \class XinxListWidgetImpl
+ * \brief The class XinxListWidgetImpl provide a widget to create, and sort a list.
  * This widget is a list of value (exemple: list of path, list of urls, list of prefix) with
  * a button to add an value, a button to delete a value, and a button to make a value the
  * default.

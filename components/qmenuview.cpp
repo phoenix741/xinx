@@ -29,7 +29,9 @@ Q_DECLARE_METATYPE(QModelIndex);
 /* QMenuView */
 
 /*!
+ * \ingroup Components
  * \class QMenuView
+ * \brief The QMenuView provide a menu based view on a QAbstractItemModel class.
  * This class is used to transform a hierarchical model based on the class
  * QAbstractItemModel into a menu. It can be used to create an action, history,
  * or snipets menu.

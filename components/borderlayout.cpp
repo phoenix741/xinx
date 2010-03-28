@@ -48,7 +48,14 @@
 #include "borderlayout.h"
 
 /*!
+ * \defgroup Components Visual Components used by XINX
+ */
+
+/*!
+ * \ingroup Components
  * \class BorderLayout
+ * \brief A layout with a central widget.
+ *
  * This layout is decomposed with a center widget and four border.
  *
  * \code

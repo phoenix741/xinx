@@ -21,7 +21,9 @@
 #include "stringcombobox.h"
 
 /*!
+ * \ingroup Components
  * \class StringComboBox
+ * \brief The class StringComboBox provide a extention of QComboBox to select an item.
  * This special combo box add a property value that can be used
  * to change dynamically the current index with a string value, instead
  * of change the value of the lineedit.

@@ -23,7 +23,9 @@
 /* PluginElement */
 
 /*!
+ * \ingroup Components
  * \class PluginElement
+ * \brief The PluginElement class provides an item for use with the PluginSelector view class.
  * The PluginElement is used by the PluginSelector to show information in the list.
  */
 
