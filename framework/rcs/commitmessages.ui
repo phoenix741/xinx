@@ -1,7 +1,8 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>CommitMessageDialog</class>
- <widget class="QDialog" name="CommitMessageDialog" >
-  <property name="geometry" >
+ <widget class="QDialog" name="CommitMessageDialog">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -9,36 +10,36 @@
     <height>442</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Commit messages</string>
   </property>
-  <layout class="QVBoxLayout" >
-   <property name="spacing" >
+  <layout class="QVBoxLayout">
+   <property name="spacing">
     <number>6</number>
    </property>
-   <property name="margin" >
+   <property name="margin">
     <number>9</number>
    </property>
    <item>
-    <widget class="QGroupBox" name="groupBox" >
-     <property name="title" >
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
       <string>RCS Messages</string>
      </property>
-     <layout class="QGridLayout" >
-      <property name="margin" >
+     <layout class="QGridLayout">
+      <property name="margin">
        <number>9</number>
       </property>
-      <property name="spacing" >
+      <property name="spacing">
        <number>6</number>
       </property>
-      <item row="0" column="0" >
-       <widget class="QTextEdit" name="m_textEditMessages" >
-        <property name="whatsThis" >
-         <string>&lt;p>Please type your message in this box. The message will be used with your revision control manager.&lt;/p>
-&lt;p/>
-&lt;p>This message must describe what you have done, to easily find an old version.&lt;/p>
-&lt;p/>
-&lt;p>&lt;i>With CVS, the list of file commited is appended to the message&lt;/i>&lt;/p></string>
+      <item row="0" column="0">
+       <widget class="QTextEdit" name="m_textEditMessages">
+        <property name="whatsThis">
+         <string>&lt;p&gt;Please type your message in this box. The message will be used with your revision control manager.&lt;/p&gt;
+&lt;p/&gt;
+&lt;p&gt;This message must describe what you have done, to easily find an old version.&lt;/p&gt;
+&lt;p/&gt;
+&lt;p&gt;&lt;i&gt;With CVS, the list of file commited is appended to the message&lt;/i&gt;&lt;/p&gt;</string>
         </property>
        </widget>
       </item>
@@ -46,26 +47,30 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_2" >
-     <property name="title" >
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
       <string>Files to commit</string>
      </property>
-     <layout class="QGridLayout" >
-      <property name="margin" >
+     <layout class="QGridLayout">
+      <property name="margin">
        <number>9</number>
       </property>
-      <property name="spacing" >
+      <property name="spacing">
        <number>6</number>
       </property>
-      <item row="0" column="0" >
-       <widget class="QListWidget" name="m_fileListWidget" >
-        <property name="whatsThis" >
-         <string>&lt;p>This is the list of the file to commit. Only knew file is listed there (.xsl, .html, .css, .js, ...).&lt;/p>
-&lt;p>In the list &lt;b>XINX&lt;/b> present three actions : &lt;/p>
-&lt;ul>&lt;li>&lt;i>Add and Commit&lt;/i> : If the file don't exist in the repository but maybe commited.&lt;/li>
-&lt;li>&lt;i>Remove and Commit&lt;/i> : If the file is deleted from disk but not from repository&lt;/li>
-&lt;li>&lt;i>Commit&lt;/i> : If the file exist and is modified (checked by default).&lt;/li>&lt;/ul>
-&lt;p>Only checked file are commited.&lt;/p></string>
+      <item row="0" column="0">
+       <widget class="QListWidget" name="m_fileListWidget">
+        <property name="whatsThis">
+         <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;This is the list of the file to commit. Only known files are listed here (.xsl, .html, .css, .js, ...).&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;In the list &lt;span style=&quot; font-weight:600;&quot;&gt;XINX&lt;/span&gt; presents three actions : &lt;/p&gt;
+&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Add and Commit&lt;/span&gt; : If the file doesn't exist in the repository but may be commited.&lt;/li&gt;
+&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Remove and Commit&lt;/span&gt; : If the file is deleted from the disk but not from the repository&lt;/li&gt;
+&lt;li style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Commit&lt;/span&gt; : If the file exists and is modified (checked by default).&lt;/li&gt;&lt;/ul&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Only checked files are commited.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </item>
@@ -73,17 +78,15 @@
     </widget>
    </item>
    <item>
-    <widget class="QDialogButtonBox" name="buttonBox" >
-     <property name="standardButtons" >
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="standardButtons">
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
      </property>
     </widget>
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="../application.qrc" />
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>buttonBox</sender>
@@ -91,11 +94,11 @@
    <receiver>CommitMessageDialog</receiver>
    <slot>accept()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>453</x>
      <y>421</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>366</x>
      <y>438</y>
     </hint>
@@ -107,11 +110,11 @@
    <receiver>CommitMessageDialog</receiver>
    <slot>reject()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>378</x>
      <y>419</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>142</x>
      <y>439</y>
     </hint>

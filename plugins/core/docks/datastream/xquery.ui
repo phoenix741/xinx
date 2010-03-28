@@ -98,7 +98,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
-      <string>&amp;Result (encapsulate in Result balise)</string>
+      <string>&amp;Result (encapsulated in the Result balise)</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="1" column="0">

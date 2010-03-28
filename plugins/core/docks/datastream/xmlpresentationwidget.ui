@@ -23,37 +23,33 @@
    <item row="0" column="0">
     <widget class="QToolButton" name="m_refreshToolButton">
      <property name="whatsThis">
-      <string>Refresh the list of file present in the &lt;i&gt;log&lt;/i&gt; directory.</string>
+      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Refresh the list of files present in the &lt;span style=&quot; font-style:italic;&quot;&gt;log&lt;/span&gt; directory.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
       <string>...</string>
      </property>
      <property name="icon">
-      <iconset resource="../../../xinx/application.qrc">
+      <iconset resource="../../../../xinx/application.qrc">
        <normaloff>:/images/reload.png</normaloff>:/images/reload.png</iconset>
      </property>
     </widget>
    </item>
-   <item row="0" column="1" colspan="2">
-    <widget class="QComboBox" name="m_presentationComboBox">
-     <property name="whatsThis">
-      <string>List of file in the &lt;i&gt;log&lt;/i&gt; directory. If you select a file the view is updated with the content of the file.&lt;/p&gt;
-&lt;p&gt;You can open a file of the list, or a file in another directory.&lt;/p&gt;</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="3">
+   <item row="0" column="4">
     <widget class="QToolButton" name="m_evaluateToolButton">
      <property name="text">
       <string>Evaluate</string>
      </property>
      <property name="icon">
-      <iconset resource="../../../xinx/application.qrc">
+      <iconset resource="../../plugindefinition/coreplugin.qrc">
        <normaloff>:/images/run.png</normaloff>:/images/run.png</iconset>
      </property>
     </widget>
    </item>
-   <item row="1" column="0" colspan="4">
+   <item row="1" column="0" colspan="5">
     <widget class="QLabel" name="label">
      <property name="text">
       <string>&amp;Filtre :</string>
@@ -63,18 +59,26 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="0" colspan="2">
+   <item row="2" column="0" colspan="3">
     <widget class="XinxLineEdit" name="m_filtreLineEdit">
      <property name="whatsThis">
-      <string>Filter to use in the view. &lt;b&gt;XINX&lt;/b&gt; search node where name match the filter (literal or regular expression).</string>
+      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Filter to use in the view. &lt;span style=&quot; font-weight:600;&quot;&gt;XINX&lt;/span&gt; searches the node where the name matches the filter (literal or regular expression).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="2" colspan="2">
+   <item row="2" column="3" colspan="2">
     <widget class="QComboBox" name="m_filterComboBox">
      <property name="whatsThis">
-      <string>&lt;p&gt;If &lt;i&gt;Sub-element&lt;/i&gt; is selected when an element is finded, all sub-element is showed. &lt;/p&gt;
-&lt;p&gt;If &lt;i&gt;None&lt;/i&gt; is selected only matched element is showed.&lt;/p&gt;</string>
+      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If &lt;span style=&quot; font-style:italic;&quot;&gt;Sub-element&lt;/span&gt; is selected when an element is found, all sub-elements are showed. &lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If &lt;span style=&quot; font-style:italic;&quot;&gt;None&lt;/span&gt; is selected only matched elements is showed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <item>
       <property name="text">
@@ -88,7 +92,7 @@
      </item>
     </widget>
    </item>
-   <item row="3" column="0" colspan="4">
+   <item row="3" column="0" colspan="5">
     <widget class="QTreeView" name="m_presentationTreeView">
      <property name="dragEnabled">
       <bool>true</bool>
@@ -98,7 +102,19 @@
      </property>
     </widget>
    </item>
-   <item row="4" column="0" colspan="4">
+   <item row="0" column="1" colspan="3">
+    <widget class="QComboBox" name="m_presentationComboBox">
+     <property name="whatsThis">
+      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;List of file in the &lt;span style=&quot; font-style:italic;&quot;&gt;log&lt;/span&gt; directory. If you select a file, the view is updated with the content of the file. &lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;You can open a file of the list, or a file in another directory.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0" colspan="5">
     <widget class="QProgressBar" name="m_presentationProgressBar">
      <property name="maximum">
       <number>0</number>
@@ -121,8 +137,8 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../../xinx/application.qrc"/>
-  <include location="../xmlpres.qrc"/>
+  <include location="../../plugindefinition/coreplugin.qrc"/>
+  <include location="../../../../xinx/application.qrc"/>
  </resources>
  <connections/>
 </ui>
