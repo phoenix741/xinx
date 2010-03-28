@@ -56,7 +56,9 @@
  * \class BorderLayout
  * \brief A layout with a central widget.
  *
- * This layout is decomposed with a center widget and four border.
+ * This layout is decomposed with a center widget and four border. Methods
+ * add() and addWidget() as a second parameter \e position used to define
+ * where you place your widget.
  *
  * \code
  *    +---------------------------+
@@ -72,7 +74,7 @@
  *    +---------------------------+
  * \endcode
  *
- * Please read the doc of trolltech for the example.
+ * For more detail on this class, you can read the documentation of trolltech/nokia.
  */
 
 /*!
