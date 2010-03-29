@@ -38,10 +38,12 @@
 /*!
  * \ingroup Components
  * \class XinxLineEditButton
+ * \since 0.9.0.0
+ *
  * \brief Button use in the XinxLineEdit.
  */
 
-//! Create the button with the parent \e parent.
+//! Create the button with the parent \p parent.
 XinxLineEditButton::XinxLineEditButton(QWidget *parent) : QWidget(parent)
 {
 }
@@ -90,6 +92,8 @@ void XinxLineEditButton::paintEvent(QPaintEvent *event)
 /*!
  * \ingroup Components
  * \class XinxLineEdit
+ * \since 0.9.0.0
+ *
  * \brief The class XinxLineEdit provide a line edit with a clear button.
  *
  * QLineEdit with an include button to clear the line edit.This class is inspired

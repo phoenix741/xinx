@@ -31,6 +31,8 @@ Q_DECLARE_METATYPE(QModelIndex);
 /*!
  * \ingroup Components
  * \class QMenuView
+ * \since 0.9.0.0
+ *
  * \brief The QMenuView provide a menu based view on a QAbstractItemModel class.
  *
  * This class is used to transform a hierarchical model based on the class
@@ -59,7 +61,7 @@ QMenuView::~QMenuView()
  * \fn void QMenuView::hovered(const QString &text) const
  * \brief The signal when a menu action is highlighted.
  *
- * \e text is the Qt::StatusTipRole of the index that caused the signal to be emitted.
+ * \p text is the Qt::StatusTipRole of the index that caused the signal to be emitted.
  *
  * Often this is used to update status information.
  *
@@ -70,7 +72,7 @@ QMenuView::~QMenuView()
  * \fn void QMenuView::triggered(const QModelIndex & index) const
  * \brief This signal is emitted when an action in this menu is triggered.
  *
- * \e index is the index's action that caused the signal to be emitted.
+ * \p index is the index's action that caused the signal to be emitted.
  *
  * \sa hovered()
  */
@@ -87,7 +89,7 @@ void QMenuView::postPopulated()
 }
 
 /*!
- * \brief Set the new model to \e model.
+ * \brief Set the new model to \p model.
  * \param model The new model to use for the creation of menus.
  */
 void QMenuView::setModel(QAbstractItemModel * model)
@@ -104,7 +106,7 @@ QAbstractItemModel * QMenuView::model() const
 }
 
 /*!
- * \brief Change the root index to \e index.
+ * \brief Change the root index to \p index.
  *
  * This can be used to show only a part of the QAbstractItemModel.
  * \param index The index to use to show the menu. if QModelIndex(), all the model is show.

@@ -433,6 +433,8 @@ QSize PluginDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelI
 /*!
  * \ingroup Components
  * \class PluginSelector
+ * \since 0.7.0.0
+ *
  * \brief The PluginSelector provide a list of configurable plugin element.
  *
  * This class show to the user the list of plugins with foreach

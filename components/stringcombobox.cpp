@@ -23,6 +23,8 @@
 /*!
  * \ingroup Components
  * \class StringComboBox
+ * \since 0.9.0.0
+ *
  * \brief The class StringComboBox provide a extention of QComboBox to select an item.
  *
  * This special combo box add a property value that can be used
@@ -32,7 +34,7 @@
  */
 
 /*!
- * \brief Create the StringComboBox with parent \e parent.
+ * \brief Create the StringComboBox with parent \p parent.
  * \param parent The parent of the combobox.
  */
 StringComboBox::StringComboBox(QWidget * parent) : QComboBox(parent)
@@ -57,9 +59,9 @@ QString StringComboBox::value() const
 }
 
 /*!
- * \brief Set the value of the combobox to \e value.
+ * \brief Set the value of the combobox to \p value.
  *
- * If \e value can't be find in the combobox, there is no selection.
+ * If \p value can't be find in the combobox, there is no selection.
  * \param value The value to select.
  * \sa value()
  */

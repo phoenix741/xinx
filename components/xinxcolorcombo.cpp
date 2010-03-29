@@ -110,6 +110,8 @@ public:
 /*!
  * \ingroup Components
  * \class XinxColorCombo
+ * \since 0.8.0.0
+ *
  * \brief The XinxColorCombo provide a QComboBox used to select color.
  *
  * Combo box to choose a color. The combo box show you the color

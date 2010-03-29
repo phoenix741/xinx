@@ -25,6 +25,8 @@
 /*!
  * \ingroup Components
  * \class XinxListWidgetImpl
+ * \since 0.7.1.0
+ *
  * \brief The class XinxListWidgetImpl provide a widget to create, and sort a list.
  *
  * This widget is a list of value (exemple: list of path, list of urls, list of prefix) with
@@ -57,7 +59,7 @@ XinxListWidgetImpl::~XinxListWidgetImpl()
 
 /*!
  * \fn void XinxListWidgetImpl::defaultValueChanged(QString value)
- * \brief This signal is emited when the user change the value \e value.
+ * \brief This signal is emited when the user change the value \p value.
  * \param value Contains the default value, choose by the user.
  */
 
@@ -116,7 +118,7 @@ QString XinxListWidgetImpl::defaultValue() const
 /*!
  * \brief Change the default value.
  *
- * If \e value isn't in the list, the value is added.
+ * If \p value isn't in the list, the value is added.
  */
 void XinxListWidgetImpl::setDefaultValue(const QString & value)
 {
@@ -132,7 +134,7 @@ bool XinxListWidgetImpl::defaultVisible() const
 /*!
  * \brief Set the visibility of the default button.
  *
- * If \e visible is set to false, the default button is hidden and the user can't choose a default value.
+ * If \p visible is set to false, the default button is hidden and the user can't choose a default value.
  */
 void XinxListWidgetImpl::setDefaultVisible(bool visible)
 {

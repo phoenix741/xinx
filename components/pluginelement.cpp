@@ -25,6 +25,8 @@
 /*!
  * \ingroup Components
  * \class PluginElement
+ * \since 0.7.2.0
+ *
  * \brief The PluginElement class provides an item for use with the PluginSelector view class.
  *
  * The PluginElement is used by the PluginSelector to show information in the list.
@@ -71,7 +73,7 @@ bool PluginElement::isActivated() const
 }
 
 /*!
- * \brief Activate the plugin if \e activated is true
+ * \brief Activate the plugin if \p activated is true
  * \sa setDesactivated(), isActivated()
  */
 void PluginElement::setActivated(bool activated)
@@ -83,7 +85,7 @@ void PluginElement::setActivated(bool activated)
 }
 
 /*!
- * \brief Desactivate the plugin if \e desactivated is true.
+ * \brief Desactivate the plugin if \p desactivated is true.
  * \sa setActivated(), isActivated()
  */
 void PluginElement::setDesactivated(bool desactivated)

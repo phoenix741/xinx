@@ -35,6 +35,8 @@
 /*!
  * \ingroup Components
  * \class CustomSchemeImpl
+ * \since 0.8.0.0
+ *
  * \brief Class to help the user to customize the QCodeEdit editor.
  *
  * Create a widget that permit to personalize the QCodeEdit editor. This use
@@ -90,7 +92,7 @@ QFormatScheme * CustomSchemeImpl::formatScheme() const
 }
 
 /*!
- * \brief Set the exemple in the custom widget to \e value.
+ * \brief Set the exemple in the custom widget to \p value.
  * \sa example()
  */
 void CustomSchemeImpl::setExample(const QString & value)
@@ -114,7 +116,7 @@ const QString & CustomSchemeImpl::example() const
 }
 
 /*!
- * \brief Set the language factory used in the custom editor to \e value
+ * \brief Set the language factory used in the custom editor to \p value
  * \sa languageFactory()
  */
 void CustomSchemeImpl::setLanguageFactory(QLanguageFactory * value)
@@ -135,7 +137,7 @@ QLanguageFactory * CustomSchemeImpl::languageFactory() const
 }
 
 /*!
- * \brief Set the language definition to \e value.
+ * \brief Set the language definition to \p value.
  * \sa languageDefinition()
  */
 void CustomSchemeImpl::setLanguageDefinition(const QString & value)

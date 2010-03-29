@@ -54,10 +54,12 @@
 /*!
  * \ingroup Components
  * \class BorderLayout
+ * \since 0.7.2.0
+ *
  * \brief A layout with a central widget.
  *
  * This layout is decomposed with a center widget and four border. Methods
- * add() and addWidget() as a second parameter \e position used to define
+ * add() and addWidget() as a second parameter \p position used to define
  * where you place your widget.
  *
  * You can add multiple widget at the same position.
@@ -105,7 +107,7 @@
  */
 
 /*!
- * \brief Create the \e BorderLayout
+ * \brief Create the \p BorderLayout
  * \param parent The parent widget
  * \param margin The marge arround the layout
  * \param spacing The space between widgets
@@ -118,7 +120,7 @@ BorderLayout::BorderLayout(QWidget *parent, int margin, int spacing) :
 }
 
 /*!
- * \brief Create the \e BorderLayout
+ * \brief Create the \p BorderLayout
  * \param spacing The space between widgets
  */
 BorderLayout::BorderLayout(int spacing)
@@ -135,7 +137,7 @@ BorderLayout::~BorderLayout()
 }
 
 /*!
- * \brief Add item \e item to the position BorderLayout::West
+ * \brief Add item \p item to the position BorderLayout::West
  * \sa addWidget(), add()
  */
 void BorderLayout::addItem(QLayoutItem *item)
@@ -144,7 +146,7 @@ void BorderLayout::addItem(QLayoutItem *item)
 }
 
 /*!
- * \brief Add the widget \e widget at the position \e position.
+ * \brief Add the widget \p widget at the position \p position.
  * \sa add(), addItem()
  */
 void BorderLayout::addWidget(QWidget *widget, Position position)
@@ -153,7 +155,7 @@ void BorderLayout::addWidget(QWidget *widget, Position position)
 }
 
 /*!
- * \brief Add the item \e item at the position \e position in this layout.
+ * \brief Add the item \p item at the position \p position in this layout.
  * \sa addWidget(), addItem()
  */
 void BorderLayout::add(QLayoutItem *item, Position position)
@@ -184,7 +186,7 @@ int BorderLayout::count() const
 	return list.size();
 }
 
-//! Return the \e index item of the list.
+//! Return the \p index item of the list.
 QLayoutItem *BorderLayout::itemAt(int index) const
 {
 	ItemWrapper *wrapper = list.value(index);
@@ -287,7 +289,7 @@ QSize BorderLayout::sizeHint() const
 	return calculateSize(SizeHint);
 }
 
-//! Return the item at the index \e index in the list and remove it.
+//! Return the item at the index \p index in the list and remove it.
 QLayoutItem *BorderLayout::takeAt(int index)
 {
 	if (index >= 0 && index < list.size())

@@ -34,6 +34,8 @@
 /*!
  * \ingroup Components
  * \class CompleterDirModel
+ * \since 0.7.0.0
+ *
  * \brief Class used by DirectoryEdit to complete on path.
  *
  * Completer model class based on a QDirModel which permit to propose a completion on
@@ -53,7 +55,7 @@ CompleterDirModel::CompleterDirModel(QObject *parent) : QDirModel(parent)
 /*!
  * \brief Return the data to change in the completion dir model.
  *
- * This model show the good separator (with the \e QDir::toNativeSepartors() function).
+ * This model show the good separator (with the \p QDir::toNativeSepartors() function).
  * \param index The model index, represents a path in the tree.
  * \param role Only the role Qt::DisplayRole is modified in this object.
  */
@@ -75,9 +77,11 @@ QVariant CompleterDirModel::data(const QModelIndex &index, int role) const
 /*!
  * \ingroup Components
  * \class DirectoryEdit
+ * \since 0.7.0.0
+ *
  * \brief A line edit to edit, file or path.
  *
- * A line editor using the QCompleter \e CompleterDirModel to simplify the editing of
+ * A line editor using the QCompleter \p CompleterDirModel to simplify the editing of
  * the path.
  * If the path is wrong, he's writing in red.
  */
@@ -149,7 +153,7 @@ const QString & DirectoryEdit::filter() const
 /*!
  * \brief Slot called when the text changed.
  *
- * This method change the color of the text if the directory \e text not exist.
+ * This method change the color of the text if the directory \p text not exist.
  */
 void DirectoryEdit::slotTextChanged(QString text)
 {
@@ -171,7 +175,7 @@ void DirectoryEdit::slotTextChanged(QString text)
  * \brief Open a dialog to change the path in the line editor.
  * \param parent The parent windows of the dialog to open
  * \param defaultValue The value to propose, if there is no value in the editor.
- * \param directory If \e true, user must choose a directory, else a file
+ * \param directory If \p true, user must choose a directory, else a file
  */
 void DirectoryEdit::changePath(QWidget * parent, const QString & defaultValue, bool directory)
 {
@@ -224,16 +228,18 @@ PrivateDirectoryEditWidget::PrivateDirectoryEditWidget(QWidget * o)
 /*!
  * \ingroup Components
  * \class DirectoryEditWidget
+ * \since 0.7.0.0
+ *
  * \brief A widget to edit a path. This widget have button attached to open a dialog.
  *
  * This class is an association of a Directory Line editor and a button.
- * The button call the \e changePath slot from the \e DirectoryEdit class.
+ * The button call the \p changePath slot from the \p DirectoryEdit class.
  */
 
 /*!
  * \brief Construct the directory edit widget and tell if the widget is used
  * to edit directory or file.
- * \param isDirectory If \e true, the widget edit directory, otherwise file.
+ * \param isDirectory If \p true, the widget edit directory, otherwise file.
  * \param parent The parent of the widget.
  */
 DirectoryEditWidget::DirectoryEditWidget(bool isDirectory, QWidget * parent) : QWidget(parent)
@@ -274,7 +280,7 @@ bool DirectoryEditWidget::isDirectory() const
 
 /*!
  * \brief Change the directory/files goal of the widget.
- * \param value If \e true, the widget is used for edit directory, otherwise files.
+ * \param value If \p true, the widget is used for edit directory, otherwise files.
  * \sa isDirectory()
  */
 void DirectoryEditWidget::setDirectory(bool value)
