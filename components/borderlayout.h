@@ -57,20 +57,19 @@ public:
 
 	BorderLayout(QWidget *parent, int margin = 0, int spacing = -1);
 	BorderLayout(int spacing = -1);
-	~BorderLayout();
+	virtual ~BorderLayout();
 
-	void addItem(QLayoutItem *item);
 	void addWidget(QWidget *widget, Position position);
-	Qt::Orientations expandingDirections() const;
-	bool hasHeightForWidth() const;
-	int count() const;
-	QLayoutItem *itemAt(int index) const;
-	QSize minimumSize() const;
-	void setGeometry(const QRect &rect);
-	QSize sizeHint() const;
-	QLayoutItem *takeAt(int index);
-
 	void add(QLayoutItem *item, Position position);
+	virtual void addItem(QLayoutItem *item);
+	virtual Qt::Orientations expandingDirections() const;
+	virtual bool hasHeightForWidth() const;
+	virtual int count() const;
+	virtual QLayoutItem *itemAt(int index) const;
+	virtual QSize minimumSize() const;
+	virtual void setGeometry(const QRect &rect);
+	virtual QSize sizeHint() const;
+	virtual QLayoutItem *takeAt(int index);
 private:
 	struct ItemWrapper
 	{

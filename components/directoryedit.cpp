@@ -40,8 +40,20 @@
  *
  * Completer model class based on a QDirModel which permit to propose a completion on
  * the path.
- * The QDir model convert the slash on native separtor. If the path end with a separator,
+ * The CompleterDirModel convert path on native separtor. If the path end with a separator,
  * the separator is deleted.
+ *
+ * To use this modele, we can use a QCompleter on a QLineEdit.
+ *
+ * \code
+ *   QLineEdit * lineEdit = new QLineEdit;
+ *
+ *   QCompleter * completer = new QCompleter(lineEdit);
+ *   lineEdit->setCompleter(completer);
+ *
+ *   CompleterDirModel * model = new CompleterDirModel(completer);
+ *   completer->setModel(model);
+ * \endcode
  */
 
 /*!
@@ -81,9 +93,20 @@ QVariant CompleterDirModel::data(const QModelIndex &index, int role) const
  *
  * \brief A line edit to edit, file or path.
  *
- * A line editor using the QCompleter \p CompleterDirModel to simplify the editing of
- * the path.
+ * A line editor using a QCompleter based on the model \p CompleterDirModel to
+ * help the user to edit the path.
+ *
  * If the path is wrong, he's writing in red.
+ *
+ * You can see the widget on completion :
+ * \image html directoryedit1.png
+ * \image latex directoryedit1.eps
+ *
+ * And the same widget, if the path doesn't exist :
+ * \image html directoryedit2.png
+ * \image latex directoryedit2.eps
+ *
+ *
  */
 
 /*!
@@ -234,6 +257,9 @@ PrivateDirectoryEditWidget::PrivateDirectoryEditWidget(QWidget * o)
  *
  * This class is an association of a Directory Line editor and a button.
  * The button call the \p changePath slot from the \p DirectoryEdit class.
+ *
+ * \image html directoryeditwidget1.png
+ * \image latex directoryeditwidget1.eps
  */
 
 /*!

@@ -45,6 +45,14 @@
  *
  * The method setHiddenFormat() is used to hide some format of the list to forbide
  * the user to change it.
+ *
+ * \image html customschemeimpl1.png
+ * \image latex customschemeimpl1.eps
+ *
+ * When the user select a format, the widget update chexkboxes, and comboboxes to
+ * the new format.
+ *
+ * All change made on a format is showed on the example part of the widget.
  */
 
 /*!

@@ -437,10 +437,23 @@ QSize PluginDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelI
  *
  * \brief The PluginSelector provide a list of configurable plugin element.
  *
- * This class show to the user the list of plugins with foreach
+ * This class show to the user the list of plugins with for each
  * plugins a configure button and a about button.
  *
- * If the plugins propose one, the list can also show an icon.
+ * If the plugins propose one, the list can also show an icon. The list is inspired
+ * from some KDE application screen where the user can activate or desactivate plugins.
+ *
+ * \image html pluginselector1.png
+ * \image latex pluginselector1.eps
+ *
+ * Each item of the list is a PluginElement :
+ * \list
+ * \li The Checkbox is only showed if PluginElement::isModifiable() return \e true.
+ * \li PluginSelector show in bold the name of the PluginElement, and above the description (truncated with ellipse).
+ * \li If PluginElement::pixmap().isValid() an icon is showed.
+ * \li PluginElement::isActivated() and PluginElement::setActivated() are both used to show and change the check in
+ * the checkbox.
+ * \endlist
  */
 
 /*!

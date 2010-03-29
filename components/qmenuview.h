@@ -17,9 +17,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
+#pragma once
 #ifndef _QMENUVIEW_H_
 #define _QMENUVIEW_H_
-#pragma once
 
 // Qt header
 #include <QMenu>

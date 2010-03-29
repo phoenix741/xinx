@@ -30,6 +30,7 @@
  * Ulrich Van Den Hekke ( 21/03/2007 ) Simplified version of KLineEdit from KDE4.
  */
 
+#pragma once
 #ifndef XINXLINEEDIT_H
 #define XINXLINEEDIT_H
 

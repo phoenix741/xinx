@@ -31,6 +31,7 @@
  * to change dynamically the current index with a string value, instead
  * of change the value of the lineedit.
  *
+ * This combobox can be used by QDataWidgetMapper who change the user property of the widget.
  */
 
 /*!

@@ -32,6 +32,13 @@
  * This widget is a list of value (exemple: list of path, list of urls, list of prefix) with
  * a button to add an value, a button to delete a value, and a button to make a value the
  * default (this button can be cached the property defaultVisible()).
+ *
+ * In this list you have two button too, to move a ligne up, and move a line down to sort
+ * your list.
+ *
+ * \image html xinxlistwidget1.png
+ * \image latex xinxlistwidget1.png
+ *
  */
 
 /*!
@@ -106,7 +113,10 @@ void XinxListWidgetImpl::updateDefault(const QString & def)
 	}
 }
 
-//! Retrieve the default value selected by the user.
+/*!
+ * \brief Retrieve the default value selected by the user.
+ * \sa setDefaultValue()
+ */
 QString XinxListWidgetImpl::defaultValue() const
 {
 	if (m_list->item(m_defaultValue))
@@ -119,13 +129,18 @@ QString XinxListWidgetImpl::defaultValue() const
  * \brief Change the default value.
  *
  * If \p value isn't in the list, the value is added.
+ *
+ * \sa defaultValue();
  */
 void XinxListWidgetImpl::setDefaultValue(const QString & value)
 {
 	updateDefault(value);
 }
 
-//! Retrieve the visibility of the default button.
+/*!
+ * \brief Retrieve the visibility of the default button.
+ * \sa setDefaultVisible()
+ */
 bool XinxListWidgetImpl::defaultVisible() const
 {
 	return m_btnDef->isVisible();
@@ -135,13 +150,18 @@ bool XinxListWidgetImpl::defaultVisible() const
  * \brief Set the visibility of the default button.
  *
  * If \p visible is set to false, the default button is hidden and the user can't choose a default value.
+ *
+ * \sa defaultVisible()
  */
 void XinxListWidgetImpl::setDefaultVisible(bool visible)
 {
 	m_btnDef->setVisible(visible);
 }
 
-//! Return the list of value used by the widget.
+/*!
+ * \brief Return the list of value used by the widget.
+ * \sa setValues()
+ */
 QStringList XinxListWidgetImpl::values() const
 {
 	QStringList result;
@@ -156,6 +176,7 @@ QStringList XinxListWidgetImpl::values() const
  * \brief Change the list of value used by the widget.
  *
  * If the defaultValue isn't in the list, the default value is added.
+ * \sa values()
  */
 void XinxListWidgetImpl::setValues(const QStringList & values)
 {
@@ -190,13 +211,19 @@ void XinxListWidgetImpl::add(const QString & value)
 	m_btnDown->setEnabled((m_list->currentRow() >= 0) && (m_list->currentRow() < m_list->count() - 1));
 }
 
-//! Retrieve the default value proposed to the user, when the add a value to the list.
+/*!
+ * \brief Retrieve the default value proposed to the user, when he add a value to the list.
+ * \sa setDefaultProposedValue()
+ */
 QString XinxListWidgetImpl::defaultProposedValue() const
 {
 	return m_defaultProposedValue;
 }
 
-//! Set the default value proposed to the user.
+/*!
+ * \brief Set the default proposed value to the user to \p value.
+ * \sa defaultProposedValue()
+ */
 void XinxListWidgetImpl::setDefaultProposedValue(const QString & value)
 {
 	m_defaultProposedValue = value;

@@ -120,6 +120,9 @@ public:
  * is open to allow the user to make his choice.
  *
  * This component is originally written for KDE3. He was adapt to turn on Qt4.
+ *
+ * \image html xinxcolorcombobox.png
+ * \image latex xinxcolorcombobox.png
  */
 
 

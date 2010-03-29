@@ -29,7 +29,8 @@
  *
  * \brief The PluginElement class provides an item for use with the PluginSelector view class.
  *
- * The PluginElement is used by the PluginSelector to show information in the list.
+ * The PluginElement is used by the PluginSelector to show information in the list. This class has
+ * \e abstract method. You must redefine this method in your PluginElement's class.
  */
 
 //! Initialise the plugin element

@@ -64,19 +64,8 @@
  *
  * You can add multiple widget at the same position.
  *
- * \code
- * +---------------------------+
- * |           NORTH           |
- * +------+-------------+------+
- * |      |             |      |
- * |      |             |      |
- * | WEST |   CENTER    | EAST |
- * |      |             |      |
- * |      |             |      |
- * +------+-------------+------+
- * |           SOUTH           |
- * +---------------------------+
- * \endcode
+ * \image html borderlayout1.png
+ * \image latex borderlayout1.eps
  *
  * For more detail on this class, you can read the documentation of trolltech/nokia.
  */
@@ -107,7 +96,7 @@
  */
 
 /*!
- * \brief Create the \p BorderLayout
+ * \brief Create the BorderLayout
  * \param parent The parent widget
  * \param margin The marge arround the layout
  * \param spacing The space between widgets
@@ -120,7 +109,7 @@ BorderLayout::BorderLayout(QWidget *parent, int margin, int spacing) :
 }
 
 /*!
- * \brief Create the \p BorderLayout
+ * \brief Create the BorderLayout
  * \param spacing The space between widgets
  */
 BorderLayout::BorderLayout(int spacing)

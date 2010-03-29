@@ -222,7 +222,6 @@ class ContentViewCache;
  * Represent a project in XINX.
  * A project specify where the user can find path to stylesheet, and javascript,
  * and where the application must store project file.
- * \todo Read Configuration file and manage standard/specifique
  *
  * \throw XinxProjectException When the application can't read a project file or can't
  * save it.

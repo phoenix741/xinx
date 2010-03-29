@@ -36,8 +36,15 @@ Q_DECLARE_METATYPE(QModelIndex);
  * \brief The QMenuView provide a menu based view on a QAbstractItemModel class.
  *
  * This class is used to transform a hierarchical model based on the class
- * QAbstractItemModel into a menu. It can be used to create an action, history,
+ * QAbstractItemModel into a menu. It can be used to create an action menu, history,
  * or snipets menu.
+ *
+ * \image html qmenuview.png
+ * \image latex qmenuview.png
+ *
+ * When the model is defined, the structure of the menu is automatically generated. This
+ * class ignore call to QAbstractItemModel::beginInsertRows() and QAbstractItemModel::endInsertRows().
+ * Menu is generated when the user open it.
  */
 
 /*!
@@ -173,7 +180,7 @@ void QMenuView::aboutToShow()
 	postPopulated();
 }
 
-//! put all of the children of parent into menu
+//! Put all of the children of parent into menu
 void QMenuView::createMenu(const QModelIndex &parent, QMenu *parentMenu, QMenu *menu)
 {
 	if (! menu)

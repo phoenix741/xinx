@@ -28,6 +28,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QDesktopServices>
+#include <QDir>
 
 /* WelcomDialogImpl */
 
@@ -81,6 +82,7 @@ void WelcomDialogImpl::updateTipOfTheDay()
 void WelcomDialogImpl::createWebsiteList()
 {
 	m_sitesWidget->addItem(tr("Documentation"), QLatin1String("http://xinx.shadoware.org/wiki"));
+	m_sitesWidget->addItem(tr("API"), QLatin1String("http://xinx.shadoware.org/doxygen/devel/html/hierarchy.html"));
 	m_sitesWidget->addItem(tr("Report a bug"), QLatin1String("http://xinx.shadoware.org/newticket"));
 	m_sitesWidget->addItem(tr("Downloads"), QLatin1String("http://xinx.shadoware.org/downloads"));
 }

@@ -98,6 +98,9 @@ void XinxLineEditButton::paintEvent(QPaintEvent *event)
  *
  * QLineEdit with an include button to clear the line edit.This class is inspired
  * from the class of the KDE project.
+ *
+ * \image html xinxlineedit.png
+ * \image latex xinxlineedit.png
  */
 
 /*!

@@ -17,9 +17,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
+#pragma once
 #ifndef P_PLUGINSELECTOR_H_ /*! \cond PRIVATE */
 #define P_PLUGINSELECTOR_H_
-#pragma once
 
 // Xinx header
 #include "pluginselector.h"
