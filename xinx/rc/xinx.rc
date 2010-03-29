@@ -1,6 +1,6 @@
 1 VERSIONINFO
-FILEVERSION XINX_VERSION
-PRODUCTVERSION XINX_VERSION
+FILEVERSION 0, 9, 0, 0
+PRODUCTVERSION 0, 9, 0, 0
 FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
 FILEFLAGS 0x9L
@@ -19,13 +19,13 @@ BEGIN
 			VALUE "CompanyName", "Ulrich Van Den Hekke"
 			VALUE "FileDescription", "XINX Application"
 			VALUE "InternalName", "xinx"
-			VALUE "LegalCopyright", "Copyleft (C) U. Van Den Hekke 2009"
+			VALUE "LegalCopyright", "Copyleft (C) U. Van Den Hekke 2010"
 			VALUE "LegalTrademarks", "\0"
 			VALUE "OriginalFilename", "xinx.exe"
 			VALUE "PrivateBuild", "\0"
 			VALUE "ProductName", "XINX"
-//			VALUE "FileVersion", TOSTRING(XINX_VERSION)
-//			VALUE "ProductVersion", TOSTRING(XINX_VERSION)
+			VALUE "FileVersion", "0, 9, 0, 0"
+			VALUE "ProductVersion", "0, 9, 0, 0"
 			VALUE "SpecialBuild", "\0"
 		END
   END
