@@ -25,7 +25,7 @@ SOURCES += dmainwindow.cpp \
            dworkspacemainwindow.cpp 
 TARGET = ideality
 TEMPLATE = lib
-CONFIG += debug
+CONFIG += release
 
 MOC_DIR = ./
 OBJECTS_DIR = ./
