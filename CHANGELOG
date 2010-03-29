@@ -1,3 +1,39 @@
+XINX - 0.9.0.0-rc1
+==================
+
+- 293 : Création d'un snipet par fichier.
+- 321 : Hide path sur RecursiveSortFilterProxyModel ne fonctionne pas
+- 345 : Gestion des Codecs
+- 190 : Snippet/Template : catégorie principale
+- 316 : Règle de développement à partir de la 140
+- 334 : Nouvelle gestion de RCS
+- 337 : Plantage lors de la modification de fichier XML se trouvant dans le dock présentation XML
+- 338 : Duplicate entries
+- 344 : Nouvelle gestion des erreurs
+- 197 : Tri des sections des template/snippet
+- 198 : Snippet/Template : option de non validation lors de l'ajout
+- 291 : Rendre XINX plus modulaire
+- 298 : QSharedPointer
+- 306 : Welcom page
+- 314 : Affichage du résultat HTML
+- 318 : Completion sur les snipets
+- 326 : Dialog de migration
+- 340 : Plus de synchro
+- 241 : Dock/Onglet
+- 287 : Version 1.5
+- 311 : Mise à jours de la boite de dialogue de personnalisation
+- 319 : Synchronisation Editeur/Dock, Editeur/...
+- 325 : Lenteur à la fermeture de la boite de dialogue propriété du projet
+- 339 : Nouveau système de vue contenue
+- 341 : Problème de désinstallation
+- 346 : searchWord plus générique
+
+GENERX PLUGIN - 1.0.0.0-rc1
+===========================
+
+- 333 : Boite de dialog nouveau projet
+- 336 : Sauvegarde d'un nouveau fichier
+
 XINX - 0.8.1.4
 ==============
 - 320 : Erreur lors de l'execution du XPATH
