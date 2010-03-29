@@ -67,6 +67,7 @@ Source: {#QTDIR}\..\mingw\bin\iconv.exe; DestDir: {app}\bin; Components: applica
 Source: {#QTDIR}\..\mingw\bin\libexslt.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile
 Source: {#QTDIR}\..\mingw\bin\xsltproc.exe; DestDir: {app}\bin; Components: application; Flags: sharedfile
 
+Source: {#QTDIR}\bin\phonon4.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile; Tasks: ; Languages:
 Source: {#QTDIR}\bin\QtCore4.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile; Tasks: ; Languages: 
 Source: {#QTDIR}\bin\QtGui4.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile
 Source: {#QTDIR}\bin\QtNetwork4.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile
@@ -176,3 +177,4 @@ end;
 Name: {app}\plugins\services.dll; Type: files; Components: services; Tasks: 
 [UninstallDelete]
 Name: {app}\datas\snipets.db; Type: files
+
