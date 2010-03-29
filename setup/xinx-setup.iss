@@ -58,7 +58,8 @@ Source: ..\framework\xinxframework.dll; DestDir: {app}\bin; Components: applicat
 Source: ..\ext\qcodeedit\qcodeedit.dll; DestDir: {app}\bin; Components: application; Flags: replacesameversion
 Source: ..\ext\ideality\lib\ideality.dll; DestDir: {app}\bin; Components: application; Flags: replacesameversion
 
-Source: {#QTDIR}\bin\mingwm10.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile
+Source: {#QTDIR}\..\mingw\bin\mingwm10.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile
+Source: {#QTDIR}\..\mingw\bin\libgcc_s_dw2-1.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile
 Source: {#QTDIR}\..\mingw\bin\libxml2.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile
 Source: {#QTDIR}\..\mingw\bin\libxslt.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile
 Source: {#QTDIR}\..\mingw\bin\iconv.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile
