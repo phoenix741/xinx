@@ -47,7 +47,7 @@ Name: assojs; Description: Associate JS with {#AppName}; Flags: unchecked
 Name: assofws; Description: Associate WebServices stream with {#AppName}; Flags: unchecked
 
 [Run]
-Filename: {app}\bin\xinx.exe; Parameters: "--snipet --init ""{app}\datas\template.xml"""; WorkingDir: {app}; Components: application
+Filename: {app}\bin\xinx.exe; Parameters: "--snipet --init ""{app}\datas\template.xml"""; WorkingDir: {app}; Components: application; StatusMsg: Création de la base de données de Snipets; Tasks: ; Languages: 
 
 [Files]
 Source: ..\COPYING; DestDir: {app}; Components: application
@@ -58,16 +58,16 @@ Source: ..\framework\xinxframework.dll; DestDir: {app}\bin; Components: applicat
 Source: ..\ext\qcodeedit\qcodeedit.dll; DestDir: {app}\bin; Components: application; Flags: replacesameversion
 Source: ..\ext\ideality\lib\ideality.dll; DestDir: {app}\bin; Components: application; Flags: replacesameversion
 
-Source: {#QTDIR}\..\mingw\bin\mingwm10.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile
-Source: {#QTDIR}\..\mingw\bin\libgcc_s_dw2-1.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile
-Source: {#QTDIR}\..\mingw\bin\libxml2.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile
-Source: {#QTDIR}\..\mingw\bin\libxslt.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile
-Source: {#QTDIR}\..\mingw\bin\iconv.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile
-Source: {#QTDIR}\..\mingw\bin\iconv.exe; DestDir: {app}\bin; Components: application; Flags: sharedfile
-Source: {#QTDIR}\..\mingw\bin\libexslt.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile
-Source: {#QTDIR}\..\mingw\bin\xsltproc.exe; DestDir: {app}\bin; Components: application; Flags: sharedfile
+Source: {#QTDIR}\..\mingw\bin\mingwm10.dll; DestDir: {app}\bin; Components: application
+Source: {#QTDIR}\..\mingw\bin\libgcc_s_dw2-1.dll; DestDir: {app}\bin; Components: application
+Source: {#QTDIR}\..\mingw\bin\libxml2.dll; DestDir: {app}\bin; Components: application
+Source: {#QTDIR}\..\mingw\bin\libxslt.dll; DestDir: {app}\bin; Components: application
+Source: {#QTDIR}\..\mingw\bin\iconv.dll; DestDir: {app}\bin; Components: application
+Source: {#QTDIR}\..\mingw\bin\iconv.exe; DestDir: {app}\bin; Components: application
+Source: {#QTDIR}\..\mingw\bin\libexslt.dll; DestDir: {app}\bin; Components: application
+Source: {#QTDIR}\..\mingw\bin\xsltproc.exe; DestDir: {app}\bin; Components: application
 
-Source: {#QTDIR}\bin\phonon4.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile; Tasks: ; Languages:
+Source: {#QTDIR}\bin\phonon4.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile; Tasks: ; Languages: 
 Source: {#QTDIR}\bin\QtCore4.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile; Tasks: ; Languages: 
 Source: {#QTDIR}\bin\QtGui4.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile
 Source: {#QTDIR}\bin\QtNetwork4.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile
@@ -88,13 +88,15 @@ Source: ..\doc\html\*.*; DestDir: {app}\doc\api; Components: documentation; Flag
 DestDir: {app}\plugins; Source: ..\plugins\services1.dll; Components: services
 DestDir: {app}\plugins; Source: ..\plugins\cvsplugin0.dll; Components: cvsplugin
 DestDir: {app}\plugins; Source: ..\plugins\svnplugin0.dll; Components: svnplugin
-DestDir: {app}\plugins; Source: ..\plugins\generix1.dll; Components: dictionaryplugin
+DestDir: {app}\plugins; Source: ..\plugins\generix1.dll; Components: generixplugin
 
 DestDir: {app}\scripts; Source: ..\scripts\*.js; Components: scripts
 
-DestDir: {app}\plugins\styles; Source: {#QTDIR}\plugins\styles\explorerstyle.dll; Flags: skipifsourcedoesntexist; Components: styles; MinVersion: 0,6.0.6000; Tasks: ; Languages: 
-DestDir: {app}\plugins\styles; Source: {#QTDIR}\plugins\styles\floatstyle0.dll; Flags: skipifsourcedoesntexist; Components: styles; MinVersion: 0,6.0.6000; Tasks: ; Languages: 
-DestDir: {app}\plugins\styles; Source: {#QTDIR}\plugins\styles\qtdotnet2.dll; Flags: skipifsourcedoesntexist; Components: styles; MinVersion: 0,6.0.6000; Tasks: ; Languages: 
+DestDir: {app}\plugins\styles; Source: {#QTDIR}\plugins\styles\explorerstyle.dll; Components: styles; MinVersion: 0,6.0.6000; Tasks: ; Languages: 
+DestDir: {app}\plugins\styles; Source: {#QTDIR}\plugins\styles\floatstyle0.dll; Components: styles; Tasks: ; Languages: 
+DestDir: {app}\plugins\styles; Source: {#QTDIR}\plugins\styles\qtdotnet2.dll; Components: styles; MinVersion: 0,6.0.6000; Tasks: ; Languages: 
+
+DestDir: {app}\plugins\sqldrivers; Source: {#QTDIR}\plugins\sqldrivers\qsqlite4.dll; Components: application
 
 [Icons]
 Name: {group}\{#AppName}; Filename: {app}\bin\xinx.exe; Components: application; Tasks: 
@@ -130,20 +132,23 @@ Root: HKCR; Subkey: Fichier FWS\DefaultIcon; ValueType: string; ValueData: {app}
 Root: HKCU; Subkey: Software\Shadoware.Org\XINX; Flags: uninsdeletekey deletekey; Components: ; Tasks: ; Languages: 
 
 [Components]
-Name: application; Description: Application; Flags: fixed; Types: custom compact full; Languages: 
+Name: application; Description: Application & Bibliothèques nécessaires; Flags: fixed; Types: custom compact full; Languages: 
 Name: source; Description: Source de l'Application; Types: full; Languages: 
-Name: documentation; Description: Technical documentation of XINX; Types: full
-Name: dictionaryplugin; Description: Show a Dictionary Dock; Types: custom full
-Name: cvsplugin; Description: Plugin's Wrapper for CVS; Types: custom full
-Name: svnplugin; Description: Plugin's Wrapper for SubVersion; Types: custom full
-Name: services; Description: Plugin with a WebServices editor; Types: custom full
-Name: scripts; Description: Scriptes utilitaire; Types: custom compact full
+Name: documentation; Description: APIs de XINX; Types: full
+Name: generixplugin; Description: Mode de fonctionnement Generix; Types: custom full
+Name: cvsplugin; Description: Encapsulation de CVS; Types: custom full
+Name: svnplugin; Description: Encapsulation de SubVersion; Types: custom full
+Name: services; Description: Appel de WebServices type RPC; Types: custom full
+Name: scripts; Description: Quelques scripts; Types: custom compact full
 Name: styles; Description: Styles Supplémentaires (Vista only); Types: full; MinVersion: 0,6.0.6000
 
 [CustomMessages]
 UNINSTALL_XINX=Il est necessaire de désinstaller l'ancienne version de XINX avant d'installer cette nouvelle version. Voulez-vous désinstaller XINX ?
 UNINSTALL_DBUS=Il est necessaire de désinstaller l'ancienne version de D-BUS avant d'installer cette nouvelle version. Voulez-vous désinstaller D-BUS ?
 UNINSTALL_REGISTERY=Voulez-vous supprimer les entrées de XINX dans la base de registre ?
+
+[InstallDelete]
+Name: {app}\plugins\services.dll; Type: files; Components: services; Tasks: 
 
 [Code]
 function InitializeSetup(): Boolean;
@@ -173,8 +178,4 @@ begin
 			Exec( '>', UninstallString, '', 1, ewWaitUntilTerminated, ResultCode );
 	end;
 end;
-[InstallDelete]
-Name: {app}\plugins\services.dll; Type: files; Components: services; Tasks: 
-[UninstallDelete]
-Name: {app}\datas\snipets.db; Type: files
 
