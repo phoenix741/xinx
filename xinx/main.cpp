@@ -71,7 +71,7 @@ void backup_appli_signal(int signal)
 	throw SignalSegFaultException(signal);
 }
 
-void initSearchPath()
+void initSearchPath(QApplication * app)
 {
 	const QString configDirectory    = QString(".config/%1/%2").arg(qApp->organizationDomain()).arg(qApp->applicationName());
 	const QString homeDirectory      = QDir::home().absoluteFilePath(configDirectory);
@@ -105,7 +105,11 @@ void initSearchPath()
 #ifndef Q_WS_WIN
 	QDir::addSearchPath("plugins", QDir(QApplication::applicationDirPath()).absoluteFilePath("../share/xinx/plugins"));
 #endif /* Q_WS_WIN */
-
+	foreach (const QString & searchPath, QDir::searchPaths("plugins"))
+	{
+		app->addLibraryPath(searchPath);
+	}
+		
 	// ... for tempalte ...
 	QDir::addSearchPath("templates", templatesDirectory);
 	QDir::addSearchPath("templates", QDir(QApplication::applicationDirPath()).absoluteFilePath("../templates"));
@@ -116,7 +120,6 @@ void initSearchPath()
 
 void processSnipetArguments(const QStringList & args)
 {
-	initSearchPath();
 	for (int i = 0 ; i < args.count() ; i++)
 	{
 		if (i + 1 >= args.count()) break;
@@ -176,6 +179,7 @@ int main(int argc, char *argv[])
 
 		if (args.contains("--snipet"))
 		{
+			initSearchPath(&app);
 			processSnipetArguments(args);
 			return 0;
 		}
@@ -198,8 +202,7 @@ int main(int argc, char *argv[])
 			// Initialize search path for datas ...
 			splash.showMessage(QApplication::translate("SplashScreen", "Initialize search path ..."));
 			app.processEvents();
-			initSearchPath();
-			app.addLibraryPath("plugins:");
+			initSearchPath(&app);
 
 			/*
 			 * To have the lang and style loaded earlier in the process, we load configuration of XINX
