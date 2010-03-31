@@ -23,29 +23,32 @@
 </div>
 <div class="contents">
 <h1>CallSnipetDialogImpl Class Reference</h1><!-- doxytag: class="CallSnipetDialogImpl" --><!-- doxytag: inherits="QDialog" -->
+<p>Implementation of snipet dialog.  
+<a href="#_details">More...</a></p>
+
 <p><code>#include &lt;callsnipetdlg.h&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for CallSnipetDialogImpl:</div>
 <div class="dynsection">
- <div class="center">
-  <img src="classCallSnipetDialogImpl.png" usemap="#CallSnipetDialogImpl_map" alt=""/>
-  <map id="CallSnipetDialogImpl_map" name="CallSnipetDialogImpl_map">
-<area doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qdialog.html" alt="QDialog" shape="rect" coords="0,0,127,24"/>
-</map>
- </div>
-</div>
+<div class="center"><img src="classCallSnipetDialogImpl__inherit__graph.png" border="0" usemap="#CallSnipetDialogImpl_inherit__map" alt="Inheritance graph"/></div>
+<map name="CallSnipetDialogImpl_inherit__map" id="CallSnipetDialogImpl_inherit__map">
+<area shape="rect" id="node2" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qdialog.html" title="QDialog" alt="" coords="43,5,109,35"/></map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 
 <p><a href="classCallSnipetDialogImpl-members.html">List of all members.</a></p>
 <table border="0" cellpadding="0" cellspacing="0">
 <tr><td colspan="2"><h2>Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCallSnipetDialogImpl.html#aa0f9394f401988cfe4a355804230181b">CallSnipetDialogImpl</a> (<a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qsqldatabase.html">QSqlDatabase</a> db, int snipetId, <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qwidget.html">QWidget</a> *parent=0, Qt::WFlags f=Qt::MSWindowsFixedSizeDialogHint)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Constructor of the snipet dialog implementation.  <a href="#aa0f9394f401988cfe4a355804230181b"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCallSnipetDialogImpl.html#a0bd231a6ae534b8c5122c8f38951af1e">~CallSnipetDialogImpl</a> ()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Destroy the dialog.  <a href="#a0bd231a6ae534b8c5122c8f38951af1e"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">const <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstring.html">QString</a> &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCallSnipetDialogImpl.html#ab108680264c45df21c821515b6b0d5c9">snipetText</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstringlist.html">QStringList</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCallSnipetDialogImpl.html#a8591e5239f97bd587e6034f8b84b0f52">values</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCallSnipetDialogImpl.html#adb30ff723e7d459c5ceed559fef198af">exec</a> ()</td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
-<p>Implementation of snipet dialog. This dialog permit to create, modify. The implementation containts only a constructor who defines default dialog presentation : Windows Style Dialog. </p>
+<p>Implementation of snipet dialog. </p>
+<p>This dialog permit to create, modify. The implementation containts only a constructor who defines default dialog presentation : Windows Style Dialog. </p>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="aa0f9394f401988cfe4a355804230181b"></a><!-- doxytag: member="CallSnipetDialogImpl::CallSnipetDialogImpl" ref="aa0f9394f401988cfe4a355804230181b" args="(QSqlDatabase db, int snipetId, QWidget *parent=0, Qt::WFlags f=Qt::MSWindowsFixedSizeDialogHint)" -->
 <div class="memitem">
@@ -83,10 +86,13 @@ Inheritance diagram for CallSnipetDialogImpl:</div>
       </table>
 </div>
 <div class="memdoc">
-<p>Constructor of the snipet dialog implementation. We defines a default windows flags. The windows can't be resize. </p>
+
+<p>Constructor of the snipet dialog implementation. </p>
+<p>We defines a default windows flags. The windows can't be resize. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>text</em>&nbsp;</td><td>Text used for the template </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>db</em>&nbsp;</td><td>A database </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>snipetId</em>&nbsp;</td><td>The id of the snipet </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>parent</em>&nbsp;</td><td>The parent of the dialog </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>f</em>&nbsp;</td><td>Flags to use on Windows. By default, the dialog have a fixed size. </td></tr>
   </table>
@@ -109,6 +115,7 @@ Inheritance diagram for CallSnipetDialogImpl:</div>
       </table>
 </div>
 <div class="memdoc">
+
 <p>Destroy the dialog. </p>
 
 </div>

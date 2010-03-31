@@ -32,7 +32,20 @@ namespace ContentView2
 {
 
 /* FileException */
+/*!
+ * \class FileException
+ * \brief Exception throw when a SQL error occur
+ */
 
+/*!
+ * Create the exception with a message and a line.
+ * \param assertion The condition who failed
+ * \param locationFile The file wich failed (this file)
+ * \param locationLine The line where the exception is throw
+ * \param locationMethod The method where the exception is throw.
+ * \param message Error of the exception.
+ * \param message Error of the exception.
+ */
 FileException::FileException(const QString & assertion, const QString & locationFile, int locationLine, const QString & locationMethod, QString message)
 	: XinxException(assertion, locationFile, locationLine, locationMethod, message)
 {

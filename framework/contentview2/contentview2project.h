@@ -35,28 +35,15 @@ class XinxProject;
 namespace ContentView2
 {
 
-/*!
- * \class FileException
- * \brief Exception throw when a SQL error occur
- */
 class LIBEXPORT ProjectException : public XinxException
 {
 public:
-	/*!
-	 * Create the exception with a message and a line.
-	 * \param message Error of the exception.
-	 * \param line Line where the error is.
-	 */
 	ProjectException(const QString & assertion, const QString & locationFile, int locationLine, const QString & locationMethod, QString message);
 private:
 };
 
 class PrivateProject;
 
-/*!
- * The class Project is usefull to simplify some operations on cv_project table.
- * This class is also used to be propaged from object to another.
- */
 class LIBEXPORT Project
 {
 	Q_DECLARE_TR_FUNCTIONS(Project)

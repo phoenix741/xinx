@@ -84,7 +84,7 @@ Base of plugin</a></h2>
 <p>if <em><a class="el" href="classXINXProjectManager.html#a592fa5614f8a37dd501bb5262d9cdb99">XINXProjectManager::self()</a>-&gt;project()</em> is null the plugin is destroyed else, he is created.</p>
 <h2><a class="anchor" id="rcsplugin">
 The Revision Control System Plugin</a></h2>
-<p>A <a class="el" href="classRCS.html">RCS</a> <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qwebpluginfactory-plugin.html">Plugin</a> must implemente the <em><a class="el" href="classIRCSPlugin.html">IRCSPlugin</a></em> interface.</p>
+<p>A <a class="el" href="classRCS.html" title="Base class to create &quot;revision control system&quot; plugin.">RCS</a> <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qwebpluginfactory-plugin.html">Plugin</a> must implemente the <em><a class="el" href="classIRCSPlugin.html">IRCSPlugin</a></em> interface.</p>
 <div class="fragment"><pre class="fragment"> <span class="keyword">class </span>FooPlugin : <span class="keyword">public</span> <a class="codeRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qobject.html">QObject</a>, <span class="keyword">public</span> <a class="code" href="classIRCSPlugin.html">IRCSPlugin</a> {
   Q_OBJECT
   Q_INTERFACES(<a class="code" href="classIXinxPlugin.html">IXinxPlugin</a>)
@@ -98,9 +98,9 @@ The Revision Control System Plugin</a></h2>
 
   virtual <a class="codeRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstringlist.html">QStringList</a> rcs();
   virtual <a class="codeRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstring.html">QString</a> descriptionOfRCS( const <a class="codeRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstring.html">QString</a> &amp; rcs );
-  virtual <a class="code" href="classRCS.html">RCS</a> * createRCS( const <a class="codeRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstring.html">QString</a> &amp; rcs, const <a class="codeRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstring.html">QString</a> &amp; basePath );
+  virtual <a class="code" href="classRCS.html" title="Base class to create &amp;quot;revision control system&amp;quot; plugin.">RCS</a> * createRCS( const <a class="codeRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstring.html">QString</a> &amp; rcs, const <a class="codeRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstring.html">QString</a> &amp; basePath );
  };
-</pre></div><p>In the implementation method create a derivated object of <em><a class="el" href="classRCS.html">RCS</a></em> </p>
+</pre></div><p>In the implementation method create a derivated object of <em><a class="el" href="classRCS.html" title="Base class to create &quot;revision control system&quot; plugin.">RCS</a></em> </p>
 <div class="fragment"><pre class="fragment"> <a class="codeRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstringlist.html">QStringList</a> FooPlugin::rcs() {
   <span class="keywordflow">return</span> <a class="codeRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstringlist.html">QStringList</a>() &lt;&lt; <span class="stringliteral">&quot;foo&quot;</span>;
  }
@@ -111,14 +111,14 @@ The Revision Control System Plugin</a></h2>
   <span class="keywordflow">return</span> <a class="codeRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstring.html">QString</a>();
  }
 
- <a class="code" href="classRCS.html">RCS</a> * <a class="code" href="classIRCSPlugin.html#a9f8cc1ebffb31e05070ed58191bb2c68">FooPlugin::createRCS</a>( <span class="keyword">const</span> <a class="codeRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstring.html">QString</a> &amp; rcs, <span class="keyword">const</span> <a class="codeRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstring.html">QString</a> &amp; basePath ) {
+ <a class="code" href="classRCS.html" title="Base class to create &amp;quot;revision control system&amp;quot; plugin.">RCS</a> * <a class="code" href="classIRCSPlugin.html#a9f8cc1ebffb31e05070ed58191bb2c68">FooPlugin::createRCS</a>( <span class="keyword">const</span> <a class="codeRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstring.html">QString</a> &amp; rcs, <span class="keyword">const</span> <a class="codeRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstring.html">QString</a> &amp; basePath ) {
   <span class="keywordflow">if</span>( rcs.<a class="codeRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstring.html#toLower">toLower</a>() == <span class="stringliteral">&quot;foo&quot;</span> ) {
       <span class="keywordflow">return</span> <span class="keyword">new</span> RCS_Foo( basePath );
   }
   <span class="keywordflow">return</span> NULL;
  }
-</pre></div><p>Then, in the object RCS_Foo (that inherits from <a class="el" href="classRCS.html">RCS</a>) :</p>
-<div class="fragment"><pre class="fragment"> <span class="keyword">class </span>RCS_Foo : <span class="keyword">public</span> <a class="code" href="classRCS.html">RCS</a> {
+</pre></div><p>Then, in the object RCS_Foo (that inherits from <a class="el" href="classRCS.html" title="Base class to create &quot;revision control system&quot; plugin.">RCS</a>) :</p>
+<div class="fragment"><pre class="fragment"> <span class="keyword">class </span>RCS_Foo : <span class="keyword">public</span> <a class="code" href="classRCS.html" title="Base class to create &amp;quot;revision control system&amp;quot; plugin.">RCS</a> {
   Q_OBJECT
  <span class="keyword">public</span>:
   RCS_Foo( <span class="keyword">const</span> <a class="codeRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstring.html">QString</a> &amp; base );
@@ -136,8 +136,8 @@ The Revision Control System Plugin</a></h2>
  <span class="keyword">private</span> slots:
  <span class="keyword">private</span>:
  };
-</pre></div><p>Operations <em><a class="el" href="classRCS.html#a0bdf5a3b7c336ebffa6b19e954c02cc6">RCS::update()</a></em>, <em><a class="el" href="classRCS.html#a79e9bb6d40efa8ed9c72cd71589661d3">RCS::commit()</a></em>, <em><a class="el" href="classRCS.html#ad673781552ac16cf083b418a35c7e158">RCS::add()</a></em>, <em><a class="el" href="classRCS.html#ac2630c6d8cb47fbdc2464b6e865a3dab">RCS::remove()</a></em> and <em><a class="el" href="classRCS.html#affab071302de4e7a272bf1c3e5bfc765">RCS::updateToRevision()</a></em> is the correspponding opperation in the revision manager.</p>
-<p><em><a class="el" href="classRCS.html#a5ff5fbbe7e8a74fcff3f430ccfee8030">RCS::operations()</a></em> describe the file than can be Commited, Removed or Added.</p>
+</pre></div><p>Operations <em><a class="el" href="classRCS.html#a91f05a568892117db0c578cd79e8083c" title="Call the update command of the plugin and return immediatly.">RCS::update()</a></em>, <em><a class="el" href="classRCS.html#adec0e5676a524f74a5352ed1cfbb0835" title="Call the commit command of the plugin.">RCS::commit()</a></em>, <em><a class="el" href="classRCS.html#a446137b752f659952130342e77811e70" title="Call the add command of the plugin.">RCS::add()</a></em>, <em><a class="el" href="classRCS.html#a1d02ed697651739079bd83f7a63726e2" title="Call the remove command of the plugin.">RCS::remove()</a></em> and <em><a class="el" href="classRCS.html#a71b5d32deda04d4fb1cd086842ba5a61" title="Call the update command of the plugin for a file at a given revision.">RCS::updateToRevision()</a></em> is the correspponding opperation in the revision manager.</p>
+<p><em><a class="el" href="classRCS.html#aa655ef30ebd2203be90a7cdf9c9743c4" title="Return a list of operation for a path or a list of path (in case of multiple selections...">RCS::operations()</a></em> describe the file than can be Commited, Removed or Added.</p>
 <h2><a class="anchor" id="projectconfiguration">
 Project configuration plugins</a></h2>
 <p>We can configure a plugin throw the <em><a class="el" href="classIXinxPluginConfiguration.html">IXinxPluginConfiguration</a></em> interface, if the configuration is global, or throw the <em><a class="el" href="classIXinxPluginProjectConfiguration.html">IXinxPluginProjectConfiguration</a></em> interface, if the configuration depends on the project.</p>

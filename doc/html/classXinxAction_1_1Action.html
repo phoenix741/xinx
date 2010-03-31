@@ -24,52 +24,53 @@
   </div>
 </div>
 <div class="contents">
-<h1>XinxAction::Action Class Reference</h1><!-- doxytag: class="XinxAction::Action" --><!-- doxytag: inherits="QObject,XinxAction::MenuItem" -->
-<p>This class represent an action in XINX This class is a wrapper of a Qt action <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qaction.html">QAction</a>. This wrapper is used to facilite the enable, and visible feature of the action.  
+<h1>XinxAction::Action Class Reference<br/>
+<small>
+[<a class="el" href="group__XinxAction.html">Actions of the XINX framework</a>]</small>
+</h1><!-- doxytag: class="XinxAction::Action" --><!-- doxytag: inherits="QObject,XinxAction::MenuItem" -->
+<p>This class provide an action for <a class="el" href="classXinxAction_1_1ActionList.html" title="Class to manage a list of action (a Menu).">ActionList</a>.  
 <a href="#_details">More...</a></p>
 
 <p><code>#include &lt;actioninterface.h&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for XinxAction::Action:</div>
 <div class="dynsection">
- <div class="center">
-  <img src="classXinxAction_1_1Action.png" usemap="#XinxAction::Action_map" alt=""/>
-  <map id="XinxAction::Action_map" name="XinxAction::Action_map">
-<area doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qobject.html" alt="QObject" shape="rect" coords="0,0,133,24"/>
-<area href="classXinxAction_1_1MenuItem.html" alt="XinxAction::MenuItem" shape="rect" coords="143,0,276,24"/>
-</map>
- </div>
-</div>
+<div class="center"><img src="classXinxAction_1_1Action__inherit__graph.png" border="0" usemap="#XinxAction_1_1Action_inherit__map" alt="Inheritance graph"/></div>
+<map name="XinxAction_1_1Action_inherit__map" id="XinxAction_1_1Action_inherit__map">
+<area shape="rect" id="node2" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qobject.html" title="QObject" alt="" coords="5,5,75,35"/><area shape="rect" id="node4" href="classXinxAction_1_1MenuItem.html" title="This class provide a menu item for ActionList." alt="" coords="99,5,245,35"/></map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 
 <p><a href="classXinxAction_1_1Action-members.html">List of all members.</a></p>
 <table border="0" cellpadding="0" cellspacing="0">
 <tr><td colspan="2"><h2>Public Slots</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXinxAction_1_1Action.html#acd86842ce64c64d3c5d12db0f6d5de7c">updateActionState</a> ()</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Use methode <a class="el" href="classXinxAction_1_1Action.html#a1bf3e470edb9ba5aa7160fdf86ff16af" title="Return true if the action is visible to user.">isActionVisible()</a> and <a class="el" href="classXinxAction_1_1Action.html#a1b70f46d1e6682313968382dc08e7c52" title="Return true if the action can be called.">isActionEnabled()</a> to update the status of the action.  <a href="#acd86842ce64c64d3c5d12db0f6d5de7c"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Use methode <a class="el" href="classXinxAction_1_1Action.html#a1bf3e470edb9ba5aa7160fdf86ff16af" title="This method must return true if the action is visible to user.">isActionVisible()</a> and <a class="el" href="classXinxAction_1_1Action.html#a1b70f46d1e6682313968382dc08e7c52" title="This method return true if the action can be called.">isActionEnabled()</a> to update the status of the action.  <a href="#acd86842ce64c64d3c5d12db0f6d5de7c"></a><br/></td></tr>
 <tr><td colspan="2"><h2>Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXinxAction_1_1Action.html#a3b58125f6575393c659fc75917dd658c">Action</a> (<a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qaction.html">QAction</a> *a, <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qobject.html">QObject</a> *<a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qobject.html#parent">parent</a>)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Create an action with <em>a</em>.  <a href="#a3b58125f6575393c659fc75917dd658c"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Create an action with the <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qaction.html">QAction</a> <em>a</em>.  <a href="#a3b58125f6575393c659fc75917dd658c"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXinxAction_1_1Action.html#a508810ce8f4ba031bd8da5babe3a2669">Action</a> (const <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstring.html">QString</a> &amp;text, const <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qkeysequence.html">QKeySequence</a> &amp;shortcut, <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qobject.html">QObject</a> *<a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qobject.html#parent">parent</a>)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Create an action with the text <em>text</em> and the shortcut <em>shortcut</em>.  <a href="#a508810ce8f4ba031bd8da5babe3a2669"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXinxAction_1_1Action.html#a9c8dc5ad327c6b2b8668a259f50fee50">Action</a> (const <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qicon.html">QIcon</a> &amp;icon, const <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstring.html">QString</a> &amp;text, const <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qkeysequence.html">QKeySequence</a> &amp;shortcut, <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qobject.html">QObject</a> *<a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qobject.html#parent">parent</a>)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Create an actiion with the icon <em>icon</em>, text <em>text</em>, and the shortcut <em>shortcut</em>.  <a href="#a9c8dc5ad327c6b2b8668a259f50fee50"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXinxAction_1_1Action.html#acdb06775d157339256a8ecd55749226c">~Action</a> ()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Destroy the action.  <a href="#acdb06775d157339256a8ecd55749226c"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qaction.html">QAction</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXinxAction_1_1Action.html#aad3b2792dc4533f93c529fe55dcc26e8">action</a> () const </td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">The <a class="el" href="classXinxAction_1_1Action.html" title="This class represent an action in XINX This class is a wrapper of a Qt action QAction...">Action</a> to add.  <a href="#aad3b2792dc4533f93c529fe55dcc26e8"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This method return the <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qaction.html">QAction</a> object.  <a href="#aad3b2792dc4533f93c529fe55dcc26e8"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXinxAction_1_1Action.html#a1bf3e470edb9ba5aa7160fdf86ff16af">isActionVisible</a> () const </td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Return true if the action is visible to user.  <a href="#a1bf3e470edb9ba5aa7160fdf86ff16af"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This method must return true if the action is visible to user.  <a href="#a1bf3e470edb9ba5aa7160fdf86ff16af"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXinxAction_1_1Action.html#a1b70f46d1e6682313968382dc08e7c52">isActionEnabled</a> () const </td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Return true if the action can be called.  <a href="#a1b70f46d1e6682313968382dc08e7c52"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This method return true if the action can be called.  <a href="#a1b70f46d1e6682313968382dc08e7c52"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXinxAction_1_1Action.html#a5bd8d51531c0947e4697d169cad54cbd">isInToolBar</a> () const </td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Return true if the action can be add to the toolbar.  <a href="#a5bd8d51531c0947e4697d169cad54cbd"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This method must return true if the action can be add to the toolbar.  <a href="#a5bd8d51531c0947e4697d169cad54cbd"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXinxAction_1_1Action.html#abbb63b614a6672601342f48a9a6daaf7">isInPopupMenu</a> () const </td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Return true if the action can be add to the popup menu.  <a href="#abbb63b614a6672601342f48a9a6daaf7"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This method must return true if the action can be add to the popup menu.  <a href="#abbb63b614a6672601342f48a9a6daaf7"></a><br/></td></tr>
 <tr><td colspan="2"><h2>Protected Slots</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXinxAction_1_1Action.html#ad627aed69ad2332935fc9b37cc549319">actionTriggered</a> ()</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Get the current editor (or not) and trigger the action.  <a href="#ad627aed69ad2332935fc9b37cc549319"></a><br/></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
-<p>This class represent an action in XINX This class is a wrapper of a Qt action <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qaction.html">QAction</a>. This wrapper is used to facilite the enable, and visible feature of the action. </p>
+<p>This class provide an action for <a class="el" href="classXinxAction_1_1ActionList.html" title="Class to manage a list of action (a Menu).">ActionList</a>. </p>
+<p>This class is a wrapper of a <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qaction.html">QAction</a>. This wrapper is used to facilite the enable, and visible feature of the action. This class inherits from <a class="el" href="classXinxAction_1_1MenuItem.html" title="This class provide a menu item for ActionList.">MenuItem</a> too, so we can use it in <a class="el" href="classXinxAction_1_1ActionList.html" title="Class to manage a list of action (a Menu).">ActionList</a>. </p>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a3b58125f6575393c659fc75917dd658c"></a><!-- doxytag: member="XinxAction::Action::Action" ref="a3b58125f6575393c659fc75917dd658c" args="(QAction *a, QObject *parent)" -->
 <div class="memitem">
@@ -96,7 +97,8 @@ Inheritance diagram for XinxAction::Action:</div>
 </div>
 <div class="memdoc">
 
-<p>Create an action with <em>a</em>. </p>
+<p>Create an action with the <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qaction.html">QAction</a> <em>a</em>. </p>
+<p>This method set enabled and visible to true. </p>
 
 </div>
 </div>
@@ -132,6 +134,7 @@ Inheritance diagram for XinxAction::Action:</div>
 <div class="memdoc">
 
 <p>Create an action with the text <em>text</em> and the shortcut <em>shortcut</em>. </p>
+<p>This methode create a <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qaction.html">QAction</a> object with the different information from parameters and use him self as parent of the <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qaction.html">QAction</a>. </p>
 
 </div>
 </div>
@@ -173,6 +176,7 @@ Inheritance diagram for XinxAction::Action:</div>
 <div class="memdoc">
 
 <p>Create an actiion with the icon <em>icon</em>, text <em>text</em>, and the shortcut <em>shortcut</em>. </p>
+<p>This methode create a <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qaction.html">QAction</a> object with the different information from parameters and use him self as parent of the <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qaction.html">QAction</a>. </p>
 
 </div>
 </div>
@@ -190,6 +194,8 @@ Inheritance diagram for XinxAction::Action:</div>
       </table>
 </div>
 <div class="memdoc">
+
+<p>Destroy the action. </p>
 
 </div>
 </div>
@@ -209,7 +215,7 @@ Inheritance diagram for XinxAction::Action:</div>
 </div>
 <div class="memdoc">
 
-<p>The <a class="el" href="classXinxAction_1_1Action.html" title="This class represent an action in XINX This class is a wrapper of a Qt action QAction...">Action</a> to add. </p>
+<p>This method return the <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qaction.html">QAction</a> object. </p>
 
 </div>
 </div>
@@ -229,6 +235,8 @@ Inheritance diagram for XinxAction::Action:</div>
 <div class="memdoc">
 
 <p>Get the current editor (or not) and trigger the action. </p>
+<dl class="note"><dt><b>Note:</b></dt><dd>This method should be redefine in child class.</dd></dl>
+<p>By default this method do nothing. </p>
 
 </div>
 </div>
@@ -247,7 +255,9 @@ Inheritance diagram for XinxAction::Action:</div>
 </div>
 <div class="memdoc">
 
-<p>Return true if the action can be called. </p>
+<p>This method return true if the action can be called. </p>
+<dl class="note"><dt><b>Note:</b></dt><dd>This method should be redefine in child class.</dd></dl>
+<p>By default this method return <em>true</em>. </p>
 
 </div>
 </div>
@@ -266,7 +276,9 @@ Inheritance diagram for XinxAction::Action:</div>
 </div>
 <div class="memdoc">
 
-<p>Return true if the action is visible to user. </p>
+<p>This method must return true if the action is visible to user. </p>
+<dl class="note"><dt><b>Note:</b></dt><dd>This method should be redefine in child class.</dd></dl>
+<p>By default this method return <em>true</em>. </p>
 
 </div>
 </div>
@@ -285,7 +297,9 @@ Inheritance diagram for XinxAction::Action:</div>
 </div>
 <div class="memdoc">
 
-<p>Return true if the action can be add to the popup menu. </p>
+<p>This method must return true if the action can be add to the popup menu. </p>
+<dl class="note"><dt><b>Note:</b></dt><dd>This method should be redefine in child class.</dd></dl>
+<p>By default this method return <em>true</em>. </p>
 
 </div>
 </div>
@@ -304,7 +318,9 @@ Inheritance diagram for XinxAction::Action:</div>
 </div>
 <div class="memdoc">
 
-<p>Return true if the action can be add to the toolbar. </p>
+<p>This method must return true if the action can be add to the toolbar. </p>
+<dl class="note"><dt><b>Note:</b></dt><dd>This method should be redefine in child class.</dd></dl>
+<p>By default this method return <em>true</em>. </p>
 
 </div>
 </div>
@@ -323,7 +339,7 @@ Inheritance diagram for XinxAction::Action:</div>
 </div>
 <div class="memdoc">
 
-<p>Use methode <a class="el" href="classXinxAction_1_1Action.html#a1bf3e470edb9ba5aa7160fdf86ff16af" title="Return true if the action is visible to user.">isActionVisible()</a> and <a class="el" href="classXinxAction_1_1Action.html#a1b70f46d1e6682313968382dc08e7c52" title="Return true if the action can be called.">isActionEnabled()</a> to update the status of the action. </p>
+<p>Use methode <a class="el" href="classXinxAction_1_1Action.html#a1bf3e470edb9ba5aa7160fdf86ff16af" title="This method must return true if the action is visible to user.">isActionVisible()</a> and <a class="el" href="classXinxAction_1_1Action.html#a1b70f46d1e6682313968382dc08e7c52" title="This method return true if the action can be called.">isActionEnabled()</a> to update the status of the action. </p>
 
 </div>
 </div>

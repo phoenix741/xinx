@@ -38,6 +38,7 @@ class AbstractEditor;
 /*!
  * \class EditorManager
  * \brief Interface that represent the object used to manage the list of editors.
+ *
  * Interface used by plugins. The goal is to permit easily access of all existing
  * editors. This class is not a QObject class but the inherited class must emit
  * signal currentChanged(int) when the current editor changed.
@@ -73,12 +74,6 @@ public:
 	static EditorManager * self();
 
 signals:
-	/*!
-	 * \fn void EditorManager::currentChanged( int index )
-	 * \param index the index of the new editor
-	 * This signal is called when the current editor is changed. This class doesn't
-	 * declare the signal (because don't inherit of QObject) but child should.
-	 */
 	//void currentChanged( int index );
 private:
 	static EditorManager * s_self;

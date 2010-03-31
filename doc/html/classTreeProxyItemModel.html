@@ -30,19 +30,10 @@
 <div class="dynheader">
 Inheritance diagram for TreeProxyItemModel:</div>
 <div class="dynsection">
- <div class="center">
-  <img src="classTreeProxyItemModel.png" usemap="#TreeProxyItemModel_map" alt=""/>
-  <map id="TreeProxyItemModel_map" name="TreeProxyItemModel_map">
-<area doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qabstractproxymodel.html" alt="QAbstractProxyModel" shape="rect" coords="250,0,407,24"/>
-<area href="classBaseSnipetItemModel.html" alt="BaseSnipetItemModel" shape="rect" coords="83,112,240,136"/>
-<area href="classCategoryItemModel.html" alt="CategoryItemModel" shape="rect" coords="250,112,407,136"/>
-<area href="classContentView2_1_1TreeModel.html" alt="ContentView2::TreeModel" shape="rect" coords="417,112,574,136"/>
-<area href="classSnipetDockItemModel.html" alt="SnipetDockItemModel" shape="rect" coords="0,168,157,192"/>
-<area href="classSnipetItemModel.html" alt="SnipetItemModel" shape="rect" coords="167,168,324,192"/>
-<area href="classSnipetMenuModel.html" alt="SnipetMenuModel" shape="rect" coords="167,224,324,248"/>
-</map>
- </div>
-</div>
+<div class="center"><img src="classTreeProxyItemModel__inherit__graph.png" border="0" usemap="#TreeProxyItemModel_inherit__map" alt="Inheritance graph"/></div>
+<map name="TreeProxyItemModel_inherit__map" id="TreeProxyItemModel_inherit__map">
+<area shape="rect" id="node5" href="classBaseSnipetItemModel.html" title="The class select datas in the snipet Sqlite base and provide information in tree..." alt="" coords="84,160,233,189"/><area shape="rect" id="node13" href="classCategoryItemModel.html" title="CategoryItemModel" alt="" coords="257,160,391,189"/><area shape="rect" id="node15" href="classContentView2_1_1TreeModel.html" title="ContentView2::TreeModel" alt="" coords="415,160,585,189"/><area shape="rect" id="node2" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qabstractproxymodel.html" title="QAbstractProxyModel" alt="" coords="249,5,399,35"/><area shape="rect" id="node7" href="classSnipetDockItemModel.html" title="SnipetDockItemModel" alt="" coords="5,237,155,267"/><area shape="rect" id="node9" href="classSnipetItemModel.html" title="SnipetItemModel" alt="" coords="179,237,296,267"/><area shape="rect" id="node11" href="classSnipetMenuModel.html" title="SnipetMenuModel" alt="" coords="175,315,300,344"/></map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 
 <p><a href="classTreeProxyItemModel-members.html">List of all members.</a></p>
 <table border="0" cellpadding="0" cellspacing="0">
@@ -95,7 +86,7 @@ Inheritance diagram for TreeProxyItemModel:</div>
 <p>Class to transform a table model to a tree model. </p>
 <p>This class is used to transform a table model (with only row and column) to a tree model. To do this the subclass must redefine <a class="el" href="classTreeProxyItemModel.html#a2639d110161e1a256ec870902cdde69e" title="Method to reimplement to TreeProxyItemModel know the parent identifer for a source...">getParentUniqueIdentifier()</a> and <a class="el" href="classTreeProxyItemModel.html#a69972d4dc4694d72b3575eb27b817483" title="Method to reimplement to TreeProxyItemModel know the identifer for a source line...">getUniqueIdentifier()</a> to give for a <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qmodelindex.html">QModelIndex</a> in the source model. This proxy read all the content of the table and generate a tree. If there is a large amount of data or if the medium of the source model is slow, another approach must be study.</p>
 <p>This model have been made to used with a source model connected to a little Sqlite base.</p>
-<p>In debug mode the internal structure is printed with qDebug() when error is triggered by <a class="el" href="classExceptionManager.html">ExceptionManager</a>. </p>
+<p>In debug mode the internal structure is printed with qDebug() when error is triggered by <a class="el" href="classExceptionManager.html" title="The Exception manager contains an error dialog that can be used when a error occure...">ExceptionManager</a>. </p>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a062b10f4f323cc7f81f726b52c4cb24f"></a><!-- doxytag: member="TreeProxyItemModel::TreeProxyItemModel" ref="a062b10f4f323cc7f81f726b52c4cb24f" args="(QObject *parent=0)" -->
 <div class="memitem">

@@ -73,11 +73,31 @@ const QString & SnipetParameterValueItem::defaultValue() const
 
 /* CallSnipetDialogImpl */
 
+/*!
+ * \class CallSnipetDialogImpl
+ * \brief Implementation of snipet dialog.
+ *
+ * This dialog permit to create, modify. The implementation containts only a
+ * constructor who defines default dialog presentation : Windows Style Dialog.
+ */
+
+/*!
+ * \brief Constructor of the snipet dialog implementation.
+ *
+ * We defines a default windows flags. The windows can't be resize.
+ * \param db A database
+ * \param snipetId The id of the snipet
+ * \param parent The parent of the dialog
+ * \param f Flags to use on Windows. By default, the dialog have a fixed size.
+ */
 CallSnipetDialogImpl::CallSnipetDialogImpl(QSqlDatabase db, int snipetId, QWidget * parent, Qt::WFlags f) : QDialog(parent, f)
 {
 	setupUi(db, snipetId, this);
 }
 
+/*!
+ * \brief Destroy the dialog.
+ */
 CallSnipetDialogImpl::~CallSnipetDialogImpl()
 {
 

@@ -198,6 +198,7 @@ int BaseSnipetItemModel::getParentUniqueIdentifier(const QModelIndex & sourceInd
  * QModelIndex for a unique identifier. As getUniqueIdentifier(), this methode
  * use isCategory and id to calculate the tree unique identifier.
  * \param isCategory must be true, if the line search is a category, false for a snipet
+ * \param id The id for wich the method return the QModelIndex
  * \return An index in the tree model.
  * \sa getTreeModelIdentifier()
  */

@@ -37,18 +37,9 @@ class XinxProject;
 namespace ContentView2
 {
 
-/*!
- * \class FileException
- * \brief Exception throw when a SQL error occur
- */
 class LIBEXPORT FileException : public XinxException
 {
 public:
-	/*!
-	 * Create the exception with a message and a line.
-	 * \param message Error of the exception.
-	 * \param line Line where the error is.
-	 */
 	FileException(const QString & assertion, const QString & locationFile, int locationLine, const QString & locationMethod, QString message);
 private:
 };

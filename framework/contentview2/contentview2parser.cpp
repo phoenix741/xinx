@@ -31,22 +31,47 @@ namespace ContentView2
 
 /* ParserException */
 
+/*!
+ * \class ParserException
+ * \brief Exception throw when the model can't be updated.
+ */
+
+/*!
+ * Create the exception with a message and a line.
+ * \param message Error of the exception.
+ * \param line Line where the error is.
+ * \param column Column where the error is.
+ */
 ParserException::ParserException(QString message, int line, int column) : XinxException(message), m_line(line), m_column(column)
 {
 
 }
 
+/*!
+ * Return the line where the error is.
+ * \return The line of the error.
+ */
 int ParserException::getLine() const
 {
 	return m_line;
 }
 
+/*!
+ * Return the column where the error is.
+ * \return the column of the error.
+ */
 int ParserException::getColumn() const
 {
 	return m_column;
 }
 
 /* Parser */
+
+/*!
+ * \class Parser
+ * \brief The content view parser create the content view tree (and fill the base)
+ *
+ */
 
 Parser::Parser() : m_decaledLine(0), m_device(0)
 {
@@ -56,26 +81,37 @@ Parser::~Parser()
 {
 }
 
+/*!
+ * \fn virtual void Parser::load() = 0
+ * \brief Load the content of the givent device and return true if sucessfully loaded
+ *
+ */
+
+/*! Set a decalage when attach a node to the parent */
 void Parser::setDecalage(int line)
 {
 	m_decaledLine = line;
 }
 
+/*! Return the current decalage */
 int Parser::decalage() const
 {
 	return m_decaledLine;
 }
 
+/*! Set the root node */
 void Parser::setRootNode(const Node & node)
 {
 	m_rootNode = node;
 }
 
+/*! Return the root node */
 Node Parser::rootNode() const
 {
 	return m_rootNode;
 }
 
+/*! Set the filename */
 void Parser::setFilename(const QString & filename)
 {
 	QFile * file = new QFile(filename);
@@ -93,31 +129,37 @@ void Parser::setFilename(const QString & filename)
 	m_device = file;
 }
 
+/*! Get the filename */
 QString Parser::filename() const
 {
 	return m_filename;
 }
 
+/*! Set the device */
 void Parser::setInputDevice(QIODevice * device)
 {
 	m_device = device;
 }
 
+/*! Return the device */
 QIODevice * Parser::inputDevice() const
 {
 	return m_device;
 }
 
+/*! Set the database */
 void Parser::setDatabase(const QSqlDatabase & db)
 {
 	m_db = db;
 }
 
+/*! Return the database */
 QSqlDatabase Parser::database() const
 {
 	return m_db;
 }
 
+//! Add the import to the list
 QString Parser::addImport(const QString & import)
 {
 	QString calculateImport = locationOf(import);
@@ -125,11 +167,15 @@ QString Parser::addImport(const QString & import)
 	return calculateImport;
 }
 
+/*! Get the list of import */
 const QStringList & Parser::imports() const
 {
 	return m_imports;
 }
 
+/*!
+ * Attach the node \e child to \e parent if this node isn't already attached.
+ */
 void Parser::attachNode(const Node & parent, Node & child)
 {
 	Q_ASSERT(parent.isValid());
@@ -149,6 +195,7 @@ void Parser::attachNode(const Node & parent, Node & child)
 	}
 }
 
+//! Load all child from the given \e rootNode for future detach
 void Parser::loadAttachedNode(const Node & rootNode)
 {
 	if (! rootNode.isValid()) return;
@@ -158,6 +205,7 @@ void Parser::loadAttachedNode(const Node & rootNode)
 	}
 }
 
+//! Detach all node again in the list
 void Parser::detachAttachedNode()
 {
 	QPair<uint,uint> p;
@@ -170,6 +218,7 @@ void Parser::detachAttachedNode()
 	m_attachedNode.clear();
 }
 
+//! Remove \e rootNode from the attachedNodeList
 void Parser::removeAttachedNode(const Node & n)
 {
 	QMutableListIterator< QPair<uint,uint> > i(m_attachedNode);
@@ -183,11 +232,13 @@ void Parser::removeAttachedNode(const Node & n)
 	}
 }
 
+//! Remove all node in the list
 void Parser::removeAttachedNodes()
 {
 	m_attachedNode.clear();
 }
 
+//! Return the location (absolute path) of the filename, with the help of the \e parent node
 QString Parser::locationOf(const QString & relativeFilename)
 {
 	QString fn = filename();

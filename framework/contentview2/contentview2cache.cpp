@@ -42,6 +42,19 @@ namespace ContentView2
 
 /* Cache */
 
+/*!
+ * \class ContentView2::Cache
+ * \brief This class is used to cache file used by the content view system.
+ *
+ * The goal of this class is to manage the loading of the content view system.
+ *
+ *
+ * \attention The cache must be independent of the project. If no project the
+ * content must be created in memory ... This because of need to have a content view even
+ * if no project is opened. In the near future, the session file must be independ of the project:
+ * in memory or in file...
+ */
+
 Cache::Cache()
 {
 	qRegisterMetaType<ContentView2::File>("ContentView2::File");
@@ -49,16 +62,19 @@ Cache::Cache()
 	connect(m_watcher, SIGNAL(fileChanged(QString)), this, SLOT(refreshCache(QString)));
 }
 
+//! Destroy the content view cache
 Cache::~Cache()
 {
 
 }
 
+//! Return the list of current contents view loaded.
 QStringList Cache::contentsViewLoaded() const
 {
 	return m_watcher->files();
 }
 
+//! Intialize a cache from the content of preloaded files.
 void Cache::initializeCache()
 {
 	if (m_watcher->files().size())
@@ -101,6 +117,7 @@ void Cache::initializeCache()
 	startTimer(300);
 }
 
+//! Load and add the parser to cache
 void Cache::addToCache(struct_cache p)
 {
 	m_parsers.append(p);
@@ -209,7 +226,7 @@ File Cache::getFile(QSqlDatabase db, struct_cache p)
 	}
 	catch (FileException e)
 	{
-		/* Lecture/Création du projet */
+		/* Lecture/Creation du projet */
 		Project project = getProject(db, p.project);
 
 		/* Creation du fichier */
@@ -525,6 +542,7 @@ void Cache::run()
 	QSqlDatabase::removeDatabase("CONTENTVIEW_SESSION_THREAD");
 }
 
+//! Call this method if you want refresh the cache for a given file
 void Cache::refreshCache(const QString & filename)
 {
 	if (QFileInfo(filename).exists())

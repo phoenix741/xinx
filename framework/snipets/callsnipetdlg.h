@@ -57,26 +57,11 @@ private:
 	QString m_defaultValue;
 };
 
-/*!
- * Implementation of snipet dialog. This dialog permit to create, modify.
- * The implementation containts only a constructor who defines default dialog
- * presentation : Windows Style Dialog.
- */
 class CallSnipetDialogImpl : public QDialog, public Ui::CallSnipetDialog
 {
 	Q_OBJECT
 public:
-	/*!
-	 * Constructor of the snipet dialog implementation. We defines a default windows flags.
-	 * The windows can't be resize.
-	 * \param text Text used for the template
-	 * \param parent The parent of the dialog
-	 * \param f Flags to use on Windows. By default, the dialog have a fixed size.
-	 */
 	CallSnipetDialogImpl(QSqlDatabase db, int snipetId, QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint);
-	/*!
-	 * Destroy the dialog.
-	 */
 	virtual ~CallSnipetDialogImpl();
 
 	const QString & snipetText() const;

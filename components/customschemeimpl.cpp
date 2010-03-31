@@ -47,7 +47,7 @@
  * the user to change it.
  *
  * \image html customschemeimpl1.png
- * \image latex customschemeimpl1.eps
+ * \image latex customschemeimpl1.png
  *
  * When the user select a format, the widget update chexkboxes, and comboboxes to
  * the new format.
