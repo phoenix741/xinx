@@ -107,7 +107,7 @@ void AppSettings::load()
 	d->deleteSettings();
 }
 
-AppSettings::AppSettings::struct_snipets AppSettings::getDefaultSnipets()
+AppSettings::struct_snipets AppSettings::getDefaultSnipets()
 {
 	struct_snipets value;
 
@@ -116,7 +116,7 @@ AppSettings::AppSettings::struct_snipets AppSettings::getDefaultSnipets()
 	return value;
 }
 
-AppSettings::AppSettings::struct_snipets AppSettings::getSettingsSnipets(AppSettingsSettings * settings, const QString & path, const AppSettings::AppSettings::struct_snipets & defaultValue)
+AppSettings::struct_snipets AppSettings::getSettingsSnipets(AppSettingsSettings * settings, const QString & path, const AppSettings::struct_snipets & defaultValue)
 {
 	struct_snipets value;
 	settings->beginGroup(path);
@@ -127,7 +127,7 @@ AppSettings::AppSettings::struct_snipets AppSettings::getSettingsSnipets(AppSett
 	return value;
 }
 
-void AppSettings::setSettingsSnipets(AppSettingsSettings * settings, const QString & path, const AppSettings::AppSettings::struct_snipets & value)
+void AppSettings::setSettingsSnipets(AppSettingsSettings * settings, const QString & path, const AppSettings::struct_snipets & value)
 {
 	struct_snipets defaultValue = getDefaultSnipets();
 	settings->beginGroup(path);
@@ -137,7 +137,7 @@ void AppSettings::setSettingsSnipets(AppSettingsSettings * settings, const QStri
 	settings->endGroup();
 }
 
-AppSettings::AppSettings::struct_qformat AppSettings::getDefaultQformat()
+AppSettings::struct_qformat AppSettings::getDefaultQformat()
 {
 	struct_qformat value;
 
@@ -151,7 +151,7 @@ AppSettings::AppSettings::struct_qformat AppSettings::getDefaultQformat()
 	return value;
 }
 
-AppSettings::AppSettings::struct_qformat AppSettings::getSettingsQformat(AppSettingsSettings * settings, const QString & path, const AppSettings::AppSettings::struct_qformat & defaultValue)
+AppSettings::struct_qformat AppSettings::getSettingsQformat(AppSettingsSettings * settings, const QString & path, const AppSettings::struct_qformat & defaultValue)
 {
 	struct_qformat value;
 	settings->beginGroup(path);
@@ -169,7 +169,7 @@ AppSettings::AppSettings::struct_qformat AppSettings::getSettingsQformat(AppSett
 	return value;
 }
 
-void AppSettings::setSettingsQformat(AppSettingsSettings * settings, const QString & path, const AppSettings::AppSettings::struct_qformat & value)
+void AppSettings::setSettingsQformat(AppSettingsSettings * settings, const QString & path, const AppSettings::struct_qformat & value)
 {
 	struct_qformat defaultValue = getDefaultQformat();
 	settings->beginGroup(path);
@@ -186,7 +186,7 @@ void AppSettings::setSettingsQformat(AppSettingsSettings * settings, const QStri
 	settings->endGroup();
 }
 
-AppSettings::AppSettings::struct_editor AppSettings::getDefaultEditor()
+AppSettings::struct_editor AppSettings::getDefaultEditor()
 {
 	struct_editor value;
 
@@ -206,7 +206,7 @@ AppSettings::AppSettings::struct_editor AppSettings::getDefaultEditor()
 	return value;
 }
 
-AppSettings::AppSettings::struct_editor AppSettings::getSettingsEditor(AppSettingsSettings * settings, const QString & path, const AppSettings::AppSettings::struct_editor & defaultValue)
+AppSettings::struct_editor AppSettings::getSettingsEditor(AppSettingsSettings * settings, const QString & path, const AppSettings::struct_editor & defaultValue)
 {
 	struct_editor value;
 	settings->beginGroup(path);
@@ -229,7 +229,7 @@ AppSettings::AppSettings::struct_editor AppSettings::getSettingsEditor(AppSettin
 	return value;
 }
 
-void AppSettings::setSettingsEditor(AppSettingsSettings * settings, const QString & path, const AppSettings::AppSettings::struct_editor & value)
+void AppSettings::setSettingsEditor(AppSettingsSettings * settings, const QString & path, const AppSettings::struct_editor & value)
 {
 	struct_editor defaultValue = getDefaultEditor();
 	settings->beginGroup(path);
@@ -251,7 +251,7 @@ void AppSettings::setSettingsEditor(AppSettingsSettings * settings, const QStrin
 	settings->endGroup();
 }
 
-AppSettings::AppSettings::struct_rcs AppSettings::getDefaultRcs()
+AppSettings::struct_rcs AppSettings::getDefaultRcs()
 {
 	struct_rcs value;
 
@@ -261,7 +261,7 @@ AppSettings::AppSettings::struct_rcs AppSettings::getDefaultRcs()
 	return value;
 }
 
-AppSettings::AppSettings::struct_rcs AppSettings::getSettingsRcs(AppSettingsSettings * settings, const QString & path, const AppSettings::AppSettings::struct_rcs & defaultValue)
+AppSettings::struct_rcs AppSettings::getSettingsRcs(AppSettingsSettings * settings, const QString & path, const AppSettings::struct_rcs & defaultValue)
 {
 	struct_rcs value;
 	settings->beginGroup(path);
@@ -273,7 +273,7 @@ AppSettings::AppSettings::struct_rcs AppSettings::getSettingsRcs(AppSettingsSett
 	return value;
 }
 
-void AppSettings::setSettingsRcs(AppSettingsSettings * settings, const QString & path, const AppSettings::AppSettings::struct_rcs & value)
+void AppSettings::setSettingsRcs(AppSettingsSettings * settings, const QString & path, const AppSettings::struct_rcs & value)
 {
 	struct_rcs defaultValue = getDefaultRcs();
 	settings->beginGroup(path);
@@ -284,7 +284,7 @@ void AppSettings::setSettingsRcs(AppSettingsSettings * settings, const QString &
 	settings->endGroup();
 }
 
-AppSettings::AppSettings::struct_project AppSettings::getDefaultProject()
+AppSettings::struct_project AppSettings::getDefaultProject()
 {
 	struct_project value;
 
@@ -297,7 +297,7 @@ AppSettings::AppSettings::struct_project AppSettings::getDefaultProject()
 	return value;
 }
 
-AppSettings::AppSettings::struct_project AppSettings::getSettingsProject(AppSettingsSettings * settings, const QString & path, const AppSettings::AppSettings::struct_project & defaultValue)
+AppSettings::struct_project AppSettings::getSettingsProject(AppSettingsSettings * settings, const QString & path, const AppSettings::struct_project & defaultValue)
 {
 	struct_project value;
 	settings->beginGroup(path);
@@ -314,7 +314,7 @@ AppSettings::AppSettings::struct_project AppSettings::getSettingsProject(AppSett
 	return value;
 }
 
-void AppSettings::setSettingsProject(AppSettingsSettings * settings, const QString & path, const AppSettings::AppSettings::struct_project & value)
+void AppSettings::setSettingsProject(AppSettingsSettings * settings, const QString & path, const AppSettings::struct_project & value)
 {
 	struct_project defaultValue = getDefaultProject();
 	settings->beginGroup(path);
@@ -330,7 +330,7 @@ void AppSettings::setSettingsProject(AppSettingsSettings * settings, const QStri
 	settings->endGroup();
 }
 
-AppSettings::AppSettings::struct_globals AppSettings::getDefaultGlobals()
+AppSettings::struct_globals AppSettings::getDefaultGlobals()
 {
 	struct_globals value;
 
@@ -347,7 +347,7 @@ AppSettings::AppSettings::struct_globals AppSettings::getDefaultGlobals()
 	return value;
 }
 
-AppSettings::AppSettings::struct_globals AppSettings::getSettingsGlobals(AppSettingsSettings * settings, const QString & path, const AppSettings::AppSettings::struct_globals & defaultValue)
+AppSettings::struct_globals AppSettings::getSettingsGlobals(AppSettingsSettings * settings, const QString & path, const AppSettings::struct_globals & defaultValue)
 {
 	struct_globals value;
 	settings->beginGroup(path);
@@ -372,7 +372,7 @@ AppSettings::AppSettings::struct_globals AppSettings::getSettingsGlobals(AppSett
 	return value;
 }
 
-void AppSettings::setSettingsGlobals(AppSettingsSettings * settings, const QString & path, const AppSettings::AppSettings::struct_globals & value)
+void AppSettings::setSettingsGlobals(AppSettingsSettings * settings, const QString & path, const AppSettings::struct_globals & value)
 {
 	struct_globals defaultValue = getDefaultGlobals();
 	settings->beginGroup(path);

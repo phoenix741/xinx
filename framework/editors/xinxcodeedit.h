@@ -82,9 +82,9 @@ public:
 	virtual bool isCommentAvailable();
 	bool canPaste();
 
-	bool find(const QString & exp, FindFlags options);
-	QDocumentCursor find(const QString & subString, const QDocumentCursor & cursor, FindFlags options = 0) const;
-	QDocumentCursor find(const QRegExp & expr, const QDocumentCursor & cursor, FindFlags options = 0) const;
+	QDocumentCursor find(const QString & subString, const QDocumentCursor & cursor, XinxCodeEdit::FindFlags options = 0) const;
+	QDocumentCursor find(const QRegExp & expr, const QDocumentCursor & cursor, XinxCodeEdit::FindFlags options = 0) const;
+	bool find(const QString & exp, XinxCodeEdit::FindFlags options);
 
 	void moveCursor(QDocumentCursor::MoveOperation operation, QDocumentCursor::MoveMode mode = QDocumentCursor::MoveAnchor);
 	void print(QPrinter * printer) const;

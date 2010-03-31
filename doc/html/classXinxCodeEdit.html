@@ -112,9 +112,9 @@ Inheritance diagram for XinxCodeEdit:</div>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXinxCodeEdit.html#ae5828a91f30d0bd36e9bf18eec9e3caa">isCommentAvailable</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXinxCodeEdit.html#a8219615ce8738be94dce1a5277ce0b8c">canPaste</a> ()</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns whether text can be pasted from the clipboard into the textedit.  <a href="#a8219615ce8738be94dce1a5277ce0b8c"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXinxCodeEdit.html#a890d92096abc8856c5c42658421127ae">find</a> (const <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstring.html">QString</a> &amp;exp, FindFlags options)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">QDocumentCursor&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXinxCodeEdit.html#aea79ad93a6f9c07f91a0b766f83227a8">find</a> (const <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstring.html">QString</a> &amp;subString, const QDocumentCursor &amp;cursor, FindFlags options=0) const </td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">QDocumentCursor&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXinxCodeEdit.html#ade079870126ad169a3918cdf8692dc43">find</a> (const <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qregexp.html">QRegExp</a> &amp;expr, const QDocumentCursor &amp;cursor, FindFlags options=0) const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">QDocumentCursor&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXinxCodeEdit.html#aaade41b7cfdf3215b9f377ddd87d1750">find</a> (const <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstring.html">QString</a> &amp;subString, const QDocumentCursor &amp;cursor, XinxCodeEdit::FindFlags options=0) const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">QDocumentCursor&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXinxCodeEdit.html#add574d0a6e416a897895b2dcef2fde43">find</a> (const <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qregexp.html">QRegExp</a> &amp;expr, const QDocumentCursor &amp;cursor, XinxCodeEdit::FindFlags options=0) const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXinxCodeEdit.html#af36de41e3bd9c8f8db60a30e54d4012c">find</a> (const <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstring.html">QString</a> &amp;exp, XinxCodeEdit::FindFlags options)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXinxCodeEdit.html#a0da94049f73bf5769a479c2c8376fdd3">moveCursor</a> (QDocumentCursor::MoveOperation operation, QDocumentCursor::MoveMode mode=QDocumentCursor::MoveAnchor)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXinxCodeEdit.html#ad3faf0c9460d28d5d241223bce76f922">print</a> (<a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qprinter.html">QPrinter</a> *printer) const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXinxCodeEdit.html#a77db2ed087d6aba68cdcf50d0c945a89">clearBookmark</a> ()</td></tr>
@@ -538,7 +538,36 @@ Inheritance diagram for XinxCodeEdit:</div>
 
 </div>
 </div>
-<a class="anchor" id="ade079870126ad169a3918cdf8692dc43"></a><!-- doxytag: member="XinxCodeEdit::find" ref="ade079870126ad169a3918cdf8692dc43" args="(const QRegExp &amp;expr, const QDocumentCursor &amp;cursor, FindFlags options=0) const " -->
+<a class="anchor" id="af36de41e3bd9c8f8db60a30e54d4012c"></a><!-- doxytag: member="XinxCodeEdit::find" ref="af36de41e3bd9c8f8db60a30e54d4012c" args="(const QString &amp;exp, XinxCodeEdit::FindFlags options)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool XinxCodeEdit::find </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstring.html">QString</a> &amp;&nbsp;</td>
+          <td class="paramname"> <em>exp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">XinxCodeEdit::FindFlags&nbsp;</td>
+          <td class="paramname"> <em>options</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Finds the next occurrence of the string <em>exp</em>, using the given <em>options</em>. Returns true if <em>exp</em> was found and changes the cursor to select the match; otherwise returns false.</p>
+<p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. </p>
+
+</div>
+</div>
+<a class="anchor" id="add574d0a6e416a897895b2dcef2fde43"></a><!-- doxytag: member="XinxCodeEdit::find" ref="add574d0a6e416a897895b2dcef2fde43" args="(const QRegExp &amp;expr, const QDocumentCursor &amp;cursor, XinxCodeEdit::FindFlags options=0) const " -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -557,7 +586,7 @@ Inheritance diagram for XinxCodeEdit:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">FindFlags&nbsp;</td>
+          <td class="paramtype">XinxCodeEdit::FindFlags&nbsp;</td>
           <td class="paramname"> <em>options</em> = <code>0</code></td><td>&nbsp;</td>
         </tr>
         <tr>
@@ -568,10 +597,16 @@ Inheritance diagram for XinxCodeEdit:</div>
       </table>
 </div>
 <div class="memdoc">
+<p>Finds the next occurrence, matching the regular expression <em>expr</em>, in the document.</p>
+<p>The search starts at the position of the given <em>cursor</em>, and proceeds forwards through the document unless specified otherwise in the search <em>options</em>. The options control the type of search performed. The FindCaseSensitively option is ignored for this overload, use QRegExp::caseSensitivity instead.</p>
+<p>Returns a cursor with the match selected if a match was found; otherwise returns a null cursor.</p>
+<p>If the given cursor has a selection, the search begins after the selection; otherwise it begins at the cursor's position.</p>
+<p>By default the search is case-sensitive, and can match text anywhere in the document.</p>
+<p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. </p>
 
 </div>
 </div>
-<a class="anchor" id="aea79ad93a6f9c07f91a0b766f83227a8"></a><!-- doxytag: member="XinxCodeEdit::find" ref="aea79ad93a6f9c07f91a0b766f83227a8" args="(const QString &amp;subString, const QDocumentCursor &amp;cursor, FindFlags options=0) const " -->
+<a class="anchor" id="aaade41b7cfdf3215b9f377ddd87d1750"></a><!-- doxytag: member="XinxCodeEdit::find" ref="aaade41b7cfdf3215b9f377ddd87d1750" args="(const QString &amp;subString, const QDocumentCursor &amp;cursor, XinxCodeEdit::FindFlags options=0) const " -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -590,7 +625,7 @@ Inheritance diagram for XinxCodeEdit:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">FindFlags&nbsp;</td>
+          <td class="paramtype">XinxCodeEdit::FindFlags&nbsp;</td>
           <td class="paramname"> <em>options</em> = <code>0</code></td><td>&nbsp;</td>
         </tr>
         <tr>
@@ -601,33 +636,11 @@ Inheritance diagram for XinxCodeEdit:</div>
       </table>
 </div>
 <div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a890d92096abc8856c5c42658421127ae"></a><!-- doxytag: member="XinxCodeEdit::find" ref="a890d92096abc8856c5c42658421127ae" args="(const QString &amp;exp, FindFlags options)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool XinxCodeEdit::find </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstring.html">QString</a> &amp;&nbsp;</td>
-          <td class="paramname"> <em>exp</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">FindFlags&nbsp;</td>
-          <td class="paramname"> <em>options</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
+<p>Finds the next occurrence of the string, <em>subString</em>, in the document. The search starts at the position of the given <em>cursor</em>, and proceeds forwards through the document unless specified otherwise in the search options. The <em>options</em> control the type of search performed.</p>
+<p>Returns a cursor with the match selected if <em>subString</em> was found; otherwise returns a null cursor.</p>
+<p>If the given cursor has a selection, the search begins after the selection; otherwise it begins at the cursor's position.</p>
+<p>By default the search is case-sensitive, and can match text anywhere in the document.</p>
+<p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. </p>
 
 </div>
 </div>

@@ -305,18 +305,6 @@ void XinxCodeEdit::setErrors(QList<int> errors)
 }
 
 /*!
- * Finds the next occurrence of the string \e exp, using the given \e options. Returns true
- * if \e exp was found and changes the cursor to select the match; otherwise returns false.
- *
- * \overload QDocumentCursor XinxCodeEdit::find(const QString & subString, const QDocumentCursor & cursor, XinxCodeEdit::FindFlags options) const
- */
-bool XinxCodeEdit::find(const QString & exp, XinxCodeEdit::FindFlags options)
-{
-	QDocumentCursor c = find(exp, m_editor->editor()->cursor(), options);
-	return ! c.isNull();
-}
-
-/*!
  * Finds the next occurrence of the string, \e subString, in the document. The search starts at
  * the position of the given \e cursor, and proceeds forwards through the document unless
  * specified otherwise in the search options. The \e options control the type of search performed.
@@ -328,6 +316,8 @@ bool XinxCodeEdit::find(const QString & exp, XinxCodeEdit::FindFlags options)
  * begins at the cursor's position.
  *
  * By default the search is case-sensitive, and can match text anywhere in the document.
+ *
+ * \overload
  */
 QDocumentCursor XinxCodeEdit::find(const QString & subString, const QDocumentCursor & cursor, XinxCodeEdit::FindFlags options) const
 {
@@ -357,7 +347,7 @@ QDocumentCursor XinxCodeEdit::find(const QString & subString, const QDocumentCur
  *
  * By default the search is case-sensitive, and can match text anywhere in the document.
  *
- * \overload QDocumentCursor XinxCodeEdit::find(const QString & subString, const QDocumentCursor & cursor, XinxCodeEdit::FindFlags options) const
+ * \overload
  */
 QDocumentCursor XinxCodeEdit::find(const QRegExp & expr, const QDocumentCursor & cursor, XinxCodeEdit::FindFlags options) const
 {
@@ -368,6 +358,18 @@ QDocumentCursor XinxCodeEdit::find(const QRegExp & expr, const QDocumentCursor &
 	searchEngine.setCursor(cursor);
 	searchEngine.next(options.testFlag(FindBackward));
 	return searchEngine.cursor();
+}
+
+/*!
+ * Finds the next occurrence of the string \e exp, using the given \e options. Returns true
+ * if \e exp was found and changes the cursor to select the match; otherwise returns false.
+ *
+ * \overload
+ */
+bool XinxCodeEdit::find(const QString & exp, XinxCodeEdit::FindFlags options)
+{
+	QDocumentCursor c = find(exp, m_editor->editor()->cursor(), options);
+	return ! c.isNull();
 }
 
 /*!
