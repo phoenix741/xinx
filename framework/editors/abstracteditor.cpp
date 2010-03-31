@@ -36,11 +36,84 @@
 
 /* AbstractEditor */
 
+/*!
+ * \defgroup XinxEditors Editors for XINX
+ */
+
+/*!
+ * \ingroup XinxEditors
+ * \class AbstractEditor
+ * \since 0.7.2.0
+
+ * \brief Base class for construct editor for XINX.
+ *
+ * This base class contains minimum method necessary to construct an editor.
+ * An editor has a name, a title, and method related with clipboard.
+ *
+ * The editor has a model for show content of it. The best way is to use
+ * the ContentView2 name space and ContentView2::TreeModel to show the content
+ * of the file, and for completion in the editor.
+ *
+ * An editor can be serialized and deserialized in a XinxProjectSessionEditor
+ * (this object save datas in XML Document).
+ *
+ * This class is also an editor that can read and write from and to a file. This class
+ * open the file (with the correct option) and call loadFromDevice() and saveToDevice().
+ */
+
+/*!
+ * \enum AbstractEditor::SearchOption
+ * \brief Options used for search text in the editor.
+ */
+
+/*!
+ * \var AbstractEditor::SearchOption AbstractEditor::ONLY_SELECTION
+ * \brief Search only the selected element (text, widget, ...)
+ */
+
+/*!
+ * \var AbstractEditor::SearchOption AbstractEditor::BACKWARD
+ * \brief Inverse the searching mode and search before the cursor.
+ */
+
+/*!
+ * \var AbstractEditor::SearchOption AbstractEditor::WHOLE_WORDS
+ * \brief Search a whole word and not a piece of word
+ */
+
+/*!
+ * \var AbstractEditor::SearchOption AbstractEditor::REGULAR_EXPRESSION
+ * \brief The search string is a regular expression.
+ */
+
+/*!
+ * \var AbstractEditor::SearchOption AbstractEditor::SEARCH_FROM_START
+ * \brief Search from the start of the document (backward and selection must be ignored)
+ */
+
+/*!
+ * \var AbstractEditor::SearchOption AbstractEditor::MATCH_CASE
+ * \brief The search is case sensitive
+ */
+
+
+/*!
+ * \brief Create objects of the AbstractEditor.
+ *
+ * The frame will be created later by EditorFactory.
+ * \param parent Parent and containers of the editor.
+ */
 AbstractEditor::AbstractEditor(QWidget * parent)  : QFrame(parent), m_isSaving(false), m_modified(false)
 {
 	initObjects();
 }
 
+/*!
+ * \brief Constructor used to copy the editor content.
+ *
+ * This constructor must only exist for serialization works.
+ * \param editor The original editor used for copy.
+ */
 AbstractEditor::AbstractEditor(const AbstractEditor & editor) : QFrame(qobject_cast<QWidget*>(editor.parent())), m_isSaving(false), m_modified(false)
 {
 	initObjects();
@@ -74,11 +147,19 @@ void AbstractEditor::initObjects()
 	QObject::connect(this, SIGNAL(pasteAvailable(bool)), m_pasteAction, SLOT(setEnabled(bool)));
 }
 
+/*!
+ * \brief This method is used to initialize the layout.
+ *
+ * It can be used to add an header or a footer.
+ */
 void AbstractEditor::initLayout()
 {
 
 }
 
+/*!
+ * \brief Destroy the created frame editor.
+ */
 AbstractEditor::~AbstractEditor()
 {
 	desactivateWatcher();
@@ -87,6 +168,178 @@ AbstractEditor::~AbstractEditor()
 	// Actions deleted as children
 }
 
+/*!
+ * \fn virtual bool AbstractEditor::canCopy() = 0
+ * \brief Check if the editor has the capacity to copy or cut data to the clipboard.
+ *
+ * A signal is emmited when this value change.
+ * \return true if the editor can copy or cut data to clipboard else return false.
+ * \sa copy(), cut(), copyAvailable()
+ */
+
+/*!
+ * \fn virtual bool AbstractEditor::canPaste() = 0
+ * \brief Check if the editor can accept paste data from clipboard.
+ *
+ * A signal is emmited when this value change.
+ * \return true if the editor can past data from clipboard.
+ * \sa paste(), pasteAvailable()
+ */
+
+/*!
+ * \fn virtual bool AbstractEditor::canUndo() = 0
+ * \brief Check if the editor can undo last command.
+ *
+ * A signal is emmited when this value change.
+ * \return true if the editor can undo last change, else return false.
+ * \sa undo(), undoAvailable()
+ */
+
+/*!
+ * \fn virtual bool AbstractEditor::canRedo() = 0
+ * \brief Check if the editor can redo change made by undo.
+ *
+ * A signal is emmited when this value change.
+ * \return true if the editor can redo last change, else return false.
+ * \sa redo(), redoAvailable()
+ */
+
+/*!
+ * \fn virtual void AbstractEditor::loadFromDevice(QIODevice & d) = 0
+ * \brief Load the editor from a device (from a file, the memory or any medium).
+ * \param d The device where XINX must load.
+ */
+
+/*!
+ * \fn virtual void AbstractEditor::saveToDevice(QIODevice & d) = 0
+ * \brief Save the editor in a device(to a file, in the memory, or any medium).
+ * \param d The device where XINX must write.
+ */
+
+/*!
+ * \fn virtual QAbstractItemModel * AbstractEditor::model() const = 0
+ * \brief Return the model that represent the content of the editor.
+ */
+
+/*!
+ * \fn virtual void AbstractEditor::updateModel() = 0
+ * \brief Update the content of the model from the content of the editor
+ */
+
+/*!
+ * \fn virtual QString AbstractEditor::defaultFileName() const = 0
+ * \brief Return the name used if no name is defined (ie. noname.txt)
+ */
+
+/*!
+ * \fn virtual void AbstractEditor::initSearch(SearchOptions & options) = 0
+ * \brief Call-it before the search/replace begins to define the option to use
+ * when search and initialize some variables.
+ * @param options Options used to search text.
+ */
+
+/*!
+ * \fn virtual bool AbstractEditor::find(const QString & text, SearchOptions options) = 0
+ * \brief Search the \e text in the document, and select it.
+ * @param text The text to search in the document
+ * @param options User options used to find the text
+ */
+
+/*!
+ * \fn virtual void AbstractEditor::replace(const QString & from, const QString & to, SearchOptions options) = 0
+ * \brief Replace the current selection by the user text.
+ * @param from The text to replace (as asked by user so be aware of regexp)
+ * @param to The text the user want to put. (if regexp \\1, \\2 is catched text)
+ * @param options User options used to replace the text
+ */
+
+/*!
+ * \fn virtual void AbstractEditor::undo() = 0
+ * \brief Call undo operation on the editor, if available.
+ *
+ * This operation rollback the last modification made on the editor.
+ * \sa canUndo(), undoAvailable()
+ */
+
+/*!
+ * \fn virtual void AbstractEditor::redo() = 0
+ * \brief Call redo operation on the editor, if available.
+ *
+ * This operation rollback the last undo command and redo the last operaton
+ * \sa canRedo(), redoAvailable()
+ */
+
+/*!
+ * \fn virtual void AbstractEditor::cut() = 0
+ * \brief Cut selected data on the editor to the clipboard.
+ * \sa canCopy(), copy(), copyAvailable()
+ */
+
+/*!
+ * \fn virtual void AbstractEditor::copy() = 0
+ * \brief Copy selected data on the editor to the clipboard.
+ * \sa canCopy(), cut(), copyAvailable()
+ */
+
+/*!
+ * \fn virtual void AbstractEditor::paste() = 0
+ * \brief Paste data from the clipboard on the editor.
+ * \sa canPaste(), pasteAvailable()
+ */
+
+/*!
+ * \fn void AbstractEditor::modificationChanged(bool isModified)
+ * \brief Signal emited when the content changed to update view synchronised on this container.
+ */
+
+/*!
+ * \fn void AbstractEditor::undoAvailable(bool available)
+ * \brief Signal emitted when the undo state change.
+ * \param available  true if undo is Available, else false
+ * \sa canUndo(), undoAvailable()
+ */
+
+/*!
+ * \fn void AbstractEditor::redoAvailable(bool available)
+ * \brief Signal emitted when the redo state change.
+ * \param available  true if redo available, else false.
+ * \sa canRedo(), redoAvailable()
+ */
+
+/*!
+ * \fn void AbstractEditor::copyAvailable(bool available)
+ * \brief Signal emitted when the cut/copy state change.
+ * \param available true if copy or cut is available (e.g. a text is selected), else false
+ * \sa copy(), cut(), canCopy()
+ */
+
+/*!
+ * \fn void AbstractEditor::pasteAvailable(bool available)
+ * \brief Signal emitted when the paste state change.
+ * \param available  true if paste is available, else false.
+ * \sa canPaste(), paste()
+ */
+
+/*!
+ * \fn void AbstractEditor::open(const QString & filename, int line)
+ * \brief Signal emited when a request to open a file is made.
+ * \param filename file name of the file to open
+ * \param line line of the file to open
+ */
+
+/*!
+ * \fn void AbstractEditor::contentChanged()
+ * \brief Signal emited when the content of the editor change.
+ */
+
+/*!
+ * \brief Get the title of the editor.
+ *
+ * Return the title of the FileEditor. The title is \e noname if \e getFileName() is Empty
+ * else return the File name (without the path).
+ * \return The title to use with Tab name
+ * \sa getFileName(), hasName()
+ */
 QString AbstractEditor::getTitle() const
 {
 	if (! m_lastFileName.isEmpty())
@@ -95,6 +348,14 @@ QString AbstractEditor::getTitle() const
 		return defaultFileName();
 }
 
+/*!
+ * \brief Get the long title of the editor.
+ *
+ * It can be use on the TabWidget to inform user in a tool type. If editor has no
+ * name, this can be equals to "noname".
+ * \return The title of frame.
+ * \sa hasName()
+ */
 QString AbstractEditor::getLongTitle() const
 {
 	if (! m_lastFileName.isEmpty())
@@ -103,6 +364,10 @@ QString AbstractEditor::getLongTitle() const
 		return defaultFileName();
 }
 
+/*!
+ * \brief Open and load from the file \e fileName
+ * \param fileName The file name to load
+ */
 void AbstractEditor::loadFromFile(const QString & fileName)
 {
 	if (! fileName.isEmpty()) setWatcher(fileName);
@@ -131,6 +396,10 @@ void AbstractEditor::loadFromFile(const QString & fileName)
 	setModified(false);
 }
 
+/*!
+ * \brief Open and save to file \e fileName
+ * \param fileName The file name to save.
+ */
 void AbstractEditor::saveToFile(const QString & fileName)
 {
 	/* Make a backup of the file */
@@ -182,42 +451,88 @@ void AbstractEditor::saveToFile(const QString & fileName)
 	setModified(false);
 }
 
+/*!
+ * \brief Return the action used to undo operations in the editor.
+ *
+ * This action call the \e undo().
+ * \return Return the action to undo.
+ * \sa undo(), undoAvailable()
+ */
 QAction * AbstractEditor::undoAction()
 {
 	return m_undoAction;
 }
 
+/*!
+ * \brief Return the action used to redo operations in the editor.
+ *
+ * This action call the \e redo().
+ * \return Return the action to redo.
+ * \sa redo(), redoAvailable()
+ */
 QAction * AbstractEditor::redoAction()
 {
 	return m_redoAction;
 }
 
+/*!
+ * \brief Return the action used to cut a selected text in the editor.
+ *
+ * This action call the \e cut().
+ * \return Return the action to cut.
+ * \sa cut(), copyAvailable(), canCopy()
+ */
 QAction * AbstractEditor::cutAction()
 {
 	return m_cutAction;
 }
 
+/*!
+ * \brief Return the action used to copy a selected text in the editor.
+ *
+ * This action call the \e copy().
+ * \return Return the action to copy.
+ * \sa copy(), copyAvailable(), canCopy()
+ */
 QAction * AbstractEditor::copyAction()
 {
 	return m_copyAction;
 }
 
+/*!
+ * \brief Return the action used to past a text in the editor.
+ *
+ * This action call the \e paste().
+ * \return Return the action to paste.
+ * \sa copy(), pasteAvailable(), canPaste()
+ */
 QAction * AbstractEditor::pasteAction()
 {
 	return m_pasteAction;
 }
 
+/*!
+ * \brief Return an icon that represent the editor.
+ * \return an icon for the editor.
+ */
 QIcon AbstractEditor::icon() const
 {
 	return QIcon(":/images/typeunknown.png");
 }
 
+/*!
+ * \brief Return true if the editor is modified by the user, else return false
+ */
 bool AbstractEditor::isModified()
 {
 	return m_modified;
 }
 
 
+/*!
+ * \brief Set the modified attribute in local.
+ * \param isModified The new value for the modified attribute.
+ */
 void AbstractEditor::setModified(bool isModified)
 {
 	if (m_modified != isModified)
@@ -227,11 +542,24 @@ void AbstractEditor::setModified(bool isModified)
 	}
 }
 
+/*!
+ * \brief Return the last name used with \e loadFromFile() or \e saveToFile()
+ */
 const QString & AbstractEditor::lastFileName() const
 {
 	return m_lastFileName;
 }
 
+/*!
+ * \brief Serialize the editor and return the value in a byte array.
+ *
+ * The serialization save internal data of the editor (modified, content,
+ * position of cursor, ...).
+ * \param data where datas must be stored.
+ * \param content If true, the editor save the modifed content, else the editor must save only
+ * the state.
+ * \sa deserialze(), deserialzeEditor()
+ */
 void AbstractEditor::serialize(XinxProjectSessionEditor * data, bool content)
 {
 	Q_UNUSED(content);
@@ -240,6 +568,13 @@ void AbstractEditor::serialize(XinxProjectSessionEditor * data, bool content)
 	data->writeProperty("Modified", QVariant(m_modified));
 }
 
+/*!
+ * \brief Restore the editor with the content of the XML document.
+ *
+ * The deserialization restore the maximum of information of the document.
+ * \param data from what the data must be read
+ * \sa serialize(), deserializeEditor()
+ */
 void AbstractEditor::deserialize(XinxProjectSessionEditor * data)
 {
 	// Dont't read the class name, already read.
@@ -256,6 +591,12 @@ void AbstractEditor::deserialize(XinxProjectSessionEditor * data)
 
 }
 
+/*!
+ * \brief Create the right editor and deserualize it.
+ * \param data from what the data must be read
+ * \return An editor
+ * \sa serialize(), deserialize()
+ */
 AbstractEditor * AbstractEditor::deserializeEditor(XinxProjectSessionEditor * data)
 {
 	QString name = data->readProperty("ClassName").toString();

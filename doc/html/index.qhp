@@ -10,6 +10,7 @@
         <section title="Deprecated List" ref="deprecated.html" />
         <section title="Modules" ref="modules.html">
           <section title="Actions of the XINX framework" ref="group__XinxAction.html" />
+          <section title="Editors for XINX" ref="group__XinxEditors.html" />
           <section title="Visual Components used by XINX" ref="group__Components.html" />
         </section>
         <section title="Class List" ref="annotated.html">
@@ -367,6 +368,7 @@
       <keyword name="Deprecated List" id="Deprecated List" ref="deprecated.html" />
       <keyword name="Visual Components used by XINX" id="Visual Components used by XINX" ref="group__Components.html" />
       <keyword name="Actions of the XINX framework" id="Actions of the XINX framework" ref="group__XinxAction.html" />
+      <keyword name="Editors for XINX" id="Editors for XINX" ref="group__XinxEditors.html" />
       <keyword name="AbstractEditor" id="AbstractEditor" ref="classAbstractEditor.html" />
       <keyword name="initSearch" id="AbstractEditor::initSearch" ref="classAbstractEditor.html" />
       <keyword name="find" id="AbstractEditor::find" ref="classAbstractEditor.html" />
@@ -387,15 +389,15 @@
       <keyword name="~AbstractEditor" id="AbstractEditor::~AbstractEditor" ref="classAbstractEditor.html" />
       <keyword name="getTitle" id="AbstractEditor::getTitle" ref="classAbstractEditor.html" />
       <keyword name="getLongTitle" id="AbstractEditor::getLongTitle" ref="classAbstractEditor.html" />
-      <keyword name="canCopy" id="AbstractEditor::canCopy" ref="classAbstractEditor.html" />
       <keyword name="cutAction" id="AbstractEditor::cutAction" ref="classAbstractEditor.html" />
       <keyword name="copyAction" id="AbstractEditor::copyAction" ref="classAbstractEditor.html" />
+      <keyword name="canCopy" id="AbstractEditor::canCopy" ref="classAbstractEditor.html" />
       <keyword name="canPaste" id="AbstractEditor::canPaste" ref="classAbstractEditor.html" />
-      <keyword name="pasteAction" id="AbstractEditor::pasteAction" ref="classAbstractEditor.html" />
+      <keyword name="canRedo" id="AbstractEditor::canRedo" ref="classAbstractEditor.html" />
       <keyword name="canUndo" id="AbstractEditor::canUndo" ref="classAbstractEditor.html" />
+      <keyword name="pasteAction" id="AbstractEditor::pasteAction" ref="classAbstractEditor.html" />
       <keyword name="undoAction" id="AbstractEditor::undoAction" ref="classAbstractEditor.html" />
       <keyword name="redoAction" id="AbstractEditor::redoAction" ref="classAbstractEditor.html" />
-      <keyword name="canRedo" id="AbstractEditor::canRedo" ref="classAbstractEditor.html" />
       <keyword name="icon" id="AbstractEditor::icon" ref="classAbstractEditor.html" />
       <keyword name="loadFromDevice" id="AbstractEditor::loadFromDevice" ref="classAbstractEditor.html" />
       <keyword name="saveToDevice" id="AbstractEditor::saveToDevice" ref="classAbstractEditor.html" />
@@ -1828,6 +1830,7 @@
       <file>deprecated.html</file>
       <file>group__Components.html</file>
       <file>group__XinxAction.html</file>
+      <file>group__XinxEditors.html</file>
       <file>modules.html</file>
       <file>annotated.html</file>
       <file>classes.html</file>
