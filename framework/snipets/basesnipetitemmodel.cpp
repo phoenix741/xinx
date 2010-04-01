@@ -35,14 +35,80 @@
 /* BaseSnipetItemModel */
 
 /*!
+ * \defgroup Snipets Snipet management
+ */
+
+/*!
+ * \ingroup Snipets
  * \class BaseSnipetItemModel
- * \brief The class select datas in the snipet Sqlite base and provide information in tree.
+ * \since 0.9.0.0
+ *
+ * \brief The class BaseSnipetItemModel select datas in the Sqlite's snipet base and provide information in tree.
  *
  * This class select in the base all categories and all snipets in a QSqlQueryTable and transform
  * this source model to a tree model with the help of TreeProxyItemModel.
  *
- * This class can be subclassing to hide some column, and add other feature as
- * Drag & Drop.
+ * This class can be subclassing to hide some column, and add other feature as Drag & Drop.
+ */
+
+/*!
+ * \enum BaseSnipetItemModel::SnipetItemRole
+ * \brief Define roles that can be passed to the BaseSnipetItemModel::data()
+ */
+
+/*!
+ * \var BaseSnipetItemModel::SnipetItemRole BaseSnipetItemModel::SnipetIdRole
+ * \brief The data used to return the Snipet id
+ */
+
+/*!
+ * \var BaseSnipetItemModel::SnipetItemRole BaseSnipetItemModel::SnipetParentIdRole
+ * \brief The data used to return the Snipet parent id
+ */
+
+/*!
+ * \var BaseSnipetItemModel::SnipetItemRole BaseSnipetItemModel::SnipetTypeRole
+ * \brief The data used to return the Snipet type
+ */
+
+/*!
+ * \var BaseSnipetItemModel::list_id
+ * \brief Column in the source model to identify the ID
+ */
+
+ /*!
+ * \var BaseSnipetItemModel::list_parentid
+ * \brief Column in the source model to identify the Parent ID
+ */
+
+ /*!
+ * \var BaseSnipetItemModel::list_icon
+ * \brief Column in the source model to identify the Icon of the snipet
+ */
+
+ /*!
+ * \var BaseSnipetItemModel::list_name
+ * \brief Column in the source model to identify the Name of the snipet
+ */
+
+ /*!
+ * \var BaseSnipetItemModel::list_description
+ * \brief Column in the source model to identify the Description
+ */
+
+ /*!
+ * \var BaseSnipetItemModel::list_shortcut
+ * \brief Column in the source model to identify the Shortcut
+ */
+
+ /*!
+ * \var BaseSnipetItemModel::list_type
+ * \brief Column in the source model to identify the Type
+ */
+
+ /*!
+ * \var BaseSnipetItemModel::list_availablejs
+ * \brief Column in the source model to identify the JavaScript defined the availablity
  */
 
 /*!
@@ -71,7 +137,7 @@ BaseSnipetItemModel::~BaseSnipetItemModel()
  *
  * This method select all the categories and snipets from the source model
  * and re-create the internal structure of the TreeProxyItemModel by calling
- * createMapping()
+ * TreeProxyItemModel::createMapping()
  */
 void BaseSnipetItemModel::select()
 {
@@ -105,25 +171,25 @@ void BaseSnipetItemModel::select()
 	createMapping();
 }
 
-/// Source model (methode provide for convenience)
+//! Source model (methode provide for convenience)
 QSqlQueryModel * BaseSnipetItemModel::sourceModel()
 {
 	return m_sourceModel;
 }
 
-/// Source model (methode provide for convenience)
+//! Source model (methode provide for convenience)
 QSqlQueryModel * BaseSnipetItemModel::sourceModel() const
 {
 	return m_sourceModel;
 }
 
-/// Database where the model is connected (methode provide for convenience)
+//! Database where the model is connected (methode provide for convenience)
 QSqlDatabase BaseSnipetItemModel::database()
 {
 	return m_db;
 }
 
-/// Database where the model is connected (methode provide for convenience)
+//! Database where the model is connected (methode provide for convenience)
 QSqlDatabase BaseSnipetItemModel::database() const
 {
 	return m_db;
@@ -132,7 +198,7 @@ QSqlDatabase BaseSnipetItemModel::database() const
 /*!
  * \brief Calculate the unique identifier for a type and an id.
  *
- * Calculate the unique identifier used in methode getUniqueIdentifier() and
+ * Calculate the unique identifier used in method getUniqueIdentifier() and
  * getParentUniqueIdentifier().
  * For this, the method used the qHash methode on a string generated from the
  * type and the id.
@@ -210,7 +276,9 @@ QModelIndex BaseSnipetItemModel::index(bool isCategory, int id) const
 	return TreeProxyItemModel::index(getTreeModelIdentifier(type, id));
 }
 
-/// Method provide for convenience (See QAbstractItemModel)
+/*!
+ * \brief Method provide for convenience (See QAbstractItemModel)
+ */
 QModelIndex BaseSnipetItemModel::index(int row, int column, const QModelIndex & parent) const
 {
 	return TreeProxyItemModel::index(row, column, parent);
@@ -266,8 +334,8 @@ QVariant BaseSnipetItemModel::data(const QModelIndex & index, int role) const
 /*!
  * \brief Return for a list of index, all the snipet and categories.
  *
- * For each index in the indexes list, this method store the id in he snipetIds list
- * or in the categoryIds list.
+ * For each index in the indexes list, this method store the id in he \p snipetIds list
+ * or in the \p categoryIds list.
  * \param indexes The list of index to convert
  * \param snipetIds list of id passed by reference
  * \param categoryIds list of id passed by reference

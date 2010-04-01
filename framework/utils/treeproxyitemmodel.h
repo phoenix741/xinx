@@ -70,18 +70,18 @@ protected slots:
 private:
 	struct Mapping
 	{
-		int id; //!< Define the id of the line. This id have nothing to do with the line in the source model
-		int parentId; //! Define the parent id of this structure
-		QVector<int> childs; //!< Define a list of id, child of this element
-		QVector<int> new_childs; //!< Structure used to know who are the new childs inserted
+		int id;                  //< Define the id of the line. This id have nothing to do with the line in the source model
+		int parentId;            //< Define the parent id of this structure
+		QVector<int> childs;     //< Define a list of id, child of this element
+		QVector<int> new_childs; //< Structure used to know who are the new childs inserted
 	};
-	/*!
+	/*
 	 * Map of id/structure.
 	 * This map associate id with a stucture contains id, parentId, and rows.
 	 */
 	typedef QHash<int,Mapping*> IndexMap;
 
-	/// Map of id/structure
+	// Map of id/structure
 	mutable IndexMap m_idMapping;
 	QHash<int,int> m_id2IndexMapping;
 	QHash<int,int> m_index2IdMapping;

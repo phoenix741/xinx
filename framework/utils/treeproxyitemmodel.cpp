@@ -28,7 +28,14 @@
 /* TreeProxyItemModel */
 
 /*!
+ * \defgroup UtilsClass Some utility classes
+ */
+
+/*!
+ * \ingroup UtilsClass
  * \class TreeProxyItemModel
+ * \since 0.9.0.0
+ *
  * \brief Class to transform a table model to a tree model
  *
  * This class is used to transform a table model (with only row and column) to a tree model. To do this
