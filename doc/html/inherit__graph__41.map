@@ -1,9 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node1" href="qt-doc.tag$qwidget.html" title="QWidget" alt="" coords="7,112,79,141"/>
-<area shape="rect" id="node3" href="$classCustomSchemeImpl.html" title="Class to help the user to customize the QCodeEdit editor." alt="" coords="128,5,267,35"/>
-<area shape="rect" id="node5" href="$classDirectoryEditWidget.html" title="A widget to edit a path. This widget have button attached to open a dialog." alt="" coords="128,59,267,88"/>
-<area shape="rect" id="node7" href="$classXinxCodeEdit.html" title="XinxCodeEdit is a wrapper of a QCodeEdit editor." alt="" coords="148,112,247,141"/>
-<area shape="rect" id="node11" href="$classXinxLineEditButton.html" title="Button use in the XinxLineEdit." alt="" coords="132,165,263,195"/>
-<area shape="rect" id="node13" href="$classXinxListWidgetImpl.html" title="The class XinxListWidgetImpl provide a widget to create, and sort a list." alt="" coords="132,219,263,248"/>
-<area shape="rect" id="node9" href="$classXinxCodeEditAction.html" title="XinxCodeEditAction" alt="" coords="315,112,451,141"/>
-</map>

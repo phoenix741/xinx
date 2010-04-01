@@ -1,9 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node5" href="$classBaseSnipetItemModel.html" title="The class select datas in the snipet Sqlite base and provide information in tree..." alt="" coords="84,160,233,189"/>
-<area shape="rect" id="node13" href="$classCategoryItemModel.html" title="CategoryItemModel" alt="" coords="257,160,391,189"/>
-<area shape="rect" id="node15" href="$classContentView2_1_1TreeModel.html" title="ContentView2::TreeModel" alt="" coords="415,160,585,189"/>
-<area shape="rect" id="node2" href="qt-doc.tag$qabstractproxymodel.html" title="QAbstractProxyModel" alt="" coords="249,5,399,35"/>
-<area shape="rect" id="node7" href="$classSnipetDockItemModel.html" title="SnipetDockItemModel" alt="" coords="5,237,155,267"/>
-<area shape="rect" id="node9" href="$classSnipetItemModel.html" title="SnipetItemModel" alt="" coords="179,237,296,267"/>
-<area shape="rect" id="node11" href="$classSnipetMenuModel.html" title="SnipetMenuModel" alt="" coords="175,315,300,344"/>
-</map>
