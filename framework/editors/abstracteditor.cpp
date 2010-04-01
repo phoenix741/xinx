@@ -409,6 +409,14 @@ AbstractEditor::~AbstractEditor()
  */
 
 /*!
+ * \fn virtual BookmarkEditorInterface * AbstractEditor::bookmarkInterface() = 0
+ * \brief Return the interface used to navigate throw Bookmark.
+ *
+ * Bookmark are manager throw the BookmarkEditorInterface. This interface must be reimplemented
+ * in the child class of AbstractEditor.
+ */
+
+/*!
  * \brief Get the title of the editor.
  *
  * Return the title of the FileEditor. The title return the value of defaultFileName(),

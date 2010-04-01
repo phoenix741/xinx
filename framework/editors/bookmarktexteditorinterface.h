@@ -35,11 +35,7 @@ class LIBEXPORT BookmarkTextEditorInterface : public BookmarkEditorInterface
 public:
 	BookmarkTextEditorInterface(TextFileEditor * parent);
 
-	/*!
-	 * List of bookmarks of the editor
-	 */
 	virtual QList<int> bookmarks() const;
-
 
 	void setBookmark(int line, bool enabled);
 	virtual void toogledBookmark();
@@ -52,7 +48,6 @@ public:
 
 	void setTextEditor(XinxCodeEdit * textEdit);
 public slots:
-	/*! Slot called when the bookmark is toogled on a line. This slot change the project settings. */
 	void slotBookmarkToggled(int line, bool enabled);
 
 private:

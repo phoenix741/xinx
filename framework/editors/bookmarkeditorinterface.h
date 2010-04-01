@@ -32,48 +32,19 @@ class LIBEXPORT BookmarkEditorInterface : public QObject
 public:
 	BookmarkEditorInterface(QObject * parent);
 
-	/*! Return a string reprensents the content of the \em i -ième bookmark. */
 	virtual QString bookmarkAt(int i) = 0;
-	/*! Return the number of bookmark. */
 	virtual int bookmarkCount() = 0;
 
 public slots :
-	/*!
-	 * Toogled a bookmark on the selected element.
-	 */
 	virtual void toogledBookmark() = 0;
-	/*!
-	 * Go to the first Bookmark of the editor, if the editor have one bookmark.
-	 */
 	virtual void firstBookmark();
-	/*!
-	 * Go to the previous bookmark or return false if there is no more bookmark.
-	 */
 	virtual bool previousBookmark() = 0;
-	/*!
-	 * Go to the next bookmark or return false if ther is no more bookmark.
-	 */
 	virtual bool nextBookmark() = 0;
-	/*!
-	 * Go to the last bookmark of the editor, if possible.
-	 */
 	virtual void lastBookmark();
-	/*!
-	 * Go to the \em i Bookmark of the editor.
-	 */
 	virtual void gotoBookmarkAt(int i) = 0;
-	/*!
-	 * Delete all existing bookmark
-	 */
 	virtual void clearAllBookmark() = 0;
 
 signals:
-	/*!
-	 * Signal emited when the list of bookmark is updated. When the signal is emited
-	 * a range is gived to tell which row is modified.
-	 * \param minValue The first bound
-	 * \param maxValue The second bound
-	 */
 	void bookmarkModified(int minValue, int maxValue);
 };
 

@@ -24,15 +24,29 @@
 
 /* BookmarkTextEditorInterface */
 
+/*!
+ * \ingroup XinxEditors
+ * \class BookmarkTextEditorInterface
+ * \since 0.9.0.0
+ *
+ * \brief Re-implementation of BookmarkEditorInterface for text editor.
+ *
+ * This class re-implement the BookmarkEditorInterface for use with the TextFileEditor parent.
+ * This class works as a wrapper of XinxCodeEdit, last implements equivalent method.
+ */
+
+/*!
+ * \brief Create a BookmarkTextEditorInterface
+ */
 BookmarkTextEditorInterface::BookmarkTextEditorInterface(TextFileEditor * parent) : BookmarkEditorInterface(parent), m_view(0), m_textEdit(parent)
 {
 }
 
+/*!
+ * \brief Slot called when the bookmark is toogled on a line.
+ */
 void BookmarkTextEditorInterface::slotBookmarkToggled(int line, bool enabled)
 {
-	Q_UNUSED(enabled);
-	Q_UNUSED(line);
-
 	if (enabled)
 	{
 		gotoBookmarkAt(m_view->listOfBookmark().indexOf(line));
@@ -40,26 +54,49 @@ void BookmarkTextEditorInterface::slotBookmarkToggled(int line, bool enabled)
 	emit bookmarkModified(0, bookmarkCount());
 }
 
+/*!
+ * \brief List of bookmarks of the editor
+ *
+ * In the text editor, bookmarks are line number
+ */
 QList<int> BookmarkTextEditorInterface::bookmarks() const
 {
 	return m_view->listOfBookmark();
 }
 
+/*!
+ * \brief This methode change the state to \p enabled of the bookmark at line \p line.
+ *
+ * This method overload XinxCodeEdit::setBookmark()
+ */
 void BookmarkTextEditorInterface::setBookmark(int line, bool enabled)
 {
 	m_view->setBookmark(line, enabled);
 }
 
+/*!
+ * \brief This methode toggle the state of the bookmark at the current line.
+ *
+ * This method overload XinxCodeEdit::setBookmark()
+ */
 void BookmarkTextEditorInterface::toogledBookmark()
 {
 	m_view->setBookmark(m_view->currentRow(), !m_view->listOfBookmark().contains(m_view->currentRow()));
 }
 
+/*!
+ * \brief This methode go to the bookmark \p i.
+ *
+ * This method overload XinxCodeEdit::gotoLine()
+ */
 void BookmarkTextEditorInterface::gotoBookmarkAt(int i)
 {
 	m_view->gotoLine(m_view->listOfBookmark().at(i));
 }
 
+/*!
+ * \brief This method return a description for the bookmark \p i.
+ */
 QString BookmarkTextEditorInterface::bookmarkAt(int i)
 {
 	QString description = tr("In editor '%1' at line %2");
@@ -67,26 +104,52 @@ QString BookmarkTextEditorInterface::bookmarkAt(int i)
 	return description;
 }
 
+/*!
+ * \brief This method return the number of bookmark in the editor
+ *
+ * This method overload XinxCodeEdit::listOfBookmark().count()
+ */
 int BookmarkTextEditorInterface::bookmarkCount()
 {
 	return m_view->listOfBookmark().count();
 }
 
+/*!
+ * \brief This method go to the previous bookmark
+ *
+ * This method overload XinxCodeEdit::previousBookmark()
+ */
 bool BookmarkTextEditorInterface::previousBookmark()
 {
 	return m_view->previousBookmark();
 }
 
+/*!
+ * \brief This method go to the next bookmark
+ *
+ * This method overload XinxCodeEdit::nextBookmark()
+ */
 bool BookmarkTextEditorInterface::nextBookmark()
 {
 	return m_view->nextBookmark();
 }
 
+/*!
+ * \brief This method remove all bookmark from the editor
+ *
+ * This method overload XinxCodeEdit::clearBookmark()
+ */
 void BookmarkTextEditorInterface::clearAllBookmark()
 {
 	m_view->clearBookmark();
 }
 
+/*!
+ * \brief This method define the XinxCodeEdit editor used in this interface.
+ *
+ * This methode must be called by TextFileEditor before call all other method used
+ * to navigate throw bookmark.
+ */
 void BookmarkTextEditorInterface::setTextEditor(XinxCodeEdit * textEdit)
 {
 	if (m_view != textEdit)
