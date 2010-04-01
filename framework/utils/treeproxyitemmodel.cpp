@@ -38,15 +38,18 @@
  *
  * \brief Class to transform a table model to a tree model
  *
- * This class is used to transform a table model (with only row and column) to a tree model. To do this
- * the subclass must redefine getParentUniqueIdentifier() and getUniqueIdentifier() to give for a QModelIndex
+ * This class is used to transform a table model (with only row and column as QSqlQuery) to a tree model. To do this
+ * the subclass must redefine getParentUniqueIdentifier() and getUniqueIdentifier() to give the QModelIndex
  * in the source model.
- * This proxy read all the content of the table and generate a tree. If there is a large amount of data or if the
+ *
+ * \warning This proxy read all the content of the table and generate a tree. If there is a large amount of data or if the
  * medium of the source model is slow, another approach must be study.
+ * (ie: The Generix dictionary is too big to  be transform by this class)
  *
  * This model have been made to used with a source model connected to a little Sqlite base.
  *
- * In debug mode the internal structure is printed with qDebug() when error is triggered by ExceptionManager.
+ * In debug mode the internal structure can be printed with qDebug() when error is triggered by ExceptionManager.
+ * For this you must uncomment the line in the constructor.
  */
 
 /*!
@@ -68,10 +71,9 @@
 /*!
  * \brief Create the TreeProxyItemModel
  *
- * Create a TreeProxyItemModel class.
- * By default the model is not reseted before createMapping fill the internal structure. But if you want speed up
- * the createMapping method, you can switch setResetModel to true.
- * If the model is resseted, all persistent index is lost.
+ * By default the model is not reseted before createMapping() fill the internal structure. But if you want speed up
+ * the createMapping() method, you can switch setResetModel to true.
+ * If the model is reseted, all persistent index is lost.
  */
 TreeProxyItemModel::TreeProxyItemModel(QObject * parent) : QAbstractProxyModel(parent), m_sourceColumnCount(0), m_resetModel(false)
 {
@@ -80,7 +82,7 @@ TreeProxyItemModel::TreeProxyItemModel(QObject * parent) : QAbstractProxyModel(p
 #endif
 }
 
-/// Destroy the TreeProxyItemModel class
+//! Destroy the TreeProxyItemModel class
 TreeProxyItemModel::~TreeProxyItemModel()
 {
 	qDeleteAll(m_idMapping);
@@ -89,7 +91,7 @@ TreeProxyItemModel::~TreeProxyItemModel()
 /*!
  * \brief Set the value of the source model (See QAbstractProxyModel)
  *
- * Set the source model to \e sourceModel and create the mapping for this model, if the sourceModel is not empty.
+ * Set the source model to \e sourceModel and create the mapping for this model if the sourceModel is not empty.
  * If \e sourceModel is null, QAbstractProxModel use a empty model.
  */
 void TreeProxyItemModel::setSourceModel(QAbstractItemModel * sourceModel)
@@ -100,8 +102,7 @@ void TreeProxyItemModel::setSourceModel(QAbstractItemModel * sourceModel)
 
 /*!
  * \brief Return the value of the resetModel property
- *
- * Return true if the model is reseted when the model is filling
+ * \return Return true if the model is reseted when the model is filling
  */
 bool TreeProxyItemModel::resetModel() const
 {
@@ -122,7 +123,7 @@ void TreeProxyItemModel::setResetModel(bool value)
 /*!
  * \internal
  * Get the Mapping structure for the id \e id.
- * If the id isn't in the HashTable, the stucture is automatically created and initialised.
+ * If the id isn't in the QHash, the stucture is automatically created and initialised.
  */
 TreeProxyItemModel::Mapping * TreeProxyItemModel::getMapping(int id) const
 {
@@ -185,7 +186,7 @@ void TreeProxyItemModel::unassignId(Mapping * mapping)
 	int oldParentId = mapping->parentId;
 	if (m_idMapping.value(mapping->parentId, 0) > 0)
 	{
-		// Test obligatoire pour eviter le cas o� le parent a d�j� �t� d�ssasign�.
+		// Test obligatoire pour eviter le cas ou le parent a deja ete dessasigne.
 		Mapping * parentMapping = getMapping(oldParentId);
 		int row = parentMapping->childs.indexOf(mapping->id);
 		Q_ASSERT(row >= 0);
@@ -251,7 +252,7 @@ void TreeProxyItemModel::validAssignement(Mapping * mapping)
 /*!
  * \brief Change the parent of an identifier
  *
- * Change the parent identifier \e paren_id for a given identifier \e id.
+ * Change the parent identifier \p parentId for a given identifier \p id.
  * Change the parent to -1 is equivalent to unassign an id. Change the
  * parent to an unassigned id, is equivalent to assign an id.
  */
@@ -350,7 +351,7 @@ void TreeProxyItemModel::printMapping(int id, int niveau) const
 }
 #endif /*_XINX_RELEASE_MODE_*/
 
-/// For the given source index, this method return the corresponding index in the proxy (See QAbstractProxyModel)
+//! For the given source index, this method return the corresponding index in the proxy (See QAbstractProxyModel)
 QModelIndex TreeProxyItemModel::mapFromSource(const QModelIndex & sourceIndex) const
 {
 	if (! sourceIndex.isValid()) return QModelIndex();
@@ -378,7 +379,7 @@ QModelIndex TreeProxyItemModel::mapFromSource(const QModelIndex & sourceIndex) c
 	return createIndex(proxyRow, proxyColumn, parentMapping);
 }
 
-/// For the given proxy index, this method return the corresponding source index (See QAbstractProxyModel)
+//! For the given proxy index, this method return the corresponding source index (See QAbstractProxyModel)
 QModelIndex TreeProxyItemModel::mapToSource(const QModelIndex & proxyIndex) const
 {
 	if (proxyIndex.model() != this)
@@ -413,7 +414,7 @@ QModelIndex TreeProxyItemModel::mapToSource(const QModelIndex & proxyIndex) cons
 	return sourceModel()->index(sourceRow, sourceColumn);
 }
 
-/// Return the \e QModelIndex for a given identifier \e id.
+//! Return the \e QModelIndex for a given identifier \e id.
 QModelIndex TreeProxyItemModel::index(int id) const
 {
 	if (id == 0) return QModelIndex();
@@ -427,7 +428,10 @@ QModelIndex TreeProxyItemModel::index(int id) const
 	return createIndex(row, 0, parentMapping);
 }
 
-/// See QAbstractItemModel
+/*!
+ * \brief Return the index for \p row, \p column and the parent \p parent
+ * \sa QAbstractItemModel::index()
+ */
 QModelIndex TreeProxyItemModel::index(int row, int column, const QModelIndex & parent) const
 {
 	if ((row < 0) || (column < 0)) return QModelIndex();
@@ -441,7 +445,10 @@ QModelIndex TreeProxyItemModel::index(int row, int column, const QModelIndex & p
 	return createIndex(row, column, parentMapping);
 }
 
-/// See QAbstractItemModel
+/*!
+ * \brief Return the parent of the index \p index
+ * \sa QAbstractItemModel::parent()
+ */
 QModelIndex TreeProxyItemModel::parent(const QModelIndex & index) const
 {
 	if (! index.isValid()) return QModelIndex();
@@ -460,7 +467,10 @@ QModelIndex TreeProxyItemModel::parent(const QModelIndex & index) const
 	return createIndex(parentRow, parentCol, grandParentMapping);
 }
 
-/// See QAbstractItemModel
+/*!
+ * \brief Return the number of row of the index \p index
+ * \sa QAbstractItemModel::rowCount()
+ */
 int TreeProxyItemModel::rowCount(const QModelIndex & index) const
 {
 	if (index.column() > 0) return 0;
@@ -471,13 +481,19 @@ int TreeProxyItemModel::rowCount(const QModelIndex & index) const
 	return count;
 }
 
-/// See QAbstractItemModel
+/*!
+ * \brief Return the number of column of the index \p index
+ * \sa QAbstractItemModel::columnCount()
+ */
 int TreeProxyItemModel::columnCount(const QModelIndex & index) const
 {
 	return sourceModel()->columnCount(mapToSource(index));
 }
 
-/// See QAbstractItemModel
+/*!
+ * \brief Return the data for \p proxyIndex for the role \p role.
+ * \sa QAbstractItemModel::data()
+ */
 QVariant TreeProxyItemModel::data(const QModelIndex &proxyIndex, int role) const
 {
 	Mapping * m = getMapping(proxyIndex);
@@ -495,7 +511,10 @@ QVariant TreeProxyItemModel::data(const QModelIndex &proxyIndex, int role) const
 	return QAbstractProxyModel::data(proxyIndex, role);
 }
 
-/// See QAbstractItemModel
+/*!
+ * \brief Return the number of flags of the index \p index
+ * \sa QAbstractItemModel::flags()
+ */
 Qt::ItemFlags TreeProxyItemModel::flags(const QModelIndex &index) const
 {
 	Mapping * m = getMapping(index);
