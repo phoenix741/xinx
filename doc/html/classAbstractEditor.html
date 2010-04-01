@@ -60,12 +60,12 @@ Inheritance diagram for AbstractEditor:</div>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><p>Options used for search text in the editor. </p>
  <a href="classAbstractEditor.html#ab0508ae4083677d3829a3e8cf6d0e979">More...</a><br/></td></tr>
 <tr><td colspan="2"><h2>Public Slots</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAbstractEditor.html#abe5906a07faaaaf401efa68cb72f0a18">initSearch</a> (SearchOptions &amp;options)=0</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Call-it before the search/replace begins to define the option to use when search and initialize some variables.  <a href="#abe5906a07faaaaf401efa68cb72f0a18"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAbstractEditor.html#a04f635d02d0844797f39f37bc951fe50">find</a> (const <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstring.html">QString</a> &amp;text, SearchOptions options)=0</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Search the <em>text</em> in the document, and select it.  <a href="#a04f635d02d0844797f39f37bc951fe50"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAbstractEditor.html#ac3acf2929018842db8257efff3d6297d">replace</a> (const <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstring.html">QString</a> &amp;from, const <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstring.html">QString</a> &amp;to, SearchOptions options)=0</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Replace the current selection by the user text.  <a href="#ac3acf2929018842db8257efff3d6297d"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAbstractEditor.html#a04644d2631a30ae0453aa75c02f8d645">initSearch</a> (AbstractEditor::SearchOptions &amp;options)=0</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This method will be called before the search/replace begins to define the option to use and initialize some variables.  <a href="#a04644d2631a30ae0453aa75c02f8d645"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAbstractEditor.html#acaa6416700a67fb5fd9856e3f78623f5">find</a> (const <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstring.html">QString</a> &amp;text, AbstractEditor::SearchOptions options)=0</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Search the <em>text</em> in the document, and select it.  <a href="#acaa6416700a67fb5fd9856e3f78623f5"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAbstractEditor.html#a52f97b98db7612464b33efa92b30f7e5">replace</a> (const <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstring.html">QString</a> &amp;from, const <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstring.html">QString</a> &amp;to, AbstractEditor::SearchOptions options)=0</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Replace the current selection by the user text.  <a href="#a52f97b98db7612464b33efa92b30f7e5"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAbstractEditor.html#a23857c254a6d17f06e29935061cc9391">undo</a> ()=0</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Call undo operation on the editor, if available.  <a href="#a23857c254a6d17f06e29935061cc9391"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAbstractEditor.html#aafb51549c88d9d44176ee01abe6d22d5">redo</a> ()=0</td></tr>
@@ -78,7 +78,7 @@ Inheritance diagram for AbstractEditor:</div>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Paste data from the clipboard on the editor.  <a href="#a28f23858101a216863914cc8eac68be0"></a><br/></td></tr>
 <tr><td colspan="2"><h2>Signals</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAbstractEditor.html#a81f2e921e2c590e9175fc8aa32c07d80">modificationChanged</a> (bool isModified)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Signal emited when the content changed to update view synchronised on this container.  <a href="#a81f2e921e2c590e9175fc8aa32c07d80"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Signal emited when the <em>modification</em> state change.  <a href="#a81f2e921e2c590e9175fc8aa32c07d80"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAbstractEditor.html#abca40e0edeff3b5c50d488fc61b4a99b">undoAvailable</a> (bool available)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Signal emitted when the undo state change.  <a href="#abca40e0edeff3b5c50d488fc61b4a99b"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAbstractEditor.html#a91c390bceb36a768138ddd2e1c3631bc">redoAvailable</a> (bool available)</td></tr>
@@ -88,12 +88,12 @@ Inheritance diagram for AbstractEditor:</div>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAbstractEditor.html#a5ed244a5ecb7ff03cd7d73e6e2773d90">pasteAvailable</a> (bool available)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Signal emitted when the paste state change.  <a href="#a5ed244a5ecb7ff03cd7d73e6e2773d90"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAbstractEditor.html#ae8179367183dcfc6b861cc1887f776c4">open</a> (const <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstring.html">QString</a> &amp;filename, int line)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Signal emited when a request to open a file is made.  <a href="#ae8179367183dcfc6b861cc1887f776c4"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Signal emited when the editor request to open a file is made.  <a href="#ae8179367183dcfc6b861cc1887f776c4"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAbstractEditor.html#a94608a77b45e95fa6a78057ece22af0a">contentChanged</a> ()</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Signal emited when the content of the editor change.  <a href="#a94608a77b45e95fa6a78057ece22af0a"></a><br/></td></tr>
 <tr><td colspan="2"><h2>Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAbstractEditor.html#a105b1a52cc6f65ad4ca1f6a50c9dc7ec">AbstractEditor</a> (<a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qwidget.html">QWidget</a> *parent=0)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Create objects of the <a class="el" href="classAbstractEditor.html" title="Base class for construct editor for XINX.">AbstractEditor</a>.  <a href="#a105b1a52cc6f65ad4ca1f6a50c9dc7ec"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Create an objects of type <a class="el" href="classAbstractEditor.html" title="Base class for construct editor for XINX.">AbstractEditor</a>.  <a href="#a105b1a52cc6f65ad4ca1f6a50c9dc7ec"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAbstractEditor.html#a2587e2232ee8f4df8212ad2d9f29b924">~AbstractEditor</a> ()</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Destroy the created frame editor.  <a href="#a2587e2232ee8f4df8212ad2d9f29b924"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstring.html">QString</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAbstractEditor.html#a51c51f97fed492e8a6135478c8e458b5">getTitle</a> () const </td></tr>
@@ -125,26 +125,26 @@ Inheritance diagram for AbstractEditor:</div>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAbstractEditor.html#ae5b9f116ea2e102b18e20466ed889ea9">saveToDevice</a> (<a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qiodevice.html">QIODevice</a> &amp;d)=0</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Save the editor in a device(to a file, in the memory, or any medium).  <a href="#ae5b9f116ea2e102b18e20466ed889ea9"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAbstractEditor.html#a43b8bd85c74846a2bbcbffe764bd3143">loadFromFile</a> (const <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstring.html">QString</a> &amp;fileName=<a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstring.html">QString</a>())</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Open and load from the file <em>fileName</em>.  <a href="#a43b8bd85c74846a2bbcbffe764bd3143"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Load the editor from the file <code>fileName</code>.  <a href="#a43b8bd85c74846a2bbcbffe764bd3143"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAbstractEditor.html#aa4ed3310b1d2a843cbe18733c843a3df">saveToFile</a> (const <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstring.html">QString</a> &amp;fileName=<a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstring.html">QString</a>())</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Open and save to file <em>fileName</em>.  <a href="#aa4ed3310b1d2a843cbe18733c843a3df"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Save the editor's content to file <em>fileName</em>.  <a href="#aa4ed3310b1d2a843cbe18733c843a3df"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qabstractitemmodel.html">QAbstractItemModel</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAbstractEditor.html#af0ac4c458afd084ced58aaf6fee91740">model</a> () const =0</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Return the model that represent the content of the editor.  <a href="#af0ac4c458afd084ced58aaf6fee91740"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAbstractEditor.html#aa98a87391b59db86bfc1576ade287dec">updateModel</a> ()=0</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Update the content of the model from the content of the editor.  <a href="#aa98a87391b59db86bfc1576ade287dec"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">const <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstring.html">QString</a> &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAbstractEditor.html#ab0769a1add3292de309a58957b00c6bb">lastFileName</a> () const </td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Return the last name used with <em><a class="el" href="classAbstractEditor.html#a43b8bd85c74846a2bbcbffe764bd3143" title="Open and load from the file fileName.">loadFromFile()</a></em> or <em><a class="el" href="classAbstractEditor.html#aa4ed3310b1d2a843cbe18733c843a3df" title="Open and save to file fileName.">saveToFile()</a></em>.  <a href="#ab0769a1add3292de309a58957b00c6bb"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Return the last name used with <em><a class="el" href="classAbstractEditor.html#a43b8bd85c74846a2bbcbffe764bd3143" title="Load the editor from the file fileName.">loadFromFile()</a></em> or <em><a class="el" href="classAbstractEditor.html#aa4ed3310b1d2a843cbe18733c843a3df" title="Save the editor&#39;s content to file fileName.">saveToFile()</a></em>.  <a href="#ab0769a1add3292de309a58957b00c6bb"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qstring.html">QString</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAbstractEditor.html#af5614c0686ea2c0a0e2e6b33de92b4de">defaultFileName</a> () const =0</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Return the name used if no name is defined (ie. noname.txt).  <a href="#af5614c0686ea2c0a0e2e6b33de92b4de"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Return the file name name to use if no filename is defined (ie. noname.txt).  <a href="#af5614c0686ea2c0a0e2e6b33de92b4de"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAbstractEditor.html#aba0096c505c1d306e5acf9ef2ddee50f">isModified</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAbstractEditor.html#aab1f5f8a3614c0d2c3dd443b061708f6">serialize</a> (<a class="el" href="classXinxProjectSessionEditor.html">XinxProjectSessionEditor</a> *data, bool content)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Serialize the editor and return the value in a byte array.  <a href="#aab1f5f8a3614c0d2c3dd443b061708f6"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Serialize the editor and return the value in a <a class="el" href="classXinxProjectSessionEditor.html">XinxProjectSessionEditor</a>.  <a href="#aab1f5f8a3614c0d2c3dd443b061708f6"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAbstractEditor.html#a66e639b24c0db81f2017cbdce543849e">deserialize</a> (<a class="el" href="classXinxProjectSessionEditor.html">XinxProjectSessionEditor</a> *data)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Restore the editor with the content of the XML document.  <a href="#a66e639b24c0db81f2017cbdce543849e"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classBookmarkEditorInterface.html">BookmarkEditorInterface</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAbstractEditor.html#a77a1945a2bf68a4f9fa4acb67084aa6e">bookmarkInterface</a> ()=0</td></tr>
 <tr><td colspan="2"><h2>Static Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classAbstractEditor.html">AbstractEditor</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAbstractEditor.html#a66adbb5266880857cd209b99245ec280">deserializeEditor</a> (<a class="el" href="classXinxProjectSessionEditor.html">XinxProjectSessionEditor</a> *data)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Create the right editor and deserualize it.  <a href="#a66adbb5266880857cd209b99245ec280"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Create the editor and deseroalize it.  <a href="#a66adbb5266880857cd209b99245ec280"></a><br/></td></tr>
 <tr><td colspan="2"><h2>Protected Slots</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAbstractEditor.html#a8e353b7d74aa3ac5699ab319b4da4a0c">setModified</a> (bool isModified)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Set the modified attribute in local.  <a href="#a8e353b7d74aa3ac5699ab319b4da4a0c"></a><br/></td></tr>
@@ -163,9 +163,23 @@ Inheritance diagram for AbstractEditor:</div>
 <p>Base class for construct editor for XINX. </p>
 <dl class="since"><dt><b>Since:</b></dt><dd>0.7.2.0</dd></dl>
 <p>This base class contains minimum method necessary to construct an editor. An editor has a name, a title, and method related with clipboard.</p>
+<h2><a class="anchor" id="ContentView">
+Editor Content View</a></h2>
 <p>The editor has a model for show content of it. The best way is to use the <a class="el" href="namespaceContentView2.html">ContentView2</a> name space and <a class="el" href="classContentView2_1_1TreeModel.html">ContentView2::TreeModel</a> to show the content of the file, and for completion in the editor.</p>
-<p>An editor can be serialized and deserialized in a <a class="el" href="classXinxProjectSessionEditor.html">XinxProjectSessionEditor</a> (this object save datas in XML Document).</p>
-<p>This class is also an editor that can read and write from and to a file. This class open the file (with the correct option) and call <a class="el" href="classAbstractEditor.html#ad2f19b73385de5b4090d064260b428a3" title="Load the editor from a device (from a file, the memory or any medium).">loadFromDevice()</a> and <a class="el" href="classAbstractEditor.html#ae5b9f116ea2e102b18e20466ed889ea9" title="Save the editor in a device(to a file, in the memory, or any medium).">saveToDevice()</a>. </p>
+<p>This model will be show in the <em>Content View Dock</em> of XINX</p>
+<div align="center">
+<img src="abstracteditor1.png" alt="abstracteditor1.png"/>
+</div>
+ <h2><a class="anchor" id="Serialization">
+Editor Serialization</a></h2>
+<p>An editor can be serialized and deserialized in a <a class="el" href="classXinxProjectSessionEditor.html">XinxProjectSessionEditor</a> (this object save datas in XML Document). For this child editor must registered by using :</p>
+<div class="fragment"><pre class="fragment">   qRegisterMetaType&lt;MyEditor&gt;(<span class="stringliteral">&quot;MyEditor&quot;</span>);
+</pre></div><p>The editor must use the Q_OBJECT macro too. The system use <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qobject.html#metaObject">QObject::metaObject()</a> classes to get some editor information. You must save and restore your member in the methode <a class="el" href="classAbstractEditor.html#aab1f5f8a3614c0d2c3dd443b061708f6" title="Serialize the editor and return the value in a XinxProjectSessionEditor.">serialize()</a> and <a class="el" href="classAbstractEditor.html#a66e639b24c0db81f2017cbdce543849e" title="Restore the editor with the content of the XML document.">deserialize()</a>.</p>
+<h2><a class="anchor" id="FileManagement">
+Editor's files</a></h2>
+<p>This class is also an editor that can read and write from and to a file. This class open the file (with the correct option) and call <a class="el" href="classAbstractEditor.html#ad2f19b73385de5b4090d064260b428a3" title="Load the editor from a device (from a file, the memory or any medium).">loadFromDevice()</a> and <a class="el" href="classAbstractEditor.html#ae5b9f116ea2e102b18e20466ed889ea9" title="Save the editor in a device(to a file, in the memory, or any medium).">saveToDevice()</a>. This method must be redifined to really read or save the file.</p>
+<p>If your goal is to make a text editor, you should use the object <a class="el" href="classTextFileEditor.html">TextFileEditor</a> instead of <a class="el" href="classAbstractEditor.html" title="Base class for construct editor for XINX.">AbstractEditor</a>.</p>
+<p>If a file is modified with an external application and in condition of <a class="el" href="classXINXConfig.html#ab90d332d83c20b6bc79a40f2f5a26286">XINXConfig::self()</a>-&gt;config().editor.popupWhenFileModified to true, a popup dialog ask to refresh the file in the editor. If the file wasn't modify in the editor, the file is reloaded without prompt. </p>
 <hr/><h2>Member Enumeration Documentation</h2>
 <a class="anchor" id="ab0508ae4083677d3829a3e8cf6d0e979"></a><!-- doxytag: member="AbstractEditor::SearchOption" ref="ab0508ae4083677d3829a3e8cf6d0e979" args="" -->
 <div class="memitem">
@@ -221,8 +235,9 @@ Inheritance diagram for AbstractEditor:</div>
 </div>
 <div class="memdoc">
 
-<p>Create objects of the <a class="el" href="classAbstractEditor.html" title="Base class for construct editor for XINX.">AbstractEditor</a>. </p>
-<p>The frame will be created later by <a class="el" href="classEditorFactory.html">EditorFactory</a>. </p>
+<p>Create an objects of type <a class="el" href="classAbstractEditor.html" title="Base class for construct editor for XINX.">AbstractEditor</a>. </p>
+<p>An editor is based on the <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qframe.html">QFrame</a> object. Your widgets must be added in the <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qframe.html">QFrame</a> object, with help of a <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qlayout.html">QLayout</a>. You can use <a class="el" href="classBorderLayout.html" title="A layout with a central widget.">BorderLayout</a> of the components library or Qt layout.</p>
+<p>The layout of the frame will be created later by <a class="el" href="classEditorFactory.html">EditorFactory</a>. For this you must re-implemente <a class="el" href="classAbstractEditor.html#a3b808fcf2d63d61d111de35055a24fcc" title="This method is used to initialize the layout.">initLayout()</a></p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>parent</em>&nbsp;</td><td>Parent and containers of the editor. </td></tr>
@@ -268,7 +283,7 @@ Inheritance diagram for AbstractEditor:</div>
 <div class="memdoc">
 
 <p>Constructor used to copy the editor content. </p>
-<p>This constructor must only exist for serialization works. </p>
+<p>This constructor must only exist for serialization works. You don't have to create your own copy constructor. The editor use the same parent of <em>editor</em> but don't copy members of <a class="el" href="classAbstractEditor.html" title="Base class for construct editor for XINX.">AbstractEditor</a>. It's used to create a new <a class="el" href="classAbstractEditor.html" title="Base class for construct editor for XINX.">AbstractEditor</a>.</p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>editor</em>&nbsp;</td><td>The original editor used for copy. </td></tr>
@@ -314,7 +329,7 @@ Inheritance diagram for AbstractEditor:</div>
 <div class="memdoc">
 
 <p>Check if the editor has the capacity to copy or cut data to the clipboard. </p>
-<p>A signal is emmited when this value change. </p>
+<p>In practice, this method must return true if the user have selected text, element, ... The signal <a class="el" href="classAbstractEditor.html#a3c72e71480957503340ddb4ec587aed9" title="Signal emitted when the cut/copy state change.">copyAvailable()</a> is emmited when this value change. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>true if the editor can copy or cut data to clipboard else return false. </dd></dl>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classAbstractEditor.html#a057690fd13105de7db3e7cf2ac97a572" title="Copy selected data on the editor to the clipboard.">copy()</a>, <a class="el" href="classAbstractEditor.html#a239a3d204a7fc24b1c3e7c29da76a48c" title="Cut selected data on the editor to the clipboard.">cut()</a>, <a class="el" href="classAbstractEditor.html#a3c72e71480957503340ddb4ec587aed9" title="Signal emitted when the cut/copy state change.">copyAvailable()</a> </dd></dl>
 
@@ -338,7 +353,7 @@ Inheritance diagram for AbstractEditor:</div>
 <div class="memdoc">
 
 <p>Check if the editor can accept paste data from clipboard. </p>
-<p>A signal is emmited when this value change. </p>
+<p>The signal <a class="el" href="classAbstractEditor.html#a5ed244a5ecb7ff03cd7d73e6e2773d90" title="Signal emitted when the paste state change.">pasteAvailable()</a> is emmited when this value change. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>true if the editor can past data from clipboard. </dd></dl>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classAbstractEditor.html#a28f23858101a216863914cc8eac68be0" title="Paste data from the clipboard on the editor.">paste()</a>, <a class="el" href="classAbstractEditor.html#a5ed244a5ecb7ff03cd7d73e6e2773d90" title="Signal emitted when the paste state change.">pasteAvailable()</a> </dd></dl>
 
@@ -362,7 +377,7 @@ Inheritance diagram for AbstractEditor:</div>
 <div class="memdoc">
 
 <p>Check if the editor can redo change made by undo. </p>
-<p>A signal is emmited when this value change. </p>
+<p>The signal <a class="el" href="classAbstractEditor.html#a91c390bceb36a768138ddd2e1c3631bc" title="Signal emitted when the redo state change.">redoAvailable()</a> is emmited when this value change. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>true if the editor can redo last change, else return false. </dd></dl>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classAbstractEditor.html#aafb51549c88d9d44176ee01abe6d22d5" title="Call redo operation on the editor, if available.">redo()</a>, <a class="el" href="classAbstractEditor.html#a91c390bceb36a768138ddd2e1c3631bc" title="Signal emitted when the redo state change.">redoAvailable()</a> </dd></dl>
 
@@ -386,7 +401,7 @@ Inheritance diagram for AbstractEditor:</div>
 <div class="memdoc">
 
 <p>Check if the editor can undo last command. </p>
-<p>A signal is emmited when this value change. </p>
+<p>The signal <a class="el" href="classAbstractEditor.html#abca40e0edeff3b5c50d488fc61b4a99b" title="Signal emitted when the undo state change.">undoAvailable()</a> is emmited when this value change. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>true if the editor can undo last change, else return false. </dd></dl>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classAbstractEditor.html#a23857c254a6d17f06e29935061cc9391" title="Call undo operation on the editor, if available.">undo()</a>, <a class="el" href="classAbstractEditor.html#abca40e0edeff3b5c50d488fc61b4a99b" title="Signal emitted when the undo state change.">undoAvailable()</a> </dd></dl>
 
@@ -543,7 +558,8 @@ Inheritance diagram for AbstractEditor:</div>
 </div>
 <div class="memdoc">
 
-<p>Return the name used if no name is defined (ie. noname.txt). </p>
+<p>Return the file name name to use if no filename is defined (ie. noname.txt). </p>
+<p>This method is used to known the file extention, and the default file name to propose to the user when saving. </p>
 
 <p>Implemented in <a class="el" href="classTextFileEditor.html#aa2f15d70ad1d4586d2feec1d0ef5aa18">TextFileEditor</a>.</p>
 
@@ -566,14 +582,14 @@ Inheritance diagram for AbstractEditor:</div>
 <div class="memdoc">
 
 <p>Restore the editor with the content of the XML document. </p>
-<p>The deserialization restore the maximum of information of the document. </p>
+<p>The deserialization restore the maximum of information of the document.</p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>data</em>&nbsp;</td><td>from what the data must be read </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classAbstractEditor.html#aab1f5f8a3614c0d2c3dd443b061708f6" title="Serialize the editor and return the value in a byte array.">serialize()</a>, <a class="el" href="classAbstractEditor.html#a66adbb5266880857cd209b99245ec280" title="Create the right editor and deserualize it.">deserializeEditor()</a> </dd></dl>
+<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classAbstractEditor.html#aab1f5f8a3614c0d2c3dd443b061708f6" title="Serialize the editor and return the value in a XinxProjectSessionEditor.">serialize()</a>, <a class="el" href="classAbstractEditor.html#a66adbb5266880857cd209b99245ec280" title="Create the editor and deseroalize it.">deserializeEditor()</a> </dd></dl>
 
 <p>Reimplemented in <a class="el" href="classTextFileEditor.html#a33bc0cfae83491ddd59fe62d92368974">TextFileEditor</a>.</p>
 
@@ -595,7 +611,9 @@ Inheritance diagram for AbstractEditor:</div>
 </div>
 <div class="memdoc">
 
-<p>Create the right editor and deserualize it. </p>
+<p>Create the editor and deseroalize it. </p>
+<p>This <em>static</em> method is used by <a class="el" href="classEditorFactory.html">EditorFactory</a> to restore the editor. This method create the right class with the help of the <code>ClassName</code> property, QMetaType::type(name) and QMetaType::construct(id).</p>
+<p>Next this method call the <em>virtual</em> method <a class="el" href="classAbstractEditor.html#a66e639b24c0db81f2017cbdce543849e" title="Restore the editor with the content of the XML document.">deserialize()</a></p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>data</em>&nbsp;</td><td>from what the data must be read </td></tr>
@@ -603,11 +621,11 @@ Inheritance diagram for AbstractEditor:</div>
   </dd>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>An editor </dd></dl>
-<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classAbstractEditor.html#aab1f5f8a3614c0d2c3dd443b061708f6" title="Serialize the editor and return the value in a byte array.">serialize()</a>, <a class="el" href="classAbstractEditor.html#a66e639b24c0db81f2017cbdce543849e" title="Restore the editor with the content of the XML document.">deserialize()</a> </dd></dl>
+<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classAbstractEditor.html#aab1f5f8a3614c0d2c3dd443b061708f6" title="Serialize the editor and return the value in a XinxProjectSessionEditor.">serialize()</a>, <a class="el" href="classAbstractEditor.html#a66e639b24c0db81f2017cbdce543849e" title="Restore the editor with the content of the XML document.">deserialize()</a> </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="a04f635d02d0844797f39f37bc951fe50"></a><!-- doxytag: member="AbstractEditor::find" ref="a04f635d02d0844797f39f37bc951fe50" args="(const QString &amp;text, SearchOptions options)=0" -->
+<a class="anchor" id="acaa6416700a67fb5fd9856e3f78623f5"></a><!-- doxytag: member="AbstractEditor::find" ref="acaa6416700a67fb5fd9856e3f78623f5" args="(const QString &amp;text, AbstractEditor::SearchOptions options)=0" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -620,7 +638,7 @@ Inheritance diagram for AbstractEditor:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">SearchOptions&nbsp;</td>
+          <td class="paramtype">AbstractEditor::SearchOptions&nbsp;</td>
           <td class="paramname"> <em>options</em></td><td>&nbsp;</td>
         </tr>
         <tr>
@@ -633,6 +651,7 @@ Inheritance diagram for AbstractEditor:</div>
 <div class="memdoc">
 
 <p>Search the <em>text</em> in the document, and select it. </p>
+<p>The parameter <code>options</code> is the same of the parameter throw via <a class="el" href="classAbstractEditor.html#a04644d2631a30ae0453aa75c02f8d645" title="This method will be called before the search/replace begins to define the option...">initSearch()</a>. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>text</em>&nbsp;</td><td>The text to search in the document </td></tr>
@@ -640,8 +659,6 @@ Inheritance diagram for AbstractEditor:</div>
   </table>
   </dd>
 </dl>
-
-<p>Implemented in <a class="el" href="classTextFileEditor.html#a9f208c4dbe31220da32b01d42aab26ca">TextFileEditor</a>.</p>
 
 </div>
 </div>
@@ -661,7 +678,7 @@ Inheritance diagram for AbstractEditor:</div>
 <div class="memdoc">
 
 <p>Get the long title of the editor. </p>
-<p>It can be use on the TabWidget to inform user in a tool type. If editor has no name, this can be equals to "noname". </p>
+<p>It can be use on the TabWidget to inform user in a tool type. If the method getFileName() return an empty string, the editor retorun the content of <a class="el" href="classAbstractEditor.html#af5614c0686ea2c0a0e2e6b33de92b4de" title="Return the file name name to use if no filename is defined (ie. noname.txt).">defaultFileName()</a>, else the filename with path is returned. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>The title of frame. </dd></dl>
 <dl class="see"><dt><b>See also:</b></dt><dd>hasName() </dd></dl>
 
@@ -683,7 +700,7 @@ Inheritance diagram for AbstractEditor:</div>
 <div class="memdoc">
 
 <p>Get the title of the editor. </p>
-<p>Return the title of the FileEditor. The title is <em>noname</em> if <em>getFileName()</em> is Empty else return the File name (without the path). </p>
+<p>Return the title of the FileEditor. The title return the value of <a class="el" href="classAbstractEditor.html#af5614c0686ea2c0a0e2e6b33de92b4de" title="Return the file name name to use if no filename is defined (ie. noname.txt).">defaultFileName()</a>, if the method getFileName() return an empty string else return the File name (without the path). </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>The title to use with <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qtextoption-tab.html">Tab</a> name </dd></dl>
 <dl class="see"><dt><b>See also:</b></dt><dd>getFileName(), hasName() </dd></dl>
 
@@ -725,20 +742,21 @@ Inheritance diagram for AbstractEditor:</div>
 <div class="memdoc">
 
 <p>This method is used to initialize the layout. </p>
-<p>It can be used to add an header or a footer. </p>
+<p>It can be used to add an header, a footer or to create an editor with a grid layout. All your imagination can be here. The <a class="el" href="classTextFileEditor.html">TextFileEditor</a> will have it's own layout, who can be replaced later by a child class.</p>
+<p>By default this method do nothing (no layout created). </p>
 
 <p>Reimplemented in <a class="el" href="classTextFileEditor.html#a06eac22ee4b818dcaff1de86040cdd22">TextFileEditor</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="abe5906a07faaaaf401efa68cb72f0a18"></a><!-- doxytag: member="AbstractEditor::initSearch" ref="abe5906a07faaaaf401efa68cb72f0a18" args="(SearchOptions &amp;options)=0" -->
+<a class="anchor" id="a04644d2631a30ae0453aa75c02f8d645"></a><!-- doxytag: member="AbstractEditor::initSearch" ref="a04644d2631a30ae0453aa75c02f8d645" args="(AbstractEditor::SearchOptions &amp;options)=0" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void AbstractEditor::initSearch </td>
           <td>(</td>
-          <td class="paramtype">SearchOptions &amp;&nbsp;</td>
+          <td class="paramtype">AbstractEditor::SearchOptions &amp;&nbsp;</td>
           <td class="paramname"> <em>options</em></td>
           <td>&nbsp;)&nbsp;</td>
           <td><code> [pure virtual, slot]</code></td>
@@ -747,15 +765,14 @@ Inheritance diagram for AbstractEditor:</div>
 </div>
 <div class="memdoc">
 
-<p>Call-it before the search/replace begins to define the option to use when search and initialize some variables. </p>
+<p>This method will be called before the search/replace begins to define the option to use and initialize some variables. </p>
+<p>Options to use are defined in <a class="el" href="classAbstractEditor.html#ab0508ae4083677d3829a3e8cf6d0e979" title="Options used for search text in the editor.">AbstractEditor::SearchOption</a>. This method can prepare the search by init the cursor, ... </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>options</em>&nbsp;</td><td>Options used to search text. </td></tr>
   </table>
   </dd>
 </dl>
-
-<p>Implemented in <a class="el" href="classTextFileEditor.html#a40bafea0f6becb50521ef6aad9ec33a2">TextFileEditor</a>.</p>
 
 </div>
 </div>
@@ -791,7 +808,7 @@ Inheritance diagram for AbstractEditor:</div>
 </div>
 <div class="memdoc">
 
-<p>Return the last name used with <em><a class="el" href="classAbstractEditor.html#a43b8bd85c74846a2bbcbffe764bd3143" title="Open and load from the file fileName.">loadFromFile()</a></em> or <em><a class="el" href="classAbstractEditor.html#aa4ed3310b1d2a843cbe18733c843a3df" title="Open and save to file fileName.">saveToFile()</a></em>. </p>
+<p>Return the last name used with <em><a class="el" href="classAbstractEditor.html#a43b8bd85c74846a2bbcbffe764bd3143" title="Load the editor from the file fileName.">loadFromFile()</a></em> or <em><a class="el" href="classAbstractEditor.html#aa4ed3310b1d2a843cbe18733c843a3df" title="Save the editor&#39;s content to file fileName.">saveToFile()</a></em>. </p>
 
 </div>
 </div>
@@ -812,6 +829,8 @@ Inheritance diagram for AbstractEditor:</div>
 <div class="memdoc">
 
 <p>Load the editor from a device (from a file, the memory or any medium). </p>
+<p>The <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qiodevice.html">QIODevice</a> must be open for reading and seek to the position 0.</p>
+<dl class="note"><dt><b>Note:</b></dt><dd>If you want use a Text editor, you should use <a class="el" href="classTextFileEditor.html">TextFileEditor</a> who already re-implement this method.</dd></dl>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>d</em>&nbsp;</td><td>The device where XINX must load. </td></tr>
@@ -839,13 +858,16 @@ Inheritance diagram for AbstractEditor:</div>
 </div>
 <div class="memdoc">
 
-<p>Open and load from the file <em>fileName</em>. </p>
+<p>Load the editor from the file <code>fileName</code>. </p>
+<p>This method open the file <code>fileName</code> and pass an opened <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qfile.html">QFile</a> to <a class="el" href="classAbstractEditor.html#ad2f19b73385de5b4090d064260b428a3" title="Load the editor from a device (from a file, the memory or any medium).">loadFromDevice()</a>.</p>
+<p>This method call method <a class="el" href="classIXinxInputOutputPlugin.html#a1f43afa3c0e91e7f312a28c22397c12f" title="Call when a file is loaded.">IXinxInputOutputPlugin::loadFile()</a> of all plugin who implements this method.</p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>fileName</em>&nbsp;</td><td>The file name to load </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classAbstractEditor.html#aa4ed3310b1d2a843cbe18733c843a3df" title="Save the editor&#39;s content to file fileName.">saveToFile()</a> </dd></dl>
 
 <p>Reimplemented in <a class="el" href="classTextFileEditor.html#a94cc02c90931a429f06fa9934e583768">TextFileEditor</a>.</p>
 
@@ -867,6 +889,7 @@ Inheritance diagram for AbstractEditor:</div>
 <div class="memdoc">
 
 <p>Return the model that represent the content of the editor. </p>
+<p>This model will be show in the in the <em>Content View Dock</em> of XINX as describe <a class="el" href="classAbstractEditor.html#ContentView">Editor Content View</a> upper. </p>
 
 <p>Implemented in <a class="el" href="classTextFileEditor.html#a583a4d81a33250e001e11ffdb7024089">TextFileEditor</a>.</p>
 
@@ -888,7 +911,14 @@ Inheritance diagram for AbstractEditor:</div>
 </div>
 <div class="memdoc">
 
-<p>Signal emited when the content changed to update view synchronised on this container. </p>
+<p>Signal emited when the <em>modification</em> state change. </p>
+<p>The modification state will be used by example to show the [*] after the filename. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>isModified</em>&nbsp;</td><td>This value contains the <em>modification</em> state of the editor. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -917,7 +947,8 @@ Inheritance diagram for AbstractEditor:</div>
 </div>
 <div class="memdoc">
 
-<p>Signal emited when a request to open a file is made. </p>
+<p>Signal emited when the editor request to open a file is made. </p>
+<p>This signal can be emited when the user <code>Ctrl+CLICK</code> to ask to open the file <code>filename</code> at the position <code>line</code> where you can find the definition of the word choose by the user.</p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>filename</em>&nbsp;</td><td>file name of the file to open </td></tr>
@@ -1071,7 +1102,7 @@ Inheritance diagram for AbstractEditor:</div>
 
 </div>
 </div>
-<a class="anchor" id="ac3acf2929018842db8257efff3d6297d"></a><!-- doxytag: member="AbstractEditor::replace" ref="ac3acf2929018842db8257efff3d6297d" args="(const QString &amp;from, const QString &amp;to, SearchOptions options)=0" -->
+<a class="anchor" id="a52f97b98db7612464b33efa92b30f7e5"></a><!-- doxytag: member="AbstractEditor::replace" ref="a52f97b98db7612464b33efa92b30f7e5" args="(const QString &amp;from, const QString &amp;to, AbstractEditor::SearchOptions options)=0" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -1090,7 +1121,7 @@ Inheritance diagram for AbstractEditor:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">SearchOptions&nbsp;</td>
+          <td class="paramtype">AbstractEditor::SearchOptions&nbsp;</td>
           <td class="paramname"> <em>options</em></td><td>&nbsp;</td>
         </tr>
         <tr>
@@ -1103,6 +1134,7 @@ Inheritance diagram for AbstractEditor:</div>
 <div class="memdoc">
 
 <p>Replace the current selection by the user text. </p>
+<p>This method is called after the method <a class="el" href="classAbstractEditor.html#acaa6416700a67fb5fd9856e3f78623f5" title="Search the text in the document, and select it.">find()</a>, if the searching is in mode <em>replace</em>. The parameter <code>options</code> is the same of the parameter throw via <a class="el" href="classAbstractEditor.html#a04644d2631a30ae0453aa75c02f8d645" title="This method will be called before the search/replace begins to define the option...">initSearch()</a>. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>from</em>&nbsp;</td><td>The text to replace (as asked by user so be aware of regexp) </td></tr>
@@ -1111,8 +1143,6 @@ Inheritance diagram for AbstractEditor:</div>
   </table>
   </dd>
 </dl>
-
-<p>Implemented in <a class="el" href="classTextFileEditor.html#a42221a9ebaa37b776c18c050e42da9d0">TextFileEditor</a>.</p>
 
 </div>
 </div>
@@ -1133,6 +1163,8 @@ Inheritance diagram for AbstractEditor:</div>
 <div class="memdoc">
 
 <p>Save the editor in a device(to a file, in the memory, or any medium). </p>
+<p>The <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qiodevice.html">QIODevice</a> must be open for reading and seek to the position 0.</p>
+<dl class="note"><dt><b>Note:</b></dt><dd>If you want use a Text editor, you should use <a class="el" href="classTextFileEditor.html">TextFileEditor</a> who already re-implement this method.</dd></dl>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>d</em>&nbsp;</td><td>The device where XINX must write. </td></tr>
@@ -1160,13 +1192,16 @@ Inheritance diagram for AbstractEditor:</div>
 </div>
 <div class="memdoc">
 
-<p>Open and save to file <em>fileName</em>. </p>
+<p>Save the editor's content to file <em>fileName</em>. </p>
+<p>This method open the file <code>fileName</code> and pass an opened <a class="elRef" doxygen="qt-doc.tag:http://qt.nokia.com/doc/4.5//" href="http://qt.nokia.com/doc/4.5//qfile.html">QFile</a> to <a class="el" href="classAbstractEditor.html#ae5b9f116ea2e102b18e20466ed889ea9" title="Save the editor in a device(to a file, in the memory, or any medium).">saveToDevice()</a>. Before saving, if <a class="el" href="classXINXConfig.html#ab90d332d83c20b6bc79a40f2f5a26286">XINXConfig::self()</a>-&gt;config().editor.createBackupFile is true, a backup file is created in appending ".bak" to the original filename.</p>
+<p>This method call method <a class="el" href="classIXinxInputOutputPlugin.html#afcb208ef3fe6f4efca1adcba4b8a4838" title="Call when a file is saved.">IXinxInputOutputPlugin::saveFile()</a> of all plugin who implements this method.</p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>fileName</em>&nbsp;</td><td>The file name to save. </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classAbstractEditor.html#a43b8bd85c74846a2bbcbffe764bd3143" title="Load the editor from the file fileName.">loadFromFile()</a> </dd></dl>
 
 <p>Reimplemented in <a class="el" href="classTextFileEditor.html#a38e9d2cf9daa77e240a8d1593b3d5d18">TextFileEditor</a>.</p>
 
@@ -1197,8 +1232,8 @@ Inheritance diagram for AbstractEditor:</div>
 </div>
 <div class="memdoc">
 
-<p>Serialize the editor and return the value in a byte array. </p>
-<p>The serialization save internal data of the editor (modified, content, position of cursor, ...). </p>
+<p>Serialize the editor and return the value in a <a class="el" href="classXinxProjectSessionEditor.html">XinxProjectSessionEditor</a>. </p>
+<p>The serialization save internal data of the editor (modified, content, position of cursor, file name, ...). The format of the data depend of <a class="el" href="classXinxProjectSessionEditor.html">XinxProjectSessionEditor</a>.</p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>data</em>&nbsp;</td><td>where datas must be stored. </td></tr>

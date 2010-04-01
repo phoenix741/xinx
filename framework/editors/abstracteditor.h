@@ -95,9 +95,9 @@ public:
 
 	virtual BookmarkEditorInterface * bookmarkInterface() = 0;
 public slots :
-	virtual void initSearch(SearchOptions & options) = 0;
-	virtual bool find(const QString & text, SearchOptions options) = 0;
-	virtual void replace(const QString & from, const QString & to, SearchOptions options) = 0;
+	virtual void initSearch(AbstractEditor::SearchOptions & options) = 0;
+	virtual bool find(const QString & text, AbstractEditor::SearchOptions options) = 0;
+	virtual void replace(const QString & from, const QString & to, AbstractEditor::SearchOptions options) = 0;
 
 	virtual void undo() = 0;
 	virtual void redo() = 0;

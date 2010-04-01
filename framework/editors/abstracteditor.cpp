@@ -50,15 +50,42 @@
  * This base class contains minimum method necessary to construct an editor.
  * An editor has a name, a title, and method related with clipboard.
  *
+ * \section ContentView Editor Content View
+ *
  * The editor has a model for show content of it. The best way is to use
  * the ContentView2 name space and ContentView2::TreeModel to show the content
  * of the file, and for completion in the editor.
  *
+ * This model will be show in the <em>Content View Dock</em> of XINX
+ *
+ * \image html abstracteditor1.png
+ * \image latex abstracteditor1.png
+ *
+ * \section Serialization Editor Serialization
+ *
  * An editor can be serialized and deserialized in a XinxProjectSessionEditor
- * (this object save datas in XML Document).
+ * (this object save datas in XML Document). For this child editor must registered
+ * by using :
+ *
+ * \code
+ *   qRegisterMetaType<MyEditor>("MyEditor");
+ * \endcode
+ *
+ * The editor must use the Q_OBJECT macro too. The system use QObject::metaObject() classes
+ * to get some editor information. You must save and restore your member in the methode serialize()
+ * and deserialize().
+ *
+ * \section FileManagement Editor's files
  *
  * This class is also an editor that can read and write from and to a file. This class
  * open the file (with the correct option) and call loadFromDevice() and saveToDevice().
+ * This method must be redifined to really read or save the file.
+ *
+ * If your goal is to make a text editor, you should use the object TextFileEditor instead of AbstractEditor.
+ *
+ * If a file is modified with an external application and in condition of XINXConfig::self()->config().editor.popupWhenFileModified
+ * to true, a popup dialog ask to refresh the file in the editor. If the file wasn't modify
+ * in the editor, the file is reloaded without prompt.
  */
 
 /*!
@@ -98,9 +125,13 @@
 
 
 /*!
- * \brief Create objects of the AbstractEditor.
+ * \brief Create an objects of type AbstractEditor.
  *
- * The frame will be created later by EditorFactory.
+ * An editor is based on the QFrame object. Your widgets must be added in the QFrame object,
+ * with help of a QLayout. You can use BorderLayout of the components library or Qt layout.
+ *
+ * The layout of the frame will be created later by EditorFactory. For this you must re-implemente initLayout()
+ *
  * \param parent Parent and containers of the editor.
  */
 AbstractEditor::AbstractEditor(QWidget * parent)  : QFrame(parent), m_isSaving(false), m_modified(false)
@@ -111,7 +142,10 @@ AbstractEditor::AbstractEditor(QWidget * parent)  : QFrame(parent), m_isSaving(f
 /*!
  * \brief Constructor used to copy the editor content.
  *
- * This constructor must only exist for serialization works.
+ * This constructor must only exist for serialization works. You don't have to create your own copy constructor.
+ * The editor use the same parent of \e editor but don't copy members of AbstractEditor. It's used to create a new
+ * AbstractEditor.
+ *
  * \param editor The original editor used for copy.
  */
 AbstractEditor::AbstractEditor(const AbstractEditor & editor) : QFrame(qobject_cast<QWidget*>(editor.parent())), m_isSaving(false), m_modified(false)
@@ -119,6 +153,9 @@ AbstractEditor::AbstractEditor(const AbstractEditor & editor) : QFrame(qobject_c
 	initObjects();
 }
 
+/*!
+ * \internal
+ */
 void AbstractEditor::initObjects()
 {
 	setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
@@ -150,7 +187,11 @@ void AbstractEditor::initObjects()
 /*!
  * \brief This method is used to initialize the layout.
  *
- * It can be used to add an header or a footer.
+ * It can be used to add an header, a footer or to create an editor with a grid layout.
+ * All your imagination can be here.
+ * The TextFileEditor will have it's own layout, who can be replaced later by a child class.
+ *
+ * By default this method do nothing (no layout created).
  */
 void AbstractEditor::initLayout()
 {
@@ -172,7 +213,8 @@ AbstractEditor::~AbstractEditor()
  * \fn virtual bool AbstractEditor::canCopy() = 0
  * \brief Check if the editor has the capacity to copy or cut data to the clipboard.
  *
- * A signal is emmited when this value change.
+ * In practice, this method must return true if the user have selected text, element, ...
+ * The signal copyAvailable() is emmited when this value change.
  * \return true if the editor can copy or cut data to clipboard else return false.
  * \sa copy(), cut(), copyAvailable()
  */
@@ -181,7 +223,7 @@ AbstractEditor::~AbstractEditor()
  * \fn virtual bool AbstractEditor::canPaste() = 0
  * \brief Check if the editor can accept paste data from clipboard.
  *
- * A signal is emmited when this value change.
+ * The signal pasteAvailable() is emmited when this value change.
  * \return true if the editor can past data from clipboard.
  * \sa paste(), pasteAvailable()
  */
@@ -190,7 +232,7 @@ AbstractEditor::~AbstractEditor()
  * \fn virtual bool AbstractEditor::canUndo() = 0
  * \brief Check if the editor can undo last command.
  *
- * A signal is emmited when this value change.
+ * The signal undoAvailable() is emmited when this value change.
  * \return true if the editor can undo last change, else return false.
  * \sa undo(), undoAvailable()
  */
@@ -199,7 +241,7 @@ AbstractEditor::~AbstractEditor()
  * \fn virtual bool AbstractEditor::canRedo() = 0
  * \brief Check if the editor can redo change made by undo.
  *
- * A signal is emmited when this value change.
+ * The signal redoAvailable() is emmited when this value change.
  * \return true if the editor can redo last change, else return false.
  * \sa redo(), redoAvailable()
  */
@@ -207,18 +249,33 @@ AbstractEditor::~AbstractEditor()
 /*!
  * \fn virtual void AbstractEditor::loadFromDevice(QIODevice & d) = 0
  * \brief Load the editor from a device (from a file, the memory or any medium).
+ *
+ * The QIODevice must be open for reading and seek to the position 0.
+ *
+ * \note If you want use a Text editor, you should use TextFileEditor who already re-implement
+ * this method.
+ *
  * \param d The device where XINX must load.
  */
 
 /*!
  * \fn virtual void AbstractEditor::saveToDevice(QIODevice & d) = 0
  * \brief Save the editor in a device(to a file, in the memory, or any medium).
+ *
+ * The QIODevice must be open for reading and seek to the position 0.
+ *
+ * \note If you want use a Text editor, you should use TextFileEditor who already re-implement
+ * this method.
+ *
  * \param d The device where XINX must write.
  */
 
 /*!
  * \fn virtual QAbstractItemModel * AbstractEditor::model() const = 0
  * \brief Return the model that represent the content of the editor.
+ *
+ * This model will be show in the in the <em>Content View Dock</em> of XINX as
+ * describe \ref ContentView upper.
  */
 
 /*!
@@ -228,26 +285,37 @@ AbstractEditor::~AbstractEditor()
 
 /*!
  * \fn virtual QString AbstractEditor::defaultFileName() const = 0
- * \brief Return the name used if no name is defined (ie. noname.txt)
+ * \brief Return the file name name to use if no filename is defined (ie. noname.txt)
+ *
+ * This method is used to known the file extention, and the default file name to propose
+ * to the user when saving.
  */
 
 /*!
- * \fn virtual void AbstractEditor::initSearch(SearchOptions & options) = 0
- * \brief Call-it before the search/replace begins to define the option to use
- * when search and initialize some variables.
- * @param options Options used to search text.
+ * \fn virtual void AbstractEditor::initSearch(AbstractEditor::SearchOptions & options) = 0
+ * \brief This method will be called before the search/replace begins to define the option to use
+ * and initialize some variables.
+ *
+ * Options to use are defined in AbstractEditor::SearchOption. This method can prepare the search
+ * by init the cursor, ...
+ * \param options Options used to search text.
  */
 
 /*!
- * \fn virtual bool AbstractEditor::find(const QString & text, SearchOptions options) = 0
+ * \fn virtual bool AbstractEditor::find(const QString & text, AbstractEditor::SearchOptions options) = 0
  * \brief Search the \e text in the document, and select it.
- * @param text The text to search in the document
- * @param options User options used to find the text
+ *
+ * The parameter \p options is the same of the parameter throw via initSearch().
+ * \param text The text to search in the document
+ * \param options User options used to find the text
  */
 
 /*!
- * \fn virtual void AbstractEditor::replace(const QString & from, const QString & to, SearchOptions options) = 0
+ * \fn virtual void AbstractEditor::replace(const QString & from, const QString & to, AbstractEditor::SearchOptions options) = 0
  * \brief Replace the current selection by the user text.
+ *
+ * This method is called after the method find(), if the searching is in mode \e replace.
+ * The parameter \p options is the same of the parameter throw via initSearch().
  * @param from The text to replace (as asked by user so be aware of regexp)
  * @param to The text the user want to put. (if regexp \\1, \\2 is catched text)
  * @param options User options used to replace the text
@@ -289,7 +357,10 @@ AbstractEditor::~AbstractEditor()
 
 /*!
  * \fn void AbstractEditor::modificationChanged(bool isModified)
- * \brief Signal emited when the content changed to update view synchronised on this container.
+ * \brief Signal emited when the \e modification state change.
+ *
+ * The modification state will be used by example to show the [*] after the filename.
+ * \param isModified This value contains the \e modification state of the editor.
  */
 
 /*!
@@ -322,7 +393,12 @@ AbstractEditor::~AbstractEditor()
 
 /*!
  * \fn void AbstractEditor::open(const QString & filename, int line)
- * \brief Signal emited when a request to open a file is made.
+ * \brief Signal emited when the editor request to open a file is made.
+ *
+ * This signal can be emited when the user \c Ctrl+CLICK to ask to open the
+ * file \p filename at the position \p line where you can find the definition
+ * of the word choose by the user.
+ *
  * \param filename file name of the file to open
  * \param line line of the file to open
  */
@@ -335,8 +411,8 @@ AbstractEditor::~AbstractEditor()
 /*!
  * \brief Get the title of the editor.
  *
- * Return the title of the FileEditor. The title is \e noname if \e getFileName() is Empty
- * else return the File name (without the path).
+ * Return the title of the FileEditor. The title return the value of defaultFileName(),
+ * if the method getFileName() return an empty string else return the File name (without the path).
  * \return The title to use with Tab name
  * \sa getFileName(), hasName()
  */
@@ -351,8 +427,9 @@ QString AbstractEditor::getTitle() const
 /*!
  * \brief Get the long title of the editor.
  *
- * It can be use on the TabWidget to inform user in a tool type. If editor has no
- * name, this can be equals to "noname".
+ * It can be use on the TabWidget to inform user in a tool type. If the method getFileName()
+ * return an empty string, the editor retorun the content of defaultFileName(), else the
+ * filename with path is returned.
  * \return The title of frame.
  * \sa hasName()
  */
@@ -365,8 +442,14 @@ QString AbstractEditor::getLongTitle() const
 }
 
 /*!
- * \brief Open and load from the file \e fileName
+ * \brief Load the editor from the file \p fileName
+ *
+ * This method open the file \p fileName and pass an opened QFile to loadFromDevice().
+ *
+ * This method call method IXinxInputOutputPlugin::loadFile() of all plugin who implements this method.
+ *
  * \param fileName The file name to load
+ * \sa saveToFile()
  */
 void AbstractEditor::loadFromFile(const QString & fileName)
 {
@@ -397,8 +480,16 @@ void AbstractEditor::loadFromFile(const QString & fileName)
 }
 
 /*!
- * \brief Open and save to file \e fileName
+ * \brief Save the editor's content to file \e fileName
+ *
+ * This method open the file \p fileName and pass an opened QFile to saveToDevice().
+ * Before saving, if XINXConfig::self()->config().editor.createBackupFile is true, a backup file
+ * is created in appending ".bak" to the original filename.
+ *
+ * This method call method IXinxInputOutputPlugin::saveFile() of all plugin who implements this method.
+
  * \param fileName The file name to save.
+ * \sa loadFromFile()
  */
 void AbstractEditor::saveToFile(const QString & fileName)
 {
@@ -551,10 +642,11 @@ const QString & AbstractEditor::lastFileName() const
 }
 
 /*!
- * \brief Serialize the editor and return the value in a byte array.
+ * \brief Serialize the editor and return the value in a XinxProjectSessionEditor.
  *
  * The serialization save internal data of the editor (modified, content,
- * position of cursor, ...).
+ * position of cursor, file name, ...). The format of the data depend of XinxProjectSessionEditor.
+ *
  * \param data where datas must be stored.
  * \param content If true, the editor save the modifed content, else the editor must save only
  * the state.
@@ -572,6 +664,7 @@ void AbstractEditor::serialize(XinxProjectSessionEditor * data, bool content)
  * \brief Restore the editor with the content of the XML document.
  *
  * The deserialization restore the maximum of information of the document.
+ *
  * \param data from what the data must be read
  * \sa serialize(), deserializeEditor()
  */
@@ -592,7 +685,14 @@ void AbstractEditor::deserialize(XinxProjectSessionEditor * data)
 }
 
 /*!
- * \brief Create the right editor and deserualize it.
+ * \brief Create the editor and deseroalize it.
+ *
+ * This \e static method is used by EditorFactory to restore the editor. This
+ * method create the right class with the help of the \c ClassName property,
+ * QMetaType::type(name) and QMetaType::construct(id).
+ *
+ * Next this method call the \e virtual method deserialize()
+ *
  * \param data from what the data must be read
  * \return An editor
  * \sa serialize(), deserialize()
