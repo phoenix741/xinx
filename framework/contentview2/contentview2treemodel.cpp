@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * XINX                                                                    *
- * Copyright (C) 2009 by Ulrich Van Den Hekke                              *
+ * Copyright (C) 2010 by Ulrich Van Den Hekke                              *
  * ulrich.vdh@shadoware.org                                                *
  *                                                                         *
  * This program is free software: you can redistribute it and/or modify    *
@@ -38,6 +38,62 @@
 namespace ContentView2
 {
 
+/*!
+ * \ingroup ContentView2
+ * \class TreeModel
+ * \since 0.9.0.0
+ *
+ * \brief This class is used to show the content of the cache for a given file.
+ *
+ * The TreeModel is used to show the content view. This object shouldn't be used if
+ * the file containt too much node.
+ *
+ * \image html abstracteditor1.png
+ */
+
+ /*!
+  * \var TreeModel::list_name
+  * \brief Return the name of the node (for used with sourceModel())
+  */
+ /*!
+  * \var TreeModel::list_type
+  * \brief Return the type of the node (for used with sourceModel())
+  */
+ /*!
+  * \var TreeModel::list_icon
+  * \brief Return the icon link of the node (for used with sourceModel())
+  */
+ /*!
+  * \var TreeModel::list_display_name
+  * \brief Return the displayed name of the node (for used with sourceModel())
+  */
+ /*!
+  * \var TreeModel::list_tips
+  * \brief Return the tips of the node (for used with sourceModel())
+  */
+ /*!
+  * \var TreeModel::list_line
+  * \brief Return the line of the node (for used with sourceModel())
+  */
+ /*!
+  * \var TreeModel::list_id
+  * \brief Return the id of the node (for used with sourceModel())
+  */
+ /*!
+  * \var TreeModel::list_parent_id
+  * \brief Return the parent id of the node (for used with sourceModel())
+  */
+
+/*!
+ * \brief The class construct a TreeModel.
+ *
+ * To create an instance, this class need a database, used to select the content of the file.
+ * A FileContainer is needed because, at the creation of the instance, the file in the database
+ * can not be created.
+ * \param db The database used to select the content.
+ * \param container The file to show
+ * \param parent The parent of the object.
+ */
 TreeModel::TreeModel(QSqlDatabase db, FileContainer container, QObject * parent) : TreeProxyItemModel(parent), m_rootId(-1), m_fileId(-1), m_container(container), m_db(db)
 {
 	// This will be automatically deleted.
@@ -45,6 +101,7 @@ TreeModel::TreeModel(QSqlDatabase db, FileContainer container, QObject * parent)
 	setSourceModel(m_sourceModel);
 }
 
+//! Destroy this object
 TreeModel::~TreeModel()
 {
 }
@@ -71,7 +128,6 @@ int TreeModel::sourceColumnToProxy(int sourceColumn) const
 	}
 }
 
-/// For the given source index, this method return the corresponding index in the proxy
 QModelIndex TreeModel::mapFromSource(const QModelIndex & sourceIndex) const
 {
 	QModelIndex index = mapFromSource(sourceIndex);
@@ -96,6 +152,12 @@ int TreeModel::columnCount(const QModelIndex & parent) const
 	return 1;
 }
 
+/*!
+ * \brief This method return the QModelIndex, for a given \p node.
+ *
+ * This method used TreeProxyItemModel::index(int) with the id in paremeter
+ * to find the QModelIndex.
+ */
 QModelIndex TreeModel::index(const ContentView2::Node & node) const
 {
 	if (! node.isValid()) return QModelIndex();
@@ -108,6 +170,13 @@ QModelIndex TreeModel::index(int row, int column, const QModelIndex & parent) co
 	return TreeProxyItemModel::index(row, column, parent);
 }
 
+/*!
+ * \brief Return the data for proxyIndex for the role \p role.
+ *
+ * This method return the data for the given role. This role can be
+ * one of Node::RoleIndex. This method create Node object to access
+ * to necessary information.
+ */
 QVariant TreeModel::data(const QModelIndex & index, int role) const
 {
 	if (! index.isValid()) return QVariant();
@@ -159,16 +228,29 @@ QVariant TreeModel::data(const QModelIndex & index, int role) const
 	return TreeProxyItemModel::data(index, role);
 }
 
+//! Source model (methode provide for convenience)
 QSqlQueryModel * TreeModel::sourceModel()
 {
 	return m_sourceModel;
 }
 
+//! Source model (methode provide for convenience)
 QSqlQueryModel * TreeModel::sourceModel() const
 {
 	return m_sourceModel;
 }
 
+/*!
+ * \brief Select in the database() all nodes for the file.
+ *
+ * If the file is valide (the file must be created in the database), this method
+ * read all node for the file id.
+ *
+ * By merging with cv_link, this method search the parent_id. Datas are sorted by display_name
+ * (case insensitive).
+ *
+ * The tree is created by calling TreeProxyItemModel::createMapping()
+ */
 void TreeModel::select()
 {
 	if (m_container.isValid(m_db))
@@ -205,6 +287,7 @@ void TreeModel::select()
 	}
 }
 
+//! This method return the id of the ContentView2::Node
 int TreeModel::getUniqueIdentifier(const QModelIndex & sourceIndex) const
 {
 	QSqlRecord record = m_sourceModel->record(sourceIndex.row());
@@ -212,6 +295,11 @@ int TreeModel::getUniqueIdentifier(const QModelIndex & sourceIndex) const
 	return id;
 }
 
+/*!
+ * \brief This method return the parent id of the ContentView2::Node
+ *
+ * The id of the parent node can be finded in the cv_link table.
+ */
 int TreeModel::getParentUniqueIdentifier(const QModelIndex & sourceIndex) const
 {
 	QSqlRecord record = m_sourceModel->record(sourceIndex.row());
@@ -219,11 +307,13 @@ int TreeModel::getParentUniqueIdentifier(const QModelIndex & sourceIndex) const
 	return id;
 }
 
+//! Database where the model is connected (methode provide for convenience)
 QSqlDatabase TreeModel::database()
 {
 	return m_db;
 }
 
+//! Database where the model is connected (methode provide for convenience)
 QSqlDatabase TreeModel::database() const
 {
 	return m_db;

@@ -31,6 +31,35 @@
 
 /* CategoryItemModel */
 
+/*!
+ * \ingroup Snipets
+ * \class CategoryItemModel
+ * \since 0.9.0.0
+ *
+ * \brief This model show the categories' snipet tree.
+ *
+ * This model is used to show only the list of snipet's category. This can be used
+ * to select a category in the list.
+ * If you add or remove a category, the method select() must be called.
+ *
+ * \image html categoryitemmodel.png
+ */
+
+/*!
+ * \enum CategoryItemModel::CategoryItemRole
+ * \brief Available role in the for the method CategoryItemModel::data()
+ */
+
+/*!
+ * \var CategoryItemModel::CategoryItemModel CategoryItemModel::CategoryIdRole
+ * \brief Return the id role of the object QModelIndex
+ */
+
+/*!
+ * \brief Create the category model.
+ * \param db Make selection of snipet on this database
+ * \param parent The parent category.
+ */
 CategoryItemModel::CategoryItemModel(QSqlDatabase db, QObject * parent) : TreeProxyItemModel(parent), m_db(db)
 {
 	// This will be automatically deleted.
@@ -38,10 +67,18 @@ CategoryItemModel::CategoryItemModel(QSqlDatabase db, QObject * parent) : TreePr
 	setSourceModel(m_sourceModel);
 }
 
+//! Destroy the category model.
 CategoryItemModel::~CategoryItemModel()
 {
 }
 
+/*!
+ * \brief Select all categories in the source model
+ *
+ * This method select all the categories from the source model
+ * and re-create the internal structure of the TreeProxyItemModel by calling
+ * TreeProxyItemModel::createMapping()
+ */
 void CategoryItemModel::select()
 {
 	// Set the query used all snipet
@@ -75,19 +112,30 @@ int CategoryItemModel::sourceColumnToProxy(int sourceColumn) const
 	return -1;
 }
 
+/*!
+ * \brief Give the unique identifier for a given source index.
+ *
+ * This method give the ID of the snipet
+ * \sa getTreeModelIdentifier(), getParentUniqueIdentifier()
+ */
 int CategoryItemModel::getUniqueIdentifier(const QModelIndex & sourceIndex) const
 {
 	QSqlRecord record = m_sourceModel->record(sourceIndex.row());
 	return record.value(list_id).toInt();
 }
 
+/*!
+ * \brief Give the unique identifier for a given source index.
+ *
+ * This method give the PARENT_ID of the snipet
+ * \sa getTreeModelIdentifier(), getUniqueIdentifier()
+ */
 int CategoryItemModel::getParentUniqueIdentifier(const QModelIndex & sourceIndex) const
 {
 	QSqlRecord record = m_sourceModel->record(sourceIndex.row());
 	return record.value(list_parentid).toInt();
 }
 
-/// For the given source index, this method return the corresponding index in the proxy
 QModelIndex CategoryItemModel::mapFromSource(const QModelIndex & sourceIndex) const
 {
 	QModelIndex index = mapFromSource(sourceIndex);

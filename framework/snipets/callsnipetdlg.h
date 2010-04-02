@@ -29,34 +29,6 @@
 #include <QSqlDatabase>
 #include <QTableWidgetItem>
 
-/*!
- * \internal
- */
-class SnipetParameterNameItem : public QTableWidgetItem
-{
-public:
-	SnipetParameterNameItem();
-	SnipetParameterNameItem(const QString & name);
-private:
-
-};
-
-/*!
- * \internal
- */
-class SnipetParameterValueItem : public QTableWidgetItem
-{
-public:
-	SnipetParameterValueItem();
-	SnipetParameterValueItem(const QString & defaultValue);
-
-	void setDefault();
-	void setDefaultValue(const QString & value);
-	const QString & defaultValue() const;
-private:
-	QString m_defaultValue;
-};
-
 class CallSnipetDialogImpl : public QDialog, public Ui::CallSnipetDialog
 {
 	Q_OBJECT

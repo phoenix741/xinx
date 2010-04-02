@@ -37,6 +37,25 @@
 #include <QDebug>
 #include <QTextCodec>
 
+/*!
+ * \ingroup ContentView2
+ * \since 0.9.0.0
+ *
+ * \brief This namespace contains all classes used to access to the new
+ * Content View system.
+ *
+ * The new ContentView system is based on a Sqlite database. All the classes
+ * of this namespace is used to simplify and manage the access of this class.
+ *
+ * You can use classes ContentView2::Node, ContentView2::File, and ContentView2::Project
+ * to access to the content of the table without any query.
+ *
+ * Classes ContentView2::Parser and ContentView2::Cache are used to generate
+ * the content of the database for using it.
+ *
+ * Classes ContentView2::TreeModel and ContentView2::CompletionModel are used
+ * to show the content of the base to the user.
+ */
 namespace ContentView2
 {
 

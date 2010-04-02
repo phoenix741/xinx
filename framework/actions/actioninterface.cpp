@@ -23,6 +23,8 @@
 
 /*!
  * \namespace XinxAction
+ * \since 0.8.1.0
+ *
  * \brief Interfaces to manage action in XINX
  */
 
@@ -37,6 +39,8 @@ using namespace XinxAction;
 /*!
  * \class XinxAction::MenuItem
  * \ingroup XinxAction
+ * \since 0.8.1.0
+ *
  * \brief This class provide a menu item for ActionList
  *
  * Class represent a menu item. A menu item can be an action or a separator. This used by XINX throw plugin,
@@ -50,8 +54,10 @@ MenuItem::~MenuItem() {
 /* Separator */
 
 /*!
- * \class Separator
+ * \class XinxAction::Separator
  * \ingroup XinxAction
+ * \since 0.8.1.0
+ *
  * \brief This class provide a separator item for ActionList
  *
  * This class represent a separator. For a separator there is no data expected.
@@ -66,6 +72,8 @@ Separator::~Separator() {
 /*!
  * \class XinxAction::Action
  * \ingroup XinxAction
+ * \since 0.8.1.0
+ *
  * \brief This class provide an action for ActionList
  *
  * This class is a wrapper of a QAction. This wrapper is used to facilite
@@ -194,6 +202,8 @@ void Action::actionTriggered()
 /*!
  * \class XinxAction::ActionList
  * \ingroup XinxAction
+ * \since 0.8.1.0
+ *
  * \brief Class to manage a list of action (a Menu)
  *
  * This class is a list of action. This also the synonym for a menu. This list as
@@ -239,6 +249,8 @@ void ActionList::updateActionsState()
 /*!
  * \class XinxAction::MenuList
  * \ingroup XinxAction
+ * \since 0.8.1.0
+ *
  * \brief Class to manage a list of ActionList (Menu)
  *
  * This list is a list of menu used in the plugin interface. A method

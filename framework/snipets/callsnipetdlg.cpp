@@ -29,10 +29,25 @@
 
 /* SnipetParameterNameItem */
 
+/*!
+ * \class SnipetParameterNameItem
+ * \internal
+ */
+class SnipetParameterNameItem : public QTableWidgetItem
+{
+public:
+	SnipetParameterNameItem();
+	SnipetParameterNameItem(const QString & name);
+private:
+
+};
+
+//! \internal
 SnipetParameterNameItem::SnipetParameterNameItem() : QTableWidgetItem()
 {
 }
 
+//! \internal
 SnipetParameterNameItem::SnipetParameterNameItem(const QString & name) : QTableWidgetItem()
 {
 	setData(Qt::DisplayRole, name);
@@ -40,20 +55,41 @@ SnipetParameterNameItem::SnipetParameterNameItem(const QString & name) : QTableW
 
 /* SnipetParameterValueItem */
 
+/*!
+ * \class SnipetParameterValueItem
+ * \internal
+ */
+class SnipetParameterValueItem : public QTableWidgetItem
+{
+public:
+	SnipetParameterValueItem();
+	SnipetParameterValueItem(const QString & defaultValue);
+
+	void setDefault();
+	void setDefaultValue(const QString & value);
+	const QString & defaultValue() const;
+private:
+	QString m_defaultValue;
+};
+
+//! \internal
 SnipetParameterValueItem::SnipetParameterValueItem() : QTableWidgetItem()
 {
 }
 
+//! \internal
 SnipetParameterValueItem::SnipetParameterValueItem(const QString & defaultValue) : QTableWidgetItem(), m_defaultValue(defaultValue)
 {
 	setData(Qt::DisplayRole, m_defaultValue);
 }
 
+//! \internal
 void SnipetParameterValueItem::setDefault()
 {
 	setData(Qt::DisplayRole, m_defaultValue);
 }
 
+//! \internal
 void SnipetParameterValueItem::setDefaultValue(const QString & value)
 {
 	if (m_defaultValue != value)
@@ -66,6 +102,7 @@ void SnipetParameterValueItem::setDefaultValue(const QString & value)
 	}
 }
 
+//! \internal
 const QString & SnipetParameterValueItem::defaultValue() const
 {
 	return m_defaultValue;
@@ -74,11 +111,19 @@ const QString & SnipetParameterValueItem::defaultValue() const
 /* CallSnipetDialogImpl */
 
 /*!
+ * \ingroup Snipets
  * \class CallSnipetDialogImpl
- * \brief Implementation of snipet dialog.
+ * \since 0.9.0.0
  *
- * This dialog permit to create, modify. The implementation containts only a
- * constructor who defines default dialog presentation : Windows Style Dialog.
+ * \brief Dialog to change parameters on snipet before add result to the text.
+ *
+ * This dialog permit to change parameters on snipet before replace it in the
+ * editor.
+ * This dialog have a part to change each parameters and another part to show a result.
+ * The result contains the execution of the script.
+ *
+ * \image html callsnipetdialogimpl.png
+ *
  */
 
 /*!
@@ -103,11 +148,19 @@ CallSnipetDialogImpl::~CallSnipetDialogImpl()
 
 }
 
+/*!
+ * \brief Return the result's text of the snipet.
+ *
+ * The result text has each parameters replaced and ECMAScript parsed.
+ */
 const QString & CallSnipetDialogImpl::snipetText() const
 {
 	return m_snipetText;
 }
 
+/*!
+ * \brief Return the list of parameters modified and for each parameters the value.
+ */
 QStringList CallSnipetDialogImpl::values() const
 {
 	QStringList parameters;
@@ -118,6 +171,12 @@ QStringList CallSnipetDialogImpl::values() const
 	return parameters;
 }
 
+/*!
+ * \brief Execute the dialog box.
+ *
+ * This method is show only if XINXConfig::self()->config().snipets.alwaysShowDialog or
+ * if showDialog in the snipet is to true.
+ */
 int CallSnipetDialogImpl::exec()
 {
 	if (XINXConfig::self()->config().snipets.alwaysShowDialog || m_showDialog)

@@ -332,7 +332,6 @@ void TreeProxyItemModel::createMapping()
 
 #ifndef _XINX_RELEASE_MODE_
 /*!
- * \internal
  * Print all the tree generated internally to the log file. This tree, is generated when
  * error occure.
  * In release mode this method is not necessary (and not usable).
