@@ -43,16 +43,20 @@ namespace ContentView2
 /* Cache */
 
 /*!
+ * \defgroup ContentView2 Gestion de la completion
+ */
+
+/*!
+ * \ingroup ContentView2
  * \class ContentView2::Cache
  * \brief This class is used to cache file used by the content view system.
  *
- * The goal of this class is to manage the loading of the content view system.
+ * The goal of this class is to manage the loading of the content view system in the sqlite database.
+ * At the initialisation of a project, each file are checked to update the database.
  *
  *
- * \attention The cache must be independent of the project. If no project the
- * content must be created in memory ... This because of need to have a content view even
- * if no project is opened. In the near future, the session file must be independ of the project:
- * in memory or in file...
+ * \attention The cache is independent of the project and created in a single sqlite database. If the project
+ * isn't use, the sqlite database is not cleaned.
  */
 
 Cache::Cache()
