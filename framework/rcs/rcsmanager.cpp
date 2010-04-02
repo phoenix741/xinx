@@ -305,9 +305,7 @@ void RCSManager::validFileOperations()
 	}
 	else
 	{
-		emit operationStarted();
 		m_operations.clear();
-		emit operationTerminated();
 	}
 }
 
@@ -396,9 +394,7 @@ void RCSManager::validWorkingCopy(QStringList files, QWidget * parent)
 	}
 	else
 	{
-		emit operationStarted();
 		emit log(RCS::LogApplication, tr("Operation cancelled"));
-		emit operationTerminated();
 	}
 }
 

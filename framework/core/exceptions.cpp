@@ -31,6 +31,7 @@
 #include <QErrorMessage>
 #include <QFile>
 #include <QTextStream>
+#include <QTimer>
 
 // Std header for exception
 #include <iostream>
@@ -302,6 +303,9 @@ const QStringList & XinxException::getStack() const
 
 ErrorManager::ErrorManager()
 {
+	m_timer.setSingleShot (true);
+	m_timer.setInterval (500);
+	connect (&m_timer, SIGNAL(timeout()), this, SIGNAL(changed()));
 }
 
 ErrorManager::~ErrorManager()
@@ -337,7 +341,8 @@ void ErrorManager::clearMessages(const QString & context)
 	const QString ctxt = m_contextTranslation.value(context).isEmpty() ? context : m_contextTranslation.value(context);
 
 	m_errors.remove(ctxt);
-	emit changed();
+
+	m_timer.start();
 }
 
 void ErrorManager::addMessage(const QString & context, int line, MessageType t, const QString & message, const QStringList & parameters)
@@ -346,7 +351,8 @@ void ErrorManager::addMessage(const QString & context, int line, MessageType t, 
 
 	struct Error e = {line, t, message, parameters};
 	m_errors[ctxt].append(e);
-	emit changed();
+
+	m_timer.start();
 }
 
 void ErrorManager::addMessage(const QString & context, int line, MessageType t, const XinxException & exception)
@@ -355,7 +361,8 @@ void ErrorManager::addMessage(const QString & context, int line, MessageType t, 
 
 	struct Error e = {line, t, exception.getMessage(), QStringList()};
 	m_errors[ctxt].append(e);
-	emit changed();
+
+	m_timer.start();
 }
 
 const QMap<QString, QList<ErrorManager::Error> > & ErrorManager::errors() const

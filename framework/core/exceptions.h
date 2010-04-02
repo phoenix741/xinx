@@ -29,6 +29,7 @@
 #include <QStringList>
 #include <QHash>
 #include <QMap>
+#include <QTimer>
 
 class QErrorMessage;
 class QWidget;
@@ -122,6 +123,7 @@ private:
 
 	QHash<QString,QString> m_contextTranslation;
 	QMap<QString, QList<Error> > m_errors;
+	QTimer m_timer;
 };
 
 #endif /* __EXCEPTIONS_H__ */
