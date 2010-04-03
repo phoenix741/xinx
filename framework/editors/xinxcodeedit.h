@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * XINX                                                                    *
- * Copyright (C) 2009 by Ulrich Van Den Hekke                              *
+ * Copyright (C) 2007-2010 by Ulrich Van Den Hekke                         *
  * ulrich.vdh@shadoware.org                                                *
  *                                                                         *
  * This program is free software: you can redistribute it and/or modify    *
@@ -17,9 +17,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
+#pragma once
 #ifndef _XINXCODEEDIT_H_
 #define _XINXCODEEDIT_H_
-#pragma once
 
 // Xinx header
 #include <core/lib-config.h>

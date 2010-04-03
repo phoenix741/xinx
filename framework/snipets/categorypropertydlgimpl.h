@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * XINX                                                                    *
- * Copyright (C) 2009 by Ulrich Van Den Hekke                              *
+ * Copyright (C) 2007-2010 by Ulrich Van Den Hekke                         *
  * ulrich.vdh@shadoware.org                                                *
  *                                                                         *
  * This program is free software: you can redistribute it and/or modify    *
@@ -17,9 +17,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
+#pragma once
 #ifndef _CATEGORYPROPERTYDLGIMPL_H_
 #define _CATEGORYPROPERTYDLGIMPL_H_
-#pragma once
 
 // Xinx header
 #include "ui_categorypropertydlg.h"
@@ -42,8 +42,6 @@ protected:
 	CategoryPropertyDlgImpl(int categoryId, QSqlDatabase db, QWidget * parent = 0, Qt::WindowFlags f = Qt::MSWindowsFixedSizeDialogHint);
 	CategoryPropertyDlgImpl(QSqlDatabase db, QWidget * parent = 0, Qt::WindowFlags f = Qt::MSWindowsFixedSizeDialogHint);
 
-	void setupUi();
-	void createMapper();
 	void setCategoryAccess(bool value);
 private slots:
 	void on_m_categoryTreeView_activated(const QModelIndex & index);
@@ -52,6 +50,8 @@ private slots:
 	void on_m_buttons_accepted();
 private:
 	friend class SnipetManager;
+	void setupUi();
+	void createMapper();
 
 	QSqlTableModel * m_categoryTableModel;
 	QDataWidgetMapper * m_mapper;

@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * XINX                                                                    *
- * Copyright (C) 2009 by Ulrich Van Den Hekke                              *
+ * Copyright (C) 2007-2010 by Ulrich Van Den Hekke                         *
  * ulrich.vdh@shadoware.org                                                *
  *                                                                         *
  * This program is free software: you can redistribute it and/or modify    *
@@ -21,14 +21,31 @@
 #include "snipets/categorytreeview.h"
 #include "snipets/categoryitemmodel.h"
 
+/* CategoryTreeView */
+
+/*!
+ * \ingroup Snipets
+ * \class CategoryTreeView
+ * \since 0.9.0.0
+ *
+ * \brief This tree view is used to choose a new category in the model.
+ *
+ * This dialog box add to method to the QTreeView object : categoryId() and
+ * setCategoryId() to get te selected category and select a new category with
+ * the help of the id.
+ */
+
+//! Create the tree view
 CategoryTreeView::CategoryTreeView(QWidget * parent) : QTreeView(parent)
 {
 }
 
+//! Destroy the tree view
 CategoryTreeView::~CategoryTreeView()
 {
 }
 
+//! Get the selected category id in the tree view
 int CategoryTreeView::categoryId()
 {
 	QModelIndexList indexes = selectedIndexes();
@@ -37,6 +54,7 @@ int CategoryTreeView::categoryId()
 	return indexes.at(0).data(CategoryItemModel::CategoryIdRole).toInt();
 }
 
+//! Set the selected category id to \p id
 void CategoryTreeView::setCategoryId(int id)
 {
 	CategoryItemModel * categoryModel = qobject_cast<CategoryItemModel*>(model());

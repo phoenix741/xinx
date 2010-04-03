@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * XINX                                                                    *
- * Copyright (C) 2009 by Ulrich Van Den Hekke                              *
+ * Copyright (C) 2007-2010 by Ulrich Van Den Hekke                         *
  * ulrich.vdh@shadoware.org                                                *
  *                                                                         *
  * This program is free software: you can redistribute it and/or modify    *
@@ -29,6 +29,10 @@
 #include <QMessageBox>
 #include <QtConcurrentRun>
 
+/*!
+ * \defgroup RCS Revision Control System
+ */
+
 /* Constante */
 
 RCSManager * RCSManager::s_self = 0;
@@ -36,6 +40,7 @@ RCSManager * RCSManager::s_self = 0;
 /* RCSManager */
 
 /*!
+ * \ingroup RCS
  * \class RCSManager
  * \brief The RCS Manager is the new interface to use to interact with RCS plugin.
  *
