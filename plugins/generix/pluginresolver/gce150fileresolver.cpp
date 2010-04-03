@@ -52,7 +52,7 @@ QString Gce150FileResolver::name()
 
 bool Gce150FileResolver::isActivated()
 {
-	return static_cast<GenerixProject*>(XINXProjectManager::self()->project().data())->isGenerixActivated();
+	return XINXProjectManager::self()->project() && static_cast<GenerixProject*>(XINXProjectManager::self()->project().data())->isGenerixActivated();
 }
 
 QString Gce150FileResolver::resolveFileName(const QString & nameToResolve, const QString & currentPath)

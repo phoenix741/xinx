@@ -32,6 +32,7 @@
 #include <QQueue>
 #include <QFileSystemWatcher>
 #include <QDateTime>
+#include <QTimer>
 
 class XinxProject;
 class TestContentView2;
@@ -64,7 +65,8 @@ signals:
 	void progressValueChanged(int value);
 protected:
 	virtual void run();
-	virtual void timerEvent(QTimerEvent * event);
+private slots:
+	void timerEvent();
 private:
 	struct struct_cache
 	{
@@ -84,6 +86,7 @@ private:
 	QQueue< struct_cache > m_parsers;
 	QQueue< struct_cache > m_toDelete;
 	QStringList m_registeredFile;
+	QTimer m_timer;
 };
 
 }
