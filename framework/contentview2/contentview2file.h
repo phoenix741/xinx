@@ -72,10 +72,6 @@ private:
 	QExplicitlySharedDataPointer<PrivateFileContainer> d;
 };
 
-/*!
- * The class file is usefull to simplify some operations on cv_file table.
- * This class is also used to be propaged from object to another.
- */
 class LIBEXPORT File
 {
 	Q_DECLARE_TR_FUNCTIONS(File)

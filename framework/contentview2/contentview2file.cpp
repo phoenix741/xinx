@@ -33,17 +33,21 @@ namespace ContentView2
 
 /* FileException */
 /*!
+ * \ingroup ContentView2
  * \class FileException
- * \brief Exception throw when a SQL error occur
+ * \since 0.9.0.0
+ *
+ * \brief Exception throw when a SQL error occur on the File class.
+ *
+ * This class can be used by EXCEPT_ELSE() macro
  */
 
 /*!
- * Create the exception with a message and a line.
+ * Create an exception
  * \param assertion The condition who failed
  * \param locationFile The file wich failed (this file)
  * \param locationLine The line where the exception is throw
  * \param locationMethod The method where the exception is throw.
- * \param message Error of the exception.
  * \param message Error of the exception.
  */
 FileException::FileException(const QString & assertion, const QString & locationFile, int locationLine, const QString & locationMethod, QString message)
@@ -129,15 +133,33 @@ PrivateFile::~PrivateFile()
 
 /* FileContainer */
 
+/*!
+ * \ingroup ContentView2
+ * \class FileContainer
+ * \since 0.9.0.0
+ *
+ * \brief This class is used to wrap a File and control the creation of the file.
+ *
+ * A file is represented by the tuple (XinxProject, path, isCached). This object
+ * is used to pass this three argumentes to the differents object, and facilitate
+ * the control of existance of the file in the table cv_file.
+ *
+ * Before use this class, check the method isValid() to determine if the file is
+ * created.
+ */
+
+//! Create an empty file container
 FileContainer::FileContainer()
 {
 	d = new PrivateFileContainer;
 }
 
+//! Create a new file container as a copy of \p other
 FileContainer::FileContainer(const FileContainer & other) : d(other.d)
 {
 }
 
+//! Create a container for the project \p project, file \p path, and the parameter \p isCached
 FileContainer::FileContainer(QPointer<XinxProject> project, const QString & path, bool isCached)
 {
 	d = new PrivateFileContainer;
@@ -146,31 +168,42 @@ FileContainer::FileContainer(QPointer<XinxProject> project, const QString & path
 	d->m_cached  = isCached;
 }
 
+//! Destroy the file container
 FileContainer::~FileContainer()
 {
 }
 
+//! Return the project passed to the constructor
 XinxProject * FileContainer::project() const
 {
 	return d->m_project;
 }
 
+//! Return the path passed to the constructor
 const QString & FileContainer::path() const
 {
 	return d->m_path;
 }
 
+//! Return the indicator isCached passed to the constructor
 bool FileContainer::isCached() const
 {
 	return d->m_cached;
 }
 
+/*!
+ * \brief Return the file defined in this container if exist in cv_file.
+ *
+ * If exist in cv_file this class return the File for value passed in the
+ * constructor. else this method return an empty file.
+ */
 File FileContainer::file(QSqlDatabase db) const
 {
 	d->load(db);
 	return d->m_file;
 }
 
+//! Reload the file defined in the FileContainer
 void FileContainer::reload(QSqlDatabase db)
 {
 	if (isValid(db))
@@ -179,12 +212,19 @@ void FileContainer::reload(QSqlDatabase db)
 	}
 }
 
+/*!
+ * \brief Return the validity of the file.
+ *
+ * If the file exist in cv_file, this method return true. Else
+ * this method return false.
+ */
 bool FileContainer::isValid(QSqlDatabase db) const
 {
 	d->load(db);
 	return d->m_file.isValid();
 }
 
+//! Copy the content from the FileContainer \p file.
 FileContainer & FileContainer::operator=(const FileContainer& file)
 {
 	this->d = file.d;
@@ -194,31 +234,48 @@ FileContainer & FileContainer::operator=(const FileContainer& file)
 
 /* File */
 
+/*!
+ * \ingroup ContentView2
+ * \class File
+ * \since 0.9.0.0
+ *
+ * \brief The class file is usefull to simplify some operations on cv_file table.
+ * This class is also used to be propaged from object to another.
+ */
+
+//! Create an empty file
 File::File()
 {
 	d = new PrivateFile;
 }
 
+//! Copy the empty file from \p other
 File::File(const File & other) : d(other.d)
 {
 }
 
+//! Get the file where the id are equals to \p id
 File::File(QSqlDatabase db, uint id)
 {
 	d = new PrivateFile;
 	load(db, id);
 }
 
+//! Find the file where the project is \p project, the path \p path, and the cache indicator is \p isCached
 File::File(QSqlDatabase db, XinxProject * project, const QString & path, bool isCached)
 {
 	d = new PrivateFile;
 	load(db, project, path, isCached);
 }
 
+//! Destroy this file
 File::~File()
 {
 }
 
+/*!
+ * \brief Load the file with the id \p id
+ */
 void File::load(QSqlDatabase db, uint id)
 {
 	QSqlQuery selectQuery("SELECT project_id, path, cached, type, datmod, loaded, root_id, selection, encoding "
@@ -240,6 +297,9 @@ void File::load(QSqlDatabase db, uint id)
 	d->m_loaded    = selectQuery.value(5).toBool();
 }
 
+/*!
+ * \brief Load The file with the project \p project, the path \p path, and the indicator \p isCached.
+ */
 void File::load(QSqlDatabase db, XinxProject * project, const QString & path, bool isCached)
 {
 	QSqlQuery projectQuery("SELECT id, name, path FROM cv_project WHERE path=:project_path", db);
@@ -270,12 +330,20 @@ void File::load(QSqlDatabase db, XinxProject * project, const QString & path, bo
 	d->m_loaded    = selectQuery.value(3).toBool();
 }
 
+//! Reload the content of the file
 void File::reload(QSqlDatabase db)
 {
 	if (d->m_id >= 0)
 		load(db, d->m_id);
 }
 
+/*!
+ * \brief Create the file in the table cv_file with information
+ * set in this object.
+ *
+ * After the creation in the database, the id will be stored and
+ * returned
+ */
 uint File::create(QSqlDatabase db)
 {
 	QSqlQuery selectQuery("SELECT 1 FROM cv_project WHERE id=:project_id", db);
@@ -307,6 +375,7 @@ uint File::create(QSqlDatabase db)
 	return newId;
 }
 
+//! Update the database with the content of the object
 void File::update(QSqlDatabase db)
 {
 	Q_ASSERT_X(d->m_id >= 0, "File::update", "The file must be initialized");
@@ -327,6 +396,7 @@ void File::update(QSqlDatabase db)
 	EXCEPT_ELSE(result, FileException, "Node::update", qPrintable(updateQuery.lastError().text()));
 }
 
+//! Destroy the file in cv_file (and links in cv_file, cv_node, cv_link and cv_import)
 void File::destroy(QSqlDatabase db)
 {
 	Q_ASSERT_X(d->m_id >= 0, "File::destroy", "The file must be initialized");
@@ -345,6 +415,7 @@ void File::destroy(QSqlDatabase db)
 	d->m_id = -1;
 }
 
+//! Destroy attached nodes.
 void File::destroyNodes(QSqlDatabase db)
 {
 	if ((d->m_id == -1) || (d->m_rootId == -1)) return ;
@@ -354,16 +425,19 @@ void File::destroyNodes(QSqlDatabase db)
 	d->m_rootId = -1;
 }
 
+//! Return the file id (-1 if the file isn't loaded or created)
 uint File::fileId() const
 {
 	return d->m_id;
 }
 
+//! Return true is the id >= 0
 bool File::isValid() const
 {
 	return d->m_id >= 0;
 }
 
+//! Clear the content of the object (don't destroy the file)
 void File::clear()
 {
 	d->m_id        = -1;
@@ -378,6 +452,12 @@ void File::clear()
 	d->m_loaded    = false;
 }
 
+/*!
+ * \brief Add the import \p file to this object
+ *
+ * Manual node are declared by the Parser. The automatic nodes
+ * are created by the Cache.
+ */
 void File::addImport(QSqlDatabase db, const File & file, bool automatic)
 {
 	Q_ASSERT_X(d->m_id >= 0, "File::addImport", "Can't add import on file not created");
@@ -390,6 +470,7 @@ void File::addImport(QSqlDatabase db, const File & file, bool automatic)
 	EXCEPT_ELSE(result, FileException, "File::addImport", qPrintable(createQuery.lastError().text()));
 }
 
+//! List of imports attached to this node.
 QList<int> File::imports(QSqlDatabase db)
 {
 	QList<int> result;
@@ -408,6 +489,10 @@ QList<int> File::imports(QSqlDatabase db)
 	return result;
 }
 
+/*!
+ * \brief Destroy all imports attached to the node.
+ * \sa destroyAutomaticImports()
+ */
 void File::destroyImports(QSqlDatabase db)
 {
 	QSqlQuery q("DELETE FROM cv_import WHERE parent_id=:id", db);
@@ -416,6 +501,10 @@ void File::destroyImports(QSqlDatabase db)
 	EXCEPT_ELSE(result, FileException, "File::destroyImports", qPrintable(q.lastError().text()));
 }
 
+/*!
+ * \brief Destroy all imports mark as automatic (added by the Parser class)
+ * \sa destroyImports()
+ */
 void File::destroyAutomaticImports(QSqlDatabase db)
 {
 	QSqlQuery q("DELETE FROM cv_import WHERE parent_id=:id and automatic_import=:automatic", db);
@@ -425,112 +514,210 @@ void File::destroyAutomaticImports(QSqlDatabase db)
 	EXCEPT_ELSE(result, FileException, "File::destroyAutomaticImports", qPrintable(q.lastError().text()));
 }
 
+/*!
+ * \brief Return the project id of the node.
+ * \sa setProjectId(), setProject()
+ */
 uint File::projectId() const
 {
 	return d->m_projectId;
 }
 
+/*!
+ * \brief Set the project id of the node to \p value.
+ *
+ * If the file is loaded or created, the value can't be modified.
+ * \sa setProject(), projectId()
+ */
 void File::setProjectId(uint value)
 {
 	Q_ASSERT_X(d->m_id == -1, "File::setProjectId", "The project can't be modified after node creation");
 	d->m_projectId = value;
 }
 
+/*!
+ * \brief Set the project to \p project
+ *
+ * If the file is loaded or created, the project can't be modified.
+ * \sa setProjectId(), projectId()
+ */
 void File::setProject(const Project & project)
 {
 	Q_ASSERT_X(d->m_id == -1, "File::setProject", "The project can't be modified after node creation");
 	d->m_projectId = project.projectId();
 }
 
+/*!
+ * \brief Return the path of the file
+ * \sa setPath()
+ */
 const QString & File::path() const
 {
 	return d->m_path;
 }
 
+/*!
+ * \brief Set the path for the file
+ *
+ * If the file is loaded or created the value can't be modified.
+ * \sa path()
+ */
 void File::setPath(const QString & value)
 {
 	Q_ASSERT_X(d->m_id == -1, "File::setPath", "The path can't be modified after node creation");
 	d->m_path = value;
 }
 
+/*!
+ * \brief Return the isCached indicator.
+ * \sa setIsCached()
+ */
 bool File::isCached() const
 {
 	return d->m_cached;
 }
 
+/*!
+ * \brief Set the isCached indicator
+ *
+ * If the file is loaded or created the value can't be modified.
+ * \sa isCached()
+ */
 void File::setIsCached(bool value)
 {
 	Q_ASSERT_X(d->m_id == -1, "File::setIsCached", "The cache value can't be modified after node creation");
 	d->m_cached = value;
 }
 
+/*!
+ * \brief Return the type of the file (used to find the parser).
+ * \sa setType()
+ */
 const QString & File::type() const
 {
 	return d->m_type;
 }
 
+/*!
+ * \brief Set the type of the file (used to find the parser)
+ *
+ * If the file is loaded or created the value can't be modified.
+ * \sa type()
+ */
 void File::setType(const QString & value)
 {
-	Q_ASSERT_X(d->m_id == -1, "File::setProjectId", "The type can't be modified after node creation");
+	Q_ASSERT_X(d->m_id == -1, "File::setType", "The type can't be modified after node creation");
 	d->m_type = value;
 }
 
+/*!
+ * \brief Return the last Modification date of the file
+ * \sa setDatmod()
+ */
 const QDateTime & File::datmod() const
 {
 	return d->m_datmod;
 }
 
+/*!
+ * \brief Set the last modification date to \p value
+ * \sa datmod()
+ */
 void File::setDatmod(const QDateTime & value)
 {
 	d->m_datmod = value;
 }
 
+/*!
+ * \brief Return the IsLoaded indicator.
+ * \sa setIsLoaded()
+ */
 bool File::isLoaded() const
 {
 	return d->m_loaded;
 }
 
+/*!
+ * \brief Set the isLoaded indicator to \p value
+ * \sa isLoaded()
+ */
 void File::setIsLoaded(bool value)
 {
 	d->m_loaded = value;
 }
 
+/*!
+ * \brief Return the first node of the file (root node).
+ * \sa setRootId(), setRoot()
+ */
 uint File::rootId() const
 {
 	return d->m_rootId;
 }
 
+/*!
+ * \brief Set the first node of the file (root node)
+ * \sa rootId(), setRoot()
+ */
 void File::setRootId(uint value)
 {
 	d->m_rootId = value;
 }
 
+/*!
+ * \brief Set the first node of the file.
+ *
+ * This method is provide for convinience
+ * \sa setRootId(), rootId()
+ */
 void File::setRoot(const Node & node)
 {
 	d->m_rootId = node.nodeId();
 }
 
+/*!
+ * \brief Set the selection mode of the file ('M' or '*')
+ * \sa setSelection()
+ */
 const QString & File::selection() const
 {
 	return d->m_selection;
 }
 
+/*!
+ * \brief Set the selection mode of the file.
+ *
+ * If the selection is 'M' the file must be added in completion manually.
+ * If the selection is '*' the file is include automatically in the completion.
+ *
+ * This value can't be modified if the file is loaded or created
+ * \sa selection()
+ */
 void File::setSelection(const QString & value)
 {
 	Q_ASSERT_X(d->m_id == -1, "File::setProjectId", "The selection can't be modified after node creation");
 	d->m_selection = value;
 }
 
+/*!
+ * \brief Return the encoding finded by the parser.
+ * \sa setEncoding()
+ */
 const QString & File::encoding() const
 {
 	return d->m_encoding;
 }
 
+/*!
+ * \brief Set the encoding finded by the parser
+ * \sa encoding()
+ */
 void File::setEncoding(const QString & value)
 {
 	d->m_encoding = value;
 }
 
+//! Return all the attached nodes for the file
 QList<int> File::nodes(QSqlDatabase db) const
 {
 	QList<int> result;
@@ -549,6 +736,7 @@ QList<int> File::nodes(QSqlDatabase db) const
 	return result;
 }
 
+//! Copy the File \p file to self.
 File & File::operator=(const File & file)
 {
 	this->d = file.d;

@@ -46,7 +46,6 @@ public:
 
 	ContentView2::Node nodeOfWord(const QString & name) const;
 public slots:
-	//! Launch the selection in the base
 	virtual void select();
 
 protected:
