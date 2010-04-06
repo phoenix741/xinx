@@ -117,21 +117,30 @@ void GceConfigurationXmlParser::readVersionElement()
 {
 	Q_ASSERT(isStartElement() && (QXmlStreamReader::name() == "version"));
 
-	while (!atEnd())
+	if (!attributes().value("release").isNull())
 	{
-		readNext();
-
-		if (isEndElement())
-			break;
-
-		if (isStartElement())
+		m_version = attributes().value("release").toString();
+		m_edition = attributes().value("sub").toString().toInt();
+		readUnknownElement();
+	}
+	else
+	{
+		while (!atEnd())
 		{
-			if (QXmlStreamReader::name() == "numero")
-				m_version = readElementText();
-			else if (QXmlStreamReader::name() == "edition_speciale")
-				m_edition = readElementText().toInt();
-			else
-				readUnknownElement();
+			readNext();
+
+			if (isEndElement())
+				break;
+
+			if (isStartElement())
+			{
+				if (QXmlStreamReader::name() == "numero")
+					m_version = readElementText();
+				else if (QXmlStreamReader::name() == "edition_speciale")
+					m_edition = readElementText().toInt();
+				else
+					readUnknownElement();
+			}
 		}
 	}
 }
