@@ -342,7 +342,10 @@ void ErrorManager::clearMessages(const QString & context)
 
 	m_errors.remove(ctxt);
 
-	m_timer.start();
+	if (QThread::currentThread() == qApp->thread())
+		m_timer.start();
+	else
+		QMetaObject::invokeMethod(&m_timer, "start", Qt::BlockingQueuedConnection);
 }
 
 void ErrorManager::addMessage(const QString & context, int line, MessageType t, const QString & message, const QStringList & parameters)
@@ -352,7 +355,10 @@ void ErrorManager::addMessage(const QString & context, int line, MessageType t, 
 	struct Error e = {line, t, message, parameters};
 	m_errors[ctxt].append(e);
 
-	m_timer.start();
+	if (QThread::currentThread() == qApp->thread())
+		m_timer.start();
+	else
+		QMetaObject::invokeMethod(&m_timer, "start", Qt::BlockingQueuedConnection);
 }
 
 void ErrorManager::addMessage(const QString & context, int line, MessageType t, const XinxException & exception)
@@ -362,7 +368,10 @@ void ErrorManager::addMessage(const QString & context, int line, MessageType t, 
 	struct Error e = {line, t, exception.getMessage(), QStringList()};
 	m_errors[ctxt].append(e);
 
-	m_timer.start();
+	if (QThread::currentThread() == qApp->thread())
+		m_timer.start();
+	else
+		QMetaObject::invokeMethod(&m_timer, "start", Qt::BlockingQueuedConnection);
 }
 
 const QMap<QString, QList<ErrorManager::Error> > & ErrorManager::errors() const
