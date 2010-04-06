@@ -1948,7 +1948,9 @@ void MainformImpl::openProject(const QString & filename)
 		while (XINXConfig::self()->config().project.recentProjectFiles.size() > MAXRECENTFILES)
 			XINXConfig::self()->config().project.recentProjectFiles.removeLast();
 
-		QProgressDialog progressDlg;
+		QProgressDialog progressDlg(this);
+		progressDlg.setModal(true);
+		progressDlg.setWindowTitle(tr("Open the project ..."));
 		progressDlg.setMinimumWidth(300);
 		progressDlg.setMaximum(2 + steps.size());
 		progressDlg.setValue(0);

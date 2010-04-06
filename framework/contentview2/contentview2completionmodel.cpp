@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * XINX                                                                    *
- * Copyright (C) 2009 by Ulrich Van Den Hekke                              *
+ * Copyright (C) 2007-2010 by Ulrich Van Den Hekke                         *
  * ulrich.vdh@shadoware.org                                                *
  *                                                                         *
  * This program is free software: you can redistribute it and/or modify    *
@@ -35,16 +35,40 @@ namespace ContentView2
 
 /* CompletionModel */
 
+/*!
+ * \ingroup ContentView2
+ * \class CompletionModel
+ * \since 0.9.0.0
+ *
+ * \brief This class is used as model to complete on the content of the ContentView database.
+ *
+ * This class is used to select the content of the database to present information for the completion.
+ * Informations presented are choose by sub-classe.
+ */
+
+ /*!
+  * \brief Create an instance for database \p db and the file \p file.
+  *
+  * The file container is used to know the id to use for the completion. If the \p file is not already loaded
+  * the completion doesn't work.
+  */
 CompletionModel::CompletionModel(QSqlDatabase db, FileContainer file, QObject * parent) : QSqlQueryModel(parent), m_db(db), m_file(file)
 {
 
 }
 
+//! Destroy this instance
 CompletionModel::~CompletionModel()
 {
 
 }
 
+/*!
+ * \brief Return information about the index for the role \p role.
+ *
+ * In case of a role upper then Node::NODE_USER_VALUE, a Node object
+ * is created to get the value.
+ */
 QVariant CompletionModel::data(const QModelIndex &idx, int role) const
 {
 	if (! idx.isValid()) return QVariant();
@@ -98,6 +122,7 @@ QVariant CompletionModel::data(const QModelIndex &idx, int role) const
 	return QSqlQueryModel::data(idx, role);
 }
 
+//! This method do nothing
 bool CompletionModel::setHeaderData(int section, Qt::Orientation orientation, const QVariant & value, int role)
 {
 	Q_UNUSED(section);
@@ -107,6 +132,13 @@ bool CompletionModel::setHeaderData(int section, Qt::Orientation orientation, co
 	return false;
 }
 
+/*!
+ * \brief Set the prefix to \e prefix to increase the speed
+ *
+ * The selection is limited to 5 element to increase the speed. To
+ * update the selection, the method setPrefix() update the used prefix and
+ * refresh the query.
+ */
 void CompletionModel::setPrefix(const QString & prefix)
 {
 	if (m_prefix != prefix)
@@ -116,6 +148,18 @@ void CompletionModel::setPrefix(const QString & prefix)
 	}
 }
 
+/*!
+ * \brief Return the where clause part of the query used to complete
+ *
+ * This method is used to select the element to complete. This method
+ * can be sub-classing to add restriction on the element used to complete.
+ *
+ * The current restriction is :
+ * \li Select all element of the current project or from the general project
+ * \li Select all element where the file is marked as '*' or where the id file
+ * is the equals to the file().
+ * \li Select all element of the file in the cv_import table.
+ */
 QString CompletionModel::whereClause() const
 {
 	return  "WHERE (cv_file.project_id=0 OR cv_file.project_id=:project_id) "
@@ -126,6 +170,7 @@ QString CompletionModel::whereClause() const
 	        "AND import.parent_id = :id2)) ";
 }
 
+//! Select the 5 first element return by the where clause of whereClause()
 void CompletionModel::select()
 {
 	m_file.reload(m_db);
@@ -157,22 +202,25 @@ void CompletionModel::select()
 	}
 }
 
+//! Return the FileContainer used for the completion
 FileContainer CompletionModel::file() const
 {
 	return m_file;
 }
 
-
+//! Return the database used for the completion (provide for convinience)
 QSqlDatabase CompletionModel::database() const
 {
 	return m_db;
 }
 
+//! Return the database used for the completion (provide for convinience)
 QSqlDatabase CompletionModel::database()
 {
 	return m_db;
 }
 
+//! Return the first finding node for the given \p name from parameters.
 ContentView2::Node CompletionModel::nodeOfWord(const QString & name) const
 {
 	QSqlQuery q(QString("SELECT cv_node.id FROM cv_file, cv_node %1 AND cv_node.name = :name").arg(whereClause()), database());

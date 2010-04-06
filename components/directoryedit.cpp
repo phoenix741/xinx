@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * XINX                                                                    *
- * Copyright (C) 2009 by Ulrich Van Den Hekke                              *
+ * Copyright (C) 2007-2010 by Ulrich Van Den Hekke                         *
  * ulrich.vdh@shadoware.org                                                *
  *                                                                         *
  * This program is free software: you can redistribute it and/or modify    *
@@ -100,11 +100,11 @@ QVariant CompleterDirModel::data(const QModelIndex &index, int role) const
  *
  * You can see the widget on completion :
  * \image html directoryedit1.png
- * \image latex directoryedit1.eps
+ * \image latex directoryedit1.png
  *
  * And the same widget, if the path doesn't exist :
  * \image html directoryedit2.png
- * \image latex directoryedit2.eps
+ * \image latex directoryedit2.png
  *
  *
  */
@@ -259,7 +259,7 @@ PrivateDirectoryEditWidget::PrivateDirectoryEditWidget(QWidget * o)
  * The button call the \p changePath slot from the \p DirectoryEdit class.
  *
  * \image html directoryeditwidget1.png
- * \image latex directoryeditwidget1.eps
+ * \image latex directoryeditwidget1.png
  */
 
 /*!

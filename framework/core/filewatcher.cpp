@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * XINX                                                                    *
- * Copyright (C) 2009 by Ulrich Van Den Hekke                              *
+ * Copyright (C) 2007-2010 by Ulrich Van Den Hekke                         *
  * ulrich.vdh@shadoware.org                                                *
  *                                                                         *
  * This program is free software: you can redistribute it and/or modify    *
@@ -26,6 +26,8 @@
 // xinx header
 #include "core/filewatcher.h"
 #include "core/p_filewatcher.h"
+
+/*! \cond private */
 
 /* Variables */
 
@@ -170,8 +172,30 @@ void PrivateWatcher::fileChanged(QString filename)
 		emit m_parent->fileChanged();
 }
 
+/*! \endcond */
+
 /* FileWatcher */
 
+/*!
+ * \class FileWatcher
+ * \brief Class used to watch the modification of a file.
+ *
+ * The file is periodically watched and if the date of the file is modified, the user is alerted by a signal.
+ *
+ * Behind the FileWatcher, a thread watch modifications of all files referenced by a
+ * FileWatcher. The watcher can be desactivate and reactivate without delete the object.
+ * When the object is reactivated, the file date, in memory, is updated.
+ */
+
+/*!
+ * \fn void FileWatcher::fileChanged()
+ * \brief The signal is emited when the watched file is modified.
+ */
+
+/*!
+ * Create a FileWatcher with a file name
+ * \param filename The file name to watch.
+ */
 FileWatcher::FileWatcher(const QString & filename)
 {
 	d = new PrivateWatcher(this);
@@ -181,16 +205,25 @@ FileWatcher::FileWatcher(const QString & filename)
 	FileWatcherManager::instance()->addFile(filename);
 }
 
+/*! Destroy the FileWatcher */
 FileWatcher::~FileWatcher()
 {
 	delete d;
 }
 
+/*!
+ * Desactivate the watcher. You must called the \e activate method to reactivate
+ * the watcher.
+ */
 void FileWatcher::desactivate()
 {
 	d->m_isActivated = false;
 }
 
+/*!
+ * Activate the watcher. The watcher is created activated. Use \e desactivate to
+ * desactivate.
+ */
 void FileWatcher::activate()
 {
 	int index = FileWatcherManager::instance()->indexOfWatchedFile(d->m_filename);

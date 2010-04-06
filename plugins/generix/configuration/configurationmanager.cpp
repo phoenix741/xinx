@@ -131,10 +131,14 @@ GceInterface * ConfigurationManager::getInterfaceOfProject(XinxProject * project
 
 void ConfigurationManager::loadDictionary(XinxProject * project)
 {
-	QStringList dictionaries = getInterfaceOfProject(project)->dictionnaries();
-	foreach(const QString & filename, dictionaries)
+	GceInterface* gce = getInterfaceOfProject(project);
+	if (gce)
 	{
-		ContentView2::Manager::self()->cache()->addToCache(project, filename, "GNX_DICO", "*");
+		QStringList dictionaries = getInterfaceOfProject(project)->dictionnaries();
+		foreach(const QString & filename, dictionaries)
+		{
+			ContentView2::Manager::self()->cache()->addToCache(project, filename, "GNX_DICO", "*");
+		}
 	}
 }
 

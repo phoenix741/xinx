@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * XINX                                                                    *
- * Copyright (C) 2009 by Ulrich Van Den Hekke                              *
+ * Copyright (C) 2007-2010 by Ulrich Van Den Hekke                         *
  * ulrich.vdh@shadoware.org                                                *
  *                                                                         *
  * This program is free software: you can redistribute it and/or modify    *
@@ -29,10 +29,25 @@
 
 /* SnipetParameterNameItem */
 
+/*!
+ * \class SnipetParameterNameItem
+ * \internal
+ */
+class SnipetParameterNameItem : public QTableWidgetItem
+{
+public:
+	SnipetParameterNameItem();
+	SnipetParameterNameItem(const QString & name);
+private:
+
+};
+
+//! \internal
 SnipetParameterNameItem::SnipetParameterNameItem() : QTableWidgetItem()
 {
 }
 
+//! \internal
 SnipetParameterNameItem::SnipetParameterNameItem(const QString & name) : QTableWidgetItem()
 {
 	setData(Qt::DisplayRole, name);
@@ -40,20 +55,41 @@ SnipetParameterNameItem::SnipetParameterNameItem(const QString & name) : QTableW
 
 /* SnipetParameterValueItem */
 
+/*!
+ * \class SnipetParameterValueItem
+ * \internal
+ */
+class SnipetParameterValueItem : public QTableWidgetItem
+{
+public:
+	SnipetParameterValueItem();
+	SnipetParameterValueItem(const QString & defaultValue);
+
+	void setDefault();
+	void setDefaultValue(const QString & value);
+	const QString & defaultValue() const;
+private:
+	QString m_defaultValue;
+};
+
+//! \internal
 SnipetParameterValueItem::SnipetParameterValueItem() : QTableWidgetItem()
 {
 }
 
+//! \internal
 SnipetParameterValueItem::SnipetParameterValueItem(const QString & defaultValue) : QTableWidgetItem(), m_defaultValue(defaultValue)
 {
 	setData(Qt::DisplayRole, m_defaultValue);
 }
 
+//! \internal
 void SnipetParameterValueItem::setDefault()
 {
 	setData(Qt::DisplayRole, m_defaultValue);
 }
 
+//! \internal
 void SnipetParameterValueItem::setDefaultValue(const QString & value)
 {
 	if (m_defaultValue != value)
@@ -66,6 +102,7 @@ void SnipetParameterValueItem::setDefaultValue(const QString & value)
 	}
 }
 
+//! \internal
 const QString & SnipetParameterValueItem::defaultValue() const
 {
 	return m_defaultValue;
@@ -73,21 +110,57 @@ const QString & SnipetParameterValueItem::defaultValue() const
 
 /* CallSnipetDialogImpl */
 
+/*!
+ * \ingroup Snipets
+ * \class CallSnipetDialogImpl
+ * \since 0.9.0.0
+ *
+ * \brief Dialog to change parameters on snipet before add result to the text.
+ *
+ * This dialog permit to change parameters on snipet before replace it in the
+ * editor.
+ * This dialog have a part to change each parameters and another part to show a result.
+ * The result contains the execution of the script.
+ *
+ * \image html callsnipetdialogimpl.png
+ *
+ */
+
+/*!
+ * \brief Constructor of the snipet dialog implementation.
+ *
+ * We defines a default windows flags. The windows can't be resize.
+ * \param db A database
+ * \param snipetId The id of the snipet
+ * \param parent The parent of the dialog
+ * \param f Flags to use on Windows. By default, the dialog have a fixed size.
+ */
 CallSnipetDialogImpl::CallSnipetDialogImpl(QSqlDatabase db, int snipetId, QWidget * parent, Qt::WFlags f) : QDialog(parent, f)
 {
 	setupUi(db, snipetId, this);
 }
 
+/*!
+ * \brief Destroy the dialog.
+ */
 CallSnipetDialogImpl::~CallSnipetDialogImpl()
 {
 
 }
 
+/*!
+ * \brief Return the result's text of the snipet.
+ *
+ * The result text has each parameters replaced and ECMAScript parsed.
+ */
 const QString & CallSnipetDialogImpl::snipetText() const
 {
 	return m_snipetText;
 }
 
+/*!
+ * \brief Return the list of parameters modified and for each parameters the value.
+ */
 QStringList CallSnipetDialogImpl::values() const
 {
 	QStringList parameters;
@@ -98,6 +171,12 @@ QStringList CallSnipetDialogImpl::values() const
 	return parameters;
 }
 
+/*!
+ * \brief Execute the dialog box.
+ *
+ * This method is show only if XINXConfig::self()->config().snipets.alwaysShowDialog or
+ * if showDialog in the snipet is to true.
+ */
 int CallSnipetDialogImpl::exec()
 {
 	if (XINXConfig::self()->config().snipets.alwaysShowDialog || m_showDialog)

@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * XINX                                                                    *
- * Copyright (C) 2009 by Ulrich Van Den Hekke                              *
+ * Copyright (C) 2007-2010 by Ulrich Van Den Hekke                         *
  * ulrich.vdh@shadoware.org                                                *
  *                                                                         *
  * This program is free software: you can redistribute it and/or modify    *
@@ -47,7 +47,7 @@
  * the user to change it.
  *
  * \image html customschemeimpl1.png
- * \image latex customschemeimpl1.eps
+ * \image latex customschemeimpl1.png
  *
  * When the user select a format, the widget update chexkboxes, and comboboxes to
  * the new format.

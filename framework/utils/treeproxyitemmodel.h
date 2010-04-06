@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * XINX                                                                    *
- * Copyright (C) 2009 by Ulrich Van Den Hekke                              *
+ * Copyright (C) 2007-2010 by Ulrich Van Den Hekke                         *
  * ulrich.vdh@shadoware.org                                                *
  *                                                                         *
  * This program is free software: you can redistribute it and/or modify    *
@@ -17,9 +17,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
+#pragma once
 #ifndef TREEPROXYITEMMODEL_H
 #define TREEPROXYITEMMODEL_H
-#pragma once
 
 // Xinx header
 #include <core/lib-config.h>
@@ -70,18 +70,18 @@ protected slots:
 private:
 	struct Mapping
 	{
-		int id; //!< Define the id of the line. This id have nothing to do with the line in the source model
-		int parentId; //! Define the parent id of this structure
-		QVector<int> childs; //!< Define a list of id, child of this element
-		QVector<int> new_childs; //!< Structure used to know who are the new childs inserted
+		int id;                  //< Define the id of the line. This id have nothing to do with the line in the source model
+		int parentId;            //< Define the parent id of this structure
+		QVector<int> childs;     //< Define a list of id, child of this element
+		QVector<int> new_childs; //< Structure used to know who are the new childs inserted
 	};
-	/*!
+	/*
 	 * Map of id/structure.
 	 * This map associate id with a stucture contains id, parentId, and rows.
 	 */
 	typedef QHash<int,Mapping*> IndexMap;
 
-	/// Map of id/structure
+	// Map of id/structure
 	mutable IndexMap m_idMapping;
 	QHash<int,int> m_id2IndexMapping;
 	QHash<int,int> m_index2IdMapping;

@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * XINX                                                                    *
- * Copyright (C) 2009 by Ulrich Van Den Hekke                              *
+ * Copyright (C) 2007-2010 by Ulrich Van Den Hekke                         *
  * ulrich.vdh@shadoware.org                                                *
  *                                                                         *
  * This program is free software: you can redistribute it and/or modify    *
@@ -29,6 +29,29 @@
 
 /* CategoryPropertyDlgImpl */
 
+/*!
+ * \ingroup Snipets
+ * \class CategoryPropertyDlgImpl
+ * \since 0.9.0.0
+ *
+ * \brief This dialog box is used to update snipet's category's properties.
+ *
+ * This dialog is used to chage the name and the description of a property. In two other
+ * tab tue user can change the parent category and an availability script used to know if
+ * the category and all attached snipet can be used.
+ *
+ * This script must be write in ECMAScript language. (See ScriptManager)
+ *
+ * \image html categorypropertydlgimpl1.png
+ */
+
+/*!
+ * \brief Create the dialog and prepare field with correct value for a given category.
+ * \param categoryId The category to use to prepare fields.
+ * \param db The database where read information
+ * \param parent The parent widget of this dialog box
+ * \param f Flags used for the dialog property
+ */
 CategoryPropertyDlgImpl::CategoryPropertyDlgImpl(int categoryId, QSqlDatabase db, QWidget * parent, Qt::WindowFlags f) : QDialog(parent, f)
 {
 	setupUi();
@@ -43,6 +66,12 @@ CategoryPropertyDlgImpl::CategoryPropertyDlgImpl(int categoryId, QSqlDatabase db
 	m_mapper->toFirst();
 }
 
+/*!
+ * \brief Prepare the dialog box for category creation.
+ * \param db The database where the category must be created.
+ * \param parent The parent widget of this dialog
+ * \param f Flags used for dialog property.
+ */
 CategoryPropertyDlgImpl::CategoryPropertyDlgImpl(QSqlDatabase db, QWidget * parent, Qt::WindowFlags f) : QDialog(parent, f)
 {
 	setupUi();
@@ -62,6 +91,7 @@ CategoryPropertyDlgImpl::CategoryPropertyDlgImpl(QSqlDatabase db, QWidget * pare
 	m_mapper->setCurrentIndex(row);
 }
 
+//! Destroy the dialog box
 CategoryPropertyDlgImpl::~CategoryPropertyDlgImpl()
 {
 }
@@ -88,11 +118,19 @@ void CategoryPropertyDlgImpl::createMapper()
 	m_mapper->addMapping(m_availablePlainTextEdit, m_categoryTableModel->fieldIndex("available_script"));
 }
 
+//! Change the parent id of the category to \p id
 void CategoryPropertyDlgImpl::setParentId(int id)
 {
 	m_categoryTreeView->setCategoryId(id);
 }
 
+/*!
+ * \brief Enable or disable the creation of a new category in this dialog
+ *
+ * If this dialog box is open from the Snipet's property dialog, the creation
+ * of new category must be disabled (only allowed on the Snipet's property
+ * dialog).
+ */
 void CategoryPropertyDlgImpl::setCategoryAccess(bool value)
 {
 	m_addCategoryButton->setVisible(value);

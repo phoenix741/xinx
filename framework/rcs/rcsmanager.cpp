@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * XINX                                                                    *
- * Copyright (C) 2009 by Ulrich Van Den Hekke                              *
+ * Copyright (C) 2007-2010 by Ulrich Van Den Hekke                         *
  * ulrich.vdh@shadoware.org                                                *
  *                                                                         *
  * This program is free software: you can redistribute it and/or modify    *
@@ -29,11 +29,42 @@
 #include <QMessageBox>
 #include <QtConcurrentRun>
 
+/*!
+ * \defgroup RCS Revision Control System
+ */
+
 /* Constante */
 
 RCSManager * RCSManager::s_self = 0;
 
 /* RCSManager */
+
+/*!
+ * \ingroup RCS
+ * \class RCSManager
+ * \brief The RCS Manager is the new interface to use to interact with RCS plugin.
+ *
+ * On validation :
+ *   The class must search file to add and file to remove, and show a dialog to
+ *   the user. After the validation of the dialog, the class must add, and remove files
+ *   and commit the class.
+ */
+
+/*!
+ * \enum RCSManager::rcsAddRemoveOperation
+ * \brief Operations on file that XINX can made.
+ */
+
+/*!
+ * \var RCSManager::rcsAddRemoveOperation RCSManager::RCS_ADD
+ * \brief Add a file to RCS
+ */
+
+/*!
+ * \var RCSManager::rcsAddRemoveOperation RCSManager::RCS_REMOVE
+ * \brief Remove a file to the RCS
+ */
+
 
 RCSManager::RCSManager() : m_rcs(0)
 {
@@ -64,12 +95,14 @@ RCSManager::RCSManager() : m_rcs(0)
 	updateActions();
 }
 
+//! Destroy the RCS Manager
 RCSManager::~RCSManager()
 {
 	if (s_self == this)
 		s_self = 0;
 }
 
+//! Return the single instance of the RCSManager
 RCSManager * RCSManager::self()
 {
 	if (! s_self)
@@ -80,21 +113,28 @@ RCSManager * RCSManager::self()
 	return s_self;
 }
 
+//! Return the action that can be used to update the repository
 QAction * RCSManager::updateAllAction() const
 {
 	return m_updateAll;
 }
 
+//! Return the action that can be used to commit the repository
 QAction * RCSManager::commitAllAction() const
 {
 	return m_commitAll;
 }
 
+//! Call the action than can be used to cancel the execution of the operation
 QAction * RCSManager::abortAction() const
 {
 	return m_abort;
 }
 
+/*!
+ * List all the revision control that can be used. The Result is a list of
+ * QPair. The first element is the key and the second element is the description.
+ */
 QMap<QString,QString> RCSManager::revisionControlIds() const
 {
 	QMap<QString,QString> result;
@@ -128,6 +168,10 @@ RCS * RCSManager::createRevisionControl(QString revision, QString basePath) cons
 	return rcs;
 }
 
+/*!
+ * Method called by XINX to set a Revision control system.
+ * \param rcs The new Revision Controle System to use
+ */
 bool RCSManager::setCurrentRCS(const QString & rcs)
 {
 	if (rcs != m_rcsName)
@@ -168,21 +212,25 @@ bool RCSManager::setCurrentRCS(const QString & rcs)
 	return true;
 }
 
+//! Return the name of the current RCS
 QString RCSManager::currentRCS() const
 {
 	return m_rcsName;
 }
 
+//! Return the description of the current RCS
 QString RCSManager::description() const
 {
 	return revisionControlIds().value(m_rcsName);
 }
 
+//! RCS Object
 RCS * RCSManager::currentRCSInterface() const
 {
 	return m_rcs;
 }
 
+//! Set the current root path
 void RCSManager::setCurrentRootPath(const QString & rootPath)
 {
 	if (m_rootPath == rootPath)
@@ -193,16 +241,19 @@ void RCSManager::setCurrentRootPath(const QString & rootPath)
 	}
 }
 
+//! Get the current root path
 const QString & RCSManager::currentRootPath() const
 {
 	return m_rootPath;
 }
 
+//! Return true if an operation is executed
 bool RCSManager::isExecuting() const
 {
 	return m_rcsWatcher.isRunning();
 }
 
+//! Add an operation to the the RCS
 void RCSManager::addFileOperation(rcsAddRemoveOperation op, const QStringList & filename, QWidget * parent, bool confirm)
 {
 	QStringList filenameList = filename;
@@ -231,6 +282,7 @@ void RCSManager::callRCSFileOperations(RCS * rcs, QStringList toAdd, QStringList
 		rcs->remove(toRemove);
 }
 
+//! Validate all operation to the RCS (made in a separate thread).
 void RCSManager::validFileOperations()
 {
 	m_rcsWatcher.waitForFinished();
@@ -258,12 +310,11 @@ void RCSManager::validFileOperations()
 	}
 	else
 	{
-		emit operationStarted();
 		m_operations.clear();
-		emit operationTerminated();
 	}
 }
 
+//! Rollback all operation to the RCS (return imediatly).
 void RCSManager::rollbackFileOperations()
 {
 	m_operations.clear();
@@ -291,6 +342,7 @@ void RCSManager::callRCSValideWorkingCopy(RCS * rcs, RCS::FilesOperation operati
 	rcs->commit(toCommit, messages);
 }
 
+//! Valide the working copy
 void RCSManager::validWorkingCopy(QStringList files, QWidget * parent)
 {
 	Q_ASSERT(m_rcs);
@@ -347,9 +399,7 @@ void RCSManager::validWorkingCopy(QStringList files, QWidget * parent)
 	}
 	else
 	{
-		emit operationStarted();
 		emit log(RCS::LogApplication, tr("Operation cancelled"));
-		emit operationTerminated();
 	}
 }
 
@@ -358,6 +408,7 @@ void RCSManager::callRCSUpdateWorkingCopy(RCS * rcs, QStringList list)
 	rcs->update(list);
 }
 
+//! Update the working copy
 void RCSManager::updateWorkingCopy(QStringList list)
 {
 	Q_ASSERT(m_rcs);
@@ -375,6 +426,7 @@ void RCSManager::callRCSUpdateRevision(RCS * rcs, QString path, QString revision
 	rcs->updateToRevision(path, revision, content);
 }
 
+//! Update one file to the given revision
 void RCSManager::updateToRevision(const QString & path, const QString & revision, QByteArray * content)
 {
 	Q_ASSERT(m_rcs);
@@ -384,6 +436,7 @@ void RCSManager::updateToRevision(const QString & path, const QString & revision
 	m_rcsWatcher.setFuture(QtConcurrent::run(this, &RCSManager::callRCSUpdateRevision, m_rcs, path, revision, content));
 }
 
+//! Abort all the opreration
 void RCSManager::abort()
 {
 	Q_ASSERT(m_rcs);

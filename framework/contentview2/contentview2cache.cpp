@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * XINX                                                                    *
- * Copyright (C) 2009 by Ulrich Van Den Hekke                              *
+ * Copyright (C) 2007-2010 by Ulrich Van Den Hekke                         *
  * ulrich.vdh@shadoware.org                                                *
  *                                                                         *
  * This program is free software: you can redistribute it and/or modify    *
@@ -37,30 +37,118 @@
 #include <QDebug>
 #include <QTextCodec>
 
+/*!
+ * \defgroup ContentView2 Gestion de la completion
+ */
+
+/*!
+ * \ingroup ContentView2
+ * \since 0.9.0.0
+ *
+ * \brief This namespace contains all classes used to access to the new
+ * Content View system.
+ *
+ * The new ContentView system is based on a Sqlite database. All the classes
+ * of this namespace is used to simplify and manage the access of this class.
+ *
+ * You can use classes ContentView2::Node, ContentView2::File, and ContentView2::Project
+ * to access to the content of the table without any query.
+ *
+ * Classes ContentView2::Parser and ContentView2::Cache are used to generate
+ * the content of the database for using it.
+ *
+ * Classes ContentView2::TreeModel and ContentView2::CompletionModel are used
+ * to show the content of the base to the user.
+ */
 namespace ContentView2
 {
 
 /* Cache */
 
+/*!
+ * \ingroup ContentView2
+ * \class ContentView2::Cache
+ * \brief This class is used to cache file used by the content view system.
+ *
+ * The goal of this class is to manage the loading of the content view system in the sqlite database.
+ * At the initialisation of a project, each file are checked to update the database. If a file is
+ * modified since the last
+ *
+ *
+ * \attention The cache is independent of the project and created in a single sqlite database.
+ * If the project isn't use, the sqlite database is not cleaned. It's possible, when
+ * \b XINX is stopped to delete the session file. It will be re-created at start.
+ *
+ * \attention Only one cache at a time should be opened in the application. If more that one
+ * cache is opened, the application can be unstable.
+ *
+ * A file in the database have mark, who said the file as cached or not. Only cached file
+ * are check at start. Other file will automatically removed if there couldn't be find in
+ * registered path (see registerPath() and unregisterPath()).
+ */
+
+/*!
+ * \fn void Cache::cacheLoaded(const ContentView2::File & file)
+ * \brief Signal emited when the cache for the file \e file is loaded.
+ */
+
+/*!
+ * \fn void Cache::cacheLoaded()
+ * \brief Signal emited when the process is finished.
+ */
+
+/*!
+ * \fn void Cache::progressRangeChanged(int min, int max)
+ * \brief Signal emited when the progress value change (a new file is added).
+ */
+
+/*!
+ * \fn void Cache::progressValueChanged(int value)
+ * \brief Signal emited each time a file is process to indicate the progress.
+ */
+
+
+//! Create a new instance.
 Cache::Cache()
 {
 	qRegisterMetaType<ContentView2::File>("ContentView2::File");
 	m_watcher = new QFileSystemWatcher(this);
 	connect(m_watcher, SIGNAL(fileChanged(QString)), this, SLOT(refreshCache(QString)));
+	m_timer.setSingleShot(true);
+	m_timer.setInterval(500);
+	connect(&m_timer, SIGNAL(timeout()), this, SLOT(timerEvent()));
 }
 
+//! Destroy this instance
 Cache::~Cache()
 {
 
 }
 
+/*!
+ * \brief Return the list of current contents view loaded.
+ *
+ * This method return the list of currently file loaded. The method return only
+ * file mark as cached.
+ */
 QStringList Cache::contentsViewLoaded() const
 {
 	return m_watcher->files();
 }
 
+/*!
+ * \brief Intialize a cache from the content of preloaded files.
+ *
+ * Load all file in the cache mark as cached. Use each predefined parser to reload the
+ * file. The file will be test later to know if the file is already loaded or not.
+ *
+ * Each path is added in a QFileSystemWatcher to watch file modified and update
+ * the cache if the file is modified.
+ */
 void Cache::initializeCache()
 {
+	m_timer.stop();
+
 	if (m_watcher->files().size())
 		m_watcher->removePaths(m_watcher->files());
 
@@ -98,7 +186,7 @@ void Cache::initializeCache()
 		// In case of error, make nothing
 	}
 
-	startTimer(300);
+	m_timer.start();
 }
 
 void Cache::addToCache(struct_cache p)
@@ -108,8 +196,29 @@ void Cache::addToCache(struct_cache p)
 		m_watcher->addPath(p.path);
 }
 
+/*!
+ * \brief Add the path \p path to the cache.
+ *
+ * If the file is a valid file, the file will be watched. The file will be
+ * added in the cache for the project \p project.
+ *
+ * \param project Project for wich the file must be added. If NULL, the file
+ * will be added for all project.
+ * \param path The path to add to the cache. If the path is valid, the file
+ * will be watched too.
+ * \param selection If selection is equals to '*', this file can be used in all
+ * type of file for completion. Else the file is exclude of the completion unless
+ * it will be explicitely added.
+ * \param parser The parser to use for parsing the file. If the parser is NULL,
+ * the default parser for this type of file will be used and the file is considered as
+ * cached.
+ *
+ * \overload
+ */
 void Cache::addToCache(XinxProject * project, const QString & path, const QString & selection, Parser * parser)
 {
+	m_timer.stop();
+
 	struct_cache fileCache;
 	fileCache.project      = project;
 	fileCache.cached       = parser == 0;
@@ -122,11 +231,31 @@ void Cache::addToCache(XinxProject * project, const QString & path, const QStrin
 	if (QFileInfo(path).exists() && ! m_watcher->files().contains(path))
 		m_watcher->addPath(path);
 
-	startTimer(100);
+	m_timer.start();
 }
 
+/*!
+ * \brief Add the path \p path to the cache.
+ *
+ * If the file is a valid file, the file will be watched. The file will be
+ * added in the cache for the project \p project.
+ *
+ * \param project Project for wich the file must be added. If NULL, the file
+ * will be added for all project.
+ * \param path The path to add to the cache. If the path is valid, the file
+ * will be watched too.
+ * \param type The type of parser to use. Given if the default parser isn't adapted.
+ * \param selection If selection is equals to '*', this file can be used in all
+ * type of file for completion. Else the file is exclude of the completion unless
+ * it will be explicitely added.
+ * \param parser The parser to use for parsing the file. If the parser is NULL,
+ * the default parser for this type of file will be used and the file is considered as
+ * cached.
+ */
 void Cache::addToCache(XinxProject * project, const QString & path, const QString & type, const QString & selection, Parser * parser)
 {
+	m_timer.stop();
+
 	struct_cache fileCache;
 	fileCache.project      = project;
 	fileCache.cached       = parser == 0;
@@ -139,11 +268,18 @@ void Cache::addToCache(XinxProject * project, const QString & path, const QStrin
 
 	m_parsers.append(fileCache);
 
-	startTimer(500);
+	m_timer.start();
 }
 
+/*!
+ * \brief Indicate to removed the given file from the cache.
+ *
+ * The file will be not watched after call this method.
+ */
 void Cache::deleteFromCache(XinxProject * project, const QString & path, bool isCached)
 {
+	m_timer.stop();
+
 	struct_cache fileCache;
 	fileCache.project      = project;
 	fileCache.cached       = isCached;
@@ -153,24 +289,38 @@ void Cache::deleteFromCache(XinxProject * project, const QString & path, bool is
 
 	m_toDelete.append(fileCache);
 
-	startTimer(500);
+	m_timer.start();
 }
 
+/*!
+ * \brief Register an uncached file.
+ *
+ * This method is used to register a file add as not cached. If the file
+ * isn't registered, it will be automatically deleted at the next call of
+ * the thread.
+ */
 void Cache::registerPath(const QString & path)
 {
 	if (! m_registeredFile.contains(path))
 		m_registeredFile.append(path);
 }
 
+/*!
+ * \brief Unregister an uncached file.
+ *
+ * This method remove the file from the registered file and launch the
+ * thread to remove it from the base.
+ */
 void Cache::unregisterPath(const QString & path)
 {
+	m_timer.stop();
 	m_registeredFile.removeAll(path);
-	startTimer(500);
+	m_timer.start();
 }
 
-void Cache::timerEvent(QTimerEvent * event)
+void Cache::timerEvent()
 {
-	killTimer(event->timerId());
+	m_timer.stop();
 	if (m_parsers.size())
 		start(QThread::IdlePriority);
 }
@@ -209,7 +359,7 @@ File Cache::getFile(QSqlDatabase db, struct_cache p)
 	}
 	catch (FileException e)
 	{
-		/* Lecture/Création du projet */
+		/* Lecture/Creation du projet */
 		Project project = getProject(db, p.project);
 
 		/* Creation du fichier */
@@ -300,6 +450,15 @@ void Cache::regenerateImport(QSqlDatabase db)
 	}
 }
 
+/*!
+ * \brief Process the cache refresh.
+ *
+ * This internal method process the cache refresh. This method remove all the
+ * unregistered files, remove the requested file and add all added file (at the
+ * condition that the file isn't alread cached).
+ *
+ * If the file is already cached, and the file isn't modified, the file isn't process.
+ */
 void Cache::run()
 {
 	{
@@ -525,10 +684,16 @@ void Cache::run()
 	QSqlDatabase::removeDatabase("CONTENTVIEW_SESSION_THREAD");
 }
 
+/*!
+ * \brief Call this method if you want refresh the cache manuelly for a given file.
+ *
+ * This method is automatically called when a watched file is modified.
+ */
 void Cache::refreshCache(const QString & filename)
 {
 	if (QFileInfo(filename).exists())
 	{
+		m_timer.stop();
 		struct_cache fileCache;
 		fileCache.project      = XINXProjectManager::self()->project();
 		fileCache.path         = filename;
@@ -538,7 +703,7 @@ void Cache::refreshCache(const QString & filename)
 		fileCache.parser       = 0;
 
 		addToCache(fileCache);
-		startTimer(1000);
+		m_timer.start();
 	}
 	else
 	{

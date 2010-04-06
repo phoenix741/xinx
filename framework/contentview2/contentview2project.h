@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * XINX                                                                    *
- * Copyright (C) 2010 by Ulrich Van Den Hekke                              *
+ * Copyright (C) 2007-2010 by Ulrich Van Den Hekke                         *
  * ulrich.vdh@shadoware.org                                                *
  *                                                                         *
  * This program is free software: you can redistribute it and/or modify    *
@@ -17,9 +17,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
+#pragma once
 #ifndef CONTENTVIEW2PROJECT_H
 #define CONTENTVIEW2PROJECT_H
-#pragma once
 
 // Xinx header
 #include <core/lib-config.h>
@@ -35,28 +35,15 @@ class XinxProject;
 namespace ContentView2
 {
 
-/*!
- * \class FileException
- * \brief Exception throw when a SQL error occur
- */
 class LIBEXPORT ProjectException : public XinxException
 {
 public:
-	/*!
-	 * Create the exception with a message and a line.
-	 * \param message Error of the exception.
-	 * \param line Line where the error is.
-	 */
 	ProjectException(const QString & assertion, const QString & locationFile, int locationLine, const QString & locationMethod, QString message);
 private:
 };
 
 class PrivateProject;
 
-/*!
- * The class Project is usefull to simplify some operations on cv_project table.
- * This class is also used to be propaged from object to another.
- */
 class LIBEXPORT Project
 {
 	Q_DECLARE_TR_FUNCTIONS(Project)

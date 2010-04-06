@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * XINX                                                                    *
- * Copyright (C) 2009 by Ulrich Van Den Hekke                              *
+ * Copyright (C) 2007-2010 by Ulrich Van Den Hekke                         *
  * ulrich.vdh@shadoware.org                                                *
  *                                                                         *
  * This program is free software: you can redistribute it and/or modify    *
@@ -17,6 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
+#pragma once
 #ifndef BOOKMARKTEXTEDITORINTERFACE_H
 #define BOOKMARKTEXTEDITORINTERFACE_H
 
@@ -35,11 +36,7 @@ class LIBEXPORT BookmarkTextEditorInterface : public BookmarkEditorInterface
 public:
 	BookmarkTextEditorInterface(TextFileEditor * parent);
 
-	/*!
-	 * List of bookmarks of the editor
-	 */
 	virtual QList<int> bookmarks() const;
-
 
 	void setBookmark(int line, bool enabled);
 	virtual void toogledBookmark();
@@ -52,7 +49,6 @@ public:
 
 	void setTextEditor(XinxCodeEdit * textEdit);
 public slots:
-	/*! Slot called when the bookmark is toogled on a line. This slot change the project settings. */
 	void slotBookmarkToggled(int line, bool enabled);
 
 private:

@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * XINX                                                                    *
- * Copyright (C) 2009 by Ulrich Van Den Hekke                              *
+ * Copyright (C) 2007-2010 by Ulrich Van Den Hekke                         *
  * ulrich.vdh@shadoware.org                                                *
  *                                                                         *
  * This program is free software: you can redistribute it and/or modify    *
@@ -32,7 +32,19 @@ namespace ContentView2
 {
 
 /* NodeException */
+/*!
+ * \class NodeException
+ * \brief Exception throw when a SQL error occur
+ */
 
+/*!
+ * Create the exception with a message and a line.
+ * \param assertion The condition who failed
+ * \param locationFile The file wich failed (this file)
+ * \param locationLine The line where the exception is throw
+ * \param locationMethod The method where the exception is throw.
+ * \param message Error of the exception.
+ */
 NodeException::NodeException(const QString & assertion, const QString & locationFile, int locationLine, const QString & locationMethod, QString message)
 	: XinxException(assertion, locationFile, locationLine, locationMethod, message)
 {
@@ -120,25 +132,85 @@ void PrivateNode::load()
 
 /* Node */
 
+/*!
+ * \class Node
+ * \brief This class represent a node element for the content view
+ *
+ * This class is a node element for the content view. It can be added to another
+ * content view element, and detached.
+ *
+ * This class is based on SQL
+ */
+
+/*!
+ * \enum Node::RoleIndex
+ * To simplify, the content view node will be not subclassed. Else data will
+ * be stored in this structure as role. Other value (as mode, ...) can be stored
+ * as user value, if needed.
+ */
+/*!
+ * \var Node::RoleIndex Node::NODE_ID
+ * \brief The id of the node (a number)
+ */
+/*!
+ * \var Node::RoleIndex Node::NODE_NAME
+ * \brief The waiting content is a QString.
+ */
+/*!
+ * \var Node::RoleIndex Node::NODE_TYPE
+ * \brief The waiting content is a QString.
+ */
+/*!
+ * \var Node::RoleIndex Node::NODE_ICON
+ * \brief The waiting content is a QString.
+ */
+/*!
+ * \var Node::RoleIndex Node::NODE_DISPLAY_NAME
+ * \brief The waiting content is a QString.
+ */
+/*!
+ * \var Node::RoleIndex Node::NODE_DISPLAY_TIPS
+ * \brief The waiting content is a QString.
+ */
+/*!
+ * \var Node::RoleIndex Node::NODE_COMPLETE_FORM
+ * \brief The waiting content is a QString.
+ */
+/*!
+ * \var Node::RoleIndex Node::NODE_USER_VALUE
+ * \brief No waiting content.
+ */
+
+/*!
+ * Create an empty content view node
+ */
 Node::Node()
 {
 	d = new PrivateNode;
 }
 
+//! Copy the node
 Node::Node(const Node & other) : d(other.d)
 {
 }
 
+/*!
+ * \brief Create an empty content view node and load the id
+ */
 Node::Node(QSqlDatabase db, uint id)
 {
 	d = new PrivateNode;
 	load(db, id);
 }
 
+/*!
+ * \brief Destroy the instance of ContentViewNode
+ */
 Node::~Node()
 {
 }
 
+//! Load the object from the base
 void Node::load(QSqlDatabase db, uint id)
 {
 	d->m_isLoaded = false;
@@ -146,12 +218,14 @@ void Node::load(QSqlDatabase db, uint id)
 	d->m_db = db;
 }
 
+//! Reload the object
 void Node::reload(QSqlDatabase db)
 {
 	if (d->m_id >= 0)
 		load(db, d->m_id);
 }
 
+//! Create the node with the content of the object
 uint Node::create(QSqlDatabase db, int forcedId)
 {
 	QSqlQuery selectQuery("SELECT 1 FROM cv_file WHERE id=:file_id", db);
@@ -220,6 +294,7 @@ uint Node::create(QSqlDatabase db, int forcedId)
 	return newId;
 }
 
+//! Update the object in the base
 void Node::update(QSqlDatabase db)
 {
 	Q_ASSERT_X(d->m_id >= 0, "Node::update", "The node must be initialized");
@@ -300,6 +375,12 @@ void Node::update(QSqlDatabase db)
 	}
 }
 
+/*!
+ * \brief Delete the node.
+ *
+ * After deleted the node, the content of the object is obsolete.
+ * \see destroyChilds()
+ */
 void Node::destroy(QSqlDatabase db)
 {
 	Q_ASSERT_X(d->m_id >= 0, "Node::destroy", "The node must be initialized");
@@ -324,11 +405,18 @@ void Node::destroy(QSqlDatabase db)
 	d->m_id = -1;
 }
 
+//! Return the node id
 uint Node::nodeId() const
 {
 	return d->m_id;
 }
 
+/*!
+ * Attach this node and all it's child to the parent node below.
+ * \param db The database to use to attache the node to its parent.
+ * \param parentId The parent node id where this node is attached.
+ * \see detach()
+ */
 bool Node::attach(QSqlDatabase db, uint parentId)
 {
 	Q_ASSERT_X(d->m_id >= 0, "Node::attach", "The node must be initialized");
@@ -351,6 +439,10 @@ bool Node::attach(QSqlDatabase db, uint parentId)
 	return true;
 }
 
+/*!
+ * Detach the node from the given parent id
+ * \see attach()
+ */
 void Node::detach(QSqlDatabase db, uint parentId)
 {
 	Q_ASSERT_X(d->m_id >= 0, "Node::detach", "The node must be initialized");
@@ -362,6 +454,7 @@ void Node::detach(QSqlDatabase db, uint parentId)
 	EXCEPT_ELSE(result, NodeException, "Node::detach", qPrintable(remove.lastError().text()));
 }
 
+//! Remove all childs of the node.
 void Node::destroyChilds(QSqlDatabase db)
 {
 	if (d->m_id == -1) return ;
@@ -373,12 +466,14 @@ void Node::destroyChilds(QSqlDatabase db)
 	}
 }
 
+//! Return the register line for the node
 int Node::line() const
 {
 	d->load();
 	return d->m_line;
 }
 
+//! Change the line of the node
 void Node::setLine(int value)
 {
 	d->load();
@@ -403,24 +498,28 @@ QString Node::filename(QSqlDatabase db) const
 	}
 }
 
+//! Return the current file name of the node. If not set, this is the current file name.
 int Node::fileId() const
 {
 	d->load();
 	return d->m_fileId;
 }
 
+//! Set the file name of the node with \e value.
 void Node::setFileId(int value)
 {
 	Q_ASSERT_X(d->m_id == -1, "Node::setFileId", "The filename can't be modified after node creation");
 	d->m_fileId = value;
 }
 
+//! Set the file to use with the node.
 void Node::setFile(const File & file)
 {
 	Q_ASSERT_X(d->m_id == -1, "Node::setFile", "The filename can't be modified after node creation");
 	d->m_fileId = file.fileId();
 }
 
+//! Return the file the use the node
 File Node::file(QSqlDatabase db)
 {
 	d->load();
@@ -434,12 +533,14 @@ File Node::file(QSqlDatabase db)
 	}
 }
 
+//! Return the data stored in the node for the given \e index
 QVariant Node::data(int index) const
 {
 	d->load();
 	return d->m_datas.value(index);
 }
 
+//! Set the data for the givent \e index
 void Node::setData(const QVariant & value, int index)
 {
 	d->load();
@@ -449,6 +550,10 @@ void Node::setData(const QVariant & value, int index)
 	}
 }
 
+/*!
+ * List of id of the childs node of this node.
+ * \see attach(), detach()
+ */
 QList<int> Node::childs(QSqlDatabase db) const
 {
 	QList<int> result;
@@ -466,6 +571,10 @@ QList<int> Node::childs(QSqlDatabase db) const
 	return result;
 }
 
+/*!
+ * List of id of the childs node of this node.
+ * \see attach(), detach()
+ */
 QList<int> Node::parents(QSqlDatabase db) const
 {
 	QList<int> result;
@@ -484,6 +593,7 @@ QList<int> Node::parents(QSqlDatabase db) const
 	return result;
 }
 
+//! Make a hash of the node and search the node having the same hash.
 int Node::indexOfChild(QSqlDatabase db, const Node & node) const
 {
 	if (d->m_id == -1) return -1;
@@ -504,11 +614,13 @@ int Node::indexOfChild(QSqlDatabase db, const Node & node) const
 	}
 }
 
+//! Return true is the node has a valid content.
 bool Node::isValid() const
 {
 	return d->m_id >= 0;
 }
 
+//! Clear the data of the node and make it not valid
 void Node::clear()
 {
 	d->m_datas.clear();
@@ -520,6 +632,7 @@ void Node::clear()
 	d->m_db       = QSqlDatabase();
 }
 
+//! Copy the node
 Node & Node::operator=(const Node & node)
 {
 	this->d = node.d;
