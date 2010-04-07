@@ -24,6 +24,8 @@
 // Qt header
 #include <QObject>
 #include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QMutex>
 
 // Xiinx header
 #include <core/xinxcore.h>
@@ -48,6 +50,9 @@ public:
 	QSqlDatabase database() const;
 	Cache * cache();
 
+	QMutex & executeStatementMutex();
+	QSqlQuery executeStatement(const QString & query, QStringList parameters);
+
 	static Manager * self();
 private:
 	void openDatabase();
@@ -64,6 +69,7 @@ private:
 	QList<ParserTuple> m_persistentParser;
 	Cache * m_cache;
 	QSqlDatabase m_localBase;
+	QMutex m_executeStatementMutex;
 	static Manager * s_self;
 };
 

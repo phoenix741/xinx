@@ -90,7 +90,6 @@ void Manager::openDatabase()
 	bool result = db.open();
 	Q_ASSERT_X(result, "Manager::openDatabase", qPrintable(db.lastError().text()));
 	db.exec("PRAGMA synchronous = OFF");
-	//db.setConnectOptions("QSQLITE_BUSY_TIMEOUT=5000");
 
 	// Check the content
 	QStringList tables = db.tables();
@@ -156,9 +155,37 @@ void Manager::closeDatabase()
 	QSqlDatabase::removeDatabase("CONTENTVIEW_SESSION");
 }
 
+//! \obsolete
 QSqlDatabase Manager::database() const
 {
 	return QSqlDatabase::database("CONTENTVIEW_SESSION", true);
+}
+
+QMutex & Manager::executeStatementMutex()
+{
+	return m_executeStatementMutex;
+}
+
+QSqlQuery Manager::executeStatement(const QString & query, QStringList parameters)
+{
+	QMutexLocker locker(&m_executeStatementMutex);
+
+	QSqlQuery q(query, database());
+	foreach (const QString & parameter, parameters)
+	{
+		q.addBindValue(parameter);
+	}
+
+	if (q.exec())
+	{
+		if (q.isSelect())
+		{
+			q.last();
+			q.first();
+		}
+	}
+
+	return q;
 }
 
 Cache * Manager::cache()
