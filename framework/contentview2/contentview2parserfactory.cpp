@@ -24,10 +24,23 @@
 namespace ContentView2
 {
 
-ParserFactory::ParserFactory()
-{
-}
+/*!
+ * \ingroup ContentView2
+ * \class ParserFactory
+ * \since 0.9.0.0
+ *
+ * \brief This class is used to create a parser for the type or file name selected.
+ *
+ * This class use the plugin system to create the parser from the file name or from
+ * the type of parser to create.
+ */
 
+/*!
+ * \brief Get the parser type from the file name.
+ *
+ * Search in the XinxPluginsLoader::matchedFileType() the file who matchi \p filename.
+ * For this file, the method get the parser type by the method IFileTypePlugin::parserType()
+ */
 QString ParserFactory::getParserTypeByFilename(const QString & filename)
 {
 	if (! QFileInfo(filename).exists()) return QString();
@@ -44,6 +57,11 @@ QString ParserFactory::getParserTypeByFilename(const QString & filename)
 	return QString();
 }
 
+/*!
+ * \brief Get the parser for the file name.
+ *
+ * \sa getParserTypeByFilename()
+ */
 Parser * ParserFactory::getParserByFilename(const QString & filename)
 {
 	QString parserType = getParserTypeByFilename(filename);
@@ -54,6 +72,13 @@ Parser * ParserFactory::getParserByFilename(const QString & filename)
 	return 0;
 }
 
+/*!
+ * \brief Get the parser from the type.
+ *
+ * This method create a parser for the type passed in parameter. To create
+ * the rigth parser, this method search in all IContentViewParserPlugin the
+ * rigth plugin and create the parser.
+ */
 Parser * ParserFactory::getParserByType(const QString & type)
 {
 	Parser * parser = 0;

@@ -31,8 +31,6 @@ namespace ContentView2
 class LIBEXPORT ParserFactory
 {
 public:
-	ParserFactory();
-
 	static QString getParserTypeByFilename(const QString & filename);
 	static Parser * getParserByFilename(const QString & filename);
 	static Parser * getParserByType(const QString & type);

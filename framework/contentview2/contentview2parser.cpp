@@ -32,12 +32,13 @@ namespace ContentView2
 /* ParserException */
 
 /*!
+ * \ingroup ContentView2
  * \class ParserException
  * \brief Exception throw when the model can't be updated.
  */
 
 /*!
- * Create the exception with a message and a line.
+ * \brief Create the exception with a message and a line.
  * \param message Error of the exception.
  * \param line Line where the error is.
  * \param column Column where the error is.
@@ -48,7 +49,7 @@ ParserException::ParserException(QString message, int line, int column) : XinxEx
 }
 
 /*!
- * Return the line where the error is.
+ * \brief Return the line where the error is.
  * \return The line of the error.
  */
 int ParserException::getLine() const
@@ -57,7 +58,7 @@ int ParserException::getLine() const
 }
 
 /*!
- * Return the column where the error is.
+ * \brief Return the column where the error is.
  * \return the column of the error.
  */
 int ParserException::getColumn() const
@@ -68,15 +69,22 @@ int ParserException::getColumn() const
 /* Parser */
 
 /*!
+ * \ingroup ContentView2
  * \class Parser
+ * \since 0.9.0.0
+ *
  * \brief The content view parser create the content view tree (and fill the base)
  *
+ * This class must be sub-classing to complete the database with the content of file. You must have a parser
+ * for each type of file.
  */
 
+//! Create an instance of parser
 Parser::Parser() : m_decaledLine(0), m_device(0)
 {
 }
 
+//! Destroy the parser
 Parser::~Parser()
 {
 }
@@ -85,33 +93,44 @@ Parser::~Parser()
  * \fn virtual void Parser::load() = 0
  * \brief Load the content of the givent device and return true if sucessfully loaded
  *
+ * This method must be derivated in sub-class.
  */
 
-/*! Set a decalage when attach a node to the parent */
+/*!
+ * \brief Set a decalage when attach a node to the parent
+ */
 void Parser::setDecalage(int line)
 {
 	m_decaledLine = line;
 }
 
-/*! Return the current decalage */
+/*!
+ * \brief Return the current decalage
+ */
 int Parser::decalage() const
 {
 	return m_decaledLine;
 }
 
-/*! Set the root node */
+/*!
+ * \brief Set the root node
+ */
 void Parser::setRootNode(const Node & node)
 {
 	m_rootNode = node;
 }
 
-/*! Return the root node */
+/*!
+ * \brief Return the root node
+ */
 Node Parser::rootNode() const
 {
 	return m_rootNode;
 }
 
-/*! Set the filename */
+/*!
+ * \brief Set the filename
+ */
 void Parser::setFilename(const QString & filename)
 {
 	QFile * file = new QFile(filename);
@@ -129,31 +148,41 @@ void Parser::setFilename(const QString & filename)
 	m_device = file;
 }
 
-/*! Get the filename */
+/*!
+ * \brief Get the filename
+ */
 QString Parser::filename() const
 {
 	return m_filename;
 }
 
-/*! Set the device */
+/*!
+ * \brief Set the device
+ */
 void Parser::setInputDevice(QIODevice * device)
 {
 	m_device = device;
 }
 
-/*! Return the device */
+/*!
+ * \brief Return the device
+ */
 QIODevice * Parser::inputDevice() const
 {
 	return m_device;
 }
 
-/*! Set the database */
+/*!
+ * \brief Set the database
+ */
 void Parser::setDatabase(const QSqlDatabase & db)
 {
 	m_db = db;
 }
 
-/*! Return the database */
+/*!
+ * \brief Return the database
+ */
 QSqlDatabase Parser::database() const
 {
 	return m_db;
@@ -167,14 +196,16 @@ QString Parser::addImport(const QString & import)
 	return calculateImport;
 }
 
-/*! Get the list of import */
+/*!
+ * \brief Get the list of import
+ */
 const QStringList & Parser::imports() const
 {
 	return m_imports;
 }
 
 /*!
- * Attach the node \e child to \e parent if this node isn't already attached.
+ * \brief Attach the node \e child to \e parent if this node isn't already attached.
  */
 void Parser::attachNode(const Node & parent, Node & child)
 {
@@ -250,6 +281,7 @@ QString Parser::locationOf(const QString & relativeFilename)
 	return ExternalFileResolver::self()->resolveFileName(relativeFilename, fn);
 }
 
+//! By default return NULL, must be sub-class to change the default codec
 QTextCodec * Parser::codec()
 {
 	return 0;

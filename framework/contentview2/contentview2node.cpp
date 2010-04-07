@@ -33,12 +33,16 @@ namespace ContentView2
 
 /* NodeException */
 /*!
+ * \ingroup ContentView2
  * \class NodeException
+ * \since 0.9.0.0
+ *
  * \brief Exception throw when a SQL error occur
  */
 
 /*!
- * Create the exception with a message and a line.
+ * \brief Create the exception with a message and a line.
+ *
  * \param assertion The condition who failed
  * \param locationFile The file wich failed (this file)
  * \param locationLine The line where the exception is throw
@@ -133,17 +137,25 @@ void PrivateNode::load()
 /* Node */
 
 /*!
+ * \ingroup ContentView2
  * \class Node
+ * \since 0.9.0.0
+ *
  * \brief This class represent a node element for the content view
  *
  * This class is a node element for the content view. It can be added to another
  * content view element, and detached.
  *
- * This class is based on SQL
+ * This class is based on SQL on the table cv_node.
+ *
+ * This class limit the number of load. The method load is really launch when a set or
+ * get method is made.
  */
 
 /*!
  * \enum Node::RoleIndex
+ * \brief List of role that can be used with method data() and setData()
+ *
  * To simplify, the content view node will be not subclassed. Else data will
  * be stored in this structure as role. Other value (as mode, ...) can be stored
  * as user value, if needed.
@@ -182,7 +194,7 @@ void PrivateNode::load()
  */
 
 /*!
- * Create an empty content view node
+ * \brief Create an empty content view node
  */
 Node::Node()
 {
@@ -412,7 +424,7 @@ uint Node::nodeId() const
 }
 
 /*!
- * Attach this node and all it's child to the parent node below.
+ * \brief Attach this node and all it's child to the parent node below.
  * \param db The database to use to attache the node to its parent.
  * \param parentId The parent node id where this node is attached.
  * \see detach()
@@ -440,7 +452,7 @@ bool Node::attach(QSqlDatabase db, uint parentId)
 }
 
 /*!
- * Detach the node from the given parent id
+ * \brief Detach the node from the given parent id
  * \see attach()
  */
 void Node::detach(QSqlDatabase db, uint parentId)
@@ -480,6 +492,7 @@ void Node::setLine(int value)
 	d->m_line = value;
 }
 
+//! Return the filename of the File of the current node
 QString Node::filename(QSqlDatabase db) const
 {
 	QSqlQuery selectQuery("SELECT path FROM cv_file WHERE id=:file_id", db);
@@ -498,21 +511,29 @@ QString Node::filename(QSqlDatabase db) const
 	}
 }
 
-//! Return the current file name of the node. If not set, this is the current file name.
+//! Return the file id of the File of the current node.
 int Node::fileId() const
 {
 	d->load();
 	return d->m_fileId;
 }
 
-//! Set the file name of the node with \e value.
+/*!
+ * \brief Set the file ID of the File of the node with \e value.
+ *
+ * The file ID can't be modified after the file creation or if the file is loaded.
+ */
 void Node::setFileId(int value)
 {
 	Q_ASSERT_X(d->m_id == -1, "Node::setFileId", "The filename can't be modified after node creation");
 	d->m_fileId = value;
 }
 
-//! Set the file to use with the node.
+/*!
+ * \brief Set the file to use with the node.
+ *
+ * The File can't be modified after the file creation or if the file is loaded.
+ */
 void Node::setFile(const File & file)
 {
 	Q_ASSERT_X(d->m_id == -1, "Node::setFile", "The filename can't be modified after node creation");
@@ -551,7 +572,7 @@ void Node::setData(const QVariant & value, int index)
 }
 
 /*!
- * List of id of the childs node of this node.
+ * \brief List of id of the child's node of this node.
  * \see attach(), detach()
  */
 QList<int> Node::childs(QSqlDatabase db) const
@@ -572,7 +593,7 @@ QList<int> Node::childs(QSqlDatabase db) const
 }
 
 /*!
- * List of id of the childs node of this node.
+ * \brief List of id of the childs node of this node.
  * \see attach(), detach()
  */
 QList<int> Node::parents(QSqlDatabase db) const
@@ -642,6 +663,14 @@ Node & Node::operator=(const Node & node)
 
 /* qHash */
 
+/*!
+ * \ingroup ContentView2
+ * \brief Calculate the hash code for the node \p node.
+ *
+ * The calculate hash can not to be unique. It can be used for
+ * the update to check that the node can't be modified. Or to
+ * find quickly a node with it's index.
+ */
 uint qHash(const Node & node)
 {
 	node.d->load();
