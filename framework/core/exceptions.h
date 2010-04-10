@@ -31,15 +31,19 @@
 #include <QMap>
 #include <QTimer>
 
+// Std header
+#include <exception>
+
 class QErrorMessage;
 class QWidget;
 class XinxErrorMessage;
 
-class LIBEXPORT XinxException
+class LIBEXPORT XinxException : public std::exception
 {
 public:
 	XinxException(const QString & message);
 	XinxException(const QString & assertion, const QString & locationFile, int locationLine, const QString & locationMethod, const QString & message);
+	virtual ~XinxException() throw();
 
 	const QString & assertion() const;
 	const QString & locationFile() const;
@@ -48,6 +52,8 @@ public:
 
 	const QString & getMessage() const;
 	const QStringList & getStack() const;
+
+	virtual const char* what() const throw();
 private:
 	QString m_message, m_assertion, m_locationFile, m_locationMethod;
 	int m_locationLine;
@@ -100,6 +106,11 @@ public:
 		MessageType type;
 		QString message;
 		QStringList parameters;
+
+		bool operator==(const Error & e) const
+		{
+			return (line == e.line) && (type == e.type) && (message == e.message) && (parameters == e.parameters);
+		}
 	};
 
 	virtual ~ErrorManager();

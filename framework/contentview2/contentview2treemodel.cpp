@@ -51,38 +51,38 @@ namespace ContentView2
  * \image html abstracteditor1.png
  */
 
- /*!
-  * \var TreeModel::list_name
-  * \brief Return the name of the node (for used with sourceModel())
-  */
- /*!
-  * \var TreeModel::list_type
-  * \brief Return the type of the node (for used with sourceModel())
-  */
- /*!
-  * \var TreeModel::list_icon
-  * \brief Return the icon link of the node (for used with sourceModel())
-  */
- /*!
-  * \var TreeModel::list_display_name
-  * \brief Return the displayed name of the node (for used with sourceModel())
-  */
- /*!
-  * \var TreeModel::list_tips
-  * \brief Return the tips of the node (for used with sourceModel())
-  */
- /*!
-  * \var TreeModel::list_line
-  * \brief Return the line of the node (for used with sourceModel())
-  */
- /*!
-  * \var TreeModel::list_id
-  * \brief Return the id of the node (for used with sourceModel())
-  */
- /*!
-  * \var TreeModel::list_parent_id
-  * \brief Return the parent id of the node (for used with sourceModel())
-  */
+/*!
+ * \var TreeModel::list_name
+ * \brief Return the name of the node (for used with sourceModel())
+ */
+/*!
+ * \var TreeModel::list_type
+ * \brief Return the type of the node (for used with sourceModel())
+ */
+/*!
+ * \var TreeModel::list_icon
+ * \brief Return the icon link of the node (for used with sourceModel())
+ */
+/*!
+ * \var TreeModel::list_display_name
+ * \brief Return the displayed name of the node (for used with sourceModel())
+ */
+/*!
+ * \var TreeModel::list_tips
+ * \brief Return the tips of the node (for used with sourceModel())
+ */
+/*!
+ * \var TreeModel::list_line
+ * \brief Return the line of the node (for used with sourceModel())
+ */
+/*!
+ * \var TreeModel::list_id
+ * \brief Return the id of the node (for used with sourceModel())
+ */
+/*!
+ * \var TreeModel::list_parent_id
+ * \brief Return the parent id of the node (for used with sourceModel())
+ */
 
 /*!
  * \brief The class construct a TreeModel.

@@ -54,7 +54,7 @@ void NewGenerixDerivation2Page::initializePage()
 	{
 		const QString webModuleLocation = field("generix.webmodule").toString();
 		bool projectPathAdded = false;
-		foreach (const QString & p, QDir(QDir(webModuleLocation).absoluteFilePath("presentation")).entryList(QDir::Dirs | QDir::NoDotAndDotDot))
+		foreach(const QString & p, QDir(QDir(webModuleLocation).absoluteFilePath("presentation")).entryList(QDir::Dirs | QDir::NoDotAndDotDot))
 		{
 			QListWidgetItem * pitem = new QListWidgetItem(m_directoryList);
 			pitem->setText("presentation/" + p);

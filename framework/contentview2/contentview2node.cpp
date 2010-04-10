@@ -20,6 +20,7 @@
 // Xinx header
 #include "contentview2node.h"
 #include "contentview2file.h"
+#include "contentview2manager.h"
 
 // Qt header
 #include <QSqlQuery>
@@ -50,7 +51,7 @@ namespace ContentView2
  * \param message Error of the exception.
  */
 NodeException::NodeException(const QString & assertion, const QString & locationFile, int locationLine, const QString & locationMethod, QString message)
-	: XinxException(assertion, locationFile, locationLine, locationMethod, message)
+		: DatabaseException(assertion, locationFile, locationLine, locationMethod, message)
 {
 }
 

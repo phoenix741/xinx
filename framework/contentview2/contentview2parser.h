@@ -29,6 +29,7 @@
 // Qt header
 #include <QApplication>
 #include <QSqlDatabase>
+#include <QPointer>
 
 namespace ContentView2
 {
@@ -84,7 +85,7 @@ private:
 	QList< QPair<uint,uint> > m_attachedNode;
 	unsigned long m_decaledLine;
 	QString m_filename;
-	QIODevice * m_device;
+	QPointer<QIODevice> m_device;
 	Node m_rootNode;
 	QStringList m_imports;
 	QSqlDatabase m_db;

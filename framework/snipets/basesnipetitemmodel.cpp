@@ -76,40 +76,40 @@
  * \brief Column in the source model to identify the ID
  */
 
- /*!
- * \var BaseSnipetItemModel::list_parentid
- * \brief Column in the source model to identify the Parent ID
- */
+/*!
+* \var BaseSnipetItemModel::list_parentid
+* \brief Column in the source model to identify the Parent ID
+*/
 
- /*!
- * \var BaseSnipetItemModel::list_icon
- * \brief Column in the source model to identify the Icon of the snipet
- */
+/*!
+* \var BaseSnipetItemModel::list_icon
+* \brief Column in the source model to identify the Icon of the snipet
+*/
 
- /*!
- * \var BaseSnipetItemModel::list_name
- * \brief Column in the source model to identify the Name of the snipet
- */
+/*!
+* \var BaseSnipetItemModel::list_name
+* \brief Column in the source model to identify the Name of the snipet
+*/
 
- /*!
- * \var BaseSnipetItemModel::list_description
- * \brief Column in the source model to identify the Description
- */
+/*!
+* \var BaseSnipetItemModel::list_description
+* \brief Column in the source model to identify the Description
+*/
 
- /*!
- * \var BaseSnipetItemModel::list_shortcut
- * \brief Column in the source model to identify the Shortcut
- */
+/*!
+* \var BaseSnipetItemModel::list_shortcut
+* \brief Column in the source model to identify the Shortcut
+*/
 
- /*!
- * \var BaseSnipetItemModel::list_type
- * \brief Column in the source model to identify the Type
- */
+/*!
+* \var BaseSnipetItemModel::list_type
+* \brief Column in the source model to identify the Type
+*/
 
- /*!
- * \var BaseSnipetItemModel::list_availablejs
- * \brief Column in the source model to identify the JavaScript defined the availablity
- */
+/*!
+* \var BaseSnipetItemModel::list_availablejs
+* \brief Column in the source model to identify the JavaScript defined the availablity
+*/
 
 /*!
  * \brief Create a BaseSnipetItemModel

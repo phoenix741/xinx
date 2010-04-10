@@ -32,6 +32,13 @@
 namespace ContentView2
 {
 
+/* DatabaseException */
+
+DatabaseException::DatabaseException(const QString & assertion, const QString & locationFile, int locationLine, const QString & locationMethod, QString message)
+		: XinxException(assertion, locationFile, locationLine, locationMethod, message)
+{
+}
+
 /* Static member */
 
 Manager * Manager::s_self = 0;
@@ -171,7 +178,7 @@ QSqlQuery Manager::executeStatement(const QString & query, QStringList parameter
 	QMutexLocker locker(&m_executeStatementMutex);
 
 	QSqlQuery q(query, database());
-	foreach (const QString & parameter, parameters)
+	foreach(const QString & parameter, parameters)
 	{
 		q.addBindValue(parameter);
 	}

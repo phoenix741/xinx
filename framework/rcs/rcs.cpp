@@ -170,13 +170,15 @@
 /*!
  * \brief Create an operation
  */
-RCS::FileOperation::FileOperation(const QString & f, rcsOperation o) : filename(f), operation(o) {
+RCS::FileOperation::FileOperation(const QString & f, rcsOperation o) : filename(f), operation(o)
+{
 }
 
 /*!
  * \brief Create an empty operation
  */
-RCS::FileOperation::FileOperation() {
+RCS::FileOperation::FileOperation()
+{
 }
 
 /*!

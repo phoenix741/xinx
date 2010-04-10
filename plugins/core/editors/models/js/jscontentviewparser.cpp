@@ -56,6 +56,7 @@ void JsContentViewParser::load()
 
 	do
 	{
+		if (!inputDevice()) break;
 		nextIdentifier(inputDevice(), type, name);
 		switch (type)
 		{

@@ -40,7 +40,8 @@ PluginElement::PluginElement() : m_isActivated(true)
 }
 
 //! Destroy the plugin element
-PluginElement::~PluginElement() {
+PluginElement::~PluginElement()
+{
 }
 
 

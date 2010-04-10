@@ -23,7 +23,7 @@
 
 // Xinx header
 #include <core/lib-config.h>
-#include <core/exceptions.h>
+#include <contentview2/contentview2manager.h>
 
 // Qt header
 #include <QApplication>
@@ -37,7 +37,7 @@ class XinxProject;
 namespace ContentView2
 {
 
-class LIBEXPORT FileException : public XinxException
+class LIBEXPORT FileException : public DatabaseException
 {
 public:
 	FileException(const QString & assertion, const QString & locationFile, int locationLine, const QString & locationMethod, QString message);

@@ -321,7 +321,7 @@ void Cache::unregisterPath(const QString & path)
 void Cache::timerEvent()
 {
 	m_timer.stop();
-	if (m_parsers.size())
+	if (m_parsers.size() && (!isRunning()))
 		start(QThread::IdlePriority);
 }
 
@@ -485,7 +485,7 @@ void Cache::run()
 			for (int i = 0 ; i < parsers.size() ; i++)
 			{
 				bool result = db.transaction();
-				if(! result)
+				if (! result)
 				{
 					sleep(500);
 					i--;
@@ -540,17 +540,20 @@ void Cache::run()
 						file.destroyImports(db);
 						foreach(const QString & import, parser->imports())
 						{
-							struct_cache fileCache;
-							fileCache.project      = XINXProjectManager::self()->project();
-							fileCache.path         = import;
-							fileCache.cached       = true;
-							fileCache.selection    = "M";
-							fileCache.type         = QString();
-							fileCache.parser       = 0;
+							if (! import.isEmpty())
+							{
+								struct_cache fileCache;
+								fileCache.project      = XINXProjectManager::self()->project();
+								fileCache.path         = import;
+								fileCache.cached       = true;
+								fileCache.selection    = "M";
+								fileCache.type         = QString();
+								fileCache.parser       = 0;
 
-							File importFile = getFile(db, fileCache);
-							file.addImport(db, importFile, false);
-							addToCache(fileCache);
+								File importFile = getFile(db, fileCache);
+								file.addImport(db, importFile, false);
+								addToCache(fileCache);
+							}
 						}
 
 						file.setIsLoaded(true);
@@ -561,7 +564,7 @@ void Cache::run()
 						file.update(db);
 
 						result = db.commit();
-						while(! result)
+						while (! result)
 						{
 							result = db.commit();
 							sleep(500);

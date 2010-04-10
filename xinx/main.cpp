@@ -105,11 +105,11 @@ void initSearchPath(QApplication * app)
 #ifndef Q_WS_WIN
 	QDir::addSearchPath("plugins", QDir(QApplication::applicationDirPath()).absoluteFilePath("../share/xinx/plugins"));
 #endif /* Q_WS_WIN */
-	foreach (const QString & searchPath, QDir::searchPaths("plugins"))
+	foreach(const QString & searchPath, QDir::searchPaths("plugins"))
 	{
 		app->addLibraryPath(searchPath);
 	}
-		
+
 	// ... for tempalte ...
 	QDir::addSearchPath("templates", templatesDirectory);
 	QDir::addSearchPath("templates", QDir(QApplication::applicationDirPath()).absoluteFilePath("../templates"));

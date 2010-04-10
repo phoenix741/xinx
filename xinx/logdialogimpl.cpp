@@ -175,7 +175,10 @@ void LogDockWidget::updateErrors()
 			}
 
 			QTreeWidgetItem * msgItem = new QTreeWidgetItem(fileItem);
-			msgItem->setText(0, tr("%1: %2").arg(err.line, 4, 10, QChar('0')).arg(message));
+			if (err.line > 0)
+				msgItem->setText(0, tr("%1: %2").arg(err.line, 4, 10, QChar('0')).arg(message));
+			else
+				msgItem->setText(0, tr("%1").arg(message));
 			msgItem->setData(0, Qt::UserRole, context);
 			msgItem->setData(0, Qt::UserRole + 1, err.line);
 			switch (err.type)

@@ -81,7 +81,7 @@ public:
 		Nothing
 	};
 
-	struct FileOperation
+	struct LIBEXPORT FileOperation
 	{
 		FileOperation(const QString & f, rcsOperation o);
 		FileOperation();

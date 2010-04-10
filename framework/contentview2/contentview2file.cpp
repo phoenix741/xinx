@@ -51,7 +51,7 @@ namespace ContentView2
  * \param message Error of the exception.
  */
 FileException::FileException(const QString & assertion, const QString & locationFile, int locationLine, const QString & locationMethod, QString message)
-	: XinxException(assertion, locationFile, locationLine, locationMethod, message)
+		: DatabaseException(assertion, locationFile, locationLine, locationMethod, message)
 {
 }
 

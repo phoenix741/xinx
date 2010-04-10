@@ -29,6 +29,7 @@
 
 // Xiinx header
 #include <core/xinxcore.h>
+#include <core/exceptions.h>
 
 class XinxProject;
 
@@ -37,6 +38,13 @@ namespace ContentView2
 
 class Cache;
 class Parser;
+
+class LIBEXPORT DatabaseException : public XinxException
+{
+public:
+	DatabaseException(const QString & assertion, const QString & locationFile, int locationLine, const QString & locationMethod, QString message);
+private:
+};
 
 class LIBEXPORT Manager : public QObject
 {
@@ -68,7 +76,6 @@ private:
 
 	QList<ParserTuple> m_persistentParser;
 	Cache * m_cache;
-	QSqlDatabase m_localBase;
 	QMutex m_executeStatementMutex;
 	static Manager * s_self;
 };

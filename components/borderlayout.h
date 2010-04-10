@@ -53,7 +53,7 @@ class BorderLayout : public QLayout
 {
 	Q_OBJECT
 public:
-	enum Position {West, North, South, East, Center	};
+	enum Position {West, North, South, East, Center };
 
 	BorderLayout(QWidget *parent, int margin = 0, int spacing = -1);
 	BorderLayout(int spacing = -1);

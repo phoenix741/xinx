@@ -20,6 +20,7 @@
 // Xinx header
 #include "contentview2project.h"
 #include "contentview2file.h"
+#include "contentview2manager.h"
 #include "project/xinxproject.h"
 
 // Qt header
@@ -46,7 +47,7 @@ namespace ContentView2
  * \param message Error of the exception.
  */
 ProjectException::ProjectException(const QString & assertion, const QString & locationFile, int locationLine, const QString & locationMethod, QString message)
-	: XinxException(assertion, locationFile, locationLine, locationMethod, message)
+		: DatabaseException(assertion, locationFile, locationLine, locationMethod, message)
 {
 }
 

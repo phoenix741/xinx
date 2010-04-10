@@ -74,7 +74,6 @@ TextFileEditor::TextFileEditor(XinxCodeEdit * editor, QWidget *parent) : Abstrac
 TextFileEditor::~TextFileEditor()
 {
 	ContentView2::Manager::self()->cache()->unregisterPath(m_uuid);
-	ContentView2::Manager::self()->cache()->wait();
 	ErrorManager::self()->clearMessages(m_uuid);
 	ErrorManager::self()->removeContextTranslation(m_uuid);
 	delete m_model;
@@ -119,7 +118,7 @@ void TextFileEditor::initObjects()
 
 	m_model = new ContentView2::TreeModel(ContentView2::Manager::self()->database(), m_file, this);
 
-	connect(ContentView2::Manager::self()->cache(), SIGNAL(cacheLoaded(ContentView2::File)), this, SLOT(updateImports(ContentView2::File)));
+	connect(ContentView2::Manager::self()->cache(), SIGNAL(cacheLoaded(ContentView2::File)), this, SLOT(updateImports(ContentView2::File)), Qt::BlockingQueuedConnection);
 	connect(ErrorManager::self(), SIGNAL(changed()), this, SLOT(errorChanged()));
 }
 
@@ -131,7 +130,7 @@ ContentView2::CompletionModel * TextFileEditor::createModel(QSqlDatabase db, QOb
 void TextFileEditor::initCompleter()
 {
 	m_completionModel = createModel(ContentView2::Manager::self()->database(), this);
-	connect(ContentView2::Manager::self()->cache(), SIGNAL(cacheLoaded()), m_completionModel, SLOT(select()));
+	connect(ContentView2::Manager::self()->cache(), SIGNAL(cacheLoaded()), m_completionModel, SLOT(select()), Qt::BlockingQueuedConnection);
 
 	QCompleter * completer = new QCompleter(textEdit());
 	completer->setModel(m_completionModel);
@@ -258,8 +257,8 @@ void TextFileEditor::initSearch(SearchOptions & options)
 	m_cursorStart = textEdit()->textCursor();
 	m_cursorEnd   = QDocumentCursor();
 
-	QDocumentCursor selectionStart = m_cursorStart.selectionStart(),
-	                                 selectionEnd   = m_cursorStart.selectionEnd();
+	QDocumentCursor selectionStart = m_cursorStart.selectionStart();
+	QDocumentCursor selectionEnd   = m_cursorStart.selectionEnd();
 
 	if (options.testFlag(SEARCH_FROM_START))
 	{

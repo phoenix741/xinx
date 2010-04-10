@@ -46,12 +46,12 @@ namespace ContentView2
  * Informations presented are choose by sub-classe.
  */
 
- /*!
-  * \brief Create an instance for database \p db and the file \p file.
-  *
-  * The file container is used to know the id to use for the completion. If the \p file is not already loaded
-  * the completion doesn't work.
-  */
+/*!
+ * \brief Create an instance for database \p db and the file \p file.
+ *
+ * The file container is used to know the id to use for the completion. If the \p file is not already loaded
+ * the completion doesn't work.
+ */
 CompletionModel::CompletionModel(QSqlDatabase db, FileContainer file, QObject * parent) : QSqlQueryModel(parent), m_db(db), m_file(file)
 {
 
@@ -178,9 +178,9 @@ void CompletionModel::select()
 
 	// Order by clause
 	QString queryStr =
-		"SELECT cv_node.display_name, cv_node.name, cv_node.icon, cv_node.id, cv_node.type, cv_node.completion_value "
-		"FROM cv_node, cv_file " + whereClause() + " AND cv_node.display_name like ifnull(:prefix,'')||'%' "
-		"ORDER BY lower(cv_node.display_name) LIMIT 5";
+	    "SELECT cv_node.display_name, cv_node.name, cv_node.icon, cv_node.id, cv_node.type, cv_node.completion_value "
+	    "FROM cv_node, cv_file " + whereClause() + " AND cv_node.display_name like ifnull(:prefix,'')||'%' "
+	    "ORDER BY lower(cv_node.display_name) LIMIT 5";
 
 	// Set the query used all snipet
 	query.prepare(queryStr);

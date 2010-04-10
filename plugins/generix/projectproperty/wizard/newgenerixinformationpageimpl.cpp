@@ -82,7 +82,7 @@ void NewGenerixInformationPageImpl::updateInformations()
 	const QString webModuleLocation     = m_webModuleLocation->lineEdit()->text();
 	const QString dataStreamLocation    = QDir(QDir(webModuleLocation).absoluteFilePath("../../../log")).canonicalPath();
 	QString moduleInternetAdresse = QDir(QDir(webModuleLocation).absoluteFilePath("presentation")).canonicalPath();
-	if(!QDir(moduleInternetAdresse).exists())
+	if (!QDir(moduleInternetAdresse).exists())
 	{
 		moduleInternetAdresse = QDir(QDir(webModuleLocation).absoluteFilePath("langue")).canonicalPath();
 	}
@@ -104,7 +104,7 @@ void NewGenerixInformationPageImpl::updateInformations()
 		{
 			m_messageLabel->setVisible(true);
 			m_messageLabel->setText(tr("<p style=\"color: red\"><b>!!! WARNING !!!</b> : The expected folder structure doesn't match with the selected version of the web module. "
-									   "Please check in the project property the configuration of dervication's path.</p>"));
+			                           "Please check in the project property the configuration of dervication's path.</p>"));
 		}
 	}
 	else

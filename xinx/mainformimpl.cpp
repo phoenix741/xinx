@@ -1971,7 +1971,7 @@ void MainformImpl::openProject(const QString & filename)
 		{
 			progressDlg.setLabelText(step->name());
 			qApp->processEvents();
-			if(! step->process())
+			if (! step->process())
 				qWarning() << tr("Can't start a project at the step \"%1\"").arg(step->name());
 			progressDlg.setValue(progressDlg.value() + 1);
 		}

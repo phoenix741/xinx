@@ -154,7 +154,7 @@ void NewVersionWizardImpl::saveToConfig()
 
 void NewVersionWizardImpl::on_m_listSlider_valueChanged(int value)
 {
-	for(int i = 0; i < m_listEffect->count(); i++)
+	for (int i = 0; i < m_listEffect->count(); i++)
 	{
 		m_listEffect->item(i)->setCheckState(i < value ? Qt::Checked : Qt::Unchecked);
 	}
