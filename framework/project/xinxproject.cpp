@@ -651,6 +651,8 @@ void XINXProjectManager::setCurrentProject(XinxProject * project)
 {
 	if (m_project)
 		m_project->disconnect(this);
+	ContentView2::Manager::self()->cache()->terminate();
+	ContentView2::Manager::self()->cache()->wait();
 
 	m_project = project;
 	XINXConfig::self()->config().project.lastOpenedProject = project->fileName();

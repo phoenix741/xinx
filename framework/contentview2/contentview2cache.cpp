@@ -466,7 +466,7 @@ void Cache::run()
 		db.open();
 
 		bool deleteNotRegistered = true;
-		while (m_parsers.size() || m_toDelete.size() || (deleteNotRegistered))
+		while ((m_parsers.size() || m_toDelete.size() || (deleteNotRegistered)))
 		{
 			QList<struct_cache> parsers;
 			while (m_parsers.size())
