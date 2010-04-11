@@ -283,7 +283,7 @@ int main(int argc, char *argv[])
 				XINXConfig::self()->config().version = VERSION_STRING;
 			}
 
-			if (!((args.count() == 1) && (XINXConfig::self()->config().project.openTheLastProjectAtStart) && (! XINXConfig::self()->config().project.lastOpenedProject.isEmpty())))
+			if ((args.count() == 1) && !((XINXConfig::self()->config().project.openTheLastProjectAtStart) && (! XINXConfig::self()->config().project.lastOpenedProject.isEmpty())))
 			{
 				mainWin->openWelcomDialog();
 			}
