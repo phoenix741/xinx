@@ -26,6 +26,9 @@
       <string>Please tell me, if you want to modify all part of the web module, or prevent the modification of orignal files and derive file in special directory.
 In &lt;b&gt;GCE 150&lt;/b&gt; or later, the choice has few impact</string>
      </property>
+     <property name="textFormat">
+      <enum>Qt::RichText</enum>
+     </property>
      <property name="wordWrap">
       <bool>true</bool>
      </property>

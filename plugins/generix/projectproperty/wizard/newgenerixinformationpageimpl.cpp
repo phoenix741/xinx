@@ -36,7 +36,7 @@ NewGenerixInformationPageImpl::NewGenerixInformationPageImpl()
 	qRegisterMetaType<ConfigurationVersion>("ConfigurationVersion");
 	registerField("generix.webmodule*", m_webModuleLocation->lineEdit());
 	registerField("generix.version", m_configurationVersionLabel, "version");
-	registerField("generix.adresse", m_urlLocationEdit);
+	registerField("generix.adresse", m_urlLocationEdit->lineEdit());
 	registerField("generix.dataStream", m_dataStreamEdit->lineEdit());
 	connect(m_webModuleLocation->lineEdit(), SIGNAL(textChanged(QString)), this, SLOT(updateInformations()));
 }
@@ -66,7 +66,7 @@ bool NewGenerixInformationPageImpl::saveSettingsDialog(XinxProject * project)
 {
 	static_cast<GenerixProject*>(project)->setWebModuleLocation(m_webModuleLocation->lineEdit()->text());
 	project->writeProperty("dataStreamLocation", m_dataStreamEdit->lineEdit()->text());
-	project->writeProperty("moduleInternetAdresse", m_urlLocationEdit->text());
+	project->writeProperty("moduleInternetAdresse", m_urlLocationEdit->lineEdit()->text());
 
 	return true;
 }
@@ -81,10 +81,10 @@ void NewGenerixInformationPageImpl::updateInformations()
 {
 	const QString webModuleLocation     = m_webModuleLocation->lineEdit()->text();
 	const QString dataStreamLocation    = QDir(QDir(webModuleLocation).absoluteFilePath("../../../log")).canonicalPath();
-	QString moduleInternetAdresse = QDir(QDir(webModuleLocation).absoluteFilePath("presentation")).canonicalPath();
-	if (!QDir(moduleInternetAdresse).exists())
+	QString moduleInternetAdresse = QDir(QDir(webModuleLocation).absoluteFilePath("presentation/common")).canonicalPath();
+	if (moduleInternetAdresse.isEmpty() || !QDir(moduleInternetAdresse).exists())
 	{
-		moduleInternetAdresse = QDir(QDir(webModuleLocation).absoluteFilePath("langue")).canonicalPath();
+		moduleInternetAdresse = QDir(QDir(webModuleLocation).absoluteFilePath("langue/fra/")).canonicalPath();
 	}
 	setField("generix.adresse", moduleInternetAdresse);
 	setField("generix.dataStream", dataStreamLocation);
