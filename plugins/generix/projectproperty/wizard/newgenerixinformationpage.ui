@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>578</width>
-    <height>353</height>
+    <width>663</width>
+    <height>427</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -20,23 +20,13 @@
    <string>Define informations used by the Generix module of XINX</string>
   </property>
   <property name="subTitle">
-   <string>In this page, you can define the webmodule location (by default the project path). With this webmodule location, the Generix module can determine, the version and the default parameters to use.</string>
+   <string>In this page, you choose, the location of the Webmodule. This path should be the same of the project path, unless you know what you do.</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLabel" name="label_2">
-     <property name="text">
-      <string>In this page, you choose, the location of the Webmodule. This path should be the same of the project path, unless you know what you do.</string>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item>
     <widget class="QLabel" name="label_3">
      <property name="text">
-      <string>The WebModule location is usually the place where you find the gce.properties file or the configuration file. It will be use to know the version of the WebModule, the content of the configuration file, and where find dictionaries. Then &lt;b&gt;XINX&lt;/b&gt; will be able to complete on dictionaries label.</string>
+      <string>The WebModule location is usually the place where you find the gce.properties files. It will be use to read the configuration file, and find dictionaries (to complete on labels). </string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

@@ -61,16 +61,19 @@ bool GceConfigurationXmlParser::loadFromFile(const QString & filename)
 
 	if (ConfigurationVersion(m_version) < version150)
 	{
-		const QDir directoryPath(m_parent->m_directoryPath);
+		const QDir directoryPath(m_parent ? m_parent->m_directoryPath : "");
 		m_fileRefToInformation.clear();
 		foreach(const QString & bvName, m_fileRefToName.keys())
 		{
 			foreach(const QString & fileRef, m_fileRefToName.values(bvName))
 			{
 				QString ref = m_rootPath + "/" + fileRef;
-				const QString absolutePath = QDir(directoryPath.absoluteFilePath(ref)).canonicalPath();
-				if (!absolutePath.isEmpty())
-					ref = directoryPath.relativeFilePath(absolutePath);
+				if (m_parent)
+				{
+					const QString absolutePath = QDir(directoryPath.absoluteFilePath(ref)).canonicalPath();
+					if (!absolutePath.isEmpty())
+						ref = directoryPath.relativeFilePath(absolutePath);
+				}
 
 				m_fileRefToInformation.insert(ref, m_nameToInformation.value(bvName));
 			}

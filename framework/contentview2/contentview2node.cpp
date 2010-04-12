@@ -64,6 +64,7 @@ public:
 	int m_fileId;
 	QHash<int,QVariant> m_datas;
 
+	uint m_hash;
 	long m_id;
 	bool m_isLoaded;
 	QSqlDatabase m_db;
@@ -109,7 +110,9 @@ void PrivateNode::load()
 	m_datas.insert(Node::NODE_DISPLAY_NAME, selectQuery.value(3).toString());
 	m_datas.insert(Node::NODE_DISPLAY_TIPS, selectQuery.value(4).toString());
 	m_datas.insert(Node::NODE_COMPLETE_FORM, selectQuery.value(5).toString());
-	m_line = selectQuery.value(6).toInt();
+	m_line   = selectQuery.value(6).toInt();
+	m_fileId = selectQuery.value(7).toInt();
+	m_hash   = selectQuery.value(8).toUInt();
 
 	for (int i = 0; i < 10 ; i++)
 	{
@@ -130,7 +133,6 @@ void PrivateNode::load()
 		m_datas.insert(selectPropertiesQuery.value(0).toInt(), selectPropertiesQuery.value(1).toString());
 	}
 
-	m_fileId   = selectQuery.value(7).toInt();
 	m_isLoaded = true;
 	m_db       = QSqlDatabase();
 }
@@ -241,13 +243,14 @@ void Node::reload(QSqlDatabase db)
 //! Create the node with the content of the object
 uint Node::create(QSqlDatabase db, int forcedId)
 {
+	/*
 	QSqlQuery selectQuery("SELECT 1 FROM cv_file WHERE id=:file_id", db);
 	selectQuery.bindValue(":file_id", d->m_fileId);
 
 	bool result = selectQuery.exec();
 	EXCEPT_ELSE(result, NodeException, "Node::create", qPrintable(selectQuery.lastError().text()));
-
 	EXCEPT_ELSE(selectQuery.first(), NodeException, "Node::create", tr("Can't find the file node %1").arg(d->m_datas.value(Node::NODE_NAME).toString()));
+	*/
 
 	QSqlQuery insertQuery(db);
 	if (forcedId == -1)
@@ -282,7 +285,7 @@ uint Node::create(QSqlDatabase db, int forcedId)
 	insertQuery.bindValue(":property9", d->m_datas.value(Node::NODE_USER_VALUE + 8).toString());
 	insertQuery.bindValue(":property10", d->m_datas.value(Node::NODE_USER_VALUE + 9).toString());
 
-	result = insertQuery.exec();
+	bool result = insertQuery.exec();
 	EXCEPT_ELSE(result, NodeException, "Node::create", qPrintable(insertQuery.lastError().text()));
 
 	uint newId = insertQuery.lastInsertId().toInt();
@@ -313,16 +316,9 @@ void Node::update(QSqlDatabase db)
 	Q_ASSERT_X(d->m_id >= 0, "Node::update", "The node must be initialized");
 	d->load();
 
-	QSqlQuery select("SELECT hash FROM cv_node WHERE id=:id", db);
-	select.bindValue(":id", QVariant::fromValue(d->m_id));
-	bool result = select.exec();
-	EXCEPT_ELSE(result, NodeException, "Node::update", qPrintable(select.lastError().text()));
-	EXCEPT_ELSE(select.next(), NodeException, "Node::update", QString("Can't find the node %1 (%2)").arg(d->m_id).arg(d->m_datas.value(Node::NODE_NAME).toString()));
-
-	uint hash    = select.value(0).toUInt();
 	uint newHash = qHash(*this);
-
-	if (hash == newHash) return;
+	if (d->m_hash == newHash) return;
+	d->m_hash = newHash;
 
 	QSqlQuery updateQuery("UPDATE cv_node "
 	                      "SET	name=:name , "
@@ -364,7 +360,7 @@ void Node::update(QSqlDatabase db)
 	updateQuery.bindValue(":property9", d->m_datas.value(Node::NODE_USER_VALUE + 8).toString());
 	updateQuery.bindValue(":property10", d->m_datas.value(Node::NODE_USER_VALUE + 9).toString());
 
-	result = updateQuery.exec();
+	bool result = updateQuery.exec();
 	EXCEPT_ELSE(result, NodeException, "Node::update", qPrintable(updateQuery.lastError().text()));
 
 	QSqlQuery deleteQuery("DELETE FROM cv_node_property WHERE node_id=:id", db);

@@ -58,9 +58,6 @@ public:
 	QSqlDatabase database() const;
 	Cache * cache();
 
-	QMutex & executeStatementMutex();
-	QSqlQuery executeStatement(const QString & query, QStringList parameters);
-
 	static Manager * self();
 private:
 	void openDatabase();

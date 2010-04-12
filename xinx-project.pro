@@ -8,6 +8,7 @@ SUBDIRS += external_qcodeedit \
 	xinx_test4 \
 	xinx_test5 \
 	xinx_test6 \
+	xinx_testgenerix \
 	plugins_core \
 	plugins_cvsplugin \
 	plugins_svnplugin \
@@ -34,6 +35,8 @@ xinx_test5.subdir = unittest/testutils
 xinx_test5.depends = external_qcodeedit xinx_components xinx_library
 xinx_test6.subdir = unittest/testcontentview2
 xinx_test6.depends = external_qcodeedit xinx_components xinx_library plugins_core
+xinx_testgenerix.subdir = unittest/testgenerix
+xinx_testgenerix.depends = external_qcodeedit xinx_components xinx_library plugins_core
 
 plugins_core.subdir = plugins/core
 

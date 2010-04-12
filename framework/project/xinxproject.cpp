@@ -649,10 +649,11 @@ XINXProjectManager * XINXProjectManager::self()
 
 void XINXProjectManager::setCurrentProject(XinxProject * project)
 {
-	if (m_project)
-		m_project->disconnect(this);
 	ContentView2::Manager::self()->cache()->terminate();
 	ContentView2::Manager::self()->cache()->wait();
+
+	if (m_project)
+		m_project->disconnect(this);
 
 	m_project = project;
 	XINXConfig::self()->config().project.lastOpenedProject = project->fileName();
@@ -676,6 +677,9 @@ XinxProjectSession2 * XINXProjectManager::session() const
 void XINXProjectManager::deleteProject()
 {
 	if (! m_project) return;
+
+	ContentView2::Manager::self()->cache()->terminate();
+	ContentView2::Manager::self()->cache()->wait();
 
 	XinxProject * backup = m_project;
 

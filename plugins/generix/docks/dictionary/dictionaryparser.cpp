@@ -46,8 +46,11 @@ DictionaryParser::~DictionaryParser()
  */
 void DictionaryParser::load()
 {
-	rootNode().setData(":/images/typexml.png", ContentView2::Node::NODE_ICON);
-	rootNode().update(database());
+	if (rootNode().isValid())
+	{
+		rootNode().setData(":/images/typexml.png", ContentView2::Node::NODE_ICON);
+		rootNode().update(database());
+	}
 
 	inputDevice()->reset();
 	setDevice(inputDevice());
@@ -116,7 +119,10 @@ void DictionaryParser::readLabelsNode()
 	labels.setData("XslVariable", ContentView2::Node::NODE_TYPE);
 	labels.setData(":/generix/images/dictionary16.png", ContentView2::Node::NODE_ICON);
 	labels.setData("gnx:trad($LANGUAGE,'%1',$CTXTRD)", ContentView2::Node::NODE_COMPLETE_FORM);
-	attachNode(rootNode(), labels);
+	if (rootNode().isValid())
+	{
+		attachNode(rootNode(), labels);
+	}
 
 	while (!atEnd())
 	{
@@ -142,6 +148,7 @@ void DictionaryParser::readLabelNode(ContentView2::Node parent)
 	QString lang  = attributes().value("lang").toString();
 	QString ctx   = attributes().value("ctx").toString();
 	QString value = attributes().value("value").toString();
+
 	ContentView2::Node label;
 	label.setFileId(rootNode().fileId());
 	label.setLine(lineNumber());
@@ -152,7 +159,10 @@ void DictionaryParser::readLabelNode(ContentView2::Node parent)
 	label.setData(lang, NODE_DICO_LANG);
 	label.setData(ctx, NODE_DICO_CTX);
 	label.setData(value, NODE_DICO_VALUE);
-	attachNode(parent, label);
+	if (rootNode().isValid())
+	{
+		attachNode(parent, label);
+	}
 
 	while (!atEnd())
 	{

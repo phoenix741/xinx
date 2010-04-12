@@ -129,7 +129,8 @@ Root: HKCR; SubKey: .fws; ValueType: string; ValueData: Fichier FWS; Flags: unin
 Root: HKCR; SubKey: Fichier FWS; ValueType: string; ValueData: Fichier WebServices; Flags: uninsdeletekey; Tasks: assofws
 Root: HKCR; SubKey: Fichier FWS\Shell\Open\Command; ValueType: string; ValueData: """{app}\bin\xinx.exe"" ""%1"""; Flags: uninsdeletevalue; Tasks: assofws
 Root: HKCR; Subkey: Fichier FWS\DefaultIcon; ValueType: string; ValueData: {app}\bin\xinx.exe,0; Flags: uninsdeletevalue; Tasks: assofws
-Root: HKCU; Subkey: Software\Shadoware.Org\XINX; Flags: uninsdeletekey deletekey; Components: ; Tasks: ; Languages: 
+
+Root: HKCU; Subkey: Software\Shadoware.Org\XINX; Flags: uninsdeletekey deletekey; Check: CheckVersion
 
 [Components]
 Name: application; Description: Application & Bibliothèques nécessaires; Flags: fixed; Types: custom compact full; Languages: 
@@ -179,3 +180,16 @@ begin
 	end;
 end;
 
+function CheckVersion(): Boolean;
+var VersionString : String;
+begin
+  Result := false;
+  if RegKeyExists( HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX' ) then
+  begin
+	RegQueryStringValue( HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX', 'Version', VersionString );
+  end;
+  if VersionString <> 'v0.9.0' then
+  begin
+	result := true;
+  end;
+end;

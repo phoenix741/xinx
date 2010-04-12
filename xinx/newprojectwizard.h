@@ -83,7 +83,7 @@ class NewProjectWizard : public QWizard
 {
 	Q_OBJECT
 public:
-	NewProjectWizard(QWidget * widget = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint);
+	NewProjectWizard(QWidget * widget = 0, Qt::WFlags f = 0);
 
 	XinxProject * createProject();
 
