@@ -468,6 +468,8 @@ void Node::destroyChilds(QSqlDatabase db)
 void Node::destroyChildsAsRoot(QSqlDatabase db)
 {
 	Q_ASSERT_X(d->m_id >= 0, "Node::destroyChildsAsRoot", "The node must be initialized");
+
+	d->load();
 	Q_ASSERT_X(d->m_fileId >= 0, "Node::destroyChildsAsRoot", "The node must be attached to a file");
 
 	QSqlQuery deleteQuery = Manager::self()->getSqlQuery("DELETE FROM cv_node WHERE id <> :id AND file_id=:file_id", db);
