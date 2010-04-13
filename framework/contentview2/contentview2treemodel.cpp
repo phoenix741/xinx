@@ -258,7 +258,7 @@ void TreeModel::select()
 		m_container.reload(m_db);
 
 		// Set the query used all snipet
-		QSqlQuery query = Manager::self()->getSqlQuery(
+		QSqlQuery query(
 				"SELECT cv_node.name, cv_node.type, cv_node.icon, cv_node.display_name, "
 				"cv_node.tips, cv_node.line, "
 				"case when cv_node.id=:root_id1 then 0 else cv_node.id end as id, "
