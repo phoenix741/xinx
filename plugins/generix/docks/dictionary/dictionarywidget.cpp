@@ -55,9 +55,8 @@ void DictionaryWidget::loadDictionaries(const QString & prefix)
 		{
 			whereClause = whereClause.arg(
 			                  "  AND (cv_node.name like '%'||ifnull(:prefix1, '')||'%' "
-			                  "   OR EXISTS (SELECT 1 FROM cv_link, cv_node cv_node2 "
-			                  " WHERE cv_link.child_id=cv_node2.id "
-			                  "   AND cv_link.parent_id=cv_node.id "
+							  "   OR EXISTS (SELECT 1 FROM cv_node cv_node2 "
+							  " WHERE cv_node2.parent_id=cv_node.id "
 			                  "   AND cv_node2.name like '%'||ifnull(:prefix2, '')||'%')) "
 			              );
 		}
@@ -86,14 +85,13 @@ void DictionaryWidget::loadDictionaries(const QString & prefix)
 
 			QSqlQuery childQuery(ContentView2::Manager::self()->database());
 			childQuery.prepare("SELECT distinct cv_node2.property1, cv_node2.property2, cv_node2.name, cv_node2.icon "
-			                   "FROM cv_file, cv_node, cv_link, cv_node cv_node2 "
+							   "FROM cv_file, cv_node, cv_node cv_node2 "
 			                   "WHERE cv_file.project_id=:project_id "
 			                   "  AND cv_node.file_id=cv_file.id "
 			                   "  AND cv_node.type = 'XslVariable' "
 			                   "  AND cv_node.name = :node_name "
 			                   "  AND cv_file.type = 'GNX_DICO' "
-			                   "  AND cv_link.parent_id = cv_node.id "
-			                   "  AND cv_link.child_id = cv_node2.id "
+							   "  AND cv_node2.parent_id = cv_node.id "
 			                   "  AND cv_node2.type = 'DICTIONARY_LABEL' "
 			                   "ORDER BY cv_node2.property1, cv_node2.property2, lower(cv_node2.name) ");
 			childQuery.bindValue(":project_id", project.projectId());

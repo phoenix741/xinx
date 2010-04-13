@@ -246,8 +246,7 @@ QSqlQueryModel * TreeModel::sourceModel() const
  * If the file is valide (the file must be created in the database), this method
  * read all node for the file id.
  *
- * By merging with cv_link, this method search the parent_id. Datas are sorted by display_name
- * (case insensitive).
+ * Datas are sorted by display_name (case insensitive).
  *
  * The tree is created by calling TreeProxyItemModel::createMapping()
  */
@@ -262,8 +261,8 @@ void TreeModel::select()
 				"SELECT cv_node.name, cv_node.type, cv_node.icon, cv_node.display_name, "
 				"cv_node.tips, cv_node.line, "
 				"case when cv_node.id=:root_id1 then 0 else cv_node.id end as id, "
-				"case when cv_link.parent_id=:root_id2 then 0 when cv_node.id=:root_id3 then -1 else cv_link.parent_id end as parent_id "
-				"FROM cv_node left join cv_link on cv_link.child_id=cv_node.id "
+				"case when cv_node.parent_id=:root_id2 then 0 when cv_node.id=:root_id3 then -1 else cv_node.parent_id end as parent_id "
+				"FROM cv_node "
 				"WHERE cv_node.file_id=:file_id "
 				"ORDER BY lower(cv_node.display_name)",
 				m_db);
@@ -297,7 +296,7 @@ int TreeModel::getUniqueIdentifier(const QModelIndex & sourceIndex) const
 /*!
  * \brief This method return the parent id of the ContentView2::Node
  *
- * The id of the parent node can be finded in the cv_link table.
+ * The id of the parent node can be finded in the cv_node table.
  */
 int TreeModel::getParentUniqueIdentifier(const QModelIndex & sourceIndex) const
 {

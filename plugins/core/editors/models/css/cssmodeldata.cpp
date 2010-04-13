@@ -46,13 +46,12 @@ void CSSFileContentParser::load()
 	rootNode().setData(":/images/typecss.png", ContentView2::Node::NODE_ICON);
 	rootNode().update(database());
 
-	loadAttachedNode(rootNode());
+	clearNodes(rootNode());
 
 	QString text = inputDevice()->readAll();
 
 	if (text.isEmpty())
 	{
-		removeAttachedNodes();
 		return;
 	}
 
@@ -180,8 +179,6 @@ void CSSFileContentParser::load()
 			m_line++;
 		}
 	}
-
-	detachAttachedNode();
 }
 
 ContentView2::Node CSSFileContentParser::attacheNewPropertyNode(ContentView2::Node parent, const QString & name, int line)

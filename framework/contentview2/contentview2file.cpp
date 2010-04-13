@@ -411,7 +411,7 @@ void File::update(QSqlDatabase db)
 	updateQuery.finish();
 }
 
-//! Destroy the file in cv_file (and links in cv_file, cv_node, cv_link and cv_import)
+//! Destroy the file in cv_file (and depends in cv_file, cv_node and cv_import)
 void File::destroy(QSqlDatabase db)
 {
 	Q_ASSERT_X(d->m_id >= 0, "File::destroy", "The file must be initialized");

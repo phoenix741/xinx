@@ -55,7 +55,7 @@ void DictionaryParser::load()
 	inputDevice()->reset();
 	setDevice(inputDevice());
 
-	loadAttachedNode(rootNode());
+	clearNodes(rootNode());
 
 	while (! atEnd())
 	{
@@ -79,8 +79,6 @@ void DictionaryParser::load()
 	{
 		throw ContentView2::ParserException(errorString(), lineNumber(), columnNumber());
 	}
-
-	detachAttachedNode();
 }
 
 

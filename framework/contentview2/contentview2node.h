@@ -74,11 +74,12 @@ public:
 
 	void destroy(QSqlDatabase db);
 	void destroyChilds(QSqlDatabase db);
+	void destroyChildsAsRoot(QSqlDatabase db);
 
 	uint nodeId() const;
 
-	bool attach(QSqlDatabase db, uint parentId);
-	void detach(QSqlDatabase db, uint parentId);
+	bool attach(uint parentId);
+	void detach();
 
 	int line() const;
 	void setLine(int value);
@@ -93,7 +94,7 @@ public:
 	void setData(const QVariant & value, int index = Node::NODE_NAME);
 
 	QList<int> childs(QSqlDatabase db) const;
-	QList<int> parents(QSqlDatabase db) const;
+	int parent(QSqlDatabase db) const;
 
 	int indexOfChild(QSqlDatabase db, const Node & node) const;
 

@@ -186,14 +186,10 @@ void TestGenerix::testInsert()
 
 		QSqlQuery insertQuery(ContentView2::Manager::self()->database());
 
-		QSqlQuery insertQuery2(ContentView2::Manager::self()->database());
-
 		insertQuery.prepare("INSERT INTO cv_node(name, type, display_name, file_id, hash) "
 							"VALUES(:name, :type, :display_name, :file_id, :hash)");
-		insertQuery2.prepare("INSERT INTO cv_link(parent_id, child_id) VALUES( :parent, :child )");
 
-		// Insertion de 150000 lignes dans 2 tables
-		for(int i = 0; i < 150000; i++)
+		for(int i = 0; i < 15000; i++)
 		{
 
 			insertQuery.bindValue(":name", QString("%1").arg(i));
@@ -205,13 +201,6 @@ void TestGenerix::testInsert()
 			bool result = insertQuery.exec();
 			if(!result)
 				QFAIL(qPrintable(insertQuery.lastError().text()));
-
-			insertQuery2.bindValue(":parent", insertQuery.lastInsertId());
-			insertQuery2.bindValue(":child", insertQuery.lastInsertId());
-
-			result = insertQuery2.exec();
-			if(!result)
-				QFAIL(qPrintable(insertQuery2.lastError().text()));
 		}
 
 

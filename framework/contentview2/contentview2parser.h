@@ -71,12 +71,8 @@ public:
 
 	virtual QTextCodec * codec();
 protected:
+	void clearNodes(Node rootNode);
 	void attachNode(const Node & parent, Node & child);
-
-	void loadAttachedNode(const Node & rootNode);
-	void detachAttachedNode();
-	void removeAttachedNode(const Node & rootNode);
-	void removeAttachedNodes();
 
 	QString locationOf(const QString & relativeFilename);
 

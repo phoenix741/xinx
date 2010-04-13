@@ -205,68 +205,24 @@ const QStringList & Parser::imports() const
 }
 
 /*!
+ * \brief Destroy all node of \p rootNode
+ */
+void Parser::clearNodes(Node rootNode)
+{
+	rootNode.destroyChildsAsRoot(m_db);
+}
+
+
+/*!
  * \brief Attach the node \e child to \e parent if this node isn't already attached.
  */
 void Parser::attachNode(const Node & parent, Node & child)
 {
 	Q_ASSERT(parent.isValid());
 
-	int id;
 	child.setLine(child.line() + m_decaledLine);
-	if ((id = parent.indexOfChild(m_db, child)) >= 0)
-	{
-		child.load(m_db, id);
-		removeAttachedNode(child);
-	}
-	else
-	{
-		child.create(m_db);
-		child.attach(m_db, parent.nodeId());
-		removeAttachedNode(child);
-	}
-}
-
-//! Load all child from the given \e rootNode for future detach
-void Parser::loadAttachedNode(const Node & rootNode)
-{
-	if (! rootNode.isValid()) return;
-	foreach(uint n, rootNode.childs(m_db))
-	{
-		m_attachedNode.append(qMakePair(rootNode.nodeId(), n));
-	}
-}
-
-//! Detach all node again in the list
-void Parser::detachAttachedNode()
-{
-	QPair<uint,uint> p;
-	foreach(p, m_attachedNode)
-	{
-		Node child(m_db, p.second);
-		child.detach(m_db, p.first);
-		child.destroy(m_db);
-	}
-	m_attachedNode.clear();
-}
-
-//! Remove \e rootNode from the attachedNodeList
-void Parser::removeAttachedNode(const Node & n)
-{
-	QMutableListIterator< QPair<uint,uint> > i(m_attachedNode);
-	while (i.hasNext())
-	{
-		QPair<uint,uint> p = i.next();
-		if (p.second == n.nodeId())
-		{
-			i.remove();
-		}
-	}
-}
-
-//! Remove all node in the list
-void Parser::removeAttachedNodes()
-{
-	m_attachedNode.clear();
+	child.attach(parent.nodeId());
+	child.create(m_db);
 }
 
 //! Return the location (absolute path) of the filename, with the help of the \e parent node

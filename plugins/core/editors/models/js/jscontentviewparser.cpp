@@ -44,7 +44,7 @@ void JsContentViewParser::load()
 	rootNode().setData(":/images/typejs.png", ContentView2::Node::NODE_ICON);
 	rootNode().update(database());
 
-	loadAttachedNode(rootNode());
+	clearNodes(rootNode());
 
 	m_line = 1;
 
@@ -108,8 +108,6 @@ void JsContentViewParser::load()
 		}
 	}
 	while (! inputDevice()->atEnd());
-
-	detachAttachedNode();
 }
 
 void JsContentViewParser::nextIdentifier(QIODevice * device, enum JAVASCRIPT_TOKEN & symbType, QString & symbName)
@@ -355,7 +353,6 @@ ContentView2::Node JsContentViewParser::loadFunction(ContentView2::Node parent, 
 		throw ContentView2::ParserException(tr("I wait an identifier."), m_line);
 
 	ContentView2::Node function = attacheNewFunctionNode(parent, name, m_line);
-	loadAttachedNode(function);
 
 	nextIdentifier(buffer, type, name);
 
