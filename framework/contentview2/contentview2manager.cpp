@@ -141,19 +141,11 @@ void Manager::createDatabase(QSqlDatabase db)
 	/* Create Index */
 	result = q.exec("CREATE INDEX cv_project_idx1 on cv_project (path ASC)");
 	Q_ASSERT_X(result, "Manager::createDatabase", qPrintable(q.lastError().text()));
-	result = q.exec("CREATE UNIQUE INDEX cv_project_idx2 on cv_project (id ASC)");
-	Q_ASSERT_X(result, "Manager::createDatabase", qPrintable(q.lastError().text()));
-	result = q.exec("CREATE INDEX cv_file_idx1 on cv_file (path ASC)");
-	Q_ASSERT_X(result, "Manager::createDatabase", qPrintable(q.lastError().text()));
-	result = q.exec("CREATE UNIQUE INDEX cv_file_idx2 on cv_file (path ASC, project_id ASC)");
+	result = q.exec("CREATE UNIQUE INDEX cv_file_idx1 on cv_file (path ASC, project_id ASC, cached ASC)");
 	Q_ASSERT_X(result, "Manager::createDatabase", qPrintable(q.lastError().text()));
 	result = q.exec("CREATE INDEX cv_file_idx3 on cv_file (root_id ASC)");
 	Q_ASSERT_X(result, "Manager::createDatabase", qPrintable(q.lastError().text()));
-	result = q.exec("CREATE UNIQUE INDEX cv_file_idx4 on cv_file (id ASC)");
-	Q_ASSERT_X(result, "Manager::createDatabase", qPrintable(q.lastError().text()));
 	result = q.exec("CREATE INDEX cv_import_idx1 on cv_import (parent_id ASC)");
-	Q_ASSERT_X(result, "Manager::createDatabase", qPrintable(q.lastError().text()));
-	result = q.exec("CREATE UNIQUE INDEX cv_node_idx1 on cv_node (id ASC)");
 	Q_ASSERT_X(result, "Manager::createDatabase", qPrintable(q.lastError().text()));
 	result = q.exec("CREATE INDEX cv_node_idx2 on cv_node (file_id ASC, name ASC, type ASC)");
 	Q_ASSERT_X(result, "Manager::createDatabase", qPrintable(q.lastError().text()));
