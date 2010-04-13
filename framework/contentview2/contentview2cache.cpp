@@ -180,6 +180,7 @@ void Cache::initializeCache()
 			if (QFileInfo(path).exists())
 				m_watcher->addPath(path);
 		}
+		cacheQuery.finish();
 	}
 	catch (...)
 	{
@@ -409,6 +410,7 @@ void Cache::regenerateImport(QSqlDatabase db)
 		deleteAllImportsQuery.bindValue(":automatic", QVariant::fromValue(true));
 		bool result = deleteAllImportsQuery.exec();
 		Q_ASSERT_X(result, "Cache::regenerateImport", qPrintable(deleteAllImportsQuery.lastError().text()));
+		deleteAllImportsQuery.finish();
 
 		QSqlQuery selectImportQuery = Manager::self()->getSqlQuery("SELECT parent_id, child_id FROM cv_import WHERE automatic_import=:automatic", db);
 		selectImportQuery.bindValue(":automatic", QVariant::fromValue(false));
@@ -419,6 +421,8 @@ void Cache::regenerateImport(QSqlDatabase db)
 		{
 			imports.insert(selectImportQuery.value(0).toInt(), selectImportQuery.value(1).toInt());
 		}
+
+		selectImportQuery.finish();
 
 		foreach(int key, imports.keys())
 		{
@@ -487,7 +491,7 @@ void Cache::run()
 				bool result = db.transaction();
 				if (! result)
 				{
-					sleep(500);
+					msleep(500);
 					i--;
 				}
 
@@ -566,8 +570,8 @@ void Cache::run()
 						result = db.commit();
 						while (! result)
 						{
+							msleep(500);
 							result = db.commit();
-							sleep(500);
 						}
 
 						emit cacheLoaded(file);
@@ -667,6 +671,8 @@ void Cache::run()
 							}
 						}
 					}
+
+					query.finish();
 				}
 				catch (ProjectException e)
 				{

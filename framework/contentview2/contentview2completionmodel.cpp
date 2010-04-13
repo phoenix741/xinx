@@ -234,8 +234,10 @@ ContentView2::Node CompletionModel::nodeOfWord(const QString & name) const
 	if (q.first())
 	{
 		uint id = q.value(0).toUInt();
+		q.finish();
 		return ContentView2::Node(database(), id);
 	}
+	q.finish();
 
 	return ContentView2::Node();
 }

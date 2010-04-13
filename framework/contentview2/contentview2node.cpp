@@ -133,6 +133,9 @@ void PrivateNode::load()
 		m_datas.insert(selectPropertiesQuery.value(0).toInt(), selectPropertiesQuery.value(1).toString());
 	}
 
+	selectQuery.finish();
+	selectPropertiesQuery.finish();
+
 	m_isLoaded = true;
 	m_db       = QSqlDatabase();
 }
@@ -308,6 +311,9 @@ uint Node::create(QSqlDatabase db, int forcedId)
 		EXCEPT_ELSE(result, NodeException, "Node::create", qPrintable(insertPropertyQuery.lastError().text()));
 	}
 
+	insertQuery.finish();
+	insertPropertyQuery.finish();
+
 	d->m_id       = newId;
 	d->m_isLoaded = true;
 	return newId;
@@ -367,10 +373,13 @@ void Node::update(QSqlDatabase db)
 	bool result = updateQuery.exec();
 	EXCEPT_ELSE(result, NodeException, "Node::update", qPrintable(updateQuery.lastError().text()));
 
+	updateQuery.finish();
+
 	QSqlQuery deleteQuery = Manager::self()->getSqlQuery("DELETE FROM cv_node_property WHERE node_id=:id", db);
 	deleteQuery.bindValue(":id", QVariant::fromValue(d->m_id));
 	result = deleteQuery.exec();
 	EXCEPT_ELSE(result, NodeException, "Node::update", qPrintable(deleteQuery.lastError().text()));
+	deleteQuery.finish();
 
 	QSqlQuery insertPropertyQuery = Manager::self()->getSqlQuery("INSERT INTO cv_node_property(node_id, ord, value) "
 	                              "VALUES(:node_id, :ord, :value)", db);
@@ -386,6 +395,8 @@ void Node::update(QSqlDatabase db)
 		result = insertPropertyQuery.exec();
 		EXCEPT_ELSE(result, NodeException, "Node::update", qPrintable(insertPropertyQuery.lastError().text()));
 	}
+
+	insertPropertyQuery.finish();
 }
 
 /*!
@@ -403,17 +414,20 @@ void Node::destroy(QSqlDatabase db)
 	deleteQuery1.bindValue(":id", QVariant::fromValue(d->m_id));
 	bool result = deleteQuery1.exec();
 	EXCEPT_ELSE(result, NodeException, "Node::destroy", qPrintable(deleteQuery1.lastError().text()));
+	deleteQuery1.finish();
 
 	QSqlQuery deleteQuery2 = Manager::self()->getSqlQuery("DELETE FROM cv_node_property WHERE node_id=:id", db);
 	deleteQuery2.bindValue(":id", QVariant::fromValue(d->m_id));
 	result = deleteQuery2.exec();
 	EXCEPT_ELSE(result, NodeException, "Node::destroy", qPrintable(deleteQuery2.lastError().text()));
+	deleteQuery2.finish();
 
 	QSqlQuery deleteQuery3 = Manager::self()->getSqlQuery("DELETE FROM cv_link WHERE parent_id=:id1 or child_id=:id2", db);
 	deleteQuery3.bindValue(":id1", QVariant::fromValue(d->m_id));
 	deleteQuery3.bindValue(":id2", QVariant::fromValue(d->m_id));
 	result = deleteQuery3.exec();
 	EXCEPT_ELSE(result, NodeException, "Node::destroy", qPrintable(deleteQuery3.lastError().text()));
+	deleteQuery3.finish();
 
 	d->m_id = -1;
 }
@@ -439,6 +453,7 @@ bool Node::attach(QSqlDatabase db, uint parentId)
 	checkId.bindValue(":child", QVariant::fromValue(d->m_id));
 	bool result = checkId.exec();
 	EXCEPT_ELSE(result, NodeException, "Node::attach", qPrintable(checkId.lastError().text()));
+	checkId.finish();
 
 	if (checkId.next())
 		return false;
@@ -448,6 +463,7 @@ bool Node::attach(QSqlDatabase db, uint parentId)
 	insert.bindValue(":child", QVariant::fromValue(d->m_id));
 	result = insert.exec();
 	EXCEPT_ELSE(result, NodeException, "Node::attach", qPrintable(insert.lastError().text()));
+	insert.finish();
 
 	return true;
 }
@@ -465,6 +481,7 @@ void Node::detach(QSqlDatabase db, uint parentId)
 	remove.bindValue(":child", QVariant::fromValue(d->m_id));
 	bool result = remove.exec();
 	EXCEPT_ELSE(result, NodeException, "Node::detach", qPrintable(remove.lastError().text()));
+	remove.finish();
 }
 
 //! Remove all childs of the node.
@@ -504,10 +521,13 @@ QString Node::filename(QSqlDatabase db) const
 
 	if (selectQuery.first())
 	{
-		return selectQuery.value(0).toString();
+		const QString path = selectQuery.value(0).toString();
+		selectQuery.finish();
+		return path;
 	}
 	else
 	{
+		selectQuery.finish();
 		return QString();
 	}
 }
@@ -590,6 +610,8 @@ QList<int> Node::childs(QSqlDatabase db) const
 		result += select.value(0).toInt();
 	}
 
+	select.finish();
+
 	return result;
 }
 
@@ -612,6 +634,8 @@ QList<int> Node::parents(QSqlDatabase db) const
 		result += select.value(0).toInt();
 	}
 
+	select.finish();
+
 	return result;
 }
 
@@ -628,10 +652,13 @@ int Node::indexOfChild(QSqlDatabase db, const Node & node) const
 
 	if (select.next())
 	{
-		return select.value(0).toUInt();
+		quint64 childId = select.value(0).toUInt();
+		select.finish();
+		return childId;
 	}
 	else
 	{
+		select.finish();
 		return -1;
 	}
 }

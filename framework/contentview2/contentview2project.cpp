@@ -123,6 +123,8 @@ void Project::load(QSqlDatabase db, uint id)
 	d->m_id   = id;
 	d->m_path = selectQuery.value(0).toString();
 	d->m_name = selectQuery.value(1).toString();
+
+	selectQuery.finish();
 }
 
 void Project::load(QSqlDatabase db, XinxProject * project)
@@ -137,6 +139,8 @@ void Project::load(QSqlDatabase db, XinxProject * project)
 
 	d->m_id   = selectQuery.value(0).toInt();
 	d->m_name = selectQuery.value(1).toString();
+
+	selectQuery.finish();
 }
 
 void Project::reload(QSqlDatabase db)
@@ -156,6 +160,7 @@ int Project::create(QSqlDatabase db)
 
 	uint newId = insertQuery.lastInsertId().toInt();
 	d->m_id = newId;
+	insertQuery.finish();
 	return newId;
 }
 
@@ -169,6 +174,7 @@ void Project::update(QSqlDatabase db)
 
 	bool result = updateQuery.exec();
 	EXCEPT_ELSE(result, ProjectException, "Project::update", qPrintable(updateQuery.lastError().text()));
+	updateQuery.finish();
 }
 
 void Project::destroy(QSqlDatabase db)
@@ -181,6 +187,7 @@ void Project::destroy(QSqlDatabase db)
 	deleteQuery1.bindValue(":id", QVariant::fromValue(d->m_id));
 	bool result = deleteQuery1.exec();
 	EXCEPT_ELSE(result, ProjectException, "Project::destroy", qPrintable(deleteQuery1.lastError().text()));
+	deleteQuery1.finish();
 }
 
 void Project::destroyFiles(QSqlDatabase db)
@@ -246,6 +253,8 @@ QList<int> Project::files(QSqlDatabase db) const
 	{
 		result += select.value(0).toInt();
 	}
+
+	select.finish();
 
 	return result;
 }
