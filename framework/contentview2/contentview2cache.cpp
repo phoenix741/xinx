@@ -156,7 +156,7 @@ void Cache::initializeCache()
 	{
 		Project project(Manager::self()->database(), XINXProjectManager::self()->project());
 
-		QSqlQuery cacheQuery("SELECT path, type, selection FROM cv_file WHERE project_id=:project and cached = :cached", Manager::self()->database());
+		QSqlQuery cacheQuery = Manager::self()->getSqlQuery("SELECT path, type, selection FROM cv_file WHERE project_id=:project and cached = :cached", Manager::self()->database());
 		cacheQuery.bindValue(":project", project.projectId());
 		cacheQuery.bindValue(":cached", true);
 		bool result = cacheQuery.exec();
@@ -405,12 +405,12 @@ void Cache::regenerateImport(QSqlDatabase db)
 
 	try
 	{
-		QSqlQuery deleteAllImportsQuery("DELETE FROM cv_import WHERE automatic_import=:automatic", db);
+		QSqlQuery deleteAllImportsQuery = Manager::self()->getSqlQuery("DELETE FROM cv_import WHERE automatic_import=:automatic", db);
 		deleteAllImportsQuery.bindValue(":automatic", QVariant::fromValue(true));
 		bool result = deleteAllImportsQuery.exec();
 		Q_ASSERT_X(result, "Cache::regenerateImport", qPrintable(deleteAllImportsQuery.lastError().text()));
 
-		QSqlQuery selectImportQuery("SELECT parent_id, child_id FROM cv_import WHERE automatic_import=:automatic", db);
+		QSqlQuery selectImportQuery = Manager::self()->getSqlQuery("SELECT parent_id, child_id FROM cv_import WHERE automatic_import=:automatic", db);
 		selectImportQuery.bindValue(":automatic", QVariant::fromValue(false));
 		result = selectImportQuery.exec();
 		Q_ASSERT_X(result, "Cache::regenerateImport", qPrintable(selectImportQuery.lastError().text()));
@@ -429,7 +429,7 @@ void Cache::regenerateImport(QSqlDatabase db)
 					if (!imports.contains(node, value))
 					{
 						imports.insert(node, value);
-						QSqlQuery insertImportQuery("INSERT INTO cv_import(parent_id, child_id, automatic_import) VALUES(:parent_id, :child_id, :automatic)", db);
+						QSqlQuery insertImportQuery = Manager::self()->getSqlQuery("INSERT INTO cv_import(parent_id, child_id, automatic_import) VALUES(:parent_id, :child_id, :automatic)", db);
 						insertImportQuery.bindValue(":parent_id", node);
 						insertImportQuery.bindValue(":child_id",value);
 						insertImportQuery.bindValue(":automatic", true);
@@ -636,7 +636,7 @@ void Cache::run()
 				{
 					Project project(db, XINXProjectManager::self()->project());
 
-					QSqlQuery query("SELECT path, id FROM cv_file WHERE project_id=:project_id and cached=:cached", db);
+					QSqlQuery query = Manager::self()->getSqlQuery("SELECT path, id FROM cv_file WHERE project_id=:project_id and cached=:cached", db);
 					query.bindValue(":project_id", project.projectId());
 					query.bindValue(":cached",false);
 					bool result = query.exec();
@@ -678,6 +678,9 @@ void Cache::run()
 
 		/* Regenerate automatic import */
 		regenerateImport(db);
+
+		/* Clear QSqlQueries */
+		Manager::self()->clearPool(db);
 
 		/* End of thread */
 		emit cacheLoaded();

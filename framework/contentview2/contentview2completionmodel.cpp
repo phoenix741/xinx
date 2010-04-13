@@ -174,7 +174,6 @@ QString CompletionModel::whereClause() const
 void CompletionModel::select()
 {
 	m_file.reload(m_db);
-	QSqlQuery query(m_db);
 
 	// Order by clause
 	QString queryStr =
@@ -183,6 +182,7 @@ void CompletionModel::select()
 	    "ORDER BY lower(cv_node.display_name) LIMIT 5";
 
 	// Set the query used all snipet
+	QSqlQuery query = Manager::self()->getSqlQuery(queryStr, m_db);
 	query.prepare(queryStr);
 	query.bindValue(":project_id", m_file.file(m_db).projectId());
 	query.bindValue(":id1", m_file.file(m_db).fileId());
@@ -223,7 +223,7 @@ QSqlDatabase CompletionModel::database()
 //! Return the first finding node for the given \p name from parameters.
 ContentView2::Node CompletionModel::nodeOfWord(const QString & name) const
 {
-	QSqlQuery q(QString("SELECT cv_node.id FROM cv_file, cv_node %1 AND cv_node.name = :name").arg(whereClause()), database());
+	QSqlQuery q = Manager::self()->getSqlQuery(QString("SELECT cv_node.id FROM cv_file, cv_node %1 AND cv_node.name = :name").arg(whereClause()), database());
 	q.bindValue(":project_id", file().file(database()).projectId());
 	q.bindValue(":id1", file().file(database()).fileId());
 	q.bindValue(":id2", file().file(database()).fileId());

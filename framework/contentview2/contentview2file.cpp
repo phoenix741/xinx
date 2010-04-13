@@ -278,8 +278,9 @@ File::~File()
  */
 void File::load(QSqlDatabase db, uint id)
 {
-	QSqlQuery selectQuery("SELECT project_id, path, cached, type, datmod, loaded, root_id, selection, encoding "
-	                      "FROM cv_file WHERE id=:id", db);
+	QSqlQuery selectQuery = Manager::self()->getSqlQuery(
+						"SELECT project_id, path, cached, type, datmod, loaded, root_id, selection, encoding "
+						"FROM cv_file WHERE id=:id", db);
 	selectQuery.bindValue(":id", QVariant::fromValue(id));
 	bool result = selectQuery.exec();
 	EXCEPT_ELSE(result, FileException, "File::load", selectQuery.lastError().text());
@@ -302,7 +303,7 @@ void File::load(QSqlDatabase db, uint id)
  */
 void File::load(QSqlDatabase db, XinxProject * project, const QString & path, bool isCached)
 {
-	QSqlQuery projectQuery("SELECT id, name, path FROM cv_project WHERE path=:project_path", db);
+	QSqlQuery projectQuery = Manager::self()->getSqlQuery("SELECT id, name, path FROM cv_project WHERE path=:project_path", db);
 	projectQuery.bindValue(":project_path", project ? project->fileName() : "/");
 	bool result = projectQuery.exec();
 	EXCEPT_ELSE(result, FileException, "File::load", projectQuery.lastError().text());
@@ -310,8 +311,9 @@ void File::load(QSqlDatabase db, XinxProject * project, const QString & path, bo
 
 	d->m_projectId = projectQuery.value(0).toInt();
 
-	QSqlQuery selectQuery("SELECT id, type, datmod, loaded, root_id, selection, encoding "
-	                      "FROM cv_file WHERE project_id=:project_id and path=:path and cached=:cached", db);
+	QSqlQuery selectQuery = Manager::self()->getSqlQuery(
+						"SELECT id, type, datmod, loaded, root_id, selection, encoding "
+						"FROM cv_file WHERE project_id=:project_id and path=:path and cached=:cached", db);
 	selectQuery.bindValue(":project_id", QVariant::fromValue(d->m_projectId));
 	selectQuery.bindValue(":path", QVariant::fromValue(path));
 	selectQuery.bindValue(":cached", QVariant::fromValue(isCached));
@@ -346,16 +348,16 @@ void File::reload(QSqlDatabase db)
  */
 uint File::create(QSqlDatabase db)
 {
-	QSqlQuery selectQuery("SELECT 1 FROM cv_project WHERE id=:project_id", db);
+	QSqlQuery selectQuery = Manager::self()->getSqlQuery("SELECT 1 FROM cv_project WHERE id=:project_id", db);
 	selectQuery.bindValue(":project_id", QVariant::fromValue(d->m_projectId));
 
 	bool result = selectQuery.exec();
 	EXCEPT_ELSE(result, FileException, "File::create", qPrintable(selectQuery.lastError().text()));
 	EXCEPT_ELSE(selectQuery.first(), FileException, "File::create", tr("Can't find the project %1").arg(d->m_path));
 
-	QSqlQuery insertQuery(db);
-	insertQuery.prepare("INSERT INTO cv_file(project_id, path, cached, type, datmod, loaded, root_id, selection, encoding) "
-	                    "VALUES(:project_id, :path, :cached, :type, :datmod, :loaded, :root_id, :selection, :encoding)");
+	QSqlQuery insertQuery = Manager::self()->getSqlQuery(
+						"INSERT INTO cv_file(project_id, path, cached, type, datmod, loaded, root_id, selection, encoding) "
+						"VALUES(:project_id, :path, :cached, :type, :datmod, :loaded, :root_id, :selection, :encoding)", db);
 
 	insertQuery.bindValue(":project_id", QVariant::fromValue(d->m_projectId));
 	insertQuery.bindValue(":path",       QVariant::fromValue(d->m_path));
@@ -380,12 +382,13 @@ void File::update(QSqlDatabase db)
 {
 	Q_ASSERT_X(d->m_id >= 0, "File::update", "The file must be initialized");
 
-	QSqlQuery updateQuery("UPDATE cv_file "
-	                      "SET	datmod=:datmod , "
-	                      "		loaded=:loaded , "
-	                      "		root_id=:root_id , "
-	                      "		encoding=:encoding "
-	                      "WHERE id=:id", db);
+	QSqlQuery updateQuery = Manager::self()->getSqlQuery(
+							"UPDATE cv_file "
+							"SET	datmod=:datmod , "
+							"		loaded=:loaded , "
+							"		root_id=:root_id , "
+							"		encoding=:encoding "
+							"WHERE id=:id", db);
 	updateQuery.bindValue(":datmod",   QVariant::fromValue(d->m_datmod));
 	updateQuery.bindValue(":loaded",   QVariant::fromValue(d->m_loaded));
 	updateQuery.bindValue(":root_id",  QVariant::fromValue(d->m_rootId));
@@ -402,12 +405,12 @@ void File::destroy(QSqlDatabase db)
 	Q_ASSERT_X(d->m_id >= 0, "File::destroy", "The file must be initialized");
 	destroyNodes(db);
 
-	QSqlQuery deleteQuery1("DELETE FROM cv_import WHERE parent_id = :id", db);
+	QSqlQuery deleteQuery1 = Manager::self()->getSqlQuery("DELETE FROM cv_import WHERE parent_id = :id", db);
 	deleteQuery1.bindValue(":id", QVariant::fromValue(d->m_id));
 	bool result = deleteQuery1.exec();
 	EXCEPT_ELSE(result, FileException, "File::destroye", qPrintable(deleteQuery1.lastError().text()));
 
-	QSqlQuery deleteQuery2("DELETE FROM cv_file WHERE id=:id", db);
+	QSqlQuery deleteQuery2 = Manager::self()->getSqlQuery("DELETE FROM cv_file WHERE id=:id", db);
 	deleteQuery2.bindValue(":id", QVariant::fromValue(d->m_id));
 	result = deleteQuery2.exec();
 	EXCEPT_ELSE(result, FileException, "File::destroy", qPrintable(deleteQuery2.lastError().text()));
@@ -462,7 +465,7 @@ void File::addImport(QSqlDatabase db, const File & file, bool automatic)
 {
 	Q_ASSERT_X(d->m_id >= 0, "File::addImport", "Can't add import on file not created");
 
-	QSqlQuery createQuery("INSERT INTO cv_import( parent_id, child_id, automatic_import ) VALUES( :parentId, :childId, :automatic )", db);
+	QSqlQuery createQuery = Manager::self()->getSqlQuery("INSERT INTO cv_import( parent_id, child_id, automatic_import ) VALUES( :parentId, :childId, :automatic )", db);
 	createQuery.bindValue(":parentId",  QVariant::fromValue(d->m_id));
 	createQuery.bindValue(":childId",   QVariant::fromValue(file.fileId()));
 	createQuery.bindValue(":automatic", QVariant::fromValue(automatic));
@@ -476,7 +479,7 @@ QList<int> File::imports(QSqlDatabase db)
 	QList<int> result;
 	if (d->m_id == -1) return result;
 
-	QSqlQuery select("SELECT id FROM cv_import WHERE parent_id=:id", db);
+	QSqlQuery select = Manager::self()->getSqlQuery("SELECT id FROM cv_import WHERE parent_id=:id", db);
 	select.bindValue(":id", QVariant::fromValue(d->m_id));
 	bool r = select.exec();
 	Q_ASSERT_X(r, "File::imports", qPrintable(select.lastError().text()));
@@ -495,7 +498,7 @@ QList<int> File::imports(QSqlDatabase db)
  */
 void File::destroyImports(QSqlDatabase db)
 {
-	QSqlQuery q("DELETE FROM cv_import WHERE parent_id=:id", db);
+	QSqlQuery q = Manager::self()->getSqlQuery("DELETE FROM cv_import WHERE parent_id=:id", db);
 	q.bindValue(":id", QVariant::fromValue(d->m_id));
 	bool result = q.exec();
 	EXCEPT_ELSE(result, FileException, "File::destroyImports", qPrintable(q.lastError().text()));
@@ -507,7 +510,7 @@ void File::destroyImports(QSqlDatabase db)
  */
 void File::destroyAutomaticImports(QSqlDatabase db)
 {
-	QSqlQuery q("DELETE FROM cv_import WHERE parent_id=:id and automatic_import=:automatic", db);
+	QSqlQuery q = Manager::self()->getSqlQuery("DELETE FROM cv_import WHERE parent_id=:id and automatic_import=:automatic", db);
 	q.bindValue(":id", QVariant::fromValue(d->m_id));
 	q.bindValue(":automatic", QVariant::fromValue(true));
 	bool result = q.exec();
@@ -723,7 +726,7 @@ QList<int> File::nodes(QSqlDatabase db) const
 	QList<int> result;
 	if (d->m_id == -1) return result;
 
-	QSqlQuery select("SELECT id FROM cv_node WHERE file_id=:file_id", db);
+	QSqlQuery select = Manager::self()->getSqlQuery("SELECT id FROM cv_node WHERE file_id=:file_id", db);
 	select.bindValue(":file_id", QVariant::fromValue(d->m_id));
 	bool r = select.exec();
 	Q_ASSERT_X(r, "File::nodes", qPrintable(select.lastError().text()));

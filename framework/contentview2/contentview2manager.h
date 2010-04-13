@@ -55,6 +55,9 @@ public:
 	void addInitializationParser(bool isGlobal, const QString & path, const QString & type, const QString & selection);
 	void initializeDatabase();
 
+	QSqlQuery getSqlQuery(const QString & query, QSqlDatabase db = QSqlDatabase());
+	void clearPool(const QSqlDatabase & db);
+
 	QSqlDatabase database() const;
 	Cache * cache();
 
@@ -71,6 +74,7 @@ private:
 		QString path, type, selection;
 	};
 
+	QHash<QString, QHash<QString, QSqlQuery> > m_queries;
 	QList<ParserTuple> m_persistentParser;
 	Cache * m_cache;
 	QMutex m_executeStatementMutex;

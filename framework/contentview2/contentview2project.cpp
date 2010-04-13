@@ -114,7 +114,7 @@ Project::~Project()
 
 void Project::load(QSqlDatabase db, uint id)
 {
-	QSqlQuery selectQuery("SELECT path, name FROM cv_project WHERE id=:id", db);
+	QSqlQuery selectQuery = Manager::self()->getSqlQuery("SELECT path, name FROM cv_project WHERE id=:id", db);
 	selectQuery.bindValue(":id", QVariant::fromValue(id));
 	bool result = selectQuery.exec();
 	EXCEPT_ELSE(result, ProjectException, "Project::load", selectQuery.lastError().text());
@@ -129,7 +129,7 @@ void Project::load(QSqlDatabase db, XinxProject * project)
 {
 	d->m_path = project ? project->fileName() : "/";
 
-	QSqlQuery selectQuery("SELECT id, name FROM cv_project WHERE path=:path", db);
+	QSqlQuery selectQuery = Manager::self()->getSqlQuery("SELECT id, name FROM cv_project WHERE path=:path", db);
 	selectQuery.bindValue(":path", QVariant::fromValue(d->m_path));
 	bool result = selectQuery.exec();
 	EXCEPT_ELSE(result, ProjectException, "Project::load", selectQuery.lastError().text());
@@ -147,8 +147,7 @@ void Project::reload(QSqlDatabase db)
 
 int Project::create(QSqlDatabase db)
 {
-	QSqlQuery insertQuery(db);
-	insertQuery.prepare("INSERT INTO cv_project(path, name) VALUES(:path, :name)");
+	QSqlQuery insertQuery = Manager::self()->getSqlQuery("INSERT INTO cv_project(path, name) VALUES(:path, :name)", db);
 	insertQuery.bindValue(":path",       d->m_path);
 	insertQuery.bindValue(":name",       d->m_name);
 
@@ -164,7 +163,7 @@ void Project::update(QSqlDatabase db)
 {
 	Q_ASSERT_X(d->m_id >= 0, "Project::update", "The project must be initialized");
 
-	QSqlQuery updateQuery("UPDATE cv_project SET name=:name WHERE id=:id", db);
+	QSqlQuery updateQuery = Manager::self()->getSqlQuery("UPDATE cv_project SET name=:name WHERE id=:id", db);
 	updateQuery.bindValue(":name", QVariant::fromValue(d->m_name));
 	updateQuery.bindValue(":id",   QVariant::fromValue(d->m_id));
 
@@ -178,7 +177,7 @@ void Project::destroy(QSqlDatabase db)
 
 	destroyFiles(db);
 
-	QSqlQuery deleteQuery1("DELETE FROM cv_project WHERE id=:id", db);
+	QSqlQuery deleteQuery1 = Manager::self()->getSqlQuery("DELETE FROM cv_project WHERE id=:id", db);
 	deleteQuery1.bindValue(":id", QVariant::fromValue(d->m_id));
 	bool result = deleteQuery1.exec();
 	EXCEPT_ELSE(result, ProjectException, "Project::destroy", qPrintable(deleteQuery1.lastError().text()));
@@ -238,7 +237,7 @@ QList<int> Project::files(QSqlDatabase db) const
 	QList<int> result;
 	if (d->m_id == -1) return result;
 
-	QSqlQuery select("SELECT id FROM cv_file WHERE project_id=:project_id", db);
+	QSqlQuery select = Manager::self()->getSqlQuery("SELECT id FROM cv_file WHERE project_id=:project_id", db);
 	select.bindValue(":project_id", QVariant::fromValue(d->m_id));
 	bool r = select.exec();
 	Q_ASSERT_X(r, "Project::files", qPrintable(select.lastError().text()));

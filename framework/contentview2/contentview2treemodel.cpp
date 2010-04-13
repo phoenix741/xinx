@@ -256,18 +256,17 @@ void TreeModel::select()
 	if (m_container.isValid(m_db))
 	{
 		m_container.reload(m_db);
-		QSqlQuery query(m_db);
 
 		// Set the query used all snipet
-		query.prepare(
-		    "SELECT cv_node.name, cv_node.type, cv_node.icon, cv_node.display_name, "
-		    "cv_node.tips, cv_node.line, "
-		    "case when cv_node.id=:root_id1 then 0 else cv_node.id end as id, "
-		    "case when cv_link.parent_id=:root_id2 then 0 when cv_node.id=:root_id3 then -1 else cv_link.parent_id end as parent_id "
-		    "FROM cv_node left join cv_link on cv_link.child_id=cv_node.id "
-		    "WHERE cv_node.file_id=:file_id "
-		    "ORDER BY lower(cv_node.display_name)"
-		);
+		QSqlQuery query = Manager::self()->getSqlQuery(
+				"SELECT cv_node.name, cv_node.type, cv_node.icon, cv_node.display_name, "
+				"cv_node.tips, cv_node.line, "
+				"case when cv_node.id=:root_id1 then 0 else cv_node.id end as id, "
+				"case when cv_link.parent_id=:root_id2 then 0 when cv_node.id=:root_id3 then -1 else cv_link.parent_id end as parent_id "
+				"FROM cv_node left join cv_link on cv_link.child_id=cv_node.id "
+				"WHERE cv_node.file_id=:file_id "
+				"ORDER BY lower(cv_node.display_name)",
+				m_db);
 
 		query.bindValue(":root_id1", m_container.file(m_db).rootId());
 		query.bindValue(":root_id2", m_container.file(m_db).rootId());

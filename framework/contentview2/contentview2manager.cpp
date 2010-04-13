@@ -62,6 +62,22 @@ Manager::~Manager()
 	delete m_cache;
 }
 
+QSqlQuery Manager::getSqlQuery(const QString & query, QSqlDatabase db)
+{
+	QSqlDatabase dbUse = db.isValid() ? db :QSqlDatabase::addDatabase("QSQLITE", "CONTENTVIEW_SESSION");
+	if (! m_queries[dbUse.connectionName()].contains(query))
+	{
+		QSqlQuery q(query, dbUse);
+		m_queries[dbUse.connectionName()].insert(query, q);
+	}
+	return m_queries[dbUse.connectionName()].value(query);
+}
+
+void Manager::clearPool(const QSqlDatabase & db)
+{
+	m_queries.remove(db.connectionName());
+}
+
 void Manager::addInitializationParser(bool isGlobal, const QString & path, const QString & type, const QString & selection)
 {
 	ParserTuple t;
@@ -159,6 +175,7 @@ void Manager::closeDatabase()
 	m_cache->wait();
 	{
 		QSqlDatabase db = QSqlDatabase::database("CONTENTVIEW_SESSION", false);
+		clearPool(db);
 		if (db.isOpen())
 			db.close();
 	}
