@@ -18,3 +18,4 @@ sleep 10
 xvfb-run ./bin/testutils
 sleep 10
 xvfb-run ./bin/testcontentview2
+exit 0

@@ -85,7 +85,7 @@ void TestContentView2::initTestCase()
 	QDir::addSearchPath("plugins", pluginsDirectory);
 	QDir::addSearchPath("plugins", QDir(QApplication::applicationDirPath()).absoluteFilePath("../../plugins"));
 
-	QFile::remove("datas:session.db");
+	QFile::remove("datas:contentview.db");
 
 	// Init plugins
 	XinxPluginsLoader::self()->loadPlugins();

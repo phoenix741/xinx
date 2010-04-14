@@ -102,11 +102,11 @@ void Manager::openDatabase()
 {
 	// Create the db object
 	QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", "CONTENTVIEW_SESSION");
-	QFileInfo fileInfo("datas:session.db");
+	QFileInfo fileInfo("datas:contentview.db");
 	QString databaseFileName = fileInfo.absoluteFilePath();
 	if (! fileInfo.exists())
 	{
-		databaseFileName = QDir(QDir::searchPaths("datas").at(0)).absoluteFilePath("session.db");
+		databaseFileName = QDir(QDir::searchPaths("datas").at(0)).absoluteFilePath("contentview.db");
 	}
 
 	db.setDatabaseName(databaseFileName);

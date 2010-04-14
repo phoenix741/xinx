@@ -181,15 +181,28 @@ begin
 end;
 
 function CheckVersion(): Boolean;
-var VersionString : String;
+var VersionString            : String;
+	DialogReturn			 : Integer;
+	UninstallRegisteryMsg	 : String;
+	Registery				 : Boolean;
 begin
   Result := false;
+  Registery := false;
   if RegKeyExists( HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX' ) then
   begin
 	RegQueryStringValue( HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX', 'Version', VersionString );
+	Registery := true;
   end;
   if VersionString <> 'v0.9.0' then
   begin
 	result := true;
   end;
+  if IsUninstaller() and Registery and not Result then
+  begin
+  	UninstallRegisteryMsg := CustomMessage('UNINSTALL_REGISTERY');
+	DialogReturn := MsgBox( UninstallRegisteryMsg, mbConfirmation, MB_YESNO );
+	if DialogReturn = IDYES then
+		result := true;
+  end;
 end;
+
