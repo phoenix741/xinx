@@ -56,9 +56,9 @@ bool ParserProjectPropertyImpl::loadSettingsDialog()
 	const QString moduleAddress = m_project->readProperty("moduleInternetAdresse").toString();
 
 	if (QFileInfo(moduleAddress).isRelative())
-		m_urlLocationEdit->setText(QDir(m_project->projectPath()).absoluteFilePath(moduleAddress));
+		m_urlLocationEdit->lineEdit()->setText(QDir(m_project->projectPath()).absoluteFilePath(moduleAddress));
 	else
-		m_urlLocationEdit->setText(moduleAddress);
+		m_urlLocationEdit->lineEdit()->setText(moduleAddress);
 
 	m_dataStreamEdit->lineEdit()->setText(QDir(m_project->projectPath()).absoluteFilePath(m_project->readProperty("dataStreamLocation").toString()));
 	return true;
@@ -66,7 +66,7 @@ bool ParserProjectPropertyImpl::loadSettingsDialog()
 
 bool ParserProjectPropertyImpl::saveSettingsDialog()
 {
-	m_project->writeProperty("moduleInternetAdresse", QDir(m_project->projectPath()).relativeFilePath(m_urlLocationEdit->text()));
+	m_project->writeProperty("moduleInternetAdresse", QDir(m_project->projectPath()).relativeFilePath(m_urlLocationEdit->lineEdit()->text()));
 	m_project->writeProperty("dataStreamLocation", QDir(m_project->projectPath()).relativeFilePath(m_dataStreamEdit->lineEdit()->text()));
 	return true;
 }

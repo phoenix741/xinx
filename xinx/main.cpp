@@ -42,6 +42,7 @@
 #include <QThread>
 #include <QBitmap>
 #include <QStyleFactory>
+#include <QDesktopServices>
 
 // C++ header
 #include <csignal>
@@ -73,7 +74,7 @@ void backup_appli_signal(int signal)
 
 void initSearchPath(QApplication * app)
 {
-	const QString configDirectory    = QString(".config/%1/%2").arg(qApp->organizationDomain()).arg(qApp->applicationName());
+	const QString configDirectory    = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
 	const QString homeDirectory      = QDir::home().absoluteFilePath(configDirectory);
 	const QString datasDirectory     = QDir(homeDirectory).absoluteFilePath("datas");
 	const QString scriptDirectory    = QDir(homeDirectory).absoluteFilePath("scripts");
@@ -105,11 +106,11 @@ void initSearchPath(QApplication * app)
 #ifndef Q_WS_WIN
 	QDir::addSearchPath("plugins", QDir(QApplication::applicationDirPath()).absoluteFilePath("../share/xinx/plugins"));
 #endif /* Q_WS_WIN */
-	foreach (const QString & searchPath, QDir::searchPaths("plugins"))
+	foreach(const QString & searchPath, QDir::searchPaths("plugins"))
 	{
 		app->addLibraryPath(searchPath);
 	}
-		
+
 	// ... for tempalte ...
 	QDir::addSearchPath("templates", templatesDirectory);
 	QDir::addSearchPath("templates", QDir(QApplication::applicationDirPath()).absoluteFilePath("../templates"));
@@ -283,7 +284,7 @@ int main(int argc, char *argv[])
 				XINXConfig::self()->config().version = VERSION_STRING;
 			}
 
-			if (!((args.count() == 1) && (XINXConfig::self()->config().project.openTheLastProjectAtStart) && (! XINXConfig::self()->config().project.lastOpenedProject.isEmpty())))
+			if ((args.count() == 1) && !((XINXConfig::self()->config().project.openTheLastProjectAtStart) && (! XINXConfig::self()->config().project.lastOpenedProject.isEmpty())))
 			{
 				mainWin->openWelcomDialog();
 			}

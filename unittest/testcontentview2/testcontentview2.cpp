@@ -85,7 +85,7 @@ void TestContentView2::initTestCase()
 	QDir::addSearchPath("plugins", pluginsDirectory);
 	QDir::addSearchPath("plugins", QDir(QApplication::applicationDirPath()).absoluteFilePath("../../plugins"));
 
-	QFile::remove("datas:session.db");
+	QFile::remove("datas:contentview.db");
 
 	// Init plugins
 	XinxPluginsLoader::self()->loadPlugins();
@@ -232,10 +232,14 @@ void TestContentView2::testParser()
 		QList<int> childs = m_root.childs(db);
 		QCOMPARE(childs.size(), 3);
 
-		int childId = childs.at(1);
-		ContentView2::Node childNode(db, childId);
-		QCOMPARE(childNode.data(ContentView2::Node::NODE_NAME).toString(), QString("/"));
-		QCOMPARE(childNode.childs(db).size(), 0);
+		QStringList childsName;
+		foreach(int childId, childs)
+		{
+			ContentView2::Node childNode(db, childId);
+			childsName.append(childNode.data(ContentView2::Node::NODE_NAME).toString());
+		}
+
+		QVERIFY(childsName.contains("/"));
 
 	}
 	catch (ContentView2::ParserException e)

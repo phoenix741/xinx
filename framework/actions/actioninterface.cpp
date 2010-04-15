@@ -48,7 +48,8 @@ using namespace XinxAction;
  */
 
 //! Destroy the menu item
-MenuItem::~MenuItem() {
+MenuItem::~MenuItem()
+{
 }
 
 /* Separator */
@@ -64,7 +65,8 @@ MenuItem::~MenuItem() {
  */
 
 //! Destroy the separator
-Separator::~Separator() {
+Separator::~Separator()
+{
 }
 
 /* Action */

@@ -81,6 +81,7 @@ NewProjectWizard::NewProjectWizard(QWidget * widget, Qt::WFlags f) : QWizard(wid
 	button(QWizard::CommitButton)->setIcon(QPixmap(":/images/button_ok.png"));
 
 	setWindowTitle(tr("New Project Wizard"));
+	adjustSize();
 }
 
 XinxProject * NewProjectWizard::createProject()

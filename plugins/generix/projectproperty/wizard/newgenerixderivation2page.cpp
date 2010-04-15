@@ -36,6 +36,7 @@ void NewGenerixDerivation2Page::initializePage()
 {
 	ConfigurationVersion version = field("generix.version").value<ConfigurationVersion>();
 	ConfigurationVersion version150(6, 1, 50);
+	const bool isDirectoryAsPrefix = field("generix.directoryAsPrefix").toBool();
 	const bool isDerivation = field("generix.derivation").toBool();
 	const QString projectPath = field("generix.projectPath").toString();
 
@@ -47,14 +48,21 @@ void NewGenerixDerivation2Page::initializePage()
 		navPathItem->setCheckState(Qt::Checked);
 
 		QListWidgetItem * projectPathItem = new QListWidgetItem(m_directoryList);
-		projectPathItem->setText("langue/fra/nav/" + projectPath);
+		if (isDirectoryAsPrefix)
+		{
+			projectPathItem->setText(projectPath + "/langue/fra/nav");
+		}
+		else
+		{
+			projectPathItem->setText("langue/fra/nav/" + projectPath);
+		}
 		projectPathItem->setCheckState(Qt::Unchecked);
 	}
 	if (version >= version150)
 	{
 		const QString webModuleLocation = field("generix.webmodule").toString();
 		bool projectPathAdded = false;
-		foreach (const QString & p, QDir(QDir(webModuleLocation).absoluteFilePath("presentation")).entryList(QDir::Dirs | QDir::NoDotAndDotDot))
+		foreach(const QString & p, QDir(QDir(webModuleLocation).absoluteFilePath("presentation")).entryList(QDir::Dirs | QDir::NoDotAndDotDot))
 		{
 			QListWidgetItem * pitem = new QListWidgetItem(m_directoryList);
 			pitem->setText("presentation/" + p);

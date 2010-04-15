@@ -50,6 +50,7 @@ FileContentDockWidget::~FileContentDockWidget()
 void FileContentDockWidget::init()
 {
 	m_contentTreeView = new QTreeView(this);
+	m_contentTreeView->setHeaderHidden(true);
 
 	QVBoxLayout * vlayout = new QVBoxLayout();
 	vlayout->setSpacing(0);
@@ -88,8 +89,5 @@ void FileContentDockWidget::updateModel(QAbstractItemModel * model)
 void FileContentDockWidget::positionChanged(const QModelIndex & index)
 {
 	m_contentTreeView->setCurrentIndex(index);
-	/*QItemSelectionModel * selectionModel = m_contentTreeView->selectionModel();
-	QItemSelection selection( index, index );
-	selectionModel->select( selection, QItemSelectionModel::ToggleCurrent );*/
 }
 

@@ -37,6 +37,7 @@ public:
 	virtual bool pageIsVisible() const;
 	virtual bool saveSettingsDialog(XinxProject * project);
 	virtual bool isComplete() const;
+	void initializePage();
 };
 
 #endif // NEWGENERIXDERIVATION1PAGE_H

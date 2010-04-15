@@ -169,12 +169,11 @@ void ExceptionManager::notifyError(QString error, QString plainError, QtMsgType 
 {
 	if (t == QtFatalMsg)
 	{
-		// On restore les signaux pour �viter d'�tre perturb� pendant la phase de sauvegarde ...
+		// On restore les signaux pour eviter d'etre perturbe pendant la phase de sauvegarde ...
 		std::signal(SIGSEGV, SIG_DFL);
 		std::signal(SIGABRT, SIG_DFL);
 		std::signal(SIGINT, SIG_DFL);
 		std::signal(SIGTERM, SIG_DFL);
-		//((ExceptionManager*)0)->m_fatal = 1;
 		emit errorTriggered();
 	}
 
@@ -250,9 +249,14 @@ XinxException::XinxException(const QString & message) : m_message(message), m_lo
 }
 
 XinxException::XinxException(const QString & assertion, const QString & locationFile, int locationLine, const QString & locationMethod, const QString & message)
-	: m_message(message), m_assertion(assertion), m_locationFile(locationFile), m_locationMethod(locationMethod), m_locationLine(locationLine)
+		: m_message(message), m_assertion(assertion), m_locationFile(locationFile), m_locationMethod(locationMethod), m_locationLine(locationLine)
 {
 	m_stack = ExceptionManager::self()->stackTrace(); //[ (unsigned long)QThread::currentThreadId() ];
+}
+
+XinxException::~XinxException() throw()
+{
+
 }
 
 /*!
@@ -262,6 +266,15 @@ XinxException::XinxException(const QString & assertion, const QString & location
 const QString & XinxException::getMessage() const
 {
 	return m_message;
+}
+
+/*!
+ * Return the message in the stl form.
+ * \return pointer to the error message.
+ */
+const char* XinxException::what() const throw()
+{
+	return qPrintable(m_message);
 }
 
 /*!
@@ -303,9 +316,9 @@ const QStringList & XinxException::getStack() const
 
 ErrorManager::ErrorManager()
 {
-	m_timer.setSingleShot (true);
-	m_timer.setInterval (500);
-	connect (&m_timer, SIGNAL(timeout()), this, SIGNAL(changed()));
+	m_timer.setSingleShot(true);
+	m_timer.setInterval(500);
+	connect(&m_timer, SIGNAL(timeout()), this, SIGNAL(changed()));
 }
 
 ErrorManager::~ErrorManager()
@@ -353,7 +366,8 @@ void ErrorManager::addMessage(const QString & context, int line, MessageType t, 
 	const QString ctxt = m_contextTranslation.value(context).isEmpty() ? context : m_contextTranslation.value(context);
 
 	struct Error e = {line, t, message, parameters};
-	m_errors[ctxt].append(e);
+	if (!m_errors[ctxt].contains(e))
+		m_errors[ctxt].append(e);
 
 	if (QThread::currentThread() == qApp->thread())
 		m_timer.start();
@@ -366,7 +380,8 @@ void ErrorManager::addMessage(const QString & context, int line, MessageType t, 
 	const QString ctxt = m_contextTranslation.value(context).isEmpty() ? context : m_contextTranslation.value(context);
 
 	struct Error e = {line, t, exception.getMessage(), QStringList()};
-	m_errors[ctxt].append(e);
+	if (!m_errors[ctxt].contains(e))
+		m_errors[ctxt].append(e);
 
 	if (QThread::currentThread() == qApp->thread())
 		m_timer.start();

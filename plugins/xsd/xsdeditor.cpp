@@ -126,7 +126,7 @@ void XsdGraphicsElementItem::paint(QPainter * painter, const QStyleOptionGraphic
 
 XsdGraphicsSequenceItem::XsdGraphicsSequenceItem(QGraphicsItem * parent) : QGraphicsPolygonItem(parent), m_vspacing(10), m_hspacing(30)
 {
-//	setFlag( QGraphicsItem::ItemIsMovable, true );
+//  setFlag( QGraphicsItem::ItemIsMovable, true );
 	setBrush(Qt::white);
 	setPen(QPen(Qt::black));
 
@@ -205,7 +205,7 @@ void XsdGraphicsChoiceItem::paint(QPainter * painter, const QStyleOptionGraphics
 
 XsdGraphicsComplexeType::XsdGraphicsComplexeType(const QString & name) : QGraphicsRectItem(), m_name(name), m_spacing(5)
 {
-//	setFlag( QGraphicsItem::ItemIsMovable, true );
+//  setFlag( QGraphicsItem::ItemIsMovable, true );
 	QPen borderPen = QPen(Qt::black);
 	borderPen.setStyle(Qt::DashLine);
 	setPen(borderPen);
@@ -266,7 +266,7 @@ void XsdGraphicsComplexeType::paint(QPainter * painter, const QStyleOptionGraphi
 
 XsdEditor::XsdEditor(QWidget * parent) : AbstractEditor(parent)
 {
-//	m_scene = new QGraphicsScene(0, 0, 1024, 768, this);
+//  m_scene = new QGraphicsScene(0, 0, 1024, 768, this);
 	m_scene = new QGraphicsScene(this);
 	m_view  = new QGraphicsView(this);
 
@@ -279,7 +279,7 @@ XsdEditor::XsdEditor(QWidget * parent) : AbstractEditor(parent)
 	complex->setPos(500, 500);
 
 	XsdGraphicsSequenceItem * seq = new XsdGraphicsSequenceItem();
-//	m_scene->addItem( seq );
+//  m_scene->addItem( seq );
 	complex->addItem(seq);
 
 	XsdGraphicsElementItem * item = new XsdGraphicsElementItem("numero", "xs:string", 1, 1, seq);
@@ -298,7 +298,7 @@ XsdEditor::XsdEditor(QWidget * parent) : AbstractEditor(parent)
 	new XsdGraphicsAnnotationItem("Gestion de la version de eGX. Les valeurs des �lements sont mis � jour par l'outil de migration. Toute modification par l'utilisateur entrainera des disfonctionnements de cet outil.", complex);
 
 
-//	m_view->centerOn( 0, 0 );
+//  m_view->centerOn( 0, 0 );
 
 	borderLayout()->addWidget(m_view, BorderLayout::Center);
 }

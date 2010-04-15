@@ -24,9 +24,12 @@
 // Qt header
 #include <QObject>
 #include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QMutex>
 
 // Xiinx header
 #include <core/xinxcore.h>
+#include <core/exceptions.h>
 
 class XinxProject;
 
@@ -36,6 +39,13 @@ namespace ContentView2
 class Cache;
 class Parser;
 
+class LIBEXPORT DatabaseException : public XinxException
+{
+public:
+	DatabaseException(const QString & assertion, const QString & locationFile, int locationLine, const QString & locationMethod, QString message);
+private:
+};
+
 class LIBEXPORT Manager : public QObject
 {
 	Q_OBJECT
@@ -44,6 +54,9 @@ public:
 
 	void addInitializationParser(bool isGlobal, const QString & path, const QString & type, const QString & selection);
 	void initializeDatabase();
+
+	QSqlQuery getSqlQuery(const QString & query, QSqlDatabase db = QSqlDatabase());
+	void clearPool(const QSqlDatabase & db);
 
 	QSqlDatabase database() const;
 	Cache * cache();
@@ -61,9 +74,10 @@ private:
 		QString path, type, selection;
 	};
 
+	QHash<QString, QHash<QString, QSqlQuery> > m_queries;
 	QList<ParserTuple> m_persistentParser;
 	Cache * m_cache;
-	QSqlDatabase m_localBase;
+	QMutex m_executeStatementMutex;
 	static Manager * s_self;
 };
 

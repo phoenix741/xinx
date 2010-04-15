@@ -21,6 +21,7 @@
 #include "newgenerixderivation1page.h"
 #include <project/xinxproject.h>
 #include "projectproperty/generixproject.h"
+#include "configuration/configurationfile.h"
 
 /* NewGenerixDerivation1Page */
 
@@ -30,11 +31,20 @@ NewGenerixDerivation1Page::NewGenerixDerivation1Page()
 
 	registerField("generix.derivation*", m_derivationRadio);
 	registerField("generix.projectPath*", m_projectPathEdit);
+	registerField("generix.directoryAsPrefix", m_projectDirectoryAsPrefix);
 }
 
 QString NewGenerixDerivation1Page::pagePluginId() const
 {
 	return "GenerixDerivation1";
+}
+
+void NewGenerixDerivation1Page::initializePage()
+{
+	ConfigurationVersion version = field("generix.version").value<ConfigurationVersion>();
+	ConfigurationVersion version150(6, 1, 50);
+
+	m_projectDirectoryAsPrefix->setEnabled (version < version150);
 }
 
 bool NewGenerixDerivation1Page::pageIsVisible() const
@@ -50,5 +60,6 @@ bool NewGenerixDerivation1Page::isComplete() const
 
 bool NewGenerixDerivation1Page::saveSettingsDialog(XinxProject * project)
 {
+	Q_UNUSED(project);
 	return true;
 }

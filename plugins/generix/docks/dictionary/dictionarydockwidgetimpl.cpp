@@ -34,7 +34,7 @@ DictionaryDockWidgetImpl::DictionaryDockWidgetImpl(QWidget * parent) : QWidget(p
 	setWindowIcon(QIcon(":/generix/images/dictionary16.png"));
 
 
-	connect(ContentView2::Manager::self()->cache(), SIGNAL(cacheLoaded(ContentView2::File)), this, SLOT(update(ContentView2::File)));
+	connect(ContentView2::Manager::self()->cache(), SIGNAL(cacheLoaded(ContentView2::File)), this, SLOT(update(ContentView2::File)), Qt::BlockingQueuedConnection);
 }
 
 DictionaryDockWidgetImpl::~DictionaryDockWidgetImpl()

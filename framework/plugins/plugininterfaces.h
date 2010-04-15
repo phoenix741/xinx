@@ -131,7 +131,8 @@ public:
 /*!
  * A project initialisation step
  */
-class IProjectInitialisationStep {
+class IProjectInitialisationStep
+{
 public:
 	//! Destroy the step
 	virtual ~IProjectInitialisationStep() {}

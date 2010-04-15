@@ -29,6 +29,7 @@
 // Qt header
 #include <QApplication>
 #include <QSqlDatabase>
+#include <QPointer>
 
 namespace ContentView2
 {
@@ -70,12 +71,8 @@ public:
 
 	virtual QTextCodec * codec();
 protected:
+	void clearNodes(Node rootNode);
 	void attachNode(const Node & parent, Node & child);
-
-	void loadAttachedNode(const Node & rootNode);
-	void detachAttachedNode();
-	void removeAttachedNode(const Node & rootNode);
-	void removeAttachedNodes();
 
 	QString locationOf(const QString & relativeFilename);
 
@@ -84,7 +81,7 @@ private:
 	QList< QPair<uint,uint> > m_attachedNode;
 	unsigned long m_decaledLine;
 	QString m_filename;
-	QIODevice * m_device;
+	QPointer<QIODevice> m_device;
 	Node m_rootNode;
 	QStringList m_imports;
 	QSqlDatabase m_db;

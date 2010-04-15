@@ -55,7 +55,7 @@ bool UniqueApplication::notify(QObject * receiver, QEvent * event)
 	{
 		return QtSingleApplication::notify(receiver, event);
 	}
-	catch (XinxException e)
+	catch (const XinxException & e)
 	{
 		qFatal(qPrintable(e.getMessage()));
 		return true;

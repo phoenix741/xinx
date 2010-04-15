@@ -51,38 +51,38 @@ namespace ContentView2
  * \image html abstracteditor1.png
  */
 
- /*!
-  * \var TreeModel::list_name
-  * \brief Return the name of the node (for used with sourceModel())
-  */
- /*!
-  * \var TreeModel::list_type
-  * \brief Return the type of the node (for used with sourceModel())
-  */
- /*!
-  * \var TreeModel::list_icon
-  * \brief Return the icon link of the node (for used with sourceModel())
-  */
- /*!
-  * \var TreeModel::list_display_name
-  * \brief Return the displayed name of the node (for used with sourceModel())
-  */
- /*!
-  * \var TreeModel::list_tips
-  * \brief Return the tips of the node (for used with sourceModel())
-  */
- /*!
-  * \var TreeModel::list_line
-  * \brief Return the line of the node (for used with sourceModel())
-  */
- /*!
-  * \var TreeModel::list_id
-  * \brief Return the id of the node (for used with sourceModel())
-  */
- /*!
-  * \var TreeModel::list_parent_id
-  * \brief Return the parent id of the node (for used with sourceModel())
-  */
+/*!
+ * \var TreeModel::list_name
+ * \brief Return the name of the node (for used with sourceModel())
+ */
+/*!
+ * \var TreeModel::list_type
+ * \brief Return the type of the node (for used with sourceModel())
+ */
+/*!
+ * \var TreeModel::list_icon
+ * \brief Return the icon link of the node (for used with sourceModel())
+ */
+/*!
+ * \var TreeModel::list_display_name
+ * \brief Return the displayed name of the node (for used with sourceModel())
+ */
+/*!
+ * \var TreeModel::list_tips
+ * \brief Return the tips of the node (for used with sourceModel())
+ */
+/*!
+ * \var TreeModel::list_line
+ * \brief Return the line of the node (for used with sourceModel())
+ */
+/*!
+ * \var TreeModel::list_id
+ * \brief Return the id of the node (for used with sourceModel())
+ */
+/*!
+ * \var TreeModel::list_parent_id
+ * \brief Return the parent id of the node (for used with sourceModel())
+ */
 
 /*!
  * \brief The class construct a TreeModel.
@@ -246,8 +246,7 @@ QSqlQueryModel * TreeModel::sourceModel() const
  * If the file is valide (the file must be created in the database), this method
  * read all node for the file id.
  *
- * By merging with cv_link, this method search the parent_id. Datas are sorted by display_name
- * (case insensitive).
+ * Datas are sorted by display_name (case insensitive).
  *
  * The tree is created by calling TreeProxyItemModel::createMapping()
  */
@@ -256,18 +255,17 @@ void TreeModel::select()
 	if (m_container.isValid(m_db))
 	{
 		m_container.reload(m_db);
-		QSqlQuery query(m_db);
 
 		// Set the query used all snipet
-		query.prepare(
-		    "SELECT cv_node.name, cv_node.type, cv_node.icon, cv_node.display_name, "
-		    "cv_node.tips, cv_node.line, "
-		    "case when cv_node.id=:root_id1 then 0 else cv_node.id end as id, "
-		    "case when cv_link.parent_id=:root_id2 then 0 when cv_node.id=:root_id3 then -1 else cv_link.parent_id end as parent_id "
-		    "FROM cv_node left join cv_link on cv_link.child_id=cv_node.id "
-		    "WHERE cv_node.file_id=:file_id "
-		    "ORDER BY lower(cv_node.display_name)"
-		);
+		QSqlQuery query(
+				"SELECT cv_node.name, cv_node.type, cv_node.icon, cv_node.display_name, "
+				"cv_node.tips, cv_node.line, "
+				"case when cv_node.id=:root_id1 then 0 else cv_node.id end as id, "
+				"case when cv_node.parent_id=:root_id2 then 0 when cv_node.id=:root_id3 then -1 else cv_node.parent_id end as parent_id "
+				"FROM cv_node "
+				"WHERE cv_node.file_id=:file_id "
+				"ORDER BY lower(cv_node.display_name)",
+				m_db);
 
 		query.bindValue(":root_id1", m_container.file(m_db).rootId());
 		query.bindValue(":root_id2", m_container.file(m_db).rootId());
@@ -298,7 +296,7 @@ int TreeModel::getUniqueIdentifier(const QModelIndex & sourceIndex) const
 /*!
  * \brief This method return the parent id of the ContentView2::Node
  *
- * The id of the parent node can be finded in the cv_link table.
+ * The id of the parent node can be finded in the cv_node table.
  */
 int TreeModel::getParentUniqueIdentifier(const QModelIndex & sourceIndex) const
 {

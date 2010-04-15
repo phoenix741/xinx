@@ -200,12 +200,13 @@ XsltParser * GenerixPlugin::createXsltParser()
 
 QList<IProjectInitialisationStep*> GenerixPlugin::loadProjectStep(XinxProject * project)
 {
-	return QList<IProjectInitialisationStep*>() 
-			<< new GenerixProjectInitialisationStep1(project)
-			<< new GenerixProjectInitialisationStep2(project);
+	return QList<IProjectInitialisationStep*>()
+	       << new GenerixProjectInitialisationStep1(project)
+	       << new GenerixProjectInitialisationStep2(project);
 }
 
-QList<IProjectInitialisationStep*> GenerixPlugin::closeProjectStep(XinxProject * project) {
+QList<IProjectInitialisationStep*> GenerixPlugin::closeProjectStep(XinxProject * project)
+{
 	Q_UNUSED(project);
 	return QList<IProjectInitialisationStep*>() << new GenerixProjectDeInitialisationStep();
 }

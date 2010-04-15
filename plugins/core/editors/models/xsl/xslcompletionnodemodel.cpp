@@ -68,8 +68,8 @@ QStringList XslCompletionNodeModel::params(QString templateName) const
 
 	QString paramsQueryStr
 	= "SELECT child.name "
-	  "FROM cv_file, cv_node, cv_node child, cv_link " + ContentView2::CompletionModel::whereClause() + " AND cv_node.id = cv_link.parent_id "
-	  "AND child.id = cv_link.child_id AND cv_node.type=:type AND child.type=:param AND cv_node.name=:name";
+	  "FROM cv_file, cv_node, cv_node child " + ContentView2::CompletionModel::whereClause() + " AND cv_node.id = child.parent_id "
+	  "AND cv_node.type=:type AND child.type=:param AND cv_node.name=:name";
 
 	QSqlQuery paramsQuery(paramsQueryStr, database());
 	paramsQuery.bindValue(":project_id", file().file(database()).projectId());
@@ -196,25 +196,16 @@ QString XslCompletionNodeModel::whereClause() const
 		clause += " OR ( cv_node.type='XmlAttribute' ";
 		if (! m_hiddenAttributeList.isEmpty())
 			clause += QString(" and cv_node.name not in ( '%1' ) ").arg(m_hiddenAttributeList.join("', '"));
-		clause += QString(" AND EXISTS ( "
-		                  "	SELECT 1 "
-		                  "	FROM cv_link "
-		                  "	WHERE cv_link.parent_id=%1 "
-		                  "	  AND cv_link.child_id=cv_node.id) ").arg(m_baliseNode.nodeId());
+		clause += QString(" AND cv_node.parent_id=%1 ").arg(m_baliseNode.nodeId());
 		clause += ")";
 	}
 	else if (m_completionMode == COMPLETION_VALUE_MODE)
 	{
-		clause += QString(" OR ( cv_node.type = 'XmlValue' AND EXISTS ( "
-		                  "	SELECT 1 "
-		                  "	FROM cv_link linkAttribute "
-		                  "	WHERE linkAttribute.parent_id=%1 "
-		                  "	  AND linkAttribute.child_id=cv_node.id)) ").arg(m_attributeNode.nodeId());
+		clause += QString(" OR ( cv_node.type = 'XmlValue' AND cv_node.parent_id=%1 ) ").arg(m_attributeNode.nodeId());
 		clause += QString(" OR ( cv_node.type in ('XslParam', 'XslVariable') AND EXISTS ( "
 		                  "	SELECT 1 "
-		                  "	FROM cv_link linkParent, cv_node nodeParent LEFT JOIN cv_node_property ON nodeParent.id=cv_node_property.node_id AND cv_node_property.ord=%1"
-		                  "	WHERE linkParent.parent_id=nodeParent.id "
-		                  "	  AND linkParent.child_id=cv_node.id"
+						  "	FROM cv_node nodeParent LEFT JOIN cv_node_property ON nodeParent.id=cv_node_property.node_id AND cv_node_property.ord=%1"
+						  "	WHERE cv_node.parent_id=nodeParent.id "
 		                  "	  AND (nodeParent.type <> 'XslTemplate' OR ( nodeParent.name='%2' AND cv_node_property.value='%3' )))) ")
 		          .arg(ContentView2::Node::NODE_USER_VALUE).arg(m_currentTemplateName).arg(m_currentTemplateMode) ;
 		clause += QString(" OR ( cv_node.type = 'XslTemplate' ) ");

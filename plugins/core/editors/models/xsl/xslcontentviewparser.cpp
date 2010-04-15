@@ -58,7 +58,7 @@ void XslContentView2Parser::load()
 		rootNode().update(database());
 	}
 
-	loadAttachedNode(rootNode());
+	clearNodes(rootNode());
 
 	while (! atEnd())
 	{
@@ -78,11 +78,7 @@ void XslContentView2Parser::load()
 		}
 	}
 
-	if (!error())    // Else completion can be more difficulte
-	{
-		detachAttachedNode();
-	}
-	else
+	if (error())    // Else completion can be more difficulte
 	{
 		throw ContentView2::ParserException(errorString(), lineNumber(), columnNumber());
 	}
@@ -266,7 +262,6 @@ void XslContentView2Parser::readTemplate()
 
 		if (! t.isValid()) continue;
 
-		loadAttachedNode(t);
 		/* Chargement des scripts */
 		foreach(struct_script s, scripts)
 		{

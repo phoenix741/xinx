@@ -20,6 +20,7 @@
 // Xinx header
 #include "contentview2node.h"
 #include "contentview2file.h"
+#include "contentview2manager.h"
 
 // Qt header
 #include <QSqlQuery>
@@ -33,12 +34,16 @@ namespace ContentView2
 
 /* NodeException */
 /*!
+ * \ingroup ContentView2
  * \class NodeException
+ * \since 0.9.0.0
+ *
  * \brief Exception throw when a SQL error occur
  */
 
 /*!
- * Create the exception with a message and a line.
+ * \brief Create the exception with a message and a line.
+ *
  * \param assertion The condition who failed
  * \param locationFile The file wich failed (this file)
  * \param locationLine The line where the exception is throw
@@ -46,7 +51,7 @@ namespace ContentView2
  * \param message Error of the exception.
  */
 NodeException::NodeException(const QString & assertion, const QString & locationFile, int locationLine, const QString & locationMethod, QString message)
-	: XinxException(assertion, locationFile, locationLine, locationMethod, message)
+		: DatabaseException(assertion, locationFile, locationLine, locationMethod, message)
 {
 }
 
@@ -57,8 +62,10 @@ class PrivateNode : public QSharedData
 public:
 	int m_line;
 	int m_fileId;
+	int m_parentId;
 	QHash<int,QVariant> m_datas;
 
+	uint m_hash;
 	long m_id;
 	bool m_isLoaded;
 	QSqlDatabase m_db;
@@ -70,7 +77,7 @@ public:
 	~PrivateNode();
 };
 
-PrivateNode::PrivateNode() : m_line(-1), m_id(-1), m_isLoaded(false)
+PrivateNode::PrivateNode() : m_line(-1), m_fileId(-1), m_parentId(-1), m_id(-1), m_isLoaded(false)
 {
 }
 
@@ -87,7 +94,7 @@ void PrivateNode::load()
 {
 	if ((m_id == -1) || (m_isLoaded)) return;
 
-	QSqlQuery selectQuery("SELECT name, type, icon, display_name, tips, completion_value, line, file_id, hash, "
+	QSqlQuery selectQuery = Manager::self()->getSqlQuery("SELECT parent_id, name, type, icon, display_name, tips, completion_value, line, file_id, hash, "
 	                      "property1, property2, property3, property4, property5, property6, "
 	                      "property7, property8, property9, property10 "
 	                      "FROM cv_node WHERE id=:id", m_db);
@@ -98,24 +105,27 @@ void PrivateNode::load()
 
 	m_datas.clear();
 
-	m_datas.insert(Node::NODE_NAME, selectQuery.value(0).toString());
-	m_datas.insert(Node::NODE_TYPE, selectQuery.value(1).toString());
-	m_datas.insert(Node::NODE_ICON, selectQuery.value(2).toString());
-	m_datas.insert(Node::NODE_DISPLAY_NAME, selectQuery.value(3).toString());
-	m_datas.insert(Node::NODE_DISPLAY_TIPS, selectQuery.value(4).toString());
-	m_datas.insert(Node::NODE_COMPLETE_FORM, selectQuery.value(5).toString());
-	m_line = selectQuery.value(6).toInt();
+	m_parentId = selectQuery.value(0).toInt();
+	m_datas.insert(Node::NODE_NAME, selectQuery.value(1).toString());
+	m_datas.insert(Node::NODE_TYPE, selectQuery.value(2).toString());
+	m_datas.insert(Node::NODE_ICON, selectQuery.value(3).toString());
+	m_datas.insert(Node::NODE_DISPLAY_NAME, selectQuery.value(4).toString());
+	m_datas.insert(Node::NODE_DISPLAY_TIPS, selectQuery.value(5).toString());
+	m_datas.insert(Node::NODE_COMPLETE_FORM, selectQuery.value(6).toString());
+	m_line   = selectQuery.value(7).toInt();
+	m_fileId = selectQuery.value(8).toInt();
+	m_hash   = selectQuery.value(9).toUInt();
 
 	for (int i = 0; i < 10 ; i++)
 	{
-		QVariant value = selectQuery.value(9 + i);
+		QVariant value = selectQuery.value(10 + i);
 		if (value.isValid())
 		{
 			m_datas.insert(Node::NODE_USER_VALUE + i, value.toString());
 		}
 	}
 
-	QSqlQuery selectPropertiesQuery("SELECT ord, value FROM cv_node_property WHERE node_id=:node_id", m_db);
+	QSqlQuery selectPropertiesQuery = Manager::self()->getSqlQuery("SELECT ord, value FROM cv_node_property WHERE node_id=:node_id", m_db);
 	selectPropertiesQuery.bindValue(":node_id", QVariant::fromValue(m_id));
 	result = selectPropertiesQuery.exec();
 	EXCEPT_ELSE(result, NodeException, "PrivateNode::load", qPrintable(selectPropertiesQuery.lastError().text()));
@@ -125,7 +135,9 @@ void PrivateNode::load()
 		m_datas.insert(selectPropertiesQuery.value(0).toInt(), selectPropertiesQuery.value(1).toString());
 	}
 
-	m_fileId   = selectQuery.value(7).toInt();
+	selectQuery.finish();
+	selectPropertiesQuery.finish();
+
 	m_isLoaded = true;
 	m_db       = QSqlDatabase();
 }
@@ -133,17 +145,25 @@ void PrivateNode::load()
 /* Node */
 
 /*!
+ * \ingroup ContentView2
  * \class Node
+ * \since 0.9.0.0
+ *
  * \brief This class represent a node element for the content view
  *
  * This class is a node element for the content view. It can be added to another
  * content view element, and detached.
  *
- * This class is based on SQL
+ * This class is based on SQL on the table cv_node.
+ *
+ * This class limit the number of load. The method load is really launch when a set or
+ * get method is made.
  */
 
 /*!
  * \enum Node::RoleIndex
+ * \brief List of role that can be used with method data() and setData()
+ *
  * To simplify, the content view node will be not subclassed. Else data will
  * be stored in this structure as role. Other value (as mode, ...) can be stored
  * as user value, if needed.
@@ -182,7 +202,7 @@ void PrivateNode::load()
  */
 
 /*!
- * Create an empty content view node
+ * \brief Create an empty content view node
  */
 Node::Node()
 {
@@ -228,27 +248,22 @@ void Node::reload(QSqlDatabase db)
 //! Create the node with the content of the object
 uint Node::create(QSqlDatabase db, int forcedId)
 {
-	QSqlQuery selectQuery("SELECT 1 FROM cv_file WHERE id=:file_id", db);
-	selectQuery.bindValue(":file_id", d->m_fileId);
-
-	bool result = selectQuery.exec();
-	EXCEPT_ELSE(result, NodeException, "Node::create", qPrintable(selectQuery.lastError().text()));
-
-	EXCEPT_ELSE(selectQuery.first(), NodeException, "Node::create", tr("Can't find the file node %1").arg(d->m_datas.value(Node::NODE_NAME).toString()));
-
-	QSqlQuery insertQuery(db);
+	QSqlQuery insertQuery;
 	if (forcedId == -1)
 	{
-		insertQuery.prepare("INSERT INTO cv_node(name, type, icon, display_name, tips, completion_value, line, file_id, hash, property1, property2, property3, property4, property5, property6, property7, property8, property9, property10) "
-		                    "VALUES(:name, :type, :icon, :display_name, :tips, :completion_value, :line, :file_id, :hash, :property1, :property2, :property3, :property4, :property5, :property6, :property7, :property8, :property9, :property10)");
+		insertQuery = Manager::self()->getSqlQuery(
+							"INSERT INTO cv_node(parent_id, name, type, icon, display_name, tips, completion_value, line, file_id, hash, property1, property2, property3, property4, property5, property6, property7, property8, property9, property10) "
+							"VALUES(:parent_id, :name, :type, :icon, :display_name, :tips, :completion_value, :line, :file_id, :hash, :property1, :property2, :property3, :property4, :property5, :property6, :property7, :property8, :property9, :property10)", db);
 	}
 	else
 	{
-		insertQuery.prepare("INSERT INTO cv_node(id, name, type, icon, display_name, tips, completion_value, line, file_id, hash, property1, property2, property3, property4, property5, property6, property7, property8, property9, property10) "
-		                    "VALUES(:forced_id, :name, :type, :icon, :display_name, :tips, :completion_value, :line, :file_id, :hash, :property1, :property2, :property3, :property4, :property5, :property6, :property7, :property8, :property9, :property10)");
+		insertQuery = Manager::self()->getSqlQuery(
+							"INSERT INTO cv_node(id, parent_id, name, type, icon, display_name, tips, completion_value, line, file_id, hash, property1, property2, property3, property4, property5, property6, property7, property8, property9, property10) "
+							"VALUES(:forced_id, :parent_id, :name, :type, :icon, :display_name, :tips, :completion_value, :line, :file_id, :hash, :property1, :property2, :property3, :property4, :property5, :property6, :property7, :property8, :property9, :property10)", db);
 		insertQuery.bindValue(":forced_id", forcedId);
 	}
 
+	insertQuery.bindValue(":parent_id", d->m_parentId);
 	insertQuery.bindValue(":name", d->m_datas.value(Node::NODE_NAME));
 	insertQuery.bindValue(":type", d->m_datas.value(Node::NODE_TYPE));
 	insertQuery.bindValue(":icon", d->m_datas.value(Node::NODE_ICON));
@@ -269,19 +284,24 @@ uint Node::create(QSqlDatabase db, int forcedId)
 	insertQuery.bindValue(":property9", d->m_datas.value(Node::NODE_USER_VALUE + 8).toString());
 	insertQuery.bindValue(":property10", d->m_datas.value(Node::NODE_USER_VALUE + 9).toString());
 
-	result = insertQuery.exec();
+	bool result = insertQuery.exec();
 	EXCEPT_ELSE(result, NodeException, "Node::create", qPrintable(insertQuery.lastError().text()));
 
 	uint newId = insertQuery.lastInsertId().toInt();
 
-	QSqlQuery insertPropertyQuery("INSERT INTO cv_node_property(node_id, ord, value) "
-	                              "VALUES(:node_id, :ord, :value)", db);
+	QSqlQuery insertPropertyQuery;
 
-	insertPropertyQuery.bindValue(":node_id", newId);
 	foreach(const int ord, d->m_datas.keys())
 	{
 		if (ord < Node::NODE_USER_VALUE + 10) continue;
+		if(insertPropertyQuery.lastQuery().isEmpty())
+		{
+			insertPropertyQuery = Manager::self()->getSqlQuery(
+				"INSERT INTO cv_node_property(node_id, ord, value) "
+				"VALUES(:node_id, :ord, :value)", db);
+		}
 
+		insertPropertyQuery.bindValue(":node_id", newId);
 		insertPropertyQuery.bindValue(":ord", ord);
 		insertPropertyQuery.bindValue(":value", d->m_datas.value(ord));
 
@@ -300,37 +320,33 @@ void Node::update(QSqlDatabase db)
 	Q_ASSERT_X(d->m_id >= 0, "Node::update", "The node must be initialized");
 	d->load();
 
-	QSqlQuery select("SELECT hash FROM cv_node WHERE id=:id", db);
-	select.bindValue(":id", QVariant::fromValue(d->m_id));
-	bool result = select.exec();
-	EXCEPT_ELSE(result, NodeException, "Node::update", qPrintable(select.lastError().text()));
-	EXCEPT_ELSE(select.next(), NodeException, "Node::update", QString("Can't find the node %1 (%2)").arg(d->m_id).arg(d->m_datas.value(Node::NODE_NAME).toString()));
-
-	uint hash    = select.value(0).toUInt();
 	uint newHash = qHash(*this);
+	if (d->m_hash == newHash) return;
+	d->m_hash = newHash;
 
-	if (hash == newHash) return;
-
-	QSqlQuery updateQuery("UPDATE cv_node "
-	                      "SET	name=:name , "
-	                      "		type=:type , "
-	                      "		icon=:icon , "
-	                      "		display_name=:display_name , "
-	                      "		tips=:tips , "
-	                      "		completion_value=:completion_value , "
-	                      "		line=:line , "
-	                      "		hash=:hash , "
-	                      "		property1=:property1, "
-	                      "		property2=:property2, "
-	                      "		property3=:property3, "
-	                      "		property4=:property4, "
-	                      "		property5=:property5, "
-	                      "		property6=:property6, "
-	                      "		property7=:property7, "
-	                      "		property8=:property8, "
-	                      "		property9=:property9, "
-	                      "		property10=:property10 "
-	                      "WHERE id=:id", db);
+	QSqlQuery updateQuery = Manager::self()->getSqlQuery(
+							"UPDATE cv_node "
+							"SET	parent_id=:parent_id , "
+							"		name=:name , "
+							"		type=:type , "
+							"		icon=:icon , "
+							"		display_name=:display_name , "
+							"		tips=:tips , "
+							"		completion_value=:completion_value , "
+							"		line=:line , "
+							"		hash=:hash , "
+							"		property1=:property1, "
+							"		property2=:property2, "
+							"		property3=:property3, "
+							"		property4=:property4, "
+							"		property5=:property5, "
+							"		property6=:property6, "
+							"		property7=:property7, "
+							"		property8=:property8, "
+							"		property9=:property9, "
+							"		property10=:property10 "
+							"WHERE id=:id", db);
+	updateQuery.bindValue(":parent_id", d->m_parentId);
 	updateQuery.bindValue(":name", d->m_datas.value(Node::NODE_NAME));
 	updateQuery.bindValue(":type", d->m_datas.value(Node::NODE_TYPE));
 	updateQuery.bindValue(":icon", d->m_datas.value(Node::NODE_ICON));
@@ -351,15 +367,15 @@ void Node::update(QSqlDatabase db)
 	updateQuery.bindValue(":property9", d->m_datas.value(Node::NODE_USER_VALUE + 8).toString());
 	updateQuery.bindValue(":property10", d->m_datas.value(Node::NODE_USER_VALUE + 9).toString());
 
-	result = updateQuery.exec();
+	bool result = updateQuery.exec();
 	EXCEPT_ELSE(result, NodeException, "Node::update", qPrintable(updateQuery.lastError().text()));
 
-	QSqlQuery deleteQuery("DELETE FROM cv_node_property WHERE node_id=:id", db);
+	QSqlQuery deleteQuery = Manager::self()->getSqlQuery("DELETE FROM cv_node_property WHERE node_id=:id", db);
 	deleteQuery.bindValue(":id", QVariant::fromValue(d->m_id));
 	result = deleteQuery.exec();
 	EXCEPT_ELSE(result, NodeException, "Node::update", qPrintable(deleteQuery.lastError().text()));
 
-	QSqlQuery insertPropertyQuery("INSERT INTO cv_node_property(node_id, ord, value) "
+	QSqlQuery insertPropertyQuery = Manager::self()->getSqlQuery("INSERT INTO cv_node_property(node_id, ord, value) "
 	                              "VALUES(:node_id, :ord, :value)", db);
 
 	insertPropertyQuery.bindValue(":node_id", QVariant::fromValue(d->m_id));
@@ -373,6 +389,7 @@ void Node::update(QSqlDatabase db)
 		result = insertPropertyQuery.exec();
 		EXCEPT_ELSE(result, NodeException, "Node::update", qPrintable(insertPropertyQuery.lastError().text()));
 	}
+
 }
 
 /*!
@@ -386,21 +403,15 @@ void Node::destroy(QSqlDatabase db)
 	Q_ASSERT_X(d->m_id >= 0, "Node::destroy", "The node must be initialized");
 	destroyChilds(db);
 
-	QSqlQuery deleteQuery1("DELETE FROM cv_node WHERE id=:id", db);
+	QSqlQuery deleteQuery1 = Manager::self()->getSqlQuery("DELETE FROM cv_node WHERE id=:id", db);
 	deleteQuery1.bindValue(":id", QVariant::fromValue(d->m_id));
 	bool result = deleteQuery1.exec();
 	EXCEPT_ELSE(result, NodeException, "Node::destroy", qPrintable(deleteQuery1.lastError().text()));
 
-	QSqlQuery deleteQuery2("DELETE FROM cv_node_property WHERE node_id=:id", db);
+	QSqlQuery deleteQuery2 = Manager::self()->getSqlQuery("DELETE FROM cv_node_property WHERE node_id=:id", db);
 	deleteQuery2.bindValue(":id", QVariant::fromValue(d->m_id));
 	result = deleteQuery2.exec();
 	EXCEPT_ELSE(result, NodeException, "Node::destroy", qPrintable(deleteQuery2.lastError().text()));
-
-	QSqlQuery deleteQuery3("DELETE FROM cv_link WHERE parent_id=:id1 or child_id=:id2", db);
-	deleteQuery3.bindValue(":id1", QVariant::fromValue(d->m_id));
-	deleteQuery3.bindValue(":id2", QVariant::fromValue(d->m_id));
-	result = deleteQuery3.exec();
-	EXCEPT_ELSE(result, NodeException, "Node::destroy", qPrintable(deleteQuery3.lastError().text()));
 
 	d->m_id = -1;
 }
@@ -412,46 +423,28 @@ uint Node::nodeId() const
 }
 
 /*!
- * Attach this node and all it's child to the parent node below.
- * \param db The database to use to attache the node to its parent.
+ * \brief Attach this node and all it's child to the parent node below. A node can have only one parent at a time.
  * \param parentId The parent node id where this node is attached.
  * \see detach()
  */
-bool Node::attach(QSqlDatabase db, uint parentId)
+bool Node::attach(uint parentId)
 {
-	Q_ASSERT_X(d->m_id >= 0, "Node::attach", "The node must be initialized");
+	Q_ASSERT_X(d->m_parentId == -1, "Node::attach", "Node must be detached first");
 
-	QSqlQuery checkId("SELECT 1 FROM cv_link WHERE parent_id=:parent AND child_id=:child", db);
-	checkId.bindValue(":parent", QVariant::fromValue(parentId));
-	checkId.bindValue(":child", QVariant::fromValue(d->m_id));
-	bool result = checkId.exec();
-	EXCEPT_ELSE(result, NodeException, "Node::attach", qPrintable(checkId.lastError().text()));
-
-	if (checkId.next())
-		return false;
-
-	QSqlQuery insert("INSERT INTO cv_link(parent_id, child_id) VALUES( :parent, :child )", db);
-	insert.bindValue(":parent", QVariant::fromValue(parentId));
-	insert.bindValue(":child", QVariant::fromValue(d->m_id));
-	result = insert.exec();
-	EXCEPT_ELSE(result, NodeException, "Node::attach", qPrintable(insert.lastError().text()));
-
+	d->load();
+	d->m_parentId = parentId;
 	return true;
 }
 
 /*!
- * Detach the node from the given parent id
+ * \brief Detach the node from the given parent id
  * \see attach()
  */
-void Node::detach(QSqlDatabase db, uint parentId)
+void Node::detach()
 {
-	Q_ASSERT_X(d->m_id >= 0, "Node::detach", "The node must be initialized");
-
-	QSqlQuery remove("DELETE FROM cv_link WHERE parent_id=:parent AND child_id=:child", db);
-	remove.bindValue(":parent", QVariant::fromValue(parentId));
-	remove.bindValue(":child", QVariant::fromValue(d->m_id));
-	bool result = remove.exec();
-	EXCEPT_ELSE(result, NodeException, "Node::detach", qPrintable(remove.lastError().text()));
+	Q_ASSERT_X(d->m_parentId, "Node::detach", "The node must be attached first");
+	d->load();
+	d->m_parentId = -1;
 }
 
 //! Remove all childs of the node.
@@ -464,6 +457,26 @@ void Node::destroyChilds(QSqlDatabase db)
 		Node child(db, id);
 		child.destroy(db);
 	}
+}
+
+/*!
+ * \brief Remove all childs of the him (considered as root node)
+ *
+ * This method is provide for convinience and optimisation and delete
+ * all node from the current files but not himself (the root node)
+ */
+void Node::destroyChildsAsRoot(QSqlDatabase db)
+{
+	Q_ASSERT_X(d->m_id >= 0, "Node::destroyChildsAsRoot", "The node must be initialized");
+
+	d->load();
+	Q_ASSERT_X(d->m_fileId >= 0, "Node::destroyChildsAsRoot", "The node must be attached to a file");
+
+	QSqlQuery deleteQuery = Manager::self()->getSqlQuery("DELETE FROM cv_node WHERE id <> :id AND file_id=:file_id", db);
+	deleteQuery.bindValue(":id", QVariant::fromValue(d->m_id));
+	deleteQuery.bindValue(":file_id", QVariant::fromValue(d->m_fileId));
+	bool result = deleteQuery.exec();
+	EXCEPT_ELSE(result, NodeException, "Node::destroyChildsAsRoot", qPrintable(deleteQuery.lastError().text()));
 }
 
 //! Return the register line for the node
@@ -480,9 +493,10 @@ void Node::setLine(int value)
 	d->m_line = value;
 }
 
+//! Return the filename of the File of the current node
 QString Node::filename(QSqlDatabase db) const
 {
-	QSqlQuery selectQuery("SELECT path FROM cv_file WHERE id=:file_id", db);
+	QSqlQuery selectQuery = Manager::self()->getSqlQuery("SELECT path FROM cv_file WHERE id=:file_id", db);
 	selectQuery.bindValue(":file_id", d->m_fileId);
 
 	bool result = selectQuery.exec();
@@ -490,29 +504,40 @@ QString Node::filename(QSqlDatabase db) const
 
 	if (selectQuery.first())
 	{
-		return selectQuery.value(0).toString();
+		const QString path = selectQuery.value(0).toString();
+		selectQuery.finish();
+		return path;
 	}
 	else
 	{
+		selectQuery.finish();
 		return QString();
 	}
 }
 
-//! Return the current file name of the node. If not set, this is the current file name.
+//! Return the file id of the File of the current node.
 int Node::fileId() const
 {
 	d->load();
 	return d->m_fileId;
 }
 
-//! Set the file name of the node with \e value.
+/*!
+ * \brief Set the file ID of the File of the node with \e value.
+ *
+ * The file ID can't be modified after the file creation or if the file is loaded.
+ */
 void Node::setFileId(int value)
 {
 	Q_ASSERT_X(d->m_id == -1, "Node::setFileId", "The filename can't be modified after node creation");
 	d->m_fileId = value;
 }
 
-//! Set the file to use with the node.
+/*!
+ * \brief Set the file to use with the node.
+ *
+ * The File can't be modified after the file creation or if the file is loaded.
+ */
 void Node::setFile(const File & file)
 {
 	Q_ASSERT_X(d->m_id == -1, "Node::setFile", "The filename can't be modified after node creation");
@@ -551,7 +576,7 @@ void Node::setData(const QVariant & value, int index)
 }
 
 /*!
- * List of id of the childs node of this node.
+ * \brief List of id of the child's node of this node.
  * \see attach(), detach()
  */
 QList<int> Node::childs(QSqlDatabase db) const
@@ -559,7 +584,7 @@ QList<int> Node::childs(QSqlDatabase db) const
 	QList<int> result;
 	if (d->m_id == -1) return result;
 
-	QSqlQuery select("SELECT child_id FROM cv_link WHERE parent_id=:parent_id", db);
+	QSqlQuery select = Manager::self()->getSqlQuery("SELECT id FROM cv_node WHERE parent_id=:parent_id", db);
 	select.bindValue(":parent_id", QVariant::fromValue(d->m_id));
 	EXCEPT_ELSE(select.exec(), NodeException, "Node::childs", qPrintable(select.lastError().text()));
 
@@ -568,29 +593,37 @@ QList<int> Node::childs(QSqlDatabase db) const
 		result += select.value(0).toInt();
 	}
 
+	select.finish();
+
 	return result;
 }
 
 /*!
- * List of id of the childs node of this node.
+ * \brief Return the parent of the node.
+ *
+ * A node can have only one parent.
  * \see attach(), detach()
  */
-QList<int> Node::parents(QSqlDatabase db) const
+int Node::parent(QSqlDatabase db) const
 {
-	QList<int> result;
-	if (d->m_id == -1) return result;
+	if (d->m_id == -1) return d->m_parentId;
 
-	QSqlQuery select("SELECT parent_id FROM cv_link WHERE child_id=:child_id", db);
+	QSqlQuery select = Manager::self()->getSqlQuery("SELECT parent_id FROM cv_node WHERE id=:child_id", db);
 	select.bindValue(":child_id", QVariant::fromValue(d->m_id));
 	bool r = select.exec();
-	Q_ASSERT_X(r, "Node::parents", qPrintable(select.lastError().text()));
+	Q_ASSERT_X(r, "Node::parent", qPrintable(select.lastError().text()));
 
-	while (select.next())
+	if (select.first())
 	{
-		result += select.value(0).toInt();
+		int parent_id = select.value(0).toInt();
+		select.finish();
+		return parent_id;
 	}
-
-	return result;
+	else
+	{
+		select.finish();
+		return d->m_id;
+	}
 }
 
 //! Make a hash of the node and search the node having the same hash.
@@ -598,18 +631,21 @@ int Node::indexOfChild(QSqlDatabase db, const Node & node) const
 {
 	if (d->m_id == -1) return -1;
 
-	QSqlQuery select("SELECT child_id FROM cv_link, cv_node WHERE cv_link.parent_id=:parent_id and cv_node.id=cv_link.child_id and cv_node.hash=:hash", db);
+	QSqlQuery select = Manager::self()->getSqlQuery("SELECT id FROM cv_node WHERE parent_id=:parent_id and hash=:hash", db);
 	select.bindValue(":parent_id", QVariant::fromValue(d->m_id));
 	select.bindValue(":hash", QVariant::fromValue(qHash(node)));
 	bool result = select.exec();
-	EXCEPT_ELSE(result, NodeException, "Node::attach", qPrintable(select.lastError().text()));
+	EXCEPT_ELSE(result, NodeException, "Node::indexOfChild", qPrintable(select.lastError().text()));
 
 	if (select.next())
 	{
-		return select.value(0).toUInt();
+		quint64 childId = select.value(0).toUInt();
+		select.finish();
+		return childId;
 	}
 	else
 	{
+		select.finish();
 		return -1;
 	}
 }
@@ -626,6 +662,7 @@ void Node::clear()
 	d->m_datas.clear();
 
 	d->m_line     = -1;
+	d->m_parentId = -1;
 	d->m_fileId   = -1;
 	d->m_id       = -1;
 	d->m_isLoaded = false;
@@ -642,6 +679,14 @@ Node & Node::operator=(const Node & node)
 
 /* qHash */
 
+/*!
+ * \ingroup ContentView2
+ * \brief Calculate the hash code for the node \p node.
+ *
+ * The calculate hash can not to be unique. It can be used for
+ * the update to check that the node can't be modified. Or to
+ * find quickly a node with it's index.
+ */
 uint qHash(const Node & node)
 {
 	node.d->load();

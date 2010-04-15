@@ -19,10 +19,17 @@
      <property name="text">
       <string>Location of the &amp;data stream :</string>
      </property>
+     <property name="buddy">
+      <cstring>m_dataStreamEdit</cstring>
+     </property>
     </widget>
    </item>
    <item row="0" column="1">
-    <widget class="DirectoryEditWidget" name="m_dataStreamEdit" native="true"/>
+    <widget class="DirectoryEditWidget" name="m_dataStreamEdit" native="true">
+     <property name="focusPolicy">
+      <enum>Qt::StrongFocus</enum>
+     </property>
+    </widget>
    </item>
    <item row="1" column="0">
     <widget class="QLabel" name="label">
@@ -35,7 +42,11 @@
     </widget>
    </item>
    <item row="1" column="1">
-    <widget class="QLineEdit" name="m_urlLocationEdit"/>
+    <widget class="DirectoryEditWidget" name="m_urlLocationEdit" native="true">
+     <property name="focusPolicy">
+      <enum>Qt::StrongFocus</enum>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
@@ -43,7 +54,7 @@
   <customwidget>
    <class>DirectoryEditWidget</class>
    <extends>QWidget</extends>
-   <header>directoryedit.h</header>
+   <header location="global">directoryedit.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

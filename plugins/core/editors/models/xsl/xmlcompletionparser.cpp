@@ -91,7 +91,7 @@ void XmlCompletionParser::load()
 	inputDevice()->reset();
 	setDevice(inputDevice());
 
-	loadAttachedNode(rootNode());
+	clearNodes(rootNode());
 	m_parentNode.clear();
 
 	while (! atEnd())
@@ -112,11 +112,7 @@ void XmlCompletionParser::load()
 		}
 	}
 
-	if (!error())    // Else completion can be more difficulte
-	{
-		detachAttachedNode();
-	}
-	else
+	if (error())    // Else completion can be more difficulte
 		throw ContentView2::ParserException(errorString(), lineNumber(), columnNumber());
 }
 

@@ -129,7 +129,8 @@ Root: HKCR; SubKey: .fws; ValueType: string; ValueData: Fichier FWS; Flags: unin
 Root: HKCR; SubKey: Fichier FWS; ValueType: string; ValueData: Fichier WebServices; Flags: uninsdeletekey; Tasks: assofws
 Root: HKCR; SubKey: Fichier FWS\Shell\Open\Command; ValueType: string; ValueData: """{app}\bin\xinx.exe"" ""%1"""; Flags: uninsdeletevalue; Tasks: assofws
 Root: HKCR; Subkey: Fichier FWS\DefaultIcon; ValueType: string; ValueData: {app}\bin\xinx.exe,0; Flags: uninsdeletevalue; Tasks: assofws
-Root: HKCU; Subkey: Software\Shadoware.Org\XINX; Flags: uninsdeletekey deletekey; Components: ; Tasks: ; Languages: 
+
+Root: HKCU; Subkey: Software\Shadoware.Org\XINX; Flags: uninsdeletekey deletekey; Check: CheckVersion
 
 [Components]
 Name: application; Description: Application & Bibliothèques nécessaires; Flags: fixed; Types: custom compact full; Languages: 
@@ -177,5 +178,31 @@ begin
 		else
 			Exec( '>', UninstallString, '', 1, ewWaitUntilTerminated, ResultCode );
 	end;
+end;
+
+function CheckVersion(): Boolean;
+var VersionString            : String;
+	DialogReturn			 : Integer;
+	UninstallRegisteryMsg	 : String;
+	Registery				 : Boolean;
+begin
+  Result := false;
+  Registery := false;
+  if RegKeyExists( HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX' ) then
+  begin
+	RegQueryStringValue( HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX', 'Version', VersionString );
+	Registery := true;
+  end;
+  if VersionString <> 'v0.9.0' then
+  begin
+	result := true;
+  end;
+  if IsUninstaller() and Registery and not Result then
+  begin
+  	UninstallRegisteryMsg := CustomMessage('UNINSTALL_REGISTERY');
+	DialogReturn := MsgBox( UninstallRegisteryMsg, mbConfirmation, MB_YESNO );
+	if DialogReturn = IDYES then
+		result := true;
+  end;
 end;
 

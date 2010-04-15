@@ -61,12 +61,20 @@ bool GceConfigurationXmlParser::loadFromFile(const QString & filename)
 
 	if (ConfigurationVersion(m_version) < version150)
 	{
+		const QDir directoryPath(m_parent ? m_parent->m_directoryPath : "");
 		m_fileRefToInformation.clear();
 		foreach(const QString & bvName, m_fileRefToName.keys())
 		{
 			foreach(const QString & fileRef, m_fileRefToName.values(bvName))
 			{
-				const QString ref = m_rootPath + "/" + fileRef;
+				QString ref = m_rootPath + "/" + fileRef;
+				if (m_parent)
+				{
+					const QString absolutePath = QDir(directoryPath.absoluteFilePath(ref)).canonicalPath();
+					if (!absolutePath.isEmpty())
+						ref = directoryPath.relativeFilePath(absolutePath);
+				}
+
 				m_fileRefToInformation.insert(ref, m_nameToInformation.value(bvName));
 			}
 		}
@@ -117,21 +125,30 @@ void GceConfigurationXmlParser::readVersionElement()
 {
 	Q_ASSERT(isStartElement() && (QXmlStreamReader::name() == "version"));
 
-	while (!atEnd())
+	if (!attributes().value("release").isNull())
 	{
-		readNext();
-
-		if (isEndElement())
-			break;
-
-		if (isStartElement())
+		m_version = attributes().value("release").toString();
+		m_edition = attributes().value("sub").toString().toInt();
+		readUnknownElement();
+	}
+	else
+	{
+		while (!atEnd())
 		{
-			if (QXmlStreamReader::name() == "numero")
-				m_version = readElementText();
-			else if (QXmlStreamReader::name() == "edition_speciale")
-				m_edition = readElementText().toInt();
-			else
-				readUnknownElement();
+			readNext();
+
+			if (isEndElement())
+				break;
+
+			if (isStartElement())
+			{
+				if (QXmlStreamReader::name() == "numero")
+					m_version = readElementText();
+				else if (QXmlStreamReader::name() == "edition_speciale")
+					m_edition = readElementText().toInt();
+				else
+					readUnknownElement();
+			}
 		}
 	}
 }

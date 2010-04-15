@@ -386,6 +386,8 @@ private:
 	/*! Create the XINX Project Manager */
 	XINXProjectManager();
 
+	void stopCache();
+
 	XinxProject * m_project;
 	XinxProjectSession2 * m_session;
 	static XINXProjectManager * s_self;

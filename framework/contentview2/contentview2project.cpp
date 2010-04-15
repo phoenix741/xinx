@@ -20,6 +20,7 @@
 // Xinx header
 #include "contentview2project.h"
 #include "contentview2file.h"
+#include "contentview2manager.h"
 #include "project/xinxproject.h"
 
 // Qt header
@@ -46,7 +47,7 @@ namespace ContentView2
  * \param message Error of the exception.
  */
 ProjectException::ProjectException(const QString & assertion, const QString & locationFile, int locationLine, const QString & locationMethod, QString message)
-	: XinxException(assertion, locationFile, locationLine, locationMethod, message)
+		: DatabaseException(assertion, locationFile, locationLine, locationMethod, message)
 {
 }
 
@@ -113,7 +114,7 @@ Project::~Project()
 
 void Project::load(QSqlDatabase db, uint id)
 {
-	QSqlQuery selectQuery("SELECT path, name FROM cv_project WHERE id=:id", db);
+	QSqlQuery selectQuery = Manager::self()->getSqlQuery("SELECT path, name FROM cv_project WHERE id=:id", db);
 	selectQuery.bindValue(":id", QVariant::fromValue(id));
 	bool result = selectQuery.exec();
 	EXCEPT_ELSE(result, ProjectException, "Project::load", selectQuery.lastError().text());
@@ -122,13 +123,15 @@ void Project::load(QSqlDatabase db, uint id)
 	d->m_id   = id;
 	d->m_path = selectQuery.value(0).toString();
 	d->m_name = selectQuery.value(1).toString();
+
+	selectQuery.finish();
 }
 
 void Project::load(QSqlDatabase db, XinxProject * project)
 {
 	d->m_path = project ? project->fileName() : "/";
 
-	QSqlQuery selectQuery("SELECT id, name FROM cv_project WHERE path=:path", db);
+	QSqlQuery selectQuery = Manager::self()->getSqlQuery("SELECT id, name FROM cv_project WHERE path=:path", db);
 	selectQuery.bindValue(":path", QVariant::fromValue(d->m_path));
 	bool result = selectQuery.exec();
 	EXCEPT_ELSE(result, ProjectException, "Project::load", selectQuery.lastError().text());
@@ -136,6 +139,8 @@ void Project::load(QSqlDatabase db, XinxProject * project)
 
 	d->m_id   = selectQuery.value(0).toInt();
 	d->m_name = selectQuery.value(1).toString();
+
+	selectQuery.finish();
 }
 
 void Project::reload(QSqlDatabase db)
@@ -146,8 +151,7 @@ void Project::reload(QSqlDatabase db)
 
 int Project::create(QSqlDatabase db)
 {
-	QSqlQuery insertQuery(db);
-	insertQuery.prepare("INSERT INTO cv_project(path, name) VALUES(:path, :name)");
+	QSqlQuery insertQuery = Manager::self()->getSqlQuery("INSERT INTO cv_project(path, name) VALUES(:path, :name)", db);
 	insertQuery.bindValue(":path",       d->m_path);
 	insertQuery.bindValue(":name",       d->m_name);
 
@@ -156,6 +160,7 @@ int Project::create(QSqlDatabase db)
 
 	uint newId = insertQuery.lastInsertId().toInt();
 	d->m_id = newId;
+	insertQuery.finish();
 	return newId;
 }
 
@@ -163,12 +168,13 @@ void Project::update(QSqlDatabase db)
 {
 	Q_ASSERT_X(d->m_id >= 0, "Project::update", "The project must be initialized");
 
-	QSqlQuery updateQuery("UPDATE cv_project SET name=:name WHERE id=:id", db);
+	QSqlQuery updateQuery = Manager::self()->getSqlQuery("UPDATE cv_project SET name=:name WHERE id=:id", db);
 	updateQuery.bindValue(":name", QVariant::fromValue(d->m_name));
 	updateQuery.bindValue(":id",   QVariant::fromValue(d->m_id));
 
 	bool result = updateQuery.exec();
 	EXCEPT_ELSE(result, ProjectException, "Project::update", qPrintable(updateQuery.lastError().text()));
+	updateQuery.finish();
 }
 
 void Project::destroy(QSqlDatabase db)
@@ -177,10 +183,11 @@ void Project::destroy(QSqlDatabase db)
 
 	destroyFiles(db);
 
-	QSqlQuery deleteQuery1("DELETE FROM cv_project WHERE id=:id", db);
+	QSqlQuery deleteQuery1 = Manager::self()->getSqlQuery("DELETE FROM cv_project WHERE id=:id", db);
 	deleteQuery1.bindValue(":id", QVariant::fromValue(d->m_id));
 	bool result = deleteQuery1.exec();
 	EXCEPT_ELSE(result, ProjectException, "Project::destroy", qPrintable(deleteQuery1.lastError().text()));
+	deleteQuery1.finish();
 }
 
 void Project::destroyFiles(QSqlDatabase db)
@@ -237,7 +244,7 @@ QList<int> Project::files(QSqlDatabase db) const
 	QList<int> result;
 	if (d->m_id == -1) return result;
 
-	QSqlQuery select("SELECT id FROM cv_file WHERE project_id=:project_id", db);
+	QSqlQuery select = Manager::self()->getSqlQuery("SELECT id FROM cv_file WHERE project_id=:project_id", db);
 	select.bindValue(":project_id", QVariant::fromValue(d->m_id));
 	bool r = select.exec();
 	Q_ASSERT_X(r, "Project::files", qPrintable(select.lastError().text()));
@@ -246,6 +253,8 @@ QList<int> Project::files(QSqlDatabase db) const
 	{
 		result += select.value(0).toInt();
 	}
+
+	select.finish();
 
 	return result;
 }

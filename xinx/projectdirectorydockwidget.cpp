@@ -168,7 +168,10 @@ void ProjectDirectoryDockWidget::toggledView(bool flat)
 void ProjectDirectoryDockWidget::setProjectPath(XinxProject * project)
 {
 	if (m_projectDirWidget->m_flatListBtn->isChecked())
+	{
 		m_projectDirWidget->m_flatListBtn->click();
+		m_projectDirWidget->m_flatListBtn->setChecked(false);
+	}
 
 	m_projectDirWidget->m_filtreLineEdit->setText("");
 	m_modelTimer->stop();

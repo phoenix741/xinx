@@ -46,7 +46,7 @@ SnipetCompletionParser::~SnipetCompletionParser()
 
 void SnipetCompletionParser::load()
 {
-	loadAttachedNode(rootNode());
+	clearNodes(rootNode());
 
 	QSqlQuery selectQuery("SELECT id, icon, shortcut, name FROM snipets WHERE auto>=:auto", SnipetManager::self()->database());
 	selectQuery.bindValue(":auto", true);
@@ -76,6 +76,5 @@ void SnipetCompletionParser::load()
 		attachNode(rootNode(), node);
 	}
 
-	detachAttachedNode();
 }
 
