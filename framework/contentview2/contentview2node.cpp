@@ -291,7 +291,6 @@ uint Node::create(QSqlDatabase db, int forcedId)
 
 	QSqlQuery insertPropertyQuery;
 
-	insertPropertyQuery.bindValue(":node_id", newId);
 	foreach(const int ord, d->m_datas.keys())
 	{
 		if (ord < Node::NODE_USER_VALUE + 10) continue;
@@ -302,6 +301,7 @@ uint Node::create(QSqlDatabase db, int forcedId)
 				"VALUES(:node_id, :ord, :value)", db);
 		}
 
+		insertPropertyQuery.bindValue(":node_id", newId);
 		insertPropertyQuery.bindValue(":ord", ord);
 		insertPropertyQuery.bindValue(":value", d->m_datas.value(ord));
 

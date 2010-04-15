@@ -33,6 +33,7 @@
 #include <QFileSystemWatcher>
 #include <QDateTime>
 #include <QTimer>
+#include <QMutex>
 
 class XinxProject;
 class TestContentView2;
@@ -50,14 +51,17 @@ public:
 	QStringList contentsViewLoaded() const;
 
 	void initializeCache();
+	void clearCacheQueue();
 	void addToCache(XinxProject * project, const QString & path, const QString & selection, Parser * parser = 0);
 	void addToCache(XinxProject * project, const QString & path, const QString & type, const QString & selection, Parser * parser = 0);
 	void deleteFromCache(XinxProject * project, const QString & path, bool isCached = true);
 
 	void registerPath(const QString & path);
 	void unregisterPath(const QString & path);
+
 public slots:
 	void refreshCache(const QString & filename);
+	void terminate();
 signals:
 	void cacheLoaded(const ContentView2::File & file);
 	void cacheLoaded();
@@ -82,11 +86,18 @@ private:
 	Project getProject(QSqlDatabase db, XinxProject * project);
 	File getFile(QSqlDatabase db, struct_cache p);
 
+	void runParserLoad(QSqlDatabase db, const struct_cache & c);
+	void runParserDelete(QSqlDatabase db, const struct_cache & c);
+	void runDeleteNotRegistered(QSqlDatabase db);
+
 	QFileSystemWatcher * m_watcher;
+
+	QMutex m_mutex;
 	QQueue< struct_cache > m_parsers;
 	QQueue< struct_cache > m_toDelete;
 	QStringList m_registeredFile;
 	QTimer m_timer;
+	QAtomicInt m_terminate;
 };
 
 }

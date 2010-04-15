@@ -42,6 +42,7 @@
 #include <QThread>
 #include <QBitmap>
 #include <QStyleFactory>
+#include <QDesktopServices>
 
 // C++ header
 #include <csignal>
@@ -73,7 +74,7 @@ void backup_appli_signal(int signal)
 
 void initSearchPath(QApplication * app)
 {
-	const QString configDirectory    = QString(".config/%1/%2").arg(qApp->organizationDomain()).arg(qApp->applicationName());
+	const QString configDirectory    = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
 	const QString homeDirectory      = QDir::home().absoluteFilePath(configDirectory);
 	const QString datasDirectory     = QDir(homeDirectory).absoluteFilePath("datas");
 	const QString scriptDirectory    = QDir(homeDirectory).absoluteFilePath("scripts");

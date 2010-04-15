@@ -647,10 +647,23 @@ XINXProjectManager * XINXProjectManager::self()
 	return s_self;
 }
 
+void XINXProjectManager::stopCache()
+{
+	if (ContentView2::Cache * c = ContentView2::Manager::self()->cache())
+	{
+		c->terminate();
+		c->blockSignals(true);
+		while (c->isRunning())
+			qApp->processEvents();
+		c->wait();
+		c->clearCacheQueue();
+		c->blockSignals(false);
+	}
+}
+
 void XINXProjectManager::setCurrentProject(XinxProject * project)
 {
-	ContentView2::Manager::self()->cache()->terminate();
-	ContentView2::Manager::self()->cache()->wait();
+	stopCache();
 
 	if (m_project)
 		m_project->disconnect(this);
@@ -678,8 +691,7 @@ void XINXProjectManager::deleteProject()
 {
 	if (! m_project) return;
 
-	ContentView2::Manager::self()->cache()->terminate();
-	ContentView2::Manager::self()->cache()->wait();
+	stopCache();
 
 	XinxProject * backup = m_project;
 
