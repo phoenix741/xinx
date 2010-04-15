@@ -33,6 +33,7 @@ class Gce150FileResolver;
 class GenerixPlugin :   public QObject,
 		public IXinxInputOutputPlugin,
 		public IDockPlugin,
+		public IXinxPluginConfiguration,
 		public IResolverPlugin,
 		public IXinxPluginProjectConfiguration,
 		public IXinxXsltParser,
@@ -42,6 +43,7 @@ class GenerixPlugin :   public QObject,
 	Q_INTERFACES(IXinxPlugin)
 	Q_INTERFACES(IXinxInputOutputPlugin)
 	Q_INTERFACES(IDockPlugin)
+	Q_INTERFACES(IXinxPluginConfiguration)
 	Q_INTERFACES(IResolverPlugin)
 	Q_INTERFACES(IXinxPluginProjectConfiguration)
 	Q_INTERFACES(IXinxXsltParser)
@@ -68,6 +70,7 @@ public:
 
 	virtual QList<IFileResolverPlugin*> fileResolvers();
 
+	virtual QList<IXinxPluginConfigurationPage*> createSettingsDialog(QWidget * parent);
 	virtual QList<IXinxPluginProjectConfigurationPage*> createProjectSettingsPage(QWidget * parent);
 	virtual QList<IXinxPluginNewProjectConfigurationPage*> createNewProjectSettingsPages();
 private:
