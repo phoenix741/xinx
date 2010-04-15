@@ -226,7 +226,6 @@ void Parser::attachNode(const Node & parent, Node & child)
 }
 
 //! Return the location (absolute path) of the filename, with the help of the \e parent node
-//! Return the location (absolute path) of the filename, with the help of the \e parent node
 QString Parser::locationOf(const QString & relativeFilename)
 {
 	QString fn = filename();
