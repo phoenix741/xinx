@@ -45,7 +45,10 @@ HEADERS = plugindefinition/generix.h \
     savedialog/derivationdialogimpl.h \
     parser/generixxsltparser.h \
     docks/dictionary/dictionarywidget.h \
-    configuration/gceconfigurationxmlparser.h
+    config/customgeneriximpl.h \
+    config/gcesettings.h \
+    config/selfgcesettings.h \
+    configuration/gceconfigurationxmlparser2.h
 SOURCES = plugindefinition/generix.cpp \
     docks/dictionary/dictionarydockwidgetimpl.cpp \
     docks/dictionary/dictionaryparser.cpp \
@@ -70,7 +73,10 @@ SOURCES = plugindefinition/generix.cpp \
     savedialog/derivationdialogimpl.cpp \
     parser/generixxsltparser.cpp \
     docks/dictionary/dictionarywidget.cpp \
-    configuration/gceconfigurationxmlparser.cpp
+    config/customgeneriximpl.cpp \
+    config/gcesettings.cpp \
+    config/selfgcesettings.cpp \
+    configuration/gceconfigurationxmlparser2.cpp
 win32:RC_FILE += rc/plugin.rc
 FORMS += ui/dictionarydockwidget.ui \
     projectproperty/std/generixprojectpageform.ui \
@@ -81,5 +87,6 @@ FORMS += ui/dictionarydockwidget.ui \
     projectproperty/wizard/newgenerixderivation2page.ui \
     projectproperty/wizard/newgenerixderivation3page.ui \
     docks/project/gnxprojectdock.ui \
-    savedialog/derivationdialog.ui
+    savedialog/derivationdialog.ui \
+    config/customgenerix.ui
 include(../../ext/qmodeltest/modeltest.pri)

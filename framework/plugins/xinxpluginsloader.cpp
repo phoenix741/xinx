@@ -152,7 +152,7 @@ void XinxPluginsLoader::loadPlugins()
 	{
 		QDir pluginsDir = QDir(directory);
 
-		foreach(const QString & fileName, pluginsDir.entryList(QStringList() << "*.dll", QDir::Files))
+		foreach(const QString & fileName, pluginsDir.entryList(QStringList() << "*.dll" << "*.so", QDir::Files))
 		{
 			QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
 			QObject * plugin = loader.instance();

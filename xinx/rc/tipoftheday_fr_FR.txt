@@ -1,7 +1,7 @@
 Vous pouvez ré-indenter votre code par la combinaison de touche <b>Ctrl+Shift+F</b>.
 Les sources de <b>XINX</b> sont disponible et modifiable par tous et pour tous.
 Vous pouvez écrire vos propres script et vos propre template pour augmenter votre rapidité de developpement avec <b>XINX</b>.
-Afin que le chargement des feuilles de style soit plus rapide, il est possible de pré-charger certain includes dans les propriétées du projet.
+Afin que la completion soit plus rapide, certaines données sont pré-chargé dans une base de donnée.
 La configuration de l'emplacement de la ServletControl peut permettre de tester la page XSL sans rebasculer sur le navigateur.
 Il est possible de dupliquer une ligne à l'aide de la commande <b>Ctrl+D</b>
 Il est possible de déplacer (par <i>Drag & Drop</i>), un snipet ou un noeud de votre flux de présentation directement sur la feuille de style.

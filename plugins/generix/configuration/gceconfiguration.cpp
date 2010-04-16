@@ -19,7 +19,8 @@
 
 // Xinx header
 #include "gceconfiguration.h"
-#include "gceconfigurationxmlparser.h"
+#include "gceconfigurationxmlparser2.h"
+#include "config/selfgcesettings.h"
 
 // Qt header
 #include <QXmlStreamReader>
@@ -32,7 +33,8 @@
 
 GceConfiguration::GceConfiguration(const QString & filename) : m_configurationFileName(filename)
 {
-	GceConfigurationXmlParser parser;
+	GceConfigurationXmlParser2 parser;
+	parser.m_quick = ! SelfGceSettings::self()->config().readConfigurations;
 	parser.m_configurationNumber = -1;
 	parser.m_parent = 0;
 	parser.loadFromFile(filename);

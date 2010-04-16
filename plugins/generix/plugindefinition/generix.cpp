@@ -36,6 +36,8 @@
 #include <rcs/rcsmanager.h>
 #include "parser/generixxsltparser.h"
 #include <plugins/xinxpluginsloader.h>
+#include "config/customgeneriximpl.h"
+#include "config/selfgcesettings.h"
 
 // Qt header
 #include <QString>
@@ -98,7 +100,7 @@ public:
 	{
 		// Create the new dictionary
 		GenerixProject * project = static_cast<GenerixProject*>(m_project);
-		if (project && project->isGenerixActivated())
+		if (project && project->isGenerixActivated() && SelfGceSettings::self()->config().readDictionaries)
 		{
 			ConfigurationManager::self()->loadDictionary(project);
 		}
@@ -299,6 +301,13 @@ QList<QWidget*> GenerixPlugin::createDocksWidget(QWidget * parent)
 QList<IFileResolverPlugin*> GenerixPlugin::fileResolvers()
 {
 	return QList<IFileResolverPlugin*>() << m_resolver;
+}
+
+QList<IXinxPluginConfigurationPage*> GenerixPlugin::createSettingsDialog(QWidget * parent)
+{
+	QList<IXinxPluginConfigurationPage*> pages;
+	pages << new CustomGenerixImpl(parent);
+	return pages;
 }
 
 QList<IXinxPluginProjectConfigurationPage*> GenerixPlugin::createProjectSettingsPage(QWidget * parent)

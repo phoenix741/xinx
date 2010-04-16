@@ -55,7 +55,10 @@ void DictionaryParser::load()
 	inputDevice()->reset();
 	setDevice(inputDevice());
 
-	clearNodes(rootNode());
+	if (rootNode().isValid())
+	{
+		clearNodes(rootNode());
+	}
 
 	while (! atEnd())
 	{

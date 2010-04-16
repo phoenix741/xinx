@@ -1,6 +1,4 @@
-<config classname="Generix Settings" organization="Shadoware.Org" application="XINX" path="PluginsSettings/generix">
-    <include>#include &lt;QStringList&gt;</include>
-
-	<value name="Default Project Path Name" type="string" default="projet"/>
-    <value name="Files" type="hash:string"/>
+<config classname="GCE Settings" organization="Shadoware.Org" application="XINX" path="PluginsSettings/generix">
+	<value name="Read Configurations" type="bool" default="true"/>
+    <value name="Read Dictionaries" type="bool" default="true"/>
 </config>

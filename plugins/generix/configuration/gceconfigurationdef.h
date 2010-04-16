@@ -29,6 +29,7 @@
 #include <QCoreApplication>
 
 class GceConfigurationXmlParser;
+class GceConfigurationXmlParser2;
 
 class GceConfigurationDef : public GceInterface
 {
@@ -55,6 +56,7 @@ protected:
 	QMultiHash<QString,BusinessViewInformation> m_fileToInformation;
 
 	friend class GceConfigurationXmlParser;
+	friend class GceConfigurationXmlParser2;
 };
 
 #endif // GCECONFIGURATIONDEF_H

@@ -1949,6 +1949,7 @@ void MainformImpl::openProject(const QString & filename)
 			XINXConfig::self()->config().project.recentProjectFiles.removeLast();
 
 		QProgressDialog progressDlg(this);
+		progressDlg.setCancelButton(0);
 		progressDlg.setModal(true);
 		progressDlg.setWindowTitle(tr("Open the project ..."));
 		progressDlg.setMinimumWidth(300);
@@ -1988,6 +1989,7 @@ void MainformImpl::openProject(const QString & filename)
 	}
 	catch (XinxProjectException e)
 	{
+		updateRecentProjects();
 		delete project;
 
 		ProjectWizard wizard(filename);
