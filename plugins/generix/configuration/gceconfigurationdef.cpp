@@ -20,6 +20,7 @@
 // Xinx header
 #include "gceconfigurationdef.h"
 #include "gceconfigurationxmlparser.h"
+#include "gceconfigurationxmlparser2.h"
 
 // Qt header
 #include <QXmlStreamReader>
@@ -92,7 +93,7 @@ void GceConfigurationDef::readConfigurationDef(const QString & configurationdefF
 
 void GceConfigurationDef::readConfigurationFile(int configurationIndex, const QString & configurationFileName)
 {
-	GceConfigurationXmlParser parser;
+	GceConfigurationXmlParser2 parser;
 	parser.m_parent = this;
 	parser.m_configurationNumber = configurationIndex;
 	parser.loadFromFile(configurationFileName);
