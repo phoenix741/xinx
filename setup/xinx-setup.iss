@@ -13,7 +13,7 @@ OutputBaseFilename=xinx-{#AppVersion}
 Compression=lzma/ultra64
 SolidCompression=true
 ShowLanguageDialog=auto
-AppID={{AB2A9C86-AD08-4373-98FD-6A9AA8496AEE}
+AppID={{84FAD124-CAB0-4424-8873-FC50C42E6D96}
 AppCopyright=Ulrich Van Den Hekke
 UserInfoPage=false
 UninstallDisplayIcon={app}\xinx.exe
@@ -130,7 +130,7 @@ Root: HKCR; SubKey: Fichier FWS; ValueType: string; ValueData: Fichier WebServic
 Root: HKCR; SubKey: Fichier FWS\Shell\Open\Command; ValueType: string; ValueData: """{app}\bin\xinx.exe"" ""%1"""; Flags: uninsdeletevalue; Tasks: assofws
 Root: HKCR; Subkey: Fichier FWS\DefaultIcon; ValueType: string; ValueData: {app}\bin\xinx.exe,0; Flags: uninsdeletevalue; Tasks: assofws
 
-Root: HKCU; Subkey: Software\Shadoware.Org\XINX; Flags: uninsdeletekey deletekey; Check: CheckVersion
+Root: HKCU; Subkey: Software\Shadoware.Org\XINX; Flags: deletekey; Check: CheckVersion
 
 [Components]
 Name: application; Description: Application & Bibliothèques nécessaires; Flags: fixed; Types: custom compact full; Languages: 
@@ -182,27 +182,32 @@ end;
 
 function CheckVersion(): Boolean;
 var VersionString            : String;
-	DialogReturn			 : Integer;
-	UninstallRegisteryMsg	 : String;
-	Registery				 : Boolean;
 begin
   Result := false;
-  Registery := false;
   if RegKeyExists( HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX' ) then
   begin
-	RegQueryStringValue( HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX', 'Version', VersionString );
-	Registery := true;
+	  RegQueryStringValue( HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX', 'Version', VersionString );
   end;
   if VersionString <> 'v0.9.0' then
   begin
-	result := true;
-  end;
-  if IsUninstaller() and Registery and not Result then
-  begin
-  	UninstallRegisteryMsg := CustomMessage('UNINSTALL_REGISTERY');
-	DialogReturn := MsgBox( UninstallRegisteryMsg, mbConfirmation, MB_YESNO );
-	if DialogReturn = IDYES then
-		result := true;
+	  result := true;
   end;
 end;
 
+procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
+var VersionString            : String;
+	DialogReturn			 : Integer;
+	UninstallRegisteryMsg	 : String;
+begin
+  if(CurUninstallStep = usUninstall) then
+  begin
+    if RegKeyExists( HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX' ) then
+    begin
+    	UninstallRegisteryMsg := CustomMessage('UNINSTALL_REGISTERY');
+  	  DialogReturn := MsgBox( UninstallRegisteryMsg, mbConfirmation, MB_YESNO );
+     	if DialogReturn = IDYES then begin
+        RegDeleteKeyIncludingSubkeys( HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX' );
+      end;
+    end;
+  end;
+end;

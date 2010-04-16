@@ -45,7 +45,6 @@ HEADERS = plugindefinition/generix.h \
     savedialog/derivationdialogimpl.h \
     parser/generixxsltparser.h \
     docks/dictionary/dictionarywidget.h \
-    configuration/gceconfigurationxmlparser.h \
     config/customgeneriximpl.h \
     config/gcesettings.h \
     config/selfgcesettings.h \
@@ -74,7 +73,6 @@ SOURCES = plugindefinition/generix.cpp \
     savedialog/derivationdialogimpl.cpp \
     parser/generixxsltparser.cpp \
     docks/dictionary/dictionarywidget.cpp \
-    configuration/gceconfigurationxmlparser.cpp \
     config/customgeneriximpl.cpp \
     config/gcesettings.cpp \
     config/selfgcesettings.cpp \

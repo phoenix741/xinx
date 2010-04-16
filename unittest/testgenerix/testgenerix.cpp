@@ -20,6 +20,8 @@
 // Xinx header
 #include <plugins/xinxpluginsloader.h>
 #include <dictionaryparser.h>
+#include <gceconfigurationxmlparser.h>
+#include <gceconfigurationxmlparser2.h>
 #include <contentview2/contentview2file.h>
 
 // Qt header
@@ -39,6 +41,11 @@ private slots:
 	void testDictionaryBase();
 
 	void testInsert();
+
+	void testConfiguration140_1();
+	void testConfiguration140_2();
+	void testConfiguration150_1();
+	void testConfiguration150_2();
 
 	void cleanupTestCase();
 private:
@@ -74,6 +81,9 @@ void TestGenerix::initTestCase()
 
 void TestGenerix::testDictionaryNoBase()
 {
+	if(!QFileInfo("testgenerix/dico_fra_gce140.xml").exists())
+		QSKIP("No dictionary", SkipSingle);
+
 	QBENCHMARK
 	{
 		ContentView2::Manager::self()->database().transaction();
@@ -116,6 +126,9 @@ void TestGenerix::testDictionaryNoBase()
 
 void TestGenerix::testDictionaryBase()
 {
+	if(!QFileInfo("testgenerix/dico_fra_gce140.xml").exists())
+		QSKIP("No dictionary", SkipSingle);
+
 	QBENCHMARK
 	{
 		ContentView2::Manager::self()->database().transaction();
@@ -205,6 +218,58 @@ void TestGenerix::testInsert()
 
 
 		ContentView2::Manager::self()->database().commit();
+	}
+}
+
+void TestGenerix::testConfiguration140_1()
+{
+	if(!QFileInfo("testgenerix/configuration140.xml").exists())
+		QSKIP("No dictionary", SkipSingle);
+
+	QBENCHMARK
+	{
+		GceConfigurationXmlParser parser;
+		parser.m_parent = 0;
+		parser.loadFromFile("testgenerix/configuration140.xml");
+	}
+}
+
+void TestGenerix::testConfiguration140_2()
+{
+	if(!QFileInfo("testgenerix/configuration140.xml").exists())
+		QSKIP("No dictionary", SkipSingle);
+
+	QBENCHMARK
+	{
+		GceConfigurationXmlParser2 parser;
+		parser.m_parent = 0;
+		parser.loadFromFile("testgenerix/configuration140.xml");
+	}
+}
+
+void TestGenerix::testConfiguration150_1()
+{
+	if(!QFileInfo("testgenerix/configuration150.xml").exists())
+		QSKIP("No dictionary", SkipSingle);
+
+	QBENCHMARK
+	{
+		GceConfigurationXmlParser parser;
+		parser.m_parent = 0;
+		parser.loadFromFile("testgenerix/configuration150.xml");
+	}
+}
+
+void TestGenerix::testConfiguration150_2()
+{
+	if(!QFileInfo("testgenerix/configuration150.xml").exists())
+		QSKIP("No dictionary", SkipSingle);
+
+	QBENCHMARK
+	{
+		GceConfigurationXmlParser2 parser;
+		parser.m_parent = 0;
+		parser.loadFromFile("testgenerix/configuration150.xml");
 	}
 }
 

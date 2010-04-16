@@ -39,6 +39,7 @@ public:
 	/* INPUT */
 	GceConfigurationDef * m_parent;
 	int m_configurationNumber;
+	bool m_quick;
 
 	/* OUTPUT */
 	QString m_version, m_rootPath;
@@ -62,5 +63,6 @@ private:
 	QHash<QString,BusinessViewInformation> m_nameToInformation;
 	QMultiHash<QString,QString> m_fileRefToName;
 };
+
 
 #endif // GCECONFIGURATIONXMLPARSER2_H

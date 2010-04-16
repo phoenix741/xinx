@@ -38,7 +38,7 @@
    <item>
     <widget class="QLabel" name="label_2">
      <property name="text">
-      <string>This option can be use to read the GCE configuration file. Reading the configuration file can be slow, so this option is desactivated by default. &lt;br/&gt;&lt;br/&gt;&lt;i&gt;&lt;u&gt;Note: &lt;/u&gt;If you change this option, you must reload your project to really use this option.</string>
+      <string>This option can be use to read the GCE configuration file. Reading the configuration file can be slow, so this option is activated by default. &lt;br/&gt;&lt;br/&gt;&lt;i&gt;&lt;u&gt;Note: &lt;/u&gt;If you change this option, you must reload XINX to really use this option.</string>
      </property>
      <property name="textFormat">
       <enum>Qt::RichText</enum>

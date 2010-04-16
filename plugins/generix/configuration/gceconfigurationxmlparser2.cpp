@@ -31,6 +31,10 @@ const ConfigurationVersion version150(6, 1, 50, 0);
 
 GceConfigurationXmlParser2::GceConfigurationXmlParser2()
 {
+	m_parent  = 0;
+	m_version = QString();
+	m_edition = -1;
+	m_quick   = false;
 }
 
 GceConfigurationXmlParser2::~GceConfigurationXmlParser2()
@@ -54,46 +58,55 @@ bool GceConfigurationXmlParser2::loadFromFile(const QString & filename)
 		return false;
 	}
 
-	ret = xmlTextReaderRead(reader);
-	while (ret == 1)
+	try
 	{
-		if (xmlTextReaderNodeType(reader) == XML_READER_TYPE_ELEMENT)
-		{
-			const xmlChar *name = xmlTextReaderConstName(reader);
-
-			if (QString::fromUtf8((char*)name) == "config")
-				readConfigElement(reader);
-			else
-			{
-				//raiseError("The file is not a configuration file.");
-				xmlFreeTextReader(reader);
-				return false;
-			}
-		}
 		ret = xmlTextReaderRead(reader);
-	}
-	xmlFreeTextReader(reader);
-
-	if (ConfigurationVersion(m_version) < version150)
-	{
-		const QDir directoryPath(m_parent ? m_parent->m_directoryPath : "");
-		m_fileRefToInformation.clear();
-		foreach(const QString & bvName, m_fileRefToName.keys())
+		while (ret == 1)
 		{
-			foreach(const QString & fileRef, m_fileRefToName.values(bvName))
+			if (xmlTextReaderNodeType(reader) == XML_READER_TYPE_ELEMENT)
 			{
-				QString ref = m_rootPath + "/" + fileRef;
-				if (m_parent)
-				{
-					const QString absolutePath = QDir(directoryPath.absoluteFilePath(ref)).canonicalPath();
-					if (!absolutePath.isEmpty())
-						ref = directoryPath.relativeFilePath(absolutePath);
-				}
+				const xmlChar *name = xmlTextReaderConstName(reader);
 
-				m_fileRefToInformation.insert(ref, m_nameToInformation.value(bvName));
+				if (QString::fromUtf8((char*)name) == "config")
+					readConfigElement(reader);
+				else
+				{
+					//raiseError("The file is not a configuration file.");
+					xmlFreeTextReader(reader);
+					return false;
+				}
+			}
+
+			ret = xmlTextReaderRead(reader);
+		}
+
+		if (ConfigurationVersion(m_version) < version150)
+		{
+			const QDir directoryPath(m_parent ? m_parent->m_directoryPath : "");
+			m_fileRefToInformation.clear();
+			foreach(const QString & bvName, m_fileRefToName.keys())
+			{
+				foreach(const QString & fileRef, m_fileRefToName.values(bvName))
+				{
+					QString ref = m_rootPath + "/" + fileRef;
+					if (m_parent)
+					{
+						const QString absolutePath = QDir(directoryPath.absoluteFilePath(ref)).canonicalPath();
+						if (!absolutePath.isEmpty())
+							ref = directoryPath.relativeFilePath(absolutePath);
+					}
+
+					m_fileRefToInformation.insert(ref, m_nameToInformation.value(bvName));
+				}
 			}
 		}
 	}
+	catch(...)
+	{
+		// Sortie rapide
+	}
+
+	xmlFreeTextReader(reader);
 
 	return true;
 }
@@ -151,7 +164,7 @@ void GceConfigurationXmlParser2::readConfigElement(xmlTextReader * reader)
 
 				if (QString::fromUtf8((char*)name) == "version")
 					readVersionElement(reader);
-				else if (QString::fromUtf8((char*)name) == "application")
+				else if (!m_quick && (QString::fromUtf8((char*)name) == "application"))
 					readApplicationElement(reader);
 				else
 					readUnknownElement(reader);
@@ -206,6 +219,11 @@ void GceConfigurationXmlParser2::readVersionElement(xmlTextReader * reader)
 				ret = xmlTextReaderRead(reader);
 			}
 		}
+	}
+	if (m_quick)
+	{
+		// File is loaded, quick exit
+		throw "Quick quit";
 	}
 }
 

@@ -1,4 +1,4 @@
 <config classname="GCE Settings" organization="Shadoware.Org" application="XINX" path="PluginsSettings/generix">
-	<value name="Read Configurations" type="bool" default="false"/>
+	<value name="Read Configurations" type="bool" default="true"/>
     <value name="Read Dictionaries" type="bool" default="true"/>
 </config>

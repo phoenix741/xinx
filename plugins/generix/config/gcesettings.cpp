@@ -92,7 +92,7 @@ void GceSettings::load() {
 GceSettings::GceSettings::struct_globals GceSettings::getDefaultGlobals() {
 	struct_globals value;
 
-	value.readConfigurations = false;
+	value.readConfigurations = true;
 	value.readDictionaries = true;
 
 	return value;
