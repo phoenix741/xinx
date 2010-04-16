@@ -93,7 +93,7 @@ void GceConfigurationDef::readConfigurationDef(const QString & configurationdefF
 
 void GceConfigurationDef::readConfigurationFile(int configurationIndex, const QString & configurationFileName)
 {
-	GceConfigurationXmlParser2 parser;
+	GceConfigurationXmlParser parser;
 	parser.m_parent = this;
 	parser.m_configurationNumber = configurationIndex;
 	parser.loadFromFile(configurationFileName);

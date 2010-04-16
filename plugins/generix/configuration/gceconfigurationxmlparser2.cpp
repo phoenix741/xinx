@@ -22,6 +22,7 @@
 
 // Qt header
 #include <QDir>
+#include <QDebug>
 
 // 150 = V06.01-50
 const ConfigurationVersion version150(6, 1, 50, 0);
@@ -40,6 +41,10 @@ GceConfigurationXmlParser2::~GceConfigurationXmlParser2()
 
 bool GceConfigurationXmlParser2::loadFromFile(const QString & filename)
 {
+	m_fileRefToName.clear();
+	m_nameToInformation.clear();
+	m_configurationFileName = filename;
+
 	xmlTextReaderPtr reader;
 	int ret;
 
@@ -64,9 +69,8 @@ bool GceConfigurationXmlParser2::loadFromFile(const QString & filename)
 				xmlFreeTextReader(reader);
 				return false;
 			}
-
-			ret = xmlTextReaderRead(reader);
 		}
+		ret = xmlTextReaderRead(reader);
 	}
 	xmlFreeTextReader(reader);
 
@@ -97,58 +101,283 @@ bool GceConfigurationXmlParser2::loadFromFile(const QString & filename)
 void GceConfigurationXmlParser2::readUnknownElement(xmlTextReader * reader)
 {
 	Q_ASSERT(xmlTextReaderNodeType(reader) == XML_READER_TYPE_ELEMENT);
-	int ret;
 
-	ret = xmlTextReaderRead(reader);
-	while (ret == 1)
+	if (!xmlTextReaderIsEmptyElement(reader))
 	{
-		if (xmlTextReaderNodeType(reader) == XML_READER_TYPE_END_ELEMENT)
-			break;
+		int startLevel, level;
+		startLevel = level = xmlTextReaderDepth (reader);
 
-		if (xmlTextReaderNodeType(reader) == XML_READER_TYPE_ELEMENT)
-			readUnknownElement(reader);
+		int ret = xmlTextReaderRead(reader);
+		while (ret == 1)
+		{
+			if (xmlTextReaderNodeType(reader) == XML_READER_TYPE_END_ELEMENT)
+			{
+				if(startLevel == level)
+				{
+					break;
+				}
+				else
+				{
+					level--;
+				}
+			}
 
-		ret = xmlTextReaderRead(reader);
+			if (xmlTextReaderNodeType(reader) == XML_READER_TYPE_ELEMENT)
+			{
+				if (!xmlTextReaderIsEmptyElement(reader))
+					level++;
+			}
+
+			ret = xmlTextReaderRead(reader);
+		}
 	}
 }
 
 void GceConfigurationXmlParser2::readConfigElement(xmlTextReader * reader)
 {
-	readUnknownElement(reader);
+	Q_ASSERT((xmlTextReaderNodeType(reader) == XML_READER_TYPE_ELEMENT) && (QString::fromUtf8((char*)xmlTextReaderConstName(reader)) == "config"));
+
+	if (!xmlTextReaderIsEmptyElement(reader))
+	{
+		int ret = xmlTextReaderRead(reader);
+		while (ret == 1)
+		{
+			if (xmlTextReaderNodeType(reader) == XML_READER_TYPE_END_ELEMENT)
+				break;
+
+			if (xmlTextReaderNodeType(reader) == XML_READER_TYPE_ELEMENT)
+			{
+				const xmlChar *name = xmlTextReaderConstName(reader);
+
+				if (QString::fromUtf8((char*)name) == "version")
+					readVersionElement(reader);
+				else if (QString::fromUtf8((char*)name) == "application")
+					readApplicationElement(reader);
+				else
+					readUnknownElement(reader);
+			}
+
+			ret = xmlTextReaderRead(reader);
+		}
+	}
 }
 
 void GceConfigurationXmlParser2::readVersionElement(xmlTextReader * reader)
 {
-	readUnknownElement(reader);
+	Q_ASSERT((xmlTextReaderNodeType(reader) == XML_READER_TYPE_ELEMENT) && (QString::fromUtf8((char*)xmlTextReaderConstName(reader)) == "version"));
+
+	if (xmlTextReaderHasAttributes(reader))
+	{
+		xmlChar * release = xmlTextReaderGetAttribute(reader, (xmlChar*)"release");
+		xmlChar * sub     = xmlTextReaderGetAttribute(reader, (xmlChar*)"sub");
+
+		m_version = QString::fromUtf8((char*)release);
+		m_edition = QString::fromUtf8((char*)sub).toInt();
+
+		xmlFree(release);
+		xmlFree(sub);
+
+		readUnknownElement(reader);
+	}
+	else
+	{
+		if (!xmlTextReaderIsEmptyElement(reader))
+		{
+			int ret = xmlTextReaderRead(reader);
+			while (ret == 1)
+			{
+				if (xmlTextReaderNodeType(reader) == XML_READER_TYPE_END_ELEMENT)
+					break;
+
+				if (xmlTextReaderNodeType(reader) == XML_READER_TYPE_ELEMENT)
+				{
+					const xmlChar *name = xmlTextReaderConstName(reader);
+					xmlChar *value = xmlTextReaderReadString(reader);
+
+					if (QString::fromUtf8((char*)name) == "numero")
+						m_version = QString::fromUtf8((char*)value);
+					else if (QString::fromUtf8((char*)name) == "edition_speciale")
+						m_edition = QString::fromUtf8((char*)value).toInt();
+
+					xmlFree(value);
+					readUnknownElement(reader);
+				}
+
+				ret = xmlTextReaderRead(reader);
+			}
+		}
+	}
 }
 
 void GceConfigurationXmlParser2::readApplicationElement(xmlTextReader * reader)
 {
-	readUnknownElement(reader);
+	Q_ASSERT((xmlTextReaderNodeType(reader) == XML_READER_TYPE_ELEMENT) && (QString::fromUtf8((char*)xmlTextReaderConstName(reader)) == "application"));
+
+	if (!xmlTextReaderIsEmptyElement(reader))
+	{
+		int ret = xmlTextReaderRead(reader);
+		while (ret == 1)
+		{
+			if (xmlTextReaderNodeType(reader) == XML_READER_TYPE_END_ELEMENT)
+				break;
+
+			if (xmlTextReaderNodeType(reader) == XML_READER_TYPE_ELEMENT)
+			{
+				const xmlChar *name = xmlTextReaderConstName(reader);
+
+				if (QString::fromUtf8((char*)name) == "businessview_def")
+				{
+					readBusinessViewDef(reader);
+				}
+				else if ((ConfigurationVersion(m_version) < version150) && (QString::fromUtf8((char*)name) == "presentation"))
+				{
+					readPresentation(reader);
+				}
+				else
+					readUnknownElement(reader);
+			}
+
+			ret = xmlTextReaderRead(reader);
+		}
+	}
 }
 
 void GceConfigurationXmlParser2::readBusinessViewDef(xmlTextReader * reader)
 {
-	readUnknownElement(reader);
+	Q_ASSERT((xmlTextReaderNodeType(reader) == XML_READER_TYPE_ELEMENT) && (QString::fromUtf8((char*)xmlTextReaderConstName(reader)) == "businessview_def"));
+
+	if (!xmlTextReaderIsEmptyElement(reader))
+	{
+		int ret = xmlTextReaderRead(reader);
+		while (ret == 1)
+		{
+			if (xmlTextReaderNodeType(reader) == XML_READER_TYPE_END_ELEMENT)
+				break;
+
+			if (xmlTextReaderNodeType(reader) == XML_READER_TYPE_ELEMENT)
+			{
+				const xmlChar *name = xmlTextReaderConstName(reader);
+
+				if (QString::fromUtf8((char*)name) == "businessview")
+				{
+					readBusinessViewDefElement(reader);
+				}
+				else
+					readUnknownElement(reader);
+			}
+
+			ret = xmlTextReaderRead(reader);
+		}
+	}
 }
 
 void GceConfigurationXmlParser2::readBusinessViewDefElement(xmlTextReader * reader)
 {
-	readUnknownElement(reader);
+	Q_ASSERT((xmlTextReaderNodeType(reader) == XML_READER_TYPE_ELEMENT) && (QString::fromUtf8((char*)xmlTextReaderConstName(reader)) == "businessview"));
+
+	xmlChar * name       = xmlTextReaderGetAttribute(reader, (xmlChar*)"name");
+	xmlChar * target     = xmlTextReaderGetAttribute(reader, (xmlChar*)"target");
+	xmlChar * viewstruct = xmlTextReaderGetAttribute(reader, (xmlChar*)"viewstruct");
+
+	BusinessViewInformation information;
+	information.setBusinessViewName(QString::fromUtf8((char*)name));
+	information.setTargetName(QString::fromUtf8((char*)target));
+	information.setViewstructName(QString::fromUtf8((char*)viewstruct));
+
+	information.setConfigurationFileName(m_configurationFileName);
+	information.setConfigurationNumber(m_configurationNumber);
+
+	m_nameToInformation.insert(information.businesViewName(), information);
+
+	xmlFree(name);
+	xmlFree(target);
+	xmlFree(viewstruct);
+
+	if (ConfigurationVersion(m_version) >= version150)
+	{
+		if (!xmlTextReaderIsEmptyElement(reader))
+		{
+			int ret = xmlTextReaderRead(reader);
+			while (ret == 1)
+			{
+				if (xmlTextReaderNodeType(reader) == XML_READER_TYPE_END_ELEMENT)
+					break;
+
+				if (xmlTextReaderNodeType(reader) == XML_READER_TYPE_ELEMENT)
+					readPresentationElement(reader, information);
+
+				ret = xmlTextReaderRead(reader);
+			}
+		}
+	}
+	else
+	{
+		readUnknownElement(reader);
+	}
 }
 
 void GceConfigurationXmlParser2::readPresentationElement(xmlTextReader * reader, const BusinessViewInformation & information)
 {
+	Q_ASSERT((xmlTextReaderNodeType(reader) == XML_READER_TYPE_ELEMENT));
+
+	xmlChar * xmlFileRef = xmlTextReaderGetAttribute(reader, (xmlChar*)"fileRef");
+	QString fileRef = QString::fromUtf8((char*)xmlFileRef);
+	xmlFree(xmlFileRef);
+
+	if (m_parent)
+	{
+		fileRef = m_parent->resolveFileName(fileRef);
+		if (QDir(fileRef).isAbsolute())
+		{
+			fileRef = QDir(m_parent->m_directoryPath).relativeFilePath(fileRef);
+		}
+	}
+	m_fileRefToInformation.insert(fileRef, information);
+
 	readUnknownElement(reader);
 }
 
 void GceConfigurationXmlParser2::readPresentation(xmlTextReader * reader)
 {
-	readUnknownElement(reader);
+	Q_ASSERT((xmlTextReaderNodeType(reader) == XML_READER_TYPE_ELEMENT) && (QString::fromUtf8((char*)xmlTextReaderConstName(reader)) == "presentation"));
+
+	xmlChar * rootPath = xmlTextReaderGetAttribute(reader, (xmlChar*)"rootPath");
+	if(rootPath)
+		m_rootPath = QString::fromUtf8((char*)rootPath);
+	xmlFree(rootPath);
+
+	if (!xmlTextReaderIsEmptyElement(reader))
+	{
+		int ret = xmlTextReaderRead(reader);
+		while (ret == 1)
+		{
+			if (xmlTextReaderNodeType(reader) == XML_READER_TYPE_END_ELEMENT)
+				break;
+
+			if (xmlTextReaderNodeType(reader) == XML_READER_TYPE_ELEMENT)
+				readPresentationElement(reader);
+
+			ret = xmlTextReaderRead(reader);
+		}
+	}
 }
 
 void GceConfigurationXmlParser2::readPresentationElement(xmlTextReader * reader)
 {
+	Q_ASSERT((xmlTextReaderNodeType(reader) == XML_READER_TYPE_ELEMENT));
+
+	xmlChar * xmlBv         = xmlTextReaderGetAttribute(reader, (xmlChar*)"businessview");
+	xmlChar * xmlFileRef    = xmlTextReaderGetAttribute(reader, (xmlChar*)"fileRef");
+
+	const QString bv = QString::fromUtf8((char*)xmlBv);
+	const QString fr = QString::fromUtf8((char*)xmlFileRef);
+
+	xmlFree(xmlBv);
+	xmlFree(xmlFileRef);
+
+	if (! m_fileRefToName.values(bv).contains(fr))
+		m_fileRefToName.insert(bv, fr);
+
 	readUnknownElement(reader);
 }
 

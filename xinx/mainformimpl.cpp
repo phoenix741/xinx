@@ -1988,6 +1988,7 @@ void MainformImpl::openProject(const QString & filename)
 	}
 	catch (XinxProjectException e)
 	{
+		updateRecentProjects();
 		delete project;
 
 		ProjectWizard wizard(filename);
