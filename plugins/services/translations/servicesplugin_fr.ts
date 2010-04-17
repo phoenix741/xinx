@@ -157,30 +157,30 @@
     <name>ServicesPage</name>
     <message>
         <source>Define Services</source>
-        <translation>Définition des services</translation>
+        <translation type="obsolete">Définition des services</translation>
     </message>
     <message>
         <source>If checked the next page ask you the list of WSDL used to known params of the WebServices.</source>
-        <translation>Si cochée, la prochaine page vous demandera la liste des WSDL utilisé pour connaitre les paramêtres des services Internet.</translation>
+        <translation type="obsolete">Si cochée, la prochaine page vous demandera la liste des WSDL utilisé pour connaitre les paramêtres des services Internet.</translation>
     </message>
     <message>
         <source>I want add some WebServices</source>
-        <translation>Je veux ajouter quelques services Internet</translation>
+        <translation type="obsolete">Je veux ajouter quelques services Internet</translation>
     </message>
     <message>
         <source>Don&apos;t manage web services in the project.</source>
-        <translation>Ne pas gérer les services Internet dans ce projet.</translation>
+        <translation type="obsolete">Ne pas gérer les services Internet dans ce projet.</translation>
     </message>
     <message>
         <source>I don&apos;t want WebServices</source>
-        <translation>Je ne veux pas de service Internet</translation>
+        <translation type="obsolete">Je ne veux pas de service Internet</translation>
     </message>
 </context>
 <context>
     <name>ServicesPageImpl</name>
     <message>
         <source>Define if the project contains WebServices. WebServices can be used to query database.</source>
-        <translation>Définit si le projet contient des services Internet. Les services Internet peuvent être utilisés pour interroger la base de donnée.</translation>
+        <translation type="obsolete">Définit si le projet contient des services Internet. Les services Internet peuvent être utilisés pour interroger la base de donnée.</translation>
     </message>
 </context>
 <context>
@@ -215,12 +215,12 @@
     <message>
         <source>&lt;p&gt;Check this box is you want add service web to the project. The list is a list of WSDL. When you start the project, &lt;b&gt;XINX&lt;/b&gt; will connect to the service and download the description file.&lt;/p&gt;
 &lt;p&gt;Next you can execute a service stream that open a dialog with the in stream and the out stream.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Cocher cette case pour ajouter des Services Internet au projet. La liste contient des liens vers les WSDL. Quand le projet est chargé, &lt;b&gt;XINX&lt;/b&gt; se connectera au service et téléchargera le fichier de description.&lt;/p&gt;
+        <translation type="obsolete">&lt;p&gt;Cocher cette case pour ajouter des Services Internet au projet. La liste contient des liens vers les WSDL. Quand le projet est chargé, &lt;b&gt;XINX&lt;/b&gt; se connectera au service et téléchargera le fichier de description.&lt;/p&gt;
 &lt;p&gt;Après, il est possible d&apos;exécuter un flux qui ouvrira une boite de dialogue avec le flux d&apos;entrée et le flux de sortie.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Project has WebServices</source>
-        <translation>Le projet a des Services Internet</translation>
+        <translation type="obsolete">Le projet a des Services Internet</translation>
     </message>
     <message>
         <source>Refresh</source>
@@ -242,7 +242,7 @@
     <name>WebServices</name>
     <message>
         <source>Invalid return value</source>
-        <translation>Valeur de retour invalide</translation>
+        <translation type="obsolete">Valeur de retour invalide</translation>
     </message>
 </context>
 <context>
@@ -290,6 +290,14 @@
     <message>
         <source>Web services has error %1</source>
         <translation>Le Service Internet échoue avec l&apos;erreur %1</translation>
+    </message>
+    <message>
+        <source>Server has respond in %1 ms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid return value</source>
+        <translation type="unfinished">Valeur de retour invalide</translation>
     </message>
 </context>
 <context>

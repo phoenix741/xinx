@@ -200,15 +200,15 @@ p, li { white-space: pre-wrap; }
     <name>CommitMessageDialog</name>
     <message>
         <source>Commit messages</source>
-        <translation>Messages de validation</translation>
+        <translation type="obsolete">Messages de validation</translation>
     </message>
     <message>
         <source>RCS Messages</source>
-        <translation>Messages du logiciel de gestion de version</translation>
+        <translation type="obsolete">Messages du logiciel de gestion de version</translation>
     </message>
     <message>
         <source>Files to commit</source>
-        <translation>Fichiers à valider</translation>
+        <translation type="obsolete">Fichiers à valider</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
@@ -224,7 +224,7 @@ p, li { white-space: pre-wrap; }
 &lt;p&gt;This message must describe what you have done, to easily find an old version.&lt;/p&gt;
 &lt;p/&gt;
 &lt;p&gt;&lt;i&gt;With CVS, the list of file commited is appended to the message&lt;/i&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Ecrivez votre message dans cette fenêtre. Ce message sera utilisé par le gestionnaire de version.&lt;/p&gt;
+        <translation type="obsolete">&lt;p&gt;Ecrivez votre message dans cette fenêtre. Ce message sera utilisé par le gestionnaire de version.&lt;/p&gt;
 &lt;p/&gt;
 &lt;p&gt;Le message doit décrire ce qui a été fait, afin de retrouver facilement une ancienne version.&lt;/p&gt;
 &lt;/p&gt;
@@ -237,7 +237,7 @@ p, li { white-space: pre-wrap; }
 &lt;li&gt;&lt;i&gt;Remove and Commit&lt;/i&gt; : If the file is deleted from disk but not from repository&lt;/li&gt;
 &lt;li&gt;&lt;i&gt;Commit&lt;/i&gt; : If the file exist and is modified (checked by default).&lt;/li&gt;&lt;/ul&gt;
 &lt;p&gt;Only checked file are commited.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Ceci est la liste des fichiers à valider. Seuls les fichiers connus sont listés ici (.xsl, .html, .css, .js, ...).&lt;/p&gt;
+        <translation type="obsolete">&lt;p&gt;Ceci est la liste des fichiers à valider. Seuls les fichiers connus sont listés ici (.xsl, .html, .css, .js, ...).&lt;/p&gt;
 &lt;p&gt;Dans cette liste &lt;b&gt;XINX&lt;/b&gt; présente trois actions : &lt;/p&gt;
 &lt;ul&gt;&lt;li&gt;&lt;i&gt;Ajouter et Valider&lt;/i&gt; : Si le fichier n&apos;existe pas dans le référentiel mais existe sur le disque dur.&lt;/li&gt;
 &lt;li&gt;&lt;i&gt;Supprimer et Valider&lt;/i&gt; : Si le fichier est supprimé du disque mais pas du référentiel.&lt;li&gt;
@@ -249,23 +249,23 @@ p, li { white-space: pre-wrap; }
     <name>CommitMessageDialogImpl</name>
     <message>
         <source> ( Commit )</source>
-        <translation> ( Valider )</translation>
+        <translation type="obsolete"> ( Valider )</translation>
     </message>
     <message>
         <source> ( Add and Commit )</source>
-        <translation> ( Ajouter et Valider )</translation>
+        <translation type="obsolete"> ( Ajouter et Valider )</translation>
     </message>
     <message>
         <source> ( Remove and Commit )</source>
-        <translation> ( Supprimer et Valider )</translation>
+        <translation type="obsolete"> ( Supprimer et Valider )</translation>
     </message>
     <message>
         <source>Commit</source>
-        <translation>Valider</translation>
+        <translation type="obsolete">Valider</translation>
     </message>
     <message>
         <source>Nothing to do.</source>
-        <translation>Il n&apos;y a rien à faire.</translation>
+        <translation type="obsolete">Il n&apos;y a rien à faire.</translation>
     </message>
 </context>
 <context>
@@ -273,6 +273,21 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Name</source>
         <translation type="obsolete">Nom</translation>
+    </message>
+</context>
+<context>
+    <name>ConclusionWizardPage</name>
+    <message>
+        <source>Conversion finished</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The conversion is terminated, you can now reopen the project.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The project is now converted. XINX can now open the project file normally.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -328,23 +343,23 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>(en) English</source>
-        <translation>(en) Anglais</translation>
+        <translation type="obsolete">(en) Anglais</translation>
     </message>
     <message>
         <source>(fr_FR) French</source>
-        <translation>(fr_FR) Français</translation>
+        <translation type="obsolete">(fr_FR) Français</translation>
     </message>
     <message>
         <source>&amp;Popup when file modifed</source>
-        <translation>&amp;Avertir lors de la modification d&apos;un fichier</translation>
+        <translation type="obsolete">&amp;Avertir lors de la modification d&apos;un fichier</translation>
     </message>
     <message>
         <source>Tools</source>
-        <translation>Outils</translation>
+        <translation type="obsolete">Outils</translation>
     </message>
     <message>
         <source>Editor</source>
-        <translation>Editeur</translation>
+        <translation type="obsolete">Editeur</translation>
     </message>
     <message>
         <source>Customize syntax</source>
@@ -352,27 +367,27 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Application &amp;description path :</source>
-        <translation>Chemin de &amp;description de l&apos;application :</translation>
+        <translation type="obsolete">Chemin de &amp;description de l&apos;application :</translation>
     </message>
     <message>
         <source>&amp;Language :</source>
-        <translation>&amp;Langue :</translation>
+        <translation type="obsolete">&amp;Langue :</translation>
     </message>
     <message>
         <source>Font &amp;size :</source>
-        <translation>Taille de la &amp;police :</translation>
+        <translation type="obsolete">Taille de la &amp;police :</translation>
     </message>
     <message>
         <source>&amp;Font name :</source>
-        <translation>Police de &amp;Caractère :</translation>
+        <translation type="obsolete">Police de &amp;Caractère :</translation>
     </message>
     <message>
         <source>P&amp;retty print on saving</source>
-        <translation>&amp;Indentation automatique à la sauvegarde</translation>
+        <translation type="obsolete">&amp;Indentation automatique à la sauvegarde</translation>
     </message>
     <message>
         <source>&amp;Create backup file when saving (.bak)</source>
-        <translation>&amp;Créer une sauvegarde avant enregistrement (.bak)</translation>
+        <translation type="obsolete">&amp;Créer une sauvegarde avant enregistrement (.bak)</translation>
     </message>
     <message>
         <source>Active popup completion dialog</source>
@@ -384,7 +399,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Size of a &amp;tabulation :</source>
-        <translation>Taille de la &amp;tabulation :</translation>
+        <translation type="obsolete">Taille de la &amp;tabulation :</translation>
     </message>
     <message>
         <source>&amp;Color :</source>
@@ -408,7 +423,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Default &amp;specifique path name :</source>
-        <translation>Nom par défaut du dossier des &amp;spécifiques :</translation>
+        <translation type="obsolete">Nom par défaut du dossier des &amp;spécifiques :</translation>
     </message>
     <message>
         <source>&amp;Alert user when file is standard (project mode only)</source>
@@ -416,7 +431,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>&amp;Save project with session information by default (content of modified file)</source>
-        <translation>&amp;Sauvegarde le projet avec les informations de session par défaut (contenu des fichiers modifiés)</translation>
+        <translation type="obsolete">&amp;Sauvegarde le projet avec les informations de session par défaut (contenu des fichiers modifiés)</translation>
     </message>
     <message>
         <source>&amp;Default</source>
@@ -432,7 +447,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Show current &amp;line</source>
-        <translation>Affiche la &amp;ligne courant</translation>
+        <translation type="obsolete">Affiche la &amp;ligne courant</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -448,7 +463,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Revision</source>
-        <translation>Révision</translation>
+        <translation type="obsolete">Révision</translation>
     </message>
     <message>
         <source>Interface</source>
@@ -456,35 +471,35 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Font</source>
-        <translation>Police</translation>
+        <translation type="obsolete">Police</translation>
     </message>
     <message>
         <source>Syntax</source>
-        <translation>Syntaxe</translation>
+        <translation type="obsolete">Syntaxe</translation>
     </message>
     <message>
         <source>Project</source>
-        <translation>Projet</translation>
+        <translation type="obsolete">Projet</translation>
     </message>
     <message>
         <source>Modules</source>
-        <translation>Modules</translation>
+        <translation type="obsolete">Modules</translation>
     </message>
     <message>
         <source>Close Tab Button</source>
-        <translation>Bouton de fermeture d&apos;onglet</translation>
+        <translation type="obsolete">Bouton de fermeture d&apos;onglet</translation>
     </message>
     <message>
         <source>Close button on the &amp;tab widget</source>
-        <translation>Bouton de fermeture sur l&apos;&amp;onglet</translation>
+        <translation type="obsolete">Bouton de fermeture sur l&apos;&amp;onglet</translation>
     </message>
     <message>
         <source>Close button on right &amp;corner</source>
-        <translation>Bouton de fermeture sur le &amp;coin droit</translation>
+        <translation type="obsolete">Bouton de fermeture sur le &amp;coin droit</translation>
     </message>
     <message>
         <source>Close button on the tab widget &amp;and the corner</source>
-        <translation>Bouton de fermeture sur l&apos;onglet &amp;et le coin</translation>
+        <translation type="obsolete">Bouton de fermeture sur l&apos;onglet &amp;et le coin</translation>
     </message>
     <message>
         <source>&amp;Code helper :</source>
@@ -492,155 +507,155 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>&amp;Color of highlight:</source>
-        <translation>&amp;Couleur du surligneur:</translation>
+        <translation type="obsolete">&amp;Couleur du surligneur:</translation>
     </message>
     <message>
         <source>&amp;Application server path :</source>
-        <translation>Emplacement du serveur d&apos;&amp;application :</translation>
+        <translation type="obsolete">Emplacement du serveur d&apos;&amp;application :</translation>
     </message>
     <message>
         <source>&amp;Specifique file :</source>
-        <translation>Fichier &amp;spécifique :</translation>
+        <translation type="obsolete">Fichier &amp;spécifique :</translation>
     </message>
     <message>
         <source>XML Pres.</source>
-        <translation>Flux XML.</translation>
+        <translation type="obsolete">Flux XML.</translation>
     </message>
     <message>
         <source>Force current &amp;style :</source>
-        <translation>Force l&apos;utilisation d&apos;un &quot;&amp;style&quot;:</translation>
+        <translation type="obsolete">Force l&apos;utilisation d&apos;un &quot;&amp;style&quot;:</translation>
     </message>
     <message>
         <source>&amp;Close the Version management Log automatically.</source>
-        <translation>&amp;Ferme le journal du gestionnaire de version automatiquement.</translation>
+        <translation type="obsolete">&amp;Ferme le journal du gestionnaire de version automatiquement.</translation>
     </message>
     <message>
         <source>&amp;Update &quot;ChangeLog&quot; automatically.</source>
-        <translation>&amp;Mise à jour du &quot;ChangeLog&quot; automatique.</translation>
+        <translation type="obsolete">&amp;Mise à jour du &quot;ChangeLog&quot; automatique.</translation>
     </message>
     <message>
         <source>&lt;i&gt;Options related to a named revision manager (such as CVS or Subversion) must be changed in the &lt;a href=&quot;#modules&quot;&gt;Modules&lt;/a&gt; section.&lt;/i&gt;</source>
-        <translation>&lt;i&gt;Les options relatives à un gestionnaire de version (comme CVS ou SubVersion) peuvent être modifiées dans la section &lt;a href=&quot;#modules&quot;&gt;Modules&lt;/a&gt;.&lt;/i&gt;</translation>
+        <translation type="obsolete">&lt;i&gt;Les options relatives à un gestionnaire de version (comme CVS ou SubVersion) peuvent être modifiées dans la section &lt;a href=&quot;#modules&quot;&gt;Modules&lt;/a&gt;.&lt;/i&gt;</translation>
     </message>
     <message>
         <source>&lt;p&gt;Choose the default text encoding, when the text encoding can&apos;t be found.
 
 &lt;i&gt;Some editor, can redefined the text encoding (ie: XML and derivated editor). This encoding is used by editor as JavaScript and other&lt;/i&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Permet de choisir l&apos;encodage par défaut quand le texte encodé ne peux être trouvé.
+        <translation type="obsolete">&lt;p&gt;Permet de choisir l&apos;encodage par défaut quand le texte encodé ne peux être trouvé.
 
 &lt;i&gt;Quelque éditeurs peuvent redéfinir l&apos;encodage du texte (ex: l&apos;éditeur XML et ses dérivés). Cet encodage est utilié par l&apos;éditeur JavaScript ainsi que les autres&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Auto highlight same &amp;word</source>
-        <translation>Surligne automatiquement tous les &amp;mots identiques</translation>
+        <translation type="obsolete">Surligne automatiquement tous les &amp;mots identiques</translation>
     </message>
     <message>
         <source>Red</source>
-        <translation>Rouge</translation>
+        <translation type="obsolete">Rouge</translation>
     </message>
     <message>
         <source>Green</source>
-        <translation>Vert</translation>
+        <translation type="obsolete">Vert</translation>
     </message>
     <message>
         <source>Blue</source>
-        <translation>Bleu</translation>
+        <translation type="obsolete">Bleu</translation>
     </message>
     <message>
         <source>Cyan</source>
-        <translation>Bleu ciel</translation>
+        <translation type="obsolete">Bleu ciel</translation>
     </message>
     <message>
         <source>Magenta</source>
-        <translation>Magenta</translation>
+        <translation type="obsolete">Magenta</translation>
     </message>
     <message>
         <source>Yellow</source>
-        <translation>Jaune</translation>
+        <translation type="obsolete">Jaune</translation>
     </message>
     <message>
         <source>Dark Red</source>
-        <translation>Rouge foncé</translation>
+        <translation type="obsolete">Rouge foncé</translation>
     </message>
     <message>
         <source>Dark Green</source>
-        <translation>Vert foncé</translation>
+        <translation type="obsolete">Vert foncé</translation>
     </message>
     <message>
         <source>Dark Blue</source>
-        <translation>Blue foncé</translation>
+        <translation type="obsolete">Blue foncé</translation>
     </message>
     <message>
         <source>Dark Cyan</source>
-        <translation>Bleu ciel foncé</translation>
+        <translation type="obsolete">Bleu ciel foncé</translation>
     </message>
     <message>
         <source>Dark Magenta</source>
-        <translation>Magenta foncé</translation>
+        <translation type="obsolete">Magenta foncé</translation>
     </message>
     <message>
         <source>Dark Yellow</source>
-        <translation>Jaune foncé</translation>
+        <translation type="obsolete">Jaune foncé</translation>
     </message>
     <message>
         <source>White</source>
-        <translation>Blanc</translation>
+        <translation type="obsolete">Blanc</translation>
     </message>
     <message>
         <source>Light Gray</source>
-        <translation>Gris clair</translation>
+        <translation type="obsolete">Gris clair</translation>
     </message>
     <message>
         <source>Gray</source>
-        <translation>Gris</translation>
+        <translation type="obsolete">Gris</translation>
     </message>
     <message>
         <source>Dark Gray</source>
-        <translation>Gris foncé</translation>
+        <translation type="obsolete">Gris foncé</translation>
     </message>
     <message>
         <source>Black</source>
-        <translation>Noir</translation>
+        <translation type="obsolete">Noir</translation>
     </message>
     <message>
         <source>Show &amp;tabulation and space in the editor</source>
-        <translation>Affiche les &amp;tabulations et les espaces dans l&apos;éditeur</translation>
+        <translation type="obsolete">Affiche les &amp;tabulations et les espaces dans l&apos;éditeur</translation>
     </message>
     <message>
         <source>&amp;Default expand path :</source>
-        <translation>Chemin par &amp;défaut à déplier :</translation>
+        <translation type="obsolete">Chemin par &amp;défaut à déplier :</translation>
     </message>
     <message>
         <source>&amp;Element to hide :</source>
-        <translation>&amp;Eléments à cacher :</translation>
+        <translation type="obsolete">&amp;Eléments à cacher :</translation>
     </message>
     <message>
         <source>&amp;Option</source>
-        <translation>&amp;Option</translation>
+        <translation type="obsolete">&amp;Option</translation>
     </message>
     <message>
         <source>&amp;Show sub-element of a corresponding node</source>
-        <translation>&amp;Afficher les sous-éléments à un noeud correspondant</translation>
+        <translation type="obsolete">&amp;Afficher les sous-éléments à un noeud correspondant</translation>
     </message>
     <message>
         <source>&amp;Color</source>
-        <translation>&amp;Couleur</translation>
+        <translation type="obsolete">&amp;Couleur</translation>
     </message>
     <message>
         <source>&amp;View color :</source>
-        <translation>&amp;Couleur d&apos;une vue :</translation>
+        <translation type="obsolete">&amp;Couleur d&apos;une vue :</translation>
     </message>
     <message>
         <source>&amp;Error color :</source>
-        <translation>Couleur d&apos;une &amp;erreur :</translation>
+        <translation type="obsolete">Couleur d&apos;une &amp;erreur :</translation>
     </message>
     <message>
         <source>&amp;Screen data color :</source>
-        <translation>Couleur d&apos;un &amp;screen_data :</translation>
+        <translation type="obsolete">Couleur d&apos;un &amp;screen_data :</translation>
     </message>
     <message>
         <source>Plugins</source>
-        <translation>Modules</translation>
+        <translation type="obsolete">Modules</translation>
     </message>
     <message>
         <source>Script</source>
@@ -649,64 +664,64 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>&lt;p&gt;This is the path where &lt;b&gt;XINX&lt;/b&gt; data files are stored (as snipet or completion file). &lt;/p&gt;
 &lt;p&gt;Normally the directory is stored in the xml sub-directory of &lt;b&gt;XINX&lt;/b&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;C&apos;est le chemin où &lt;b&gt;XINX&lt;/b&gt; stocke les fichiers de données (comme les fichiers de modèle ou d&apos;aide à la saisie).&lt;/p&gt;
+        <translation type="obsolete">&lt;p&gt;C&apos;est le chemin où &lt;b&gt;XINX&lt;/b&gt; stocke les fichiers de données (comme les fichiers de modèle ou d&apos;aide à la saisie).&lt;/p&gt;
 &lt;p&gt;Normalement le dossier du nom de xml est placé dans un sous dossier de &lt;b&gt;XINX&lt;/b&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <source>&lt;p&gt;Langue in which &lt;b&gt;XINX&lt;/b&gt; must be used.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Modification take effect at restart.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Langue dans laquelle &lt;b&gt;XINX&lt;/b&gt; est utilisé.&lt;/p&gt;
+        <translation type="obsolete">&lt;p&gt;Langue dans laquelle &lt;b&gt;XINX&lt;/b&gt; est utilisé.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Les modifications prendront effet au redémarrage.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <source>&lt;p&gt;When an action with the revision control system is made, a log window is open and show information about the progress.&lt;/p&gt;
 &lt;p&gt;If checked, the log windows is automaticallyclosed when action (like update, commit ...) finished.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Quand une action avec le gestionnaire de version est effectuée, un journal est ouvert et affiche des indications sur la progression.&lt;/p&gt;
+        <translation type="obsolete">&lt;p&gt;Quand une action avec le gestionnaire de version est effectuée, un journal est ouvert et affiche des indications sur la progression.&lt;/p&gt;
 &lt;p&gt;Si coché, le journal sera automatiquement fermé à la fin de l&apos;opération (comme la mise à jour, ou la validation, ...).&lt;/p&gt;</translation>
     </message>
     <message>
         <source>&lt;p&gt;When checked, a &lt;i&gt;ChangeLog&lt;/i&gt; file is created/appended at each commit with date, hour, and the commit messages.&lt;/p&gt;</source>
-        <translation>Si coché, un fichier &lt;i&gt;ChangeLog&lt;/i&gt; est créé/mis à jour à chaque validation avec la date, l&apos;heure, et le message de validation.&lt;/p&gt;</translation>
+        <translation type="obsolete">Si coché, un fichier &lt;i&gt;ChangeLog&lt;/i&gt; est créé/mis à jour à chaque validation avec la date, l&apos;heure, et le message de validation.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>&lt;p&gt;List of tools used by &lt;b&gt;XINX&lt;/b&gt; and all plugins. Tools are external application called by this application.&lt;/p&gt;
 &lt;p&gt;If the tool can&apos;t be find, the text color will be &lt;span style=&quot;color:#ff0000;&quot;&gt;red&lt;/span&gt;.&lt;/p&gt;
 &lt;p&gt;To edit a tool, double click (or presse F2) on the path of the tool.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Liste des outils utilisés par &lt;b&gt;XINX&lt;/b&gt; et ces modules. Les outils sont des applications externes appelés par cette application.&lt;/p&gt;
+        <translation type="obsolete">&lt;p&gt;Liste des outils utilisés par &lt;b&gt;XINX&lt;/b&gt; et ces modules. Les outils sont des applications externes appelés par cette application.&lt;/p&gt;
 &lt;p&gt;Si l&apos;outil ne peut être trouvé, le chemin vers l&apos;application sera affiché en &lt;span style=&quot;color:#ff0000;&quot;&gt;rouge&lt;/span&gt;.&lt;/p&gt;
 &lt;p&gt;Pour éditer un outil, vous pouvez double-cliquer (ou presser la toucher F2) sur le chemin de l&apos;outil.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>&lt;p&gt;&lt;img src=&quot;:/images/tabclose.png&quot;/&gt;Show a button on the right corner of &lt;b&gt;XINX&lt;/b&gt;.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;img src=&quot;:/images/tabclose.png&quot;/&gt;Affiche un bouton sur le coin droit de &lt;b&gt;XINX&lt;/b&gt;.&lt;/p&gt;</translation>
+        <translation type="obsolete">&lt;p&gt;&lt;img src=&quot;:/images/tabclose.png&quot;/&gt;Affiche un bouton sur le coin droit de &lt;b&gt;XINX&lt;/b&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>&lt;p&gt;&lt;img src=&quot;:/images/fileclose.png&quot;/&gt;Show a close button on each tab.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;img src=&quot;:/images/fileclose.png&quot;/&gt;Affiche un bouton de fermeture sur chaque onglet.&lt;/p&gt;</translation>
+        <translation type="obsolete">&lt;p&gt;&lt;img src=&quot;:/images/fileclose.png&quot;/&gt;Affiche un bouton de fermeture sur chaque onglet.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>&lt;p&gt;&lt;img src=&quot;:/images/tabclose.png&quot; /&gt;&lt;img src=&quot;:/images/fileclose.png&quot; /&gt;Show a button on the right corner of &lt;b&gt;XINX&lt;/b&gt; and another on each tab. This option is the concatenation of the two other options&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;img src=&quot;:/images/tabclose.png&quot; /&gt;&lt;img src=&quot;:/images/fileclose.png&quot; /&gt;Affiche un bouton sur le coin droit de &lt;b&gt;XINX&lt;/b&gt; ainsi qu&apos;un autre sur chaque onglet. Cette option est la somme des deux autres options.&lt;/p&gt;</translation>
+        <translation type="obsolete">&lt;p&gt;&lt;img src=&quot;:/images/tabclose.png&quot; /&gt;&lt;img src=&quot;:/images/fileclose.png&quot; /&gt;Affiche un bouton sur le coin droit de &lt;b&gt;XINX&lt;/b&gt; ainsi qu&apos;un autre sur chaque onglet. Cette option est la somme des deux autres options.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>&lt;p&gt;Alert user when the file is modified by an extern application. The user has the choice to open the new file (&lt;u&gt;and loose his change&lt;/u&gt;) or keep current file.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Prévient l&apos;utilisateur quand le fichier est modifié par une application externe. L&apos;utilisateur a alors le choix d&apos;ouvrir le nouveau fichier (&lt;u&gt;et alors perdre ses modifications&lt;/u&gt;) ou garder la version courante.&lt;/p&gt;</translation>
+        <translation type="obsolete">&lt;p&gt;Prévient l&apos;utilisateur quand le fichier est modifié par une application externe. L&apos;utilisateur a alors le choix d&apos;ouvrir le nouveau fichier (&lt;u&gt;et alors perdre ses modifications&lt;/u&gt;) ou garder la version courante.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>&lt;p&gt;Create a backup file before saving the file. The backup file is stored in the same directory that the original file. &lt;/p&gt;
 &lt;p&gt;The backup is created by copy the modified file before he his saved.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Crée une sauvegarde du fichier avant l&apos;enregistrement. La sauvegarde est stockée dans le même dossier que le fichier original.&lt;/p&gt;
+        <translation type="obsolete">&lt;p&gt;Crée une sauvegarde du fichier avant l&apos;enregistrement. La sauvegarde est stockée dans le même dossier que le fichier original.&lt;/p&gt;
 &lt;p&gt;Le fichier est copié avant sauvegarde.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>&lt;p&gt;If the box is checked, when saving the file, &lt;b&gt;XINX &lt;/b&gt;apply the pretty print function on the text. This format the code on saving file. &lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Saving file can be slower.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Si la case est cochée, pendant la sauvegarde du fichier, &lt;b&gt;XINX&lt;/b&gt; applique une indentation automatique sur le texte. Ce qui formate le code à l&apos;enregistrement.&lt;/p&gt;
+        <translation type="obsolete">&lt;p&gt;Si la case est cochée, pendant la sauvegarde du fichier, &lt;b&gt;XINX&lt;/b&gt; applique une indentation automatique sur le texte. Ce qui formate le code à l&apos;enregistrement.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;L&apos;enregistrement du fichier peut être lent.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Size of tabulation in number of character. This is the number of character that tabulation replaces.</source>
-        <translation>Taille d&apos;une tabulation en nombre de caractère.</translation>
+        <translation type="obsolete">Taille d&apos;une tabulation en nombre de caractère.</translation>
     </message>
     <message>
         <source>&lt;p&gt;Level of the completion. The completion can be :&lt;/p&gt;
@@ -720,34 +735,34 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Name of the font to use in all editors.</source>
-        <translation>Nom de la police de caractère utilisé dans les éditeurs.</translation>
+        <translation type="obsolete">Nom de la police de caractère utilisé dans les éditeurs.</translation>
     </message>
     <message>
         <source>Size of the font in the editor. The value is a global value.</source>
-        <translation>Taille de la police de caractère dans l&apos;éditeur. </translation>
+        <translation type="obsolete">Taille de la police de caractère dans l&apos;éditeur. </translation>
     </message>
     <message>
         <source>Show the current line in a different color. Usually a blue-gray.</source>
-        <translation>Affiche la ligne courante dans une couleur différente. Généralement un bleu-gris.</translation>
+        <translation type="obsolete">Affiche la ligne courante dans une couleur différente. Généralement un bleu-gris.</translation>
     </message>
     <message>
         <source>&lt;p&gt;Highlight automatically all same word in the editor in the same color.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;This can be slow down the edition mode.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Surligne d&apos;une même couleur automatiquement les mots identiques dans l&apos;éditeur.&lt;/p&gt;
+        <translation type="obsolete">&lt;p&gt;Surligne d&apos;une même couleur automatiquement les mots identiques dans l&apos;éditeur.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Cette option peut ralentir la saisie&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Color used for highlight same word</source>
-        <translation>Couleur utilisée pour surligner les mots identiques</translation>
+        <translation type="obsolete">Couleur utilisée pour surligner les mots identiques</translation>
     </message>
     <message>
         <source>Show tabulation and space in the editor with specialcharacter (in greyed colour).</source>
-        <translation>Affiche les tabulations et les espaces dans l&apos;éditeur avec un caractère spécial (dans une couleur grise).</translation>
+        <translation type="obsolete">Affiche les tabulations et les espaces dans l&apos;éditeur avec un caractère spécial (dans une couleur grise).</translation>
     </message>
     <message>
         <source>&lt;p&gt;List of highlighter. Highlighter is used to color a text in an editor. &lt;/p&gt;
 &lt;p&gt;&lt;i&gt;To add new highlighter, you must add the corresponding plugin.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Liste les modules de coloration syntaxique. La coloration syntaxique est utilisée pour colorer le texte dans l&apos;éditeur.&lt;/p&gt;
+        <translation type="obsolete">&lt;p&gt;Liste les modules de coloration syntaxique. La coloration syntaxique est utilisée pour colorer le texte dans l&apos;éditeur.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Pour ajouter la gestion d&apos;un nouveau type de fichier, il faut ajouter le plugin correspondant.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
@@ -789,7 +804,7 @@ p, li { white-space: pre-wrap; }
 &lt;p&gt;Else, the XINX ask the user about unsaved file.&lt;/p&gt;
 &lt;p/&gt;
 &lt;p&gt;&lt;i&gt;In case of crash &lt;b&gt;XINX&lt;/b&gt; save the project in session mode automatically.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Ceci définit la méthode utilisée pour fermer le projet.&lt;/p&gt;
+        <translation type="obsolete">&lt;p&gt;Ceci définit la méthode utilisée pour fermer le projet.&lt;/p&gt;
 &lt;p&gt;Si coché, quand le projet ou l&apos;application est fermé, les informations à propos des fichiers sont stockées dans le fichier de session même si le fichier n&apos;était pas sauvé.&lt;/p&gt;
 &lt;p&gt;Sinon, XINX demande à l&apos;utilisateur d&apos;enregistrer les fichiers non sauvés.&lt;/p&gt;
 &lt;p/&gt;
@@ -798,56 +813,56 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>&lt;p&gt;This the path where the save dialog must be opened when you create a new project.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;As the author set the project path to the Application Server path, this path is now the project path. You can safely use another path, but in &lt;i&gt;New Project Wizard&lt;/i&gt;, the Application Server path would be wrong.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;C&apos;est le chemin où la boite de dialogue de sauvegarde doit être ouverte lors de la création d&apos;un nouveau projet.&lt;/p&gt;
+        <translation type="obsolete">&lt;p&gt;C&apos;est le chemin où la boite de dialogue de sauvegarde doit être ouverte lors de la création d&apos;un nouveau projet.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Comme l&apos;auteur du logiciel mémorise le chemin du serveur d&apos;application dans ce chemin, c&apos;est maintenant la valeur de ce dossier. Vous pouvez, sans problème, indiquer un autre chemin, mais &lt;i&gt;L&apos;assistant de création de nouveau projet&lt;/i&gt;, le chemin vers le serveur d&apos;application sera faux.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <source>&lt;p&gt;This is the path where derivated files are stored in derivated project mode.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;In &lt;b&gt;Generix&lt;/b&gt;, this is a sub-directory of langue/fra/nav/&lt;/i&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;C&apos;est le chemin où les fichiers dérivés sont enregistrés en mode projet dérivé.&lt;/p&gt;
+        <translation type="obsolete">&lt;p&gt;C&apos;est le chemin où les fichiers dérivés sont enregistrés en mode projet dérivé.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Dans &lt;b&gt;Generix&lt;/b&gt;, c&apos;est le sous-dossier de langue/fra/nav/&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <source>For each type of files, you can choose a sub-directory of the default specifique path name (ie. &lt;i&gt;langue/fra/nav/projet/js&lt;/i&gt;). You can choose if the type of file can be Specifique or not. If not, the sub-directory is ignored.</source>
-        <translation>Pour chaque type de fichier, on peut choisir un sous dossier du dossier par défaut des spécifiques (ie. &lt;i&gt;langue/fra/nav/projet/js&lt;/i&gt;). On peut également choisir si le type de fichier peut être spécifique ou non. Dans ce dernier cas, le sous dossier est ignoré.</translation>
+        <translation type="obsolete">Pour chaque type de fichier, on peut choisir un sous dossier du dossier par défaut des spécifiques (ie. &lt;i&gt;langue/fra/nav/projet/js&lt;/i&gt;). On peut également choisir si le type de fichier peut être spécifique ou non. Dans ce dernier cas, le sous dossier est ignoré.</translation>
     </message>
     <message>
         <source>This is the path where the view must begin. Generally the first node is the root path (ie. &lt;i&gt;/layout_data&lt;/i&gt;)</source>
-        <translation>C&apos;est le chemin où la vue doit commencer. Généralement le premier noeud est la racine (ie. &lt;i&gt;/layout_data&lt;/i&gt;)</translation>
+        <translation type="obsolete">C&apos;est le chemin où la vue doit commencer. Généralement le premier noeud est la racine (ie. &lt;i&gt;/layout_data&lt;/i&gt;)</translation>
     </message>
     <message>
         <source>If checked, when you filter the text, the list show sub-element of node where the filter verify the text.</source>
-        <translation>Si coché, quand on filtre le texte, la liste affiche les sous-éléments d&apos;un noeud correspondant au filtre.</translation>
+        <translation type="obsolete">Si coché, quand on filtre le texte, la liste affiche les sous-éléments d&apos;un noeud correspondant au filtre.</translation>
     </message>
     <message>
         <source>Color of the node of view type (Generally begins by &lt;i&gt;Vue...&lt;/i&gt;)</source>
-        <translation>Couleur du noeud de type Vue (Généralement commencant par &lt;i&gt;Vue...&lt;/i&gt;)</translation>
+        <translation type="obsolete">Couleur du noeud de type Vue (Généralement commencant par &lt;i&gt;Vue...&lt;/i&gt;)</translation>
     </message>
     <message>
         <source>Color of a node with a sub-element of name error.</source>
-        <translation>Couleur du noeud ayant comme sous-élément le nom erreur.</translation>
+        <translation type="obsolete">Couleur du noeud ayant comme sous-élément le nom erreur.</translation>
     </message>
     <message>
         <source>Color of a balise with a &lt;i&gt;screen_data&lt;/i&gt; node.</source>
-        <translation>Couleur du noeud avec un sous-noeud &lt;i&gt;screen_data&lt;/i&gt;.</translation>
+        <translation type="obsolete">Couleur du noeud avec un sous-noeud &lt;i&gt;screen_data&lt;/i&gt;.</translation>
     </message>
     <message>
         <source>&lt;p&gt;List of plugins of &lt;b&gt;XINX&lt;/b&gt;. Plugins are piece of software that can be added without reinstall &lt;b&gt;XINX&lt;/b&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;b&gt;XINX&lt;/b&gt; is now modular, so you can wrote your own plugins and enjoy. Plugins are writte in &lt;i&gt;C++&lt;/i&gt;, use &lt;i&gt;Qt&lt;/i&gt;, and must be in licence accepted by &lt;i&gt;Qt&lt;/i&gt;.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Liste des modules de &lt;b&gt;XINX&lt;/b&gt;. Les modules sont des morceaux de logiciel qui peuvent être ajoutés/supprimés sans réinstaller &lt;b&gt;XINX&lt;/b&gt;.&lt;/p&gt;
+        <translation type="obsolete">&lt;p&gt;Liste des modules de &lt;b&gt;XINX&lt;/b&gt;. Les modules sont des morceaux de logiciel qui peuvent être ajoutés/supprimés sans réinstaller &lt;b&gt;XINX&lt;/b&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;b&gt;XINX&lt;/b&gt; est maintenant modulaire, vous pouvez donc écrire vos propres modules et jouir de leur utilisation. Les modules sont écrits en &lt;i&gt;C++&lt;/i&gt; et utilisent &lt;i&gt;Qt&lt;/i&gt;. La licence doit être compatible avec &lt;i&gt;Qt&lt;/i&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Snipet</source>
-        <translation>Modèle</translation>
+        <translation type="obsolete">Modèle</translation>
     </message>
     <message>
         <source>&amp;Options</source>
-        <translation>&amp;Options</translation>
+        <translation type="obsolete">&amp;Options</translation>
     </message>
     <message>
         <source>List of snipet that could be used as a completion (with the snipet key) or called manually in the menu. You can also import snipet in &lt;b&gt;XINX&lt;/b&gt; file or export snipet to a &lt;i&gt;XML&lt;/i&gt; file.</source>
-        <translation>Liste des modèles pouvant être utilisés lors de la complétion (avec la clé du modèle) ou appelés manuellement dans le menu. Il est aussi possible d&apos;importer dans &lt;b&gt;XINX&lt;/b&gt; des fichiers ou d&apos;exporter des modèles dans un fichier &lt;i&gt;XML&lt;/i&gt;.</translation>
+        <translation type="obsolete">Liste des modèles pouvant être utilisés lors de la complétion (avec la clé du modèle) ou appelés manuellement dans le menu. Il est aussi possible d&apos;importer dans &lt;b&gt;XINX&lt;/b&gt; des fichiers ou d&apos;exporter des modèles dans un fichier &lt;i&gt;XML&lt;/i&gt;.</translation>
     </message>
     <message>
         <source>List of snipet known by &lt;b&gt;XINX&lt;/b&gt;. This snipets can contains keyword and script to held the user to edit text.</source>
@@ -855,63 +870,63 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Open a dialog to create a new snipet.</source>
-        <translation>Ouvre une fenêtre pour créer un nouveau modèle.</translation>
+        <translation type="obsolete">Ouvre une fenêtre pour créer un nouveau modèle.</translation>
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation>&amp;Ajouter</translation>
+        <translation type="obsolete">&amp;Ajouter</translation>
     </message>
     <message>
         <source>Delete selected snipet in the list below.</source>
-        <translation>Supprime les modèles selectionnés dans la liste ci-dessus.</translation>
+        <translation type="obsolete">Supprime les modèles selectionnés dans la liste ci-dessus.</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>&amp;Supprimer</translation>
+        <translation type="obsolete">&amp;Supprimer</translation>
     </message>
     <message>
         <source>Modify the selected snipet.</source>
-        <translation>Modifie le modèle selectionné.</translation>
+        <translation type="obsolete">Modifie le modèle selectionné.</translation>
     </message>
     <message>
         <source>&amp;Modify</source>
-        <translation>&amp;Modifier</translation>
+        <translation type="obsolete">&amp;Modifier</translation>
     </message>
     <message>
         <source>Import a list of snipet from an XML file.</source>
-        <translation>Importe une liste de modèle depuis un fichier XML.</translation>
+        <translation type="obsolete">Importe une liste de modèle depuis un fichier XML.</translation>
     </message>
     <message>
         <source>&amp;Import ...</source>
-        <translation>&amp;Importer ...</translation>
+        <translation type="obsolete">&amp;Importer ...</translation>
     </message>
     <message>
         <source>Export selected snipet to an XML file.</source>
-        <translation>Exporte les modèles selectionnés dans un fichier XML.</translation>
+        <translation type="obsolete">Exporte les modèles selectionnés dans un fichier XML.</translation>
     </message>
     <message>
         <source>&amp;Export ...</source>
-        <translation>&amp;Exporter ...</translation>
+        <translation type="obsolete">&amp;Exporter ...</translation>
     </message>
     <message>
         <source>Scripts</source>
-        <translation>Scripts</translation>
+        <translation type="obsolete">Scripts</translation>
     </message>
     <message>
         <source>&amp;Trace Log File :</source>
-        <translation>Fichier journal de &amp;trace :</translation>
+        <translation type="obsolete">Fichier journal de &amp;trace :</translation>
     </message>
     <message>
         <source>Refresh Directory &amp;Timeout :</source>
-        <translation>&amp;Temps avant actualisation des dossiers :</translation>
+        <translation type="obsolete">&amp;Temps avant actualisation des dossiers :</translation>
     </message>
     <message>
         <source>Timeout before the directory view is reloaded with your filter.</source>
-        <translation>Temps avant lequel la vue des dossiers est rechargée afin de refléter le filtre.</translation>
+        <translation type="obsolete">Temps avant lequel la vue des dossiers est rechargée afin de refléter le filtre.</translation>
     </message>
     <message>
         <source> ms</source>
-        <translation> ms</translation>
+        <translation type="obsolete"> ms</translation>
     </message>
     <message>
         <source>This is the last opened project (&lt;i&gt;if any, it&apos;s the opened project when &lt;b&gt;XINX&lt;/b&gt; is closed&lt;/i&gt;), when &lt;b&gt;XINX&lt;/b&gt; is started.</source>
@@ -919,11 +934,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>&amp;Open the last project at start</source>
-        <translation>&amp;Ouvre le dernier projet au démarrage</translation>
+        <translation type="obsolete">&amp;Ouvre le dernier projet au démarrage</translation>
     </message>
     <message>
         <source>Default text &amp;encoding :</source>
-        <translation>&amp;Encodage par défaut du texte :</translation>
+        <translation type="obsolete">&amp;Encodage par défaut du texte :</translation>
     </message>
     <message>
         <source>&lt;p&gt;Choose the default text encoding, when the text encoding can&apos;t be found. 
@@ -935,84 +950,464 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>&amp;Text content refresh :</source>
-        <translation>&amp;Rafraichissement du contenu :</translation>
+        <translation type="obsolete">&amp;Rafraichissement du contenu :</translation>
     </message>
     <message>
         <source>Number of ms to wait before reloading of the editor content. This timeout is reseted when you hit your keyboard.</source>
-        <translation>Nombre de millisecondes à attendre avant le rechargement du contenu de l&apos;éditeur. A chaque frappe au clavier le compte à rebours est remis à zéro.</translation>
+        <translation type="obsolete">Nombre de millisecondes à attendre avant le rechargement du contenu de l&apos;éditeur. A chaque frappe au clavier le compte à rebours est remis à zéro.</translation>
     </message>
     <message>
         <source>Custom...</source>
-        <translation>Personnaliser ...</translation>
+        <translation type="obsolete">Personnaliser ...</translation>
     </message>
     <message>
         <source>&lt;p&gt;If checked the name attribute is added in &lt;i&gt;XPATH&lt;/i&gt; if possible.&lt;/p&gt;
 
 &lt;p&gt;If checked the &lt;i&gt;XPATH&lt;/i&gt; will be as :
 &lt;code&gt;VueXXXX[@name=&apos;MyName&apos;]&lt;/code&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Si coché l&apos;attribut &quot;name&quot; est ajouté au &lt;i&gt;XPATH&lt;/i&gt;, si possible.&lt;p&gt;
+        <translation type="obsolete">&lt;p&gt;Si coché l&apos;attribut &quot;name&quot; est ajouté au &lt;i&gt;XPATH&lt;/i&gt;, si possible.&lt;p&gt;
 
 &lt;p&gt;Si coché le &lt;i&gt;XPATH&lt;/i&gt; aura la forme : 
 &lt;code&gt;VueXXXX[@name=&apos;MonNom&apos;]&lt;/code&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Show name attribute if exist</source>
-        <translation>Afficher l&apos;attribut Name si possible</translation>
+        <translation type="obsolete">Afficher l&apos;attribut Name si possible</translation>
     </message>
     <message>
         <source>List of snipet (or template) that &lt;b&gt;XINX&lt;/b&gt; can use. A snipet is a piece of code quickly accessible by a key word, or by a menu.</source>
-        <translation>Liste des modèles (snipet ou template) que &lt;b&gt;XINX&lt;/b&gt; peut utiliser. Un modèle est un morceau de code rapidement accessible par un mot clé ou par le menu.</translation>
+        <translation type="obsolete">Liste des modèles (snipet ou template) que &lt;b&gt;XINX&lt;/b&gt; peut utiliser. Un modèle est un morceau de code rapidement accessible par un mot clé ou par le menu.</translation>
     </message>
     <message>
         <source>Duplicate the selected snipet</source>
-        <translation>Duplique le modèle selectionné</translation>
+        <translation type="obsolete">Duplique le modèle selectionné</translation>
     </message>
     <message>
         <source>D&amp;uplicate</source>
-        <translation>D&amp;upliquer</translation>
+        <translation type="obsolete">D&amp;upliquer</translation>
     </message>
     <message>
         <source>Open the last opened project (&lt;i&gt;if any, it&apos;s the opened project when &lt;b&gt;XINX&lt;/b&gt; is closed&lt;/i&gt;), when &lt;b&gt;XINX&lt;/b&gt; is started.</source>
-        <translation>Ouvre le dernier projet ouvert (&lt;i&gt;s&apos;il existe, c&apos;est le projet ouvert lors de la fermeture de &lt;b&gt;XINX&lt;/b&gt;&lt;/i&gt;), quand &lt;b&gt;XINX&lt;/b&gt; démarre.</translation>
+        <translation type="obsolete">Ouvre le dernier projet ouvert (&lt;i&gt;s&apos;il existe, c&apos;est le projet ouvert lors de la fermeture de &lt;b&gt;XINX&lt;/b&gt;&lt;/i&gt;), quand &lt;b&gt;XINX&lt;/b&gt; démarre.</translation>
     </message>
 </context>
 <context>
     <name>CustomDialogImpl</name>
     <message>
         <source>Plugin Customization</source>
-        <translation>Personnalisation du module</translation>
+        <translation type="obsolete">Personnalisation du module</translation>
     </message>
     <message>
         <source>Can&apos;t load the plugin configuration</source>
-        <translation>Ne peut charger la configuration du module</translation>
+        <translation type="obsolete">Ne peut charger la configuration du module</translation>
     </message>
     <message>
         <source>Can&apos;t save the plugin configuration</source>
-        <translation>Ne peut sauvegarder la configuration du plugin</translation>
+        <translation type="obsolete">Ne peut sauvegarder la configuration du plugin</translation>
     </message>
     <message>
         <source>&lt;table&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;hr/&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Author&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;E-Mail&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;mailto:%4&quot;&gt;%4&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Web site&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;%5&quot;&gt;%5&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Version&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Licence&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</source>
-        <translation>&lt;table&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;hr/&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Auteur&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;E-Mail&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;mailto:%4&quot;&gt;%4&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Site internet&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;%5&quot;&gt;%5&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Version&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Licence&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</translation>
+        <translation type="obsolete">&lt;table&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;hr/&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Auteur&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;E-Mail&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;mailto:%4&quot;&gt;%4&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Site internet&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;%5&quot;&gt;%5&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Version&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Licence&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</translation>
     </message>
     <message>
         <source>&amp;Informations</source>
-        <translation>&amp;Informations</translation>
+        <translation type="obsolete">&amp;Informations</translation>
     </message>
     <message>
         <source>&lt;table&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;hr/&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Author&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Version&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Licence&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</source>
-        <translation>&lt;table&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;hr/&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Auteur&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Version&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Licence&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</translation>
+        <translation type="obsolete">&lt;table&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;hr/&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Auteur&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Version&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Licence&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</translation>
     </message>
     <message>
         <source>Import snipets</source>
-        <translation>Importation de modèle</translation>
+        <translation type="obsolete">Importation de modèle</translation>
     </message>
     <message>
         <source>Export snipets</source>
-        <translation>Exportation de modèle</translation>
+        <translation type="obsolete">Exportation de modèle</translation>
     </message>
     <message>
         <source>Author : </source>
         <translation type="obsolete">Auteur :</translation>
+    </message>
+</context>
+<context>
+    <name>CustomEditor</name>
+    <message>
+        <source>Editor</source>
+        <translation type="unfinished">Editeur</translation>
+    </message>
+    <message>
+        <source>&amp;Options</source>
+        <translation type="unfinished">&amp;Options</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;Alert user when the file is modified by an extern application. The user has the choice to open the new file (&lt;u&gt;and loose his change&lt;/u&gt;) or keep current file.&lt;/p&gt;</source>
+        <translation type="unfinished">&lt;p&gt;Prévient l&apos;utilisateur quand le fichier est modifié par une application externe. L&apos;utilisateur a alors le choix d&apos;ouvrir le nouveau fichier (&lt;u&gt;et alors perdre ses modifications&lt;/u&gt;) ou garder la version courante.&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>&amp;Popup when file modifed</source>
+        <translation type="unfinished">&amp;Avertir lors de la modification d&apos;un fichier</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;Create a backup file before saving the file. The backup file is stored in the same directory that the original file. &lt;/p&gt;
+&lt;p&gt;The backup is created by copy the modified file before he his saved.&lt;/p&gt;</source>
+        <translation type="unfinished">&lt;p&gt;Crée une sauvegarde du fichier avant l&apos;enregistrement. La sauvegarde est stockée dans le même dossier que le fichier original.&lt;/p&gt;
+&lt;p&gt;Le fichier est copié avant sauvegarde.&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>&amp;Create backup file when saving (.bak)</source>
+        <translation type="unfinished">&amp;Créer une sauvegarde avant enregistrement (.bak)</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;If the box is checked, when saving the file, &lt;b&gt;XINX &lt;/b&gt;apply the pretty print function on the text. This format the code on saving file. &lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Saving file can be slower.&lt;/i&gt;&lt;/p&gt;</source>
+        <translation type="unfinished">&lt;p&gt;Si la case est cochée, pendant la sauvegarde du fichier, &lt;b&gt;XINX&lt;/b&gt; applique une indentation automatique sur le texte. Ce qui formate le code à l&apos;enregistrement.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;L&apos;enregistrement du fichier peut être lent.&lt;/i&gt;&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>P&amp;retty print on saving</source>
+        <translation type="unfinished">&amp;Indentation automatique à la sauvegarde</translation>
+    </message>
+    <message>
+        <source>Close Tab Button</source>
+        <translation type="unfinished">Bouton de fermeture d&apos;onglet</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;&lt;img src=&quot;:/images/tabclose.png&quot;/&gt;Show a button on the right corner of &lt;b&gt;XINX&lt;/b&gt;.&lt;/p&gt;</source>
+        <translation type="unfinished">&lt;p&gt;&lt;img src=&quot;:/images/tabclose.png&quot;/&gt;Affiche un bouton sur le coin droit de &lt;b&gt;XINX&lt;/b&gt;.&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>Close button on the &amp;tab widget</source>
+        <translation type="unfinished">Bouton de fermeture sur l&apos;&amp;onglet</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;&lt;img src=&quot;:/images/fileclose.png&quot;/&gt;Show a close button on each tab.&lt;/p&gt;</source>
+        <translation type="unfinished">&lt;p&gt;&lt;img src=&quot;:/images/fileclose.png&quot;/&gt;Affiche un bouton de fermeture sur chaque onglet.&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>Close button on right &amp;corner</source>
+        <translation type="unfinished">Bouton de fermeture sur le &amp;coin droit</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;&lt;img src=&quot;:/images/tabclose.png&quot; /&gt;&lt;img src=&quot;:/images/fileclose.png&quot; /&gt;Show a button on the right corner of &lt;b&gt;XINX&lt;/b&gt; and another on each tab. This option is the concatenation of the two other options&lt;/p&gt;</source>
+        <translation type="unfinished">&lt;p&gt;&lt;img src=&quot;:/images/tabclose.png&quot; /&gt;&lt;img src=&quot;:/images/fileclose.png&quot; /&gt;Affiche un bouton sur le coin droit de &lt;b&gt;XINX&lt;/b&gt; ainsi qu&apos;un autre sur chaque onglet. Cette option est la somme des deux autres options.&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>Close button on the tab widget &amp;and the corner</source>
+        <translation type="unfinished">Bouton de fermeture sur l&apos;onglet &amp;et le coin</translation>
+    </message>
+    <message>
+        <source>Default text &amp;encoding :</source>
+        <translation type="unfinished">&amp;Encodage par défaut du texte :</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;Choose the default text encoding, when the text encoding can&apos;t be found.
+
+&lt;i&gt;Some editor, can redefined the text encoding (ie: XML and derivated editor). This encoding is used by editor as JavaScript and other&lt;/i&gt;&lt;/p&gt;</source>
+        <translation type="unfinished">&lt;p&gt;Permet de choisir l&apos;encodage par défaut quand le texte encodé ne peux être trouvé.
+
+&lt;i&gt;Quelque éditeurs peuvent redéfinir l&apos;encodage du texte (ex: l&apos;éditeur XML et ses dérivés). Cet encodage est utilié par l&apos;éditeur JavaScript ainsi que les autres&lt;/i&gt;&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>&amp;Text content refresh :</source>
+        <translation type="unfinished">&amp;Rafraichissement du contenu :</translation>
+    </message>
+    <message>
+        <source>Number of ms to wait before reloading of the editor content. This timeout is reseted when you hit your keyboard.</source>
+        <translation type="unfinished">Nombre de millisecondes à attendre avant le rechargement du contenu de l&apos;éditeur. A chaque frappe au clavier le compte à rebours est remis à zéro.</translation>
+    </message>
+    <message>
+        <source> ms</source>
+        <translation type="unfinished"> ms</translation>
+    </message>
+</context>
+<context>
+    <name>CustomFont</name>
+    <message>
+        <source>Font</source>
+        <translation type="unfinished">Police</translation>
+    </message>
+    <message>
+        <source>&amp;Font name :</source>
+        <translation type="unfinished">Police de &amp;Caractère :</translation>
+    </message>
+    <message>
+        <source>Name of the font to use in all editors.</source>
+        <translation type="unfinished">Nom de la police de caractère utilisé dans les éditeurs.</translation>
+    </message>
+    <message>
+        <source>Font &amp;size :</source>
+        <translation type="unfinished">Taille de la &amp;police :</translation>
+    </message>
+    <message>
+        <source>Size of the font in the editor. The value is a global value.</source>
+        <translation type="unfinished">Taille de la police de caractère dans l&apos;éditeur. </translation>
+    </message>
+    <message>
+        <source>Show the current line in a different color. Usually a blue-gray.</source>
+        <translation type="unfinished">Affiche la ligne courante dans une couleur différente. Généralement un bleu-gris.</translation>
+    </message>
+    <message>
+        <source>Show current &amp;line</source>
+        <translation type="unfinished">Affiche la &amp;ligne courant</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;Highlight automatically all same word in the editor in the same color.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;This can be slow down the edition mode.&lt;/i&gt;&lt;/p&gt;</source>
+        <translation type="unfinished">&lt;p&gt;Surligne d&apos;une même couleur automatiquement les mots identiques dans l&apos;éditeur.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Cette option peut ralentir la saisie&lt;/i&gt;&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>Auto highlight same &amp;word</source>
+        <translation type="unfinished">Surligne automatiquement tous les &amp;mots identiques</translation>
+    </message>
+    <message>
+        <source>&amp;Color of highlight:</source>
+        <translation type="unfinished">&amp;Couleur du surligneur:</translation>
+    </message>
+    <message>
+        <source>Color used for highlight same word</source>
+        <translation type="unfinished">Couleur utilisée pour surligner les mots identiques</translation>
+    </message>
+    <message>
+        <source>Custom...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Red</source>
+        <translation type="unfinished">Rouge</translation>
+    </message>
+    <message>
+        <source>Green</source>
+        <translation type="unfinished">Vert</translation>
+    </message>
+    <message>
+        <source>Blue</source>
+        <translation type="unfinished">Bleu</translation>
+    </message>
+    <message>
+        <source>Cyan</source>
+        <translation type="unfinished">Bleu ciel</translation>
+    </message>
+    <message>
+        <source>Magenta</source>
+        <translation type="unfinished">Magenta</translation>
+    </message>
+    <message>
+        <source>Yellow</source>
+        <translation type="unfinished">Jaune</translation>
+    </message>
+    <message>
+        <source>Dark Red</source>
+        <translation type="unfinished">Rouge foncé</translation>
+    </message>
+    <message>
+        <source>Dark Green</source>
+        <translation type="unfinished">Vert foncé</translation>
+    </message>
+    <message>
+        <source>Dark Blue</source>
+        <translation type="unfinished">Blue foncé</translation>
+    </message>
+    <message>
+        <source>Dark Cyan</source>
+        <translation type="unfinished">Bleu ciel foncé</translation>
+    </message>
+    <message>
+        <source>Dark Magenta</source>
+        <translation type="unfinished">Magenta foncé</translation>
+    </message>
+    <message>
+        <source>Dark Yellow</source>
+        <translation type="unfinished">Jaune foncé</translation>
+    </message>
+    <message>
+        <source>White</source>
+        <translation type="unfinished">Blanc</translation>
+    </message>
+    <message>
+        <source>Light Gray</source>
+        <translation type="unfinished">Gris clair</translation>
+    </message>
+    <message>
+        <source>Gray</source>
+        <translation type="unfinished">Gris</translation>
+    </message>
+    <message>
+        <source>Dark Gray</source>
+        <translation type="unfinished">Gris foncé</translation>
+    </message>
+    <message>
+        <source>Black</source>
+        <translation type="unfinished">Noir</translation>
+    </message>
+    <message>
+        <source>Show tabulation and space in the editor with specialcharacter (in greyed colour).</source>
+        <translation type="unfinished">Affiche les tabulations et les espaces dans l&apos;éditeur avec un caractère spécial (dans une couleur grise).</translation>
+    </message>
+    <message>
+        <source>Show &amp;tabulation and space in the editor</source>
+        <translation type="unfinished">Affiche les &amp;tabulations et les espaces dans l&apos;éditeur</translation>
+    </message>
+    <message>
+        <source>Size of a &amp;tabulation :</source>
+        <translation type="unfinished">Taille de la &amp;tabulation :</translation>
+    </message>
+    <message>
+        <source>Size of tabulation in number of character. This is the number of character that tabulation replaces.</source>
+        <translation type="unfinished">Taille d&apos;une tabulation en nombre de caractère.</translation>
+    </message>
+</context>
+<context>
+    <name>CustomGeneral</name>
+    <message>
+        <source>General</source>
+        <translation type="unfinished">Général</translation>
+    </message>
+    <message>
+        <source>&amp;Language :</source>
+        <translation type="unfinished">&amp;Langue :</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;Langue in which &lt;b&gt;XINX&lt;/b&gt; must be used.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Modification take effect at restart.&lt;/i&gt;&lt;/p&gt;</source>
+        <translation type="unfinished">&lt;p&gt;Langue dans laquelle &lt;b&gt;XINX&lt;/b&gt; est utilisé.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Les modifications prendront effet au redémarrage.&lt;/i&gt;&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>(en) English</source>
+        <translation type="unfinished">(en) Anglais</translation>
+    </message>
+    <message>
+        <source>(fr_FR) French</source>
+        <translation type="unfinished">(fr_FR) Français</translation>
+    </message>
+    <message>
+        <source>&amp;Trace Log File :</source>
+        <translation type="unfinished">Fichier journal de &amp;trace :</translation>
+    </message>
+    <message>
+        <source>Force current &amp;style :</source>
+        <translation type="unfinished">Force l&apos;utilisation d&apos;un &quot;&amp;style&quot;:</translation>
+    </message>
+</context>
+<context>
+    <name>CustomModules</name>
+    <message>
+        <source>Modules</source>
+        <translation type="unfinished">Modules</translation>
+    </message>
+    <message>
+        <source>Plugins</source>
+        <translation type="unfinished">Modules</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;List of plugins of &lt;b&gt;XINX&lt;/b&gt;. Plugins are piece of software that can be added without reinstall &lt;b&gt;XINX&lt;/b&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;XINX&lt;/b&gt; is now modular, so you can wrote your own plugins and enjoy. Plugins are writte in &lt;i&gt;C++&lt;/i&gt;, use &lt;i&gt;Qt&lt;/i&gt;, and must be in licence accepted by &lt;i&gt;Qt&lt;/i&gt;.&lt;/p&gt;</source>
+        <translation type="unfinished">&lt;p&gt;Liste des modules de &lt;b&gt;XINX&lt;/b&gt;. Les modules sont des morceaux de logiciel qui peuvent être ajoutés/supprimés sans réinstaller &lt;b&gt;XINX&lt;/b&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;XINX&lt;/b&gt; est maintenant modulaire, vous pouvez donc écrire vos propres modules et jouir de leur utilisation. Les modules sont écrits en &lt;i&gt;C++&lt;/i&gt; et utilisent &lt;i&gt;Qt&lt;/i&gt;. La licence doit être compatible avec &lt;i&gt;Qt&lt;/i&gt;.&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>Scripts</source>
+        <translation type="unfinished">Scripts</translation>
+    </message>
+</context>
+<context>
+    <name>CustomModulesImpl</name>
+    <message>
+        <source>&lt;table&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;hr/&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Author&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;E-Mail&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;mailto:%4&quot;&gt;%4&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Web site&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;%5&quot;&gt;%5&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Version&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Licence&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</source>
+        <translation type="unfinished">&lt;table&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;hr/&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Auteur&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;E-Mail&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;mailto:%4&quot;&gt;%4&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Site internet&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;%5&quot;&gt;%5&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Version&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Licence&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</translation>
+    </message>
+    <message>
+        <source>&amp;Informations</source>
+        <translation type="unfinished">&amp;Informations</translation>
+    </message>
+    <message>
+        <source>&lt;table&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;hr/&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Author&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Version&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Licence&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</source>
+        <translation type="unfinished">&lt;table&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;hr/&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Auteur&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Version&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Licence&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</translation>
+    </message>
+</context>
+<context>
+    <name>CustomProject</name>
+    <message>
+        <source>Project</source>
+        <translation type="unfinished">Projet</translation>
+    </message>
+    <message>
+        <source>Project &amp;Management</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default open &amp;project directory :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;This the path where the save dialog must be opened when you create a new project.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;As the author set the project path to the Application Server path, this path is now the project path. You can safely use another path, but in &lt;i&gt;New Project Wizard&lt;/i&gt;, the Application Server path would be wrong.&lt;/i&gt;&lt;/p&gt;</source>
+        <translation type="unfinished">&lt;p&gt;C&apos;est le chemin où la boite de dialogue de sauvegarde doit être ouverte lors de la création d&apos;un nouveau projet.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Comme l&apos;auteur du logiciel mémorise le chemin du serveur d&apos;application dans ce chemin, c&apos;est maintenant la valeur de ce dossier. Vous pouvez, sans problème, indiquer un autre chemin, mais &lt;i&gt;L&apos;assistant de création de nouveau projet&lt;/i&gt;, le chemin vers le serveur d&apos;application sera faux.&lt;/i&gt;&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>Refresh Directory &amp;Timeout :</source>
+        <translation type="unfinished">&amp;Temps avant actualisation des dossiers :</translation>
+    </message>
+    <message>
+        <source>Timeout before the directory view is reloaded with your filter.</source>
+        <translation type="unfinished">Temps avant lequel la vue des dossiers est rechargée afin de refléter le filtre.</translation>
+    </message>
+    <message>
+        <source> ms</source>
+        <translation type="unfinished"> ms</translation>
+    </message>
+    <message>
+        <source>Open the last opened project (&lt;i&gt;if any, it&apos;s the opened project when &lt;b&gt;XINX&lt;/b&gt; is closed&lt;/i&gt;), when &lt;b&gt;XINX&lt;/b&gt; is started.</source>
+        <translation type="unfinished">Ouvre le dernier projet ouvert (&lt;i&gt;s&apos;il existe, c&apos;est le projet ouvert lors de la fermeture de &lt;b&gt;XINX&lt;/b&gt;&lt;/i&gt;), quand &lt;b&gt;XINX&lt;/b&gt; démarre.</translation>
+    </message>
+    <message>
+        <source>&amp;Open the last project at start</source>
+        <translation type="unfinished">&amp;Ouvre le dernier projet au démarrage</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;This define the default way to close the project.&lt;/p&gt;
+&lt;p&gt;If checked, when the project, or the application is closed informations about unsaved files are stored in a session file.&lt;/p&gt;
+&lt;p&gt;Else, the XINX ask the user about unsaved file.&lt;/p&gt;
+&lt;p/&gt;
+&lt;p&gt;&lt;i&gt;In case of crash &lt;b&gt;XINX&lt;/b&gt; save the project in session mode automatically.&lt;/i&gt;&lt;/p&gt;</source>
+        <translation type="unfinished">&lt;p&gt;Ceci définit la méthode utilisée pour fermer le projet.&lt;/p&gt;
+&lt;p&gt;Si coché, quand le projet ou l&apos;application est fermé, les informations à propos des fichiers sont stockées dans le fichier de session même si le fichier n&apos;était pas sauvé.&lt;/p&gt;
+&lt;p&gt;Sinon, XINX demande à l&apos;utilisateur d&apos;enregistrer les fichiers non sauvés.&lt;/p&gt;
+&lt;p/&gt;
+&lt;p&gt;&lt;i&gt;Lors d&apos;un plantage &lt;b&gt;XINX&lt;/b&gt; sauve automatiquement le projet en mode session.&lt;/i&gt;&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>&amp;Save project with session information by default (content of modified file)</source>
+        <translation type="unfinished">&amp;Sauvegarde le projet avec les informations de session par défaut (contenu des fichiers modifiés)</translation>
+    </message>
+    <message>
+        <source>General &amp;Revision Control System Options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;When an action with the revision control system is made, a log window is open and show information about the progress.&lt;/p&gt;
+&lt;p&gt;If checked, the log windows is automaticallyclosed when action (like update, commit ...) finished.&lt;/p&gt;</source>
+        <translation type="unfinished">&lt;p&gt;Quand une action avec le gestionnaire de version est effectuée, un journal est ouvert et affiche des indications sur la progression.&lt;/p&gt;
+&lt;p&gt;Si coché, le journal sera automatiquement fermé à la fin de l&apos;opération (comme la mise à jour, ou la validation, ...).&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>&amp;Close the Version management Log automatically.</source>
+        <translation type="unfinished">&amp;Ferme le journal du gestionnaire de version automatiquement.</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;When checked, a &lt;i&gt;ChangeLog&lt;/i&gt; file is created/appended at each commit with date, hour, and the commit messages.&lt;/p&gt;</source>
+        <translation type="unfinished">Si coché, un fichier &lt;i&gt;ChangeLog&lt;/i&gt; est créé/mis à jour à chaque validation avec la date, l&apos;heure, et le message de validation.&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>&amp;Update &quot;ChangeLog&quot; automatically.</source>
+        <translation type="unfinished">&amp;Mise à jour du &quot;ChangeLog&quot; automatique.</translation>
+    </message>
+    <message>
+        <source>&amp;Auto add file to versionning system</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1039,26 +1434,140 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>CustomSnipet</name>
+    <message>
+        <source>Snipet</source>
+        <translation type="unfinished">Modèle</translation>
+    </message>
+    <message>
+        <source>&amp;Filter :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>List of snipet that could be used as a completion (with the snipet key) or called manually in the menu. You can also import snipet in &lt;b&gt;XINX&lt;/b&gt; file or export snipet to a &lt;i&gt;XML&lt;/i&gt; file.</source>
+        <translation type="unfinished">Liste des modèles pouvant être utilisés lors de la complétion (avec la clé du modèle) ou appelés manuellement dans le menu. Il est aussi possible d&apos;importer dans &lt;b&gt;XINX&lt;/b&gt; des fichiers ou d&apos;exporter des modèles dans un fichier &lt;i&gt;XML&lt;/i&gt;.</translation>
+    </message>
+    <message>
+        <source>List of snipet (or template) that &lt;b&gt;XINX&lt;/b&gt; can use. A snipet is a piece of code quickly accessible by a key word, or by a menu.</source>
+        <translation type="unfinished">Liste des modèles (snipet ou template) que &lt;b&gt;XINX&lt;/b&gt; peut utiliser. Un modèle est un morceau de code rapidement accessible par un mot clé ou par le menu.</translation>
+    </message>
+    <message>
+        <source>Open a dialog to create a new snipet.</source>
+        <translation type="unfinished">Ouvre une fenêtre pour créer un nouveau modèle.</translation>
+    </message>
+    <message>
+        <source>&amp;Add</source>
+        <translation type="unfinished">&amp;Ajouter</translation>
+    </message>
+    <message>
+        <source>Delete selected snipet in the list below.</source>
+        <translation type="unfinished">Supprime les modèles selectionnés dans la liste ci-dessus.</translation>
+    </message>
+    <message>
+        <source>&amp;Delete</source>
+        <translation type="unfinished">&amp;Supprimer</translation>
+    </message>
+    <message>
+        <source>Modify the selected snipet.</source>
+        <translation type="unfinished">Modifie le modèle selectionné.</translation>
+    </message>
+    <message>
+        <source>&amp;Modify</source>
+        <translation type="unfinished">&amp;Modifier</translation>
+    </message>
+    <message>
+        <source>Duplicate the selected snipet</source>
+        <translation type="unfinished">Duplique le modèle selectionné</translation>
+    </message>
+    <message>
+        <source>D&amp;uplicate</source>
+        <translation type="unfinished">D&amp;upliquer</translation>
+    </message>
+    <message>
+        <source>Import a list of snipet from an XML file.</source>
+        <translation type="unfinished">Importe une liste de modèle depuis un fichier XML.</translation>
+    </message>
+    <message>
+        <source>&amp;Import ...</source>
+        <translation type="unfinished">&amp;Importer ...</translation>
+    </message>
+    <message>
+        <source>Export selected snipet to an XML file.</source>
+        <translation type="unfinished">Exporte les modèles selectionnés dans un fichier XML.</translation>
+    </message>
+    <message>
+        <source>&amp;Export ...</source>
+        <translation type="unfinished">&amp;Exporter ...</translation>
+    </message>
+</context>
+<context>
+    <name>CustomSnipetImpl</name>
+    <message>
+        <source>Add a new Snipet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add a new Category</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import snipets</source>
+        <translation type="unfinished">Importation de modèle</translation>
+    </message>
+    <message>
+        <source>Export snipets</source>
+        <translation type="unfinished">Exportation de modèle</translation>
+    </message>
+</context>
+<context>
+    <name>CustomSyntax</name>
+    <message>
+        <source>Syntax</source>
+        <translation type="unfinished">Syntaxe</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;List of highlighter. Highlighter is used to color a text in an editor. &lt;/p&gt;
+&lt;p&gt;&lt;i&gt;To add new highlighter, you must add the corresponding plugin.&lt;/i&gt;&lt;/p&gt;</source>
+        <translation type="unfinished">&lt;p&gt;Liste les modules de coloration syntaxique. La coloration syntaxique est utilisée pour colorer le texte dans l&apos;éditeur.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Pour ajouter la gestion d&apos;un nouveau type de fichier, il faut ajouter le plugin correspondant.&lt;/i&gt;&lt;/p&gt;</translation>
+    </message>
+</context>
+<context>
+    <name>CustomTools</name>
+    <message>
+        <source>Tools</source>
+        <translation type="unfinished">Outils</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;List of tools used by &lt;b&gt;XINX&lt;/b&gt; and all plugins. Tools are external application called by this application.&lt;/p&gt;
+&lt;p&gt;If the tool can&apos;t be find, the text color will be &lt;span style=&quot;color:#ff0000;&quot;&gt;red&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;To edit a tool, double click (or presse F2) on the path of the tool.&lt;/p&gt;</source>
+        <translation type="unfinished">&lt;p&gt;Liste des outils utilisés par &lt;b&gt;XINX&lt;/b&gt; et ces modules. Les outils sont des applications externes appelés par cette application.&lt;/p&gt;
+&lt;p&gt;Si l&apos;outil ne peut être trouvé, le chemin vers l&apos;application sera affiché en &lt;span style=&quot;color:#ff0000;&quot;&gt;rouge&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Pour éditer un outil, vous pouvez double-cliquer (ou presser la toucher F2) sur le chemin de l&apos;outil.&lt;/p&gt;</translation>
+    </message>
+</context>
+<context>
     <name>DirRCSModel</name>
     <message>
         <source>Unknown</source>
-        <translation>Inconnu</translation>
+        <translation type="obsolete">Inconnu</translation>
     </message>
     <message>
         <source>Locally modified</source>
-        <translation>Modifié localement</translation>
+        <translation type="obsolete">Modifié localement</translation>
     </message>
     <message>
         <source>Locally added</source>
-        <translation>Ajouté localement</translation>
+        <translation type="obsolete">Ajouté localement</translation>
     </message>
     <message>
         <source>Has conflict</source>
-        <translation>En conflit</translation>
+        <translation type="obsolete">En conflit</translation>
     </message>
     <message>
         <source>No modified</source>
-        <translation>Pas modifié</translation>
+        <translation type="obsolete">Pas modifié</translation>
     </message>
     <message>
         <source>Filename : %1
@@ -1068,7 +1577,7 @@ Date in CVS : %4
 Version : %5
 
 Cache size : %6/%7</source>
-        <translation>Nom du fichier : %1
+        <translation type="obsolete">Nom du fichier : %1
 Statuts : %2
 Date du fichier : %3
 Date dans CVS : %4
@@ -1098,6 +1607,13 @@ Taille du cache : %6/%7</translation>
     <message>
         <source>&amp;Paste</source>
         <translation type="obsolete">Co&amp;ller</translation>
+    </message>
+</context>
+<context>
+    <name>FileContentDockWidget</name>
+    <message>
+        <source>File Content</source>
+        <translation type="unfinished">Contenu du document</translation>
     </message>
 </context>
 <context>
@@ -1179,6 +1695,25 @@ Taille du cache : %6/%7</translation>
     </message>
 </context>
 <context>
+    <name>FileWizardPage</name>
+    <message>
+        <source>Project file selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This wizard will help you to migrate your project file to the current version of XINX. Please fill all fields.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Project file : </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Project Wizard</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>KColorCombo</name>
     <message>
         <source>Custom...</source>
@@ -1198,6 +1733,21 @@ Taille du cache : %6/%7</translation>
     <message>
         <source>The project is now created, please enjoy.</source>
         <translation>Le projet est maintenant créé, régalez-vous.</translation>
+    </message>
+</context>
+<context>
+    <name>LogDockWidget</name>
+    <message>
+        <source>Logs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1</source>
+        <translation type="unfinished">%1</translation>
     </message>
 </context>
 <context>
@@ -1221,6 +1771,10 @@ Taille du cache : %6/%7</translation>
     <message>
         <source>Line</source>
         <translation>Ligne</translation>
+    </message>
+    <message>
+        <source>&amp;Message</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1760,7 +2314,7 @@ Taille du cache : %6/%7</translation>
     </message>
     <message>
         <source>Can&apos;t open project</source>
-        <translation>Ne peut ouvrir le projet</translation>
+        <translation type="obsolete">Ne peut ouvrir le projet</translation>
     </message>
     <message>
         <source>Deserialization</source>
@@ -1772,15 +2326,15 @@ Taille du cache : %6/%7</translation>
     </message>
     <message>
         <source>&lt;Commit with no text&gt;</source>
-        <translation>&lt;Validation sans commentaire&gt;</translation>
+        <translation type="obsolete">&lt;Validation sans commentaire&gt;</translation>
     </message>
     <message>
         <source>Project Directory</source>
-        <translation>Dossier projet</translation>
+        <translation type="obsolete">Dossier projet</translation>
     </message>
     <message>
         <source>File Content</source>
-        <translation>Contenu du document</translation>
+        <translation type="obsolete">Contenu du document</translation>
     </message>
     <message>
         <source>XML Presentation</source>
@@ -1788,11 +2342,11 @@ Taille du cache : %6/%7</translation>
     </message>
     <message>
         <source>Snipets</source>
-        <translation>Modèles</translation>
+        <translation type="obsolete">Modèles</translation>
     </message>
     <message>
         <source>Log</source>
-        <translation>Journal</translation>
+        <translation type="obsolete">Journal</translation>
     </message>
     <message>
         <source>New %1</source>
@@ -1848,11 +2402,11 @@ Voulez-vous sauver les changements ?</translation>
     </message>
     <message>
         <source>Tools</source>
-        <translation>Outils</translation>
+        <translation type="obsolete">Outils</translation>
     </message>
     <message>
         <source>Compare</source>
-        <translation>Comparer</translation>
+        <translation type="obsolete">Comparer</translation>
     </message>
     <message>
         <source>Standard file %1 not found or not in specifique directory.</source>
@@ -1860,11 +2414,11 @@ Voulez-vous sauver les changements ?</translation>
     </message>
     <message>
         <source>Standard file for %1 not found or not in specifique directory.</source>
-        <translation>Le fichier standard pour %1 ne peut être trouvé ou n&apos;est pas dans le dossier spécifique.</translation>
+        <translation type="obsolete">Le fichier standard pour %1 ne peut être trouvé ou n&apos;est pas dans le dossier spécifique.</translation>
     </message>
     <message>
         <source>Not a specifique file</source>
-        <translation>Le fichier n&apos;est pas spécifique</translation>
+        <translation type="obsolete">Le fichier n&apos;est pas spécifique</translation>
     </message>
     <message>
         <source>Replace text</source>
@@ -1904,7 +2458,7 @@ Voulez-vous sauver les changements ?</translation>
     </message>
     <message>
         <source>Can&apos;t stop a project for plugin &quot;%1&quot;</source>
-        <translation>Le module &quot;%1&quot; ne peut arrêter le projet</translation>
+        <translation type="obsolete">Le module &quot;%1&quot; ne peut arrêter le projet</translation>
     </message>
     <message>
         <source>XINX</source>
@@ -1920,11 +2474,11 @@ Voulez-vous sauver les changements ?</translation>
     </message>
     <message>
         <source>Error when restoring editor for %1</source>
-        <translation>Erreur lors de la restauration de l&apos;éditeur %1</translation>
+        <translation type="obsolete">Erreur lors de la restauration de l&apos;éditeur %1</translation>
     </message>
     <message>
         <source>Can&apos;t start a project for plugin &quot;%1&quot;</source>
-        <translation>Le module &quot;%1&quot; ne peut démarrer le projet</translation>
+        <translation type="obsolete">Le module &quot;%1&quot; ne peut démarrer le projet</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -1964,7 +2518,7 @@ Voulez-vous sauver les changements ?</translation>
     </message>
     <message>
         <source>&amp;Template</source>
-        <translation>&amp;Modèle</translation>
+        <translation type="obsolete">&amp;Modèle</translation>
     </message>
     <message>
         <source>&amp;New</source>
@@ -2172,27 +2726,27 @@ Voulez-vous sauver les changements ?</translation>
     </message>
     <message>
         <source>&amp;Comment</source>
-        <translation>&amp;Commenter</translation>
+        <translation type="obsolete">&amp;Commenter</translation>
     </message>
     <message>
         <source>Comment the selected text</source>
-        <translation>Commente le texte sélectionné</translation>
+        <translation type="obsolete">Commente le texte sélectionné</translation>
     </message>
     <message>
         <source>Comment the selected text with the specifique guidelines of the language. &lt;ul&gt;&lt;li&gt;In &lt;b&gt;XML&lt;/b&gt; like format &lt;i&gt;&amp;lt;!-- comment --&amp;gt;&lt;/i&gt;&lt;/li&gt; &lt;li&gt;In &lt;b&gt;Javascript&lt;/b&gt; : &lt;i&gt;/* comment */&lt;/i&gt; &lt;/li&gt;&lt;/ul&gt;</source>
-        <translation>Commente le texte sélectionné selon le type de langage. &lt;ul&gt;&lt;li&gt;Dans du &lt;b&gt;XML&lt;/b&gt; comme &lt;i&gt;&amp;lt;!-- comment --&amp;gt;&lt;/li&gt;&lt;li&gt;Dans du &lt;b&gt;JavaScript&lt;/b&gt; : &lt;i&gt; /* comment */&lt;/i&gt;&lt;/li&gt;&lt;/ul&gt;</translation>
+        <translation type="obsolete">Commente le texte sélectionné selon le type de langage. &lt;ul&gt;&lt;li&gt;Dans du &lt;b&gt;XML&lt;/b&gt; comme &lt;i&gt;&amp;lt;!-- comment --&amp;gt;&lt;/li&gt;&lt;li&gt;Dans du &lt;b&gt;JavaScript&lt;/b&gt; : &lt;i&gt; /* comment */&lt;/i&gt;&lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
     <message>
         <source>&amp;Uncomment</source>
-        <translation>&amp;Décommenter</translation>
+        <translation type="obsolete">&amp;Décommenter</translation>
     </message>
     <message>
         <source>Uncomment the selected text if commented</source>
-        <translation>Décommente le texte sélectionné si commenté</translation>
+        <translation type="obsolete">Décommente le texte sélectionné si commenté</translation>
     </message>
     <message>
         <source>See the comment helper function</source>
-        <translation>Voir l&apos;aide de la fonction de commentaire</translation>
+        <translation type="obsolete">Voir l&apos;aide de la fonction de commentaire</translation>
     </message>
     <message>
         <source>Indent Code</source>
@@ -2312,39 +2866,39 @@ Voulez-vous sauver les changements ?</translation>
     </message>
     <message>
         <source>Update project</source>
-        <translation>Mise à jour du projet</translation>
+        <translation type="obsolete">Mise à jour du projet</translation>
     </message>
     <message>
         <source>Call the update fonction of your &lt;i&gt;revision control system&lt;/i&gt; for all the project directory.</source>
-        <translation>Appelle la fonction de mise à jours du &lt;i&gt;gestionnaire de version&lt;/i&gt; pour tout le dossier projet.</translation>
+        <translation type="obsolete">Appelle la fonction de mise à jours du &lt;i&gt;gestionnaire de version&lt;/i&gt; pour tout le dossier projet.</translation>
     </message>
     <message>
         <source>Commit project</source>
-        <translation>Validation du projet</translation>
+        <translation type="obsolete">Validation du projet</translation>
     </message>
     <message>
         <source>Cancel RCS operation</source>
-        <translation>Annule l&apos;opération</translation>
+        <translation type="obsolete">Annule l&apos;opération</translation>
     </message>
     <message>
         <source>Compare with the version management</source>
-        <translation>Comparer avec le gestionnaire de version</translation>
+        <translation type="obsolete">Comparer avec le gestionnaire de version</translation>
     </message>
     <message>
         <source>Compare files</source>
-        <translation>Comparer les fichiers</translation>
+        <translation type="obsolete">Comparer les fichiers</translation>
     </message>
     <message>
         <source>Compare with standard</source>
-        <translation>Comparer avec le standard</translation>
+        <translation type="obsolete">Comparer avec le standard</translation>
     </message>
     <message>
         <source>Add file(s) to project</source>
-        <translation>Ajouter un/des fichier(s) au projet</translation>
+        <translation type="obsolete">Ajouter un/des fichier(s) au projet</translation>
     </message>
     <message>
         <source>Delete file(s) from project</source>
-        <translation>Supprimer un/des fichier(s) du projet</translation>
+        <translation type="obsolete">Supprimer un/des fichier(s) du projet</translation>
     </message>
     <message>
         <source>Next tab</source>
@@ -2360,11 +2914,11 @@ Voulez-vous sauver les changements ?</translation>
     </message>
     <message>
         <source>Create &amp;template</source>
-        <translation>Créer un &amp;modèle</translation>
+        <translation type="obsolete">Créer un &amp;modèle</translation>
     </message>
     <message>
         <source>&amp;Refresh Snipets</source>
-        <translation>&amp;Actualiser les modèles</translation>
+        <translation type="obsolete">&amp;Actualiser les modèles</translation>
     </message>
     <message>
         <source>&amp;Refresh Scripts</source>
@@ -2398,6 +2952,42 @@ Voulez-vous sauver les changements ?</translation>
         <source>Show the application&apos;s About box</source>
         <translation>Afficher les informations de l&apos;application</translation>
     </message>
+    <message>
+        <source>&amp;Snipet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Always show run snipet dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Snipet is not supported in this kind of editor.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save text file</source>
+        <translation type="unfinished">Sauver le fichier texte</translation>
+    </message>
+    <message>
+        <source>Projet (*%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open the project ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close previous project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set the current project of &lt;b&gt;XINX&lt;/b&gt;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Can&apos;t start a project at the step &quot;%1&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>NewProjectWizard</name>
@@ -2412,6 +3002,167 @@ Voulez-vous sauver les changements ?</translation>
     <message>
         <source>Can&apos;t save &quot;%1&quot; page</source>
         <translation>Ne peut pas sauvegarder la page &quot;%1&quot;</translation>
+    </message>
+</context>
+<context>
+    <name>NewVersionWizard</name>
+    <message>
+        <source>Welcom in XINX</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>First Installation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This is the first installation of &lt;span style=&quot; font-weight:600;&quot;&gt;XINX&lt;/span&gt; or you upgrade from an old version.  This wizard will help you to define or redefine some important &lt;span style=&quot; font-weight:600;&quot;&gt;XINX&lt;/span&gt; options.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Next, in the custom dialog, you can modifiy more options to customize &lt;span style=&quot; font-weight:600;&quot;&gt;XINX&lt;/span&gt; as you want, to improve your developpement.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please report, if necessary, all options that you need and that &lt;span style=&quot; font-weight:600;&quot;&gt;XINX&lt;/span&gt; don&apos;t have.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Global Application Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>In this page, we adjust global settings, used by the application for accesibility (as lang, or automatic task) or for the creation of new project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Language :</source>
+        <translation type="unfinished">&amp;Langue :</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;Langue in which &lt;b&gt;XINX&lt;/b&gt; must be used.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Modification take effect at restart.&lt;/i&gt;&lt;/p&gt;</source>
+        <translation type="unfinished">&lt;p&gt;Langue dans laquelle &lt;b&gt;XINX&lt;/b&gt; est utilisé.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Les modifications prendront effet au redémarrage.&lt;/i&gt;&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>(en) English</source>
+        <translation type="unfinished">(en) Anglais</translation>
+    </message>
+    <message>
+        <source>(fr_FR) French</source>
+        <translation type="unfinished">(fr_FR) Français</translation>
+    </message>
+    <message>
+        <source>Auto refresh directory dock</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open the last opened project (&lt;i&gt;if any, it&apos;s the opened project when &lt;b&gt;XINX&lt;/b&gt; is closed&lt;/i&gt;), when &lt;b&gt;XINX&lt;/b&gt; is started.</source>
+        <translation type="unfinished">Ouvre le dernier projet ouvert (&lt;i&gt;s&apos;il existe, c&apos;est le projet ouvert lors de la fermeture de &lt;b&gt;XINX&lt;/b&gt;&lt;/i&gt;), quand &lt;b&gt;XINX&lt;/b&gt; démarre.</translation>
+    </message>
+    <message>
+        <source>&amp;Open the last project at start</source>
+        <translation type="unfinished">&amp;Ouvre le dernier projet au démarrage</translation>
+    </message>
+    <message>
+        <source>Default open &amp;project directory :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;This the path where the save dialog must be opened when you create a new project.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;As the author set the project path to the Application Server path, this path is now the project path. You can safely use another path, but in &lt;i&gt;New Project Wizard&lt;/i&gt;, the Application Server path would be wrong.&lt;/i&gt;&lt;/p&gt;</source>
+        <translation type="unfinished">&lt;p&gt;C&apos;est le chemin où la boite de dialogue de sauvegarde doit être ouverte lors de la création d&apos;un nouveau projet.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Comme l&apos;auteur du logiciel mémorise le chemin du serveur d&apos;application dans ce chemin, c&apos;est maintenant la valeur de ce dossier. Vous pouvez, sans problème, indiquer un autre chemin, mais &lt;i&gt;L&apos;assistant de création de nouveau projet&lt;/i&gt;, le chemin vers le serveur d&apos;application sera faux.&lt;/i&gt;&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;Choose the default text encoding, when the text encoding can&apos;t be found.
+
+&lt;i&gt;Some editor, can redefined the text encoding (ie: XML and derivated editor). This encoding is used by editor as JavaScript and other&lt;/i&gt;&lt;/p&gt;</source>
+        <translation type="unfinished">&lt;p&gt;Permet de choisir l&apos;encodage par défaut quand le texte encodé ne peux être trouvé.
+
+&lt;i&gt;Quelque éditeurs peuvent redéfinir l&apos;encodage du texte (ex: l&apos;éditeur XML et ses dérivés). Cet encodage est utilié par l&apos;éditeur JavaScript ainsi que les autres&lt;/i&gt;&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>Default text &amp;encoding :</source>
+        <translation type="unfinished">&amp;Encodage par défaut du texte :</translation>
+    </message>
+    <message>
+        <source>Edtior Settings Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>In this page we adjust settins used by the editor. In this page we can adjust effect, used to facilitate the edition (has show the current line, space, tabulation).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;Alert user when the file is modified by an extern application. The user has the choice to open the new file (&lt;u&gt;and loose his change&lt;/u&gt;) or keep current file.&lt;/p&gt;</source>
+        <translation type="unfinished">&lt;p&gt;Prévient l&apos;utilisateur quand le fichier est modifié par une application externe. L&apos;utilisateur a alors le choix d&apos;ouvrir le nouveau fichier (&lt;u&gt;et alors perdre ses modifications&lt;/u&gt;) ou garder la version courante.&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>&amp;Popup when file modifed</source>
+        <translation type="unfinished">&amp;Avertir lors de la modification d&apos;un fichier</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;Create a backup file before saving the file. The backup file is stored in the same directory that the original file. &lt;/p&gt;
+&lt;p&gt;The backup is created by copy the modified file before he his saved.&lt;/p&gt;</source>
+        <translation type="unfinished">&lt;p&gt;Crée une sauvegarde du fichier avant l&apos;enregistrement. La sauvegarde est stockée dans le même dossier que le fichier original.&lt;/p&gt;
+&lt;p&gt;Le fichier est copié avant sauvegarde.&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>&amp;Create backup file when saving (.bak)</source>
+        <translation type="unfinished">&amp;Créer une sauvegarde avant enregistrement (.bak)</translation>
+    </message>
+    <message>
+        <source>&amp;Graphics effect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show tabulation and space in the editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show current line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Auto highlight same word</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pretty Print on saving</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tools Settings Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>In this page you can define path to tools that can be use by XINX.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;List of tools used by &lt;b&gt;XINX&lt;/b&gt; and all plugins. Tools are external application called by this application.&lt;/p&gt;
+&lt;p&gt;If the tool can&apos;t be find, the text color will be &lt;span style=&quot;color:#ff0000;&quot;&gt;red&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;To edit a tool, double click (or presse F2) on the path of the tool.&lt;/p&gt;</source>
+        <translation type="unfinished">&lt;p&gt;Liste des outils utilisés par &lt;b&gt;XINX&lt;/b&gt; et ces modules. Les outils sont des applications externes appelés par cette application.&lt;/p&gt;
+&lt;p&gt;Si l&apos;outil ne peut être trouvé, le chemin vers l&apos;application sera affiché en &lt;span style=&quot;color:#ff0000;&quot;&gt;rouge&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Pour éditer un outil, vous pouvez double-cliquer (ou presser la toucher F2) sur le chemin de l&apos;outil.&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>Conclusion</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>We have now customize XINX. You can adjsute XINX settings by opening the good &quot;Customize dialog&quot;. In the tools menu.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Have fun with XINX.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Open the customize dialog page to made more settings.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2675,6 +3426,24 @@ Date du fichier : %4</translation>
     </message>
 </context>
 <context>
+    <name>ProgressWizardPage</name>
+    <message>
+        <source>Progress of the conversion</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please wait ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ProjectConverter</name>
+    <message>
+        <source>XINX Project file</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ProjectDirectoryDockWidget</name>
     <message>
         <source>&amp;Copy filename to Clipboard</source>
@@ -2683,6 +3452,34 @@ Date du fichier : %4</translation>
     <message>
         <source>C&amp;opy path to clipboard</source>
         <translation>C&amp;opie le chemin au presse-papier</translation>
+    </message>
+    <message>
+        <source>Project Directory</source>
+        <translation type="unfinished">Dossier projet</translation>
+    </message>
+    <message>
+        <source>Compare with the version management</source>
+        <translation type="unfinished">Comparer avec le gestionnaire de version</translation>
+    </message>
+    <message>
+        <source>Compare files</source>
+        <translation type="unfinished">Comparer les fichiers</translation>
+    </message>
+    <message>
+        <source>Update project</source>
+        <translation type="unfinished">Mise à jour du projet</translation>
+    </message>
+    <message>
+        <source>Commit project</source>
+        <translation type="unfinished">Validation du projet</translation>
+    </message>
+    <message>
+        <source>Add file(s) to project</source>
+        <translation type="unfinished">Ajouter un/des fichier(s) au projet</translation>
+    </message>
+    <message>
+        <source>Delete file(s) from project</source>
+        <translation type="unfinished">Supprimer un/des fichier(s) du projet</translation>
     </message>
 </context>
 <context>
@@ -2701,7 +3498,7 @@ Date du fichier : %4</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation>Effacer</translation>
+        <translation type="obsolete">Effacer</translation>
     </message>
     <message>
         <source>Call the update fonction of your &lt;i&gt;revision control system&lt;/i&gt; for all the project directory.</source>
@@ -2715,7 +3512,7 @@ Date du fichier : %4</translation>
     </message>
     <message>
         <source>This is a list of prefix used in the project. This list is used to check if a file is standard or derived. The selected prefix is used when saving standard file, to propose automatically the file name prefixed of the selected value.</source>
-        <translation>Liste des préfixes utilisée par le projet. Cette liste est utilisée pour vérifier si le fichier est standard ou dérivé. Le préfix sélectionné est utilisé pour la sauvegarde de fichier standard.</translation>
+        <translation type="obsolete">Liste des préfixes utilisée par le projet. Cette liste est utilisée pour vérifier si le fichier est standard ou dérivé. Le préfix sélectionné est utilisé pour la sauvegarde de fichier standard.</translation>
     </message>
     <message>
         <source>If checked the list is showed as flat instead of tree. Each list of file is preceded of a directory header.</source>
@@ -2723,7 +3520,7 @@ Date du fichier : %4</translation>
     </message>
     <message>
         <source>Clear the content of filter and restore the project directory view.</source>
-        <translation>Efface le contenu du filtre et restaure la vue du dossier projet.</translation>
+        <translation type="obsolete">Efface le contenu du filtre et restaure la vue du dossier projet.</translation>
     </message>
     <message>
         <source>Filter the view on files present in the project directory. (joker as * and ? can be used). When filter is actived, the view is automatically switched in flat view. When filter is cleared, the view is switched in tree view.</source>
@@ -2758,11 +3555,11 @@ Date du fichier : %4</translation>
     </message>
     <message>
         <source>&amp;Derivated from standard</source>
-        <translation>&amp;Dérivé du standard</translation>
+        <translation type="obsolete">&amp;Dérivé du standard</translation>
     </message>
     <message>
         <source>Change the &amp;standard</source>
-        <translation>Modification sur le &amp;standard</translation>
+        <translation type="obsolete">Modification sur le &amp;standard</translation>
     </message>
     <message>
         <source>&amp;Name of the project :</source>
@@ -2770,11 +3567,11 @@ Date du fichier : %4</translation>
     </message>
     <message>
         <source>&amp;Application Server Directory :</source>
-        <translation>Dossier du serveur d&apos;&amp;application :</translation>
+        <translation type="obsolete">Dossier du serveur d&apos;&amp;application :</translation>
     </message>
     <message>
         <source>Application Server &amp;Log Directory :</source>
-        <translation>Dossier des &amp;journaux du serveur d&apos;application :</translation>
+        <translation type="obsolete">Dossier des &amp;journaux du serveur d&apos;application :</translation>
     </message>
     <message>
         <source>&amp;Project Directory :</source>
@@ -2788,7 +3585,7 @@ Date du fichier : %4</translation>
         <source>&lt;p&gt;This wizard will help you to create a &lt;b&gt;XINX&lt;/b&gt; project and define some important variables.&lt;/p&gt;
 &lt;p&gt;In &lt;b&gt;XINX&lt;/b&gt;, a project is used to use the &lt;i&gt;file research &lt;/i&gt;in a project, use a &lt;i&gt;revision control system&lt;/i&gt;, or use a &lt;i&gt;project prefix&lt;/i&gt; in derivated modules.&lt;/p&gt;
 &lt;p&gt;A project can define web services too.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Cet assistant vous aidera à créer un projet &lt;b&gt;XINX&lt;/b&gt; et à définir les variables importantes.&lt;/p&gt;
+        <translation type="obsolete">&lt;p&gt;Cet assistant vous aidera à créer un projet &lt;b&gt;XINX&lt;/b&gt; et à définir les variables importantes.&lt;/p&gt;
 &lt;p&gt;Dans &lt;b&gt;XINX&lt;/b&gt;, un projet est utilisé sur la &lt;i&gt;recherche fichier&lt;/i&gt; dans un projet, utilise un &lt;i&gt;gestionnaire de version&lt;/i&gt;, ou utiliser un &lt;i&gt;préfixe projet&lt;/i&gt; dans les modules dérivés.&lt;/p&gt;
 &lt;p&gt;Un projet peut également définir des services internet.&lt;/p&gt;</translation>
     </message>
@@ -2796,13 +3593,13 @@ Date du fichier : %4</translation>
         <source>&lt;p&gt;In a derivated project, the file prefix is used to check if a file is derivated or standard.&lt;/p&gt;
 &lt;p&gt;A derivated file, he begins by the prefix and an underscore like &apos;&lt;i&gt;&amp;lt;prefix&amp;gt;_&amp;lt;filename&amp;gt;.&amp;lt;ext&amp;gt;&lt;/i&gt;&apos;.&lt;/p&gt;
 &lt;p&gt;If you save a standard file, &lt;b&gt;XINX&lt;/b&gt; propose you to derive the file, and if possible to add the file in the &lt;i&gt;revision control system&lt;/i&gt;.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Dans un projet dérivé, le préfixe fichier est utilisé pour vérifier si un fichier est standard ou dérivé.&lt;/p&gt;
+        <translation type="obsolete">&lt;p&gt;Dans un projet dérivé, le préfixe fichier est utilisé pour vérifier si un fichier est standard ou dérivé.&lt;/p&gt;
 &lt;p&gt;Un fichier dérivé commence par un préfixe, suivi d&apos;un surligneur, comme &apos;&lt;i&gt;&amp;lt;prefix&amp;gt;_&amp;lt;filename&amp;gt;.&amp;lt;ext&amp;gt;&lt;/i&gt;&apos;.&lt;/p&gt;
 &lt;p&gt;Si on sauve un fichier standard, &lt;b&gt;XINX&lt;/b&gt; vous propose de dériver le fichier, et si possible de l&apos;ajouter dans le &lt;i&gt;gestionnaire de version&lt;/i&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>If the project is full standard, the project don&apos;t ask you to save the file with a specifique prefix.</source>
-        <translation>Si le projet est complétement standard, &lt;b&gt;XINX&lt;/b&gt; ne demandera pas à sauvegarder les fichiers avec un préfix spécifique.</translation>
+        <translation type="obsolete">Si le projet est complétement standard, &lt;b&gt;XINX&lt;/b&gt; ne demandera pas à sauvegarder les fichiers avec un préfix spécifique.</translation>
     </message>
     <message>
         <source>Name of the project showed in the title bar of &lt;b&gt;XINX&lt;/b&gt;, the project name is appended to the application server directory and showed the project directory.</source>
@@ -2810,17 +3607,23 @@ Date du fichier : %4</translation>
     </message>
     <message>
         <source>The &lt;i&gt;application serveur directory&lt;/i&gt; is used to fill the &lt;i&gt;applcation server log directory&lt;/i&gt;, and the &lt;i&gt;project directory&lt;/i&gt;. The default value for this field is the &lt;i&gt;application server directory&lt;/i&gt; from the settings dialog.</source>
-        <translation>Le &lt;i&gt;chemin du serveur d&apos;application&lt;/i&gt; est utilisé pour remplir automatiquement le &lt;i&gt;chemin des journaux du serveur d&apos;application&lt;/i&gt;, ainsi que le &lt;i&gt;dossier projet&lt;/i&gt;. La valeur par défaut de ce champ est le &lt;i&gt;chemin du serveur d&apos;application&lt;/i&gt; de la boite de dialogue de personnalisation.</translation>
+        <translation type="obsolete">Le &lt;i&gt;chemin du serveur d&apos;application&lt;/i&gt; est utilisé pour remplir automatiquement le &lt;i&gt;chemin des journaux du serveur d&apos;application&lt;/i&gt;, ainsi que le &lt;i&gt;dossier projet&lt;/i&gt;. La valeur par défaut de ce champ est le &lt;i&gt;chemin du serveur d&apos;application&lt;/i&gt; de la boite de dialogue de personnalisation.</translation>
     </message>
     <message>
         <source>This is the server log directory, used to list presentation files in the &lt;i&gt;XML presentation View&lt;/i&gt;.</source>
-        <translation>C&apos;est le dossier des journaux du serveur, utilisé pour lister tous les flux de présentation dans la fenêtre &lt;i&gt;Flux de présentation&lt;/i&gt;.</translation>
+        <translation type="obsolete">C&apos;est le dossier des journaux du serveur, utilisé pour lister tous les flux de présentation dans la fenêtre &lt;i&gt;Flux de présentation&lt;/i&gt;.</translation>
     </message>
     <message>
         <source>&lt;p&gt;This is the project directory, generally where is stored the &lt;i&gt;configuration.xml&lt;/i&gt; file.&lt;/p&gt;
 &lt;p&gt;This is the racine where the &lt;i&gt;project file view&lt;/i&gt; start.&lt;/p&gt;</source>
         <translation>&lt;p&gt;C&apos;est le chemin du dossier projet, généralement là où est stocké le fichier &lt;i&gt;configuration.xml&lt;/i&gt;.&lt;/p&gt;
 &lt;p&gt;C&apos;est la racine où la &lt;i&gt;vue projet&lt;/i&gt; commence.&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>This wizard will help you to create a &lt;b&gt;XINX&lt;/b&gt; project and define some important variables.&lt;br/&gt;&lt;br/&gt;
+In &lt;b&gt;XINX&lt;/b&gt;, a project is used to use the &lt;i&gt;file research&lt;/i&gt;in a project, use a &lt;i&gt;revision control system&lt;/i&gt;, or use for other purpose in the &lt;b&gt;XINX&lt;/b&gt; modules.&lt;br/&gt;&lt;br/&gt;
+A project can define web services too.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2831,7 +3634,7 @@ Date du fichier : %4</translation>
     </message>
     <message>
         <source>Project</source>
-        <translation>Projet</translation>
+        <translation type="obsolete">Projet</translation>
     </message>
     <message>
         <source>Project &amp;RCS :</source>
@@ -2847,75 +3650,43 @@ Date du fichier : %4</translation>
     </message>
     <message>
         <source>Default Value</source>
-        <translation>Valeur par défaut</translation>
+        <translation type="obsolete">Valeur par défaut</translation>
     </message>
     <message>
         <source>&amp;Lang</source>
-        <translation>&amp;Langue</translation>
-    </message>
-    <message>
-        <source>FRA</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>ENG</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>DEU</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>ITA</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>ESP</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>POR</source>
-        <translation></translation>
+        <translation type="obsolete">&amp;Langue</translation>
     </message>
     <message>
         <source>N&amp;avigator</source>
-        <translation>N&amp;avigateur</translation>
-    </message>
-    <message>
-        <source>NAV/MIC</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>NAV/NET</source>
-        <translation></translation>
+        <translation type="obsolete">N&amp;avigateur</translation>
     </message>
     <message>
         <source>&amp;Preloaded files</source>
-        <translation>Fichiers &amp;préchargées</translation>
+        <translation type="obsolete">Fichiers &amp;préchargées</translation>
     </message>
     <message>
         <source>&amp;Preloaded files at project loading</source>
-        <translation>Fichiers précharger lors de l&apos;&amp;ouverture d&apos;un projet</translation>
+        <translation type="obsolete">Fichiers précharger lors de l&apos;&amp;ouverture d&apos;un projet</translation>
     </message>
     <message>
         <source>Actually preloaded files</source>
-        <translation>Fichiers actuellement pré-chargés</translation>
+        <translation type="obsolete">Fichiers actuellement pré-chargés</translation>
     </message>
     <message>
         <source>&amp;Project Definition</source>
-        <translation>Définition du &amp;projet</translation>
+        <translation type="obsolete">Définition du &amp;projet</translation>
     </message>
     <message>
         <source>Project &amp;Log :</source>
-        <translation>Dossier &amp;Journal projet :</translation>
+        <translation type="obsolete">Dossier &amp;Journal projet :</translation>
     </message>
     <message>
         <source>&amp;Default value</source>
-        <translation>Valeur par &amp;défaut</translation>
+        <translation type="obsolete">Valeur par &amp;défaut</translation>
     </message>
     <message>
         <source>Version :</source>
-        <translation>Version :</translation>
+        <translation type="obsolete">Version :</translation>
     </message>
     <message>
         <source>&amp;WebServices</source>
@@ -2923,15 +3694,15 @@ Date du fichier : %4</translation>
     </message>
     <message>
         <source>&amp;Custom files</source>
-        <translation>&amp;Fichier spécifique</translation>
+        <translation type="obsolete">&amp;Fichier spécifique</translation>
     </message>
     <message>
         <source>&amp;Specifique project path name :</source>
-        <translation>Nom du dossier des &amp;spécifiques :</translation>
+        <translation type="obsolete">Nom du dossier des &amp;spécifiques :</translation>
     </message>
     <message>
         <source>Presentation file :</source>
-        <translation>Fichier de présentation :</translation>
+        <translation type="obsolete">Fichier de présentation :</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -2947,15 +3718,15 @@ Date du fichier : %4</translation>
     </message>
     <message>
         <source>&amp;Project is derivated from standard</source>
-        <translation>Le &amp;Projet est dérivé du standard</translation>
+        <translation type="obsolete">Le &amp;Projet est dérivé du standard</translation>
     </message>
     <message>
         <source>&amp;Search path list :</source>
-        <translation>Liste des chemins de &amp;recherche :</translation>
+        <translation type="obsolete">Liste des chemins de &amp;recherche :</translation>
     </message>
     <message>
         <source>Project p&amp;refix :</source>
-        <translation>P&amp;réfix projet :</translation>
+        <translation type="obsolete">P&amp;réfix projet :</translation>
     </message>
     <message>
         <source>This is the project name showed in the title bar of &lt;b&gt;XINX&lt;/b&gt;.This just an informative information useless.</source>
@@ -2963,7 +3734,7 @@ Date du fichier : %4</translation>
     </message>
     <message>
         <source>This is the project directory (generally where is stored &lt;i&gt;configuration.xml&lt;/i&gt;). This is the root of the project directory dock, used to search file and for &lt;i&gt;revision control system&lt;/i&gt; access.</source>
-        <translation>C&apos;est le dossier projet (généralement là où est stocké le fichier &lt;i&gt;configuration.xml&lt;/i&gt;). C&apos;est la racine où la vue dossier projet, utilisée pour chercher des fichiers et utiliser le &lt;i&gt;gestionnaire de version&lt;/i&gt; commence.</translation>
+        <translation type="obsolete">C&apos;est le dossier projet (généralement là où est stocké le fichier &lt;i&gt;configuration.xml&lt;/i&gt;). C&apos;est la racine où la vue dossier projet, utilisée pour chercher des fichiers et utiliser le &lt;i&gt;gestionnaire de version&lt;/i&gt; commence.</translation>
     </message>
     <message>
         <source>This the list of &lt;i&gt;revision control system&lt;/i&gt;. The list is appended by modules that you can find in the customize dialog.</source>
@@ -2971,15 +3742,15 @@ Date du fichier : %4</translation>
     </message>
     <message>
         <source>This is the path of the log server directory (where is stored all &lt;i&gt;presentation_*.xml&lt;/i&gt; files).</source>
-        <translation>C&apos;est le chemin vers les dossiers du journal du serveur (où sont enregistrés les fichiers du style &lt;i&gt;présentation_*.xml&lt;/i&gt;).</translation>
+        <translation type="obsolete">C&apos;est le chemin vers les dossiers du journal du serveur (où sont enregistrés les fichiers du style &lt;i&gt;présentation_*.xml&lt;/i&gt;).</translation>
     </message>
     <message>
         <source>This is the default lang used by your project. This can be used for the search path of the &lt;u&gt;C&lt;/u&gt;ustom files tab.</source>
-        <translation>C&apos;est la langue utilisée par défaut dans le projet. Cette information peut-être utilisée par les chemins de l&apos;onglet &lt;u&gt;F&lt;/u&gt;ichier spécifique.</translation>
+        <translation type="obsolete">C&apos;est la langue utilisée par défaut dans le projet. Cette information peut-être utilisée par les chemins de l&apos;onglet &lt;u&gt;F&lt;/u&gt;ichier spécifique.</translation>
     </message>
     <message>
         <source>This is the default navigator used in the list of path in the &lt;u&gt;C&lt;/u&gt;ustom files tab.</source>
-        <translation>C&apos;est le navigateur par défaut utilisé dans la liste des chemins de l&apos;onget &lt;u&gt;F&lt;/u&gt;ichier spéciques.</translation>
+        <translation type="obsolete">C&apos;est le navigateur par défaut utilisé dans la liste des chemins de l&apos;onget &lt;u&gt;F&lt;/u&gt;ichier spéciques.</translation>
     </message>
     <message>
         <source>&lt;p&gt;Check this box is you want add service web to the project. The list is a list of WSDL. When you start the project, &lt;b&gt;XINX&lt;/b&gt; will connect to the service and download the description file.&lt;/p&gt;
@@ -2989,26 +3760,34 @@ Date du fichier : %4</translation>
     </message>
     <message>
         <source>If checked, &lt;b&gt;XINX&lt;/b&gt; will check if the file is standard or not if the file is standard, and in this case the project porpose you to prefix the file.</source>
-        <translation>Si coché, &lt;b&gt;XINX&lt;/b&gt; vérifira si le fichier est dérivé ou non, et le cas échéant proposera de le préfixer.</translation>
+        <translation type="obsolete">Si coché, &lt;b&gt;XINX&lt;/b&gt; vérifira si le fichier est dérivé ou non, et le cas échéant proposera de le préfixer.</translation>
     </message>
     <message>
         <source>The sub-directory where the derivated file must be stored.</source>
-        <translation>Le sous-dossier dans lequel le fichier dérivé doit être enregistré.</translation>
+        <translation type="obsolete">Le sous-dossier dans lequel le fichier dérivé doit être enregistré.</translation>
+    </message>
+    <message>
+        <source>1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Actually preloaded files</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ProjectPropertyImpl</name>
     <message>
         <source>Search version of file ...</source>
-        <translation>Recherche de la version ...</translation>
+        <translation type="obsolete">Recherche de la version ...</translation>
     </message>
     <message>
         <source>warning: The configuration file is not in this directory.</source>
-        <translation>Attention: Le fichier de configuration n&apos;est pas dans ce dossier.</translation>
+        <translation type="obsolete">Attention: Le fichier de configuration n&apos;est pas dans ce dossier.</translation>
     </message>
     <message>
         <source>warning: A valid version cannot be found in the configuration file (may be 4xx).</source>
-        <translation>Attention: Un numéro de version valide ne peut être trouvé dans le fichier de configuration (peut-être une 4xx).</translation>
+        <translation type="obsolete">Attention: Un numéro de version valide ne peut être trouvé dans le fichier de configuration (peut-être une 4xx).</translation>
     </message>
     <message>
         <source>&lt;No Revision Control System&gt;</source>
@@ -3021,6 +3800,25 @@ Date du fichier : %4</translation>
     <message>
         <source>Can&apos;t save &quot;%1&quot; page</source>
         <translation>Ne peut pas sauvegarder la page &quot;%1&quot;</translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation type="unfinished">Général</translation>
+    </message>
+    <message>
+        <source>Project Definition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preloaded files</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ProjectWizard</name>
+    <message>
+        <source>Project wizard</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3213,23 +4011,23 @@ Date du fichier : %4</translation>
     <name>RunSnipetDialog</name>
     <message>
         <source>Use the template</source>
-        <translation>Utiliser un modèle</translation>
+        <translation type="obsolete">Utiliser un modèle</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation>Description</translation>
+        <translation type="obsolete">Description</translation>
     </message>
     <message>
         <source>&lt;b&gt;This is the name&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Ceci est le nom&lt;/b&gt;</translation>
+        <translation type="obsolete">&lt;b&gt;Ceci est le nom&lt;/b&gt;</translation>
     </message>
     <message>
         <source>This is a long description of the template. This description explain how to use, or why, and all the possible parameter.</source>
-        <translation>Ceci est une longue description du modèle. On y explique comment l&apos;utiliser, pourquoi, et les paramètres possibles.</translation>
+        <translation type="obsolete">Ceci est une longue description du modèle. On y explique comment l&apos;utiliser, pourquoi, et les paramètres possibles.</translation>
     </message>
     <message>
         <source>&amp;Parameter</source>
-        <translation>&amp;Paramètre</translation>
+        <translation type="obsolete">&amp;Paramètre</translation>
     </message>
     <message>
         <source>&amp;Detail ...</source>
@@ -3262,18 +4060,18 @@ Date du fichier : %4</translation>
     <name>ScriptManager</name>
     <message>
         <source>Cannot read file : %1: %2</source>
-        <translation>Ne peut lire le fichier %1 :%2</translation>
+        <translation type="obsolete">Ne peut lire le fichier %1 :%2</translation>
     </message>
     <message>
         <source>An error occurred while executing the script %1 : %2 at line %3</source>
-        <translation>Une erreur est survenue pendant l&apos;éxécution du script %1 : %2 à la ligne %3</translation>
+        <translation type="obsolete">Une erreur est survenue pendant l&apos;éxécution du script %1 : %2 à la ligne %3</translation>
     </message>
 </context>
 <context>
     <name>ScriptValue</name>
     <message>
         <source>An error occure while run the script : %1</source>
-        <translation>Une erreur est arrivée lors de l&apos;execution du script : %1</translation>
+        <translation type="obsolete">Une erreur est arrivée lors de l&apos;execution du script : %1</translation>
     </message>
 </context>
 <context>
@@ -3370,11 +4168,11 @@ Date du fichier : %4</translation>
     <name>SnipetDialog</name>
     <message>
         <source>Template property</source>
-        <translation>Propriété du modèle</translation>
+        <translation type="obsolete">Propriété du modèle</translation>
     </message>
     <message>
         <source>&amp;Template text :</source>
-        <translation>&amp;Texte du modèle : </translation>
+        <translation type="obsolete">&amp;Texte du modèle : </translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -3386,35 +4184,35 @@ Date du fichier : %4</translation>
     </message>
     <message>
         <source>&amp;Parameter</source>
-        <translation>&amp;Paramètre</translation>
+        <translation type="obsolete">&amp;Paramètre</translation>
     </message>
     <message>
         <source>&amp;Description</source>
-        <translation>&amp;Description</translation>
+        <translation type="obsolete">&amp;Description</translation>
     </message>
     <message>
         <source>&amp;Category :</source>
-        <translation>&amp;Catégorie :</translation>
+        <translation type="obsolete">&amp;Catégorie :</translation>
     </message>
     <message>
         <source>&amp;Icon :</source>
-        <translation>&amp;Image :</translation>
+        <translation type="obsolete">&amp;Image :</translation>
     </message>
     <message>
         <source>&amp;Name :</source>
-        <translation>&amp;Nom : </translation>
+        <translation type="obsolete">&amp;Nom : </translation>
     </message>
     <message>
         <source>Others</source>
-        <translation>Autres</translation>
+        <translation type="obsolete">Autres</translation>
     </message>
     <message>
         <source>&amp;Description :</source>
-        <translation>&amp;Description :</translation>
+        <translation type="obsolete">&amp;Description :</translation>
     </message>
     <message>
         <source>&amp;Snipet key :</source>
-        <translation>&amp;Clé du modèle :</translation>
+        <translation type="obsolete">&amp;Clé du modèle :</translation>
     </message>
     <message>
         <source>Long des descriptions of the snipet.</source>
@@ -3422,46 +4220,53 @@ Date du fichier : %4</translation>
     </message>
     <message>
         <source>Path to an icon for the template. If the path begin by :/ the icon is looked in the &lt;b&gt;XINX&lt;/b&gt; resources</source>
-        <translation>Chemin vers une icone pour le modèle. Si le chemin commence par &quot;:/&quot;, l&apos;icone sera recherché dans les resources de &lt;b&gt;XINX&lt;/b&gt;</translation>
+        <translation type="obsolete">Chemin vers une icone pour le modèle. Si le chemin commence par &quot;:/&quot;, l&apos;icone sera recherché dans les resources de &lt;b&gt;XINX&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Category where the snipet must be classed.</source>
-        <translation>Catégorie où le modèle doit être classé.</translation>
+        <translation type="obsolete">Catégorie où le modèle doit être classé.</translation>
     </message>
     <message>
         <source>Name of the snipet used in to identify the snipet in menus.</source>
-        <translation>Nom du modèle utilisé pour l&apos;identifier dans le menu des modèles.</translation>
+        <translation type="obsolete">Nom du modèle utilisé pour l&apos;identifier dans le menu des modèles.</translation>
     </message>
     <message>
         <source>Word key used to call the snipet in the &lt;b&gt;XINX&lt;/b&gt; editor. If no key is defined, it&apos;s not possible to call the template in the completion.</source>
-        <translation>Mot clé utilisé pour appeler le modèle dans l&apos;éditeur de text de &lt;b&gt;XINX&lt;/b&gt;. Si aucune clé n&apos;est définie, il n&apos;est pas possible d&apos;appeler le modèle lors de la complétion.</translation>
+        <translation type="obsolete">Mot clé utilisé pour appeler le modèle dans l&apos;éditeur de text de &lt;b&gt;XINX&lt;/b&gt;. Si aucune clé n&apos;est définie, il n&apos;est pas possible d&apos;appeler le modèle lors de la complétion.</translation>
     </message>
     <message>
         <source>&amp;Extention :</source>
-        <translation>&amp;Extention :</translation>
+        <translation type="obsolete">&amp;Extention :</translation>
     </message>
     <message>
         <source>Extention to use for the syntax highlighter in the editor below.</source>
-        <translation>Extention à utiliser pour la coloration syntaxique utilisée dans l&apos;éditeur ci-dessous.</translation>
+        <translation type="obsolete">Extention à utiliser pour la coloration syntaxique utilisée dans l&apos;éditeur ci-dessous.</translation>
     </message>
     <message>
         <source>List of name parameter used by the template. The first parameter replace the key word %1, the second parameter replace the key word %2, ...</source>
-        <translation>Liste de nom de paramètres utilisé par le modèle. Le premier paramètre remplace le mot clé %1, le second paramètre remplace le mot clé %2, ...</translation>
+        <translation type="obsolete">Liste de nom de paramètres utilisé par le modèle. Le premier paramètre remplace le mot clé %1, le second paramètre remplace le mot clé %2, ...</translation>
     </message>
     <message>
         <source>Templat to show to screen. In this template you can define parameter by used &lt;i&gt;%n&lt;/i&gt; keyword where &lt;i&gt;n&lt;/i&gt; is a number. More sophisticate snipet can use ECMAScript. Balise &lt;i&gt;&amp;lt;?= ?&amp;gt;&lt;/i&gt; is used to call script and show the text returned by the script. &lt;i&gt;&amp;lt;?    ?&amp;gt;&lt;/i&gt; can be used to init the script and make some pre-process.</source>
-        <translation>Modèle à afficher à l&apos;écran. Dans ce modèle il est possible de définir des paramètres à l&apos;aide du mot clé &lt;i&gt;%n&lt;/i&gt; où &lt;i&gt;n&lt;/i&gt; est un nombre. Des modèles plus sophistiqués peuvent utiliser l&apos;ECMAScript. Les balises &lt;i&gt;&amp;lt;?= ?&amp;gt;&lt;/i&gt; encadrent l&apos;appel d&apos;un script et affiche le texte retourné par le script. &lt;i&gt;&amp;lt;?   ?&amp;gt;&lt;/i&gt; peuvent être utilisés à l&apos;initialisation du script et pour faire quelques pré-traitements?.</translation>
+        <translation type="obsolete">Modèle à afficher à l&apos;écran. Dans ce modèle il est possible de définir des paramètres à l&apos;aide du mot clé &lt;i&gt;%n&lt;/i&gt; où &lt;i&gt;n&lt;/i&gt; est un nombre. Des modèles plus sophistiqués peuvent utiliser l&apos;ECMAScript. Les balises &lt;i&gt;&amp;lt;?= ?&amp;gt;&lt;/i&gt; encadrent l&apos;appel d&apos;un script et affiche le texte retourné par le script. &lt;i&gt;&amp;lt;?   ?&amp;gt;&lt;/i&gt; peuvent être utilisés à l&apos;initialisation du script et pour faire quelques pré-traitements?.</translation>
     </message>
     <message>
         <source>Long descriptions of the snipet.</source>
-        <translation>Longue description du modèle.</translation>
+        <translation type="obsolete">Longue description du modèle.</translation>
     </message>
 </context>
 <context>
     <name>SnipetDialogImpl</name>
     <message>
         <source>Param &amp;%1 : </source>
-        <translation>Paramètre &amp;%1 :</translation>
+        <translation type="obsolete">Paramètre &amp;%1 :</translation>
+    </message>
+</context>
+<context>
+    <name>SnipetDockWidget</name>
+    <message>
+        <source>Snipets</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3469,17 +4274,17 @@ Date du fichier : %4</translation>
     <message>
         <source>Cannot read file %1:
 %2.</source>
-        <translation>Ne peut lire le fichier %1 :
+        <translation type="obsolete">Ne peut lire le fichier %1 :
 %2.</translation>
     </message>
     <message>
         <source>Parse error exception.</source>
-        <translation>Erreur d&apos;analyse.</translation>
+        <translation type="obsolete">Erreur d&apos;analyse.</translation>
     </message>
     <message>
         <source>Cannot write file %1:
 %2.</source>
-        <translation>Ne peut écrire le fichier %1 :
+        <translation type="obsolete">Ne peut écrire le fichier %1 :
 %2.</translation>
     </message>
 </context>
@@ -3487,42 +4292,57 @@ Date du fichier : %4</translation>
     <name>SnipetModelIndex</name>
     <message>
         <source>Name</source>
-        <translation>Nom</translation>
+        <translation type="obsolete">Nom</translation>
     </message>
     <message>
         <source>Key</source>
-        <translation>Clé</translation>
+        <translation type="obsolete">Clé</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation>Description</translation>
+        <translation type="obsolete">Description</translation>
+    </message>
+</context>
+<context>
+    <name>SnipetsDockWidget</name>
+    <message>
+        <source>Snipets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Filter :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>...</source>
+        <translation type="unfinished">...</translation>
     </message>
 </context>
 <context>
     <name>SpecifiqueDialog</name>
     <message>
         <source>Saving options</source>
-        <translation>Options de sauvegarde</translation>
+        <translation type="obsolete">Options de sauvegarde</translation>
     </message>
     <message>
         <source>You&apos;re being to save standard file or save a file with a new name. I give you some options for that.</source>
-        <translation>Vous êtes sur le point de sauvegarder un fichier standard ou sous un nouveau nom. Vous pouvez choisir quelques options pour cette sauvegarde.</translation>
+        <translation type="obsolete">Vous êtes sur le point de sauvegarder un fichier standard ou sous un nouveau nom. Vous pouvez choisir quelques options pour cette sauvegarde.</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation>Options</translation>
+        <translation type="obsolete">Options</translation>
     </message>
     <message>
         <source>Do you want make it &amp;specifique ?</source>
-        <translation>Voulez-vous en faire un fichier &amp;spécifique ?</translation>
+        <translation type="obsolete">Voulez-vous en faire un fichier &amp;spécifique ?</translation>
     </message>
     <message>
         <source>Do you want add it to &amp;repository ?</source>
-        <translation>Voulez-vous l&apos;ajouter au &amp;référentiel ?</translation>
+        <translation type="obsolete">Voulez-vous l&apos;ajouter au &amp;référentiel ?</translation>
     </message>
     <message>
         <source>&amp;Impacted BusinessView</source>
-        <translation>BusinessView &amp;impactée(s)</translation>
+        <translation type="obsolete">BusinessView &amp;impactée(s)</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -3534,41 +4354,41 @@ Date du fichier : %4</translation>
     </message>
     <message>
         <source>If checked &lt;b&gt;XINX&lt;/b&gt; will propose you to add a prefix to the filename.</source>
-        <translation>Si coché &lt;b&gt;XINX&lt;/b&gt; proposera d&apos;ajouter le préfixe au nom du fichier.</translation>
+        <translation type="obsolete">Si coché &lt;b&gt;XINX&lt;/b&gt; proposera d&apos;ajouter le préfixe au nom du fichier.</translation>
     </message>
     <message>
         <source>If checked, &lt;b&gt;XINX&lt;/b&gt; will propose you to add the file to the repository.</source>
-        <translation>Si coché, &lt;b&gt;XINX&lt;/b&gt; proposera d&apos;ajouter le fichier au référentiel.</translation>
+        <translation type="obsolete">Si coché, &lt;b&gt;XINX&lt;/b&gt; proposera d&apos;ajouter le fichier au référentiel.</translation>
     </message>
     <message>
         <source>List of &lt;i&gt;Business View&lt;/i&gt; using this file and that made be impactedi.</source>
-        <translation>Liste des &lt;i&gt;Business View&lt;/i&gt; utilisé dans le fichier et pouvant être impacté.</translation>
+        <translation type="obsolete">Liste des &lt;i&gt;Business View&lt;/i&gt; utilisé dans le fichier et pouvant être impacté.</translation>
     </message>
 </context>
 <context>
     <name>SpecifiqueDialogImpl</name>
     <message>
         <source>Save text file</source>
-        <translation>Sauver le fichier texte</translation>
+        <translation type="obsolete">Sauver le fichier texte</translation>
     </message>
 </context>
 <context>
     <name>SpecifiqueModelIndex</name>
     <message>
         <source>Can be save as specifique</source>
-        <translation>Peut-être spécifique</translation>
+        <translation type="obsolete">Peut-être spécifique</translation>
     </message>
     <message>
         <source>Can be Commited</source>
-        <translation>Peut être versionné</translation>
+        <translation type="obsolete">Peut être versionné</translation>
     </message>
     <message>
         <source>Is in configuration.xml</source>
-        <translation>Est dans le fichier de configuration.xml</translation>
+        <translation type="obsolete">Est dans le fichier de configuration.xml</translation>
     </message>
     <message>
         <source>File type</source>
-        <translation>Type du fichier</translation>
+        <translation type="obsolete">Type du fichier</translation>
     </message>
     <message>
         <source>Can be specifique</source>
@@ -3576,37 +4396,37 @@ Date du fichier : %4</translation>
     </message>
     <message>
         <source>Sub-directory</source>
-        <translation>Sous-dossier</translation>
+        <translation type="obsolete">Sous-dossier</translation>
     </message>
 </context>
 <context>
     <name>SpecifiquePage</name>
     <message>
         <source>Define Specifique property</source>
-        <translation>Définition des propriétés spécifiques</translation>
+        <translation type="obsolete">Définition des propriétés spécifiques</translation>
     </message>
     <message>
         <source>Project &amp;prefix :</source>
-        <translation>&amp;Préfix projet :</translation>
+        <translation type="obsolete">&amp;Préfix projet :</translation>
     </message>
     <message>
         <source>&amp;Specifique path name :</source>
-        <translation>Nom du dossier des &amp;spécifiques :</translation>
+        <translation type="obsolete">Nom du dossier des &amp;spécifiques :</translation>
     </message>
     <message>
         <source>This is the prefix appended to the file when the file is saved.</source>
-        <translation>Ce préfix est ajouté au fichier au moment de la sauvegarde.</translation>
+        <translation type="obsolete">Ce préfix est ajouté au fichier au moment de la sauvegarde.</translation>
     </message>
     <message>
         <source>This is the directory where is stored derivated files.</source>
-        <translation>Chemin utilisé pour stocker les fichiers dérivés.</translation>
+        <translation type="obsolete">Chemin utilisé pour stocker les fichiers dérivés.</translation>
     </message>
 </context>
 <context>
     <name>SpecifiquePageImpl</name>
     <message>
         <source>Define if the project is specifique or not. A specifique (derivated) project is used when original&apos;s file can&apos;t be modified.</source>
-        <translation>Définit si le projet est spécifique ou non. Un projet spécifique (ou dérivé) est utilisé quand les fichiers d&apos;origines ne peuvent être modifiés.</translation>
+        <translation type="obsolete">Définit si le projet est spécifique ou non. Un projet spécifique (ou dérivé) est utilisé quand les fichiers d&apos;origines ne peuvent être modifiés.</translation>
     </message>
 </context>
 <context>
@@ -3637,7 +4457,7 @@ Date du fichier : %4</translation>
     </message>
     <message>
         <source>Can&apos;t load snipet file.</source>
-        <translation>Ne peut charger le fichier de modèle.</translation>
+        <translation type="obsolete">Ne peut charger le fichier de modèle.</translation>
     </message>
     <message>
         <source>Load main window ...</source>
@@ -3657,7 +4477,7 @@ Date du fichier : %4</translation>
     </message>
     <message>
         <source>Load snipets ...</source>
-        <translation>Lecture des modèles ...</translation>
+        <translation type="obsolete">Lecture des modèles ...</translation>
     </message>
     <message>
         <source>Load last opened project ...</source>
@@ -3673,6 +4493,13 @@ Date du fichier : %4</translation>
     <message>
         <source>%1</source>
         <translation type="obsolete">%1</translation>
+    </message>
+</context>
+<context>
+    <name>TemplateDialog</name>
+    <message>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3710,6 +4537,22 @@ Date du fichier : %4</translation>
     <message>
         <source>Tool path</source>
         <translation>Emplacement de l&apos;outil</translation>
+    </message>
+</context>
+<context>
+    <name>VersionWizardPage</name>
+    <message>
+        <source>Version informations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This page show you some informations about the selected project file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You want convert a %1 (version %2).
+This wizard will convert the project to the last version of XINX. Wizard must convert %3 opened file.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3752,6 +4595,84 @@ Date du fichier : %4</translation>
 %2.</source>
         <translation type="obsolete">Ne peut écrire le fichier %1 :
 %2.</translation>
+    </message>
+</context>
+<context>
+    <name>WelcomDialog</name>
+    <message>
+        <source>Welcom to XINX</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;
+	&lt;head&gt;
+		&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;
+	&lt;/head&gt;
+	&lt;body style=&quot;font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+		&lt;span style=&quot;font-size:x-large&quot;&gt;Open Recent Project&lt;/span&gt;
+		&lt;hr/&gt;
+	&lt;/body&gt;
+&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create New Project...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Open Existing Project ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;
+	&lt;head&gt;
+		&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;
+	&lt;/head&gt;
+	&lt;body style=&quot;font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+		&lt;span style=&quot;font-size:x-large&quot;&gt;XINX Websites&lt;/span&gt;
+		&lt;hr/&gt;
+	&lt;/body&gt;
+&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;
+	&lt;head&gt;
+		&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;
+	&lt;/head&gt;
+	&lt;body style=&quot;font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+		&lt;span style=&quot;font-size:x-large&quot;&gt;Did You Known ?&lt;/span&gt;
+		&lt;hr/&gt;
+	&lt;/body&gt;
+&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>#banner {
+    border-image: url(:/images/banner.png) 0;
+    border-width: 0;
+}
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>WelcomDialogImpl</name>
+    <message>
+        <source>Documentation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>API</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Report a bug</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Downloads</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

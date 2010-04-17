@@ -228,6 +228,22 @@ Valeur : %2</translation>
         <source>&amp;Edit</source>
         <translation>&amp;Edition</translation>
     </message>
+    <message>
+        <source>Comment the selected text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Comment the selected text with the specifique guidelines of the language. &lt;ul&gt;&lt;li&gt;In &lt;b&gt;XML&lt;/b&gt; like format &lt;i&gt;&amp;lt;!-- comment --&amp;gt;&lt;/i&gt;&lt;/li&gt; &lt;li&gt;In &lt;b&gt;Javascript&lt;/b&gt; : &lt;i&gt;/* comment */&lt;/i&gt; &lt;/li&gt;&lt;/ul&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uncomment the selected text if commented</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>See the comment helper function</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CssFileContentProperty</name>
@@ -236,6 +252,44 @@ Valeur : %2</translation>
 Value : %2</source>
         <translation type="obsolete">
 Valeur : %2</translation>
+    </message>
+</context>
+<context>
+    <name>EditorsConfigForm</name>
+    <message>
+        <source>Customize Web Plugin</source>
+        <translation type="unfinished">Personnaliser le module Web</translation>
+    </message>
+    <message>
+        <source>Active completion on XML</source>
+        <translation type="unfinished">Activer la complétion sur l&apos;XML</translation>
+    </message>
+    <message>
+        <source>&amp;Add closed balise automatically</source>
+        <translation type="unfinished">&amp;Ajouter la balise de fermeture automatiquement</translation>
+    </message>
+    <message>
+        <source>Add default a&amp;ttribute automatically</source>
+        <translation type="unfinished">Ajouter les a&amp;ttributs par défaut automatiquement</translation>
+    </message>
+    <message>
+        <source>Add default sub-&amp;balise automatically</source>
+        <translation type="unfinished">Ajouter le sous-&amp;balises par défaut automatiquement </translation>
+    </message>
+    <message>
+        <source>Active completion on JavaScript</source>
+        <translation type="unfinished">Activer la complétion sur le JavaScript</translation>
+    </message>
+    <message>
+        <source>Auto close bracket</source>
+        <translation type="unfinished">Fermer automatiquement les parenthèses</translation>
+    </message>
+</context>
+<context>
+    <name>EditorsConfigFormImpl</name>
+    <message>
+        <source>Editors Completion</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -264,7 +318,7 @@ Valeur : %2</translation>
     </message>
     <message>
         <source>Please give the internet adresse of the servlet control of the web module (like http://localhost/ear/war/dir/Servlet) in property project</source>
-        <translation>Saisissez l&apos;adresse internet de la Servlet de control du module internet (comme http://localhost/ear/war/dir/Servlet) dans les propriétés du projet</translation>
+        <translation type="obsolete">Saisissez l&apos;adresse internet de la Servlet de control du module internet (comme http://localhost/ear/war/dir/Servlet) dans les propriétés du projet</translation>
     </message>
     <message>
         <source>Can&apos;t open file %1.</source>
@@ -329,6 +383,28 @@ Valeur : %2</translation>
     </message>
 </context>
 <context>
+    <name>ManualFileResolver</name>
+    <message>
+        <source>Manual Resolver</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ParserProjectProperty</name>
+    <message>
+        <source>Xml/Xsl Project Property</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Location of the &amp;data stream :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Location of the &amp;running page :</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>QObject</name>
     <message>
         <source>Cannot read file %1:
@@ -370,6 +446,13 @@ Valeur : %2</translation>
     </message>
 </context>
 <context>
+    <name>SearchPathListForm</name>
+    <message>
+        <source>Search Path List Resolver</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>StyleSheetEditor</name>
     <message>
         <source>noname.xsl</source>
@@ -377,11 +460,11 @@ Valeur : %2</translation>
     </message>
     <message>
         <source>Search Word</source>
-        <translation>Recherche du mot</translation>
+        <translation type="obsolete">Recherche du mot</translation>
     </message>
     <message>
         <source>Word %1 not found</source>
-        <translation>Le mot %1 n&apos;a pas été trouvé</translation>
+        <translation type="obsolete">Le mot %1 n&apos;a pas été trouvé</translation>
     </message>
     <message>
         <source>Stylesheet Parsing</source>
@@ -389,11 +472,11 @@ Valeur : %2</translation>
     </message>
     <message>
         <source>Please give the internet adresse of the servlet control of the web module (like http://localhost/ear/war/dir/Servlet) in property project</source>
-        <translation>Saisissez l&apos;adresse internet de la Servlet de control du module internet (comme http://localhost/ear/war/dir/Servlet) dans les propriétés du projet</translation>
+        <translation type="obsolete">Saisissez l&apos;adresse internet de la Servlet de control du module internet (comme http://localhost/ear/war/dir/Servlet) dans les propriétés du projet</translation>
     </message>
     <message>
         <source>Please use the project mode for use parsing ;)</source>
-        <translation>Pour utiliser le parsing, configurer un projet ;)</translation>
+        <translation type="obsolete">Pour utiliser le parsing, configurer un projet ;)</translation>
     </message>
     <message>
         <source>The internal parsing is not yet supported. Please choose other</source>
@@ -425,7 +508,7 @@ Valeur : %2</translation>
     </message>
     <message>
         <source>Can&apos;t parse stylesheet</source>
-        <translation>Ne peux parser la feuille de style</translation>
+        <translation type="obsolete">Ne peux parser la feuille de style</translation>
     </message>
 </context>
 <context>
@@ -439,50 +522,50 @@ Valeur : %2</translation>
     <name>WebPluginForm</name>
     <message>
         <source>Customize Web Plugin</source>
-        <translation>Personnaliser le module Web</translation>
+        <translation type="obsolete">Personnaliser le module Web</translation>
     </message>
     <message>
         <source>XML</source>
-        <translation>XML</translation>
+        <translation type="obsolete">XML</translation>
     </message>
     <message>
         <source>Active completion on XML</source>
-        <translation>Activer la complétion sur l&apos;XML</translation>
+        <translation type="obsolete">Activer la complétion sur l&apos;XML</translation>
     </message>
     <message>
         <source>&amp;Add closed balise automatically</source>
-        <translation>&amp;Ajouter la balise de fermeture automatiquement</translation>
+        <translation type="obsolete">&amp;Ajouter la balise de fermeture automatiquement</translation>
     </message>
     <message>
         <source>Add default a&amp;ttribute automatically</source>
-        <translation>Ajouter les a&amp;ttributs par défaut automatiquement</translation>
+        <translation type="obsolete">Ajouter les a&amp;ttributs par défaut automatiquement</translation>
     </message>
     <message>
         <source>Add default sub-&amp;balise automatically</source>
-        <translation>Ajouter le sous-&amp;balises par défaut automatiquement </translation>
+        <translation type="obsolete">Ajouter le sous-&amp;balises par défaut automatiquement </translation>
     </message>
     <message>
         <source>JavaScript</source>
-        <translation>JavaScript</translation>
+        <translation type="obsolete">JavaScript</translation>
     </message>
     <message>
         <source>Active completion on JavaScript</source>
-        <translation>Activer la complétion sur le JavaScript</translation>
+        <translation type="obsolete">Activer la complétion sur le JavaScript</translation>
     </message>
     <message>
         <source>Auto close bracket</source>
-        <translation>Fermer automatiquement les parenthèses</translation>
+        <translation type="obsolete">Fermer automatiquement les parenthèses</translation>
     </message>
 </context>
 <context>
     <name>WebPluginProjectPropertyForm</name>
     <message>
         <source>Web module property</source>
-        <translation>Propriété du module Web</translation>
+        <translation type="obsolete">Propriété du module Web</translation>
     </message>
     <message>
         <source>&amp;Internet adresse :</source>
-        <translation>Adresse &amp;Internet :</translation>
+        <translation type="obsolete">Adresse &amp;Internet :</translation>
     </message>
 </context>
 <context>
@@ -494,6 +577,14 @@ Valeur : %2</translation>
     <message>
         <source>Define information about the web module, like the adresse of the servlet control.</source>
         <translation>Définition des informations à propos du module web, comme l&apos;adresse de la Servlet de control.</translation>
+    </message>
+    <message>
+        <source>Location of the &amp;running page :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Location of data stream :</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -565,7 +656,11 @@ Valeur : %2</translation>
     </message>
     <message>
         <source>&amp;Result (encapsulate in Result balise)</source>
-        <translation>&amp;Résultat (encapsuler dans la balise &quot;Result&quot;)</translation>
+        <translation type="obsolete">&amp;Résultat (encapsuler dans la balise &quot;Result&quot;)</translation>
+    </message>
+    <message>
+        <source>&amp;Result (encapsulated in the Result balise)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -683,25 +778,25 @@ Valeur : %2</translation>
     </message>
     <message>
         <source>If checked, when you filter the text, the list show sub-element of node where the filter verify the text.</source>
-        <translation>Si coché, quand vous filtrez le text, la liste affiche les sous-éléments du noeud où le filtre vérifie le texte.</translation>
+        <translation type="obsolete">Si coché, quand vous filtrez le text, la liste affiche les sous-éléments du noeud où le filtre vérifie le texte.</translation>
     </message>
     <message>
         <source>&amp;Show sub-element of a corresponding node</source>
-        <translation>&amp;Affiche les sous-éléments du noeud correspondant</translation>
+        <translation type="obsolete">&amp;Affiche les sous-éléments du noeud correspondant</translation>
     </message>
     <message>
         <source>&lt;p&gt;If checked the name attribute is added in &lt;i&gt;XPATH&lt;/i&gt; if possible.&lt;/p&gt;
 
 &lt;p&gt;If checked the &lt;i&gt;XPATH&lt;/i&gt; will be as :
 &lt;code&gt;VueXXXX[@name=&apos;MyName&apos;]&lt;/code&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Si coché l&apos;attribut &quot;name&quot; est ajouté dans le &lt;i&gt;XPATH&lt;/i&gt;, si possible&lt;/p&gt;
+        <translation type="obsolete">&lt;p&gt;Si coché l&apos;attribut &quot;name&quot; est ajouté dans le &lt;i&gt;XPATH&lt;/i&gt;, si possible&lt;/p&gt;
 
 &lt;p&gt;Si coché le &lt;i&gt;XPATH&lt;/i&gt; va être tel que :
 &lt;code&gt;VueXXXX[@name=&apos;MyName&apos;]&lt;/code&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Show name attribute if exist</source>
-        <translation>Affiche l&apos;attribut nom, si existe</translation>
+        <translation type="obsolete">Affiche l&apos;attribut nom, si existe</translation>
     </message>
     <message>
         <source>&amp;Color</source>
@@ -803,6 +898,38 @@ Valeur : %2</translation>
         <source>Color of a balise with a &lt;i&gt;screen_data&lt;/i&gt; node.</source>
         <translation>Couleur de la balise avec un noeud &lt;i&gt;screen_data&lt;/i&gt;.</translation>
     </message>
+    <message>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;If checked, when the text is filtered, the list shows sub-elements of the node whose filter matches the node name.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Show sub-element of the corresponding node</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If checked the name attribute is added in &lt;span style=&quot; font-style:italic;&quot;&gt;XPATH&lt;/span&gt; if possible. &lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If checked the &lt;span style=&quot; font-style:italic;&quot;&gt;XPATH&lt;/span&gt; will be : &lt;span style=&quot; font-family:&apos;Courier New,courier&apos;;&quot;&gt;VueXXXX[@name=&apos;MyName&apos;]&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show name attribute if it exists</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>XmlPresConfigFormImpl</name>
+    <message>
+        <source>XML Pres.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>XmlPresPlugin</name>
@@ -846,7 +973,11 @@ Date du fichier :%4</translation>
     <name>XmlPresentationDockWidget</name>
     <message>
         <source>XML Presentation</source>
-        <translation>Présentation XML</translation>
+        <translation type="obsolete">Présentation XML</translation>
+    </message>
+    <message>
+        <source>Xml Presentation</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -864,7 +995,7 @@ Date du fichier :%4</translation>
     <name>XmlPresentationWidget</name>
     <message>
         <source>Refresh the list of file present in the &lt;i&gt;log&lt;/i&gt; directory.</source>
-        <translation>Rafraichir la liste des fichiers présent dans le dossier &lt;i&gt;log&lt;/i&gt;.</translation>
+        <translation type="obsolete">Rafraichir la liste des fichiers présent dans le dossier &lt;i&gt;log&lt;/i&gt;.</translation>
     </message>
     <message>
         <source>...</source>
@@ -873,7 +1004,7 @@ Date du fichier :%4</translation>
     <message>
         <source>List of file in the &lt;i&gt;log&lt;/i&gt; directory. If you select a file the view is updated with the content of the file.&lt;/p&gt;
 &lt;p&gt;You can open a file of the list, or a file in another directory.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Liste des fichier du dossier &lt;i&gt;log&lt;/i&gt;. Si vous selectionné un fichier, la vue est mis à jours avec le contenu du fichier.&lt;/p&gt;
+        <translation type="obsolete">&lt;p&gt;Liste des fichier du dossier &lt;i&gt;log&lt;/i&gt;. Si vous selectionné un fichier, la vue est mis à jours avec le contenu du fichier.&lt;/p&gt;
 &lt;p&gt;Vous pouvez ouvrir un fichier de la list, ou un autre fichier d&apos;un autre dossier&lt;/p&gt;</translation>
     </message>
     <message>
@@ -890,12 +1021,12 @@ Date du fichier :%4</translation>
     </message>
     <message>
         <source>Filter to use in the view. &lt;b&gt;XINX&lt;/b&gt; search node where name match the filter (literal or regular expression).</source>
-        <translation>Filtre à utiliser dans la vue. &lt;b&gt;XINX&lt;/b&gt; recherche le noeud où le nom correspond au filtre (littéralement ou en utilisant une expréssion régulière).</translation>
+        <translation type="obsolete">Filtre à utiliser dans la vue. &lt;b&gt;XINX&lt;/b&gt; recherche le noeud où le nom correspond au filtre (littéralement ou en utilisant une expréssion régulière).</translation>
     </message>
     <message>
         <source>&lt;p&gt;If &lt;i&gt;Sub-element&lt;/i&gt; is selected when an element is finded, all sub-element is showed. &lt;/p&gt;
 &lt;p&gt;If &lt;i&gt;None&lt;/i&gt; is selected only matched element is showed.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Si &lt;i&gt;Sous-élément&lt;/i&gt; est selectionné, quand un élément est trouvé, tous les sous-éléments sont affiché.&lt;/p&gt;
+        <translation type="obsolete">&lt;p&gt;Si &lt;i&gt;Sous-élément&lt;/i&gt; est selectionné, quand un élément est trouvé, tous les sous-éléments sont affiché.&lt;/p&gt;
 &lt;p&gt;Si &lt;i&gt;Aucun&lt;/i&gt; est selectionné, seul les éléments correspondants sont affiché.&lt;/p&gt;</translation>
     </message>
     <message>
@@ -906,35 +1037,89 @@ Date du fichier :%4</translation>
         <source>None</source>
         <translation>Aucun</translation>
     </message>
+    <message>
+        <source>Refresh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Refresh the list of files present in the &lt;i&gt;log&lt;/i&gt; directory.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Run X-Query</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Click on this button to open &lt;i&gt;X-Query&lt;/i&gt; dialog and query the XML document.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Filter to use in the view. &lt;b&gt;XINX&lt;/b&gt; searches the node where the name matches the filter (literal or regular expression).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If &lt;i&gt;Sub-element&lt;/i&gt; is selected when an element is found, all sub-elements are showed. &lt;br/&gt;
+If &lt;i&gt;None&lt;/i&gt; is selected only matched elements is showed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>List of file in the &lt;i&gt;log&lt;/i&gt; directory. If you select a file, the view is updated with the content of the file. &lt;br/&gt;
+
+You can open a file of the list, or a file in another directory.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
-    <name>XslContentViewParser</name>
+    <name>XslContentView2Parser</name>
     <message>
         <source>The file is not an Stylesheet file.</source>
-        <translation>Le fichier n&apos;est pas une feuille de style.</translation>
+        <translation type="unfinished">Le fichier n&apos;est pas une feuille de style.</translation>
+    </message>
+    <message>
+        <source>Element at line : %1</source>
+        <translation type="unfinished">Element à la ligne : %1</translation>
     </message>
     <message>
         <source>Element at line : %1
 Mode = %2</source>
-        <translation>Element à la ligne : %1
+        <translation type="unfinished">Element à la ligne : %1
 Mode = %2</translation>
     </message>
     <message>
         <source>Element at line : %1
 Value = %2</source>
-        <translation>Element à la ligne : %1
+        <translation type="unfinished">Element à la ligne : %1
+Valeur = %2</translation>
+    </message>
+</context>
+<context>
+    <name>XslContentViewParser</name>
+    <message>
+        <source>The file is not an Stylesheet file.</source>
+        <translation type="obsolete">Le fichier n&apos;est pas une feuille de style.</translation>
+    </message>
+    <message>
+        <source>Element at line : %1
+Mode = %2</source>
+        <translation type="obsolete">Element à la ligne : %1
+Mode = %2</translation>
+    </message>
+    <message>
+        <source>Element at line : %1
+Value = %2</source>
+        <translation type="obsolete">Element à la ligne : %1
 Valeur = %2</translation>
     </message>
     <message>
         <source>Element at line : %1</source>
-        <translation>Element à la ligne : %1</translation>
+        <translation type="obsolete">Element à la ligne : %1</translation>
     </message>
 </context>
 <context>
     <name>XsltParser</name>
     <message>
         <source>Failed to load external entity : &quot;%1&quot;</source>
-        <translation>Echec lors de la lecture de l&apos;entité externe : &quot;%1&quot;</translation>
+        <translation type="obsolete">Echec lors de la lecture de l&apos;entité externe : &quot;%1&quot;</translation>
     </message>
 </context>
 </TS>

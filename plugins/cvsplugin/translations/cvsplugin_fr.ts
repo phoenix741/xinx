@@ -1,21 +1,22 @@
-<!DOCTYPE TS><TS>
-<defaultcodec></defaultcodec>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>CVSAddThread</name>
     <message>
         <source>Add terminated</source>
-        <translation>Ajout terminé</translation>
+        <translation type="obsolete">Ajout terminé</translation>
     </message>
 </context>
 <context>
     <name>CVSCommitThread</name>
     <message>
         <source>Files commited :</source>
-        <translation>Fichier(s) validé(s) :</translation>
+        <translation type="obsolete">Fichier(s) validé(s) :</translation>
     </message>
     <message>
         <source>Commit terminated</source>
-        <translation>Validation terminée</translation>
+        <translation type="obsolete">Validation terminée</translation>
     </message>
 </context>
 <context>
@@ -37,28 +38,28 @@
     <name>CVSRemoveThread</name>
     <message>
         <source>Remove terminated</source>
-        <translation>Suppression terminée</translation>
+        <translation type="obsolete">Suppression terminée</translation>
     </message>
 </context>
 <context>
     <name>CVSThread</name>
     <message>
         <source>I&apos;M A PROCESS KILLER</source>
-        <translation>Le processus a été tué</translation>
+        <translation type="obsolete">Le processus a été tué</translation>
     </message>
 </context>
 <context>
     <name>CVSUpdateRevisionThread</name>
     <message>
         <source>Update to revision %1 terminated</source>
-        <translation>La mise à jour vers la version %1 est terminée</translation>
+        <translation type="obsolete">La mise à jour vers la version %1 est terminée</translation>
     </message>
 </context>
 <context>
     <name>CVSUpdateThread</name>
     <message>
         <source>Update terminated</source>
-        <translation>Mise à jour terminée</translation>
+        <translation type="obsolete">Mise à jour terminée</translation>
     </message>
 </context>
 <context>
@@ -138,6 +139,37 @@
     <message>
         <source>Customization of CVS Plugin</source>
         <translation>Personnalisation du plugin CVS</translation>
+    </message>
+</context>
+<context>
+    <name>RCS_CVS</name>
+    <message>
+        <source>Update terminated</source>
+        <translation type="unfinished">Mise à jour terminée</translation>
+    </message>
+    <message>
+        <source>Update to revision %1 terminated</source>
+        <translation type="unfinished">La mise à jour vers la version %1 est terminée</translation>
+    </message>
+    <message>
+        <source>Files commited :</source>
+        <translation type="unfinished">Fichier(s) validé(s) :</translation>
+    </message>
+    <message>
+        <source>Commit terminated</source>
+        <translation type="unfinished">Validation terminée</translation>
+    </message>
+    <message>
+        <source>Add terminated</source>
+        <translation type="unfinished">Ajout terminé</translation>
+    </message>
+    <message>
+        <source>Remove terminated</source>
+        <translation type="unfinished">Suppression terminée</translation>
+    </message>
+    <message>
+        <source>I&apos;M A PROCESS KILLER</source>
+        <translation type="unfinished">Le processus a été tué</translation>
     </message>
 </context>
 </TS>

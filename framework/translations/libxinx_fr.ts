@@ -25,7 +25,7 @@
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Fermer</translation>
+        <translation type="obsolete">&amp;Fermer</translation>
     </message>
     <message>
         <source>Can&apos;t open file for reading %1 : %2</source>
@@ -72,43 +72,364 @@
     </message>
 </context>
 <context>
-    <name>CompletionNodeModel</name>
+    <name>BaseSnipetItemModel</name>
+    <message>
+        <source>Id</source>
+        <translation>Id</translation>
+    </message>
+    <message>
+        <source>Parent</source>
+        <translation>Parent</translation>
+    </message>
+    <message>
+        <source>Icon</source>
+        <translation>Icône</translation>
+    </message>
     <message>
         <source>Name</source>
         <translation>Nom</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation>Description</translation>
+    </message>
+    <message>
+        <source>Shortcut</source>
+        <translation>Raccourci</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>Type</translation>
+    </message>
+    <message>
+        <source>Available Script</source>
+        <translation>Script de disponibilité</translation>
+    </message>
+</context>
+<context>
+    <name>BookmarkTextEditorInterface</name>
+    <message>
+        <source>In editor &apos;%1&apos; at line %2</source>
+        <translation>Dans l&apos;éditeur &apos;%1&apos; à la ligne %2</translation>
+    </message>
+</context>
+<context>
+    <name>CallSnipetDialog</name>
+    <message>
+        <source>Use the snipet &quot;%1&quot;</source>
+        <translation>Utiliser le modèle &quot;%1&quot;</translation>
+    </message>
+    <message>
+        <source>&amp;Information</source>
+        <translation>&amp;Information</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation>Description</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;This is the name&lt;/b&gt;</source>
+        <translation>&lt;b&gt;Ceci est le nom&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>This is a long description of the template. This description explains how or in which cases to use the template or all the possible parameters.</source>
+        <translation>Ceci est la longue description du modèle. Cette description explique comment ou dans quel cas utiliser le modèle ou les paramètres possibles.</translation>
+    </message>
+    <message>
+        <source>Parameters</source>
+        <translation>Paramètres</translation>
+    </message>
+    <message>
+        <source>You are about to &lt;b&gt;replace&lt;/b&gt; the last word of the text you just wrote by the text of the template. If this dialog is showed, the snipet is configured to be called manually or requires that all parameters have a default value.&lt;br/&gt;
+If you prefer the snipet to be called automatically in the future, please change the property in the custom dialog.&lt;br/&gt;
+&lt;br/&gt;
+Please check parameters below and &lt;i&gt;valid&lt;/i&gt; this form if you agree.</source>
+        <translation>Vous êtes sur le point de &lt;b&gt;remplacer&lt;/b&gt; le dernier mot du text que vous êtes entrain d&apos;écrire, par celui de modèle. Si cette boite de dialogue s&apos;est ouverte, le modèle est configuré pour être appelé automatiquement et necessite que tout les paramètres ait une valeur par défaut.&lt;br/&gt;
+Si vous préférez que le modèle soit appelé automatiquement par la suite, veuillez changer les propriétés dans la boite de dialogue de personalisation.&lt;br/&gt;
+&lt;br/&gt;
+Veuillez verifier les paramètres ci-dessous et &lt;i&gt;validez&lt;/i&gt; ce formulaire si vous êtes d&apos;accord.</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Nom</translation>
+    </message>
+    <message>
+        <source>Value</source>
+        <translation>Valeur</translation>
+    </message>
+    <message>
+        <source>&amp;Result</source>
+        <translation>&amp;Résultat</translation>
+    </message>
+</context>
+<context>
+    <name>CallSnipetDialogImpl</name>
+    <message>
+        <source>Cannot execute the snipet. Please check the script in the snipet in configuration dialog.</source>
+        <translation>Ne peux executer ce modèle. Veuillez verifier le script du modèle dans la boite de dialogue de configuration.</translation>
+    </message>
+    <message>
+        <source>CallSnipetDialogImpl: Can&apos;t find snipet id &apos;%1&apos;</source>
+        <translation>CallSnipetDialogImpl: Ne peux trouver l&apos;id du modèle &apos;%1&apos;</translation>
+    </message>
+    <message>
+        <source>Use the snipet &quot;%1&quot;</source>
+        <translation>Utiliser le modèle &quot;%1&quot;</translation>
+    </message>
+    <message>
+        <source>Parameter %1</source>
+        <translation>Paramètre %1</translation>
+    </message>
+</context>
+<context>
+    <name>CategoryItemModel</name>
+    <message>
+        <source>Id</source>
+        <translation>Id</translation>
+    </message>
+    <message>
+        <source>Parent</source>
+        <translation>Parent</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Nom</translation>
+    </message>
+</context>
+<context>
+    <name>CategoryPropertyDialog</name>
+    <message>
+        <source>Category property</source>
+        <translation>Propriété de la catégorie</translation>
+    </message>
+    <message>
+        <source>&amp;Description</source>
+        <translation>&amp;Description</translation>
+    </message>
+    <message>
+        <source>&amp;Name :</source>
+        <translation>&amp;Nom :</translation>
+    </message>
+    <message>
+        <source>Name of the snipet used to identify the snipet in the menus.</source>
+        <translation>Nom du modèle utilisé pour identifier ce modèle dans les menus.</translation>
+    </message>
+    <message>
+        <source>&amp;Description :</source>
+        <translation>&amp;Description :</translation>
+    </message>
+    <message>
+        <source>Long description of the snipet.</source>
+        <translation>Longue description du modèle.</translation>
+    </message>
+    <message>
+        <source>&amp;Category</source>
+        <translation>&amp;Catégorie</translation>
+    </message>
+    <message>
+        <source>Category</source>
+        <translation>Catégorie</translation>
+    </message>
+    <message>
+        <source>&amp;Remove Category</source>
+        <translation>&amp;Suppression de la catégorie</translation>
+    </message>
+    <message>
+        <source>&amp;Add Category</source>
+        <translation>&amp;Ajout une catégorie</translation>
+    </message>
+    <message>
+        <source>&amp;Control</source>
+        <translation>&amp;Contrôle</translation>
+    </message>
+    <message>
+        <source>&amp;Condition to enable the snipet</source>
+        <translation>&amp;Conditions pour activer le modèle</translation>
+    </message>
+</context>
+<context>
+    <name>CommitMessageDialog</name>
+    <message>
+        <source>Commit messages</source>
+        <translation>Messages de validation</translation>
+    </message>
+    <message>
+        <source>RCS Messages</source>
+        <translation>Messages du système de gestion de version</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;Please type your message in this box. The message will be used with your revision control manager.&lt;/p&gt;
+&lt;p/&gt;
+&lt;p&gt;This message must describe what you have done, to easily find an old version.&lt;/p&gt;
+&lt;p/&gt;
+&lt;p&gt;&lt;i&gt;With CVS, the list of file commited is appended to the message&lt;/i&gt;&lt;/p&gt;</source>
+        <translation>&lt;p&gt;Veuillez écrire votre message dans cette boîte de dialogue. Le message sera utilisé par votre gestionnaire de version&lt;/p&gt;
+&lt;p/&gt;
+&lt;p&gt;Ce message devrait décrire ce que vous avez fait, pour retrouver facilement une ancienne version.&lt;/p&gt;
+&lt;p/&gt;
+&lt;p&gt;&lt;i&gt;Avec CVS, la liste des fichiers validés est ajouté à la fin du message&lt;/i&gt;&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>Files to commit</source>
+        <translation>Fichiers à valider</translation>
+    </message>
+    <message>
+        <source>This is the list of the file to commit. Only known files are listed here (&lt;i&gt;.xsl, .html, .css, .js, ...&lt;/i&gt;).&lt;br/&gt;
+In the list &lt;b&gt;XINX&lt;/b&gt; presents three actions : 
+&lt;ul&gt;
+&lt;li&gt;&lt;i&gt;Add and Commit&lt;/i&gt; : If the file doesn&apos;t exist in the repository but may be commited.&lt;/li&gt;
+&lt;li&gt;&lt;i&gt;Remove and Commit&lt;/i&gt; : If the file is deleted from the disk but not from the repository&lt;/li&gt;
+&lt;li&gt;&lt;i&gt;Commit&lt;/i&gt; : If the file exists and is modified (checked by default).&lt;/li&gt;
+&lt;/ul&gt;
+Only checked files are commited.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CommitMessageDialogImpl</name>
+    <message>
+        <source> ( Commit )</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> ( Add and Commit )</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> ( Remove and Commit )</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Commit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nothing to do.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CompletionNodeModel</name>
+    <message>
+        <source>Name</source>
+        <translation type="obsolete">Nom</translation>
     </message>
 </context>
 <context>
     <name>ConfigurationFile</name>
     <message>
         <source>Error while opening configuration file : %1</source>
-        <translation>Erreur lors de l&apos;ouverture du fichier de configuration : %1</translation>
+        <translation type="obsolete">Erreur lors de l&apos;ouverture du fichier de configuration : %1</translation>
     </message>
     <message>
         <source>Error while opening version query : %1</source>
-        <translation>Error lors de l&apos;ouverture de la requête &quot;version&quot; : %1</translation>
+        <translation type="obsolete">Error lors de l&apos;ouverture de la requête &quot;version&quot; : %1</translation>
     </message>
     <message>
         <source>Error while opening businessview list query : %1</source>
-        <translation>Erreur lors de l&apos;ouverture de la requête &quot;liste des BusinessView&quot; : %1</translation>
+        <translation type="obsolete">Erreur lors de l&apos;ouverture de la requête &quot;liste des BusinessView&quot; : %1</translation>
+    </message>
+</context>
+<context>
+    <name>ContentView2::CompletionModel</name>
+    <message>
+        <source>Completion not ready</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ContentView2::File</name>
+    <message>
+        <source>Can&apos;t find the node %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Can&apos;t find the project %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Can&apos;t find the node for path %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ContentView2::Manager</name>
+    <message>
+        <source>General</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ContentView2::Project</name>
+    <message>
+        <source>Can&apos;t find the node %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Can&apos;t find the project %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ContentView2::TreeModel</name>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished">Nom</translation>
     </message>
 </context>
 <context>
     <name>ContentViewModel</name>
     <message>
         <source>Name</source>
-        <translation>Nom</translation>
+        <translation type="obsolete">Nom</translation>
     </message>
 </context>
 <context>
     <name>ContentViewParser</name>
     <message>
         <source>Parser already running</source>
-        <translation>Le parser est déjà en cours de traitement</translation>
+        <translation type="obsolete">Le parser est déjà en cours de traitement</translation>
     </message>
     <message>
         <source>Cannot read file %1:%2.</source>
-        <translation>Ne peut lire le fichier %1 :%2.</translation>
+        <translation type="obsolete">Ne peut lire le fichier %1 :%2.</translation>
+    </message>
+</context>
+<context>
+    <name>DirRCSModel</name>
+    <message>
+        <source>Unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Locally modified</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Locally added</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Has conflict</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No modified</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Need checkout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Filename : %1
+Status : %2
+Date of file : %3
+Date in CVS : %4
+Version : %5
+
+Cache size : %6/%7</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -126,6 +447,28 @@
     </message>
 </context>
 <context>
+    <name>MainForm</name>
+    <message>
+        <source>&lt;p&gt;Call the commit method of your &lt;i&gt;revision control sytem&lt;/i&gt; for all the project directory. An optional message can be added.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Only &lt;b&gt;XINX&lt;/b&gt; managed files are commited to the repository.&lt;/i&gt;&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>NewProjectTemplate</name>
+    <message>
+        <source>The file %1 is not a New Project Template file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Node</name>
+    <message>
+        <source>Can&apos;t find the node %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>QErrorMessage</name>
     <message>
         <source>Debug Message:</source>
@@ -133,11 +476,23 @@
     </message>
     <message>
         <source>Warning:</source>
-        <translation>Avertissement :</translation>
+        <translation type="obsolete">Avertissement :</translation>
     </message>
     <message>
         <source>Fatal Error:</source>
-        <translation>Erreur fatale :</translation>
+        <translation type="obsolete">Erreur fatale :</translation>
+    </message>
+    <message>
+        <source>DEBUG</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>WARNING</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FATAL</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -160,6 +515,251 @@
     </message>
 </context>
 <context>
+    <name>RCSManager</name>
+    <message>
+        <source>Update project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Call the update fonction of your &lt;i&gt;revision control system&lt;/i&gt; for all the project directory.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Commit project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel RCS operation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No tools defined</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add a file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to add the file &apos;%1&apos; to the repository</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;Commit with no text&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Operation cancelled</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ScriptManager</name>
+    <message>
+        <source>Cannot read file : %1: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>An error occurred while executing the script %1 : %2 at line %3</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ScriptValue</name>
+    <message>
+        <source>An error occure while run the script : %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SnipetList</name>
+    <message>
+        <source>Cannot write file %1:
+%2.</source>
+        <translation type="unfinished">Ne peut écrire le fichier %1:
+%2.</translation>
+    </message>
+    <message>
+        <source>Cannot read file %1:
+%2.</source>
+        <translation type="unfinished">Ne peut lire le fichier %1 :
+%2.</translation>
+    </message>
+    <message>
+        <source>Parse error exception.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SnipetManager</name>
+    <message>
+        <source>Remove a category</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This category contains snipet or other category, you can&apos;t remove this category.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure to delete the category &quot;%1&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Imported Snipets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Can&apos;t search id for key &apos;%1&apos; : %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error when calling script for record %1 : %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The script %1 %2 return neither true or false.
+%3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Can&apos;t load snipet database : %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Categories</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>List of all categories</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SnipetMenu</name>
+    <message>
+        <source>&amp;Create Snipet ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SnipetPropertyDialog</name>
+    <message>
+        <source>Snipet property</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Name :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name of the snipet used to identify the snipet in menus.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Image :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Extension :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Snipet key :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Word key used to call the snipet in the &lt;b&gt;XINX&lt;/b&gt; editor. If no key is defined, it&apos;s not possible to call the template in the completion.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Automatic features :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Call snipet automatically (not only by Ctrl+Space)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show description dialog, with parameters customization</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Description :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Long description of the snipet.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Category</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Category</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Remove Category</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Add Category</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Snipet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Template text :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Template to show to screen. In this template you can define parameter by using the &lt;code&gt;%n&lt;/code&gt; keyword where &lt;code&gt;n&lt;/code&gt; is a number. More sophisticated snipets can use &lt;b&gt;ECMAScript&lt;/b&gt;. Balise &lt;code&gt;&amp;lt;?= ?&amp;gt;&lt;/code&gt; is used to call script and show the text returned by the script. &lt;code&gt;&amp;lt;? ?&amp;gt;&lt;/code&gt; can be used to init the script and make some pre-process.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Parameters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>List of name parameter used by the template. The first parameter replace the key word %1, the second parameter replace the key word %2, ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Parameter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Control</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Condition to enable the snipet</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SnipetPropertyDlgImpl</name>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished">Nom</translation>
+    </message>
+    <message>
+        <source>Default Value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Parameter %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>TextEditor</name>
     <message>
         <source>Can&apos;t comment this type of document</source>
@@ -170,15 +770,15 @@
     <name>TextFileEditor</name>
     <message>
         <source>Comment</source>
-        <translation>Commenter</translation>
+        <translation type="obsolete">Commenter</translation>
     </message>
     <message>
         <source>Uncomment</source>
-        <translation>Décommenter</translation>
+        <translation type="obsolete">Décommenter</translation>
     </message>
     <message>
         <source>In editor &apos;%1&apos; at line %2</source>
-        <translation>Dans l&apos;éditeur &apos;%1&apos; à la ligne %2</translation>
+        <translation type="obsolete">Dans l&apos;éditeur &apos;%1&apos; à la ligne %2</translation>
     </message>
     <message>
         <source>Can&apos;t indent this type of document</source>
@@ -186,11 +786,26 @@
     </message>
     <message>
         <source>Not implemented</source>
-        <translation>Non implémenté</translation>
+        <translation type="obsolete">Non implémenté</translation>
     </message>
     <message>
         <source>noname.txt</source>
         <translation>sansnom.txt</translation>
+    </message>
+    <message>
+        <source>Search Word</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Word %1 not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TreeProxyItemModel</name>
+    <message>
+        <source>&lt;deleted&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
