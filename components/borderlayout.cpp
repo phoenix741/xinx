@@ -58,16 +58,16 @@
  *
  * \brief A layout with a central widget.
  *
- * This layout is decomposed with a center widget and four border. Methods
- * add() and addWidget() as a second parameter \p position used to define
+ * This layout is decomposed with a central widget and four borders. Methods
+ * add() and addWidget() have a second parameter \p position used to define
  * where you place your widget.
  *
- * You can add multiple widget at the same position.
+ * You can add multiple widgets at the same position.
  *
  * \image html borderlayout1.png
  * \image latex borderlayout1.eps
  *
- * For more detail on this class, you can read the documentation of trolltech/nokia.
+ * For more details on this class, you can read the documentation of trolltech/nokia.
  */
 
 /*!
@@ -188,8 +188,8 @@ QLayoutItem *BorderLayout::itemAt(int index) const
 /*!
  * \brief Return the minimum size of the widget.
  *
- * This method use the minimum size of the different elements added to the layout
- * to known the minimum size.
+ * This method uses the minimum size of the different elements added to the layout
+ * to know the minimum size.
  */
 QSize BorderLayout::minimumSize() const
 {
@@ -278,7 +278,7 @@ QSize BorderLayout::sizeHint() const
 	return calculateSize(SizeHint);
 }
 
-//! Return the item at the index \p index in the list and remove it.
+//! Returns the item at the index \p index in the list and removes it.
 QLayoutItem *BorderLayout::takeAt(int index)
 {
 	if (index >= 0 && index < list.size())

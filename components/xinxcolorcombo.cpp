@@ -112,14 +112,14 @@ public:
  * \class XinxColorCombo
  * \since 0.8.0.0
  *
- * \brief The XinxColorCombo provide a QComboBox used to select color.
+ * \brief The XinxColorCombo provides a QComboBox used to select color.
  *
- * Combo box to choose a color. The combo box show you the color
- * and an associate text to the color. The showed color, is standard Qt color.
- * The user can also change, and use a custom color. In this case a dialog
+ * Combo box to choose a color. The combo box shows you the color
+ * and an associated text to the color. The shown color, is standard Qt color.
+ * The user can also change, and use a customed color. In this case a dialog
  * is open to allow the user to make his choice.
  *
- * This component is originally written for KDE3. He was adapt to turn on Qt4.
+ * This component is originally written for KDE3. It was adapted to turn on Qt4.
  *
  * \image html xinxcolorcombobox.png
  * \image latex xinxcolorcombobox.png
@@ -127,7 +127,7 @@ public:
 
 
 /*!
- * \brief Create a color combo box
+ * \brief Creates a color combo box
  * \param parent The parent widget of the color combo box.
  */
 XinxColorCombo::XinxColorCombo(QWidget *parent)
@@ -177,7 +177,7 @@ void XinxColorCombo::setColor(const QColor &col)
 }
 
 /*!
- * \brief Return the color selected in the ComboBox.
+ * \brief Returns the color selected in the ComboBox.
  * \return The color selected
  * \sa setColor()
  */
@@ -196,7 +196,7 @@ void XinxColorCombo::resizeEvent(QResizeEvent *re)
 	addColors();
 }
 
-//! Show an empty color combo box.
+//! Shows an empty color combo box.
 void XinxColorCombo::showEmptyList()
 {
 	d->showEmptyList=true;

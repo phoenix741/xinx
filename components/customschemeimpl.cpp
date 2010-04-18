@@ -39,8 +39,8 @@
  *
  * \brief Class to help the user to customize the QCodeEdit editor.
  *
- * Create a widget that permit to personalize the QCodeEdit editor. This use
- * QLanguageFactory and QFormatScheme to show the list of available format to
+ * Create a widget that allows to customize the QCodeEdit editor. This program uses
+ * QLanguageFactory and QFormatScheme to show the list of available formats to
  * change.
  *
  * The method setHiddenFormat() is used to hide some format of the list to forbide
@@ -49,10 +49,10 @@
  * \image html customschemeimpl1.png
  * \image latex customschemeimpl1.png
  *
- * When the user select a format, the widget update chexkboxes, and comboboxes to
+ * When the user selects a format, the widget updates chexkboxes, and comboboxes to
  * the new format.
  *
- * All change made on a format is showed on the example part of the widget.
+ * All changes made on a format are shown on the example part of the widget.
  */
 
 /*!
@@ -115,7 +115,7 @@ void CustomSchemeImpl::setExample(const QString & value)
 
 /*!
  * \property CustomSchemeImpl::example
- * \brief Return the exemple defined in the object.
+ * \brief Returns the exemple defined in the object.
  * \sa setExample(), example
  */
 const QString & CustomSchemeImpl::example() const
@@ -170,7 +170,7 @@ QString CustomSchemeImpl::languageDefinition() const
 }
 
 /*!
- * \brief Set the list of format that the widget to not show.
+ * \brief Set the list of format that the widget does not show.
  * \sa hiddenFormat()
  */
 void CustomSchemeImpl::setHiddenFormat(const QStringList & value)

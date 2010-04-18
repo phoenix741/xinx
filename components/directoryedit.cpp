@@ -253,7 +253,7 @@ PrivateDirectoryEditWidget::PrivateDirectoryEditWidget(QWidget * o)
  * \class DirectoryEditWidget
  * \since 0.7.0.0
  *
- * \brief A widget to edit a path. This widget have button attached to open a dialog.
+ * \brief A widget to edit a path. This widget has a button attached to open a dialog.
  *
  * This class is an association of a Directory Line editor and a button.
  * The button call the \p changePath slot from the \p DirectoryEdit class.
@@ -263,7 +263,7 @@ PrivateDirectoryEditWidget::PrivateDirectoryEditWidget(QWidget * o)
  */
 
 /*!
- * \brief Construct the directory edit widget and tell if the widget is used
+ * \brief Constructs the directory edit widget and tells if the widget is used
  * to edit directory or file.
  * \param isDirectory If \p true, the widget edit directory, otherwise file.
  * \param parent The parent of the widget.
