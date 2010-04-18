@@ -282,30 +282,37 @@ In the list &lt;b&gt;XINX&lt;/b&gt; presents three actions :
 &lt;li&gt;&lt;i&gt;Commit&lt;/i&gt; : If the file exists and is modified (checked by default).&lt;/li&gt;
 &lt;/ul&gt;
 Only checked files are commited.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cette liste contient les documents à valider. Seul les fichiers connus par XINX sont listé ici (&lt;i&gt;.xsl, .html, .css, .js, ...&lt;/i&gt;).&lt;br/&gt;
+Dans cette liste&lt;b&gt;XINX&lt;/b&gt; permet trois actions :
+&lt;ul&gt;
+&lt;li&gt;&lt;i&gt;Ajouter et Valider&lt;/i&gt; : Si le fichier n&apos;existe pas dans le réferenciel mais peut être validé&lt;/li&gt;
+&lt;li&gt;&lt;i&gt;Supprimer et Valider&lt;/i&gt; : Si le fichier est supprimé du disque mais pas du référenciel&lt;/li&gt;
+&lt;li&gt;&lt;i&gt;Valider&lt;/i&gt; : Si le fichier existe et est modifié (coché par défaut).&lt;/li&gt;
+&lt;/ul&gt;
+Seul les fichiers cochés seront validés.</translation>
     </message>
 </context>
 <context>
     <name>CommitMessageDialogImpl</name>
     <message>
         <source> ( Commit )</source>
-        <translation type="unfinished"></translation>
+        <translation> ( Valider )</translation>
     </message>
     <message>
         <source> ( Add and Commit )</source>
-        <translation type="unfinished"></translation>
+        <translation> ( Ajouter et Valider )</translation>
     </message>
     <message>
         <source> ( Remove and Commit )</source>
-        <translation type="unfinished"></translation>
+        <translation> ( Supprimer et Valider )</translation>
     </message>
     <message>
         <source>Commit</source>
-        <translation type="unfinished"></translation>
+        <translation>Valider</translation>
     </message>
     <message>
         <source>Nothing to do.</source>
-        <translation type="unfinished"></translation>
+        <translation>Il n&apos;y a aucun fichier à valider.</translation>
     </message>
 </context>
 <context>
@@ -334,47 +341,47 @@ Only checked files are commited.</source>
     <name>ContentView2::CompletionModel</name>
     <message>
         <source>Completion not ready</source>
-        <translation type="unfinished"></translation>
+        <translation>Complétion pas prête</translation>
     </message>
 </context>
 <context>
     <name>ContentView2::File</name>
     <message>
         <source>Can&apos;t find the node %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne peux trouver le noeud %1</translation>
     </message>
     <message>
         <source>Can&apos;t find the project %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne peux trouver le projet %1</translation>
     </message>
     <message>
         <source>Can&apos;t find the node for path %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne peux trouver le noeud pour le chemin %1</translation>
     </message>
 </context>
 <context>
     <name>ContentView2::Manager</name>
     <message>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>Général</translation>
     </message>
 </context>
 <context>
     <name>ContentView2::Project</name>
     <message>
         <source>Can&apos;t find the node %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne peux trouver le noeud %1</translation>
     </message>
     <message>
         <source>Can&apos;t find the project %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne peux trouver le projet %1</translation>
     </message>
 </context>
 <context>
     <name>ContentView2::TreeModel</name>
     <message>
         <source>Name</source>
-        <translation type="unfinished">Nom</translation>
+        <translation>Nom</translation>
     </message>
 </context>
 <context>
@@ -399,27 +406,27 @@ Only checked files are commited.</source>
     <name>DirRCSModel</name>
     <message>
         <source>Unknown</source>
-        <translation type="unfinished"></translation>
+        <translation>Inconnu</translation>
     </message>
     <message>
         <source>Locally modified</source>
-        <translation type="unfinished"></translation>
+        <translation>Modifié locallement</translation>
     </message>
     <message>
         <source>Locally added</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouté locallement</translation>
     </message>
     <message>
         <source>Has conflict</source>
-        <translation type="unfinished"></translation>
+        <translation>En conflit</translation>
     </message>
     <message>
         <source>No modified</source>
-        <translation type="unfinished"></translation>
+        <translation>Non modifié</translation>
     </message>
     <message>
         <source>Need checkout</source>
-        <translation type="unfinished"></translation>
+        <translation>Necessite une mise à jour</translation>
     </message>
     <message>
         <source>Filename : %1
@@ -429,7 +436,13 @@ Date in CVS : %4
 Version : %5
 
 Cache size : %6/%7</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom du fichier : %1
+Status : %2
+Date du fichier : %3
+Date de la révision : %4
+Version : %5
+
+Taille du cache : %6/%7</translation>
     </message>
 </context>
 <context>
@@ -451,21 +464,22 @@ Cache size : %6/%7</source>
     <message>
         <source>&lt;p&gt;Call the commit method of your &lt;i&gt;revision control sytem&lt;/i&gt; for all the project directory. An optional message can be added.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Only &lt;b&gt;XINX&lt;/b&gt; managed files are commited to the repository.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Valide dans votre &lt;i&gt;système de gestion de version&lt;/i&gt; le contenue de tout le dossier projet. Un message optionel peut être ajouté.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Seul les types de fichiers gérés par &lt;b&gt;XINX&lt;/b&gt; seront validé dans le référenciel.&lt;/i&gt;/&lt;p&gt;</translation>
     </message>
 </context>
 <context>
     <name>NewProjectTemplate</name>
     <message>
         <source>The file %1 is not a New Project Template file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le fichier %1 n&apos;est pas un modèle pour la création d&apos;un nouveau projet.</translation>
     </message>
 </context>
 <context>
     <name>Node</name>
     <message>
         <source>Can&apos;t find the node %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne peux trouver le noeud %1</translation>
     </message>
 </context>
 <context>
@@ -484,15 +498,15 @@ Cache size : %6/%7</source>
     </message>
     <message>
         <source>DEBUG</source>
-        <translation type="unfinished"></translation>
+        <translation>Déverminage</translation>
     </message>
     <message>
         <source>WARNING</source>
-        <translation type="unfinished"></translation>
+        <translation>Attention</translation>
     </message>
     <message>
         <source>FATAL</source>
-        <translation type="unfinished"></translation>
+        <translation>Fatal</translation>
     </message>
 </context>
 <context>
@@ -518,57 +532,57 @@ Cache size : %6/%7</source>
     <name>RCSManager</name>
     <message>
         <source>Update project</source>
-        <translation type="unfinished"></translation>
+        <translation>Mise à jour du projet</translation>
     </message>
     <message>
         <source>Call the update fonction of your &lt;i&gt;revision control system&lt;/i&gt; for all the project directory.</source>
-        <translation type="unfinished"></translation>
+        <translation>Met à jour le dossier projet à partir du &lt;i&gt;système de gestion de version&lt;i&gt; choisis.</translation>
     </message>
     <message>
         <source>Commit project</source>
-        <translation type="unfinished"></translation>
+        <translation>Valide le projet</translation>
     </message>
     <message>
         <source>Cancel RCS operation</source>
-        <translation type="unfinished"></translation>
+        <translation>Annule l&apos;opération</translation>
     </message>
     <message>
         <source>No tools defined</source>
-        <translation type="unfinished"></translation>
+        <translation>Outil non définit</translation>
     </message>
     <message>
         <source>Add a file</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajoute un fichier</translation>
     </message>
     <message>
         <source>Do you want to add the file &apos;%1&apos; to the repository</source>
-        <translation type="unfinished"></translation>
+        <translation>Voulez-vous ajouter le fichier &apos;%1&apos; au référenciel</translation>
     </message>
     <message>
         <source>&lt;Commit with no text&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;Valider sans texte&gt;</translation>
     </message>
     <message>
         <source>Operation cancelled</source>
-        <translation type="unfinished"></translation>
+        <translation>Opération annulée</translation>
     </message>
 </context>
 <context>
     <name>ScriptManager</name>
     <message>
         <source>Cannot read file : %1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne peux lire le fichier : %1: %2</translation>
     </message>
     <message>
         <source>An error occurred while executing the script %1 : %2 at line %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Un erreur est survenue pendant l&apos;execution du script %1 : %2 à la ligne %3</translation>
     </message>
 </context>
 <context>
     <name>ScriptValue</name>
     <message>
         <source>An error occure while run the script : %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Une erreur est survenue pendant l&apos;éxécution du script : %1</translation>
     </message>
 </context>
 <context>
@@ -576,88 +590,89 @@ Cache size : %6/%7</source>
     <message>
         <source>Cannot write file %1:
 %2.</source>
-        <translation type="unfinished">Ne peut écrire le fichier %1:
+        <translation>Ne peut écrire le fichier %1:
 %2.</translation>
     </message>
     <message>
         <source>Cannot read file %1:
 %2.</source>
-        <translation type="unfinished">Ne peut lire le fichier %1 :
+        <translation>Ne peut lire le fichier %1 :
 %2.</translation>
     </message>
     <message>
         <source>Parse error exception.</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur de parsing de la liste des Snipets.</translation>
     </message>
 </context>
 <context>
     <name>SnipetManager</name>
     <message>
         <source>Remove a category</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer la catégorie</translation>
     </message>
     <message>
         <source>This category contains snipet or other category, you can&apos;t remove this category.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si la catégorie contient des modèles ou d&apos;autres catégorie, vous ne pouvez pas supprimer cette catégorie.</translation>
     </message>
     <message>
         <source>Are you sure to delete the category &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Êtes-vous sur de vouloir supprimer la catégorie &quot;%1&quot;</translation>
     </message>
     <message>
         <source>Imported Snipets</source>
-        <translation type="unfinished"></translation>
+        <translation>Modèles importés</translation>
     </message>
     <message>
         <source>Can&apos;t search id for key &apos;%1&apos; : %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne peux chercher l&apos;id pour la clé &quot;%1&quot; : %2</translation>
     </message>
     <message>
         <source>Error when calling script for record %1 : %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur lors de l&apos;appel du script pour l&apos;enregistrement %1 : %2</translation>
     </message>
     <message>
         <source>The script %1 %2 return neither true or false.
 %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Le script %1 %2 n&apos;a retourné ni vraie, ni faux.
+%3</translation>
     </message>
     <message>
         <source>Can&apos;t load snipet database : %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne peux charger la base de donnée des modèles : %1</translation>
     </message>
     <message>
         <source>Categories</source>
-        <translation type="unfinished"></translation>
+        <translation>Catégories</translation>
     </message>
     <message>
         <source>List of all categories</source>
-        <translation type="unfinished"></translation>
+        <translation>List des catégories</translation>
     </message>
 </context>
 <context>
     <name>SnipetMenu</name>
     <message>
         <source>&amp;Create Snipet ...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Création d&apos;un modèle ...</translation>
     </message>
 </context>
 <context>
     <name>SnipetPropertyDialog</name>
     <message>
         <source>Snipet property</source>
-        <translation type="unfinished"></translation>
+        <translation>Propriété du modèle</translation>
     </message>
     <message>
         <source>&amp;Description</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Description</translation>
     </message>
     <message>
         <source>&amp;Name :</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Nom :</translation>
     </message>
     <message>
         <source>Name of the snipet used to identify the snipet in menus.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nom du modèle, utilisé pour identifier le modèle dans les menus.</translation>
     </message>
     <message>
         <source>&amp;Image :</source>

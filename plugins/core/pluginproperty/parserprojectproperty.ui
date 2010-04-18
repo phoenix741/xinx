@@ -17,7 +17,7 @@
    <item row="0" column="0">
     <widget class="QLabel" name="m_labelDataStream">
      <property name="text">
-      <string>Location of the &amp;data stream :</string>
+      <string>Location of the &amp;data stream (parsed by the stylesheet) :</string>
      </property>
      <property name="buddy">
       <cstring>m_dataStreamEdit</cstring>
@@ -34,7 +34,7 @@
    <item row="1" column="0">
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Location of the &amp;running page :</string>
+      <string>Directory used to find CSS, JS and Image files :</string>
      </property>
      <property name="buddy">
       <cstring>m_urlLocationEdit</cstring>

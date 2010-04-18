@@ -100,7 +100,7 @@ QVariant CorePlugin::getPluginAttribute(const enum IXinxPlugin::PluginAttribute 
 	case PLG_NAME:
 		return tr("Core Plugin");
 	case PLG_DESCRIPTION:
-		return tr("Necessary editor, actions, and dock used by XINX.");
+		return tr("Minimum editors, completer, docks for XINX.");
 	case PLG_ICON:
 		return QPixmap(":/images/coreplugin.png");
 	case PLG_AUTHOR:
@@ -158,7 +158,7 @@ XinxAction::MenuList CorePlugin::actions()
 		XinxAction::Action * uncommentAction = new UncommentAction(tr("&Uncomment"), QString("Ctrl+Shift+D"), this);
 
 		commentAction->action()->setStatusTip(tr("Comment the selected text"));
-		commentAction->action()->setWhatsThis(tr("Comment the selected text with the specifique guidelines of the language. <ul><li>In <b>XML</b> like format <i>&lt;!-- comment --&gt;</i></li> <li>In <b>Javascript</b> : <i>/* comment */</i> </li></ul>"));
+		commentAction->action()->setWhatsThis(tr("Comment the selected text by using the language syntax. <ul><li>In <b>XML</b> like format <i>&lt;!-- comment --&gt;</i></li> <li>In <b>Javascript</b> : <i>/* comment */</i> </li></ul>"));
 
 		uncommentAction->action()->setStatusTip(tr("Uncomment the selected text if commented"));
 		uncommentAction->action()->setWhatsThis(tr("See the comment helper function"));

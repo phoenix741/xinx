@@ -108,7 +108,7 @@ void XmlCompletionParser::load()
 			if (name() == "xml")
 				readRootTag();
 			else
-				raiseError(tr("The file is not a completion file."));
+				raiseError(tr("The file is can't be used to do completion."));
 		}
 	}
 
@@ -162,7 +162,7 @@ void XmlCompletionParser::readRootTag()
 			if (QXmlStreamReader::name() == "type")
 				readTypeTag();
 			else
-				raiseError(tr("Wrong node name %1 in root element").arg(QXmlStreamReader::name().toString()));
+				raiseError(tr("Wrong node name \"%1\" in root element").arg(QXmlStreamReader::name().toString()));
 		}
 	}
 
@@ -187,7 +187,7 @@ void XmlCompletionParser::readTypeTag()
 			if (QXmlStreamReader::name() == "balise")
 				readBaliseTag();
 			else
-				raiseError(tr("Wrong node name %1 in type element").arg(QXmlStreamReader::name().toString()));
+				raiseError(tr("Wrong node name \"%1\" in type element").arg(QXmlStreamReader::name().toString()));
 		}
 	}
 }
@@ -235,7 +235,7 @@ void XmlCompletionParser::readBaliseTag()
 			else if (QXmlStreamReader::name() == "attribute")
 				readAttributeTag();
 			else
-				raiseError(tr("Wrong node name %1 in balise element").arg(QXmlStreamReader::name().toString()));
+				raiseError(tr("Wrong node name \"%1\" in balise element").arg(QXmlStreamReader::name().toString()));
 		}
 	}
 	m_parentNode.pop();
@@ -278,7 +278,7 @@ void XmlCompletionParser::readAttributeTag()
 			if (QXmlStreamReader::name() == "value")
 				readValueTag();
 			else
-				raiseError(tr("Wrong node name %1 in attribute element").arg(QXmlStreamReader::name().toString()));
+				raiseError(tr("Wrong node name \"%1\" in attribute element").arg(QXmlStreamReader::name().toString()));
 		}
 	}
 	m_parentNode.pop();

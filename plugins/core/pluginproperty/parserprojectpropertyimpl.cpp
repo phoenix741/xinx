@@ -96,7 +96,7 @@ bool ParserProjectPropertyImpl::isVisible()
 WebPluginProjectPropertyWizard::WebPluginProjectPropertyWizard()
 {
 	setTitle(tr("Web Module Property Page"));
-	setSubTitle(tr("Define information about the web module, like the adresse of the servlet control."));
+	setSubTitle(tr("Define information about the web module, like the directory where find JS, Image and CSS."));
 
 	QGridLayout * gridLayout = new QGridLayout(this);
 
@@ -115,11 +115,11 @@ WebPluginProjectPropertyWizard::WebPluginProjectPropertyWizard()
 	gridLayout->addItem(new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding), 2, 0);
 
 	labelUrl->setBuddy(m_urlLocationEdit);
-	labelUrl->setText(tr("Location of the &running page :"));
+	labelUrl->setText(tr("Directory used to find CSS, JS and Image files :"));
 	m_urlLocationEdit->setText(field("project.path").toString());
 
 	labelDataStream->setBuddy(m_dataStreamEdit);
-	labelDataStream->setText(tr("Location of data stream :"));
+	labelDataStream->setText(tr("Location of the &data stream (parsed by the stylesheet) :"));
 	m_dataStreamEdit->lineEdit()->setText(field("project.path").toString());
 
 	registerField("webplugin.adresse", m_urlLocationEdit);
