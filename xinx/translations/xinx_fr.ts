@@ -4,22 +4,27 @@
 <context>
     <name>AboutDialog</name>
     <message>
+        <location filename="../ui/about.ui" line="19"/>
         <source>About XINX</source>
         <translation>A propos de XINX</translation>
     </message>
     <message>
+        <location filename="../ui/about.ui" line="42"/>
         <source>&amp;About</source>
         <translation>&amp;A propos</translation>
     </message>
     <message>
+        <location filename="../ui/about.ui" line="88"/>
         <source>A&amp;uthor(s)</source>
         <translation>A&amp;uteur(s)</translation>
     </message>
     <message>
+        <location filename="../ui/about.ui" line="145"/>
         <source>&amp;Thanks to</source>
         <translation>&amp;Remerciements</translation>
     </message>
     <message>
+        <location filename="../ui/about.ui" line="202"/>
         <source>Licence</source>
         <translation>Licence</translation>
     </message>
@@ -28,15 +33,18 @@
         <translation type="obsolete">&amp;Fermer</translation>
     </message>
     <message>
+        <location filename="../ui/about.ui" line="31"/>
         <source>&lt;b&gt;XINX trunk-svn (use Qt %1)&lt;/b&gt;</source>
         <translation>&lt;b&gt;XINX trunk-svn (utilise Qt %1)&lt;/b&gt;</translation>
     </message>
     <message>
+        <location filename="../ui/about.ui" line="73"/>
         <source>&lt;p&gt;&lt;b&gt;XINX&lt;/b&gt; Is Not only XML&lt;/p&gt;
 &lt;p&gt;(c) 2006-2007, Ulrich Van Den Hekke&lt;/p&gt;</source>
         <translation></translation>
     </message>
     <message utf8="true">
+        <location filename="../ui/about.ui" line="214"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -278,14 +286,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ConclusionWizardPage</name>
     <message>
+        <location filename="../xinxprojectwizard/projectwizard.cpp" line="175"/>
         <source>Conversion finished</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../xinxprojectwizard/projectwizard.cpp" line="176"/>
         <source>The conversion is terminated, you can now reopen the project.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../xinxprojectwizard/projectwizard.cpp" line="179"/>
         <source>The project is now converted. XINX can now open the project file normally.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -338,6 +349,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CustomDialog</name>
     <message>
+        <location filename="../customdialog/ui/customdialog.ui" line="14"/>
         <source>Customize</source>
         <translation>Personnaliser</translation>
     </message>
@@ -458,6 +470,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">&amp;Annuler</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customdialog.ui" line="60"/>
         <source>General</source>
         <translation>Général</translation>
     </message>
@@ -1033,74 +1046,91 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CustomEditor</name>
     <message>
+        <location filename="../customdialog/ui/customeditor.ui" line="14"/>
         <source>Editor</source>
         <translation type="unfinished">Editeur</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customeditor.ui" line="20"/>
         <source>&amp;Options</source>
         <translation type="unfinished">&amp;Options</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customeditor.ui" line="26"/>
         <source>&lt;p&gt;Alert user when the file is modified by an extern application. The user has the choice to open the new file (&lt;u&gt;and loose his change&lt;/u&gt;) or keep current file.&lt;/p&gt;</source>
         <translation type="unfinished">&lt;p&gt;Prévient l&apos;utilisateur quand le fichier est modifié par une application externe. L&apos;utilisateur a alors le choix d&apos;ouvrir le nouveau fichier (&lt;u&gt;et alors perdre ses modifications&lt;/u&gt;) ou garder la version courante.&lt;/p&gt;</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customeditor.ui" line="29"/>
         <source>&amp;Popup when file modifed</source>
         <translation type="unfinished">&amp;Avertir lors de la modification d&apos;un fichier</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customeditor.ui" line="36"/>
         <source>&lt;p&gt;Create a backup file before saving the file. The backup file is stored in the same directory that the original file. &lt;/p&gt;
 &lt;p&gt;The backup is created by copy the modified file before he his saved.&lt;/p&gt;</source>
         <translation type="unfinished">&lt;p&gt;Crée une sauvegarde du fichier avant l&apos;enregistrement. La sauvegarde est stockée dans le même dossier que le fichier original.&lt;/p&gt;
 &lt;p&gt;Le fichier est copié avant sauvegarde.&lt;/p&gt;</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customeditor.ui" line="40"/>
         <source>&amp;Create backup file when saving (.bak)</source>
         <translation type="unfinished">&amp;Créer une sauvegarde avant enregistrement (.bak)</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customeditor.ui" line="47"/>
         <source>&lt;p&gt;If the box is checked, when saving the file, &lt;b&gt;XINX &lt;/b&gt;apply the pretty print function on the text. This format the code on saving file. &lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Saving file can be slower.&lt;/i&gt;&lt;/p&gt;</source>
         <translation type="unfinished">&lt;p&gt;Si la case est cochée, pendant la sauvegarde du fichier, &lt;b&gt;XINX&lt;/b&gt; applique une indentation automatique sur le texte. Ce qui formate le code à l&apos;enregistrement.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;L&apos;enregistrement du fichier peut être lent.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customeditor.ui" line="51"/>
         <source>P&amp;retty print on saving</source>
         <translation type="unfinished">&amp;Indentation automatique à la sauvegarde</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customeditor.ui" line="61"/>
         <source>Close Tab Button</source>
         <translation type="unfinished">Bouton de fermeture d&apos;onglet</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customeditor.ui" line="67"/>
         <source>&lt;p&gt;&lt;img src=&quot;:/images/tabclose.png&quot;/&gt;Show a button on the right corner of &lt;b&gt;XINX&lt;/b&gt;.&lt;/p&gt;</source>
         <translation type="unfinished">&lt;p&gt;&lt;img src=&quot;:/images/tabclose.png&quot;/&gt;Affiche un bouton sur le coin droit de &lt;b&gt;XINX&lt;/b&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customeditor.ui" line="70"/>
         <source>Close button on the &amp;tab widget</source>
         <translation type="unfinished">Bouton de fermeture sur l&apos;&amp;onglet</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customeditor.ui" line="77"/>
         <source>&lt;p&gt;&lt;img src=&quot;:/images/fileclose.png&quot;/&gt;Show a close button on each tab.&lt;/p&gt;</source>
         <translation type="unfinished">&lt;p&gt;&lt;img src=&quot;:/images/fileclose.png&quot;/&gt;Affiche un bouton de fermeture sur chaque onglet.&lt;/p&gt;</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customeditor.ui" line="80"/>
         <source>Close button on right &amp;corner</source>
         <translation type="unfinished">Bouton de fermeture sur le &amp;coin droit</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customeditor.ui" line="90"/>
         <source>&lt;p&gt;&lt;img src=&quot;:/images/tabclose.png&quot; /&gt;&lt;img src=&quot;:/images/fileclose.png&quot; /&gt;Show a button on the right corner of &lt;b&gt;XINX&lt;/b&gt; and another on each tab. This option is the concatenation of the two other options&lt;/p&gt;</source>
         <translation type="unfinished">&lt;p&gt;&lt;img src=&quot;:/images/tabclose.png&quot; /&gt;&lt;img src=&quot;:/images/fileclose.png&quot; /&gt;Affiche un bouton sur le coin droit de &lt;b&gt;XINX&lt;/b&gt; ainsi qu&apos;un autre sur chaque onglet. Cette option est la somme des deux autres options.&lt;/p&gt;</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customeditor.ui" line="93"/>
         <source>Close button on the tab widget &amp;and the corner</source>
         <translation type="unfinished">Bouton de fermeture sur l&apos;onglet &amp;et le coin</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customeditor.ui" line="103"/>
         <source>Default text &amp;encoding :</source>
         <translation type="unfinished">&amp;Encodage par défaut du texte :</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customeditor.ui" line="113"/>
         <source>&lt;p&gt;Choose the default text encoding, when the text encoding can&apos;t be found.
 
 &lt;i&gt;Some editor, can redefined the text encoding (ie: XML and derivated editor). This encoding is used by editor as JavaScript and other&lt;/i&gt;&lt;/p&gt;</source>
@@ -1109,14 +1139,17 @@ p, li { white-space: pre-wrap; }
 &lt;i&gt;Quelque éditeurs peuvent redéfinir l&apos;encodage du texte (ex: l&apos;éditeur XML et ses dérivés). Cet encodage est utilié par l&apos;éditeur JavaScript ainsi que les autres&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customeditor.ui" line="122"/>
         <source>&amp;Text content refresh :</source>
         <translation type="unfinished">&amp;Rafraichissement du contenu :</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customeditor.ui" line="132"/>
         <source>Number of ms to wait before reloading of the editor content. This timeout is reseted when you hit your keyboard.</source>
         <translation type="unfinished">Nombre de millisecondes à attendre avant le rechargement du contenu de l&apos;éditeur. A chaque frappe au clavier le compte à rebours est remis à zéro.</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customeditor.ui" line="135"/>
         <source> ms</source>
         <translation type="unfinished"> ms</translation>
     </message>
@@ -1124,136 +1157,169 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CustomFont</name>
     <message>
+        <location filename="../customdialog/ui/customfont.ui" line="14"/>
         <source>Font</source>
         <translation type="unfinished">Police</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customfont.ui" line="20"/>
         <source>&amp;Font name :</source>
         <translation type="unfinished">Police de &amp;Caractère :</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customfont.ui" line="30"/>
         <source>Name of the font to use in all editors.</source>
         <translation type="unfinished">Nom de la police de caractère utilisé dans les éditeurs.</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customfont.ui" line="37"/>
         <source>Font &amp;size :</source>
         <translation type="unfinished">Taille de la &amp;police :</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customfont.ui" line="47"/>
         <source>Size of the font in the editor. The value is a global value.</source>
         <translation type="unfinished">Taille de la police de caractère dans l&apos;éditeur. </translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customfont.ui" line="54"/>
         <source>Show the current line in a different color. Usually a blue-gray.</source>
         <translation type="unfinished">Affiche la ligne courante dans une couleur différente. Généralement un bleu-gris.</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customfont.ui" line="57"/>
         <source>Show current &amp;line</source>
         <translation type="unfinished">Affiche la &amp;ligne courant</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customfont.ui" line="64"/>
         <source>&lt;p&gt;Highlight automatically all same word in the editor in the same color.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;This can be slow down the edition mode.&lt;/i&gt;&lt;/p&gt;</source>
         <translation type="unfinished">&lt;p&gt;Surligne d&apos;une même couleur automatiquement les mots identiques dans l&apos;éditeur.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Cette option peut ralentir la saisie&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customfont.ui" line="68"/>
         <source>Auto highlight same &amp;word</source>
         <translation type="unfinished">Surligne automatiquement tous les &amp;mots identiques</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customfont.ui" line="75"/>
         <source>&amp;Color of highlight:</source>
         <translation type="unfinished">&amp;Couleur du surligneur:</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customfont.ui" line="85"/>
         <source>Color used for highlight same word</source>
         <translation type="unfinished">Couleur utilisée pour surligner les mots identiques</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customfont.ui" line="89"/>
         <source>Custom...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customfont.ui" line="94"/>
         <source>Red</source>
         <translation type="unfinished">Rouge</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customfont.ui" line="99"/>
         <source>Green</source>
         <translation type="unfinished">Vert</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customfont.ui" line="104"/>
         <source>Blue</source>
         <translation type="unfinished">Bleu</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customfont.ui" line="109"/>
         <source>Cyan</source>
         <translation type="unfinished">Bleu ciel</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customfont.ui" line="114"/>
         <source>Magenta</source>
         <translation type="unfinished">Magenta</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customfont.ui" line="119"/>
         <source>Yellow</source>
         <translation type="unfinished">Jaune</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customfont.ui" line="124"/>
         <source>Dark Red</source>
         <translation type="unfinished">Rouge foncé</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customfont.ui" line="129"/>
         <source>Dark Green</source>
         <translation type="unfinished">Vert foncé</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customfont.ui" line="134"/>
         <source>Dark Blue</source>
         <translation type="unfinished">Blue foncé</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customfont.ui" line="139"/>
         <source>Dark Cyan</source>
         <translation type="unfinished">Bleu ciel foncé</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customfont.ui" line="144"/>
         <source>Dark Magenta</source>
         <translation type="unfinished">Magenta foncé</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customfont.ui" line="149"/>
         <source>Dark Yellow</source>
         <translation type="unfinished">Jaune foncé</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customfont.ui" line="154"/>
         <source>White</source>
         <translation type="unfinished">Blanc</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customfont.ui" line="159"/>
         <source>Light Gray</source>
         <translation type="unfinished">Gris clair</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customfont.ui" line="164"/>
         <source>Gray</source>
         <translation type="unfinished">Gris</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customfont.ui" line="169"/>
         <source>Dark Gray</source>
         <translation type="unfinished">Gris foncé</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customfont.ui" line="174"/>
         <source>Black</source>
         <translation type="unfinished">Noir</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customfont.ui" line="182"/>
         <source>Show tabulation and space in the editor with specialcharacter (in greyed colour).</source>
         <translation type="unfinished">Affiche les tabulations et les espaces dans l&apos;éditeur avec un caractère spécial (dans une couleur grise).</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customfont.ui" line="185"/>
         <source>Show &amp;tabulation and space in the editor</source>
         <translation type="unfinished">Affiche les &amp;tabulations et les espaces dans l&apos;éditeur</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customfont.ui" line="192"/>
         <source>Size of a &amp;tabulation :</source>
         <translation type="unfinished">Taille de la &amp;tabulation :</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customfont.ui" line="202"/>
         <source>Size of tabulation in number of character. This is the number of character that tabulation replaces.</source>
         <translation type="unfinished">Taille d&apos;une tabulation en nombre de caractère.</translation>
     </message>
@@ -1261,32 +1327,39 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CustomGeneral</name>
     <message>
+        <location filename="../customdialog/ui/customgeneral.ui" line="14"/>
         <source>General</source>
         <translation type="unfinished">Général</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customgeneral.ui" line="20"/>
         <source>&amp;Language :</source>
         <translation type="unfinished">&amp;Langue :</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customgeneral.ui" line="30"/>
         <source>&lt;p&gt;Langue in which &lt;b&gt;XINX&lt;/b&gt; must be used.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Modification take effect at restart.&lt;/i&gt;&lt;/p&gt;</source>
         <translation type="unfinished">&lt;p&gt;Langue dans laquelle &lt;b&gt;XINX&lt;/b&gt; est utilisé.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Les modifications prendront effet au redémarrage.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customgeneral.ui" line="35"/>
         <source>(en) English</source>
         <translation type="unfinished">(en) Anglais</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customgeneral.ui" line="44"/>
         <source>(fr_FR) French</source>
         <translation type="unfinished">(fr_FR) Français</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customgeneral.ui" line="56"/>
         <source>&amp;Trace Log File :</source>
         <translation type="unfinished">Fichier journal de &amp;trace :</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customgeneral.ui" line="82"/>
         <source>Force current &amp;style :</source>
         <translation type="unfinished">Force l&apos;utilisation d&apos;un &quot;&amp;style&quot;:</translation>
     </message>
@@ -1294,20 +1367,24 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CustomModules</name>
     <message>
+        <location filename="../customdialog/ui/custommodules.ui" line="14"/>
         <source>Modules</source>
         <translation type="unfinished">Modules</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/custommodules.ui" line="24"/>
         <source>Plugins</source>
         <translation type="unfinished">Modules</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/custommodules.ui" line="30"/>
         <source>&lt;p&gt;List of plugins of &lt;b&gt;XINX&lt;/b&gt;. Plugins are piece of software that can be added without reinstall &lt;b&gt;XINX&lt;/b&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;b&gt;XINX&lt;/b&gt; is now modular, so you can wrote your own plugins and enjoy. Plugins are writte in &lt;i&gt;C++&lt;/i&gt;, use &lt;i&gt;Qt&lt;/i&gt;, and must be in licence accepted by &lt;i&gt;Qt&lt;/i&gt;.&lt;/p&gt;</source>
         <translation type="unfinished">&lt;p&gt;Liste des modules de &lt;b&gt;XINX&lt;/b&gt;. Les modules sont des morceaux de logiciel qui peuvent être ajoutés/supprimés sans réinstaller &lt;b&gt;XINX&lt;/b&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;b&gt;XINX&lt;/b&gt; est maintenant modulaire, vous pouvez donc écrire vos propres modules et jouir de leur utilisation. Les modules sont écrits en &lt;i&gt;C++&lt;/i&gt; et utilisent &lt;i&gt;Qt&lt;/i&gt;. La licence doit être compatible avec &lt;i&gt;Qt&lt;/i&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/custommodules.ui" line="39"/>
         <source>Scripts</source>
         <translation type="unfinished">Scripts</translation>
     </message>
@@ -1315,14 +1392,18 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CustomModulesImpl</name>
     <message>
+        <location filename="../customdialog/custommodulesimpl.cpp" line="138"/>
         <source>&lt;table&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;hr/&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Author&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;E-Mail&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;mailto:%4&quot;&gt;%4&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Web site&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;%5&quot;&gt;%5&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Version&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Licence&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</source>
         <translation type="unfinished">&lt;table&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;hr/&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Auteur&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;E-Mail&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;mailto:%4&quot;&gt;%4&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Site internet&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;%5&quot;&gt;%5&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Version&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Licence&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</translation>
     </message>
     <message>
+        <location filename="../customdialog/custommodulesimpl.cpp" line="184"/>
+        <location filename="../customdialog/custommodulesimpl.cpp" line="246"/>
         <source>&amp;Informations</source>
         <translation type="unfinished">&amp;Informations</translation>
     </message>
     <message>
+        <location filename="../customdialog/custommodulesimpl.cpp" line="216"/>
         <source>&lt;table&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;hr/&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Author&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Version&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Licence&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</source>
         <translation type="unfinished">&lt;table&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;hr/&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Auteur&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Version&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Licence&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</translation>
     </message>
@@ -1330,44 +1411,54 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CustomProject</name>
     <message>
+        <location filename="../customdialog/ui/customproject.ui" line="14"/>
         <source>Project</source>
         <translation type="unfinished">Projet</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customproject.ui" line="20"/>
         <source>Project &amp;Management</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customproject.ui" line="26"/>
         <source>Default open &amp;project directory :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customproject.ui" line="39"/>
         <source>&lt;p&gt;This the path where the save dialog must be opened when you create a new project.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;As the author set the project path to the Application Server path, this path is now the project path. You can safely use another path, but in &lt;i&gt;New Project Wizard&lt;/i&gt;, the Application Server path would be wrong.&lt;/i&gt;&lt;/p&gt;</source>
         <translation type="unfinished">&lt;p&gt;C&apos;est le chemin où la boite de dialogue de sauvegarde doit être ouverte lors de la création d&apos;un nouveau projet.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Comme l&apos;auteur du logiciel mémorise le chemin du serveur d&apos;application dans ce chemin, c&apos;est maintenant la valeur de ce dossier. Vous pouvez, sans problème, indiquer un autre chemin, mais &lt;i&gt;L&apos;assistant de création de nouveau projet&lt;/i&gt;, le chemin vers le serveur d&apos;application sera faux.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customproject.ui" line="47"/>
         <source>Refresh Directory &amp;Timeout :</source>
         <translation type="unfinished">&amp;Temps avant actualisation des dossiers :</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customproject.ui" line="57"/>
         <source>Timeout before the directory view is reloaded with your filter.</source>
         <translation type="unfinished">Temps avant lequel la vue des dossiers est rechargée afin de refléter le filtre.</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customproject.ui" line="60"/>
         <source> ms</source>
         <translation type="unfinished"> ms</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customproject.ui" line="76"/>
         <source>Open the last opened project (&lt;i&gt;if any, it&apos;s the opened project when &lt;b&gt;XINX&lt;/b&gt; is closed&lt;/i&gt;), when &lt;b&gt;XINX&lt;/b&gt; is started.</source>
         <translation type="unfinished">Ouvre le dernier projet ouvert (&lt;i&gt;s&apos;il existe, c&apos;est le projet ouvert lors de la fermeture de &lt;b&gt;XINX&lt;/b&gt;&lt;/i&gt;), quand &lt;b&gt;XINX&lt;/b&gt; démarre.</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customproject.ui" line="79"/>
         <source>&amp;Open the last project at start</source>
         <translation type="unfinished">&amp;Ouvre le dernier projet au démarrage</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customproject.ui" line="86"/>
         <source>&lt;p&gt;This define the default way to close the project.&lt;/p&gt;
 &lt;p&gt;If checked, when the project, or the application is closed informations about unsaved files are stored in a session file.&lt;/p&gt;
 &lt;p&gt;Else, the XINX ask the user about unsaved file.&lt;/p&gt;
@@ -1380,32 +1471,39 @@ p, li { white-space: pre-wrap; }
 &lt;p&gt;&lt;i&gt;Lors d&apos;un plantage &lt;b&gt;XINX&lt;/b&gt; sauve automatiquement le projet en mode session.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customproject.ui" line="93"/>
         <source>&amp;Save project with session information by default (content of modified file)</source>
         <translation type="unfinished">&amp;Sauvegarde le projet avec les informations de session par défaut (contenu des fichiers modifiés)</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customproject.ui" line="109"/>
         <source>General &amp;Revision Control System Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customproject.ui" line="115"/>
         <source>&lt;p&gt;When an action with the revision control system is made, a log window is open and show information about the progress.&lt;/p&gt;
 &lt;p&gt;If checked, the log windows is automaticallyclosed when action (like update, commit ...) finished.&lt;/p&gt;</source>
         <translation type="unfinished">&lt;p&gt;Quand une action avec le gestionnaire de version est effectuée, un journal est ouvert et affiche des indications sur la progression.&lt;/p&gt;
 &lt;p&gt;Si coché, le journal sera automatiquement fermé à la fin de l&apos;opération (comme la mise à jour, ou la validation, ...).&lt;/p&gt;</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customproject.ui" line="119"/>
         <source>&amp;Close the Version management Log automatically.</source>
         <translation type="unfinished">&amp;Ferme le journal du gestionnaire de version automatiquement.</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customproject.ui" line="126"/>
         <source>&lt;p&gt;When checked, a &lt;i&gt;ChangeLog&lt;/i&gt; file is created/appended at each commit with date, hour, and the commit messages.&lt;/p&gt;</source>
         <translation type="unfinished">Si coché, un fichier &lt;i&gt;ChangeLog&lt;/i&gt; est créé/mis à jour à chaque validation avec la date, l&apos;heure, et le message de validation.&lt;/p&gt;</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customproject.ui" line="129"/>
         <source>&amp;Update &quot;ChangeLog&quot; automatically.</source>
         <translation type="unfinished">&amp;Mise à jour du &quot;ChangeLog&quot; automatique.</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customproject.ui" line="136"/>
         <source>&amp;Auto add file to versionning system</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1436,66 +1534,82 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CustomSnipet</name>
     <message>
+        <location filename="../customdialog/ui/customsnipet.ui" line="14"/>
         <source>Snipet</source>
         <translation type="unfinished">Modèle</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customsnipet.ui" line="22"/>
         <source>&amp;Filter :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customsnipet.ui" line="37"/>
         <source>List of snipet that could be used as a completion (with the snipet key) or called manually in the menu. You can also import snipet in &lt;b&gt;XINX&lt;/b&gt; file or export snipet to a &lt;i&gt;XML&lt;/i&gt; file.</source>
         <translation type="unfinished">Liste des modèles pouvant être utilisés lors de la complétion (avec la clé du modèle) ou appelés manuellement dans le menu. Il est aussi possible d&apos;importer dans &lt;b&gt;XINX&lt;/b&gt; des fichiers ou d&apos;exporter des modèles dans un fichier &lt;i&gt;XML&lt;/i&gt;.</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customsnipet.ui" line="50"/>
         <source>List of snipet (or template) that &lt;b&gt;XINX&lt;/b&gt; can use. A snipet is a piece of code quickly accessible by a key word, or by a menu.</source>
         <translation type="unfinished">Liste des modèles (snipet ou template) que &lt;b&gt;XINX&lt;/b&gt; peut utiliser. Un modèle est un morceau de code rapidement accessible par un mot clé ou par le menu.</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customsnipet.ui" line="86"/>
         <source>Open a dialog to create a new snipet.</source>
         <translation type="unfinished">Ouvre une fenêtre pour créer un nouveau modèle.</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customsnipet.ui" line="89"/>
         <source>&amp;Add</source>
         <translation type="unfinished">&amp;Ajouter</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customsnipet.ui" line="100"/>
         <source>Delete selected snipet in the list below.</source>
         <translation type="unfinished">Supprime les modèles selectionnés dans la liste ci-dessus.</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customsnipet.ui" line="103"/>
         <source>&amp;Delete</source>
         <translation type="unfinished">&amp;Supprimer</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customsnipet.ui" line="114"/>
         <source>Modify the selected snipet.</source>
         <translation type="unfinished">Modifie le modèle selectionné.</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customsnipet.ui" line="117"/>
         <source>&amp;Modify</source>
         <translation type="unfinished">&amp;Modifier</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customsnipet.ui" line="128"/>
         <source>Duplicate the selected snipet</source>
         <translation type="unfinished">Duplique le modèle selectionné</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customsnipet.ui" line="131"/>
         <source>D&amp;uplicate</source>
         <translation type="unfinished">D&amp;upliquer</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customsnipet.ui" line="155"/>
         <source>Import a list of snipet from an XML file.</source>
         <translation type="unfinished">Importe une liste de modèle depuis un fichier XML.</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customsnipet.ui" line="158"/>
         <source>&amp;Import ...</source>
         <translation type="unfinished">&amp;Importer ...</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customsnipet.ui" line="169"/>
         <source>Export selected snipet to an XML file.</source>
         <translation type="unfinished">Exporte les modèles selectionnés dans un fichier XML.</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customsnipet.ui" line="172"/>
         <source>&amp;Export ...</source>
         <translation type="unfinished">&amp;Exporter ...</translation>
     </message>
@@ -1503,18 +1617,22 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CustomSnipetImpl</name>
     <message>
+        <location filename="../customdialog/customsnipetimpl.cpp" line="40"/>
         <source>Add a new Snipet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../customdialog/customsnipetimpl.cpp" line="41"/>
         <source>Add a new Category</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../customdialog/customsnipetimpl.cpp" line="146"/>
         <source>Import snipets</source>
         <translation type="unfinished">Importation de modèle</translation>
     </message>
     <message>
+        <location filename="../customdialog/customsnipetimpl.cpp" line="168"/>
         <source>Export snipets</source>
         <translation type="unfinished">Exportation de modèle</translation>
     </message>
@@ -1522,10 +1640,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CustomSyntax</name>
     <message>
+        <location filename="../customdialog/ui/customsyntax.ui" line="14"/>
         <source>Syntax</source>
         <translation type="unfinished">Syntaxe</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customsyntax.ui" line="20"/>
         <source>&lt;p&gt;List of highlighter. Highlighter is used to color a text in an editor. &lt;/p&gt;
 &lt;p&gt;&lt;i&gt;To add new highlighter, you must add the corresponding plugin.&lt;/i&gt;&lt;/p&gt;</source>
         <translation type="unfinished">&lt;p&gt;Liste les modules de coloration syntaxique. La coloration syntaxique est utilisée pour colorer le texte dans l&apos;éditeur.&lt;/p&gt;
@@ -1535,10 +1655,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CustomTools</name>
     <message>
+        <location filename="../customdialog/ui/customtools.ui" line="14"/>
         <source>Tools</source>
         <translation type="unfinished">Outils</translation>
     </message>
     <message>
+        <location filename="../customdialog/ui/customtools.ui" line="20"/>
         <source>&lt;p&gt;List of tools used by &lt;b&gt;XINX&lt;/b&gt; and all plugins. Tools are external application called by this application.&lt;/p&gt;
 &lt;p&gt;If the tool can&apos;t be find, the text color will be &lt;span style=&quot;color:#ff0000;&quot;&gt;red&lt;/span&gt;.&lt;/p&gt;
 &lt;p&gt;To edit a tool, double click (or presse F2) on the path of the tool.&lt;/p&gt;</source>
@@ -1612,6 +1734,7 @@ Taille du cache : %6/%7</translation>
 <context>
     <name>FileContentDockWidget</name>
     <message>
+        <location filename="../filecontentdockwidget.cpp" line="40"/>
         <source>File Content</source>
         <translation type="unfinished">Contenu du document</translation>
     </message>
@@ -1697,18 +1820,22 @@ Taille du cache : %6/%7</translation>
 <context>
     <name>FileWizardPage</name>
     <message>
+        <location filename="../xinxprojectwizard/projectwizard.cpp" line="77"/>
         <source>Project file selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../xinxprojectwizard/projectwizard.cpp" line="78"/>
         <source>This wizard will help you to migrate your project file to the current version of XINX. Please fill all fields.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../xinxprojectwizard/projectwizard.cpp" line="83"/>
         <source>&amp;Project file : </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../xinxprojectwizard/projectwizard.cpp" line="106"/>
         <source>Project Wizard</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1723,14 +1850,17 @@ Taille du cache : %6/%7</translation>
 <context>
     <name>LastPageImpl</name>
     <message>
+        <location filename="../newprojectwizard.cpp" line="285"/>
         <source>Project created</source>
         <translation>Projet créé</translation>
     </message>
     <message>
+        <location filename="../newprojectwizard.cpp" line="286"/>
         <source>The project is now created.</source>
         <translation>Le projet est maintenant créé.</translation>
     </message>
     <message>
+        <location filename="../newprojectwizard.cpp" line="288"/>
         <source>The project is now created, please enjoy.</source>
         <translation>Le projet est maintenant créé, régalez-vous.</translation>
     </message>
@@ -1738,14 +1868,17 @@ Taille du cache : %6/%7</translation>
 <context>
     <name>LogDockWidget</name>
     <message>
+        <location filename="../logdialogimpl.cpp" line="84"/>
         <source>Logs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../logdialogimpl.cpp" line="179"/>
         <source>%1: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../logdialogimpl.cpp" line="181"/>
         <source>%1</source>
         <translation type="unfinished">%1</translation>
     </message>
@@ -1753,26 +1886,32 @@ Taille du cache : %6/%7</translation>
 <context>
     <name>LogWidget</name>
     <message>
+        <location filename="../ui/logform.ui" line="53"/>
         <source>RCS Log</source>
         <translation>Journal du système de gestion de version</translation>
     </message>
     <message>
+        <location filename="../ui/logform.ui" line="59"/>
         <source>&lt;html&gt;This is where &lt;b&gt;XINX&lt;/b&gt; store it&apos;s message from &lt;i&gt;revision control system&lt;/i&gt; console.</source>
         <translation>C&apos;est la fenêtre où &lt;b&gt;XINX&lt;/b&gt; affichera les messages venant de la console du &lt;i&gt;gestionnaire de version&lt;/i&gt;.</translation>
     </message>
     <message>
+        <location filename="../ui/logform.ui" line="67"/>
         <source>Search Result</source>
         <translation>Résultat de la recherche</translation>
     </message>
     <message>
+        <location filename="../ui/logform.ui" line="83"/>
         <source>Filename</source>
         <translation>Nom du fichier</translation>
     </message>
     <message>
+        <location filename="../ui/logform.ui" line="88"/>
         <source>Line</source>
         <translation>Ligne</translation>
     </message>
     <message>
+        <location filename="../ui/logform.ui" line="34"/>
         <source>&amp;Message</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2305,10 +2444,12 @@ Taille du cache : %6/%7</translation>
         <translation type="obsolete">Le service internet ne peut être trouvé. Rafraichissez la liste des services pour continuer.</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="1847"/>
         <source>File loaded</source>
         <translation>Fichier chargé</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="1905"/>
         <source>Save a project</source>
         <translation>Sauver un projet</translation>
     </message>
@@ -2349,14 +2490,19 @@ Taille du cache : %6/%7</translation>
         <translation type="obsolete">Journal</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="870"/>
         <source>New %1</source>
         <translation>Nouveau %1</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="888"/>
+        <location filename="../mainformimpl.cpp" line="889"/>
+        <location filename="../mainformimpl.cpp" line="1006"/>
         <source>Unknown</source>
         <translation>Inconnu</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="897"/>
         <source>Ready</source>
         <translation>Prêt</translation>
     </message>
@@ -2365,38 +2511,48 @@ Taille du cache : %6/%7</translation>
         <translation type="obsolete">Une erreur est survenue pendant l&apos;exécution du script : %1</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="1005"/>
         <source>No codec</source>
         <translation>Pas d&apos;encodage</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="1072"/>
         <source>Open text file</source>
         <translation>Ouvrir un fichier texte</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="1101"/>
+        <location filename="../mainformimpl.cpp" line="1332"/>
         <source>Application</source>
         <translation>Application</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="1102"/>
         <source>The document %1 has been modified.
 Do you really want refresh this?</source>
         <translation>Le document %1 a été modifié.
 Voulez-vous vraiment l&apos;actualiser ?</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="1175"/>
+        <location filename="../mainformimpl.cpp" line="1209"/>
         <source>&amp;%1 %2</source>
         <translation>&amp;%1 %2</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="1333"/>
         <source>The document %1 has been modified.
 Do you want to save your changes?</source>
         <translation>Le document %1 a été modifié.
 Voulez-vous sauver les changements ?</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="1396"/>
         <source>File %1 saved</source>
         <translation>Fichier %1 sauvé</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="1446"/>
         <source>Printed</source>
         <translation>Impression</translation>
     </message>
@@ -2421,38 +2577,48 @@ Voulez-vous sauver les changements ?</translation>
         <translation type="obsolete">Le fichier n&apos;est pas spécifique</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="1526"/>
         <source>Replace text</source>
         <translation>Remplacer le texte</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="1526"/>
         <source>Replace this occurence</source>
         <translation>Remplacer cette occurence</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="1574"/>
         <source>Search End</source>
         <translation>Recherche terminée</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="1574"/>
         <source>All string are finded</source>
         <translation>Toutes les chaines ont été trouvées</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="1636"/>
+        <location filename="../mainformimpl.cpp" line="1643"/>
         <source>Search/Replace</source>
         <translation>Chercher/Remplacer</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="1637"/>
         <source>%1 occurences of &apos;%2&apos; replaced.</source>
         <translation>%1 occurences de la chaine &apos;%2&apos; remplacées.</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="1644"/>
         <source>%1 occurences of &apos;%2&apos; %3. Return to the beginning of the document ?</source>
         <translation>%1 occurences de la chaine &apos;%2&apos; %3. Retourner au début du document ?</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="1644"/>
         <source>replaced</source>
         <translation>remplacé</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="1644"/>
         <source>finded</source>
         <translation>trouvé</translation>
     </message>
@@ -2461,14 +2627,18 @@ Voulez-vous sauver les changements ?</translation>
         <translation type="obsolete">Le module &quot;%1&quot; ne peut arrêter le projet</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="1747"/>
+        <location filename="../mainformimpl.cpp" line="1750"/>
         <source>XINX</source>
         <translation></translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="1750"/>
         <source>%1 - %2</source>
         <translation>%1 - %2</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="1756"/>
         <source>Open a project</source>
         <translation>Ouvrir un projet</translation>
     </message>
@@ -2481,38 +2651,52 @@ Voulez-vous sauver les changements ?</translation>
         <translation type="obsolete">Le module &quot;%1&quot; ne peut démarrer le projet</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="143"/>
+        <location filename="../mainformimpl.cpp" line="161"/>
         <source>&amp;File</source>
         <translation>&amp;Fichier</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="144"/>
+        <location filename="../mainformimpl.cpp" line="162"/>
         <source>&amp;Edit</source>
         <translation>&amp;Editer</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="145"/>
+        <location filename="../mainformimpl.cpp" line="163"/>
         <source>&amp;Search</source>
         <translation>&amp;Chercher</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="146"/>
+        <location filename="../mainformimpl.cpp" line="663"/>
         <source>&amp;Bookmark</source>
         <translation>&amp;Signets</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="147"/>
+        <location filename="../mainformimpl.cpp" line="160"/>
         <source>&amp;Project</source>
         <translation>&amp;Projet</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="148"/>
         <source>&amp;Windows</source>
         <translation>&amp;Affichage</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="149"/>
         <source>&amp;Tools</source>
         <translation>&amp;Outils</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="150"/>
         <source>&amp;Help</source>
         <translation>&amp;Aide</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="151"/>
         <source>&amp;Script</source>
         <translation>&amp;Script</translation>
     </message>
@@ -2521,206 +2705,258 @@ Voulez-vous sauver les changements ?</translation>
         <translation type="obsolete">&amp;Modèle</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="309"/>
         <source>&amp;New</source>
         <translation>&amp;Nouveau</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="310"/>
         <source>New document</source>
         <translation>Nouveau document</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="311"/>
         <source>Create a new document</source>
         <translation>Créer un nouveau document</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="318"/>
         <source>&amp;Open ...</source>
         <translation>&amp;Ouvrir ...</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="319"/>
         <source>Open a file on the disk</source>
         <translation>Ouvre un fichier sur le disque</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="320"/>
         <source>Open an existing file on the disk</source>
         <translation>Ouvrir un fichier existant sur le disque</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="328"/>
         <source>&amp;Recent file</source>
         <translation>Fichier &amp;récent</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="340"/>
         <source>&amp;Refresh</source>
         <translation>&amp;Actualiser</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="345"/>
         <source>&amp;Copy filename to Clipboard</source>
         <translation>&amp;Copie du nom dans le presse-papier</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="350"/>
         <source>C&amp;opy path to clipboard</source>
         <translation>C&amp;opie le chemin au presse-papier</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="355"/>
         <source>&amp;Save</source>
         <translation>&amp;Sauver</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="356"/>
         <source>Save the document</source>
         <translation>Sauver le document</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="357"/>
         <source>Save the document to disk</source>
         <translation>Sauver le document sur le disque</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="363"/>
         <source>Save &amp;As...</source>
         <translation>Sauver s&amp;ous ...</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="364"/>
         <source>Save the document As</source>
         <translation>Sauver le document sous</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="365"/>
         <source>Save the document with a new name to the disk</source>
         <translation>Sauver le document avec un nouveau nom sur le disque</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="370"/>
         <source>Save A&amp;ll...</source>
         <translation>Sauver &amp;Tout ...</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="371"/>
         <source>Save all documents</source>
         <translation>Sauver tous les documents</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="372"/>
         <source>Save all documents to disk</source>
         <translation>Sauver tous les documents sur le disque</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="376"/>
         <source>&amp;Print ...</source>
         <translation>&amp;Imprimer ...</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="377"/>
         <source>Print the document</source>
         <translation>Imprimer le document</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="378"/>
         <source>Print the current document</source>
         <translation>Imprimer le document courant</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="383"/>
         <source>&amp;Close</source>
         <translation>&amp;Fermer</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="384"/>
         <source>Close document</source>
         <translation>Fermer le document</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="385"/>
         <source>Close the current document</source>
         <translation>Fermer le document courant</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="391"/>
         <source>&amp;Close All</source>
         <translation>F&amp;ermer tout</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="392"/>
+        <location filename="../mainformimpl.cpp" line="393"/>
         <source>Close All document</source>
         <translation>Fermer tous les documents</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="397"/>
         <source>E&amp;xit</source>
         <translation>&amp;Quitter</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="398"/>
         <source>Quit XINX</source>
         <translation>Quitter XINX</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="405"/>
         <source>&amp;Undo</source>
         <translation>&amp;Défaire</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="406"/>
         <source>Undo the last action</source>
         <translation>Défaire la dernière opération</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="413"/>
         <source>&amp;Redo</source>
         <translation>&amp;Refaire</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="414"/>
         <source>Redo the next action</source>
         <translation>Refaire la dernière action</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="421"/>
         <source>Cu&amp;t</source>
         <translation>Co&amp;uper</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="422"/>
         <source>Cut the selection to the clipboard</source>
         <translation>Couper la sélection vers le presse papier</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="429"/>
         <source>&amp;Copy</source>
         <translation>Cop&amp;ier</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="430"/>
         <source>Copy the selection to the clipboard</source>
         <translation>Copier la sélection vers le presse papier</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="437"/>
         <source>&amp;Paste</source>
         <translation>Co&amp;ller</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="438"/>
         <source>Paste the clipboard&apos;s contents</source>
         <translation>Coller le contenu du presse papier</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="445"/>
         <source>&amp;Select All</source>
         <translation>Tout sélection&amp;ner</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="446"/>
         <source>Select all the text of the current editor</source>
         <translation>Sélectionner tout le contenu de l&apos;éditeur</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="453"/>
         <source>&amp;Duplicate current line</source>
         <translation>&amp;Dupliquer la ligne courante</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="454"/>
         <source>Duplicate the current line</source>
         <translation>Dupliquer la ligne courrante</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="461"/>
         <source>&amp;Move line up</source>
         <translation>Déplacer à la ligne s&amp;uivante</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="462"/>
         <source>Move the current line up</source>
         <translation>Déplace la ligne courante vers le haut</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="469"/>
         <source>&amp;Move line down</source>
         <translation>Déplacer à la ligne pré&amp;cédente</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="470"/>
         <source>Move the current line down</source>
         <translation>Déplace la ligne courante vers le bas</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="477"/>
         <source>&amp;Upper Case</source>
         <translation>Ma&amp;juscule</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="478"/>
         <source>Make the selected character upper case</source>
         <translation>Converti les caractères sélectionnés en majuscule</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="485"/>
         <source>&amp;Lower Case</source>
         <translation>M&amp;inuscule</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="486"/>
         <source>Make the selected character lower case</source>
         <translation>Converti les caratères sélectionnés en minuscule</translation>
     </message>
@@ -2749,118 +2985,151 @@ Voulez-vous sauver les changements ?</translation>
         <translation type="obsolete">Voir l&apos;aide de la fonction de commentaire</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="493"/>
         <source>Indent Code</source>
         <translation>Indenter le code</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="500"/>
         <source>Unindent code</source>
         <translation>Désindenter le code</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="507"/>
         <source>Completer</source>
         <translation>Compléter</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="514"/>
         <source>Pretty print</source>
         <translation>Indentation automatique</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="521"/>
         <source>Highlight same word</source>
         <translation>Surligner les mots identiques</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="526"/>
         <source>Show space and &amp;Tabulation</source>
         <translation>Affiche les espaces et les &amp;tabulations</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="534"/>
         <source>&amp;Search ...</source>
         <translation>&amp;Rechercher ...</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="535"/>
         <source>Search a text in the current editor</source>
         <translation>Cherche le texte dans l&apos;éditeur courant</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="540"/>
+        <location filename="../mainformimpl.cpp" line="541"/>
+        <location filename="../mainformimpl.cpp" line="542"/>
         <source>Search previous</source>
         <translation>Recherche précédente</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="549"/>
+        <location filename="../mainformimpl.cpp" line="550"/>
+        <location filename="../mainformimpl.cpp" line="551"/>
         <source>Search next</source>
         <translation>Recherche suivante</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="552"/>
         <source>Search the next element in the current editor</source>
         <translation>Cherche le prochain élément dans l&apos;éditeur courant</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="559"/>
         <source>&amp;Replace ...</source>
         <translation>Re&amp;mplacer ...</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="560"/>
         <source>Replace a text in the current editor</source>
         <translation>Remplace le texte dans l&apos;éditeur courant</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="575"/>
         <source>&amp;New project ...</source>
         <translation>&amp;Nouveau projet ...</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="576"/>
         <source>Create a new project</source>
         <translation>Créer un nouveau projet</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="580"/>
         <source>&amp;Choose file ...</source>
         <translation>&amp;Choisir un fichier ...</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="581"/>
         <source>Choose a project file</source>
         <translation>Choisit un fichier projet</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="582"/>
         <source>Choose a project file on the disk</source>
         <translation>Choisit un fichier projet sur le disque</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="588"/>
         <source>&amp;Recent Project</source>
         <translation>Projet &amp;récent</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="599"/>
         <source>&amp;Save project</source>
         <translation>&amp;Sauver le projet</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="600"/>
         <source>Save the project</source>
         <translation>Sauver un projet</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="605"/>
         <source>Close project</source>
         <translation>Fermer le projet</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="609"/>
         <source>&amp;Close Project (no session)</source>
         <translation>&amp;Fermer le projet (sans session)</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="614"/>
         <source>Close Project (session)</source>
         <translation>Fermer le projet (session)</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="615"/>
         <source>Save and Close project with session information (the content of file editor is saved too).</source>
         <translation>Sauve et Ferme le projet avec les informations de sessions (le contenu de l&apos;éditeur est sauvé également).</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="621"/>
         <source>Project &amp;property</source>
         <translation>&amp;Propriété du projet</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="622"/>
         <source>Show/Modify the property of the project</source>
         <translation>Affiche/Modifie les propriétés d&apos;un projet</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="628"/>
         <source>Toggled Flat View</source>
         <translation>Inverser le modèle vue plate/hiérarchique</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="629"/>
         <source>If checked the list is showed as flat instead of tree. Each list of file is preceded of a directory header.</source>
         <translation>Si coché, la list est affiché à plat, à la place d&apos;en arbre. Chaque liste de fichier est précédé d&apos;un entête avec le nom du dossier.</translation>
     </message>
@@ -2901,14 +3170,18 @@ Voulez-vous sauver les changements ?</translation>
         <translation type="obsolete">Supprimer un/des fichier(s) du projet</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="635"/>
+        <location filename="../mainformimpl.cpp" line="636"/>
         <source>Next tab</source>
         <translation>Onglet suivant</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="641"/>
         <source>Previous Tab</source>
         <translation>Onglet précédent</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="648"/>
         <source>Customize ...</source>
         <translation>Personnaliser ...</translation>
     </message>
@@ -2921,70 +3194,88 @@ Voulez-vous sauver les changements ?</translation>
         <translation type="obsolete">&amp;Actualiser les modèles</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="652"/>
         <source>&amp;Refresh Scripts</source>
         <translation>&amp;Actualiser les Scripts</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="658"/>
         <source>&amp;Next bookmark</source>
         <translation>Signet &amp;suivant</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="668"/>
         <source>&amp;Previous bookmark</source>
         <translation>Signet &amp;précédent</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="673"/>
         <source>&amp;Clear all bookmark</source>
         <translation>&amp;Effacer tous les signets</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="680"/>
         <source>About &amp;Qt</source>
         <translation>A propos de &amp;Qt</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="681"/>
         <source>Show the Qt library&apos;s About box</source>
         <translation>Affiche les informations à propos de Qt</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="685"/>
         <source>&amp;About</source>
         <translation>&amp;A propos</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="686"/>
         <source>Show the application&apos;s About box</source>
         <translation>Afficher les informations de l&apos;application</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="152"/>
         <source>&amp;Snipet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="701"/>
         <source>Always show run snipet dialog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="930"/>
         <source>Snipet is not supported in this kind of editor.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="1380"/>
         <source>Save text file</source>
         <translation type="unfinished">Sauver le fichier texte</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="1756"/>
+        <location filename="../mainformimpl.cpp" line="1905"/>
         <source>Projet (*%1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="1954"/>
         <source>Open the project ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="1959"/>
         <source>Close previous project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="1965"/>
         <source>Set the current project of &lt;b&gt;XINX&lt;/b&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="1976"/>
         <source>Can&apos;t start a project at the step &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2992,14 +3283,17 @@ Voulez-vous sauver les changements ?</translation>
 <context>
     <name>NewProjectWizard</name>
     <message>
+        <location filename="../newprojectwizard.cpp" line="38"/>
         <source>&amp;Expert ...</source>
         <translation>&amp;Expert ...</translation>
     </message>
     <message>
+        <location filename="../newprojectwizard.cpp" line="83"/>
         <source>New Project Wizard</source>
         <translation>Assistant de création projet</translation>
     </message>
     <message>
+        <location filename="../newprojectwizard.cpp" line="106"/>
         <source>Can&apos;t save &quot;%1&quot; page</source>
         <translation>Ne peut pas sauvegarder la page &quot;%1&quot;</translation>
     </message>
@@ -3007,74 +3301,91 @@ Voulez-vous sauver les changements ?</translation>
 <context>
     <name>NewVersionWizard</name>
     <message>
+        <location filename="../ui/newversion.ui" line="14"/>
         <source>Welcom in XINX</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../ui/newversion.ui" line="18"/>
         <source>First Installation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../ui/newversion.ui" line="27"/>
         <source>This is the first installation of &lt;span style=&quot; font-weight:600;&quot;&gt;XINX&lt;/span&gt; or you upgrade from an old version.  This wizard will help you to define or redefine some important &lt;span style=&quot; font-weight:600;&quot;&gt;XINX&lt;/span&gt; options.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../ui/newversion.ui" line="37"/>
         <source>Next, in the custom dialog, you can modifiy more options to customize &lt;span style=&quot; font-weight:600;&quot;&gt;XINX&lt;/span&gt; as you want, to improve your developpement.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../ui/newversion.ui" line="47"/>
         <source>Please report, if necessary, all options that you need and that &lt;span style=&quot; font-weight:600;&quot;&gt;XINX&lt;/span&gt; don&apos;t have.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../ui/newversion.ui" line="58"/>
         <source>Global Application Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../ui/newversion.ui" line="61"/>
         <source>In this page, we adjust global settings, used by the application for accesibility (as lang, or automatic task) or for the creation of new project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../ui/newversion.ui" line="70"/>
         <source>&amp;Language :</source>
         <translation type="unfinished">&amp;Langue :</translation>
     </message>
     <message>
+        <location filename="../ui/newversion.ui" line="80"/>
         <source>&lt;p&gt;Langue in which &lt;b&gt;XINX&lt;/b&gt; must be used.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Modification take effect at restart.&lt;/i&gt;&lt;/p&gt;</source>
         <translation type="unfinished">&lt;p&gt;Langue dans laquelle &lt;b&gt;XINX&lt;/b&gt; est utilisé.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Les modifications prendront effet au redémarrage.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
+        <location filename="../ui/newversion.ui" line="85"/>
         <source>(en) English</source>
         <translation type="unfinished">(en) Anglais</translation>
     </message>
     <message>
+        <location filename="../ui/newversion.ui" line="94"/>
         <source>(fr_FR) French</source>
         <translation type="unfinished">(fr_FR) Français</translation>
     </message>
     <message>
+        <location filename="../ui/newversion.ui" line="106"/>
         <source>Auto refresh directory dock</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../ui/newversion.ui" line="113"/>
         <source>Open the last opened project (&lt;i&gt;if any, it&apos;s the opened project when &lt;b&gt;XINX&lt;/b&gt; is closed&lt;/i&gt;), when &lt;b&gt;XINX&lt;/b&gt; is started.</source>
         <translation type="unfinished">Ouvre le dernier projet ouvert (&lt;i&gt;s&apos;il existe, c&apos;est le projet ouvert lors de la fermeture de &lt;b&gt;XINX&lt;/b&gt;&lt;/i&gt;), quand &lt;b&gt;XINX&lt;/b&gt; démarre.</translation>
     </message>
     <message>
+        <location filename="../ui/newversion.ui" line="116"/>
         <source>&amp;Open the last project at start</source>
         <translation type="unfinished">&amp;Ouvre le dernier projet au démarrage</translation>
     </message>
     <message>
+        <location filename="../ui/newversion.ui" line="123"/>
         <source>Default open &amp;project directory :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../ui/newversion.ui" line="136"/>
         <source>&lt;p&gt;This the path where the save dialog must be opened when you create a new project.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;As the author set the project path to the Application Server path, this path is now the project path. You can safely use another path, but in &lt;i&gt;New Project Wizard&lt;/i&gt;, the Application Server path would be wrong.&lt;/i&gt;&lt;/p&gt;</source>
         <translation type="unfinished">&lt;p&gt;C&apos;est le chemin où la boite de dialogue de sauvegarde doit être ouverte lors de la création d&apos;un nouveau projet.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Comme l&apos;auteur du logiciel mémorise le chemin du serveur d&apos;application dans ce chemin, c&apos;est maintenant la valeur de ce dossier. Vous pouvez, sans problème, indiquer un autre chemin, mais &lt;i&gt;L&apos;assistant de création de nouveau projet&lt;/i&gt;, le chemin vers le serveur d&apos;application sera faux.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
+        <location filename="../ui/newversion.ui" line="144"/>
         <source>&lt;p&gt;Choose the default text encoding, when the text encoding can&apos;t be found.
 
 &lt;i&gt;Some editor, can redefined the text encoding (ie: XML and derivated editor). This encoding is used by editor as JavaScript and other&lt;/i&gt;&lt;/p&gt;</source>
@@ -3083,64 +3394,79 @@ Voulez-vous sauver les changements ?</translation>
 &lt;i&gt;Quelque éditeurs peuvent redéfinir l&apos;encodage du texte (ex: l&apos;éditeur XML et ses dérivés). Cet encodage est utilié par l&apos;éditeur JavaScript ainsi que les autres&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
+        <location filename="../ui/newversion.ui" line="153"/>
         <source>Default text &amp;encoding :</source>
         <translation type="unfinished">&amp;Encodage par défaut du texte :</translation>
     </message>
     <message>
+        <location filename="../ui/newversion.ui" line="164"/>
         <source>Edtior Settings Page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../ui/newversion.ui" line="167"/>
         <source>In this page we adjust settins used by the editor. In this page we can adjust effect, used to facilitate the edition (has show the current line, space, tabulation).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../ui/newversion.ui" line="173"/>
         <source>&lt;p&gt;Alert user when the file is modified by an extern application. The user has the choice to open the new file (&lt;u&gt;and loose his change&lt;/u&gt;) or keep current file.&lt;/p&gt;</source>
         <translation type="unfinished">&lt;p&gt;Prévient l&apos;utilisateur quand le fichier est modifié par une application externe. L&apos;utilisateur a alors le choix d&apos;ouvrir le nouveau fichier (&lt;u&gt;et alors perdre ses modifications&lt;/u&gt;) ou garder la version courante.&lt;/p&gt;</translation>
     </message>
     <message>
+        <location filename="../ui/newversion.ui" line="176"/>
         <source>&amp;Popup when file modifed</source>
         <translation type="unfinished">&amp;Avertir lors de la modification d&apos;un fichier</translation>
     </message>
     <message>
+        <location filename="../ui/newversion.ui" line="183"/>
         <source>&lt;p&gt;Create a backup file before saving the file. The backup file is stored in the same directory that the original file. &lt;/p&gt;
 &lt;p&gt;The backup is created by copy the modified file before he his saved.&lt;/p&gt;</source>
         <translation type="unfinished">&lt;p&gt;Crée une sauvegarde du fichier avant l&apos;enregistrement. La sauvegarde est stockée dans le même dossier que le fichier original.&lt;/p&gt;
 &lt;p&gt;Le fichier est copié avant sauvegarde.&lt;/p&gt;</translation>
     </message>
     <message>
+        <location filename="../ui/newversion.ui" line="187"/>
         <source>&amp;Create backup file when saving (.bak)</source>
         <translation type="unfinished">&amp;Créer une sauvegarde avant enregistrement (.bak)</translation>
     </message>
     <message>
+        <location filename="../ui/newversion.ui" line="194"/>
         <source>&amp;Graphics effect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../ui/newversion.ui" line="214"/>
         <source>Show tabulation and space in the editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../ui/newversion.ui" line="222"/>
         <source>Show current line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../ui/newversion.ui" line="230"/>
         <source>Auto highlight same word</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../ui/newversion.ui" line="238"/>
         <source>Pretty Print on saving</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../ui/newversion.ui" line="253"/>
         <source>Tools Settings Page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../ui/newversion.ui" line="256"/>
         <source>In this page you can define path to tools that can be use by XINX.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../ui/newversion.ui" line="262"/>
         <source>&lt;p&gt;List of tools used by &lt;b&gt;XINX&lt;/b&gt; and all plugins. Tools are external application called by this application.&lt;/p&gt;
 &lt;p&gt;If the tool can&apos;t be find, the text color will be &lt;span style=&quot;color:#ff0000;&quot;&gt;red&lt;/span&gt;.&lt;/p&gt;
 &lt;p&gt;To edit a tool, double click (or presse F2) on the path of the tool.&lt;/p&gt;</source>
@@ -3149,18 +3475,22 @@ Voulez-vous sauver les changements ?</translation>
 &lt;p&gt;Pour éditer un outil, vous pouvez double-cliquer (ou presser la toucher F2) sur le chemin de l&apos;outil.&lt;/p&gt;</translation>
     </message>
     <message>
+        <location filename="../ui/newversion.ui" line="275"/>
         <source>Conclusion</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../ui/newversion.ui" line="281"/>
         <source>We have now customize XINX. You can adjsute XINX settings by opening the good &quot;Customize dialog&quot;. In the tools menu.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../ui/newversion.ui" line="291"/>
         <source>Have fun with XINX.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../ui/newversion.ui" line="298"/>
         <source>&amp;Open the customize dialog page to made more settings.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3428,10 +3758,12 @@ Date du fichier : %4</translation>
 <context>
     <name>ProgressWizardPage</name>
     <message>
+        <location filename="../xinxprojectwizard/projectwizard.cpp" line="145"/>
         <source>Progress of the conversion</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../xinxprojectwizard/projectwizard.cpp" line="146"/>
         <source>Please wait ...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3439,6 +3771,7 @@ Date du fichier : %4</translation>
 <context>
     <name>ProjectConverter</name>
     <message>
+        <location filename="../xinxprojectwizard/projectconverter.cpp" line="281"/>
         <source>XINX Project file</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3446,38 +3779,47 @@ Date du fichier : %4</translation>
 <context>
     <name>ProjectDirectoryDockWidget</name>
     <message>
+        <location filename="../projectdirectorydockwidget.cpp" line="57"/>
         <source>&amp;Copy filename to Clipboard</source>
         <translation>&amp;Copie du nom dans le presse-papier</translation>
     </message>
     <message>
+        <location filename="../projectdirectorydockwidget.cpp" line="58"/>
         <source>C&amp;opy path to clipboard</source>
         <translation>C&amp;opie le chemin au presse-papier</translation>
     </message>
     <message>
+        <location filename="../projectdirectorydockwidget.cpp" line="50"/>
         <source>Project Directory</source>
         <translation type="unfinished">Dossier projet</translation>
     </message>
     <message>
+        <location filename="../projectdirectorydockwidget.cpp" line="60"/>
         <source>Compare with the version management</source>
         <translation type="unfinished">Comparer avec le gestionnaire de version</translation>
     </message>
     <message>
+        <location filename="../projectdirectorydockwidget.cpp" line="61"/>
         <source>Compare files</source>
         <translation type="unfinished">Comparer les fichiers</translation>
     </message>
     <message>
+        <location filename="../projectdirectorydockwidget.cpp" line="62"/>
         <source>Update project</source>
         <translation type="unfinished">Mise à jour du projet</translation>
     </message>
     <message>
+        <location filename="../projectdirectorydockwidget.cpp" line="63"/>
         <source>Commit project</source>
         <translation type="unfinished">Validation du projet</translation>
     </message>
     <message>
+        <location filename="../projectdirectorydockwidget.cpp" line="64"/>
         <source>Add file(s) to project</source>
         <translation type="unfinished">Ajouter un/des fichier(s) au projet</translation>
     </message>
     <message>
+        <location filename="../projectdirectorydockwidget.cpp" line="65"/>
         <source>Delete file(s) from project</source>
         <translation type="unfinished">Supprimer un/des fichier(s) du projet</translation>
     </message>
@@ -3485,14 +3827,17 @@ Date du fichier : %4</translation>
 <context>
     <name>ProjectDirectoryWidget</name>
     <message>
+        <location filename="../ui/projectdirectorywidget.ui" line="34"/>
         <source>Update project</source>
         <translation>Mise à jour du projet</translation>
     </message>
     <message>
+        <location filename="../ui/projectdirectorywidget.ui" line="48"/>
         <source>Commit project</source>
         <translation>Validation du projet</translation>
     </message>
     <message>
+        <location filename="../ui/projectdirectorywidget.ui" line="89"/>
         <source>Filtre :</source>
         <translation>Filtre :</translation>
     </message>
@@ -3501,10 +3846,12 @@ Date du fichier : %4</translation>
         <translation type="obsolete">Effacer</translation>
     </message>
     <message>
+        <location filename="../ui/projectdirectorywidget.ui" line="37"/>
         <source>Call the update fonction of your &lt;i&gt;revision control system&lt;/i&gt; for all the project directory.</source>
         <translation>Appelle la fonction de mise à jour de votre &lt;i&gt;gestionnaire de version&lt;/i&gt; pour chaque dossier projet.</translation>
     </message>
     <message>
+        <location filename="../ui/projectdirectorywidget.ui" line="51"/>
         <source>&lt;p&gt;Call the commit method of your &lt;i&gt;revision control sytem&lt;/i&gt; for all the project directory. An optional message can be added.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Only &lt;b&gt;XINX&lt;/b&gt; managed files are commited to the repository.&lt;/i&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;Appelle la méthode de validation de votre &lt;i&gt;gestionnaire de version&lt;/i&gt; pour chaque dossier projet. Un message optionnel peut être ajouté.&lt;/p&gt;
@@ -3515,6 +3862,7 @@ Date du fichier : %4</translation>
         <translation type="obsolete">Liste des préfixes utilisée par le projet. Cette liste est utilisée pour vérifier si le fichier est standard ou dérivé. Le préfix sélectionné est utilisé pour la sauvegarde de fichier standard.</translation>
     </message>
     <message>
+        <location filename="../ui/projectdirectorywidget.ui" line="76"/>
         <source>If checked the list is showed as flat instead of tree. Each list of file is preceded of a directory header.</source>
         <translation>Si cochée, la liste est affichée à plat au lieu d&apos;utiliser un arbre. Chaque liste de fichier est précédée d&apos;une entête de dossier.</translation>
     </message>
@@ -3523,10 +3871,12 @@ Date du fichier : %4</translation>
         <translation type="obsolete">Efface le contenu du filtre et restaure la vue du dossier projet.</translation>
     </message>
     <message>
+        <location filename="../ui/projectdirectorywidget.ui" line="96"/>
         <source>Filter the view on files present in the project directory. (joker as * and ? can be used). When filter is actived, the view is automatically switched in flat view. When filter is cleared, the view is switched in tree view.</source>
         <translation>Filtre la vue sur les fichiers présents dans le dossier projet. (les jokers tel que * et ? peuvent être utilisés). Quand le filtre est actif, la vue bascule automatiquement en vue à plat. Quand le filtre est effacé, la vue est rebasculée en mode arblre.</translation>
     </message>
     <message>
+        <location filename="../ui/projectdirectorywidget.ui" line="103"/>
         <source>&lt;p&gt;This view show all file in the project directory (and may be filtered by the field upper).&lt;/p&gt;
 &lt;p&gt;By a right click with your mouse on a file, you can :&lt;/p&gt;
 &lt;ul&gt;&lt;li&gt;Compare the file with the standard&lt;/li&gt;
@@ -3550,6 +3900,7 @@ Date du fichier : %4</translation>
 <context>
     <name>ProjectPage</name>
     <message>
+        <location filename="../ui/newprojectwizard_project.ui" line="14"/>
         <source>Define Project</source>
         <translation>Définition d&apos;un projet</translation>
     </message>
@@ -3562,6 +3913,7 @@ Date du fichier : %4</translation>
         <translation type="obsolete">Modification sur le &amp;standard</translation>
     </message>
     <message>
+        <location filename="../ui/newprojectwizard_project.ui" line="32"/>
         <source>&amp;Name of the project :</source>
         <translation>&amp;Nom du projet :</translation>
     </message>
@@ -3574,10 +3926,12 @@ Date du fichier : %4</translation>
         <translation type="obsolete">Dossier des &amp;journaux du serveur d&apos;application :</translation>
     </message>
     <message>
+        <location filename="../ui/newprojectwizard_project.ui" line="49"/>
         <source>&amp;Project Directory :</source>
         <translation>Dossier &amp;projet :</translation>
     </message>
     <message>
+        <location filename="../ui/newprojectwizard_project.ui" line="80"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -3602,6 +3956,7 @@ Date du fichier : %4</translation>
         <translation type="obsolete">Si le projet est complétement standard, &lt;b&gt;XINX&lt;/b&gt; ne demandera pas à sauvegarder les fichiers avec un préfix spécifique.</translation>
     </message>
     <message>
+        <location filename="../ui/newprojectwizard_project.ui" line="42"/>
         <source>Name of the project showed in the title bar of &lt;b&gt;XINX&lt;/b&gt;, the project name is appended to the application server directory and showed the project directory.</source>
         <translation>Nom du projet affiché dans la barre de titre de &lt;b&gt;XINX&lt;/b&gt;, le nom du projet est ajouté également au chemin du serveur d&apos;application comme dossier projet dans &lt;i&gt;l&apos;assistant de création de projet&lt;/i&gt;.</translation>
     </message>
@@ -3614,12 +3969,14 @@ Date du fichier : %4</translation>
         <translation type="obsolete">C&apos;est le dossier des journaux du serveur, utilisé pour lister tous les flux de présentation dans la fenêtre &lt;i&gt;Flux de présentation&lt;/i&gt;.</translation>
     </message>
     <message>
+        <location filename="../ui/newprojectwizard_project.ui" line="59"/>
         <source>&lt;p&gt;This is the project directory, generally where is stored the &lt;i&gt;configuration.xml&lt;/i&gt; file.&lt;/p&gt;
 &lt;p&gt;This is the racine where the &lt;i&gt;project file view&lt;/i&gt; start.&lt;/p&gt;</source>
         <translation>&lt;p&gt;C&apos;est le chemin du dossier projet, généralement là où est stocké le fichier &lt;i&gt;configuration.xml&lt;/i&gt;.&lt;/p&gt;
 &lt;p&gt;C&apos;est la racine où la &lt;i&gt;vue projet&lt;/i&gt; commence.&lt;/p&gt;</translation>
     </message>
     <message>
+        <location filename="../ui/newprojectwizard_project.ui" line="20"/>
         <source>This wizard will help you to create a &lt;b&gt;XINX&lt;/b&gt; project and define some important variables.&lt;br/&gt;&lt;br/&gt;
 In &lt;b&gt;XINX&lt;/b&gt;, a project is used to use the &lt;i&gt;file research&lt;/i&gt;in a project, use a &lt;i&gt;revision control system&lt;/i&gt;, or use for other purpose in the &lt;b&gt;XINX&lt;/b&gt; modules.&lt;br/&gt;&lt;br/&gt;
 A project can define web services too.</source>
@@ -3629,6 +3986,7 @@ A project can define web services too.</source>
 <context>
     <name>ProjectProperty</name>
     <message>
+        <location filename="../ui/projectproperty.ui" line="14"/>
         <source>Project property</source>
         <translation>Propriété du projet</translation>
     </message>
@@ -3637,14 +3995,17 @@ A project can define web services too.</source>
         <translation type="obsolete">Projet</translation>
     </message>
     <message>
+        <location filename="../ui/projectproperty.ui" line="95"/>
         <source>Project &amp;RCS :</source>
         <translation>&amp;Gestionnaire de version:</translation>
     </message>
     <message>
+        <location filename="../ui/projectproperty.ui" line="78"/>
         <source>Project &amp;Directory :</source>
         <translation>&amp;Dossier projet :</translation>
     </message>
     <message>
+        <location filename="../ui/projectproperty.ui" line="61"/>
         <source>Project &amp;Name :</source>
         <translation>&amp;Nom du projet :</translation>
     </message>
@@ -3729,6 +4090,7 @@ A project can define web services too.</source>
         <translation type="obsolete">P&amp;réfix projet :</translation>
     </message>
     <message>
+        <location filename="../ui/projectproperty.ui" line="71"/>
         <source>This is the project name showed in the title bar of &lt;b&gt;XINX&lt;/b&gt;.This just an informative information useless.</source>
         <translation>C&apos;est le nom du projet affiché dans la barre de titre de &lt;b&gt;XINX&lt;/b&gt;. Cette information est inutile.</translation>
     </message>
@@ -3737,6 +4099,7 @@ A project can define web services too.</source>
         <translation type="obsolete">C&apos;est le dossier projet (généralement là où est stocké le fichier &lt;i&gt;configuration.xml&lt;/i&gt;). C&apos;est la racine où la vue dossier projet, utilisée pour chercher des fichiers et utiliser le &lt;i&gt;gestionnaire de version&lt;/i&gt; commence.</translation>
     </message>
     <message>
+        <location filename="../ui/projectproperty.ui" line="105"/>
         <source>This the list of &lt;i&gt;revision control system&lt;/i&gt;. The list is appended by modules that you can find in the customize dialog.</source>
         <translation>C&apos;est la liste des &lt;i&gt;gestionnaires de version&lt;/i&gt; disponible. Cette liste est mise à jour par les modules que vous pouvez trouver dans la fenêtre de personnalisation.</translation>
     </message>
@@ -3767,10 +4130,12 @@ A project can define web services too.</source>
         <translation type="obsolete">Le sous-dossier dans lequel le fichier dérivé doit être enregistré.</translation>
     </message>
     <message>
+        <location filename="../ui/projectproperty.ui" line="43"/>
         <source>1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../ui/projectproperty.ui" line="116"/>
         <source>&amp;Actually preloaded files</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3790,26 +4155,32 @@ A project can define web services too.</source>
         <translation type="obsolete">Attention: Un numéro de version valide ne peut être trouvé dans le fichier de configuration (peut-être une 4xx).</translation>
     </message>
     <message>
+        <location filename="../projectpropertyimpl.cpp" line="51"/>
         <source>&lt;No Revision Control System&gt;</source>
         <translation>&lt;Pas de gestionnaire de version&gt;</translation>
     </message>
     <message>
+        <location filename="../projectpropertyimpl.cpp" line="143"/>
         <source>Can&apos;t load &quot;%1&quot; page</source>
         <translation>Ne peut pas charger la page &quot;%1&quot;</translation>
     </message>
     <message>
+        <location filename="../projectpropertyimpl.cpp" line="158"/>
         <source>Can&apos;t save &quot;%1&quot; page</source>
         <translation>Ne peut pas sauvegarder la page &quot;%1&quot;</translation>
     </message>
     <message>
+        <location filename="../projectpropertyimpl.cpp" line="43"/>
         <source>General</source>
         <translation type="unfinished">Général</translation>
     </message>
     <message>
+        <location filename="../projectpropertyimpl.cpp" line="48"/>
         <source>Project Definition</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../projectpropertyimpl.cpp" line="63"/>
         <source>Preloaded files</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3817,6 +4188,7 @@ A project can define web services too.</source>
 <context>
     <name>ProjectWizard</name>
     <message>
+        <location filename="../xinxprojectwizard/projectwizard.cpp" line="52"/>
         <source>Project wizard</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3880,30 +4252,37 @@ A project can define web services too.</source>
 <context>
     <name>ReplaceDialog</name>
     <message>
+        <location filename="../ui/replace.ui" line="13"/>
         <source>Find or Replace a text</source>
         <translation>Chercher ou Remplacer un texte</translation>
     </message>
     <message>
+        <location filename="../ui/replace.ui" line="31"/>
         <source>&amp;Replace by :</source>
         <translation>&amp;Remplacer par :</translation>
     </message>
     <message>
+        <location filename="../ui/replace.ui" line="61"/>
         <source>Find &amp;what :</source>
         <translation>R&amp;echercher :</translation>
     </message>
     <message>
+        <location filename="../ui/replace.ui" line="136"/>
         <source>Direction</source>
         <translation>Sens</translation>
     </message>
     <message>
+        <location filename="../ui/replace.ui" line="148"/>
         <source>Go up</source>
         <translation>Vers le haut</translation>
     </message>
     <message>
+        <location filename="../ui/replace.ui" line="155"/>
         <source>Go down</source>
         <translation>Vers le bas</translation>
     </message>
     <message>
+        <location filename="../ui/replace.ui" line="184"/>
         <source>Extend</source>
         <translation>Etendue</translation>
     </message>
@@ -3912,26 +4291,32 @@ A project can define web services too.</source>
         <translation type="obsolete">Tous</translation>
     </message>
     <message>
+        <location filename="../ui/replace.ui" line="206"/>
         <source>Selection</source>
         <translation>Sélection</translation>
     </message>
     <message>
+        <location filename="../ui/replace.ui" line="230"/>
         <source>Options</source>
         <translation>Options</translation>
     </message>
     <message>
+        <location filename="../ui/replace.ui" line="245"/>
         <source>Match c&amp;ase</source>
         <translation>Sensible à la c&amp;asse</translation>
     </message>
     <message>
+        <location filename="../ui/replace.ui" line="255"/>
         <source>Search from &amp;start</source>
         <translation>Chercher depuis le &amp;début</translation>
     </message>
     <message>
+        <location filename="../ui/replace.ui" line="265"/>
         <source>&amp;Whole words</source>
         <translation>To&amp;us les mots</translation>
     </message>
     <message>
+        <location filename="../ui/replace.ui" line="275"/>
         <source>&amp;Use regular expression</source>
         <translation>&amp;Utiliser une expression régulière</translation>
     </message>
@@ -3944,54 +4329,66 @@ A project can define web services too.</source>
         <translation type="obsolete">&amp;Fermer</translation>
     </message>
     <message>
+        <location filename="../ui/replace.ui" line="27"/>
         <source>p&gt;If checked, &lt;b&gt;XINX&lt;/b&gt; replace the searched string by this  sting.&lt;/p&gt;
 &lt;p&gt;If the search string is a &lt;i&gt;regular expression&lt;/i&gt;, you can use \1 or \2 for captured string. Captured string in the find string is in bracket.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Si coché, &lt;b&gt;XINX&lt;/b&gt; remplacera la chaine de recherche par cette chaine de caractère.&lt;/p&gt;
 &lt;p&gt;Si la chaine de recherche est une &lt;i&gt;expression régulière&lt;/i&gt;, on peut utiliser \1 ou \2 pour les chaines capturées. Les chaines capturées dans la chaine de recherche sont entre parenthèse.&lt;/p&gt;</translation>
     </message>
     <message>
+        <location filename="../ui/replace.ui" line="38"/>
         <source>&lt;p&gt;Text to search in the editor. The search string can be &lt;i&gt;string literal&lt;/i&gt; or a &lt;i&gt;regular expression&lt;/i&gt; (if the corresponding checkbox is checked).&lt;/p&gt;
 &lt;p&gt;&lt;b&gt;XINX&lt;/b&gt; keep history of searched text.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Texte à utiliser lors de la recherche. La chaine de recherche peut être &lt;i&gt;litérale&lt;/i&gt; ou une &lt;i&gt;expression régulière&lt;/i&gt; (si la case à cocher correspondante est cochée).&lt;/p&gt;
 &lt;p&gt;&lt;b&gt;XINX&lt;/b&gt; garde un historique des chaines recherchées.&lt;/p&gt;</translation>
     </message>
     <message>
+        <location filename="../ui/replace.ui" line="133"/>
         <source>Direction where &lt;b&gt;XINX&lt;/b&gt; must go for search string.</source>
         <translation>Direction que &lt;b&gt;XINX&lt;/b&gt; doit prendre pour rechercher la chaine.</translation>
     </message>
     <message>
+        <location filename="../ui/replace.ui" line="181"/>
         <source>If &lt;i&gt;All&lt;/i&gt; is checked &lt;b&gt;XINX&lt;/b&gt; search in the whole document, else &lt;b&gt;XINX&lt;/b&gt; search only in the selection.</source>
         <translation>Si &lt;i&gt;Tout&lt;/i&gt; est coché &lt;b&gt;XINX&lt;/b&gt; cherchera le texte dans tout le document, sinon &lt;b&gt;XINX&lt;/b&gt; cherchera uniquement dans la sélection.</translation>
     </message>
     <message>
+        <location filename="../ui/replace.ui" line="242"/>
         <source>If checked, &lt;b&gt;XINX&lt;/b&gt; search the case sensitive string.</source>
         <translation>Si coché, &lt;b&gt;XINX&lt;/b&gt; cherche la chaine en respectant la Casse.</translation>
     </message>
     <message>
+        <location filename="../ui/replace.ui" line="252"/>
         <source>If checked, &lt;b&gt;XINX&lt;/b&gt; search the word from the start of the document, else &lt;b&gt;XINX&lt;/b&gt; search from the cursor position.</source>
         <translation>Si coché, &lt;b&gt;XINX&lt;/b&gt; cherchera le mot depuis le début du document, sinon &lt;b&gt;XINX&lt;/b&gt; cherchera depuis la position du curseur.</translation>
     </message>
     <message>
+        <location filename="../ui/replace.ui" line="262"/>
         <source>If unchecked, &lt;b&gt;XINX&lt;/b&gt; search string include in other word, else only whole word is searched.</source>
         <translation>Si non coché, &lt;b&gt;XINX&lt;/b&gt; cherchera la chaine même si elle est incluse dans un autre mot, sinon seuls les mots complets seront recherchés.</translation>
     </message>
     <message>
+        <location filename="../ui/replace.ui" line="272"/>
         <source>If checked, &lt;b&gt;XINX&lt;/b&gt; use regular expression to match string.</source>
         <translation>Si coché, &lt;b&gt;XINX&lt;/b&gt; utilisera les expressions régulières pour trouver la chaine.</translation>
     </message>
     <message>
+        <location filename="../ui/replace.ui" line="87"/>
         <source>&amp;Where</source>
         <translation>&amp;Où</translation>
     </message>
     <message>
+        <location filename="../ui/replace.ui" line="196"/>
         <source>Current document</source>
         <translation>Document courant</translation>
     </message>
     <message>
+        <location filename="../ui/replace.ui" line="213"/>
         <source>Project files</source>
         <translation>Fichiers projet</translation>
     </message>
     <message>
+        <location filename="../ui/replace.ui" line="220"/>
         <source>Custom files</source>
         <translation>Fichiers personnalisés</translation>
     </message>
@@ -3999,10 +4396,13 @@ A project can define web services too.</source>
 <context>
     <name>ReplaceDialogImpl</name>
     <message>
+        <location filename="../replacedialogimpl.cpp" line="43"/>
         <source>Replace</source>
         <translation>Remplacer</translation>
     </message>
     <message>
+        <location filename="../replacedialogimpl.cpp" line="33"/>
+        <location filename="../replacedialogimpl.cpp" line="45"/>
         <source>Find</source>
         <translation>Trouver</translation>
     </message>
@@ -4052,6 +4452,7 @@ A project can define web services too.</source>
 <context>
     <name>ScriptElement</name>
     <message>
+        <location filename="../customdialog/scriptelement.cpp" line="66"/>
         <source>Author : </source>
         <translation>Auteur :</translation>
     </message>
@@ -4077,10 +4478,12 @@ A project can define web services too.</source>
 <context>
     <name>SearchFileThread</name>
     <message>
+        <location filename="../searchfilethread.cpp" line="43"/>
         <source>Not supported</source>
         <translation>Non supporté</translation>
     </message>
     <message>
+        <location filename="../searchfilethread.cpp" line="43"/>
         <source>Replacement on multiple file is not yet supported</source>
         <translation>Le remplacement de fichier multiple n&apos;est pas encore supporté</translation>
     </message>
@@ -4265,6 +4668,7 @@ A project can define web services too.</source>
 <context>
     <name>SnipetDockWidget</name>
     <message>
+        <location filename="../snipetdockwidget.cpp" line="53"/>
         <source>Snipets</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4306,14 +4710,18 @@ A project can define web services too.</source>
 <context>
     <name>SnipetsDockWidget</name>
     <message>
+        <location filename="../ui/snipetlistwidget.ui" line="14"/>
         <source>Snipets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../ui/snipetlistwidget.ui" line="28"/>
         <source>&amp;Filter :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../ui/snipetlistwidget.ui" line="51"/>
+        <location filename="../ui/snipetlistwidget.ui" line="62"/>
         <source>...</source>
         <translation type="unfinished">...</translation>
     </message>
@@ -4432,10 +4840,12 @@ A project can define web services too.</source>
 <context>
     <name>SplashScreen</name>
     <message>
+        <location filename="../main.cpp" line="212"/>
         <source>Load configuration ...</source>
         <translation>Chargement de la configuration ...</translation>
     </message>
     <message>
+        <location filename="../main.cpp" line="222"/>
         <source>Load translations ...</source>
         <translation>Chargement des traductions ...</translation>
     </message>
@@ -4444,14 +4854,17 @@ A project can define web services too.</source>
         <translation type="obsolete">Création des objets internes de complétion et des templates ...</translation>
     </message>
     <message>
+        <location filename="../main.cpp" line="199"/>
         <source>Install exception handler ...</source>
         <translation>Installation de gestionnaire d&apos;exception ...</translation>
     </message>
     <message>
+        <location filename="../main.cpp" line="204"/>
         <source>Initialize search path ...</source>
         <translation>Initialisation des chemins de recherche ...</translation>
     </message>
     <message>
+        <location filename="../main.cpp" line="240"/>
         <source>Load available marks ...</source>
         <translation>Lecture des marques disponibles ...</translation>
     </message>
@@ -4460,14 +4873,17 @@ A project can define web services too.</source>
         <translation type="obsolete">Ne peut charger le fichier de modèle.</translation>
     </message>
     <message>
+        <location filename="../main.cpp" line="249"/>
         <source>Load main window ...</source>
         <translation>Chargement de la fenêtre principale ....</translation>
     </message>
     <message>
+        <location filename="../main.cpp" line="262"/>
         <source>Load arguments ...</source>
         <translation>Chargement des arguments ...</translation>
     </message>
     <message>
+        <location filename="../main.cpp" line="245"/>
         <source>Load plugins ...</source>
         <translation>Chargement des plugins ...</translation>
     </message>
@@ -4480,6 +4896,7 @@ A project can define web services too.</source>
         <translation type="obsolete">Lecture des modèles ...</translation>
     </message>
     <message>
+        <location filename="../main.cpp" line="255"/>
         <source>Load last opened project ...</source>
         <translation>Chargement du dernier projet ouvert ...</translation>
     </message>
@@ -4498,6 +4915,7 @@ A project can define web services too.</source>
 <context>
     <name>TemplateDialog</name>
     <message>
+        <location filename="../ui/templatedialog.ui" line="14"/>
         <source>Form</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4531,10 +4949,12 @@ A project can define web services too.</source>
 <context>
     <name>ToolsModelIndex</name>
     <message>
+        <location filename="../customdialog/toolsmodelindex.cpp" line="106"/>
         <source>Tool name</source>
         <translation>Nom de l&apos;outil</translation>
     </message>
     <message>
+        <location filename="../customdialog/toolsmodelindex.cpp" line="108"/>
         <source>Tool path</source>
         <translation>Emplacement de l&apos;outil</translation>
     </message>
@@ -4542,14 +4962,17 @@ A project can define web services too.</source>
 <context>
     <name>VersionWizardPage</name>
     <message>
+        <location filename="../xinxprojectwizard/projectwizard.cpp" line="116"/>
         <source>Version informations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../xinxprojectwizard/projectwizard.cpp" line="117"/>
         <source>This page show you some informations about the selected project file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../xinxprojectwizard/projectwizard.cpp" line="132"/>
         <source>You want convert a %1 (version %2).
 This wizard will convert the project to the last version of XINX. Wizard must convert %3 opened file.</source>
         <translation type="unfinished"></translation>
@@ -4558,14 +4981,17 @@ This wizard will convert the project to the last version of XINX. Wizard must co
 <context>
     <name>VersionsPageImpl</name>
     <message>
+        <location filename="../newprojectwizard.cpp" line="228"/>
         <source>Define Revision Control</source>
         <translation>Définissons le système de contrôle des versions</translation>
     </message>
     <message>
+        <location filename="../newprojectwizard.cpp" line="229"/>
         <source>Define the revision control used for the project if you want to used one.</source>
         <translation>Définit le système de contrôle utilisé pour le projet, si vous voulez en utiliser un.</translation>
     </message>
     <message>
+        <location filename="../newprojectwizard.cpp" line="231"/>
         <source>No revision control system.</source>
         <translation>Pas de système de contrôle de version.</translation>
     </message>
@@ -4600,10 +5026,12 @@ This wizard will convert the project to the last version of XINX. Wizard must co
 <context>
     <name>WelcomDialog</name>
     <message>
+        <location filename="../ui/welcomdlg.ui" line="14"/>
         <source>Welcom to XINX</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../ui/welcomdlg.ui" line="53"/>
         <source>&lt;html&gt;
 	&lt;head&gt;
 		&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;
@@ -4616,14 +5044,17 @@ This wizard will convert the project to the last version of XINX. Wizard must co
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../ui/welcomdlg.ui" line="106"/>
         <source>Create New Project...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../ui/welcomdlg.ui" line="113"/>
         <source>&amp;Open Existing Project ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../ui/welcomdlg.ui" line="144"/>
         <source>&lt;html&gt;
 	&lt;head&gt;
 		&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;
@@ -4636,6 +5067,7 @@ This wizard will convert the project to the last version of XINX. Wizard must co
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../ui/welcomdlg.ui" line="202"/>
         <source>&lt;html&gt;
 	&lt;head&gt;
 		&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;
@@ -4648,6 +5080,7 @@ This wizard will convert the project to the last version of XINX. Wizard must co
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../ui/welcomdlg.ui" line="246"/>
         <source>#banner {
     border-image: url(:/images/banner.png) 0;
     border-width: 0;
@@ -4659,18 +5092,22 @@ This wizard will convert the project to the last version of XINX. Wizard must co
 <context>
     <name>WelcomDialogImpl</name>
     <message>
+        <location filename="../welcomdlgimpl.cpp" line="84"/>
         <source>Documentation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../welcomdlgimpl.cpp" line="85"/>
         <source>API</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../welcomdlgimpl.cpp" line="86"/>
         <source>Report a bug</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../welcomdlgimpl.cpp" line="87"/>
         <source>Downloads</source>
         <translation type="unfinished"></translation>
     </message>
