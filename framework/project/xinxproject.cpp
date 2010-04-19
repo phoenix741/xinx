@@ -533,7 +533,7 @@ void XinxProject::saveToFile(const QString & filename)
 	static const int IndentSize = 3;
 	QFile file(d->m_fileName);
 	if (!file.open(QFile::WriteOnly | QFile::Text))
-		throw XinxProjectException(QObject::tr("Cannot write file %1:\n%2.").arg(d->m_fileName).arg(file.errorString()));
+		throw XinxProjectException(tr("Cannot write file %1:\n%2.").arg(d->m_fileName).arg(file.errorString()));
 
 	QTextStream text(&file);
 	document.save(text, IndentSize);

@@ -77,7 +77,7 @@
              </sizepolicy>
             </property>
             <property name="text">
-             <string>You are about to &lt;b&gt;replace&lt;/b&gt; the last word of the text you just wrote by the text of the template. If this dialog is showed, the snipet is configured to be called manually or requires that all parameters have a default value.&lt;br/&gt;
+             <string>You are about to &lt;b&gt;replace&lt;/b&gt; the last word of the text you just wrote by the text of the template. If this dialog is showed, the snipet is configured to be called manually and requires that all parameters have a default value.&lt;br/&gt;
 If you prefer the snipet to be called automatically in the future, please change the property in the custom dialog.&lt;br/&gt;
 &lt;br/&gt;
 Please check parameters below and &lt;i&gt;valid&lt;/i&gt; this form if you agree.</string>

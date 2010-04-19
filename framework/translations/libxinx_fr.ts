@@ -167,11 +167,21 @@
     </message>
     <message>
         <location filename="../snipets/callsnipetdlg.ui" line="80"/>
-        <source>You are about to &lt;b&gt;replace&lt;/b&gt; the last word of the text you just wrote by the text of the template. If this dialog is showed, the snipet is configured to be called manually or requires that all parameters have a default value.&lt;br/&gt;
+        <source>You are about to &lt;b&gt;replace&lt;/b&gt; the last word of the text you just wrote by the text of the template. If this dialog is showed, the snipet is configured to be called manually and requires that all parameters have a default value.&lt;br/&gt;
 If you prefer the snipet to be called automatically in the future, please change the property in the custom dialog.&lt;br/&gt;
 &lt;br/&gt;
 Please check parameters below and &lt;i&gt;valid&lt;/i&gt; this form if you agree.</source>
         <translation>Vous êtes sur le point de &lt;b&gt;remplacer&lt;/b&gt; le dernier mot du text que vous êtes entrain d&apos;écrire, par celui de modèle. Si cette boite de dialogue s&apos;est ouverte, le modèle est configuré pour être appelé automatiquement et necessite que tout les paramètres ait une valeur par défaut.&lt;br/&gt;
+Si vous préférez que le modèle soit appelé automatiquement par la suite, veuillez changer les propriétés dans la boite de dialogue de personalisation.&lt;br/&gt;
+&lt;br/&gt;
+Veuillez verifier les paramètres ci-dessous et &lt;i&gt;validez&lt;/i&gt; ce formulaire si vous êtes d&apos;accord.</translation>
+    </message>
+    <message>
+        <source>You are about to &lt;b&gt;replace&lt;/b&gt; the last word of the text you just wrote by the text of the template. If this dialog is showed, the snipet is configured to be called manually or requires that all parameters have a default value.&lt;br/&gt;
+If you prefer the snipet to be called automatically in the future, please change the property in the custom dialog.&lt;br/&gt;
+&lt;br/&gt;
+Please check parameters below and &lt;i&gt;valid&lt;/i&gt; this form if you agree.</source>
+        <translation type="obsolete">Vous êtes sur le point de &lt;b&gt;remplacer&lt;/b&gt; le dernier mot du text que vous êtes entrain d&apos;écrire, par celui de modèle. Si cette boite de dialogue s&apos;est ouverte, le modèle est configuré pour être appelé automatiquement et necessite que tout les paramètres ait une valeur par défaut.&lt;br/&gt;
 Si vous préférez que le modèle soit appelé automatiquement par la suite, veuillez changer les propriétés dans la boite de dialogue de personalisation.&lt;br/&gt;
 &lt;br/&gt;
 Veuillez verifier les paramètres ci-dessous et &lt;i&gt;validez&lt;/i&gt; ce formulaire si vous êtes d&apos;accord.</translation>
@@ -253,9 +263,13 @@ Veuillez verifier les paramètres ci-dessous et &lt;i&gt;validez&lt;/i&gt; ce fo
         <translation>&amp;Nom :</translation>
     </message>
     <message>
-        <location filename="../snipets/categorypropertydlg.ui" line="56"/>
         <source>Name of the snipet used to identify the snipet in the menus.</source>
-        <translation>Nom du modèle utilisé pour identifier ce modèle dans les menus.</translation>
+        <translation type="obsolete">Nom du modèle utilisé pour l&apos;identifier dans les menus.</translation>
+    </message>
+    <message>
+        <location filename="../snipets/categorypropertydlg.ui" line="56"/>
+        <source>Name of the snipet used to identify it in the menus.</source>
+        <translation>Nom du modèle utilisé pour l&apos;identifier dans les menus.</translation>
     </message>
     <message>
         <location filename="../snipets/categorypropertydlg.ui" line="63"/>
@@ -330,6 +344,42 @@ Veuillez verifier les paramètres ci-dessous et &lt;i&gt;validez&lt;/i&gt; ce fo
     </message>
     <message>
         <location filename="../rcs/commitmessages.ui" line="64"/>
+        <source>This is the list of the file to commit. Only files, known by &lt;b&gt;XINX&lt;/b&gt; are listed here (&lt;i&gt;.xsl, .html, .css, .js, ...&lt;/i&gt;).&lt;br/&gt;
+In the list &lt;b&gt;XINX&lt;/b&gt; presents three actions : 
+&lt;ul&gt;
+&lt;li&gt;&lt;i&gt;Add and Commit&lt;/i&gt; : If the file doesn&apos;t exist in the repository but may be commited.&lt;/li&gt;
+&lt;li&gt;&lt;i&gt;Remove and Commit&lt;/i&gt; : If the file is deleted from the disk but not from the repository&lt;/li&gt;
+&lt;li&gt;&lt;i&gt;Commit&lt;/i&gt; : If the file exists and is modified (checked by default).&lt;/li&gt;
+&lt;/ul&gt;
+Only checked files are commited.</source>
+        <translation>Cette liste contient les documents à valider. Seul les fichiers connus par &lt;b&gt;XINX&lt;/b&gt; sont listé ici (&lt;i&gt;.xsl, .html, .css, .js, ...&lt;/i&gt;).&lt;br/&gt;
+Dans cette liste&lt;b&gt;XINX&lt;/b&gt; permet trois actions :
+&lt;ul&gt;
+&lt;li&gt;&lt;i&gt;Ajouter et Valider&lt;/i&gt; : Si le fichier n&apos;existe pas dans le réferenciel mais peut être validé&lt;/li&gt;
+&lt;li&gt;&lt;i&gt;Supprimer et Valider&lt;/i&gt; : Si le fichier est supprimé du disque mais pas du référenciel&lt;/li&gt;
+&lt;li&gt;&lt;i&gt;Valider&lt;/i&gt; : Si le fichier existe et est modifié (coché par défaut).&lt;/li&gt;
+&lt;/ul&gt;
+Seul les fichiers cochés seront validés.</translation>
+    </message>
+    <message>
+        <source>This is the list of the file to commit. Only files, known by &lt;b&gt;XINX&lt;/v&gt; are listed here (&lt;i&gt;.xsl, .html, .css, .js, ...&lt;/i&gt;).&lt;br/&gt;
+In the list &lt;b&gt;XINX&lt;/b&gt; presents three actions : 
+&lt;ul&gt;
+&lt;li&gt;&lt;i&gt;Add and Commit&lt;/i&gt; : If the file doesn&apos;t exist in the repository but may be commited.&lt;/li&gt;
+&lt;li&gt;&lt;i&gt;Remove and Commit&lt;/i&gt; : If the file is deleted from the disk but not from the repository&lt;/li&gt;
+&lt;li&gt;&lt;i&gt;Commit&lt;/i&gt; : If the file exists and is modified (checked by default).&lt;/li&gt;
+&lt;/ul&gt;
+Only checked files are commited.</source>
+        <translation type="obsolete">Cette liste contient les documents à valider. Seul les fichiers connus par &lt;b&gt;XINX&lt;/b&gt; sont listé ici (&lt;i&gt;.xsl, .html, .css, .js, ...&lt;/i&gt;).&lt;br/&gt;
+Dans cette liste&lt;b&gt;XINX&lt;/b&gt; permet trois actions :
+&lt;ul&gt;
+&lt;li&gt;&lt;i&gt;Ajouter et Valider&lt;/i&gt; : Si le fichier n&apos;existe pas dans le réferenciel mais peut être validé&lt;/li&gt;
+&lt;li&gt;&lt;i&gt;Supprimer et Valider&lt;/i&gt; : Si le fichier est supprimé du disque mais pas du référenciel&lt;/li&gt;
+&lt;li&gt;&lt;i&gt;Valider&lt;/i&gt; : Si le fichier existe et est modifié (coché par défaut).&lt;/li&gt;
+&lt;/ul&gt;
+Seul les fichiers cochés seront validés.</translation>
+    </message>
+    <message>
         <source>This is the list of the file to commit. Only known files are listed here (&lt;i&gt;.xsl, .html, .css, .js, ...&lt;/i&gt;).&lt;br/&gt;
 In the list &lt;b&gt;XINX&lt;/b&gt; presents three actions : 
 &lt;ul&gt;
@@ -338,7 +388,7 @@ In the list &lt;b&gt;XINX&lt;/b&gt; presents three actions :
 &lt;li&gt;&lt;i&gt;Commit&lt;/i&gt; : If the file exists and is modified (checked by default).&lt;/li&gt;
 &lt;/ul&gt;
 Only checked files are commited.</source>
-        <translation>Cette liste contient les documents à valider. Seul les fichiers connus par XINX sont listé ici (&lt;i&gt;.xsl, .html, .css, .js, ...&lt;/i&gt;).&lt;br/&gt;
+        <translation type="obsolete">Cette liste contient les documents à valider. Seul les fichiers connus par XINX sont listé ici (&lt;i&gt;.xsl, .html, .css, .js, ...&lt;/i&gt;).&lt;br/&gt;
 Dans cette liste&lt;b&gt;XINX&lt;/b&gt; permet trois actions :
 &lt;ul&gt;
 &lt;li&gt;&lt;i&gt;Ajouter et Valider&lt;/i&gt; : Si le fichier n&apos;existe pas dans le réferenciel mais peut être validé&lt;/li&gt;
@@ -540,10 +590,9 @@ Taille du cache : %6/%7</translation>
 <context>
     <name>MainForm</name>
     <message>
-        <location filename="../rcs/rcsmanager.cpp" line="79"/>
         <source>&lt;p&gt;Call the commit method of your &lt;i&gt;revision control sytem&lt;/i&gt; for all the project directory. An optional message can be added.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Only &lt;b&gt;XINX&lt;/b&gt; managed files are commited to the repository.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Valide dans votre &lt;i&gt;système de gestion de version&lt;/i&gt; le contenue de tout le dossier projet. Un message optionel peut être ajouté.&lt;/p&gt;
+        <translation type="obsolete">&lt;p&gt;Valide dans votre &lt;i&gt;système de gestion de version&lt;/i&gt; le contenue de tout le dossier projet. Un message optionel peut être ajouté.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Seul les types de fichiers gérés par &lt;b&gt;XINX&lt;/b&gt; seront validé dans le référenciel.&lt;/i&gt;/&lt;p&gt;</translation>
     </message>
 </context>
@@ -603,10 +652,9 @@ Taille du cache : %6/%7</translation>
 %2.</translation>
     </message>
     <message>
-        <location filename="../project/xinxproject.cpp" line="536"/>
         <source>Cannot write file %1:
 %2.</source>
-        <translation>Ne peut écrire le fichier %1:
+        <translation type="obsolete">Ne peut écrire le fichier %1:
 %2.</translation>
     </message>
     <message>
@@ -622,14 +670,28 @@ Taille du cache : %6/%7</translation>
         <translation>Mise à jour du projet</translation>
     </message>
     <message>
-        <location filename="../rcs/rcsmanager.cpp" line="73"/>
         <source>Call the update fonction of your &lt;i&gt;revision control system&lt;/i&gt; for all the project directory.</source>
-        <translation>Met à jour le dossier projet à partir du &lt;i&gt;système de gestion de version&lt;i&gt; choisis.</translation>
+        <translation type="obsolete">Met à jour le dossier projet à partir du &lt;i&gt;système de gestion de version&lt;i&gt; choisis.</translation>
+    </message>
+    <message>
+        <location filename="../rcs/rcsmanager.cpp" line="73"/>
+        <source>Update all files of the project directory (from repository).</source>
+        <translation>Met à jours tous les fichier du dossier projet (à partir du référenciel).</translation>
     </message>
     <message>
         <location filename="../rcs/rcsmanager.cpp" line="78"/>
         <source>Commit project</source>
         <translation>Valide le projet</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../rcs/rcsmanager.cpp" line="79"/>
+        <source>&lt;p&gt;Commit all files of the project directory (to repository). An optional message can be added.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Only &lt;b&gt;XINX&lt;/b&gt; managed files are commited to the repository.&lt;/i&gt;&lt;/p&gt;</source>
+        <translation>
+            <numerusform>&lt;p&gt;Pousse tous les fichiers du dossier projet (dans le référenciel). Un message optionel peut être ajouté.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Seul les fichiers gérés par &lt;b&gt;XINX&lt;/b&gt; peuvent être poussé dans le référenciel.&lt;/i&gt;&lt;/p&gt;</numerusform>
+            <numerusform></numerusform>
+        </translation>
     </message>
     <message>
         <location filename="../rcs/rcsmanager.cpp" line="85"/>
@@ -648,8 +710,12 @@ Taille du cache : %6/%7</translation>
     </message>
     <message>
         <location filename="../rcs/rcsmanager.cpp" line="267"/>
+        <source>Do you want to add the file &apos;%1&apos; to the repository ?</source>
+        <translation>Voulez-vous ajouter le fichier &apos;%1&apos; au référenciel ?</translation>
+    </message>
+    <message>
         <source>Do you want to add the file &apos;%1&apos; to the repository</source>
-        <translation>Voulez-vous ajouter le fichier &apos;%1&apos; au référenciel</translation>
+        <translation type="obsolete">Voulez-vous ajouter le fichier &apos;%1&apos; au référenciel ?</translation>
     </message>
     <message>
         <location filename="../rcs/rcsmanager.cpp" line="391"/>
@@ -719,14 +785,22 @@ Taille du cache : %6/%7</translation>
         <translation>Supprimer la catégorie</translation>
     </message>
     <message>
-        <location filename="../snipets/snipetmanager.cpp" line="195"/>
         <source>This category contains snipet or other category, you can&apos;t remove this category.</source>
-        <translation>Si la catégorie contient des modèles ou d&apos;autres catégorie, vous ne pouvez pas supprimer cette catégorie.</translation>
+        <translation type="obsolete">La catégorie contient des modèles ou d&apos;autres catégories, vous ne pouvez donc pas supprimer cette catégorie.</translation>
+    </message>
+    <message>
+        <source>Are you sure to delete the category &quot;%1&quot;</source>
+        <translation type="obsolete">Êtes-vous sur de vouloir supprimer la catégorie &quot;%1&quot; ?</translation>
+    </message>
+    <message>
+        <location filename="../snipets/snipetmanager.cpp" line="195"/>
+        <source>This category contains snipet or other category, so you can&apos;t remove this category.</source>
+        <translation>La catégorie contient des modèles ou d&apos;autres catégories, vous ne pouvez donc pas supprimer cette catégorie.</translation>
     </message>
     <message>
         <location filename="../snipets/snipetmanager.cpp" line="208"/>
-        <source>Are you sure to delete the category &quot;%1&quot;</source>
-        <translation>Êtes-vous sur de vouloir supprimer la catégorie &quot;%1&quot;</translation>
+        <source>Are you sure to delete the category &quot;%1&quot; ?</source>
+        <translation>Êtes-vous sur de vouloir supprimer la catégorie &quot;%1&quot; ?</translation>
     </message>
     <message>
         <location filename="../snipets/snipetmanager.cpp" line="385"/>
@@ -797,112 +871,112 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="../snipets/snipetpropertydlg.ui" line="56"/>
         <source>Name of the snipet used to identify the snipet in menus.</source>
-        <translation type="unfinished">Nom du modèle, utilisé pour identifier le modèle dans les menus.</translation>
+        <translation>Nom du modèle, utilisé pour identifier le modèle dans les menus.</translation>
     </message>
     <message>
         <location filename="../snipets/snipetpropertydlg.ui" line="63"/>
         <source>&amp;Image :</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Image :</translation>
     </message>
     <message>
         <location filename="../snipets/snipetpropertydlg.ui" line="76"/>
         <source>&amp;Extension :</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Extention :</translation>
     </message>
     <message>
         <location filename="../snipets/snipetpropertydlg.ui" line="86"/>
         <source>&amp;Snipet key :</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Clé du modèle :</translation>
     </message>
     <message>
         <location filename="../snipets/snipetpropertydlg.ui" line="96"/>
         <source>Word key used to call the snipet in the &lt;b&gt;XINX&lt;/b&gt; editor. If no key is defined, it&apos;s not possible to call the template in the completion.</source>
-        <translation type="unfinished"></translation>
+        <translation>Mot utilisé pour appeler le modèle dans l&apos;éditeur de &lt;b&gt;XINX&lt;/b&gt;. Si aucune clé n&apos;est définit, il ne sera pas possible d&apos;appeler le modèle lors de la complétion.</translation>
     </message>
     <message>
         <location filename="../snipets/snipetpropertydlg.ui" line="103"/>
         <source>&amp;Automatic features :</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Options d&apos;automatisation :</translation>
     </message>
     <message>
         <location filename="../snipets/snipetpropertydlg.ui" line="113"/>
         <source>Call snipet automatically (not only by Ctrl+Space)</source>
-        <translation type="unfinished"></translation>
+        <translation>Appele le modèle automatiquement (pas seulement par Ctrl+Espace)</translation>
     </message>
     <message>
         <location filename="../snipets/snipetpropertydlg.ui" line="120"/>
         <source>Show description dialog, with parameters customization</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher la boîte de dialogue de description, pour modifier les paramètres</translation>
     </message>
     <message>
         <location filename="../snipets/snipetpropertydlg.ui" line="127"/>
         <source>&amp;Description :</source>
-        <translation type="unfinished">&amp;Description :</translation>
+        <translation>&amp;Description :</translation>
     </message>
     <message>
         <location filename="../snipets/snipetpropertydlg.ui" line="152"/>
         <source>Long description of the snipet.</source>
-        <translation type="unfinished">Longue description du modèle.</translation>
+        <translation>Longue description du modèle.</translation>
     </message>
     <message>
         <location filename="../snipets/snipetpropertydlg.ui" line="183"/>
         <source>&amp;Category</source>
-        <translation type="unfinished">&amp;Catégorie</translation>
+        <translation>&amp;Catégorie</translation>
     </message>
     <message>
         <location filename="../snipets/snipetpropertydlg.ui" line="189"/>
         <source>Category</source>
-        <translation type="unfinished">Catégorie</translation>
+        <translation>Catégorie</translation>
     </message>
     <message>
         <location filename="../snipets/snipetpropertydlg.ui" line="205"/>
         <source>&amp;Remove Category</source>
-        <translation type="unfinished">&amp;Suppression de la catégorie</translation>
+        <translation>&amp;Suppression de la catégorie</translation>
     </message>
     <message>
         <location filename="../snipets/snipetpropertydlg.ui" line="216"/>
         <source>&amp;Add Category</source>
-        <translation type="unfinished">&amp;Ajout une catégorie</translation>
+        <translation>&amp;Ajout une catégorie</translation>
     </message>
     <message>
         <location filename="../snipets/snipetpropertydlg.ui" line="244"/>
         <source>&amp;Snipet</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Modèle</translation>
     </message>
     <message>
         <location filename="../snipets/snipetpropertydlg.ui" line="250"/>
         <source>&amp;Template text :</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Texte du modèle :</translation>
     </message>
     <message>
         <location filename="../snipets/snipetpropertydlg.ui" line="256"/>
         <source>Template to show to screen. In this template you can define parameter by using the &lt;code&gt;%n&lt;/code&gt; keyword where &lt;code&gt;n&lt;/code&gt; is a number. More sophisticated snipets can use &lt;b&gt;ECMAScript&lt;/b&gt;. Balise &lt;code&gt;&amp;lt;?= ?&amp;gt;&lt;/code&gt; is used to call script and show the text returned by the script. &lt;code&gt;&amp;lt;? ?&amp;gt;&lt;/code&gt; can be used to init the script and make some pre-process.</source>
-        <translation type="unfinished"></translation>
+        <translation>Modèle affiché à l&apos;écran. Dans ce modèle vous pouvez définir des paramètres en utilisant le mot clé &lt;code&gt;%n&lt;/code&gt; où &lt;code&gt;n&lt;/code&gt; est un nombre. Des modèles plus compliqués peuvent inclure de l&apos;&lt;b&gt;ECMAScript&lt;/b&gt;. La baslise &lt;code&gt;&amp;lt;?= ?&amp;gt;&lt;/code&gt; est utilisé pour appeler le script et être remplacé par son résultat. &lt;code&gt;&amp;lt;?  ?&amp;gt;&lt;/code&gt; peut être utilisé pour initialiser les variables du script ou faire certain traitement (boucle, ...).</translation>
     </message>
     <message>
         <location filename="../snipets/snipetpropertydlg.ui" line="267"/>
         <source>&amp;Parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Paramètres</translation>
     </message>
     <message>
         <location filename="../snipets/snipetpropertydlg.ui" line="279"/>
         <source>List of name parameter used by the template. The first parameter replace the key word %1, the second parameter replace the key word %2, ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Liste des noms des paramètres utilisé par le modèle. Le premier paramètre remplacera le premier mot clé : %1, le second paramètre, le second mot clé %2, et ainsi de suite ...</translation>
     </message>
     <message>
         <location filename="../snipets/snipetpropertydlg.ui" line="282"/>
         <source>&amp;Parameter</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Paramètre</translation>
     </message>
     <message>
         <location filename="../snipets/snipetpropertydlg.ui" line="299"/>
         <source>&amp;Control</source>
-        <translation type="unfinished">&amp;Contrôle</translation>
+        <translation>&amp;Contrôle</translation>
     </message>
     <message>
         <location filename="../snipets/snipetpropertydlg.ui" line="305"/>
         <source>&amp;Condition to enable the snipet</source>
-        <translation type="unfinished">&amp;Conditions pour activer le modèle</translation>
+        <translation>&amp;Conditions pour activer le modèle</translation>
     </message>
 </context>
 <context>
@@ -911,18 +985,18 @@ Taille du cache : %6/%7</translation>
         <location filename="../snipets/snipetpropertydlgimpl.cpp" line="112"/>
         <location filename="../snipets/snipetpropertydlgimpl.cpp" line="154"/>
         <source>Name</source>
-        <translation type="unfinished">Nom</translation>
+        <translation>Nom</translation>
     </message>
     <message>
         <location filename="../snipets/snipetpropertydlgimpl.cpp" line="113"/>
         <location filename="../snipets/snipetpropertydlgimpl.cpp" line="155"/>
         <source>Default Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Valeur par défaut</translation>
     </message>
     <message>
         <location filename="../snipets/snipetpropertydlgimpl.cpp" line="268"/>
         <source>Parameter %1</source>
-        <translation type="unfinished">Paramètre %1</translation>
+        <translation>Paramètre %1</translation>
     </message>
 </context>
 <context>
@@ -963,12 +1037,12 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="../editors/textfileeditor.cpp" line="559"/>
         <source>Search Word</source>
-        <translation type="unfinished"></translation>
+        <translation>Recherche de mot</translation>
     </message>
     <message>
         <location filename="../editors/textfileeditor.cpp" line="559"/>
         <source>Word %1 not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Mot %1 non trouvé</translation>
     </message>
 </context>
 <context>
@@ -976,7 +1050,7 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="../utils/treeproxyitemmodel.cpp" line="503"/>
         <source>&lt;deleted&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;supprimé&gt;</translation>
     </message>
 </context>
 <context>
@@ -1105,6 +1179,13 @@ Taille du cache : %6/%7</translation>
         <location filename="../project/xinxproject.cpp" line="480"/>
         <source>Project path (%1) don&apos;t exists.</source>
         <translation>Le chemin du projet (%1) n&apos;existe pas.</translation>
+    </message>
+    <message>
+        <location filename="../project/xinxproject.cpp" line="536"/>
+        <source>Cannot write file %1:
+%2.</source>
+        <translation>Ne peut écrire le fichier %1:
+%2.</translation>
     </message>
 </context>
 <context>

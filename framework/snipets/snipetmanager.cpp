@@ -192,7 +192,7 @@ void SnipetManager::removeCategory(int id, QWidget * parent)
 	int count = countQuery.value(0).toInt();
 	if (count > 0)
 	{
-		QMessageBox::critical(parent, tr("Remove a category"), tr("This category contains snipet or other category, you can't remove this category."));
+		QMessageBox::critical(parent, tr("Remove a category"), tr("This category contains snipet or other category, so you can't remove this category."));
 		return;
 	}
 
@@ -205,7 +205,7 @@ void SnipetManager::removeCategory(int id, QWidget * parent)
 	result = titleQuery.next();
 	Q_ASSERT(result);
 
-	int r = QMessageBox::question(parent, tr("Remove a category"), tr("Are you sure to delete the category \"%1\"").arg(titleQuery.value(0).toString()), QMessageBox::Yes | QMessageBox::No);
+	int r = QMessageBox::question(parent, tr("Remove a category"), tr("Are you sure to delete the category \"%1\" ?").arg(titleQuery.value(0).toString()), QMessageBox::Yes | QMessageBox::No);
 
 	if (r == QMessageBox::Yes)
 	{

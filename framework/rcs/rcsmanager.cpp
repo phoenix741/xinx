@@ -70,13 +70,13 @@ RCSManager::RCSManager() : m_rcs(0)
 {
 	// Global Update
 	m_updateAll = new QAction(QIcon(":/images/vcs_update.png"), tr("Update project"), this);
-	m_updateAll->setWhatsThis(tr("Call the update fonction of your <i>revision control system</i> for all the project directory."));
+	m_updateAll->setWhatsThis(tr("Update all files of the project directory (from repository)."));
 	m_updateAll->setShortcut(QKeySequence::Refresh);
 	connect(m_updateAll, SIGNAL(triggered()), this, SLOT(updateWorkingCopy()));
 
 	// Global Commit
 	m_commitAll = new QAction(QIcon(":/images/vcs_commit.png"), tr("Commit project"), this);
-	m_commitAll->setWhatsThis(QApplication::translate("MainForm", "<p>Call the commit method of your <i>revision control sytem</i> for all the project directory. An optional message can be added.</p>\n"
+	m_commitAll->setWhatsThis(tr("<p>Commit all files of the project directory (to repository). An optional message can be added.</p>\n"
 	                          "<p><i>Only <b>XINX</b> managed files are commited to the repository.</i></p>", 0, QApplication::UnicodeUTF8));
 	m_commitAll->setShortcut(QKeySequence("F6"));
 	connect(m_commitAll, SIGNAL(triggered()), this, SLOT(validWorkingCopy()));
@@ -264,7 +264,7 @@ void RCSManager::addFileOperation(rcsAddRemoveOperation op, const QStringList & 
 		{
 			const QString text = it.next();
 
-			if (QMessageBox::question(parent, tr("Add a file"), tr("Do you want to add the file '%1' to the repository").arg(text), QMessageBox::Yes | QMessageBox::No) == QMessageBox::No)
+			if (QMessageBox::question(parent, tr("Add a file"), tr("Do you want to add the file '%1' to the repository ?").arg(text), QMessageBox::Yes | QMessageBox::No) == QMessageBox::No)
 			{
 				it.remove();
 			}
