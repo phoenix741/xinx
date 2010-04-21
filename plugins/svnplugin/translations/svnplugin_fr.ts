@@ -19,10 +19,6 @@
         <translation>Ne peut démarrer le programme SubVersion.</translation>
     </message>
     <message>
-        <source>Can&apos;t find the svn program.</source>
-        <translation type="obsolete">Ne peut trouver le programme svn.</translation>
-    </message>
-    <message>
         <location filename="../rcs_svn.cpp" line="372"/>
         <source>Can&apos;t stop the process on windows.</source>
         <translation>Ne peut pas arrêter le traitement sous windows.</translation>

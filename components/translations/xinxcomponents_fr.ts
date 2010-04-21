@@ -79,13 +79,6 @@
     </message>
 </context>
 <context>
-    <name>FileContentElement</name>
-    <message>
-        <source>Element at line : %1</source>
-        <translation type="obsolete">Element à la ligne : %1</translation>
-    </message>
-</context>
-<context>
     <name>PluginDelegate</name>
     <message>
         <location filename="../pluginselector.cpp" line="329"/>
@@ -202,26 +195,6 @@
 <context>
     <name>XinxListWidget</name>
     <message>
-        <source>Add</source>
-        <translation type="obsolete">Ajouter</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="obsolete">Supprimer</translation>
-    </message>
-    <message>
-        <source>Default</source>
-        <translation type="obsolete">Défaut</translation>
-    </message>
-    <message>
-        <source>Up</source>
-        <translation type="obsolete">Haut</translation>
-    </message>
-    <message>
-        <source>Down</source>
-        <translation type="obsolete">Bas</translation>
-    </message>
-    <message>
         <location filename="../ui/xinxlistwidget.ui" line="40"/>
         <source>&amp;Add</source>
         <translation>&amp;Ajouter</translation>
@@ -245,17 +218,6 @@
         <location filename="../ui/xinxlistwidget.ui" line="97"/>
         <source>Move &amp;Down</source>
         <translation>Déplacer en &amp;bas</translation>
-    </message>
-</context>
-<context>
-    <name>XinxPluginDelegate</name>
-    <message>
-        <source>About ...</source>
-        <translation type="obsolete">A propos de ...</translation>
-    </message>
-    <message>
-        <source>Configure ...</source>
-        <translation type="obsolete">Personnaliser ...</translation>
     </message>
 </context>
 </TS>

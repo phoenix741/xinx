@@ -145,7 +145,7 @@ GenerixPlugin::~GenerixPlugin()
 bool GenerixPlugin::initializePlugin(const QString & lang)
 {
 	QTranslator * tranlator = new QTranslator(this);
-	tranlator->load(QString(":/generix/translations/generix_%1").arg(lang));
+	tranlator->load(QString(":/generix/translations/dictionary_%1").arg(lang));
 	qApp->installTranslator(tranlator);
 
 	m_resolver = new Gce150FileResolver();

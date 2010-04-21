@@ -29,10 +29,6 @@
         <translation>Co&amp;ller</translation>
     </message>
     <message>
-        <source>&amp;Close</source>
-        <translation type="obsolete">&amp;Fermer</translation>
-    </message>
-    <message>
         <location filename="../editors/abstracteditor.cpp" line="480"/>
         <source>Can&apos;t open file for reading %1 : %2</source>
         <translation>Ne peut pas ouvrir le fichier en lecture %1 : %2</translation>
@@ -57,29 +53,6 @@
         <location filename="../editors/abstracteditor.cpp" line="739"/>
         <source>The file %1 was removed.</source>
         <translation>Le fichier %1 a été supprimé.</translation>
-    </message>
-</context>
-<context>
-    <name>AbstractFileEditor</name>
-    <message>
-        <source>Can&apos;t open file for reading %1 : %2</source>
-        <translation type="obsolete">Ne peut pas ouvrir le fichier en lecture %1 : %2</translation>
-    </message>
-    <message>
-        <source>Can&apos;t open file for writing %1 : %2</source>
-        <translation type="obsolete">Ne peut pas ouvrir le fichier en écriture %1 : %2</translation>
-    </message>
-    <message>
-        <source>Reload page</source>
-        <translation type="obsolete">Actualiser</translation>
-    </message>
-    <message>
-        <source>The file %1 was modified. Reload the page ?</source>
-        <translation type="obsolete">Le fichier %1 a été modifié. Recharger la page ?</translation>
-    </message>
-    <message>
-        <source>The file %1 was removed.</source>
-        <translation type="obsolete">Le fichier %1 a été supprimé.</translation>
     </message>
 </context>
 <context>
@@ -177,16 +150,6 @@ Si vous préférez que le modèle soit appelé automatiquement par la suite, veu
 Veuillez verifier les paramètres ci-dessous et &lt;i&gt;validez&lt;/i&gt; ce formulaire si vous êtes d&apos;accord.</translation>
     </message>
     <message>
-        <source>You are about to &lt;b&gt;replace&lt;/b&gt; the last word of the text you just wrote by the text of the template. If this dialog is showed, the snipet is configured to be called manually or requires that all parameters have a default value.&lt;br/&gt;
-If you prefer the snipet to be called automatically in the future, please change the property in the custom dialog.&lt;br/&gt;
-&lt;br/&gt;
-Please check parameters below and &lt;i&gt;valid&lt;/i&gt; this form if you agree.</source>
-        <translation type="obsolete">Vous êtes sur le point de &lt;b&gt;remplacer&lt;/b&gt; le dernier mot du text que vous êtes entrain d&apos;écrire, par celui de modèle. Si cette boite de dialogue s&apos;est ouverte, le modèle est configuré pour être appelé automatiquement et necessite que tout les paramètres ait une valeur par défaut.&lt;br/&gt;
-Si vous préférez que le modèle soit appelé automatiquement par la suite, veuillez changer les propriétés dans la boite de dialogue de personalisation.&lt;br/&gt;
-&lt;br/&gt;
-Veuillez verifier les paramètres ci-dessous et &lt;i&gt;validez&lt;/i&gt; ce formulaire si vous êtes d&apos;accord.</translation>
-    </message>
-    <message>
         <location filename="../snipets/callsnipetdlg.ui" line="100"/>
         <source>Name</source>
         <translation>Nom</translation>
@@ -261,10 +224,6 @@ Veuillez verifier les paramètres ci-dessous et &lt;i&gt;validez&lt;/i&gt; ce fo
         <location filename="../snipets/categorypropertydlg.ui" line="46"/>
         <source>&amp;Name :</source>
         <translation>&amp;Nom :</translation>
-    </message>
-    <message>
-        <source>Name of the snipet used to identify the snipet in the menus.</source>
-        <translation type="obsolete">Nom du modèle utilisé pour l&apos;identifier dans les menus.</translation>
     </message>
     <message>
         <location filename="../snipets/categorypropertydlg.ui" line="56"/>
@@ -361,42 +320,6 @@ Dans cette liste&lt;b&gt;XINX&lt;/b&gt; permet trois actions :
 &lt;/ul&gt;
 Seul les fichiers cochés seront validés.</translation>
     </message>
-    <message>
-        <source>This is the list of the file to commit. Only files, known by &lt;b&gt;XINX&lt;/v&gt; are listed here (&lt;i&gt;.xsl, .html, .css, .js, ...&lt;/i&gt;).&lt;br/&gt;
-In the list &lt;b&gt;XINX&lt;/b&gt; presents three actions : 
-&lt;ul&gt;
-&lt;li&gt;&lt;i&gt;Add and Commit&lt;/i&gt; : If the file doesn&apos;t exist in the repository but may be commited.&lt;/li&gt;
-&lt;li&gt;&lt;i&gt;Remove and Commit&lt;/i&gt; : If the file is deleted from the disk but not from the repository&lt;/li&gt;
-&lt;li&gt;&lt;i&gt;Commit&lt;/i&gt; : If the file exists and is modified (checked by default).&lt;/li&gt;
-&lt;/ul&gt;
-Only checked files are commited.</source>
-        <translation type="obsolete">Cette liste contient les documents à valider. Seul les fichiers connus par &lt;b&gt;XINX&lt;/b&gt; sont listé ici (&lt;i&gt;.xsl, .html, .css, .js, ...&lt;/i&gt;).&lt;br/&gt;
-Dans cette liste&lt;b&gt;XINX&lt;/b&gt; permet trois actions :
-&lt;ul&gt;
-&lt;li&gt;&lt;i&gt;Ajouter et Valider&lt;/i&gt; : Si le fichier n&apos;existe pas dans le réferenciel mais peut être validé&lt;/li&gt;
-&lt;li&gt;&lt;i&gt;Supprimer et Valider&lt;/i&gt; : Si le fichier est supprimé du disque mais pas du référenciel&lt;/li&gt;
-&lt;li&gt;&lt;i&gt;Valider&lt;/i&gt; : Si le fichier existe et est modifié (coché par défaut).&lt;/li&gt;
-&lt;/ul&gt;
-Seul les fichiers cochés seront validés.</translation>
-    </message>
-    <message>
-        <source>This is the list of the file to commit. Only known files are listed here (&lt;i&gt;.xsl, .html, .css, .js, ...&lt;/i&gt;).&lt;br/&gt;
-In the list &lt;b&gt;XINX&lt;/b&gt; presents three actions : 
-&lt;ul&gt;
-&lt;li&gt;&lt;i&gt;Add and Commit&lt;/i&gt; : If the file doesn&apos;t exist in the repository but may be commited.&lt;/li&gt;
-&lt;li&gt;&lt;i&gt;Remove and Commit&lt;/i&gt; : If the file is deleted from the disk but not from the repository&lt;/li&gt;
-&lt;li&gt;&lt;i&gt;Commit&lt;/i&gt; : If the file exists and is modified (checked by default).&lt;/li&gt;
-&lt;/ul&gt;
-Only checked files are commited.</source>
-        <translation type="obsolete">Cette liste contient les documents à valider. Seul les fichiers connus par XINX sont listé ici (&lt;i&gt;.xsl, .html, .css, .js, ...&lt;/i&gt;).&lt;br/&gt;
-Dans cette liste&lt;b&gt;XINX&lt;/b&gt; permet trois actions :
-&lt;ul&gt;
-&lt;li&gt;&lt;i&gt;Ajouter et Valider&lt;/i&gt; : Si le fichier n&apos;existe pas dans le réferenciel mais peut être validé&lt;/li&gt;
-&lt;li&gt;&lt;i&gt;Supprimer et Valider&lt;/i&gt; : Si le fichier est supprimé du disque mais pas du référenciel&lt;/li&gt;
-&lt;li&gt;&lt;i&gt;Valider&lt;/i&gt; : Si le fichier existe et est modifié (coché par défaut).&lt;/li&gt;
-&lt;/ul&gt;
-Seul les fichiers cochés seront validés.</translation>
-    </message>
 </context>
 <context>
     <name>CommitMessageDialogImpl</name>
@@ -427,52 +350,11 @@ Seul les fichiers cochés seront validés.</translation>
     </message>
 </context>
 <context>
-    <name>CompletionNodeModel</name>
-    <message>
-        <source>Name</source>
-        <translation type="obsolete">Nom</translation>
-    </message>
-</context>
-<context>
-    <name>ConfigurationFile</name>
-    <message>
-        <source>Error while opening configuration file : %1</source>
-        <translation type="obsolete">Erreur lors de l&apos;ouverture du fichier de configuration : %1</translation>
-    </message>
-    <message>
-        <source>Error while opening version query : %1</source>
-        <translation type="obsolete">Error lors de l&apos;ouverture de la requête &quot;version&quot; : %1</translation>
-    </message>
-    <message>
-        <source>Error while opening businessview list query : %1</source>
-        <translation type="obsolete">Erreur lors de l&apos;ouverture de la requête &quot;liste des BusinessView&quot; : %1</translation>
-    </message>
-</context>
-<context>
     <name>ContentView2::CompletionModel</name>
     <message>
         <location filename="../contentview2/contentview2completionmodel.cpp" line="199"/>
         <source>Completion not ready</source>
         <translation>Complétion pas prête</translation>
-    </message>
-</context>
-<context>
-    <name>ContentView2::File</name>
-    <message>
-        <location filename="../contentview2/contentview2file.cpp" line="287"/>
-        <source>Can&apos;t find the node %1</source>
-        <translation>Ne peux trouver le noeud %1</translation>
-    </message>
-    <message>
-        <location filename="../contentview2/contentview2file.cpp" line="312"/>
-        <location filename="../contentview2/contentview2file.cpp" line="362"/>
-        <source>Can&apos;t find the project %1</source>
-        <translation>Ne peux trouver le projet %1</translation>
-    </message>
-    <message>
-        <location filename="../contentview2/contentview2file.cpp" line="326"/>
-        <source>Can&apos;t find the node for path %1</source>
-        <translation>Ne peux trouver le noeud pour le chemin %1</translation>
     </message>
 </context>
 <context>
@@ -484,42 +366,11 @@ Seul les fichiers cochés seront validés.</translation>
     </message>
 </context>
 <context>
-    <name>ContentView2::Project</name>
-    <message>
-        <location filename="../contentview2/contentview2project.cpp" line="121"/>
-        <source>Can&apos;t find the node %1</source>
-        <translation>Ne peux trouver le noeud %1</translation>
-    </message>
-    <message>
-        <location filename="../contentview2/contentview2project.cpp" line="138"/>
-        <source>Can&apos;t find the project %1</source>
-        <translation>Ne peux trouver le projet %1</translation>
-    </message>
-</context>
-<context>
     <name>ContentView2::TreeModel</name>
     <message>
         <location filename="../contentview2/contentview2treemodel.cpp" line="281"/>
         <source>Name</source>
         <translation>Nom</translation>
-    </message>
-</context>
-<context>
-    <name>ContentViewModel</name>
-    <message>
-        <source>Name</source>
-        <translation type="obsolete">Nom</translation>
-    </message>
-</context>
-<context>
-    <name>ContentViewParser</name>
-    <message>
-        <source>Parser already running</source>
-        <translation type="obsolete">Le parser est déjà en cours de traitement</translation>
-    </message>
-    <message>
-        <source>Cannot read file %1:%2.</source>
-        <translation type="obsolete">Ne peut lire le fichier %1 :%2.</translation>
     </message>
 </context>
 <context>
@@ -574,26 +425,22 @@ Taille du cache : %6/%7</translation>
     </message>
 </context>
 <context>
-    <name>FileContentElement</name>
+    <name>File</name>
     <message>
-        <source>Element at line : %1</source>
-        <translation type="obsolete">Elément à la ligne : %1</translation>
+        <location filename="../contentview2/contentview2file.cpp" line="287"/>
+        <source>Can&apos;t find the node %1</source>
+        <translation>Ne peux trouver le noeud %1</translation>
     </message>
-</context>
-<context>
-    <name>FileContentItemModel</name>
     <message>
-        <source>Name</source>
-        <translation type="obsolete">Nom</translation>
+        <location filename="../contentview2/contentview2file.cpp" line="312"/>
+        <location filename="../contentview2/contentview2file.cpp" line="362"/>
+        <source>Can&apos;t find the project %1</source>
+        <translation>Ne peux trouver le projet %1</translation>
     </message>
-</context>
-<context>
-    <name>MainForm</name>
     <message>
-        <source>&lt;p&gt;Call the commit method of your &lt;i&gt;revision control sytem&lt;/i&gt; for all the project directory. An optional message can be added.&lt;/p&gt;
-&lt;p&gt;&lt;i&gt;Only &lt;b&gt;XINX&lt;/b&gt; managed files are commited to the repository.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="obsolete">&lt;p&gt;Valide dans votre &lt;i&gt;système de gestion de version&lt;/i&gt; le contenue de tout le dossier projet. Un message optionel peut être ajouté.&lt;/p&gt;
-&lt;p&gt;&lt;i&gt;Seul les types de fichiers gérés par &lt;b&gt;XINX&lt;/b&gt; seront validé dans le référenciel.&lt;/i&gt;/&lt;p&gt;</translation>
+        <location filename="../contentview2/contentview2file.cpp" line="326"/>
+        <source>Can&apos;t find the node for path %1</source>
+        <translation>Ne peux trouver le noeud pour le chemin %1</translation>
     </message>
 </context>
 <context>
@@ -613,19 +460,24 @@ Taille du cache : %6/%7</translation>
     </message>
 </context>
 <context>
+    <name>Project</name>
+    <message>
+        <location filename="../contentview2/contentview2project.cpp" line="121"/>
+        <source>Can&apos;t find the node %1</source>
+        <translation>Ne peux trouver le noeud %1</translation>
+    </message>
+    <message>
+        <location filename="../contentview2/contentview2project.cpp" line="138"/>
+        <source>Can&apos;t find the project %1</source>
+        <translation>Ne peux trouver le projet %1</translation>
+    </message>
+</context>
+<context>
     <name>QErrorMessage</name>
     <message>
         <location filename="../core/exceptions.cpp" line="65"/>
         <source>Debug Message:</source>
         <translation>Message de déverminage :</translation>
-    </message>
-    <message>
-        <source>Warning:</source>
-        <translation type="obsolete">Avertissement :</translation>
-    </message>
-    <message>
-        <source>Fatal Error:</source>
-        <translation type="obsolete">Erreur fatale :</translation>
     </message>
     <message>
         <location filename="../core/exceptions.cpp" line="66"/>
@@ -644,34 +496,11 @@ Taille du cache : %6/%7</translation>
     </message>
 </context>
 <context>
-    <name>QObject</name>
-    <message>
-        <source>Cannot read file %1:
-%2.</source>
-        <translation type="obsolete">Ne peut lire le fichier %1 :
-%2.</translation>
-    </message>
-    <message>
-        <source>Cannot write file %1:
-%2.</source>
-        <translation type="obsolete">Ne peut écrire le fichier %1:
-%2.</translation>
-    </message>
-    <message>
-        <source>Cannot read file %1:%2.</source>
-        <translation type="obsolete">Ne peut lire le fichier %1 :%2.</translation>
-    </message>
-</context>
-<context>
     <name>RCSManager</name>
     <message>
         <location filename="../rcs/rcsmanager.cpp" line="72"/>
         <source>Update project</source>
         <translation>Mise à jour du projet</translation>
-    </message>
-    <message>
-        <source>Call the update fonction of your &lt;i&gt;revision control system&lt;/i&gt; for all the project directory.</source>
-        <translation type="obsolete">Met à jour le dossier projet à partir du &lt;i&gt;système de gestion de version&lt;i&gt; choisis.</translation>
     </message>
     <message>
         <location filename="../rcs/rcsmanager.cpp" line="73"/>
@@ -712,10 +541,6 @@ Taille du cache : %6/%7</translation>
         <location filename="../rcs/rcsmanager.cpp" line="267"/>
         <source>Do you want to add the file &apos;%1&apos; to the repository ?</source>
         <translation>Voulez-vous ajouter le fichier &apos;%1&apos; au référenciel ?</translation>
-    </message>
-    <message>
-        <source>Do you want to add the file &apos;%1&apos; to the repository</source>
-        <translation type="obsolete">Voulez-vous ajouter le fichier &apos;%1&apos; au référenciel ?</translation>
     </message>
     <message>
         <location filename="../rcs/rcsmanager.cpp" line="391"/>
@@ -783,14 +608,6 @@ Taille du cache : %6/%7</translation>
         <location filename="../snipets/snipetmanager.cpp" line="208"/>
         <source>Remove a category</source>
         <translation>Supprimer la catégorie</translation>
-    </message>
-    <message>
-        <source>This category contains snipet or other category, you can&apos;t remove this category.</source>
-        <translation type="obsolete">La catégorie contient des modèles ou d&apos;autres catégories, vous ne pouvez donc pas supprimer cette catégorie.</translation>
-    </message>
-    <message>
-        <source>Are you sure to delete the category &quot;%1&quot;</source>
-        <translation type="obsolete">Êtes-vous sur de vouloir supprimer la catégorie &quot;%1&quot; ?</translation>
     </message>
     <message>
         <location filename="../snipets/snipetmanager.cpp" line="195"/>
@@ -1000,34 +817,11 @@ Taille du cache : %6/%7</translation>
     </message>
 </context>
 <context>
-    <name>TextEditor</name>
-    <message>
-        <source>Can&apos;t comment this type of document</source>
-        <translation type="obsolete">Ne peut commenter ce type de document</translation>
-    </message>
-</context>
-<context>
     <name>TextFileEditor</name>
-    <message>
-        <source>Comment</source>
-        <translation type="obsolete">Commenter</translation>
-    </message>
-    <message>
-        <source>Uncomment</source>
-        <translation type="obsolete">Décommenter</translation>
-    </message>
-    <message>
-        <source>In editor &apos;%1&apos; at line %2</source>
-        <translation type="obsolete">Dans l&apos;éditeur &apos;%1&apos; à la ligne %2</translation>
-    </message>
     <message>
         <location filename="../editors/textfileeditor.cpp" line="459"/>
         <source>Can&apos;t indent this type of document</source>
         <translation>Ne peut indenter ce type de document</translation>
-    </message>
-    <message>
-        <source>Not implemented</source>
-        <translation type="obsolete">Non implémenté</translation>
     </message>
     <message>
         <location filename="../editors/textfileeditor.cpp" line="167"/>
@@ -1059,68 +853,6 @@ Taille du cache : %6/%7</translation>
         <location filename="../core/xinxconfig.cpp" line="140"/>
         <source>Select the %1 tool</source>
         <translation>Sélectionner l&apos;outil %1</translation>
-    </message>
-    <message>
-        <source>All %1 (%2)</source>
-        <translation type="obsolete">Tous les %1 (%2)</translation>
-    </message>
-    <message>
-        <source>All managed file</source>
-        <translation type="obsolete">Tous les fichiers gérés</translation>
-    </message>
-</context>
-<context>
-    <name>XSLProject</name>
-    <message>
-        <source>Cannot read file %1:
-%2.</source>
-        <translation type="obsolete">Ne peut lire le fichier %1 :
-%2.</translation>
-    </message>
-    <message>
-        <source>Parse error at line %1, column %2:
-%3</source>
-        <translation type="obsolete">Erreur de syntaxe à la ligne %1, colonne %2:
-%3</translation>
-    </message>
-    <message>
-        <source>The file isn&apos;t a XINX Project</source>
-        <translation type="obsolete">Ce fichier n&apos;est pas un projet XINX</translation>
-    </message>
-    <message>
-        <source>The file is a too recent XINX Project</source>
-        <translation type="obsolete">Ce fichier est un projet trop récent</translation>
-    </message>
-    <message>
-        <source>The project can&apos;t be opened. Please use the XINX Project Wizard.</source>
-        <translation type="obsolete">Ce projet ne peut pas être ouvert. Utilisez l&apos;assistant de migration des projets XINX, s&apos;il vous plait.</translation>
-    </message>
-    <message>
-        <source>Project path (%1) don&apos;t exists.</source>
-        <translation type="obsolete">Le chemin du projet (%1) n&apos;existe pas.</translation>
-    </message>
-</context>
-<context>
-    <name>XSLProjectSession</name>
-    <message>
-        <source>Can&apos;t open session file.</source>
-        <translation type="obsolete">Ne peut ouvrir le fichier de session.</translation>
-    </message>
-    <message>
-        <source>Parse error at line %1, column %2:
-%3</source>
-        <translation type="obsolete">Erreur de syntaxe à la ligne %1, colonne %2:
-%3</translation>
-    </message>
-    <message>
-        <source>The file isn&apos;t a XINX Project Session file</source>
-        <translation type="obsolete">Ce fichier n&apos;est pas une session projet XINX</translation>
-    </message>
-    <message>
-        <source>Cannot write file %1:
-%2.</source>
-        <translation type="obsolete">Ne peut écrire le fichier %1:
-%2.</translation>
     </message>
 </context>
 <context>

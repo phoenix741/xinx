@@ -147,22 +147,6 @@
 <context>
     <name>DictionaryDockWidgetImpl</name>
     <message>
-        <source>&lt;No dictionary file&gt;</source>
-        <translation type="obsolete">&lt;Pas de dictionnaire&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;Choose a dictionary file ...&gt;</source>
-        <translation type="obsolete">&lt;Choisir un dictionnaire ...&gt;</translation>
-    </message>
-    <message>
-        <source>Open a dictionary</source>
-        <translation type="obsolete">Ouvrir un dictionnaire</translation>
-    </message>
-    <message>
-        <source>Dictionary (*.xml)</source>
-        <translation type="obsolete">Dictionnaire (*xml)</translation>
-    </message>
-    <message>
         <location filename="../../docks/dictionary/dictionarydockwidgetimpl.cpp" line="33"/>
         <source>Dictionary</source>
         <translation>Dictionnaire</translation>
@@ -190,21 +174,6 @@
         <location filename="../../docks/dictionary/dictionaryparser.cpp" line="177"/>
         <source>Label node expected. %1 found</source>
         <translation>Noeud &quot;label&quot; attendu. %1 trouvé</translation>
-    </message>
-</context>
-<context>
-    <name>DictionaryPlugin</name>
-    <message>
-        <source>XINX Dictionary Plugin</source>
-        <translation type="obsolete">Plugin Dictionnaire pour XINX</translation>
-    </message>
-    <message>
-        <source>This small plugin show a new dock with the dictionary of the application</source>
-        <translation type="obsolete">Ce petit plugin affiche un nouveau dock avec le dictionnaire de l&apos;application</translation>
-    </message>
-    <message>
-        <source>This small show a new dock with the dictionary of the application</source>
-        <translation type="obsolete">Ce petit</translation>
     </message>
 </context>
 <context>

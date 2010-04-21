@@ -2,24 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="fr_FR">
 <context>
-    <name>CVSAddThread</name>
-    <message>
-        <source>Add terminated</source>
-        <translation type="obsolete">Ajout terminé</translation>
-    </message>
-</context>
-<context>
-    <name>CVSCommitThread</name>
-    <message>
-        <source>Files commited :</source>
-        <translation type="obsolete">Fichier(s) validé(s) :</translation>
-    </message>
-    <message>
-        <source>Commit terminated</source>
-        <translation type="obsolete">Validation terminée</translation>
-    </message>
-</context>
-<context>
     <name>CVSPlugin</name>
     <message>
         <location filename="../cvsplugin.cpp" line="61"/>
@@ -35,34 +17,6 @@
         <location filename="../cvsplugin.cpp" line="109"/>
         <source>CVS - Concurent Version System</source>
         <translation></translation>
-    </message>
-</context>
-<context>
-    <name>CVSRemoveThread</name>
-    <message>
-        <source>Remove terminated</source>
-        <translation type="obsolete">Suppression terminée</translation>
-    </message>
-</context>
-<context>
-    <name>CVSThread</name>
-    <message>
-        <source>I&apos;M A PROCESS KILLER</source>
-        <translation type="obsolete">Le processus a été tué</translation>
-    </message>
-</context>
-<context>
-    <name>CVSUpdateRevisionThread</name>
-    <message>
-        <source>Update to revision %1 terminated</source>
-        <translation type="obsolete">La mise à jour vers la version %1 est terminée</translation>
-    </message>
-</context>
-<context>
-    <name>CVSUpdateThread</name>
-    <message>
-        <source>Update terminated</source>
-        <translation type="obsolete">Mise à jour terminée</translation>
     </message>
 </context>
 <context>
