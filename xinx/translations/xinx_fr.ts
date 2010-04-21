@@ -3303,85 +3303,85 @@ Voulez-vous sauver les changements ?</translation>
     <message>
         <location filename="../ui/newversion.ui" line="14"/>
         <source>Welcom in XINX</source>
-        <translation type="unfinished"></translation>
+        <translation>Bienvenue dans XINX</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="18"/>
         <source>First Installation</source>
-        <translation type="unfinished"></translation>
+        <translation>Première installation</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="27"/>
         <source>This is the first installation of &lt;span style=&quot; font-weight:600;&quot;&gt;XINX&lt;/span&gt; or you upgrade from an old version.  This wizard will help you to define or redefine some important &lt;span style=&quot; font-weight:600;&quot;&gt;XINX&lt;/span&gt; options.</source>
-        <translation type="unfinished"></translation>
+        <translation>C&apos;est votre première installation de &lt;b&gt;XINX&lt;/b&gt; ou une mettre à jour depuis une version antérieure. Cet assistant vous aidera à définir ou à redéfinir quelques options importantes de &lt;b&gt;XINX&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="37"/>
         <source>Next, in the custom dialog, you can modifiy more options to customize &lt;span style=&quot; font-weight:600;&quot;&gt;XINX&lt;/span&gt; as you want, to improve your developpement.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dans la boite de dialogue de configuration vous pouvez modifier plus d&apos;option pour personnaliser &lt;b&gt;XINX&lt;/b&gt; selon vos habitudes, pour améliorer vos expérience de développeur.</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="47"/>
         <source>Please report, if necessary, all options that you need and that &lt;span style=&quot; font-weight:600;&quot;&gt;XINX&lt;/span&gt; don&apos;t have.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si necessaire, n&apos;hesitez pas à reporter toutes options dont vous auriez besoin et dont &lt;b&gt;XINX&lt;/b&gt; ne propose pas.</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="58"/>
         <source>Global Application Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Paramètrage globale de l&apos;application</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="61"/>
         <source>In this page, we adjust global settings, used by the application for accesibility (as lang, or automatic task) or for the creation of new project</source>
-        <translation type="unfinished"></translation>
+        <translation>Dans cette page vous pouvez ajuster les propriétés générale d&apos;accéssibilité (langue et tâche automatique) ou de création projet</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="70"/>
         <source>&amp;Language :</source>
-        <translation type="unfinished">&amp;Langue :</translation>
+        <translation>&amp;Langue :</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="80"/>
         <source>&lt;p&gt;Langue in which &lt;b&gt;XINX&lt;/b&gt; must be used.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Modification take effect at restart.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;p&gt;Langue dans laquelle &lt;b&gt;XINX&lt;/b&gt; est utilisé.&lt;/p&gt;
+        <translation>&lt;p&gt;Langue dans laquelle &lt;b&gt;XINX&lt;/b&gt; est utilisé.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Les modifications prendront effet au redémarrage.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="85"/>
         <source>(en) English</source>
-        <translation type="unfinished">(en) Anglais</translation>
+        <translation>(en) Anglais</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="94"/>
         <source>(fr_FR) French</source>
-        <translation type="unfinished">(fr_FR) Français</translation>
+        <translation>(fr_FR) Français</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="106"/>
         <source>Auto refresh directory dock</source>
-        <translation type="unfinished"></translation>
+        <translation>Rafraichire automatiquement les dossiers projets</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="113"/>
         <source>Open the last opened project (&lt;i&gt;if any, it&apos;s the opened project when &lt;b&gt;XINX&lt;/b&gt; is closed&lt;/i&gt;), when &lt;b&gt;XINX&lt;/b&gt; is started.</source>
-        <translation type="unfinished">Ouvre le dernier projet ouvert (&lt;i&gt;s&apos;il existe, c&apos;est le projet ouvert lors de la fermeture de &lt;b&gt;XINX&lt;/b&gt;&lt;/i&gt;), quand &lt;b&gt;XINX&lt;/b&gt; démarre.</translation>
+        <translation>Ouvre le dernier projet ouvert (&lt;i&gt;s&apos;il existe, c&apos;est le projet ouvert lors de la fermeture de &lt;b&gt;XINX&lt;/b&gt;&lt;/i&gt;), quand &lt;b&gt;XINX&lt;/b&gt; démarre.</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="116"/>
         <source>&amp;Open the last project at start</source>
-        <translation type="unfinished">&amp;Ouvre le dernier projet au démarrage</translation>
+        <translation>&amp;Ouvre le dernier projet au démarrage</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="123"/>
         <source>Default open &amp;project directory :</source>
-        <translation type="unfinished"></translation>
+        <translation>Dossier d&apos;&amp;ouverture par défaut du projet :</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="136"/>
         <source>&lt;p&gt;This the path where the save dialog must be opened when you create a new project.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;As the author set the project path to the Application Server path, this path is now the project path. You can safely use another path, but in &lt;i&gt;New Project Wizard&lt;/i&gt;, the Application Server path would be wrong.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;p&gt;C&apos;est le chemin où la boite de dialogue de sauvegarde doit être ouverte lors de la création d&apos;un nouveau projet.&lt;/p&gt;
+        <translation>&lt;p&gt;C&apos;est le chemin où la boite de dialogue de sauvegarde doit être ouverte lors de la création d&apos;un nouveau projet.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Comme l&apos;auteur du logiciel mémorise le chemin du serveur d&apos;application dans ce chemin, c&apos;est maintenant la valeur de ce dossier. Vous pouvez, sans problème, indiquer un autre chemin, mais &lt;i&gt;L&apos;assistant de création de nouveau projet&lt;/i&gt;, le chemin vers le serveur d&apos;application sera faux.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
@@ -3389,110 +3389,110 @@ Voulez-vous sauver les changements ?</translation>
         <source>&lt;p&gt;Choose the default text encoding, when the text encoding can&apos;t be found.
 
 &lt;i&gt;Some editor, can redefined the text encoding (ie: XML and derivated editor). This encoding is used by editor as JavaScript and other&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;p&gt;Permet de choisir l&apos;encodage par défaut quand le texte encodé ne peux être trouvé.
+        <translation>&lt;p&gt;Permet de choisir l&apos;encodage par défaut quand le texte encodé ne peux être trouvé.
 
 &lt;i&gt;Quelque éditeurs peuvent redéfinir l&apos;encodage du texte (ex: l&apos;éditeur XML et ses dérivés). Cet encodage est utilié par l&apos;éditeur JavaScript ainsi que les autres&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="153"/>
         <source>Default text &amp;encoding :</source>
-        <translation type="unfinished">&amp;Encodage par défaut du texte :</translation>
+        <translation>&amp;Encodage par défaut du texte :</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="164"/>
         <source>Edtior Settings Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Paramétrage de l&apos;éditeur</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="167"/>
         <source>In this page we adjust settins used by the editor. In this page we can adjust effect, used to facilitate the edition (has show the current line, space, tabulation).</source>
-        <translation type="unfinished"></translation>
+        <translation>Dans cette page vous pouvez ajuter les paramètre utilisé par l&apos;éditeur. Vous pouvez ajuste les effets utilisez pour faciliter l&apos;édition (comme l&apos;affichage de la ligne courante, des espaces et des tabulations).</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="173"/>
         <source>&lt;p&gt;Alert user when the file is modified by an extern application. The user has the choice to open the new file (&lt;u&gt;and loose his change&lt;/u&gt;) or keep current file.&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;p&gt;Prévient l&apos;utilisateur quand le fichier est modifié par une application externe. L&apos;utilisateur a alors le choix d&apos;ouvrir le nouveau fichier (&lt;u&gt;et alors perdre ses modifications&lt;/u&gt;) ou garder la version courante.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Prévient l&apos;utilisateur quand le fichier est modifié par une application externe. L&apos;utilisateur a alors le choix d&apos;ouvrir le nouveau fichier (&lt;u&gt;et alors perdre ses modifications&lt;/u&gt;) ou garder la version courante.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="176"/>
         <source>&amp;Popup when file modifed</source>
-        <translation type="unfinished">&amp;Avertir lors de la modification d&apos;un fichier</translation>
+        <translation>&amp;Avertir lors de la modification d&apos;un fichier</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="183"/>
         <source>&lt;p&gt;Create a backup file before saving the file. The backup file is stored in the same directory that the original file. &lt;/p&gt;
 &lt;p&gt;The backup is created by copy the modified file before he his saved.&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;p&gt;Crée une sauvegarde du fichier avant l&apos;enregistrement. La sauvegarde est stockée dans le même dossier que le fichier original.&lt;/p&gt;
+        <translation>&lt;p&gt;Crée une sauvegarde du fichier avant l&apos;enregistrement. La sauvegarde est stockée dans le même dossier que le fichier original.&lt;/p&gt;
 &lt;p&gt;Le fichier est copié avant sauvegarde.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="187"/>
         <source>&amp;Create backup file when saving (.bak)</source>
-        <translation type="unfinished">&amp;Créer une sauvegarde avant enregistrement (.bak)</translation>
+        <translation>&amp;Créer une sauvegarde avant enregistrement (.bak)</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="194"/>
         <source>&amp;Graphics effect</source>
-        <translation type="unfinished"></translation>
+        <translation>Effets &amp;graphiques</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="214"/>
         <source>Show tabulation and space in the editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Affiche les tabulations et les espaces dans l&apos;éditeur</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="222"/>
         <source>Show current line</source>
-        <translation type="unfinished"></translation>
+        <translation>Affiche la ligne courant</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="230"/>
         <source>Auto highlight same word</source>
-        <translation type="unfinished"></translation>
+        <translation>Surligne automatiquement tous les mots identiques</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="238"/>
         <source>Pretty Print on saving</source>
-        <translation type="unfinished"></translation>
+        <translation>Indentation automatique à la sauvegarde</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="253"/>
         <source>Tools Settings Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Paramètrage des outils</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="256"/>
         <source>In this page you can define path to tools that can be use by XINX.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dans cette page vous pouvez définir les outils pouvant être utilisé par XINX.</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="262"/>
         <source>&lt;p&gt;List of tools used by &lt;b&gt;XINX&lt;/b&gt; and all plugins. Tools are external application called by this application.&lt;/p&gt;
 &lt;p&gt;If the tool can&apos;t be find, the text color will be &lt;span style=&quot;color:#ff0000;&quot;&gt;red&lt;/span&gt;.&lt;/p&gt;
 &lt;p&gt;To edit a tool, double click (or presse F2) on the path of the tool.&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;p&gt;Liste des outils utilisés par &lt;b&gt;XINX&lt;/b&gt; et ces modules. Les outils sont des applications externes appelés par cette application.&lt;/p&gt;
+        <translation>&lt;p&gt;Liste des outils utilisés par &lt;b&gt;XINX&lt;/b&gt; et ces modules. Les outils sont des applications externes appelés par cette application.&lt;/p&gt;
 &lt;p&gt;Si l&apos;outil ne peut être trouvé, le chemin vers l&apos;application sera affiché en &lt;span style=&quot;color:#ff0000;&quot;&gt;rouge&lt;/span&gt;.&lt;/p&gt;
 &lt;p&gt;Pour éditer un outil, vous pouvez double-cliquer (ou presser la toucher F2) sur le chemin de l&apos;outil.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="275"/>
         <source>Conclusion</source>
-        <translation type="unfinished"></translation>
+        <translation>Conclusion</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="281"/>
         <source>We have now customize XINX. You can adjsute XINX settings by opening the good &quot;Customize dialog&quot;. In the tools menu.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous avez terminé de personalisé XINX. Vous pouvez ajuster d&apos;autres paramètres de XINX en ouvrant la boite de dialogue &quot;Personaliser&quot; dans le menu &quot;Outils&quot;.</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="291"/>
         <source>Have fun with XINX.</source>
-        <translation type="unfinished"></translation>
+        <translation>Amusez vous bien sous XINX.</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="298"/>
         <source>&amp;Open the customize dialog page to made more settings.</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ouvrir la boite de dialogue de personalisation pour modifier plus d&apos;options.</translation>
     </message>
 </context>
 <context>
@@ -3760,12 +3760,12 @@ Date du fichier : %4</translation>
     <message>
         <location filename="../xinxprojectwizard/projectwizard.cpp" line="145"/>
         <source>Progress of the conversion</source>
-        <translation type="unfinished"></translation>
+        <translation>Progression de la conversion</translation>
     </message>
     <message>
         <location filename="../xinxprojectwizard/projectwizard.cpp" line="146"/>
         <source>Please wait ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Attendez s&apos;il vous plait ...</translation>
     </message>
 </context>
 <context>
@@ -3773,7 +3773,7 @@ Date du fichier : %4</translation>
     <message>
         <location filename="../xinxprojectwizard/projectconverter.cpp" line="281"/>
         <source>XINX Project file</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichier projet XINX</translation>
     </message>
 </context>
 <context>
@@ -3791,37 +3791,37 @@ Date du fichier : %4</translation>
     <message>
         <location filename="../projectdirectorydockwidget.cpp" line="50"/>
         <source>Project Directory</source>
-        <translation type="unfinished">Dossier projet</translation>
+        <translation>Dossier projet</translation>
     </message>
     <message>
         <location filename="../projectdirectorydockwidget.cpp" line="60"/>
         <source>Compare with the version management</source>
-        <translation type="unfinished">Comparer avec le gestionnaire de version</translation>
+        <translation>Comparer avec le gestionnaire de version</translation>
     </message>
     <message>
         <location filename="../projectdirectorydockwidget.cpp" line="61"/>
         <source>Compare files</source>
-        <translation type="unfinished">Comparer les fichiers</translation>
+        <translation>Comparer les fichiers</translation>
     </message>
     <message>
         <location filename="../projectdirectorydockwidget.cpp" line="62"/>
         <source>Update project</source>
-        <translation type="unfinished">Mise à jour du projet</translation>
+        <translation>Mise à jour du projet</translation>
     </message>
     <message>
         <location filename="../projectdirectorydockwidget.cpp" line="63"/>
         <source>Commit project</source>
-        <translation type="unfinished">Validation du projet</translation>
+        <translation>Validation du projet</translation>
     </message>
     <message>
         <location filename="../projectdirectorydockwidget.cpp" line="64"/>
         <source>Add file(s) to project</source>
-        <translation type="unfinished">Ajouter un/des fichier(s) au projet</translation>
+        <translation>Ajouter un/des fichier(s) au projet</translation>
     </message>
     <message>
         <location filename="../projectdirectorydockwidget.cpp" line="65"/>
         <source>Delete file(s) from project</source>
-        <translation type="unfinished">Supprimer un/des fichier(s) du projet</translation>
+        <translation>Supprimer un/des fichier(s) du projet</translation>
     </message>
 </context>
 <context>
@@ -3980,7 +3980,9 @@ Date du fichier : %4</translation>
         <source>This wizard will help you to create a &lt;b&gt;XINX&lt;/b&gt; project and define some important variables.&lt;br/&gt;&lt;br/&gt;
 In &lt;b&gt;XINX&lt;/b&gt;, a project is used to use the &lt;i&gt;file research&lt;/i&gt;in a project, use a &lt;i&gt;revision control system&lt;/i&gt;, or use for other purpose in the &lt;b&gt;XINX&lt;/b&gt; modules.&lt;br/&gt;&lt;br/&gt;
 A project can define web services too.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cet assistant vous aidera à créer un projet &lt;b&gt;XINX&lt;/b&gt; et à définir les variables importantes.&lt;br/&gt;&lt;br/&gt;
+Dans &lt;b&gt;XINX&lt;/b&gt;, un projet est utilisé pour &lt;i&gt;recherche un fichier&lt;/i&gt; dans un projet, utiliser un &lt;i&gt;gestionnaire de version&lt;/i&gt;, ou utiliser un &lt;i&gt;préfixe projet&lt;/i&gt; dans les modules dérivés.&lt;br/&gt;&lt;br/&gt;
+Un projet peut également définir des services internet.</translation>
     </message>
 </context>
 <context>
@@ -4137,7 +4139,7 @@ A project can define web services too.</source>
     <message>
         <location filename="../ui/projectproperty.ui" line="116"/>
         <source>&amp;Actually preloaded files</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichiers &amp;actuellement préchargés</translation>
     </message>
 </context>
 <context>
@@ -4172,17 +4174,17 @@ A project can define web services too.</source>
     <message>
         <location filename="../projectpropertyimpl.cpp" line="43"/>
         <source>General</source>
-        <translation type="unfinished">Général</translation>
+        <translation>Général</translation>
     </message>
     <message>
         <location filename="../projectpropertyimpl.cpp" line="48"/>
         <source>Project Definition</source>
-        <translation type="unfinished"></translation>
+        <translation>Définition du projet</translation>
     </message>
     <message>
         <location filename="../projectpropertyimpl.cpp" line="63"/>
         <source>Preloaded files</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichiers préchargées</translation>
     </message>
 </context>
 <context>
@@ -4190,7 +4192,7 @@ A project can define web services too.</source>
     <message>
         <location filename="../xinxprojectwizard/projectwizard.cpp" line="52"/>
         <source>Project wizard</source>
-        <translation type="unfinished"></translation>
+        <translation>Assistant projet</translation>
     </message>
 </context>
 <context>
@@ -4670,7 +4672,7 @@ A project can define web services too.</source>
     <message>
         <location filename="../snipetdockwidget.cpp" line="53"/>
         <source>Snipets</source>
-        <translation type="unfinished"></translation>
+        <translation>Modèles</translation>
     </message>
 </context>
 <context>
@@ -4712,18 +4714,18 @@ A project can define web services too.</source>
     <message>
         <location filename="../ui/snipetlistwidget.ui" line="14"/>
         <source>Snipets</source>
-        <translation type="unfinished"></translation>
+        <translation>Modèles</translation>
     </message>
     <message>
         <location filename="../ui/snipetlistwidget.ui" line="28"/>
         <source>&amp;Filter :</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Filtre :</translation>
     </message>
     <message>
         <location filename="../ui/snipetlistwidget.ui" line="51"/>
         <location filename="../ui/snipetlistwidget.ui" line="62"/>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
 </context>
 <context>
@@ -4917,7 +4919,7 @@ A project can define web services too.</source>
     <message>
         <location filename="../ui/templatedialog.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Formulaire</translation>
     </message>
 </context>
 <context>
@@ -4964,18 +4966,19 @@ A project can define web services too.</source>
     <message>
         <location filename="../xinxprojectwizard/projectwizard.cpp" line="116"/>
         <source>Version informations</source>
-        <translation type="unfinished"></translation>
+        <translation>Informations sur la version</translation>
     </message>
     <message>
         <location filename="../xinxprojectwizard/projectwizard.cpp" line="117"/>
         <source>This page show you some informations about the selected project file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cette page vous affichera quelques informations à propos des fichiers projets sélectionné.</translation>
     </message>
     <message>
         <location filename="../xinxprojectwizard/projectwizard.cpp" line="132"/>
         <source>You want convert a %1 (version %2).
 This wizard will convert the project to the last version of XINX. Wizard must convert %3 opened file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous voulez convertir un %1 (version %2).
+Cet assistant va convertir le projet vers la dernière version de projet XINX. Ce projet doit convertir %3 fichiers ouvert.</translation>
     </message>
 </context>
 <context>
@@ -5028,7 +5031,7 @@ This wizard will convert the project to the last version of XINX. Wizard must co
     <message>
         <location filename="../ui/welcomdlg.ui" line="14"/>
         <source>Welcom to XINX</source>
-        <translation type="unfinished"></translation>
+        <translation>Bienvenue dans XINX</translation>
     </message>
     <message>
         <location filename="../ui/welcomdlg.ui" line="53"/>
@@ -5041,17 +5044,25 @@ This wizard will convert the project to the last version of XINX. Wizard must co
 		&lt;hr/&gt;
 	&lt;/body&gt;
 &lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;
+	&lt;head&gt;
+		&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;
+	&lt;/head&gt;
+	&lt;body style=&quot;font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+		&lt;span style=&quot;font-size:x-large&quot;&gt;Derniers projets ouverts&lt;/span&gt;
+		&lt;hr/&gt;
+	&lt;/body&gt;
+&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/welcomdlg.ui" line="106"/>
         <source>Create New Project...</source>
-        <translation type="unfinished"></translation>
+        <translation>Créer un nouveau projet ...</translation>
     </message>
     <message>
         <location filename="../ui/welcomdlg.ui" line="113"/>
         <source>&amp;Open Existing Project ...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ouvrir un projet existant ...</translation>
     </message>
     <message>
         <location filename="../ui/welcomdlg.ui" line="144"/>
@@ -5064,7 +5075,15 @@ This wizard will convert the project to the last version of XINX. Wizard must co
 		&lt;hr/&gt;
 	&lt;/body&gt;
 &lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;
+	&lt;head&gt;
+		&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;
+	&lt;/head&gt;
+	&lt;body style=&quot;font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+		&lt;span style=&quot;font-size:x-large&quot;&gt;Site Internet XINX&lt;/span&gt;
+		&lt;hr/&gt;
+	&lt;/body&gt;
+&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/welcomdlg.ui" line="202"/>
@@ -5077,7 +5096,15 @@ This wizard will convert the project to the last version of XINX. Wizard must co
 		&lt;hr/&gt;
 	&lt;/body&gt;
 &lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;
+	&lt;head&gt;
+		&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;
+	&lt;/head&gt;
+	&lt;body style=&quot;font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+		&lt;span style=&quot;font-size:x-large&quot;&gt;Le saviez-vous ?&lt;/span&gt;
+		&lt;hr/&gt;
+	&lt;/body&gt;
+&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/welcomdlg.ui" line="246"/>
@@ -5094,22 +5121,22 @@ This wizard will convert the project to the last version of XINX. Wizard must co
     <message>
         <location filename="../welcomdlgimpl.cpp" line="84"/>
         <source>Documentation</source>
-        <translation type="unfinished"></translation>
+        <translation>Documentation</translation>
     </message>
     <message>
         <location filename="../welcomdlgimpl.cpp" line="85"/>
         <source>API</source>
-        <translation type="unfinished"></translation>
+        <translation>API</translation>
     </message>
     <message>
         <location filename="../welcomdlgimpl.cpp" line="86"/>
         <source>Report a bug</source>
-        <translation type="unfinished"></translation>
+        <translation>Déclarer une annomalie</translation>
     </message>
     <message>
         <location filename="../welcomdlgimpl.cpp" line="87"/>
         <source>Downloads</source>
-        <translation type="unfinished"></translation>
+        <translation>Téléchargements</translation>
     </message>
 </context>
 <context>

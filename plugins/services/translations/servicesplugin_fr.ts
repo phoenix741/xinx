@@ -319,12 +319,12 @@
     <message>
         <location filename="../webserviceseditor.cpp" line="499"/>
         <source>Server has respond in %1 ms</source>
-        <translation type="unfinished"></translation>
+        <translation>Le serveur à répondu en %1 ms</translation>
     </message>
     <message>
         <location filename="../webserviceseditor.cpp" line="512"/>
         <source>Invalid return value</source>
-        <translation type="unfinished">Valeur de retour invalide</translation>
+        <translation>Valeur de retour invalide</translation>
     </message>
 </context>
 <context>

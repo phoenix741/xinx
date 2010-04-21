@@ -244,27 +244,27 @@ Valeur : %2</translation>
     <message>
         <location filename="../coreplugin.cpp" line="160"/>
         <source>Comment the selected text</source>
-        <translation type="unfinished"></translation>
+        <translation>Commente le texte selectionné</translation>
     </message>
     <message>
         <location filename="../coreplugin.cpp" line="163"/>
         <source>Uncomment the selected text if commented</source>
-        <translation type="unfinished"></translation>
+        <translation>Décommente le texte sélectionné, si commenté</translation>
     </message>
     <message>
         <location filename="../coreplugin.cpp" line="164"/>
         <source>See the comment helper function</source>
-        <translation type="unfinished"></translation>
+        <translation>Voir l&apos;aide de la fonction &quot;Commenter&quot;</translation>
     </message>
     <message>
         <location filename="../coreplugin.cpp" line="103"/>
         <source>Minimum editors, completer, docks for XINX.</source>
-        <translation type="unfinished"></translation>
+        <translation>Editeurs, Completer, et Dock minimal pour XINX.</translation>
     </message>
     <message>
         <location filename="../coreplugin.cpp" line="161"/>
         <source>Comment the selected text by using the language syntax. &lt;ul&gt;&lt;li&gt;In &lt;b&gt;XML&lt;/b&gt; like format &lt;i&gt;&amp;lt;!-- comment --&amp;gt;&lt;/i&gt;&lt;/li&gt; &lt;li&gt;In &lt;b&gt;Javascript&lt;/b&gt; : &lt;i&gt;/* comment */&lt;/i&gt; &lt;/li&gt;&lt;/ul&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Commente le texte selctionné en utilisant la syntaxe du language. &lt;ul&gt;&lt;li&gt;En XML &lt;b&gt;XML&lt;/b&gt; par &lt;i&gt;&amp;lt;!-- commentaire --&amp;gt;&lt;/i&gt;&lt;/li&gt; &lt;li&gt;En &lt;b&gt;Javascript&lt;/b&gt; : &lt;i&gt;/* commentaire */&lt;/i&gt;&lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
 </context>
 <context>
@@ -281,12 +281,12 @@ Valeur : %2</translation>
     <message>
         <location filename="../../config/editorsconfigform.ui" line="14"/>
         <source>Customize Web Plugin</source>
-        <translation type="unfinished">Personnaliser le module Web</translation>
+        <translation>Personnaliser le module Web</translation>
     </message>
     <message>
         <location filename="../../config/editorsconfigform.ui" line="20"/>
         <source>Active completion on XML</source>
-        <translation type="unfinished">Activer la complétion sur l&apos;XML</translation>
+        <translation>Activer la complétion sur l&apos;XML</translation>
     </message>
     <message>
         <source>&amp;Add closed balise automatically</source>
@@ -303,27 +303,27 @@ Valeur : %2</translation>
     <message>
         <location filename="../../config/editorsconfigform.ui" line="59"/>
         <source>Active completion on JavaScript</source>
-        <translation type="unfinished">Activer la complétion sur le JavaScript</translation>
+        <translation>Activer la complétion sur le JavaScript</translation>
     </message>
     <message>
         <location filename="../../config/editorsconfigform.ui" line="74"/>
         <source>Auto close bracket</source>
-        <translation type="unfinished">Fermer automatiquement les parenthèses</translation>
+        <translation>Fermer automatiquement les parenthèses</translation>
     </message>
     <message>
         <location filename="../../config/editorsconfigform.ui" line="35"/>
         <source>Add the default a&amp;ttribute automatically to the balise</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter les a&amp;ttributs par défaut automatiquement à la balise</translation>
     </message>
     <message>
         <location filename="../../config/editorsconfigform.ui" line="42"/>
         <source>Add default sub-&amp;balise automatically (like xsl:when for the xsl:choose balise)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter la sous-&amp;balises par défaut automatiquement (comme &lt;i&gt;xsl:when&lt;/i&gt; pour la balise &lt;i&gt;xsl:choose&lt;/i&gt;)</translation>
     </message>
     <message>
         <location filename="../../config/editorsconfigform.ui" line="49"/>
         <source>&amp;Add closing balise automatically (for the corresponding opening balise)</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ajouter la balise de fermeture automatiquement (pour la balise ouverte correspondante)</translation>
     </message>
 </context>
 <context>
@@ -331,7 +331,7 @@ Valeur : %2</translation>
     <message>
         <location filename="../../config/editorsconfigformimpl.cpp" line="43"/>
         <source>Editors Completion</source>
-        <translation type="unfinished"></translation>
+        <translation>Complétion des éditeurs</translation>
     </message>
 </context>
 <context>
@@ -450,7 +450,7 @@ Valeur : %2</translation>
     <message>
         <location filename="../../pluginresolver/manualfileresolver.cpp" line="49"/>
         <source>Manual Resolver</source>
-        <translation type="unfinished"></translation>
+        <translation>Résolution manuelle</translation>
     </message>
 </context>
 <context>
@@ -458,17 +458,17 @@ Valeur : %2</translation>
     <message>
         <location filename="../../pluginproperty/parserprojectproperty.ui" line="14"/>
         <source>Xml/Xsl Project Property</source>
-        <translation type="unfinished"></translation>
+        <translation>Propriété Xml/Xsl du projet</translation>
     </message>
     <message>
         <location filename="../../pluginproperty/parserprojectproperty.ui" line="20"/>
         <source>Location of the &amp;data stream (parsed by the stylesheet) :</source>
-        <translation type="unfinished"></translation>
+        <translation>Emplacement du flux de &amp;donnée (parsé par la feuille de style) :</translation>
     </message>
     <message>
         <location filename="../../pluginproperty/parserprojectproperty.ui" line="37"/>
         <source>Directory used to find CSS, JS and Image files :</source>
-        <translation type="unfinished"></translation>
+        <translation>Dossier utilisé pour trouver les fichiers CSS, JavaScript et images :</translation>
     </message>
 </context>
 <context>
@@ -517,7 +517,7 @@ Valeur : %2</translation>
     <message>
         <location filename="../../pluginproperty/searchpathlistprjpageform.ui" line="14"/>
         <source>Search Path List Resolver</source>
-        <translation type="unfinished"></translation>
+        <translation>Résolution par chemin de recherche</translation>
     </message>
 </context>
 <context>
@@ -655,17 +655,17 @@ Valeur : %2</translation>
     <message>
         <location filename="../../pluginproperty/parserprojectpropertyimpl.cpp" line="99"/>
         <source>Define information about the web module, like the directory where find JS, Image and CSS.</source>
-        <translation type="unfinished"></translation>
+        <translation>Définit les informations à propos du module Web, comme le dossier où trouver les JavaScript, images et CS.</translation>
     </message>
     <message>
         <location filename="../../pluginproperty/parserprojectpropertyimpl.cpp" line="118"/>
         <source>Directory used to find CSS, JS and Image files :</source>
-        <translation type="unfinished"></translation>
+        <translation>Dossier utilisé pour trouver les fichiers feuilles CSS, les JavaScript, et les images :</translation>
     </message>
     <message>
         <location filename="../../pluginproperty/parserprojectpropertyimpl.cpp" line="122"/>
         <source>Location of the &amp;data stream (parsed by the stylesheet) :</source>
-        <translation type="unfinished"></translation>
+        <translation>Emplacement des flux de &amp;donnée (parsé par la feuille de style) :</translation>
     </message>
 </context>
 <context>
@@ -755,7 +755,7 @@ Valeur : %2</translation>
     <message>
         <location filename="../../docks/datastream/xquery.ui" line="101"/>
         <source>&amp;Result (encapsulated in the Result balise)</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Résultat (encapsuler dans la balise &quot;Result&quot;)</translation>
     </message>
 </context>
 <context>
@@ -852,27 +852,27 @@ Valeur : %2</translation>
     <message>
         <location filename="../../editors/models/xsl/xmlcompletionparser.cpp" line="111"/>
         <source>The file is can&apos;t be used to do completion.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ce fichier ne peux être utilisé pour faire de la complétion.</translation>
     </message>
     <message>
         <location filename="../../editors/models/xsl/xmlcompletionparser.cpp" line="165"/>
         <source>Wrong node name &quot;%1&quot; in root element</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom de noeud %1 incorrect dans le noeud racine</translation>
     </message>
     <message>
         <location filename="../../editors/models/xsl/xmlcompletionparser.cpp" line="190"/>
         <source>Wrong node name &quot;%1&quot; in type element</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom de noeud %1 incorrect dans l&apos;élément type</translation>
     </message>
     <message>
         <location filename="../../editors/models/xsl/xmlcompletionparser.cpp" line="238"/>
         <source>Wrong node name &quot;%1&quot; in balise element</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom de noeud %1 incorrect dans l&apos;élément balise</translation>
     </message>
     <message>
         <location filename="../../editors/models/xsl/xmlcompletionparser.cpp" line="281"/>
         <source>Wrong node name &quot;%1&quot; in attribute element</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom de noeud %1 incorrect dans l&apos;élément attribut</translation>
     </message>
 </context>
 <context>
@@ -1106,12 +1106,12 @@ Valeur : %2</translation>
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;If checked, when the text is filtered, the list shows sub-elements of the node whose filter matches the node name.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Si coché, lors du filtrage du texte, la liste affiche les sous-éléments du noeud qui a été choisis (dont le nom du noeud correspond au filtre).&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../../config/xmlpresconfigform.ui" line="73"/>
         <source>&amp;Show sub-element of the corresponding node</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Affiche les sous-éléments du noeud correspondant</translation>
     </message>
     <message>
         <location filename="../../config/xmlpresconfigform.ui" line="80"/>
@@ -1121,12 +1121,13 @@ p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If checked the name attribute is added in &lt;span style=&quot; font-style:italic;&quot;&gt;XPATH&lt;/span&gt; if possible. &lt;/p&gt;
 &lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If checked the &lt;span style=&quot; font-style:italic;&quot;&gt;XPATH&lt;/span&gt; will be : &lt;span style=&quot; font-family:&apos;Courier New,courier&apos;;&quot;&gt;VueXXXX[@name=&apos;MyName&apos;]&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Si coché l&apos;attribut &quot;name&quot; est ajouté dans le &lt;i&gt;XPATH&lt;/i&gt; si possible.&lt;/p&gt;
+&lt;p&gt;Si coché le &lt;i&gt;XPATH&lt;/i&gt; contiendra &lt;code&gt;VueXXXX[@name=&apos;MyName&apos;]&lt;/code&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../../config/xmlpresconfigform.ui" line="88"/>
         <source>Show name attribute if it exists</source>
-        <translation type="unfinished"></translation>
+        <translation>Affiche l&apos;attribut nom, si existe</translation>
     </message>
 </context>
 <context>
@@ -1134,7 +1135,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../../config/xmlpresconfigformimpl.cpp" line="45"/>
         <source>XML Pres.</source>
-        <translation type="unfinished"></translation>
+        <translation>Flux de donnée.</translation>
     </message>
 </context>
 <context>
@@ -1189,7 +1190,7 @@ Date du fichier :%4</translation>
     <message>
         <location filename="../../docks/datastream/xmlpresentationdockwidget.cpp" line="35"/>
         <source>Xml Presentation</source>
-        <translation type="unfinished"></translation>
+        <translation>Flux de présentation</translation>
     </message>
 </context>
 <context>
@@ -1259,40 +1260,43 @@ Date du fichier :%4</translation>
     <message>
         <location filename="../../docks/datastream/xmlpresentationwidget.ui" line="26"/>
         <source>Refresh</source>
-        <translation type="unfinished"></translation>
+        <translation>Rafraichir</translation>
     </message>
     <message>
         <location filename="../../docks/datastream/xmlpresentationwidget.ui" line="29"/>
         <source>Refresh the list of files present in the &lt;i&gt;log&lt;/i&gt; directory.</source>
-        <translation type="unfinished"></translation>
+        <translation>Rafraichir la liste des fichiers présent dans le dossier &lt;i&gt;log&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../../docks/datastream/xmlpresentationwidget.ui" line="43"/>
         <source>Run X-Query</source>
-        <translation type="unfinished"></translation>
+        <translation>Execute une X-Query</translation>
     </message>
     <message>
         <location filename="../../docks/datastream/xmlpresentationwidget.ui" line="46"/>
         <source>Click on this button to open &lt;i&gt;X-Query&lt;/i&gt; dialog and query the XML document.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ce boutton ouvre la boite de dialogue &lt;i&gt;X-Query&lt;/i&gt; pour requêter le document XML.</translation>
     </message>
     <message>
         <location filename="../../docks/datastream/xmlpresentationwidget.ui" line="70"/>
         <source>Filter to use in the view. &lt;b&gt;XINX&lt;/b&gt; searches the node where the name matches the filter (literal or regular expression).</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtre à utiliser dans la vue. &lt;b&gt;XINX&lt;/b&gt; recherche le noeud où le nom correspond au filtre (littéralement ou en utilisant une expréssion régulière).</translation>
     </message>
     <message>
         <location filename="../../docks/datastream/xmlpresentationwidget.ui" line="77"/>
         <source>If &lt;i&gt;Sub-element&lt;/i&gt; is selected when an element is found, all sub-elements are showed. &lt;br/&gt;
 If &lt;i&gt;None&lt;/i&gt; is selected only matched elements is showed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si &lt;i&gt;Sous-élément&lt;/i&gt; est selectionné, quand un élément est trouvé, tous les sous-éléments sont affiché.&lt;br/&gt;
+Si &lt;i&gt;Aucun&lt;/i&gt; est selectionné, seul les éléments correspondants sont affiché.</translation>
     </message>
     <message>
         <location filename="../../docks/datastream/xmlpresentationwidget.ui" line="105"/>
         <source>List of file in the &lt;i&gt;log&lt;/i&gt; directory. If you select a file, the view is updated with the content of the file. &lt;br/&gt;
 
 You can open a file of the list, or a file in another directory.</source>
-        <translation type="unfinished"></translation>
+        <translation>Liste des fichier du dossier &lt;i&gt;log&lt;/i&gt;. Si vous selectionné un fichier, la vue est mis à jours avec le contenu du fichier.&lt;br/&gt;
+
+Vous pouvez ouvrir un fichier de la list, ou un autre fichier d&apos;un autre dossier.</translation>
     </message>
 </context>
 <context>
@@ -1300,18 +1304,18 @@ You can open a file of the list, or a file in another directory.</source>
     <message>
         <location filename="../../editors/models/xsl/xslcontentviewparser.cpp" line="77"/>
         <source>The file is not an Stylesheet file.</source>
-        <translation type="unfinished">Le fichier n&apos;est pas une feuille de style.</translation>
+        <translation>Le fichier n&apos;est pas une feuille de style.</translation>
     </message>
     <message>
         <location filename="../../editors/models/xsl/xslcontentviewparser.cpp" line="272"/>
         <source>Element at line : %1</source>
-        <translation type="unfinished">Element à la ligne : %1</translation>
+        <translation>Element à la ligne : %1</translation>
     </message>
     <message>
         <location filename="../../editors/models/xsl/xslcontentviewparser.cpp" line="351"/>
         <source>Element at line : %1
 Mode = %2</source>
-        <translation type="unfinished">Element à la ligne : %1
+        <translation>Element à la ligne : %1
 Mode = %2</translation>
     </message>
     <message>
@@ -1319,7 +1323,7 @@ Mode = %2</translation>
         <location filename="../../editors/models/xsl/xslcontentviewparser.cpp" line="392"/>
         <source>Element at line : %1
 Value = %2</source>
-        <translation type="unfinished">Element à la ligne : %1
+        <translation>Element à la ligne : %1
 Valeur = %2</translation>
     </message>
 </context>

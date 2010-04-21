@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
+<TS version="2.0" language="fr_FR">
 <context>
     <name>CVSAddThread</name>
     <message>
@@ -168,37 +168,37 @@
     <message>
         <location filename="../rcs_cvs.cpp" line="193"/>
         <source>Update terminated</source>
-        <translation type="unfinished">Mise à jour terminée</translation>
+        <translation>Mise à jour terminée</translation>
     </message>
     <message>
         <location filename="../rcs_cvs.cpp" line="222"/>
         <source>Update to revision %1 terminated</source>
-        <translation type="unfinished">La mise à jour vers la version %1 est terminée</translation>
+        <translation>La mise à jour vers la version %1 est terminée</translation>
     </message>
     <message>
         <location filename="../rcs_cvs.cpp" line="239"/>
         <source>Files commited :</source>
-        <translation type="unfinished">Fichier(s) validé(s) :</translation>
+        <translation>Fichier(s) validé(s) :</translation>
     </message>
     <message>
         <location filename="../rcs_cvs.cpp" line="253"/>
         <source>Commit terminated</source>
-        <translation type="unfinished">Validation terminée</translation>
+        <translation>Validation terminée</translation>
     </message>
     <message>
         <location filename="../rcs_cvs.cpp" line="272"/>
         <source>Add terminated</source>
-        <translation type="unfinished">Ajout terminé</translation>
+        <translation>Ajout terminé</translation>
     </message>
     <message>
         <location filename="../rcs_cvs.cpp" line="291"/>
         <source>Remove terminated</source>
-        <translation type="unfinished">Suppression terminée</translation>
+        <translation>Suppression terminée</translation>
     </message>
     <message>
         <location filename="../rcs_cvs.cpp" line="309"/>
         <source>I&apos;M A PROCESS KILLER</source>
-        <translation type="unfinished">Le processus a été tué</translation>
+        <translation>Le processus a été tué</translation>
     </message>
 </context>
 </TS>
