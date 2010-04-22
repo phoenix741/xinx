@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="fr_FR">
+<!DOCTYPE TS><TS version="1.1" language="fr_FR">
+<defaultcodec></defaultcodec>
 <context>
     <name>QObject</name>
     <message>
@@ -70,7 +70,7 @@
     <message>
         <location filename="../ui/servicesprojectproperty.ui" line="76"/>
         <source>Refresh</source>
-        <translation>Rafraichir</translation>
+        <translation type="unfinished">Rafraîchir</translation>
     </message>
     <message>
         <location filename="../ui/servicesprojectproperty.ui" line="22"/>
@@ -81,7 +81,6 @@
 <context>
     <name>ServicesProjectPropertyImpl</name>
     <message>
-        <location filename="../servicesprojectpropertyimpl.cpp" line="169"/>
         <location filename="../servicesprojectpropertyimpl.cpp" line="226"/>
         <source>Download WSDL from %1 ...</source>
         <translation>Télécharge le WSDL à partir de %1 ...</translation>
@@ -125,13 +124,11 @@
         <translation>Valeurs de résultat :</translation>
     </message>
     <message>
-        <location filename="../webserviceseditor.cpp" line="504"/>
         <location filename="../webserviceseditor.cpp" line="512"/>
         <source>WebServices Error</source>
         <translation>Erreur Service Internet</translation>
     </message>
     <message>
-        <location filename="../webserviceseditor.cpp" line="504"/>
         <location filename="../webserviceseditor.cpp" line="512"/>
         <source>Web services has error %1</source>
         <translation>Le Service Internet échoue avec l&apos;erreur %1</translation>
@@ -139,7 +136,7 @@
     <message>
         <location filename="../webserviceseditor.cpp" line="499"/>
         <source>Server has respond in %1 ms</source>
-        <translation>Le serveur à répondu en %1 ms</translation>
+        <translation type="unfinished">Le serveur a répondu en %1 ms</translation>
     </message>
     <message>
         <location filename="../webserviceseditor.cpp" line="512"/>
@@ -170,7 +167,7 @@
     <message>
         <location filename="../webservices.cpp" line="324"/>
         <source>Can&apos;t load WSDL of link %1 : %2</source>
-        <translation>Ne peux charger le lien %1 du fichier WSDL : %2</translation>
+        <translation type="unfinished">Ne peut charger le lien %1 du fichier WSDL : %2</translation>
     </message>
 </context>
 </TS>

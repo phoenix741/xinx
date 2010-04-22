@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="fr_FR" sourcelanguage="en">
+<!DOCTYPE TS><TS version="1.1" language="fr_FR">
+<defaultcodec></defaultcodec>
 <context>
     <name>CustomScheme</name>
     <message>
@@ -36,7 +36,7 @@
     <message>
         <location filename="../ui/customscheme.ui" line="74"/>
         <source>&amp;Underline</source>
-        <translation>S&amp;ousligné</translation>
+        <translation type="unfinished">S&amp;ouligné</translation>
     </message>
     <message>
         <location filename="../ui/customscheme.ui" line="84"/>
@@ -51,7 +51,7 @@
     <message>
         <location filename="../ui/customscheme.ui" line="106"/>
         <source>&amp;Foreground</source>
-        <translation>&amp;Text</translation>
+        <translation type="unfinished">&amp;Texte</translation>
     </message>
     <message>
         <location filename="../ui/customscheme.ui" line="119"/>
@@ -72,7 +72,6 @@
         <translation>Changer le dossier</translation>
     </message>
     <message>
-        <location filename="../directoryedit.cpp" line="211"/>
         <location filename="../directoryedit.cpp" line="213"/>
         <source>Change the file</source>
         <translation>Changer le fichier</translation>

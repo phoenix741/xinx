@@ -1,19 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="fr">
+<!DOCTYPE TS><TS version="1.1" language="fr">
+<defaultcodec></defaultcodec>
 <context>
     <name>RCS_SVN</name>
     <message>
-        <location filename="../rcs_svn.cpp" line="231"/>
         <location filename="../rcs_svn.cpp" line="335"/>
         <source>Process terminated</source>
         <translation>Traitement terminé</translation>
     </message>
     <message>
-        <location filename="../rcs_svn.cpp" line="258"/>
-        <location filename="../rcs_svn.cpp" line="280"/>
-        <location filename="../rcs_svn.cpp" line="299"/>
-        <location filename="../rcs_svn.cpp" line="318"/>
         <location filename="../rcs_svn.cpp" line="358"/>
         <source>Can&apos;t start svn program.</source>
         <translation>Ne peut démarrer le programme SubVersion.</translation>

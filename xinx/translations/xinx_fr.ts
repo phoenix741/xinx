@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="fr_FR">
+<!DOCTYPE TS><TS version="1.1" language="fr_FR">
+<defaultcodec></defaultcodec>
 <context>
     <name>AboutDialog</name>
     <message>
@@ -39,7 +39,7 @@
 &lt;p&gt;(c) 2006-2007, Ulrich Van Den Hekke&lt;/p&gt;</source>
         <translation></translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <location filename="../ui/about.ui" line="214"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -168,12 +168,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../xinxprojectwizard/projectwizard.cpp" line="176"/>
         <source>The conversion is terminated, you can now reopen the project.</source>
-        <translation>La conversion est terminé, vous pouvez maintenant ré-ouvrir votre projet.</translation>
+        <translation type="unfinished">La conversion est terminée, vous pouvez maintenant ré-ouvrir votre projet.</translation>
     </message>
     <message>
         <location filename="../xinxprojectwizard/projectwizard.cpp" line="179"/>
         <source>The project is now converted. XINX can now open the project file normally.</source>
-        <translation>Le projet est maintenant convertis. XINX peux maintenant ouvrir le fichier projet normallement.</translation>
+        <translation type="unfinished">Le projet est maintenant convertit. XINX peut maintenant ouvrir le fichier projet normalement.</translation>
     </message>
 </context>
 <context>
@@ -280,14 +280,14 @@ p, li { white-space: pre-wrap; }
         <source>&lt;p&gt;Choose the default text encoding, when the text encoding can&apos;t be found.
 
 &lt;i&gt;Some editor, can redefined the text encoding (ie: XML and derivated editor). This encoding is used by editor as JavaScript and other&lt;/i&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Permet de choisir l&apos;encodage par défaut quand le texte encodé ne peux être trouvé.
+        <translation type="unfinished">&lt;p&gt;Permet de choisir l&apos;encodage par défaut quand le texte encodé ne peut être trouvé.
 
-&lt;i&gt;Quelque éditeurs peuvent redéfinir l&apos;encodage du texte (ex: l&apos;éditeur XML et ses dérivés). Cet encodage est utilié par l&apos;éditeur JavaScript ainsi que les autres&lt;/i&gt;&lt;/p&gt;</translation>
+&lt;i&gt;Quelques éditeurs peuvent redéfinir l&apos;encodage du texte (ex: l&apos;éditeur XML et ses dérivés). Cet encodage est utilisé par l&apos;éditeur JavaScript ainsi que les autres&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../customdialog/ui/customeditor.ui" line="122"/>
         <source>&amp;Text content refresh :</source>
-        <translation>&amp;Rafraichissement du contenu :</translation>
+        <translation type="unfinished">&amp;Rafraîchissement du contenu :</translation>
     </message>
     <message>
         <location filename="../customdialog/ui/customeditor.ui" line="132"/>
@@ -315,7 +315,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../customdialog/ui/customfont.ui" line="30"/>
         <source>Name of the font to use in all editors.</source>
-        <translation>Nom de la police de caractère utilisé dans les éditeurs.</translation>
+        <translation type="unfinished">Nom de la police de caractère utilisée dans les éditeurs.</translation>
     </message>
     <message>
         <location filename="../customdialog/ui/customfont.ui" line="37"/>
@@ -407,7 +407,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../customdialog/ui/customfont.ui" line="134"/>
         <source>Dark Blue</source>
-        <translation>Blue foncé</translation>
+        <translation type="unfinished">Bleu foncé</translation>
     </message>
     <message>
         <location filename="../customdialog/ui/customfont.ui" line="139"/>
@@ -543,7 +543,6 @@ p, li { white-space: pre-wrap; }
         <translation>&lt;table&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;hr/&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Auteur&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;E-Mail&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;mailto:%4&quot;&gt;%4&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Site internet&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;%5&quot;&gt;%5&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Version&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Licence&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</translation>
     </message>
     <message>
-        <location filename="../customdialog/custommodulesimpl.cpp" line="184"/>
         <location filename="../customdialog/custommodulesimpl.cpp" line="246"/>
         <source>&amp;Informations</source>
         <translation>&amp;Informations</translation>
@@ -729,7 +728,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../customdialog/ui/customsnipet.ui" line="169"/>
         <source>Export selected snipet to an XML file.</source>
-        <translation>Exporte les modèles selectionnés dans un fichier XML.</translation>
+        <translation type="unfinished">Exporte les modèles sélectionnés dans un fichier XML.</translation>
     </message>
     <message>
         <location filename="../customdialog/ui/customsnipet.ui" line="172"/>
@@ -787,7 +786,7 @@ p, li { white-space: pre-wrap; }
         <source>&lt;p&gt;List of tools used by &lt;b&gt;XINX&lt;/b&gt; and all plugins. Tools are external application called by this application.&lt;/p&gt;
 &lt;p&gt;If the tool can&apos;t be find, the text color will be &lt;span style=&quot;color:#ff0000;&quot;&gt;red&lt;/span&gt;.&lt;/p&gt;
 &lt;p&gt;To edit a tool, double click (or presse F2) on the path of the tool.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Liste des outils utilisés par &lt;b&gt;XINX&lt;/b&gt; et ces modules. Les outils sont des applications externes appelés par cette application.&lt;/p&gt;
+        <translation type="unfinished">&lt;p&gt;Liste des outils utilisés par &lt;b&gt;XINX&lt;/b&gt; et ces modules. Les outils sont des applications externes appelées par cette application.&lt;/p&gt;
 &lt;p&gt;Si l&apos;outil ne peut être trouvé, le chemin vers l&apos;application sera affiché en &lt;span style=&quot;color:#ff0000;&quot;&gt;rouge&lt;/span&gt;.&lt;/p&gt;
 &lt;p&gt;Pour éditer un outil, vous pouvez double-cliquer (ou presser la toucher F2) sur le chemin de l&apos;outil.&lt;/p&gt;</translation>
     </message>
@@ -797,7 +796,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../filecontentdockwidget.cpp" line="40"/>
         <source>File Content</source>
-        <translation>Contenu du document</translation>
+        <translation type="unfinished">Contenu du document</translation>
     </message>
 </context>
 <context>
@@ -846,7 +845,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../logdialogimpl.cpp" line="84"/>
         <source>Logs</source>
-        <translation>Journals</translation>
+        <translation type="unfinished">Journaux</translation>
     </message>
     <message>
         <location filename="../logdialogimpl.cpp" line="179"/>
@@ -910,8 +909,6 @@ p, li { white-space: pre-wrap; }
         <translation>Nouveau %1</translation>
     </message>
     <message>
-        <location filename="../mainformimpl.cpp" line="888"/>
-        <location filename="../mainformimpl.cpp" line="889"/>
         <location filename="../mainformimpl.cpp" line="1006"/>
         <source>Unknown</source>
         <translation>Inconnu</translation>
@@ -932,7 +929,6 @@ p, li { white-space: pre-wrap; }
         <translation>Ouvrir un fichier texte</translation>
     </message>
     <message>
-        <location filename="../mainformimpl.cpp" line="1101"/>
         <location filename="../mainformimpl.cpp" line="1332"/>
         <source>Application</source>
         <translation>Application</translation>
@@ -945,7 +941,6 @@ Do you really want refresh this?</source>
 Voulez-vous vraiment l&apos;actualiser ?</translation>
     </message>
     <message>
-        <location filename="../mainformimpl.cpp" line="1175"/>
         <location filename="../mainformimpl.cpp" line="1209"/>
         <source>&amp;%1 %2</source>
         <translation>&amp;%1 %2</translation>
@@ -988,7 +983,6 @@ Voulez-vous sauver les changements ?</translation>
         <translation>Toutes les chaines ont été trouvées</translation>
     </message>
     <message>
-        <location filename="../mainformimpl.cpp" line="1636"/>
         <location filename="../mainformimpl.cpp" line="1643"/>
         <source>Search/Replace</source>
         <translation>Chercher/Remplacer</translation>
@@ -1014,7 +1008,6 @@ Voulez-vous sauver les changements ?</translation>
         <translation>trouvé</translation>
     </message>
     <message>
-        <location filename="../mainformimpl.cpp" line="1747"/>
         <location filename="../mainformimpl.cpp" line="1750"/>
         <source>XINX</source>
         <translation></translation>
@@ -1030,31 +1023,26 @@ Voulez-vous sauver les changements ?</translation>
         <translation>Ouvrir un projet</translation>
     </message>
     <message>
-        <location filename="../mainformimpl.cpp" line="143"/>
         <location filename="../mainformimpl.cpp" line="161"/>
         <source>&amp;File</source>
         <translation>&amp;Fichier</translation>
     </message>
     <message>
-        <location filename="../mainformimpl.cpp" line="144"/>
         <location filename="../mainformimpl.cpp" line="162"/>
         <source>&amp;Edit</source>
         <translation>&amp;Editer</translation>
     </message>
     <message>
-        <location filename="../mainformimpl.cpp" line="145"/>
         <location filename="../mainformimpl.cpp" line="163"/>
         <source>&amp;Search</source>
         <translation>&amp;Chercher</translation>
     </message>
     <message>
-        <location filename="../mainformimpl.cpp" line="146"/>
         <location filename="../mainformimpl.cpp" line="663"/>
         <source>&amp;Bookmark</source>
         <translation>&amp;Signets</translation>
     </message>
     <message>
-        <location filename="../mainformimpl.cpp" line="147"/>
         <location filename="../mainformimpl.cpp" line="160"/>
         <source>&amp;Project</source>
         <translation>&amp;Projet</translation>
@@ -1210,7 +1198,6 @@ Voulez-vous sauver les changements ?</translation>
         <translation>F&amp;ermer tout</translation>
     </message>
     <message>
-        <location filename="../mainformimpl.cpp" line="392"/>
         <location filename="../mainformimpl.cpp" line="393"/>
         <source>Close All document</source>
         <translation>Fermer tous les documents</translation>
@@ -1323,7 +1310,7 @@ Voulez-vous sauver les changements ?</translation>
     <message>
         <location filename="../mainformimpl.cpp" line="478"/>
         <source>Make the selected character upper case</source>
-        <translation>Converti les caractères sélectionnés en majuscule</translation>
+        <translation type="unfinished">Convertit les caractères sélectionnés en majuscule</translation>
     </message>
     <message>
         <location filename="../mainformimpl.cpp" line="485"/>
@@ -1333,7 +1320,7 @@ Voulez-vous sauver les changements ?</translation>
     <message>
         <location filename="../mainformimpl.cpp" line="486"/>
         <source>Make the selected character lower case</source>
-        <translation>Converti les caratères sélectionnés en minuscule</translation>
+        <translation type="unfinished">Convertit les caratères sélectionnés en minuscule</translation>
     </message>
     <message>
         <location filename="../mainformimpl.cpp" line="493"/>
@@ -1376,15 +1363,11 @@ Voulez-vous sauver les changements ?</translation>
         <translation>Cherche le texte dans l&apos;éditeur courant</translation>
     </message>
     <message>
-        <location filename="../mainformimpl.cpp" line="540"/>
-        <location filename="../mainformimpl.cpp" line="541"/>
         <location filename="../mainformimpl.cpp" line="542"/>
         <source>Search previous</source>
         <translation>Recherche précédente</translation>
     </message>
     <message>
-        <location filename="../mainformimpl.cpp" line="549"/>
-        <location filename="../mainformimpl.cpp" line="550"/>
         <location filename="../mainformimpl.cpp" line="551"/>
         <source>Search next</source>
         <translation>Recherche suivante</translation>
@@ -1482,10 +1465,9 @@ Voulez-vous sauver les changements ?</translation>
     <message>
         <location filename="../mainformimpl.cpp" line="629"/>
         <source>If checked the list is showed as flat instead of tree. Each list of file is preceded of a directory header.</source>
-        <translation>Si coché, la list est affiché à plat, à la place d&apos;en arbre. Chaque liste de fichier est précédé d&apos;un entête avec le nom du dossier.</translation>
+        <translation type="unfinished">Si coché, la liste est affichée à plat, à la place d&apos;un arbre. Chaque liste de fichier est précédée d&apos;un entête avec le nom du dossier.</translation>
     </message>
     <message>
-        <location filename="../mainformimpl.cpp" line="635"/>
         <location filename="../mainformimpl.cpp" line="636"/>
         <source>Next tab</source>
         <translation>Onglet suivant</translation>
@@ -1548,7 +1530,7 @@ Voulez-vous sauver les changements ?</translation>
     <message>
         <location filename="../mainformimpl.cpp" line="701"/>
         <source>Always show run snipet dialog</source>
-        <translation>Toujours affiche la boite d&apos;éxecution du modèle</translation>
+        <translation type="unfinished"> affiche toujours la boite d&apos;exécution du modèle</translation>
     </message>
     <message>
         <location filename="../mainformimpl.cpp" line="930"/>
@@ -1561,7 +1543,6 @@ Voulez-vous sauver les changements ?</translation>
         <translation>Sauver le fichier texte</translation>
     </message>
     <message>
-        <location filename="../mainformimpl.cpp" line="1756"/>
         <location filename="../mainformimpl.cpp" line="1905"/>
         <source>Projet (*%1)</source>
         <translation>Projet (*%1)</translation>
@@ -1584,7 +1565,7 @@ Voulez-vous sauver les changements ?</translation>
     <message>
         <location filename="../mainformimpl.cpp" line="1976"/>
         <source>Can&apos;t start a project at the step &quot;%1&quot;</source>
-        <translation>Ne peux ouvrir le projet pour l&apos;étape &quot;%1&quot;</translation>
+        <translation type="unfinished">Ne peut ouvrir le projet pour l&apos;étape &quot;%1&quot;</translation>
     </message>
 </context>
 <context>
@@ -1620,17 +1601,17 @@ Voulez-vous sauver les changements ?</translation>
     <message>
         <location filename="../ui/newversion.ui" line="27"/>
         <source>This is the first installation of &lt;span style=&quot; font-weight:600;&quot;&gt;XINX&lt;/span&gt; or you upgrade from an old version.  This wizard will help you to define or redefine some important &lt;span style=&quot; font-weight:600;&quot;&gt;XINX&lt;/span&gt; options.</source>
-        <translation>C&apos;est votre première installation de &lt;b&gt;XINX&lt;/b&gt; ou une mettre à jour depuis une version antérieure. Cet assistant vous aidera à définir ou à redéfinir quelques options importantes de &lt;b&gt;XINX&lt;/b&gt;.</translation>
+        <translation type="unfinished">C&apos;est votre première installation de &lt;b&gt;XINX&lt;/b&gt; ou une mise à jour depuis une version antérieure. Cet assistant vous aidera à définir ou à redéfinir quelques options importantes de &lt;b&gt;XINX&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="37"/>
         <source>Next, in the custom dialog, you can modifiy more options to customize &lt;span style=&quot; font-weight:600;&quot;&gt;XINX&lt;/span&gt; as you want, to improve your developpement.</source>
-        <translation>Dans la boite de dialogue de configuration vous pouvez modifier plus d&apos;option pour personnaliser &lt;b&gt;XINX&lt;/b&gt; selon vos habitudes, pour améliorer vos expérience de développeur.</translation>
+        <translation type="unfinished">Dans la boite de dialogue de configuration vous pouvez modifier plus d&apos;option pour personnaliser &lt;b&gt;XINX&lt;/b&gt; selon vos habitudes, pour améliorer vos expériences de développeur.</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="47"/>
         <source>Please report, if necessary, all options that you need and that &lt;span style=&quot; font-weight:600;&quot;&gt;XINX&lt;/span&gt; don&apos;t have.</source>
-        <translation>Si necessaire, n&apos;hesitez pas à reporter toutes options dont vous auriez besoin et dont &lt;b&gt;XINX&lt;/b&gt; ne propose pas.</translation>
+        <translation type="unfinished">Si nécessaire, n&apos;hésitez pas à reporter toutes options dont vous auriez besoin et dont &lt;b&gt;XINX&lt;/b&gt; ne propose pas.</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="58"/>
@@ -1640,7 +1621,7 @@ Voulez-vous sauver les changements ?</translation>
     <message>
         <location filename="../ui/newversion.ui" line="61"/>
         <source>In this page, we adjust global settings, used by the application for accesibility (as lang, or automatic task) or for the creation of new project</source>
-        <translation>Dans cette page vous pouvez ajuster les propriétés générale d&apos;accéssibilité (langue et tâche automatique) ou de création projet</translation>
+        <translation type="unfinished">Dans cette page vous pouvez ajuster les propriétés générales d&apos;accéssibilité (langue et tâche automatique) ou de création projet</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="70"/>
@@ -1667,7 +1648,7 @@ Voulez-vous sauver les changements ?</translation>
     <message>
         <location filename="../ui/newversion.ui" line="106"/>
         <source>Auto refresh directory dock</source>
-        <translation>Rafraichire automatiquement les dossiers projets</translation>
+        <translation type="unfinished">Rafraîchir automatiquement les dossiers projets</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="113"/>
@@ -1696,9 +1677,9 @@ Voulez-vous sauver les changements ?</translation>
         <source>&lt;p&gt;Choose the default text encoding, when the text encoding can&apos;t be found.
 
 &lt;i&gt;Some editor, can redefined the text encoding (ie: XML and derivated editor). This encoding is used by editor as JavaScript and other&lt;/i&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Permet de choisir l&apos;encodage par défaut quand le texte encodé ne peux être trouvé.
+        <translation type="unfinished">&lt;p&gt;Permet de choisir l&apos;encodage par défaut quand le texte encodé ne peut être trouvé.
 
-&lt;i&gt;Quelque éditeurs peuvent redéfinir l&apos;encodage du texte (ex: l&apos;éditeur XML et ses dérivés). Cet encodage est utilié par l&apos;éditeur JavaScript ainsi que les autres&lt;/i&gt;&lt;/p&gt;</translation>
+&lt;i&gt;Quelques éditeurs peuvent redéfinir l&apos;encodage du texte (ex: l&apos;éditeur XML et ses dérivés). Cet encodage est utilisé par l&apos;éditeur JavaScript ainsi que les autres&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="153"/>
@@ -1713,7 +1694,7 @@ Voulez-vous sauver les changements ?</translation>
     <message>
         <location filename="../ui/newversion.ui" line="167"/>
         <source>In this page we adjust settins used by the editor. In this page we can adjust effect, used to facilitate the edition (has show the current line, space, tabulation).</source>
-        <translation>Dans cette page vous pouvez ajuter les paramètre utilisé par l&apos;éditeur. Vous pouvez ajuste les effets utilisez pour faciliter l&apos;édition (comme l&apos;affichage de la ligne courante, des espaces et des tabulations).</translation>
+        <translation type="unfinished">Dans cette page vous pouvez ajuster les paramètres utilisés par l&apos;éditeur. Vous pouvez ajuster les effets utilisés pour faciliter l&apos;édition (comme l&apos;affichage de la ligne courante, des espaces et des tabulations).</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="173"/>
@@ -1770,14 +1751,14 @@ Voulez-vous sauver les changements ?</translation>
     <message>
         <location filename="../ui/newversion.ui" line="256"/>
         <source>In this page you can define path to tools that can be use by XINX.</source>
-        <translation>Dans cette page vous pouvez définir les outils pouvant être utilisé par XINX.</translation>
+        <translation type="unfinished">Dans cette page vous pouvez définir les outils pouvant être utilisés par XINX.</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="262"/>
         <source>&lt;p&gt;List of tools used by &lt;b&gt;XINX&lt;/b&gt; and all plugins. Tools are external application called by this application.&lt;/p&gt;
 &lt;p&gt;If the tool can&apos;t be find, the text color will be &lt;span style=&quot;color:#ff0000;&quot;&gt;red&lt;/span&gt;.&lt;/p&gt;
 &lt;p&gt;To edit a tool, double click (or presse F2) on the path of the tool.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Liste des outils utilisés par &lt;b&gt;XINX&lt;/b&gt; et ces modules. Les outils sont des applications externes appelés par cette application.&lt;/p&gt;
+        <translation type="unfinished">&lt;p&gt;Liste des outils utilisés par &lt;b&gt;XINX&lt;/b&gt; et ces modules. Les outils sont des applications externes appelées par cette application.&lt;/p&gt;
 &lt;p&gt;Si l&apos;outil ne peut être trouvé, le chemin vers l&apos;application sera affiché en &lt;span style=&quot;color:#ff0000;&quot;&gt;rouge&lt;/span&gt;.&lt;/p&gt;
 &lt;p&gt;Pour éditer un outil, vous pouvez double-cliquer (ou presser la toucher F2) sur le chemin de l&apos;outil.&lt;/p&gt;</translation>
     </message>
@@ -1789,17 +1770,17 @@ Voulez-vous sauver les changements ?</translation>
     <message>
         <location filename="../ui/newversion.ui" line="281"/>
         <source>We have now customize XINX. You can adjsute XINX settings by opening the good &quot;Customize dialog&quot;. In the tools menu.</source>
-        <translation>Vous avez terminé de personalisé XINX. Vous pouvez ajuster d&apos;autres paramètres de XINX en ouvrant la boite de dialogue &quot;Personaliser&quot; dans le menu &quot;Outils&quot;.</translation>
+        <translation type="unfinished">Vous avez terminé de personnaliser XINX. Vous pouvez ajuster d&apos;autres paramètres de XINX en ouvrant la boite de dialogue &quot;Personnaliser&quot; dans le menu &quot;Outils&quot;.</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="291"/>
         <source>Have fun with XINX.</source>
-        <translation>Amusez vous bien sous XINX.</translation>
+        <translation type="unfinished">Amusez-vous bien sous XINX.</translation>
     </message>
     <message>
         <location filename="../ui/newversion.ui" line="298"/>
         <source>&amp;Open the customize dialog page to made more settings.</source>
-        <translation>&amp;Ouvrir la boite de dialogue de personalisation pour modifier plus d&apos;options.</translation>
+        <translation type="unfinished">&amp;Ouvrir la boite de dialogue de personnalisation pour modifier plus d&apos;options.</translation>
     </message>
 </context>
 <context>
@@ -1903,7 +1884,7 @@ Voulez-vous sauver les changements ?</translation>
     <message>
         <location filename="../ui/projectdirectorywidget.ui" line="76"/>
         <source>If checked the list is showed as flat instead of tree. Each list of file is preceded of a directory header.</source>
-        <translation>Si cochée, la liste est affichée à plat au lieu d&apos;utiliser un arbre. Chaque liste de fichier est précédée d&apos;une entête de dossier.</translation>
+        <translation type="unfinished">Si cochée, la liste est affichée à plat au lieu d&apos;utiliser un arbre. Chaque liste de fichier est précédée d&apos;un entête de dossier.</translation>
     </message>
     <message>
         <location filename="../ui/projectdirectorywidget.ui" line="96"/>
@@ -1971,8 +1952,8 @@ Voulez-vous sauver les changements ?</translation>
         <source>This wizard will help you to create a &lt;b&gt;XINX&lt;/b&gt; project and define some important variables.&lt;br/&gt;&lt;br/&gt;
 In &lt;b&gt;XINX&lt;/b&gt;, a project is used to use the &lt;i&gt;file research&lt;/i&gt;in a project, use a &lt;i&gt;revision control system&lt;/i&gt;, or use for other purpose in the &lt;b&gt;XINX&lt;/b&gt; modules.&lt;br/&gt;&lt;br/&gt;
 A project can define web services too.</source>
-        <translation>Cet assistant vous aidera à créer un projet &lt;b&gt;XINX&lt;/b&gt; et à définir les variables importantes.&lt;br/&gt;&lt;br/&gt;
-Dans &lt;b&gt;XINX&lt;/b&gt;, un projet est utilisé pour &lt;i&gt;recherche un fichier&lt;/i&gt; dans un projet, utiliser un &lt;i&gt;gestionnaire de version&lt;/i&gt;, ou utiliser un &lt;i&gt;préfixe projet&lt;/i&gt; dans les modules dérivés.&lt;br/&gt;&lt;br/&gt;
+        <translation type="unfinished">Cet assistant vous aidera à créer un projet &lt;b&gt;XINX&lt;/b&gt; et à définir les variables importantes.&lt;br/&gt;&lt;br/&gt;
+Dans &lt;b&gt;XINX&lt;/b&gt;, un projet est utilisé pour &lt;i&gt;rechercher un fichier&lt;/i&gt; dans un projet, utiliser un &lt;i&gt;gestionnaire de version&lt;/i&gt;, ou utiliser un &lt;i&gt;préfixe projet&lt;/i&gt; dans les modules dérivés.&lt;br/&gt;&lt;br/&gt;
 Un projet peut également définir des services internet.</translation>
     </message>
 </context>
@@ -2049,7 +2030,7 @@ Un projet peut également définir des services internet.</translation>
     <message>
         <location filename="../projectpropertyimpl.cpp" line="63"/>
         <source>Preloaded files</source>
-        <translation>Fichiers préchargées</translation>
+        <translation type="unfinished">Fichiers préchargés</translation>
     </message>
 </context>
 <context>
@@ -2138,7 +2119,7 @@ Un projet peut également définir des services internet.</translation>
         <location filename="../ui/replace.ui" line="38"/>
         <source>&lt;p&gt;Text to search in the editor. The search string can be &lt;i&gt;string literal&lt;/i&gt; or a &lt;i&gt;regular expression&lt;/i&gt; (if the corresponding checkbox is checked).&lt;/p&gt;
 &lt;p&gt;&lt;b&gt;XINX&lt;/b&gt; keep history of searched text.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Texte à utiliser lors de la recherche. La chaine de recherche peut être &lt;i&gt;litérale&lt;/i&gt; ou une &lt;i&gt;expression régulière&lt;/i&gt; (si la case à cocher correspondante est cochée).&lt;/p&gt;
+        <translation type="unfinished">&lt;p&gt;Texte à utiliser lors de la recherche. La chaine de recherche peut être &lt;i&gt;littérale&lt;/i&gt; ou une &lt;i&gt;expression régulière&lt;/i&gt; (si la case à cocher correspondante est cochée).&lt;/p&gt;
 &lt;p&gt;&lt;b&gt;XINX&lt;/b&gt; garde un historique des chaines recherchées.&lt;/p&gt;</translation>
     </message>
     <message>
@@ -2200,7 +2181,6 @@ Un projet peut également définir des services internet.</translation>
         <translation>Remplacer</translation>
     </message>
     <message>
-        <location filename="../replacedialogimpl.cpp" line="33"/>
         <location filename="../replacedialogimpl.cpp" line="45"/>
         <source>Find</source>
         <translation>Trouver</translation>
@@ -2248,7 +2228,6 @@ Un projet peut également définir des services internet.</translation>
         <translation>&amp;Filtre :</translation>
     </message>
     <message>
-        <location filename="../ui/snipetlistwidget.ui" line="51"/>
         <location filename="../ui/snipetlistwidget.ui" line="62"/>
         <source>...</source>
         <translation>...</translation>
@@ -2333,14 +2312,14 @@ Un projet peut également définir des services internet.</translation>
     <message>
         <location filename="../xinxprojectwizard/projectwizard.cpp" line="117"/>
         <source>This page show you some informations about the selected project file.</source>
-        <translation>Cette page vous affichera quelques informations à propos des fichiers projets sélectionné.</translation>
+        <translation type="unfinished">Cette page vous affichera quelques informations à propos des fichiers projets sélectionnés.</translation>
     </message>
     <message>
         <location filename="../xinxprojectwizard/projectwizard.cpp" line="132"/>
         <source>You want convert a %1 (version %2).
 This wizard will convert the project to the last version of XINX. Wizard must convert %3 opened file.</source>
-        <translation>Vous voulez convertir un %1 (version %2).
-Cet assistant va convertir le projet vers la dernière version de projet XINX. Ce projet doit convertir %3 fichiers ouvert.</translation>
+        <translation type="unfinished">Vous voulez convertir un %1 (version %2).
+Cet assistant va convertir le projet vers la dernière version de projet XINX. Ce projet doit convertir %3 fichiers ouverts.</translation>
     </message>
 </context>
 <context>
@@ -2371,22 +2350,22 @@ Cet assistant va convertir le projet vers la dernière version de projet XINX. C
     <message>
         <location filename="../ui/welcomdlg.ui" line="53"/>
         <source>&lt;html&gt;
-	&lt;head&gt;
-		&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;
-	&lt;/head&gt;
-	&lt;body style=&quot;font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-		&lt;span style=&quot;font-size:x-large&quot;&gt;Open Recent Project&lt;/span&gt;
-		&lt;hr/&gt;
-	&lt;/body&gt;
+<byte value="x9"/>&lt;head&gt;
+<byte value="x9"/><byte value="x9"/>&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;
+<byte value="x9"/>&lt;/head&gt;
+<byte value="x9"/>&lt;body style=&quot;font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+<byte value="x9"/><byte value="x9"/>&lt;span style=&quot;font-size:x-large&quot;&gt;Open Recent Project&lt;/span&gt;
+<byte value="x9"/><byte value="x9"/>&lt;hr/&gt;
+<byte value="x9"/>&lt;/body&gt;
 &lt;/html&gt;</source>
         <translation>&lt;html&gt;
-	&lt;head&gt;
-		&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;
-	&lt;/head&gt;
-	&lt;body style=&quot;font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-		&lt;span style=&quot;font-size:x-large&quot;&gt;Derniers projets ouverts&lt;/span&gt;
-		&lt;hr/&gt;
-	&lt;/body&gt;
+<byte value="x9"/>&lt;head&gt;
+<byte value="x9"/><byte value="x9"/>&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;
+<byte value="x9"/>&lt;/head&gt;
+<byte value="x9"/>&lt;body style=&quot;font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+<byte value="x9"/><byte value="x9"/>&lt;span style=&quot;font-size:x-large&quot;&gt;Derniers projets ouverts&lt;/span&gt;
+<byte value="x9"/><byte value="x9"/>&lt;hr/&gt;
+<byte value="x9"/>&lt;/body&gt;
 &lt;/html&gt;</translation>
     </message>
     <message>
@@ -2402,43 +2381,43 @@ Cet assistant va convertir le projet vers la dernière version de projet XINX. C
     <message>
         <location filename="../ui/welcomdlg.ui" line="144"/>
         <source>&lt;html&gt;
-	&lt;head&gt;
-		&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;
-	&lt;/head&gt;
-	&lt;body style=&quot;font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-		&lt;span style=&quot;font-size:x-large&quot;&gt;XINX Websites&lt;/span&gt;
-		&lt;hr/&gt;
-	&lt;/body&gt;
+<byte value="x9"/>&lt;head&gt;
+<byte value="x9"/><byte value="x9"/>&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;
+<byte value="x9"/>&lt;/head&gt;
+<byte value="x9"/>&lt;body style=&quot;font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+<byte value="x9"/><byte value="x9"/>&lt;span style=&quot;font-size:x-large&quot;&gt;XINX Websites&lt;/span&gt;
+<byte value="x9"/><byte value="x9"/>&lt;hr/&gt;
+<byte value="x9"/>&lt;/body&gt;
 &lt;/html&gt;</source>
         <translation>&lt;html&gt;
-	&lt;head&gt;
-		&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;
-	&lt;/head&gt;
-	&lt;body style=&quot;font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-		&lt;span style=&quot;font-size:x-large&quot;&gt;Site Internet XINX&lt;/span&gt;
-		&lt;hr/&gt;
-	&lt;/body&gt;
+<byte value="x9"/>&lt;head&gt;
+<byte value="x9"/><byte value="x9"/>&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;
+<byte value="x9"/>&lt;/head&gt;
+<byte value="x9"/>&lt;body style=&quot;font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+<byte value="x9"/><byte value="x9"/>&lt;span style=&quot;font-size:x-large&quot;&gt;Site Internet XINX&lt;/span&gt;
+<byte value="x9"/><byte value="x9"/>&lt;hr/&gt;
+<byte value="x9"/>&lt;/body&gt;
 &lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/welcomdlg.ui" line="202"/>
         <source>&lt;html&gt;
-	&lt;head&gt;
-		&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;
-	&lt;/head&gt;
-	&lt;body style=&quot;font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-		&lt;span style=&quot;font-size:x-large&quot;&gt;Did You Known ?&lt;/span&gt;
-		&lt;hr/&gt;
-	&lt;/body&gt;
+<byte value="x9"/>&lt;head&gt;
+<byte value="x9"/><byte value="x9"/>&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;
+<byte value="x9"/>&lt;/head&gt;
+<byte value="x9"/>&lt;body style=&quot;font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+<byte value="x9"/><byte value="x9"/>&lt;span style=&quot;font-size:x-large&quot;&gt;Did You Known ?&lt;/span&gt;
+<byte value="x9"/><byte value="x9"/>&lt;hr/&gt;
+<byte value="x9"/>&lt;/body&gt;
 &lt;/html&gt;</source>
         <translation>&lt;html&gt;
-	&lt;head&gt;
-		&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;
-	&lt;/head&gt;
-	&lt;body style=&quot;font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-		&lt;span style=&quot;font-size:x-large&quot;&gt;Le saviez-vous ?&lt;/span&gt;
-		&lt;hr/&gt;
-	&lt;/body&gt;
+<byte value="x9"/>&lt;head&gt;
+<byte value="x9"/><byte value="x9"/>&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;
+<byte value="x9"/>&lt;/head&gt;
+<byte value="x9"/>&lt;body style=&quot;font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+<byte value="x9"/><byte value="x9"/>&lt;span style=&quot;font-size:x-large&quot;&gt;Le saviez-vous ?&lt;/span&gt;
+<byte value="x9"/><byte value="x9"/>&lt;hr/&gt;
+<byte value="x9"/>&lt;/body&gt;
 &lt;/html&gt;</translation>
     </message>
     <message>
@@ -2466,7 +2445,7 @@ Cet assistant va convertir le projet vers la dernière version de projet XINX. C
     <message>
         <location filename="../welcomdlgimpl.cpp" line="86"/>
         <source>Report a bug</source>
-        <translation>Déclarer une annomalie</translation>
+        <translation type="unfinished">Déclarer une anomalie</translation>
     </message>
     <message>
         <location filename="../welcomdlgimpl.cpp" line="87"/>
