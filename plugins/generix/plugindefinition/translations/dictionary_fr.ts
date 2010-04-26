@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1" language="fr_FR">
-<defaultcodec></defaultcodec>
+<!DOCTYPE TS>
+<TS version="2.0" language="fr_FR">
 <context>
     <name>ConfigurationFile</name>
     <message>
+        <location filename="../../configuration/configurationfile.cpp" line="358"/>
         <location filename="../../configuration/configurationfile.cpp" line="418"/>
         <source>Error while opening configuration file : %1</source>
         <translation>Erreur lors de l&apos;ouverture du fichier de configuration : %1</translation>
@@ -11,12 +12,12 @@
     <message>
         <location filename="../../configuration/configurationfile.cpp" line="367"/>
         <source>Error while opening version query : %1</source>
-        <translation type="unfinished">Erreur lors de l&apos;ouverture de la requête de recherche de version : %1</translation>
+        <translation>Erreur lors de l&apos;ouverture de la requête de recherche de version : %1</translation>
     </message>
     <message>
         <location filename="../../configuration/configurationfile.cpp" line="427"/>
         <source>Error while opening businessview list query : %1</source>
-        <translation type="unfinished">Erreur lors de l&apos;ouverture de la requête des listes des vues métiers : %1</translation>
+        <translation>Erreur lors de l&apos;ouverture de la requête des listes des vues métiers : %1</translation>
     </message>
 </context>
 <context>
@@ -37,7 +38,7 @@
     <message>
         <location filename="../../config/customgenerix.ui" line="20"/>
         <source>This page, can be used to change some option of project management for the &lt;b&gt;GCE&lt;/b&gt; plugin</source>
-        <translation type="unfinished">Cette page peut être utilisée pour changer quelques options de la gestion du projet pour le plugin &lt;b&gt;GCE&lt;/b&gt;</translation>
+        <translation>Cette page peut être utilisée pour changer quelques options de la gestion du projet pour le plugin &lt;b&gt;GCE&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../../config/customgenerix.ui" line="34"/>
@@ -47,7 +48,7 @@
     <message>
         <location filename="../../config/customgenerix.ui" line="41"/>
         <source>This option can be use to read the GCE configuration file. Reading the configuration file can be slow, so this option is activated by default. &lt;br/&gt;&lt;br/&gt;&lt;i&gt;&lt;u&gt;Note: &lt;/u&gt;If you change this option, you must reload XINX to really use this option.</source>
-        <translation type="unfinished">Cette option peut être utilisée pour lire le fichier de configuration GCE. Lire le fichier de configuration peut être lent. Cette option est activée par défaut.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;&lt;u&gt;Note: &lt;/u&gt;Si vous changez cette option, vous devez recharger XINX pour que cette option soit réellement activée.</translation>
+        <translation>Cette option peut être utilisée pour lire le fichier de configuration GCE. Lire le fichier de configuration peut être lent. Cette option est activée par défaut.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;&lt;u&gt;Note: &lt;/u&gt;Si vous changez cette option, vous devez recharger XINX pour que cette option soit réellement activée.</translation>
     </message>
     <message>
         <location filename="../../config/customgenerix.ui" line="64"/>
@@ -57,7 +58,7 @@
     <message>
         <location filename="../../config/customgenerix.ui" line="71"/>
         <source>This option can be used to read dictionaries. Reading dictionaries can be make &lt;b&gt;XINX&lt;/b&gt; less responsive but is necessary to use the completion on GCE labels. This option is activated by default. &lt;br/&gt;&lt;br/&gt; &lt;i&gt;&lt;u&gt;Note :&lt;/u&gt; If you change this option you must reload your project to really use it.&lt;/i&gt;</source>
-        <translation type="unfinished">Cette option peut être utilisée pour lire les dictionnaires. Lire les dictionnaires peut rendre &lt;b&gt;XINX&lt;/b&gt; moins réactif, mais est nécessaire pour utiliser la complétion sur les libellés GCE. Cette option est activée par défaut.&lt;br/&gt;&lt;br/&gt; &lt;i&gt;&lt;u&gt;Note :&lt;/u&gt; Si vous changez cette option, vous devez relire le projet pour que le changement soit réellement effectif.&lt;/i&gt;</translation>
+        <translation>Cette option peut être utilisée pour lire les dictionnaires. Lire les dictionnaires peut rendre &lt;b&gt;XINX&lt;/b&gt; moins réactif, mais est nécessaire pour utiliser la complétion sur les libellés GCE. Cette option est activée par défaut.&lt;br/&gt;&lt;br/&gt; &lt;i&gt;&lt;u&gt;Note :&lt;/u&gt; Si vous changez cette option, vous devez relire le projet pour que le changement soit réellement effectif.&lt;/i&gt;</translation>
     </message>
 </context>
 <context>
@@ -137,6 +138,7 @@
         <translation>Dictionnaire</translation>
     </message>
     <message>
+        <location filename="../../ui/dictionarydockwidget.ui" line="32"/>
         <location filename="../../ui/dictionarydockwidget.ui" line="46"/>
         <source>...</source>
         <translation>...</translation>
@@ -152,7 +154,7 @@
     <message>
         <location filename="../../docks/dictionary/dictionarydockwidgetimpl.cpp" line="64"/>
         <source>%1 label(s) loaded.</source>
-        <translation type="unfinished">%1 libellé(s) lu(s).</translation>
+        <translation>%1 libellé(s) lu(s).</translation>
     </message>
 </context>
 <context>
@@ -163,6 +165,7 @@
         <translation>Ce fichier n&apos;est pas un dictionnaire.</translation>
     </message>
     <message>
+        <location filename="../../docks/dictionary/dictionaryparser.cpp" line="104"/>
         <location filename="../../docks/dictionary/dictionaryparser.cpp" line="140"/>
         <source>Labels node expected. %1 found</source>
         <translation>Noeud &quot;Labels&quot; attendu. %1 trouvé</translation>
@@ -186,12 +189,12 @@
     <message>
         <location filename="../../configuration/gceconfigurationdef.cpp" line="62"/>
         <source>Can&apos;t open configurationdef file</source>
-        <translation type="unfinished">Ne peut ouvrir le fichier  configurationdef</translation>
+        <translation>Ne peut ouvrir le fichier  configurationdef</translation>
     </message>
     <message>
         <location filename="../../configuration/gceconfigurationdef.cpp" line="66"/>
         <source>Can&apos;t read the content of the configurationdef file</source>
-        <translation type="unfinished">Ne peut lire le contenu du fichier configurationdef</translation>
+        <translation>Ne peut lire le contenu du fichier configurationdef</translation>
     </message>
 </context>
 <context>
@@ -199,17 +202,17 @@
     <message>
         <location filename="../../configuration/gceproperties.cpp" line="63"/>
         <source>Can&apos;t open the gce properties file</source>
-        <translation type="unfinished">Ne peut ouvrir le fichier de propriété gce</translation>
+        <translation>Ne peut ouvrir le fichier de propriété gce</translation>
     </message>
     <message>
         <location filename="../../configuration/gceproperties.cpp" line="71"/>
         <source>Can&apos;t read the root element of the gce properties file</source>
-        <translation type="unfinished">Ne peut lire l&apos;élément racine du fichier de propriété gce</translation>
+        <translation>Ne peut lire l&apos;élément racine du fichier de propriété gce</translation>
     </message>
     <message>
         <location filename="../../configuration/gceproperties.cpp" line="80"/>
         <source>Unable to create new XPath context</source>
-        <translation type="unfinished">Ne peut pas créer le nouveau contexte du XPath</translation>
+        <translation>Ne peut pas créer le nouveau contexte du XPath</translation>
     </message>
 </context>
 <context>
@@ -278,7 +281,7 @@
     <message>
         <location filename="../generix.cpp" line="163"/>
         <source>This plugin add some fonctionnality usefull for Generix Group&apos;s XINX users</source>
-        <translation type="unfinished">Ce plugin ajoute plusieurs fonctionnalités utiles pour les utilisateurs de XINX à Generix Group</translation>
+        <translation>Ce plugin ajoute plusieurs fonctionnalités utiles pour les utilisateurs de XINX à Generix Group</translation>
     </message>
 </context>
 <context>
@@ -307,7 +310,7 @@
         <location filename="../../docks/project/gnxprojectdock.ui" line="45"/>
         <source>Current
 &amp;Prefix :</source>
-        <translation type="unfinished">&amp;Préfixe
+        <translation>&amp;Préfixe
 courant :</translation>
     </message>
 </context>
@@ -349,23 +352,23 @@ courant :</translation>
     <message>
         <location filename="../../projectproperty/wizard/newgenerixderivation1page.ui" line="14"/>
         <source>WizardPage</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../projectproperty/wizard/newgenerixderivation1page.ui" line="17"/>
         <source>Do you want derivate or edit a standard project</source>
-        <translation type="unfinished">Voulez- vous dériver ou éditer un projet standard</translation>
+        <translation>Voulez- vous dériver ou éditer un projet standard</translation>
     </message>
     <message>
         <location filename="../../projectproperty/wizard/newgenerixderivation1page.ui" line="20"/>
         <source>Choose to derivate from a standard project, offer you to copy file in another tree automatically.</source>
-        <translation type="unfinished">Si vous choisissez de dériver à partir d&apos;un projet standard, XINX vous permettra de placer une copie du fichier modifié automatiquement dans une nouvelle arborescence.</translation>
+        <translation>Si vous choisissez de dériver à partir d&apos;un projet standard, XINX vous permettra de placer une copie du fichier modifié automatiquement dans une nouvelle arborescence.</translation>
     </message>
     <message>
         <location filename="../../projectproperty/wizard/newgenerixderivation1page.ui" line="26"/>
         <source>Please tell me, if you want to modify all part of the web module, or prevent the modification of orignal files and derive file in special directory.
 In &lt;b&gt;GCE 150&lt;/b&gt; or later, the choice has few impact</source>
-        <translation type="unfinished">Voulez-vous modifier l&apos;ensemble du module Internet, ou prévenir de la modification des fichiers originaux en les dérivant dans un dossier spécial.&lt;br/&gt;
+        <translation>Voulez-vous modifier l&apos;ensemble du module Internet, ou prévenir de la modification des fichiers originaux en les dérivant dans un dossier spécial.&lt;br/&gt;
 En &lt;b&gt;GCE 150&lt;/b&gt; ou plus, le choix à peu d&apos;impact</translation>
     </message>
     <message>
@@ -386,7 +389,7 @@ En &lt;b&gt;GCE 150&lt;/b&gt; ou plus, le choix à peu d&apos;impact</translatio
     <message>
         <location filename="../../projectproperty/wizard/newgenerixderivation1page.ui" line="90"/>
         <source>Add the project directory name as prefix</source>
-        <translation type="unfinished">Ajouter le nom du dossier projet saisi en tant que préfixe</translation>
+        <translation>Ajouter le nom du dossier projet saisi en tant que préfixe</translation>
     </message>
 </context>
 <context>
@@ -404,17 +407,17 @@ En &lt;b&gt;GCE 150&lt;/b&gt; ou plus, le choix à peu d&apos;impact</translatio
     <message>
         <location filename="../../projectproperty/wizard/newgenerixderivation2page.ui" line="20"/>
         <source>Define the path you want to make read only in your web module. Generally, you should have one path not readonly and all other read only.</source>
-        <translation type="unfinished">Définit le chemin que vous souhaitez ne pas modifier dans votre module Web. Généralement , vous devez avoir un des chemins en écriture, et les autres en lecture uniquement.</translation>
+        <translation>Définit le chemin que vous souhaitez ne pas modifier dans votre module Web. Généralement , vous devez avoir un des chemins en écriture, et les autres en lecture uniquement.</translation>
     </message>
     <message>
         <location filename="../../projectproperty/wizard/newgenerixderivation2page.ui" line="26"/>
         <source>In this list you have all directory detected by &lt;b&gt;XINX&lt;/b&gt;. If the list isn&apos;t complete, you can add or modify the list, later, in the project property.</source>
-        <translation type="unfinished">Dans cette liste vous avez tous les dossiers détectés par &lt;b&gt;XINX&lt;/b&gt;. Si la liste n&apos;est pas complète, vous pouvez ajouter ou modifier cette liste plus tard, dans les propriétés du projet.</translation>
+        <translation>Dans cette liste vous avez tous les dossiers détectés par &lt;b&gt;XINX&lt;/b&gt;. Si la liste n&apos;est pas complète, vous pouvez ajouter ou modifier cette liste plus tard, dans les propriétés du projet.</translation>
     </message>
     <message>
         <location filename="../../projectproperty/wizard/newgenerixderivation2page.ui" line="36"/>
         <source>In the list, please check directory that you want make read-only (While modify a file in this directory, this will open a dialog to derive the fie. You always can force to save the file in the original directory.</source>
-        <translation type="unfinished">Veuillez cocher les dossiers que vous souhaitez en lecture uniquement (lors de la modification d&apos;un fichier de ce dotion, une boite de dialogue de dérivation sera ouverte). Vous pouvez toujours forcer la sauvegarde du fichier dans le dossier d&apos;origine.</translation>
+        <translation>Veuillez cocher les dossiers que vous souhaitez en lecture uniquement (lors de la modification d&apos;un fichier de ce dotion, une boite de dialogue de dérivation sera ouverte). Vous pouvez toujours forcer la sauvegarde du fichier dans le dossier d&apos;origine.</translation>
     </message>
     <message>
         <location filename="../../projectproperty/wizard/newgenerixderivation2page.ui" line="63"/>
@@ -462,7 +465,7 @@ En &lt;b&gt;GCE 150&lt;/b&gt; ou plus, le choix à peu d&apos;impact</translatio
     <message>
         <location filename="../../projectproperty/wizard/newgenerixderivation3page.ui" line="74"/>
         <source>&lt;span style=&quot;color: red&quot;&gt;&lt;b&gt;!!! WARNING !!!&lt;/b&gt; : You should define a prefix, in derivation project mode on this version of GCE.</source>
-        <translation type="unfinished">&lt;span style=&quot;color: red&quot;&gt;&lt;b&gt;!!! ATTENTION !!!&lt;/b&gt; : Vous devriez définir un préfixe en mode dérivation dans cette version de GCE.</translation>
+        <translation>&lt;span style=&quot;color: red&quot;&gt;&lt;b&gt;!!! ATTENTION !!!&lt;/b&gt; : Vous devriez définir un préfixe en mode dérivation dans cette version de GCE.</translation>
     </message>
     <message>
         <location filename="../../projectproperty/wizard/newgenerixderivation3page.ui" line="84"/>
@@ -480,17 +483,17 @@ En &lt;b&gt;GCE 150&lt;/b&gt; ou plus, le choix à peu d&apos;impact</translatio
     <message>
         <location filename="../../projectproperty/wizard/newgenerixinformationpage.ui" line="20"/>
         <source>Define informations used by the Generix module of XINX</source>
-        <translation type="unfinished">Définit les informations utilisées par le module Generix de XINX</translation>
+        <translation>Définit les informations utilisées par le module Generix de XINX</translation>
     </message>
     <message>
         <location filename="../../projectproperty/wizard/newgenerixinformationpage.ui" line="23"/>
         <source>In this page, you choose, the location of the Webmodule. This path should be the same of the project path, unless you know what you do.</source>
-        <translation type="unfinished">Dans cette page, vous pouvez choisir l&apos;emplacement du module Web. Ce dossier devrait être le même que le dossier projet, sauf si vous savez ce que vous faites.</translation>
+        <translation>Dans cette page, vous pouvez choisir l&apos;emplacement du module Web. Ce dossier devrait être le même que le dossier projet, sauf si vous savez ce que vous faites.</translation>
     </message>
     <message>
         <location filename="../../projectproperty/wizard/newgenerixinformationpage.ui" line="29"/>
         <source>The WebModule location is usually the place where you find the gce.properties files. It will be use to read the configuration file, and find dictionaries (to complete on labels). </source>
-        <translation type="unfinished">L&apos;emplacement du module Web est généralement là où l&apos;on trouve le fichier gce.properties. Il sera utilisé pour lire le fichier de configuration ainsi que les dictionnaires (pour compléter sur les libellés).</translation>
+        <translation>L&apos;emplacement du module Web est généralement là où l&apos;on trouve le fichier gce.properties. Il sera utilisé pour lire le fichier de configuration ainsi que les dictionnaires (pour compléter sur les libellés).</translation>
     </message>
     <message>
         <location filename="../../projectproperty/wizard/newgenerixinformationpage.ui" line="66"/>
@@ -515,7 +518,7 @@ En &lt;b&gt;GCE 150&lt;/b&gt; ou plus, le choix à peu d&apos;impact</translatio
     <message>
         <location filename="../../projectproperty/wizard/newgenerixinformationpage.ui" line="148"/>
         <source>&lt;p style=&quot;color: red&quot;&gt;&lt;b&gt;!!! WARNING !!!&lt;/b&gt; : The directory structure doesn&apos;t match with the version of the GCE module.&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;p style=&quot;color: red&quot;&gt;&lt;b&gt;!!! ATTENTION !!!&lt;/b&gt; : La structure du dossier ne correspond pas à la version du module GCE.&lt;/p&gt;</translation>
+        <translation>&lt;p style=&quot;color: red&quot;&gt;&lt;b&gt;!!! ATTENTION !!!&lt;/b&gt; : La structure du dossier ne correspond pas à la version du module GCE.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>

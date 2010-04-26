@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1" language="fr_FR">
-<defaultcodec></defaultcodec>
+<!DOCTYPE TS>
+<TS version="2.0" language="fr_FR">
 <context>
     <name>AbstractEditor</name>
     <message>
@@ -39,6 +39,7 @@
         <translation>Ne peut pas ouvrir le fichier en écriture %1 : %2</translation>
     </message>
     <message>
+        <location filename="../editors/abstracteditor.cpp" line="732"/>
         <location filename="../editors/abstracteditor.cpp" line="739"/>
         <source>Reload page</source>
         <translation>Actualiser</translation>
@@ -143,7 +144,7 @@
 If you prefer the snipet to be called automatically in the future, please change the property in the custom dialog.&lt;br/&gt;
 &lt;br/&gt;
 Please check parameters below and &lt;i&gt;valid&lt;/i&gt; this form if you agree.</source>
-        <translation type="unfinished">Vous êtes sur le point de &lt;b&gt;remplacer&lt;/b&gt; le dernier mot du texte que vous êtes entrain d&apos;écrire, par celui de modèle. Si cette boite de dialogue s&apos;est ouverte, le modèle est configuré pour être appelé automatiquement et nécessite que tous les paramètres aient une valeur par défaut.&lt;br/&gt;
+        <translation>Vous êtes sur le point de &lt;b&gt;remplacer&lt;/b&gt; le dernier mot du texte que vous êtes entrain d&apos;écrire, par celui de modèle. Si cette boite de dialogue s&apos;est ouverte, le modèle est configuré pour être appelé automatiquement et nécessite que tous les paramètres aient une valeur par défaut.&lt;br/&gt;
 Si vous préférez que le modèle soit appelé automatiquement par la suite, veuillez changer les propriétés dans la boite de dialogue de personnalisation.&lt;br/&gt;
 &lt;br/&gt;
 Veuillez vérifier les paramètres ci-dessous et &lt;i&gt;validez&lt;/i&gt; ce formulaire si vous êtes d&apos;accord.</translation>
@@ -159,6 +160,7 @@ Veuillez vérifier les paramètres ci-dessous et &lt;i&gt;validez&lt;/i&gt; ce f
         <translation>Valeur</translation>
     </message>
     <message>
+        <location filename="../snipets/callsnipetdlg.ui" line="117"/>
         <location filename="../snipets/callsnipetdlg.ui" line="123"/>
         <source>&amp;Result</source>
         <translation>&amp;Résultat</translation>
@@ -169,12 +171,12 @@ Veuillez vérifier les paramètres ci-dessous et &lt;i&gt;validez&lt;/i&gt; ce f
     <message>
         <location filename="../snipets/callsnipetdlg.cpp" line="201"/>
         <source>Cannot execute the snipet. Please check the script in the snipet in configuration dialog.</source>
-        <translation type="unfinished">Ne peut exécuter ce modèle. Veuillez verifier le script du modèle dans la boite de dialogue de configuration.</translation>
+        <translation>Ne peut exécuter ce modèle. Veuillez verifier le script du modèle dans la boite de dialogue de configuration.</translation>
     </message>
     <message>
         <location filename="../snipets/callsnipetdlg.cpp" line="218"/>
         <source>CallSnipetDialogImpl: Can&apos;t find snipet id &apos;%1&apos;</source>
-        <translation type="unfinished">CallSnipetDialogImpl: Ne peut trouver l&apos;id du modèle &apos;%1&apos;</translation>
+        <translation>CallSnipetDialogImpl: Ne peut trouver l&apos;id du modèle &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../snipets/callsnipetdlg.cpp" line="222"/>
@@ -213,6 +215,7 @@ Veuillez vérifier les paramètres ci-dessous et &lt;i&gt;validez&lt;/i&gt; ce f
         <translation>Propriété de la catégorie</translation>
     </message>
     <message>
+        <location filename="../snipets/categorypropertydlg.ui" line="31"/>
         <location filename="../snipets/categorypropertydlg.ui" line="37"/>
         <source>&amp;Description</source>
         <translation>&amp;Description</translation>
@@ -287,7 +290,7 @@ Veuillez vérifier les paramètres ci-dessous et &lt;i&gt;validez&lt;/i&gt; ce f
 &lt;p&gt;This message must describe what you have done, to easily find an old version.&lt;/p&gt;
 &lt;p/&gt;
 &lt;p&gt;&lt;i&gt;With CVS, the list of file commited is appended to the message&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;p&gt;Veuillez écrire votre message dans cette boîte de dialogue. Le message sera utilisé par votre gestionnaire de version&lt;/p&gt;
+        <translation>&lt;p&gt;Veuillez écrire votre message dans cette boîte de dialogue. Le message sera utilisé par votre gestionnaire de version&lt;/p&gt;
 &lt;p/&gt;
 &lt;p&gt;Ce message devrait décrire ce que vous avez fait, pour retrouver facilement une ancienne version.&lt;/p&gt;
 &lt;p/&gt;
@@ -308,7 +311,7 @@ In the list &lt;b&gt;XINX&lt;/b&gt; presents three actions :
 &lt;li&gt;&lt;i&gt;Commit&lt;/i&gt; : If the file exists and is modified (checked by default).&lt;/li&gt;
 &lt;/ul&gt;
 Only checked files are commited.</source>
-        <translation type="unfinished">Cette liste contient les documents à valider. Seuls les fichiers connus par &lt;b&gt;XINX&lt;/b&gt; sont listés ici (&lt;i&gt;.xsl, .html, .css, .js, ...&lt;/i&gt;).&lt;br/&gt;
+        <translation>Cette liste contient les documents à valider. Seuls les fichiers connus par &lt;b&gt;XINX&lt;/b&gt; sont listés ici (&lt;i&gt;.xsl, .html, .css, .js, ...&lt;/i&gt;).&lt;br/&gt;
 Dans cette liste&lt;b&gt;XINX&lt;/b&gt; permet trois actions :
 &lt;ul&gt;
 &lt;li&gt;&lt;i&gt;Ajouter et Valider&lt;/i&gt; : Si le fichier n&apos;existe pas dans le réferenciel mais peut être validé&lt;/li&gt;
@@ -380,19 +383,20 @@ Seuls les fichiers cochés seront validés.</translation>
     <message>
         <location filename="../project/dirrcsmodel.cpp" line="47"/>
         <source>Locally modified</source>
-        <translation type="unfinished">Modifié localement</translation>
+        <translation>Modifié localement</translation>
     </message>
     <message>
         <location filename="../project/dirrcsmodel.cpp" line="49"/>
         <source>Locally added</source>
-        <translation type="unfinished">Ajouté localement</translation>
+        <translation>Ajouté localement</translation>
     </message>
     <message>
         <location filename="../project/dirrcsmodel.cpp" line="51"/>
         <source>Has conflict</source>
-        <translation type="unfinished">En conflit</translation>
+        <translation>En conflit</translation>
     </message>
     <message>
+        <location filename="../project/dirrcsmodel.cpp" line="53"/>
         <location filename="../project/dirrcsmodel.cpp" line="54"/>
         <source>No modified</source>
         <translation>Non modifié</translation>
@@ -400,7 +404,7 @@ Seuls les fichiers cochés seront validés.</translation>
     <message>
         <location filename="../project/dirrcsmodel.cpp" line="53"/>
         <source>Need checkout</source>
-        <translation type="unfinished">Nécessite une mise à jour</translation>
+        <translation>Nécessite une mise à jour</translation>
     </message>
     <message>
         <location filename="../project/dirrcsmodel.cpp" line="129"/>
@@ -425,17 +429,18 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="../contentview2/contentview2file.cpp" line="287"/>
         <source>Can&apos;t find the node %1</source>
-        <translation type="unfinished">Ne peut trouver le noeud %1</translation>
+        <translation>Ne peut trouver le noeud %1</translation>
     </message>
     <message>
+        <location filename="../contentview2/contentview2file.cpp" line="312"/>
         <location filename="../contentview2/contentview2file.cpp" line="362"/>
         <source>Can&apos;t find the project %1</source>
-        <translation type="unfinished">Ne peut trouver le projet %1</translation>
+        <translation>Ne peut trouver le projet %1</translation>
     </message>
     <message>
         <location filename="../contentview2/contentview2file.cpp" line="326"/>
         <source>Can&apos;t find the node for path %1</source>
-        <translation type="unfinished">Ne peut trouver le noeud pour le chemin %1</translation>
+        <translation>Ne peut trouver le noeud pour le chemin %1</translation>
     </message>
 </context>
 <context>
@@ -451,7 +456,7 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="../contentview2/contentview2node.cpp" line="104"/>
         <source>Can&apos;t find the node %1</source>
-        <translation type="unfinished">Ne peut trouver le noeud %1</translation>
+        <translation>Ne peut trouver le noeud %1</translation>
     </message>
 </context>
 <context>
@@ -459,12 +464,12 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="../contentview2/contentview2project.cpp" line="121"/>
         <source>Can&apos;t find the node %1</source>
-        <translation type="unfinished">Ne peut trouver le noeud %1</translation>
+        <translation>Ne peut trouver le noeud %1</translation>
     </message>
     <message>
         <location filename="../contentview2/contentview2project.cpp" line="138"/>
         <source>Can&apos;t find the project %1</source>
-        <translation type="unfinished">Ne peut trouver le projet %1</translation>
+        <translation>Ne peut trouver le projet %1</translation>
     </message>
 </context>
 <context>
@@ -500,7 +505,7 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="../rcs/rcsmanager.cpp" line="73"/>
         <source>Update all files of the project directory (from repository).</source>
-        <translation type="unfinished">Met à jour tous les fichiers du dossier projet (à partir du référenciel).</translation>
+        <translation>Met à jour tous les fichiers du dossier projet (à partir du référenciel).</translation>
     </message>
     <message>
         <location filename="../rcs/rcsmanager.cpp" line="78"/>
@@ -511,7 +516,7 @@ Taille du cache : %6/%7</translation>
         <location filename="../rcs/rcsmanager.cpp" line="79"/>
         <source>&lt;p&gt;Commit all files of the project directory (to repository). An optional message can be added.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Only &lt;b&gt;XINX&lt;/b&gt; managed files are commited to the repository.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>&lt;p&gt;Pousse tous les fichiers du dossier projet (dans le référenciel). Un message optionnel peut être ajouté.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Seuls les fichiers gérés par &lt;b&gt;XINX&lt;/b&gt; peuvent être poussés dans le référenciel.&lt;/i&gt;&lt;/p&gt;</numerusform>
             <numerusform></numerusform>
@@ -553,20 +558,24 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="../scripts/scriptmanager.cpp" line="262"/>
         <source>Cannot read file : %1: %2</source>
-        <translation type="unfinished">Ne peut lire le fichier : %1: %2</translation>
+        <translation>Ne peut lire le fichier : %1: %2</translation>
     </message>
     <message>
         <location filename="../scripts/scriptmanager.cpp" line="275"/>
         <source>An error occurred while executing the script %1 : %2 at line %3</source>
-        <translation type="unfinished">Une erreur est survenue pendant l&apos;exécution du script %1 : %2 à la ligne %3</translation>
+        <translation>Une erreur est survenue pendant l&apos;exécution du script %1 : %2 à la ligne %3</translation>
     </message>
 </context>
 <context>
     <name>ScriptValue</name>
     <message>
+        <location filename="../scripts/scriptmanager.cpp" line="153"/>
+        <location filename="../scripts/scriptmanager.cpp" line="167"/>
+        <location filename="../scripts/scriptmanager.cpp" line="181"/>
+        <location filename="../scripts/scriptmanager.cpp" line="195"/>
         <location filename="../scripts/scriptmanager.cpp" line="204"/>
         <source>An error occure while run the script : %1</source>
-        <translation type="unfinished">Une erreur est survenue pendant l&apos;exécution du script : %1</translation>
+        <translation>Une erreur est survenue pendant l&apos;exécution du script : %1</translation>
     </message>
 </context>
 <context>
@@ -586,6 +595,7 @@ Taille du cache : %6/%7</translation>
 %2.</translation>
     </message>
     <message>
+        <location filename="../snipets/snipetlist.cpp" line="147"/>
         <location filename="../snipets/snipetlist.cpp" line="151"/>
         <source>Parse error exception.</source>
         <translation>Erreur de parsing de la liste des Snipets.</translation>
@@ -594,6 +604,7 @@ Taille du cache : %6/%7</translation>
 <context>
     <name>SnipetManager</name>
     <message>
+        <location filename="../snipets/snipetmanager.cpp" line="195"/>
         <location filename="../snipets/snipetmanager.cpp" line="208"/>
         <source>Remove a category</source>
         <translation>Supprimer la catégorie</translation>
@@ -606,7 +617,7 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="../snipets/snipetmanager.cpp" line="208"/>
         <source>Are you sure to delete the category &quot;%1&quot; ?</source>
-        <translation type="unfinished">Êtes-vous sûr de vouloir supprimer la catégorie &quot;%1&quot; ?</translation>
+        <translation>Êtes-vous sûr de vouloir supprimer la catégorie &quot;%1&quot; ?</translation>
     </message>
     <message>
         <location filename="../snipets/snipetmanager.cpp" line="385"/>
@@ -614,9 +625,10 @@ Taille du cache : %6/%7</translation>
         <translation>Modèles importés</translation>
     </message>
     <message>
+        <location filename="../snipets/snipetmanager.cpp" line="454"/>
         <location filename="../snipets/snipetmanager.cpp" line="479"/>
         <source>Can&apos;t search id for key &apos;%1&apos; : %2</source>
-        <translation type="unfinished">Ne peut chercher l&apos;id pour la clé &quot;%1&quot; : %2</translation>
+        <translation>Ne peut chercher l&apos;id pour la clé &quot;%1&quot; : %2</translation>
     </message>
     <message>
         <location filename="../snipets/snipetmanager.cpp" line="560"/>
@@ -624,16 +636,17 @@ Taille du cache : %6/%7</translation>
         <translation>Erreur lors de l&apos;appel du script pour l&apos;enregistrement %1 : %2</translation>
     </message>
     <message>
+        <location filename="../snipets/snipetmanager.cpp" line="567"/>
         <location filename="../snipets/snipetmanager.cpp" line="580"/>
         <source>The script %1 %2 return neither true or false.
 %3</source>
-        <translation type="unfinished">Le script %1 %2 n&apos;a retourné ni vrai, ni faux.
+        <translation>Le script %1 %2 n&apos;a retourné ni vrai, ni faux.
 %3</translation>
     </message>
     <message>
         <location filename="../snipets/snipetmanager.cpp" line="640"/>
         <source>Can&apos;t load snipet database : %1</source>
-        <translation type="unfinished">Ne peut charger la base de donnée des modèles : %1</translation>
+        <translation>Ne peut charger la base de donnée des modèles : %1</translation>
     </message>
     <message>
         <location filename="../snipets/snipetmanager.cpp" line="776"/>
@@ -643,7 +656,7 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="../snipets/snipetmanager.cpp" line="776"/>
         <source>List of all categories</source>
-        <translation type="unfinished">Liste des catégories</translation>
+        <translation>Liste des catégories</translation>
     </message>
 </context>
 <context>
@@ -662,6 +675,7 @@ Taille du cache : %6/%7</translation>
         <translation>Propriété du modèle</translation>
     </message>
     <message>
+        <location filename="../snipets/snipetpropertydlg.ui" line="31"/>
         <location filename="../snipets/snipetpropertydlg.ui" line="37"/>
         <source>&amp;Description</source>
         <translation>&amp;Description</translation>
@@ -694,7 +708,7 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="../snipets/snipetpropertydlg.ui" line="96"/>
         <source>Word key used to call the snipet in the &lt;b&gt;XINX&lt;/b&gt; editor. If no key is defined, it&apos;s not possible to call the template in the completion.</source>
-        <translation type="unfinished">Mot utilisé pour appeler le modèle dans l&apos;éditeur de &lt;b&gt;XINX&lt;/b&gt;. Si aucune clé n&apos;est définie, il ne sera pas possible d&apos;appeler le modèle lors de la complétion.</translation>
+        <translation>Mot utilisé pour appeler le modèle dans l&apos;éditeur de &lt;b&gt;XINX&lt;/b&gt;. Si aucune clé n&apos;est définie, il ne sera pas possible d&apos;appeler le modèle lors de la complétion.</translation>
     </message>
     <message>
         <location filename="../snipets/snipetpropertydlg.ui" line="103"/>
@@ -704,7 +718,7 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="../snipets/snipetpropertydlg.ui" line="113"/>
         <source>Call snipet automatically (not only by Ctrl+Space)</source>
-        <translation type="unfinished">Appeler le modèle automatiquement (pas seulement par Ctrl+Espace)</translation>
+        <translation>Appeler le modèle automatiquement (pas seulement par Ctrl+Espace)</translation>
     </message>
     <message>
         <location filename="../snipets/snipetpropertydlg.ui" line="120"/>
@@ -764,7 +778,7 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="../snipets/snipetpropertydlg.ui" line="279"/>
         <source>List of name parameter used by the template. The first parameter replace the key word %1, the second parameter replace the key word %2, ...</source>
-        <translation type="unfinished">Liste des noms des paramètres utilisés par le modèle. Le premier paramètre remplacera le premier mot clé : %1, le second paramètre, le second mot clé %2, et ainsi de suite ...</translation>
+        <translation>Liste des noms des paramètres utilisés par le modèle. Le premier paramètre remplacera le premier mot clé : %1, le second paramètre, le second mot clé %2, et ainsi de suite ...</translation>
     </message>
     <message>
         <location filename="../snipets/snipetpropertydlg.ui" line="282"/>
@@ -785,11 +799,13 @@ Taille du cache : %6/%7</translation>
 <context>
     <name>SnipetPropertyDlgImpl</name>
     <message>
+        <location filename="../snipets/snipetpropertydlgimpl.cpp" line="112"/>
         <location filename="../snipets/snipetpropertydlgimpl.cpp" line="154"/>
         <source>Name</source>
         <translation>Nom</translation>
     </message>
     <message>
+        <location filename="../snipets/snipetpropertydlgimpl.cpp" line="113"/>
         <location filename="../snipets/snipetpropertydlgimpl.cpp" line="155"/>
         <source>Default Value</source>
         <translation>Valeur par défaut</translation>

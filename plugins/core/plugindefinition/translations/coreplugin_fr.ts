@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1" language="fr_FR">
-<defaultcodec></defaultcodec>
+<!DOCTYPE TS>
+<TS version="2.0" language="fr_FR">
 <context>
     <name>CSSFileContentParser</name>
     <message>
         <location filename="../../editors/models/css/cssmodeldata.cpp" line="204"/>
         <source>Element at line : %1
 Value : %2</source>
-        <translation type="unfinished">Elément à la ligne : %1
+        <translation>Elément à la ligne : %1
 Valeur : %2</translation>
     </message>
     <message>
+        <location filename="../../editors/models/css/cssmodeldata.cpp" line="218"/>
+        <location filename="../../editors/models/css/cssmodeldata.cpp" line="232"/>
+        <location filename="../../editors/models/css/cssmodeldata.cpp" line="246"/>
         <location filename="../../editors/models/css/cssmodeldata.cpp" line="260"/>
         <source>Element at line : %1</source>
-        <translation type="unfinished">Elément à la ligne : %1</translation>
+        <translation>Elément à la ligne : %1</translation>
     </message>
 </context>
 <context>
@@ -67,7 +70,7 @@ Valeur : %2</translation>
     <message>
         <location filename="../coreplugin.cpp" line="160"/>
         <source>Comment the selected text</source>
-        <translation type="unfinished">Commente le texte sélectionné</translation>
+        <translation>Commente le texte sélectionné</translation>
     </message>
     <message>
         <location filename="../coreplugin.cpp" line="163"/>
@@ -82,12 +85,12 @@ Valeur : %2</translation>
     <message>
         <location filename="../coreplugin.cpp" line="103"/>
         <source>Minimum editors, completer, docks for XINX.</source>
-        <translation type="unfinished">Editeurs, Compléter, et Dock minimal pour XINX.</translation>
+        <translation>Editeurs, Compléter, et Dock minimal pour XINX.</translation>
     </message>
     <message>
         <location filename="../coreplugin.cpp" line="161"/>
         <source>Comment the selected text by using the language syntax. &lt;ul&gt;&lt;li&gt;In &lt;b&gt;XML&lt;/b&gt; like format &lt;i&gt;&amp;lt;!-- comment --&amp;gt;&lt;/i&gt;&lt;/li&gt; &lt;li&gt;In &lt;b&gt;Javascript&lt;/b&gt; : &lt;i&gt;/* comment */&lt;/i&gt; &lt;/li&gt;&lt;/ul&gt;</source>
-        <translation type="unfinished">Commente le texte selectionné en utilisant la syntaxe du langage. &lt;ul&gt;&lt;li&gt;En XML &lt;b&gt;XML&lt;/b&gt; par &lt;i&gt;&amp;lt;!-- commentaire --&amp;gt;&lt;/i&gt;&lt;/li&gt; &lt;li&gt;En &lt;b&gt;Javascript&lt;/b&gt; : &lt;i&gt;/* commentaire */&lt;/i&gt;&lt;/li&gt;&lt;/ul&gt;</translation>
+        <translation>Commente le texte selectionné en utilisant la syntaxe du langage. &lt;ul&gt;&lt;li&gt;En XML &lt;b&gt;XML&lt;/b&gt; par &lt;i&gt;&amp;lt;!-- commentaire --&amp;gt;&lt;/i&gt;&lt;/li&gt; &lt;li&gt;En &lt;b&gt;Javascript&lt;/b&gt; : &lt;i&gt;/* commentaire */&lt;/i&gt;&lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
 </context>
 <context>
@@ -120,7 +123,7 @@ Valeur : %2</translation>
     <message>
         <location filename="../../config/editorsconfigform.ui" line="42"/>
         <source>Add default sub-&amp;balise automatically (like xsl:when for the xsl:choose balise)</source>
-        <translation type="unfinished">Ajouter la sous-&amp;balise par défaut automatiquement (comme &lt;i&gt;xsl:when&lt;/i&gt; pour la balise &lt;i&gt;xsl:choose&lt;/i&gt;)</translation>
+        <translation>Ajouter la sous-&amp;balise par défaut automatiquement (comme &lt;i&gt;xsl:when&lt;/i&gt; pour la balise &lt;i&gt;xsl:choose&lt;/i&gt;)</translation>
     </message>
     <message>
         <location filename="../../config/editorsconfigform.ui" line="49"/>
@@ -159,7 +162,7 @@ Valeur : %2</translation>
     <message>
         <location filename="../../editors/widgeteditor/html/htmlfileeditor.cpp" line="91"/>
         <source>Web View</source>
-        <translation type="unfinished">Représentation HTML</translation>
+        <translation>Représentation HTML</translation>
     </message>
 </context>
 <context>
@@ -186,6 +189,10 @@ Valeur : %2</translation>
         <translation>Ne peut pas attacher la variable à la fonction ?</translation>
     </message>
     <message>
+        <location filename="../../editors/models/js/jscontentviewparser.cpp" line="82"/>
+        <location filename="../../editors/models/js/jscontentviewparser.cpp" line="299"/>
+        <location filename="../../editors/models/js/jscontentviewparser.cpp" line="324"/>
+        <location filename="../../editors/models/js/jscontentviewparser.cpp" line="366"/>
         <location filename="../../editors/models/js/jscontentviewparser.cpp" line="375"/>
         <source>End of file is prematured</source>
         <translation>Fin du fichier prématuré</translation>
@@ -206,6 +213,7 @@ Valeur : %2</translation>
         <translation>J&apos;attends un identificateur</translation>
     </message>
     <message>
+        <location filename="../../editors/models/js/jscontentviewparser.cpp" line="333"/>
         <location filename="../../editors/models/js/jscontentviewparser.cpp" line="353"/>
         <source>I wait an identifier.</source>
         <translation>J&apos;attends un identificateur.</translation>
@@ -216,9 +224,11 @@ Valeur : %2</translation>
         <translation>J&apos;attends une parenthèse ouvrante &apos;(&apos;</translation>
     </message>
     <message>
+        <location filename="../../editors/models/js/jscontentviewparser.cpp" line="392"/>
+        <location filename="../../editors/models/js/jscontentviewparser.cpp" line="406"/>
         <location filename="../../editors/models/js/jscontentviewparser.cpp" line="420"/>
         <source>Element at line : %1</source>
-        <translation type="unfinished">Elément à la ligne : %1</translation>
+        <translation>Elément à la ligne : %1</translation>
     </message>
 </context>
 <context>
@@ -275,7 +285,7 @@ Valeur : %2</translation>
     <message>
         <location filename="../../editors/widgeteditor/xsl/xslfileeditor.cpp" line="92"/>
         <source>Web View</source>
-        <translation type="unfinished">Représentation HTML</translation>
+        <translation>Représentation HTML</translation>
     </message>
 </context>
 <context>
@@ -491,7 +501,7 @@ Valeur : %2</translation>
     <message>
         <location filename="../../config/xmlpresconfigform.ui" line="32"/>
         <source>This is the path where the view must begin. Generally the first node is the root path (ie. &lt;i&gt;/layout_data&lt;/i&gt;)</source>
-        <translation type="unfinished">C&apos;est le chemin qui va être déplié par défaut dans la vue. Généralement c&apos;est le premier noeud après la racine (ex: &lt;i&gt;/layout_data&lt;/i&gt;)</translation>
+        <translation>C&apos;est le chemin qui va être déplié par défaut dans la vue. Généralement c&apos;est le premier noeud après la racine (ex: &lt;i&gt;/layout_data&lt;/i&gt;)</translation>
     </message>
     <message>
         <location filename="../../config/xmlpresconfigform.ui" line="41"/>
@@ -516,94 +526,136 @@ Valeur : %2</translation>
     <message>
         <location filename="../../config/xmlpresconfigform.ui" line="127"/>
         <source>Color of the node of view type (Generally begins by &lt;i&gt;Vue...&lt;/i&gt;)</source>
-        <translation type="unfinished">Couleur du noeud &quot;view type&quot; (Généralement par &lt;i&gt;Vue...&lt;/i&gt;)</translation>
+        <translation>Couleur du noeud &quot;view type&quot; (Généralement par &lt;i&gt;Vue...&lt;/i&gt;)</translation>
     </message>
     <message>
+        <location filename="../../config/xmlpresconfigform.ui" line="131"/>
+        <location filename="../../config/xmlpresconfigform.ui" line="221"/>
+        <location filename="../../config/xmlpresconfigform.ui" line="311"/>
+        <location filename="../../config/xmlpresconfigform.ui" line="333"/>
+        <location filename="../../config/xmlpresconfigform.ui" line="423"/>
+        <location filename="../../config/xmlpresconfigform.ui" line="513"/>
+        <location filename="../../config/xmlpresconfigform.ui" line="535"/>
+        <location filename="../../config/xmlpresconfigform.ui" line="625"/>
         <location filename="../../config/xmlpresconfigform.ui" line="715"/>
         <source>Custom...</source>
         <translation>Personnaliser ...</translation>
     </message>
     <message>
+        <location filename="../../config/xmlpresconfigform.ui" line="136"/>
+        <location filename="../../config/xmlpresconfigform.ui" line="338"/>
         <location filename="../../config/xmlpresconfigform.ui" line="540"/>
         <source>Red</source>
         <translation>Rouge</translation>
     </message>
     <message>
+        <location filename="../../config/xmlpresconfigform.ui" line="141"/>
+        <location filename="../../config/xmlpresconfigform.ui" line="343"/>
         <location filename="../../config/xmlpresconfigform.ui" line="545"/>
         <source>Green</source>
         <translation>Vert</translation>
     </message>
     <message>
+        <location filename="../../config/xmlpresconfigform.ui" line="146"/>
+        <location filename="../../config/xmlpresconfigform.ui" line="348"/>
         <location filename="../../config/xmlpresconfigform.ui" line="550"/>
         <source>Blue</source>
         <translation>Bleu</translation>
     </message>
     <message>
+        <location filename="../../config/xmlpresconfigform.ui" line="151"/>
+        <location filename="../../config/xmlpresconfigform.ui" line="353"/>
         <location filename="../../config/xmlpresconfigform.ui" line="555"/>
         <source>Cyan</source>
         <translation>Cyan</translation>
     </message>
     <message>
+        <location filename="../../config/xmlpresconfigform.ui" line="156"/>
+        <location filename="../../config/xmlpresconfigform.ui" line="358"/>
         <location filename="../../config/xmlpresconfigform.ui" line="560"/>
         <source>Magenta</source>
         <translation>Magenta</translation>
     </message>
     <message>
+        <location filename="../../config/xmlpresconfigform.ui" line="161"/>
+        <location filename="../../config/xmlpresconfigform.ui" line="363"/>
         <location filename="../../config/xmlpresconfigform.ui" line="565"/>
         <source>Yellow</source>
         <translation>Jaune</translation>
     </message>
     <message>
+        <location filename="../../config/xmlpresconfigform.ui" line="166"/>
+        <location filename="../../config/xmlpresconfigform.ui" line="368"/>
         <location filename="../../config/xmlpresconfigform.ui" line="570"/>
         <source>Dark Red</source>
         <translation>Rouge foncé</translation>
     </message>
     <message>
+        <location filename="../../config/xmlpresconfigform.ui" line="171"/>
+        <location filename="../../config/xmlpresconfigform.ui" line="373"/>
         <location filename="../../config/xmlpresconfigform.ui" line="575"/>
         <source>Dark Green</source>
         <translation>Vert foncé</translation>
     </message>
     <message>
+        <location filename="../../config/xmlpresconfigform.ui" line="176"/>
+        <location filename="../../config/xmlpresconfigform.ui" line="378"/>
         <location filename="../../config/xmlpresconfigform.ui" line="580"/>
         <source>Dark Blue</source>
         <translation>Bleu foncé</translation>
     </message>
     <message>
+        <location filename="../../config/xmlpresconfigform.ui" line="181"/>
+        <location filename="../../config/xmlpresconfigform.ui" line="383"/>
         <location filename="../../config/xmlpresconfigform.ui" line="585"/>
         <source>Dark Cyan</source>
         <translation>Cyan foncé</translation>
     </message>
     <message>
+        <location filename="../../config/xmlpresconfigform.ui" line="186"/>
+        <location filename="../../config/xmlpresconfigform.ui" line="388"/>
         <location filename="../../config/xmlpresconfigform.ui" line="590"/>
         <source>Dark Magenta</source>
         <translation>Magenta foncé</translation>
     </message>
     <message>
+        <location filename="../../config/xmlpresconfigform.ui" line="191"/>
+        <location filename="../../config/xmlpresconfigform.ui" line="393"/>
         <location filename="../../config/xmlpresconfigform.ui" line="595"/>
         <source>Dark Yellow</source>
         <translation>Jaune foncé</translation>
     </message>
     <message>
+        <location filename="../../config/xmlpresconfigform.ui" line="196"/>
+        <location filename="../../config/xmlpresconfigform.ui" line="398"/>
         <location filename="../../config/xmlpresconfigform.ui" line="600"/>
         <source>White</source>
         <translation>Blanc</translation>
     </message>
     <message>
+        <location filename="../../config/xmlpresconfigform.ui" line="201"/>
+        <location filename="../../config/xmlpresconfigform.ui" line="403"/>
         <location filename="../../config/xmlpresconfigform.ui" line="605"/>
         <source>Light Gray</source>
         <translation>Gris clair</translation>
     </message>
     <message>
+        <location filename="../../config/xmlpresconfigform.ui" line="206"/>
+        <location filename="../../config/xmlpresconfigform.ui" line="408"/>
         <location filename="../../config/xmlpresconfigform.ui" line="610"/>
         <source>Gray</source>
         <translation>Gris</translation>
     </message>
     <message>
+        <location filename="../../config/xmlpresconfigform.ui" line="211"/>
+        <location filename="../../config/xmlpresconfigform.ui" line="413"/>
         <location filename="../../config/xmlpresconfigform.ui" line="615"/>
         <source>Dark Gray</source>
         <translation>Gris foncé</translation>
     </message>
     <message>
+        <location filename="../../config/xmlpresconfigform.ui" line="216"/>
+        <location filename="../../config/xmlpresconfigform.ui" line="418"/>
         <location filename="../../config/xmlpresconfigform.ui" line="620"/>
         <source>Black</source>
         <translation>Noir</translation>
@@ -611,7 +663,7 @@ Valeur : %2</translation>
     <message>
         <location filename="../../config/xmlpresconfigform.ui" line="319"/>
         <source>&amp;Error color :</source>
-        <translation type="unfinished">Couleur des &amp;erreurs :</translation>
+        <translation>Couleur des &amp;erreurs :</translation>
     </message>
     <message>
         <location filename="../../config/xmlpresconfigform.ui" line="329"/>
@@ -635,7 +687,7 @@ Valeur : %2</translation>
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;If checked, when the text is filtered, the list shows sub-elements of the node whose filter matches the node name.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;p&gt;Si coché, lors du filtrage du texte, la liste affiche les sous-éléments du noeud qui ont été choisis (dont le nom du noeud correspond au filtre).&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Si coché, lors du filtrage du texte, la liste affiche les sous-éléments du noeud qui ont été choisis (dont le nom du noeud correspond au filtre).&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../../config/xmlpresconfigform.ui" line="73"/>
@@ -750,33 +802,33 @@ Date du fichier :%4</translation>
     <message>
         <location filename="../../docks/datastream/xmlpresentationwidget.ui" line="26"/>
         <source>Refresh</source>
-        <translation type="unfinished">Rafraîchir</translation>
+        <translation>Rafraîchir</translation>
     </message>
     <message>
         <location filename="../../docks/datastream/xmlpresentationwidget.ui" line="29"/>
         <source>Refresh the list of files present in the &lt;i&gt;log&lt;/i&gt; directory.</source>
-        <translation type="unfinished">Rafraîchir la liste des fichiers présents dans le dossier &lt;i&gt;log&lt;/i&gt;.</translation>
+        <translation>Rafraîchir la liste des fichiers présents dans le dossier &lt;i&gt;log&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../../docks/datastream/xmlpresentationwidget.ui" line="43"/>
         <source>Run X-Query</source>
-        <translation type="unfinished">Exécute une X-Query</translation>
+        <translation>Exécute une X-Query</translation>
     </message>
     <message>
         <location filename="../../docks/datastream/xmlpresentationwidget.ui" line="46"/>
         <source>Click on this button to open &lt;i&gt;X-Query&lt;/i&gt; dialog and query the XML document.</source>
-        <translation type="unfinished">Ce bouton ouvre la boite de dialogue &lt;i&gt;X-Query&lt;/i&gt; pour requêter le document XML.</translation>
+        <translation>Ce bouton ouvre la boite de dialogue &lt;i&gt;X-Query&lt;/i&gt; pour requêter le document XML.</translation>
     </message>
     <message>
         <location filename="../../docks/datastream/xmlpresentationwidget.ui" line="70"/>
         <source>Filter to use in the view. &lt;b&gt;XINX&lt;/b&gt; searches the node where the name matches the filter (literal or regular expression).</source>
-        <translation type="unfinished">Filtre à utiliser dans la vue. &lt;b&gt;XINX&lt;/b&gt; recherche le noeud où le nom correspond au filtre (littéralement ou en utilisant une expression régulière).</translation>
+        <translation>Filtre à utiliser dans la vue. &lt;b&gt;XINX&lt;/b&gt; recherche le noeud où le nom correspond au filtre (littéralement ou en utilisant une expression régulière).</translation>
     </message>
     <message>
         <location filename="../../docks/datastream/xmlpresentationwidget.ui" line="77"/>
         <source>If &lt;i&gt;Sub-element&lt;/i&gt; is selected when an element is found, all sub-elements are showed. &lt;br/&gt;
 If &lt;i&gt;None&lt;/i&gt; is selected only matched elements is showed.</source>
-        <translation type="unfinished">Si &lt;i&gt;Sous-élément&lt;/i&gt; est sélectionné, quand un élément est trouvé, tous les sous-éléments sont affichés.&lt;br/&gt;
+        <translation>Si &lt;i&gt;Sous-élément&lt;/i&gt; est sélectionné, quand un élément est trouvé, tous les sous-éléments sont affichés.&lt;br/&gt;
 Si &lt;i&gt;Aucun&lt;/i&gt; est sélectionné, seul les éléments correspondants sont affichés.</translation>
     </message>
     <message>
@@ -784,7 +836,7 @@ Si &lt;i&gt;Aucun&lt;/i&gt; est sélectionné, seul les éléments correspondant
         <source>List of file in the &lt;i&gt;log&lt;/i&gt; directory. If you select a file, the view is updated with the content of the file. &lt;br/&gt;
 
 You can open a file of the list, or a file in another directory.</source>
-        <translation type="unfinished">Liste des fichiers du dossier &lt;i&gt;log&lt;/i&gt;. Si vous selectionnez un fichier, la vue est mise à jour avec le contenu du fichier.&lt;br/&gt;
+        <translation>Liste des fichiers du dossier &lt;i&gt;log&lt;/i&gt;. Si vous selectionnez un fichier, la vue est mise à jour avec le contenu du fichier.&lt;br/&gt;
 
 Vous pouvez ouvrir un fichier de la liste, ou un autre fichier d&apos;un autre dossier.</translation>
     </message>
@@ -799,20 +851,21 @@ Vous pouvez ouvrir un fichier de la liste, ou un autre fichier d&apos;un autre d
     <message>
         <location filename="../../editors/models/xsl/xslcontentviewparser.cpp" line="272"/>
         <source>Element at line : %1</source>
-        <translation type="unfinished">Elément à la ligne : %1</translation>
+        <translation>Elément à la ligne : %1</translation>
     </message>
     <message>
         <location filename="../../editors/models/xsl/xslcontentviewparser.cpp" line="351"/>
         <source>Element at line : %1
 Mode = %2</source>
-        <translation type="unfinished">Elément à la ligne : %1
+        <translation>Elément à la ligne : %1
 Mode = %2</translation>
     </message>
     <message>
+        <location filename="../../editors/models/xsl/xslcontentviewparser.cpp" line="372"/>
         <location filename="../../editors/models/xsl/xslcontentviewparser.cpp" line="392"/>
         <source>Element at line : %1
 Value = %2</source>
-        <translation type="unfinished">Elément à la ligne : %1
+        <translation>Elément à la ligne : %1
 Valeur = %2</translation>
     </message>
 </context>
