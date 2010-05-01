@@ -3,8 +3,4 @@
   section="Applications/Programming"\
   title="XINX"\
   command="/usr/bin/xinx"
-?package(xinxprojectwizard):\
-  needs="X11"\
-  section="Applications/Programming"\
-  title="XINX Project Wizard Converter"\
-  command="/usr/bin/xinxprojectwizard"
+

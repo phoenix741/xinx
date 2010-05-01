@@ -9,51 +9,50 @@ Homepage: http://xinx.shadoware.org/
 Package: xinx
 Section: devel
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, xinx-scripts (>= 0.7.2.0)
+Depends: ${shlibs:Depends}, ${misc:Depends}, xinx-scripts (>= 0.9.0.0)
 Recommends: xinx-plugins-services, xinx-plugins-cvs, xinx-plugins-svn
-Suggests: xinx-doc
-Description: XSL/JS/HTML editor for Generix
+Suggests: xinx-doc xinx-plugins-gce
+Description: XSL/JS/HTML editor
  XINX is an editor of XSL stylesheet, JavaScript, Cascading Style Sheet.
- This editor is used with egx.
 
 Package: xinx-plugins-services
 Section: devel
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, xinx (= 0.8.1.3)
+Depends: ${shlibs:Depends}, ${misc:Depends}, xinx (>= 0.9.0.0)
 Description: WebServices plugins library for XINX
  Add the WebServices capabilities to XINX
  
 Package: xinx-plugins-cvs
 Section: devel
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, xinx (= 0.8.1.3), cvs | cvsnt
+Depends: ${shlibs:Depends}, ${misc:Depends}, xinx (>= 0.9.0.0), cvs | cvsnt
 Description: CVS plugins library for XINX
  Add the CVS capabilities to XINX
  
 Package: xinx-plugins-svn
 Section: devel
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, xinx (= 0.8.1.3), subversion
+Depends: ${shlibs:Depends}, ${misc:Depends}, xinx (>= 0.9.0.0), subversion
 Description: SubVersion plugins library for XINX
  Add the SubVersion capabilities to XINX
 
-Package: xinx-plugins-dictionary
+Package: xinx-plugins-gce
 Section: devel
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, xinx (= 0.8.1.3)
-Description: Add a dictionary dock to XINX
- Add a dictionary dock to XINX to open dictinary format of GCE130+
+Depends: ${shlibs:Depends}, ${misc:Depends}, xinx (>= 0.9.0.0)
+Description: Add some feature usefull when working on GCE
+ This plugins add some usefull feature for developping stylesheet on GCE
 
 Package: xinx-scripts
 Section: devel
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, xinx (>= 0.8.1.0)
+Depends: ${shlibs:Depends}, ${misc:Depends}, xinx (>= 0.9.0.0)
 Description: Default Scripts for XINX
  Default Script for XINX
  
 Package: xinx-doc
 Section: doc
 Architecture: all
-Depends: xinx (>= 0.8.1.0)
+Depends: xinx (>= 0.9.0.0)
 Description: Documentation for xinx
  Technical Documentation of XINX

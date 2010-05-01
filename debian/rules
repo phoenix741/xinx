@@ -7,11 +7,11 @@ install/xinx::
 	mkdir $(CURDIR)/debian/xinx/usr/
 	mkdir $(CURDIR)/debian/xinx/usr/bin/
 	cp $(CURDIR)/xinx/xinx $(CURDIR)/debian/xinx/usr/bin/
-	cp $(CURDIR)/xinxprojectwizard/xinxprojectwizard $(CURDIR)/debian/xinx/usr/bin/
 	
 	mkdir $(CURDIR)/debian/xinx/usr/lib/
 	cp -a $(CURDIR)/ext/qcodeedit/libqcodeedit* $(CURDIR)/debian/xinx/usr/lib/
-	cp -a $(CURDIR)/libxinx/libsharedxinx* $(CURDIR)/debian/xinx/usr/lib/
+	cp -a $(CURDIR)/ext/ideality/libideality* $(CURDIR)/debian/xinx/usr/lib/
+	cp -a $(CURDIR)/framework/libxinxframework* $(CURDIR)/debian/xinx/usr/lib/
 	cp -a $(CURDIR)/components/libxinxcmp* $(CURDIR)/debian/xinx/usr/lib/
 	
 install/xinx-plugins-services::
@@ -35,12 +35,12 @@ install/xinx-plugins-svn::
 	mkdir $(CURDIR)/debian/xinx-plugins-svn/usr/share/xinx/plugins/
 	cp $(CURDIR)/plugins/libsvnplugin.so $(CURDIR)/debian/xinx-plugins-svn/usr/share/xinx/plugins/
 
-install/xinx-plugins-dictionary::
-	mkdir $(CURDIR)/debian/xinx-plugins-dictionary/usr/
-	mkdir $(CURDIR)/debian/xinx-plugins-dictionary/usr/share/
-	mkdir $(CURDIR)/debian/xinx-plugins-dictionary/usr/share/xinx/
-	mkdir $(CURDIR)/debian/xinx-plugins-dictionary/usr/share/xinx/plugins/
-	cp $(CURDIR)/plugins/libdictionary.so $(CURDIR)/debian/xinx-plugins-dictionary/usr/share/xinx/plugins/
+install/xinx-plugins-gce::
+	mkdir $(CURDIR)/debian/xinx-plugins-gce/usr/
+	mkdir $(CURDIR)/debian/xinx-plugins-gce/usr/share/
+	mkdir $(CURDIR)/debian/xinx-plugins-gce/usr/share/xinx/
+	mkdir $(CURDIR)/debian/xinx-plugins-gce/usr/share/xinx/plugins/
+	cp $(CURDIR)/plugins/libgenerix.so $(CURDIR)/debian/xinx-plugins-gce/usr/share/xinx/plugins/
 
 install/xinx-scripts::
 	mkdir $(CURDIR)/debian/xinx-scripts/usr/
@@ -51,9 +51,10 @@ install/xinx-scripts::
 	cp $(CURDIR)/scripts/*.xq $(CURDIR)/debian/xinx-scripts/usr/share/xinx/scripts/
 
 install/xinx-doc::
+	cd $(CURDIR)
+	doxygen
 	mkdir $(CURDIR)/debian/xinx-doc/usr/
 	mkdir $(CURDIR)/debian/xinx-doc/usr/share/
 	mkdir $(CURDIR)/debian/xinx-doc/usr/share/doc/
 	mkdir $(CURDIR)/debian/xinx-doc/usr/share/doc/xinx-doc/
 	cp -a $(CURDIR)/doc/* $(CURDIR)/debian/xinx-doc/usr/share/doc/xinx-doc/
-	rm -rf $(CURDIR)/debian/xinx-doc/usr/share/doc/xinx-doc/html/.svn
