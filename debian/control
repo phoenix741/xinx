@@ -6,15 +6,6 @@ Build-Depends: debhelper (>= 7)
 Standards-Version: 3.7.3
 Homepage: http://xinx.shadoware.org/
 
-Package: xinx
-Section: devel
-Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, xinx-scripts (>= 0.9.0.0)
-Recommends: xinx-plugins-services, xinx-plugins-cvs, xinx-plugins-svn
-Suggests: xinx-doc xinx-plugins-gce
-Description: XSL/JS/HTML editor
- XINX is an editor of XSL stylesheet, JavaScript, Cascading Style Sheet.
-
 Package: xinx-plugins-services
 Section: devel
 Architecture: any
@@ -49,10 +40,19 @@ Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, xinx (>= 0.9.0.0)
 Description: Default Scripts for XINX
  Default Script for XINX
- 
+
 Package: xinx-doc
 Section: doc
 Architecture: all
 Depends: xinx (>= 0.9.0.0)
 Description: Documentation for xinx
  Technical Documentation of XINX
+
+Package: xinx
+Section: devel
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, xinx-scripts (>= 0.9.0.0)
+Recommends: xinx-plugins-services, xinx-plugins-cvs, xinx-plugins-svn
+Suggests: xinx-doc, xinx-plugins-gce
+Description: XSL/JS/HTML editor
+ XINX is an editor of XSL stylesheet, JavaScript, Cascading Style Sheet.
