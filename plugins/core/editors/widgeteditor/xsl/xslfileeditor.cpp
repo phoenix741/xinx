@@ -214,7 +214,7 @@ void StyleSheetEditor::launchStylesheetParsing(const QString & xmlfile)
 
 	result = xsltParser->getOutput();
 	m_sourceView->setPlainText(result);
-	m_htmlView->setHtml(result, QUrl(moduleInternetAdresse));
+	m_htmlView->setHtml(result, QUrl::fromLocalFile(moduleInternetAdresse));
 
 error:
 	foreach(const XsltParser::ErrorMessage & e, xsltParser->errors())
