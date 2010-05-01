@@ -3,3 +3,5 @@ ext/qcodeedit/libqcodeedit* /usr/lib/
 ext/ideality/lib/libideality* /usr/lib/
 framework/libxinxframework* /usr/lib/
 components/libxinxcmp* /usr/lib/
+scripts/*.js /usr/share/xinx/scripts/
+scripts/*.xq /usr/share/xinx/scripts/

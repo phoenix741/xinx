@@ -34,13 +34,6 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, xinx (>= 0.9.0.0)
 Description: Add some feature usefull when working on GCE
  This plugins add some usefull feature for developping stylesheet on GCE
 
-Package: xinx-scripts
-Section: devel
-Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, xinx (>= 0.9.0.0)
-Description: Default Scripts for XINX
- Default Script for XINX
-
 Package: xinx-doc
 Section: doc
 Architecture: all
@@ -51,7 +44,7 @@ Description: Documentation for xinx
 Package: xinx
 Section: devel
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, xinx-scripts (>= 0.9.0.0)
+Depends: ${shlibs:Depends}, ${misc:Depends}
 Recommends: xinx-plugins-services, xinx-plugins-cvs, xinx-plugins-svn
 Suggests: xinx-doc, xinx-plugins-gce
 Description: XSL/JS/HTML editor
