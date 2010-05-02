@@ -229,7 +229,7 @@ QString XsltParser::getOutput() const
 	xmlSetGenericErrorFunc(0, 0);
 	xmlSetStructuredErrorFunc(0, 0);
 
-	return QLatin1String((char*)buffer);
+	return QString::fromUtf8((char*)buffer);
 }
 
 void XsltParser::registerPlugin(void* ctxt)

@@ -435,37 +435,37 @@ QSize PluginDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelI
  * \class PluginSelector
  * \since 0.7.0.0
  *
- * \brief The PluginSelector provide a list of configurable plugin element.
+ * \brief The PluginSelector provides a list of configurable plugin elements.
  *
- * This class show to the user the list of plugins with for each
+ * This class shows to the user the list of plugins with for each
  * plugins a configure button and a about button.
  *
- * If the plugins propose one, the list can also show an icon. The list is inspired
+ * If the plugins suggests one, the list can also show an icon. The list is inspired
  * from some KDE application screen where the user can activate or desactivate plugins.
  *
  * \image html pluginselector1.png
  * \image latex pluginselector1.png
  *
  * Each item of the list is a PluginElement :
- * \li The Checkbox is only showed if PluginElement::isModifiable() return \e true.
- * \li PluginSelector show in bold the name of the PluginElement, and above the description (truncated with ellipse).
- * \li If PluginElement::pixmap().isValid() an icon is showed.
+ * \li The Checkbox is only shown if PluginElement::isModifiable() return \e true.
+ * \li PluginSelector shows in bold the name of the PluginElement, and above the description (truncated with ellipse).
+ * \li If PluginElement::pixmap().isValid() an icon is shown.
  * \li PluginElement::isActivated() and PluginElement::setActivated() are both used to show and change the check in
  * the checkbox.
  */
 
 /*!
  * \fn void PluginSelector::configurePlugin(PluginElement * plugin);
- * This signal is emited when the plugin request to be configured.
+ * This signal is emited when the plugin requests to be configured.
  */
 
 /*!
  * \fn void PluginSelector::aboutPlugin(PluginElement * plugin);
- * The signal is emited when the plugin request to show a description.
+ * The signal is emited when the plugin requests to show a description.
  */
 
 /*!
- * \brief Create the plugin selector widget.
+ * \brief Creates the plugin selector widget.
  * \param parent The parent widget.
  */
 PluginSelector::PluginSelector(QWidget *parent) : QListView(parent)
@@ -483,7 +483,7 @@ PluginSelector::PluginSelector(QWidget *parent) : QListView(parent)
 	setMouseTracking(true);
 }
 
-//! Destroy the plugin selector.
+//! Destroys the plugin selector.
 PluginSelector::~PluginSelector()
 {
 	delete d;

@@ -61,7 +61,7 @@
       <item row="0" column="0">
        <widget class="QListWidget" name="m_fileListWidget">
         <property name="whatsThis">
-         <string>This is the list of the file to commit. Only known files are listed here (&lt;i&gt;.xsl, .html, .css, .js, ...&lt;/i&gt;).&lt;br/&gt;
+         <string>This is the list of the file to commit. Only files, known by &lt;b&gt;XINX&lt;/b&gt; are listed here (&lt;i&gt;.xsl, .html, .css, .js, ...&lt;/i&gt;).&lt;br/&gt;
 In the list &lt;b&gt;XINX&lt;/b&gt; presents three actions : 
 &lt;ul&gt;
 &lt;li&gt;&lt;i&gt;Add and Commit&lt;/i&gt; : If the file doesn't exist in the repository but may be commited.&lt;/li&gt;

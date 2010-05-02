@@ -53,7 +53,7 @@
           <item row="0" column="1">
            <widget class="QLineEdit" name="m_nameLineEdit">
             <property name="whatsThis">
-             <string>Name of the snipet used to identify the snipet in the menus.</string>
+             <string>Name of the snipet used to identify it in the menus.</string>
             </property>
            </widget>
           </item>

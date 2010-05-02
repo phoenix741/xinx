@@ -1,59 +1,8 @@
 #!/usr/bin/make -f
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/qmake.mk
-QMAKE=qmake-qt4 project.pro
-
-install/xinx::
-	mkdir $(CURDIR)/debian/xinx/usr/
-	mkdir $(CURDIR)/debian/xinx/usr/bin/
-	cp $(CURDIR)/xinx/xinx $(CURDIR)/debian/xinx/usr/bin/
-	cp $(CURDIR)/xinxprojectwizard/xinxprojectwizard $(CURDIR)/debian/xinx/usr/bin/
-	
-	mkdir $(CURDIR)/debian/xinx/usr/lib/
-	cp -a $(CURDIR)/ext/qcodeedit/libqcodeedit* $(CURDIR)/debian/xinx/usr/lib/
-	cp -a $(CURDIR)/libxinx/libsharedxinx* $(CURDIR)/debian/xinx/usr/lib/
-	cp -a $(CURDIR)/components/libxinxcmp* $(CURDIR)/debian/xinx/usr/lib/
-	
-install/xinx-plugins-services::
-	mkdir $(CURDIR)/debian/xinx-plugins-services/usr/
-	mkdir $(CURDIR)/debian/xinx-plugins-services/usr/share/
-	mkdir $(CURDIR)/debian/xinx-plugins-services/usr/share/xinx/
-	mkdir $(CURDIR)/debian/xinx-plugins-services/usr/share/xinx/plugins/
-	cp $(CURDIR)/plugins/libservices.so $(CURDIR)/debian/xinx-plugins-services/usr/share/xinx/plugins/
-
-install/xinx-plugins-cvs::
-	mkdir $(CURDIR)/debian/xinx-plugins-cvs/usr/
-	mkdir $(CURDIR)/debian/xinx-plugins-cvs/usr/share/
-	mkdir $(CURDIR)/debian/xinx-plugins-cvs/usr/share/xinx/
-	mkdir $(CURDIR)/debian/xinx-plugins-cvs/usr/share/xinx/plugins/
-	cp $(CURDIR)/plugins/libcvsplugin.so $(CURDIR)/debian/xinx-plugins-cvs/usr/share/xinx/plugins/
-
-install/xinx-plugins-svn::
-	mkdir $(CURDIR)/debian/xinx-plugins-svn/usr/
-	mkdir $(CURDIR)/debian/xinx-plugins-svn/usr/share/
-	mkdir $(CURDIR)/debian/xinx-plugins-svn/usr/share/xinx/
-	mkdir $(CURDIR)/debian/xinx-plugins-svn/usr/share/xinx/plugins/
-	cp $(CURDIR)/plugins/libsvnplugin.so $(CURDIR)/debian/xinx-plugins-svn/usr/share/xinx/plugins/
-
-install/xinx-plugins-dictionary::
-	mkdir $(CURDIR)/debian/xinx-plugins-dictionary/usr/
-	mkdir $(CURDIR)/debian/xinx-plugins-dictionary/usr/share/
-	mkdir $(CURDIR)/debian/xinx-plugins-dictionary/usr/share/xinx/
-	mkdir $(CURDIR)/debian/xinx-plugins-dictionary/usr/share/xinx/plugins/
-	cp $(CURDIR)/plugins/libdictionary.so $(CURDIR)/debian/xinx-plugins-dictionary/usr/share/xinx/plugins/
-
-install/xinx-scripts::
-	mkdir $(CURDIR)/debian/xinx-scripts/usr/
-	mkdir $(CURDIR)/debian/xinx-scripts/usr/share/
-	mkdir $(CURDIR)/debian/xinx-scripts/usr/share/xinx/
-	mkdir $(CURDIR)/debian/xinx-scripts/usr/share/xinx/scripts/
-	cp $(CURDIR)/scripts/*.js $(CURDIR)/debian/xinx-scripts/usr/share/xinx/scripts/
-	cp $(CURDIR)/scripts/*.xq $(CURDIR)/debian/xinx-scripts/usr/share/xinx/scripts/
+QMAKE=qmake-qt4 xinx-project.pro
 
 install/xinx-doc::
-	mkdir $(CURDIR)/debian/xinx-doc/usr/
-	mkdir $(CURDIR)/debian/xinx-doc/usr/share/
-	mkdir $(CURDIR)/debian/xinx-doc/usr/share/doc/
-	mkdir $(CURDIR)/debian/xinx-doc/usr/share/doc/xinx-doc/
-	cp -a $(CURDIR)/doc/* $(CURDIR)/debian/xinx-doc/usr/share/doc/xinx-doc/
-	rm -rf $(CURDIR)/debian/xinx-doc/usr/share/doc/xinx-doc/html/.svn
+	cd $(CURDIR)
+	doxygen

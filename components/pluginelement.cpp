@@ -27,7 +27,7 @@
  * \class PluginElement
  * \since 0.7.2.0
  *
- * \brief The PluginElement class provides an item for use with the PluginSelector view class.
+ * \brief The PluginElement class provides an item to use with the PluginSelector view class.
  *
  * The PluginElement is used by the PluginSelector to show information in the list. This class has
  * \e abstract method. You must redefine this method in your PluginElement's class.
@@ -47,7 +47,7 @@ PluginElement::~PluginElement()
 
 /*!
  * \fn virtual bool PluginElement::isModifiable() const = 0
- * \brief If the plugin element is modifiable a checkbox is showed at the right
+ * \brief If the plugin element is modifiable a checkbox is shown at the right
  */
 
 /*!
@@ -57,12 +57,12 @@ PluginElement::~PluginElement()
 
 /*!
  * \fn virtual QString PluginElement::name() const = 0;
- * \brief Return the name of the plugin
+ * \brief Returns the name of the plugin
  */
 
 /*!
  * \fn virtual QString PluginElement::description() const = 0;
- * \brief Return the description of the plugin
+ * \brief Returns the description of the plugin
  */
 
 /*!
@@ -75,7 +75,7 @@ bool PluginElement::isActivated() const
 }
 
 /*!
- * \brief Activate the plugin if \p activated is true
+ * \brief Activates the plugin if \p activated is true
  * \sa setDesactivated(), isActivated()
  */
 void PluginElement::setActivated(bool activated)
