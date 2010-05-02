@@ -16,12 +16,11 @@ Description: XINX is an XSL Stylesheet editor
  attributes, on values of attributes (with paremeters or variables), on
  template modes, on template parameters, such as parsing of the
  stylesheet with an XML document to show a result.
- 
+ .
  XINX can also be used to modify some JavaScript and CSS.
- 
+ .
  This plugin add the possibility to call rpc web services.
- 
- 
+
 Package: xinx-plugins-cvs
 Section: devel
 Architecture: any
@@ -32,12 +31,12 @@ Description: XINX is XSL Stylesheet editor
  attributes, on values of attributes (with paremeters or variables), on
  template modes, on template parameters, such as parsing of the
  stylesheet with an XML document to show a result.
- 
+ .
  XINX can also be used to modify some JavaScript and CSS.
- 
+ .
  This plugin adds the possibility to update/commit/add/remove files to
  the CVS repository.
- 
+
 Package: xinx-plugins-svn
 Section: devel
 Architecture: any
@@ -48,9 +47,9 @@ Description: XINX is XSL Stylesheet editor
  attributes, on values of attributes (with paremeters or variables), on
  template modes, on template parameters, such as parsing of the
  stylesheet with an XML document to show a result.
- 
+ .
  XINX can also be used to modify some JavaScript and CSS.
- 
+ .
  This plugin adds the possibility to update/commit/add/remove files to
  the SubVersion repository.
 
@@ -64,9 +63,9 @@ Description: XINX is XSL Stylesheet editor
  attributes, on values of attributes (with paremeters or variables), on
  template modes, on template parameters, such as parsing of the
  stylesheet with an XML document to show a result.
- 
+ .
  XINX can also be used to modify some JavaScript and CSS.
- 
+ .
  This plugin adds the possibility to view dictionaries and configuration
  file of the GCE (c) Generix Group software. This plugin adds the
  derivation option too.
@@ -81,9 +80,9 @@ Description: XINX is XSL Stylesheet editor
  attributes, on values of attributes (with paremeters or variables), on
  template modes, on template parameters, such as parsing of the
  stylesheet with an XML document to show a result.
- 
+ .
  XINX can also be used to modify some JavaScript and CSS.
- 
+ .
  This package adds the documentation of the API of XINX. Useful to
  write plugin or script.
 
@@ -99,6 +98,6 @@ Description: XINX is XSL Stylesheet editor
  attributes, on values of attributes (with paremeters or variables), on
  template modes, on template parameters, such as parsing of the
  stylesheet with an XML document to show a result.
- 
+ .
  XINX can also be used to modify some JavaScript and CSS.
 
