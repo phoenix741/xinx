@@ -48,13 +48,11 @@ public:
 	virtual bool autoIndent();
 
 	virtual QIcon icon() const;
-	virtual QTextCodec * codec() const;
+protected:
+	virtual void detectCodec(QIODevice & d);
 
-	virtual void loadFromDevice(QIODevice & d);
-private:
-	void initObjects();
-
-	QTextCodec * m_codec;
+protected slots:
+	virtual void updateCodec();
 };
 
 #endif //_XMLFILEEDITOR_H_

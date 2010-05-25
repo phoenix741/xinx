@@ -54,6 +54,7 @@ public:
 
 	XslCompletionNodeModel * completionModel() const;
 protected:
+	virtual void detectCodec(QIODevice & d);
 	virtual void initLayout();
 	virtual ContentView2::Parser * createParser();
 	virtual ContentView2::CompletionModel * createModel(QSqlDatabase db, QObject * parent = 0);
@@ -61,6 +62,8 @@ private slots:
 	void cursorPositionChanged();
 	void tabIndexChange(int);
 	void xmlPresentationDockFilenameChanged(const QString & filename);
+protected slots:
+	virtual void updateCodec();
 private:
 	void initObjects();
 

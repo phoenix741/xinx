@@ -106,13 +106,13 @@ public:
 	 */
 	virtual QAbstractItemModel * model()  const;
 	/*!
-	 * Return the model used in the editor as model() but with the type ContentViewModel
+	 * Return the model used in the edi	tor as model() but with the type ContentViewModel
 	 * \sa model()
 	 */
 	ContentView2::TreeModel * contentViewModel() const;
 
 	//! The codec used to read and write the file. By Default, the codec is defined in options.
-	virtual QTextCodec * codec() const;
+	QTextCodec * codec();
 	/*!
 	 * Return the EndOfLine of the document. This can't be modified.
 	 * A newly created editor is in platform end of line type. Saving a file converte the
@@ -166,7 +166,14 @@ signals:
 	 */
 	void positionInEditorChanged(const QModelIndex & index);
 
+	/*!
+	 * This signal is emited when the codec is modified.
+	 */
+	void codecChanged();
+
 protected:
+	virtual void detectEOL(QIODevice & d);
+	virtual void detectCodec(QIODevice & d);
 	virtual void setModified(bool isModified);
 	virtual void contextMenuEvent(QContextMenuEvent * contextMenuEvent);
 
@@ -176,12 +183,17 @@ protected:
 	virtual void initCompleter();
 	friend class EditorFactory;
 
+	//! Set the codec to \e text
+	void setCodec(const QString & text);
 	//! Return the current root node
 	ContentView2::Node rootNode() const;
 	//! Return the file container
 	ContentView2::FileContainer fileContainer() const;
 	//! Create a parser for the text editor
 	virtual ContentView2::Parser * createParser();
+protected slots:
+	virtual void updateCodec();
+
 private slots:
 	void textChanged();
 	void updateImports(const ContentView2::File & file);
@@ -190,6 +202,7 @@ private:
 	void initObjects();
 
 	QTimer * m_keyTimer;
+	QString m_codec;
 
 	QBuffer * m_buffer;
 	XinxCodeEdit * m_view;

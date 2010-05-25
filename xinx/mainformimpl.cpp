@@ -986,7 +986,9 @@ void MainformImpl::updateEditorInformations()
 	if (qobject_cast<TextFileEditor*>(editor))      // This is a text file editor. So we have codec, ...
 	{
 		TextFileEditor * textFileEditor = qobject_cast<TextFileEditor*>(editor);
-		m_codecLabel->setText(textFileEditor->codec()->name());
+		if (textFileEditor->codec())
+			m_codecLabel->setText(textFileEditor->codec()->name());
+
 		switch (textFileEditor->eol())
 		{
 		case TextFileEditor::MacEndOfLine:

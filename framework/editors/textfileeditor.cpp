@@ -120,6 +120,8 @@ void TextFileEditor::initObjects()
 
 	connect(ContentView2::Manager::self()->cache(), SIGNAL(cacheLoaded(ContentView2::File)), this, SLOT(updateImports(ContentView2::File)), Qt::BlockingQueuedConnection);
 	connect(ErrorManager::self(), SIGNAL(changed()), this, SLOT(errorChanged()));
+
+	connect(textEdit()->editor(), SIGNAL(textEdited(QKeyEvent*)), this, SLOT(updateCodec()));
 }
 
 ContentView2::CompletionModel * TextFileEditor::createModel(QSqlDatabase db, QObject * parent)
@@ -186,10 +188,8 @@ void TextFileEditor::saveToFile(const QString & fileName)
 	textEdit()->setFilename(fileName);
 }
 
-void TextFileEditor::loadFromDevice(QIODevice & d)
+void TextFileEditor::detectEOL(QIODevice & d)
 {
-	m_keyTimer->stop();
-
 	// Get the EOL of the file.
 	char c;
 	while (d.getChar(&c))
@@ -211,6 +211,21 @@ void TextFileEditor::loadFromDevice(QIODevice & d)
 	}
 
 	d.reset();
+}
+
+void TextFileEditor::detectCodec(QIODevice & d)
+{
+	Q_UNUSED(d);
+
+	setCodec(XINXConfig::self()->config().editor.defaultTextCodec);
+}
+
+void TextFileEditor::loadFromDevice(QIODevice & d)
+{
+	m_keyTimer->stop();
+
+	detectEOL(d);
+	detectCodec(d);
 
 	QTextStream text(&d);
 	text.setCodec(codec());
@@ -370,7 +385,10 @@ ContentView2::Parser * TextFileEditor::createParser()
 void TextFileEditor::updateModel()
 {
 	ContentView2::Parser * parser = createParser();
-	if (! parser) return ;
+	if (! parser) {
+		emit contentChanged();
+		return ;
+	}
 
 	m_buffer->close();
 	if (codec())
@@ -428,25 +446,29 @@ ContentView2::FileContainer TextFileEditor::fileContainer() const
 	return m_file;
 }
 
-QTextCodec * TextFileEditor::codec() const
+void TextFileEditor::setCodec(const QString & text)
 {
-	QTextCodec * codec = 0;
-	if (m_file.isValid(ContentView2::Manager::self()->database()))
+	if (m_codec != text)
 	{
-		const QByteArray codecStr = m_file.file(ContentView2::Manager::self()->database()).encoding().toLatin1();
-		codec = QTextCodec::codecForName(codecStr);
+		m_codec = text;
+		emit codecChanged();
+	}
+}
+
+QTextCodec * TextFileEditor::codec()
+{
+	QTextCodec * codec = QTextCodec::codecForName(m_codec.toLatin1());
+	if( ! codec )
+	{
+		codec = QTextCodec::codecForLocale();
 	}
 
-	if (codec)
-	{
-		return codec;
-	}
-	else
-	{
-		QTextCodec * c = QTextCodec::codecForName(XINXConfig::self()->config().editor.defaultTextCodec.toAscii());
-		if (c) return c;
-		return QTextCodec::codecForLocale();
-	}
+	return codec;
+}
+
+void TextFileEditor::updateCodec()
+{
+
 }
 
 TextFileEditor::EndOfLineType TextFileEditor::eol() const
