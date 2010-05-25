@@ -47,25 +47,12 @@
 
 /* XmlFileEditor */
 
-XmlFileEditor::XmlFileEditor(QWidget *parent) : TextFileEditor(new XmlTextEditor(), parent), m_codec(0)
+XmlFileEditor::XmlFileEditor(QWidget *parent) : TextFileEditor(new XmlTextEditor(), parent)
 {
-	initObjects();
 }
 
 XmlFileEditor::~XmlFileEditor()
 {
-}
-
-void XmlFileEditor::initObjects()
-{
-}
-
-QTextCodec * XmlFileEditor::codec() const
-{
-	if (m_codec)
-		return m_codec;
-	else
-		return TextFileEditor::codec();
 }
 
 QString XmlFileEditor::defaultFileName() const
@@ -101,7 +88,28 @@ bool XmlFileEditor::autoIndent()
 	return true;
 }
 
-void XmlFileEditor::loadFromDevice(QIODevice & d)
+void XmlFileEditor::updateCodec()
+{
+	QXmlStreamReader reader(textEdit()->editor()->text());
+	while (! reader.atEnd())
+	{
+		reader.readNext();
+
+		if (reader.isStartDocument())
+		{
+			setCodec(reader.documentEncoding().toString());
+			break;
+		}
+
+		if (reader.isStartElement())
+		{
+			setCodec(TextFileEditor::codec()->name());
+			break;
+		}
+	}
+}
+
+void XmlFileEditor::detectCodec(QIODevice & d)
 {
 	{
 		QXmlStreamReader reader(&d);
@@ -111,18 +119,20 @@ void XmlFileEditor::loadFromDevice(QIODevice & d)
 
 			if (reader.isStartDocument())
 			{
-				m_codec = QTextCodec::codecForName(reader.documentEncoding().toString().toLatin1());
+				setCodec(reader.documentEncoding().toString());
 				break;
 			}
 
 			if (reader.isStartElement())
 			{
-				m_codec = TextFileEditor::codec();
+				setCodec(TextFileEditor::codec()->name());
 				break;
 			}
 		}
+
 	}
+
 	d.reset();
-	TextFileEditor::loadFromDevice(d);
 }
+
 

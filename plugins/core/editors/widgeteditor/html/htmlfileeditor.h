@@ -48,14 +48,17 @@ public:
 	virtual bool autoIndent();
 
 	virtual QIcon icon() const;
-	virtual QTextCodec * codec() const;
 
 	virtual void showHtml();
 
 	XslCompletionNodeModel * completionModel() const;
 protected:
+	virtual void detectCodec(QIODevice & d);
 	virtual void initLayout();
 	virtual ContentView2::CompletionModel * createModel(QSqlDatabase db, QObject * parent = 0);
+
+protected slots:
+	virtual void updateCodec();
 
 private slots:
 	void tabIndexChange(int);

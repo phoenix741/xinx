@@ -113,9 +113,16 @@ QIcon HtmlFileEditor::icon() const
 	return QIcon(":/images/typehtml.png");
 }
 
-QTextCodec * HtmlFileEditor::codec() const
+void HtmlFileEditor::detectCodec(QIODevice & d)
 {
-	return QTextCodec::codecForHtml(textEdit()->toPlainText().toLocal8Bit(), TextFileEditor::codec());
+	setCodec(QTextCodec::codecForHtml(d.readAll(), TextFileEditor::codec())->name());
+
+	d.reset();
+}
+
+void HtmlFileEditor::updateCodec()
+{
+	setCodec(QTextCodec::codecForHtml(textEdit()->toPlainText().toLocal8Bit(), TextFileEditor::codec())->name());
 }
 
 bool HtmlFileEditor::autoIndent()

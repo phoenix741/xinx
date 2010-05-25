@@ -103,6 +103,53 @@ void StyleSheetEditor::initLayout()
 	setLayout(hbox);
 }
 
+void StyleSheetEditor::updateCodec()
+{
+	QXmlStreamReader reader(textEdit()->editor()->text());
+	while (! reader.atEnd())
+	{
+		reader.readNext();
+
+		if (reader.isStartDocument())
+		{
+			setCodec(reader.documentEncoding().toString());
+			break;
+		}
+
+		if (reader.isStartElement())
+		{
+			setCodec(TextFileEditor::codec()->name());
+			break;
+		}
+	}
+}
+
+void StyleSheetEditor::detectCodec(QIODevice & d)
+{
+	{
+		QXmlStreamReader reader(&d);
+		while (! reader.atEnd())
+		{
+			reader.readNext();
+
+			if (reader.isStartDocument())
+			{
+				setCodec(reader.documentEncoding().toString().toLatin1());
+				break;
+			}
+
+			if (reader.isStartElement())
+			{
+				setCodec(TextFileEditor::codec()->name());
+				break;
+			}
+		}
+
+	}
+
+	d.reset();
+}
+
 ContentView2::Parser * StyleSheetEditor::createParser()
 {
 	return new XslContentView2Parser();
