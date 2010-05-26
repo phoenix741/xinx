@@ -41,18 +41,11 @@ public:
 	DictionaryParser();
 	virtual ~DictionaryParser();
 
-	virtual QTextCodec * codec()
-	{
-		return m_codec;
-	}
-
 	virtual void load();
 private:
 	void readRootNode();
 	void readLabelsNode();
 	void readLabelNode(ContentView2::Node parent);
-
-	QTextCodec * m_codec;
 };
 
 #endif // DICTIONARYPARSER_H

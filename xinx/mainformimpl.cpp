@@ -74,7 +74,6 @@
 #include <QClipboard>
 #include <QDateTime>
 #include <QWhatsThis>
-#include <QTextCodec>
 #include <QIcon>
 #include <QThreadPool>
 #include <QDebug>
@@ -986,8 +985,7 @@ void MainformImpl::updateEditorInformations()
 	if (qobject_cast<TextFileEditor*>(editor))      // This is a text file editor. So we have codec, ...
 	{
 		TextFileEditor * textFileEditor = qobject_cast<TextFileEditor*>(editor);
-		if (textFileEditor->codec())
-			m_codecLabel->setText(textFileEditor->codec()->name());
+		m_codecLabel->setText(textFileEditor->codecName());
 
 		switch (textFileEditor->eol())
 		{

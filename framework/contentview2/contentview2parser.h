@@ -68,8 +68,6 @@ public:
 
 	void setDecalage(int line);
 	int decalage() const;
-
-	virtual QTextCodec * codec();
 protected:
 	void clearNodes(Node rootNode);
 	void attachNode(const Node & parent, Node & child);

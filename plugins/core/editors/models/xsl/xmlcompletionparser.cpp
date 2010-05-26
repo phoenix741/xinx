@@ -29,7 +29,6 @@
 #include <project/xinxproject.h>
 
 // Qt header
-#include <QTextCodec>
 #include <QIcon>
 #include <QVariant>
 #include <QQueue>
@@ -45,7 +44,6 @@ XmlCompletionParser * XmlCompletionParser::s_self = 0;
 QHash<QString,uint> XmlCompletionParser::m_balisesName;
 QHash<uint,XmlCompletionParser::InternalBalise> XmlCompletionParser::m_balisesId;
 QHash<uint,XmlCompletionParser::InternalAttribute> XmlCompletionParser::m_attributesId;
-QTextCodec * XmlCompletionParser::m_codec = 0;
 
 /* XmlCompletionParser */
 
@@ -97,11 +95,6 @@ void XmlCompletionParser::load()
 	while (! atEnd())
 	{
 		readNext();
-
-		if (isStartDocument())
-		{
-			m_codec = QTextCodec::codecForName(documentEncoding().toString().toLatin1());
-		}
 
 		if (isStartElement())
 		{

@@ -115,14 +115,14 @@ QIcon HtmlFileEditor::icon() const
 
 void HtmlFileEditor::detectCodec(QIODevice & d)
 {
-	setCodec(QTextCodec::codecForHtml(d.readAll(), TextFileEditor::codec())->name());
+	setCodecName(QTextCodec::codecForHtml(d.readAll(), TextFileEditor::codec())->name());
 
 	d.reset();
 }
 
 void HtmlFileEditor::updateCodec()
 {
-	setCodec(QTextCodec::codecForHtml(textEdit()->toPlainText().toLocal8Bit(), TextFileEditor::codec())->name());
+	setCodecName(QTextCodec::codecForHtml(textEdit()->toPlainText().toLocal8Bit(), TextFileEditor::codec())->name());
 }
 
 bool HtmlFileEditor::autoIndent()

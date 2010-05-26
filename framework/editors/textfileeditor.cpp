@@ -66,7 +66,7 @@
 #endif
 #endif
 
-TextFileEditor::TextFileEditor(XinxCodeEdit * editor, QWidget *parent) : AbstractEditor(parent), m_view(editor), m_eol(DEFAULT_EOL), m_completionModel(0)
+TextFileEditor::TextFileEditor(XinxCodeEdit * editor, QWidget *parent) : AbstractEditor(parent), m_codec(XINXConfig::self()->config().editor.defaultTextCodec), m_view(editor), m_eol(DEFAULT_EOL), m_completionModel(0)
 {
 	initObjects();
 }
@@ -120,8 +120,6 @@ void TextFileEditor::initObjects()
 
 	connect(ContentView2::Manager::self()->cache(), SIGNAL(cacheLoaded(ContentView2::File)), this, SLOT(updateImports(ContentView2::File)), Qt::BlockingQueuedConnection);
 	connect(ErrorManager::self(), SIGNAL(changed()), this, SLOT(errorChanged()));
-
-	connect(textEdit()->editor(), SIGNAL(textEdited(QKeyEvent*)), this, SLOT(updateCodec()));
 }
 
 ContentView2::CompletionModel * TextFileEditor::createModel(QSqlDatabase db, QObject * parent)
@@ -217,7 +215,7 @@ void TextFileEditor::detectCodec(QIODevice & d)
 {
 	Q_UNUSED(d);
 
-	setCodec(XINXConfig::self()->config().editor.defaultTextCodec);
+	setCodecName(XINXConfig::self()->config().editor.defaultTextCodec);
 }
 
 void TextFileEditor::loadFromDevice(QIODevice & d)
@@ -384,6 +382,8 @@ ContentView2::Parser * TextFileEditor::createParser()
 
 void TextFileEditor::updateModel()
 {
+	updateCodec();
+
 	ContentView2::Parser * parser = createParser();
 	if (! parser) {
 		emit contentChanged();
@@ -446,7 +446,7 @@ ContentView2::FileContainer TextFileEditor::fileContainer() const
 	return m_file;
 }
 
-void TextFileEditor::setCodec(const QString & text)
+void TextFileEditor::setCodecName(const QString & text)
 {
 	if (m_codec != text)
 	{
@@ -455,9 +455,14 @@ void TextFileEditor::setCodec(const QString & text)
 	}
 }
 
-QTextCodec * TextFileEditor::codec()
+const QString & TextFileEditor::codecName() const
 {
-	QTextCodec * codec = QTextCodec::codecForName(m_codec.toLatin1());
+	return m_codec;
+}
+
+QTextCodec * TextFileEditor::codec() const
+{
+	QTextCodec * codec = QTextCodec::codecForName(m_codec.toAscii());
 	if( ! codec )
 	{
 		codec = QTextCodec::codecForLocale();

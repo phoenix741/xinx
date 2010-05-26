@@ -35,7 +35,6 @@
 #include <QXmlStreamReader>
 #include <QMessageBox>
 #include <QCompleter>
-#include <QTextCodec>
 #include <QWebView>
 #include <QSplitter>
 #include <QApplication>
@@ -97,13 +96,12 @@ void XmlFileEditor::updateCodec()
 
 		if (reader.isStartDocument())
 		{
-			setCodec(reader.documentEncoding().toString());
+			setCodecName(reader.documentEncoding().toString());
 			break;
 		}
 
 		if (reader.isStartElement())
 		{
-			setCodec(TextFileEditor::codec()->name());
 			break;
 		}
 	}
@@ -119,13 +117,12 @@ void XmlFileEditor::detectCodec(QIODevice & d)
 
 			if (reader.isStartDocument())
 			{
-				setCodec(reader.documentEncoding().toString());
+				setCodecName(reader.documentEncoding().toString());
 				break;
 			}
 
 			if (reader.isStartElement())
 			{
-				setCodec(TextFileEditor::codec()->name());
 				break;
 			}
 		}

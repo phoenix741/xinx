@@ -35,7 +35,6 @@
 #include <QFileInfo>
 #include <QDateTime>
 #include <QDebug>
-#include <QTextCodec>
 
 /*!
  * \defgroup ContentView2 Gestion de la completion
@@ -518,9 +517,6 @@ void Cache::runParserLoad(QSqlDatabase db, const struct_cache & c)
 		{
 			ErrorManager::self()->clearMessages(file.path());
 			parser->load();
-
-			if (parser->codec())
-				file.setEncoding(parser->codec()->name());
 
 			file.destroyImports(db);
 			foreach(const QString & import, parser->imports())
