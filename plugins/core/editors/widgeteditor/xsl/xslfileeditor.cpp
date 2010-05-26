@@ -39,7 +39,6 @@
 #include <QXmlStreamReader>
 #include <QMessageBox>
 #include <QCompleter>
-#include <QTextCodec>
 #include <QWebView>
 #include <QSplitter>
 #include <QApplication>
@@ -112,13 +111,12 @@ void StyleSheetEditor::updateCodec()
 
 		if (reader.isStartDocument())
 		{
-			setCodec(reader.documentEncoding().toString());
+			setCodecName(reader.documentEncoding().toString());
 			break;
 		}
 
 		if (reader.isStartElement())
 		{
-			setCodec(TextFileEditor::codec()->name());
 			break;
 		}
 	}
@@ -134,13 +132,12 @@ void StyleSheetEditor::detectCodec(QIODevice & d)
 
 			if (reader.isStartDocument())
 			{
-				setCodec(reader.documentEncoding().toString().toLatin1());
+				setCodecName(reader.documentEncoding().toString());
 				break;
 			}
 
 			if (reader.isStartElement())
 			{
-				setCodec(TextFileEditor::codec()->name());
 				break;
 			}
 		}
@@ -250,8 +247,6 @@ void StyleSheetEditor::launchStylesheetParsing(const QString & xmlfile)
 	}
 
 	QString result;
-	QString utf8Text = textEdit()->toPlainText();
-	QByteArray byte  = codec()->fromUnicode(utf8Text);
 
 	ErrorManager::self()->clearMessages(textEdit()->filename());
 

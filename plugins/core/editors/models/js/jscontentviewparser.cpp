@@ -23,7 +23,6 @@
 
 // Qt header
 #include <QIODevice>
-#include <QTextCodec>
 #include <QIcon>
 #include <QVariant>
 

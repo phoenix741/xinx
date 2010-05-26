@@ -237,10 +237,4 @@ QString Parser::locationOf(const QString & relativeFilename)
 	return ExternalFileResolver::self()->resolveFileName(relativeFilename, fn);
 }
 
-//! By default return NULL, must be sub-class to change the default codec
-QTextCodec * Parser::codec()
-{
-	return 0;
-}
-
 } // namespace ContentView2

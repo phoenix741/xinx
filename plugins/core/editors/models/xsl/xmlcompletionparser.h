@@ -29,8 +29,6 @@
 #include <QXmlStreamReader>
 #include <QStack>
 
-class QTextCodec;
-
 /* XmlCompletionParser */
 
 class XmlCompletionParser : public QObject, public ContentView2::Parser, private QXmlStreamReader
@@ -48,10 +46,6 @@ public:
 	~XmlCompletionParser();
 
 	virtual void load();
-	virtual QTextCodec * codec()
-	{
-		return m_codec;
-	}
 
 	static XmlCompletionParser * self();
 
@@ -95,7 +89,6 @@ private:
 	static QHash<QString,uint> m_balisesName;
 	static QHash<uint,InternalBalise> m_balisesId;
 	static QHash<uint,InternalAttribute> m_attributesId;
-	static QTextCodec * m_codec;
 
 	unsigned long m_index;
 	static XmlCompletionParser * s_self;

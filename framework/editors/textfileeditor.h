@@ -111,8 +111,13 @@ public:
 	 */
 	ContentView2::TreeModel * contentViewModel() const;
 
+	//! Set the codec to \e text
+	void setCodecName(const QString & text);
+	//! Get the codec name
+	const QString & codecName() const;
 	//! The codec used to read and write the file. By Default, the codec is defined in options.
-	QTextCodec * codec();
+	QTextCodec * codec() const;
+
 	/*!
 	 * Return the EndOfLine of the document. This can't be modified.
 	 * A newly created editor is in platform end of line type. Saving a file converte the

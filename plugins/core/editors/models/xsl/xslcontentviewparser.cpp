@@ -286,8 +286,8 @@ void XslContentView2Parser::readTemplate()
 					attachNode(t, node);
 
 					QByteArray textToParse = qPrintable(s.content);
-					if (codec())
-						textToParse = codec()->fromUnicode(s.content);
+					if (m_codec)
+						textToParse = m_codec->fromUnicode(s.content);
 					QBuffer buffer;
 					buffer.setData(textToParse);
 					buffer.open(QIODevice::ReadOnly);

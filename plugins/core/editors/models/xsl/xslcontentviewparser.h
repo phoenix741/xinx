@@ -42,10 +42,6 @@ public:
 
 	virtual void load();
 
-	QTextCodec * codec()
-	{
-		return m_codec;
-	}
 private:
 	struct struct_xsl_variable
 	{
@@ -75,5 +71,6 @@ private:
 
 	QTextCodec * m_codec;
 };
+
 
 #endif /* _XSLCONTENTVIEW2PARSER_H_ */

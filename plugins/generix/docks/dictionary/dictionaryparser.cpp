@@ -23,11 +23,10 @@
 #include <contentview2/contentview2manager.h>
 
 // Qt header
-#include <QTextCodec>
 #include <QVariant>
 #include <QFile>
 
-DictionaryParser::DictionaryParser() : ContentView2::Parser(), m_codec(0)
+DictionaryParser::DictionaryParser() : ContentView2::Parser()
 {
 }
 
@@ -63,11 +62,6 @@ void DictionaryParser::load()
 	while (! atEnd())
 	{
 		readNext();
-
-		if (isStartDocument())
-		{
-			m_codec = QTextCodec::codecForName(documentEncoding().toString().toLatin1());
-		}
 
 		if (isStartElement())
 		{
