@@ -5,3 +5,4 @@ framework/libxinxframework* /usr/lib/
 components/libxinxcmp* /usr/lib/
 scripts/*.js /usr/share/xinx/scripts/
 scripts/*.xq /usr/share/xinx/scripts/
+datas/*.xml /usr/share/xinx/datas/
