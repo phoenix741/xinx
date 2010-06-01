@@ -129,15 +129,7 @@ void processSnipetArguments(const QStringList & args)
 		const QString & filename = args.at(i + 1);
 
 
-		if (arg == "--init")
-		{
-			QFileInfo fileInfo("datas:snipets.db");
-			if (fileInfo.exists()) return; /* In init mode the file must not exist */
-			SnipetList list;
-			list.loadFromFile(filename);
-			SnipetManager::self()->importSnipetList(list, false);
-		}
-		else if (arg == "--import")
+		if (arg == "--import")
 		{
 			SnipetList list;
 			list.loadFromFile(filename);

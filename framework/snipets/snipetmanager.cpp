@@ -111,7 +111,7 @@ SnipetMenu * SnipetManager::createSnipetMenu(const QString & title, QWidget * pa
 	return menu;
 }
 
-int SnipetManager::getCategoryId(const QStringList & category)
+int SnipetManager::getCategoryId(const QStringList & category) const
 {
 	int parentCategory = 1;
 	QSqlQuery selectQuery("SELECT id FROM categories WHERE parent_id=:parentCategory AND LOWER(name) like LOWER(:name)", database());
@@ -371,7 +371,7 @@ bool SnipetManager::exportSnipetList(const QList<int> & list, SnipetList * snipe
 	return true;
 }
 
-bool SnipetManager::importSnipetList(const SnipetList & list, bool imported, QWidget * parent)
+bool SnipetManager::importSnipetList(const SnipetList & list, bool imported, QWidget * parent) const
 {
 	QSqlQuery insertSnipetQuery("INSERT INTO snipets(name, description, shortcut, icon, auto, show_dialog, text, available_script, category_id) "
 	                            "VALUES(:name, :description, :shortcut, :icon, :auto, :dialog, :text, :available_script, :category_id)", database());
@@ -778,6 +778,14 @@ bool SnipetManager::createDatabase(QSqlDatabase db) const
 		qWarning(qPrintable(createQuery.lastError().text()));
 		return false;
 	}
+
+	if(QFileInfo("datas:template.xml").exists())
+	{
+		SnipetList list;
+		list.loadFromFile("datas:template.xml");
+		importSnipetList(list, false);
+	}
+
 	return true;
 }
 

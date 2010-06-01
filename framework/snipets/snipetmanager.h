@@ -65,7 +65,7 @@ public:
 
 	QList<int> snipets() const;
 	QList<int> snipets(int categoryId) const;
-	bool importSnipetList(const SnipetList & list, bool imported = true, QWidget * parent = 0);
+	bool importSnipetList(const SnipetList & list, bool imported = true, QWidget * parent = 0) const;
 	bool exportSnipetList(const QList<int> & list, SnipetList * snipets, QWidget * parent = 0);
 
 	bool callSnipet(int id, QString * result, QWidget * parent = 0);
@@ -76,7 +76,7 @@ public:
 	bool isAvailable(const QString & script, const QString & type, int id) const;
 	bool isSnipetMatch(const QString & filename, int snipetId) const;
 
-	int getCategoryId(const QStringList & category);
+	int getCategoryId(const QStringList & category) const;
 	QStringList getCategoryName(int id);
 private:
 	SnipetManager();
