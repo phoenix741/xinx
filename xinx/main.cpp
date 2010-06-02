@@ -91,6 +91,7 @@ void initSearchPath(QApplication * app)
 	QDir::addSearchPath("datas", QDir(QApplication::applicationDirPath()).absoluteFilePath("../datas"));
 #ifndef Q_WS_WIN
 	QDir::addSearchPath("datas", QDir(QApplication::applicationDirPath()).absoluteFilePath("../share/xinx/datas"));
+	QDir::addSearchPath("datas", QDir(QApplication::applicationDirPath()).absoluteFilePath("../lib/xinx/datas"));
 #endif /* Q_WS_WIN */
 
 	// ... for scripts ...
@@ -98,6 +99,7 @@ void initSearchPath(QApplication * app)
 	QDir::addSearchPath("scripts", QDir(QApplication::applicationDirPath()).absoluteFilePath("../scripts"));
 #ifndef Q_WS_WIN
 	QDir::addSearchPath("scripts", QDir(QApplication::applicationDirPath()).absoluteFilePath("../share/xinx/scripts"));
+	QDir::addSearchPath("scripts", QDir(QApplication::applicationDirPath()).absoluteFilePath("../lib/xinx/scripts"));
 #endif /* Q_WS_WIN */
 
 	// ... for plugins ...
@@ -105,6 +107,7 @@ void initSearchPath(QApplication * app)
 	QDir::addSearchPath("plugins", QDir(QApplication::applicationDirPath()).absoluteFilePath("../plugins"));
 #ifndef Q_WS_WIN
 	QDir::addSearchPath("plugins", QDir(QApplication::applicationDirPath()).absoluteFilePath("../share/xinx/plugins"));
+	QDir::addSearchPath("plugins", QDir(QApplication::applicationDirPath()).absoluteFilePath("../lib/xinx/plugins"));
 #endif /* Q_WS_WIN */
 	foreach(const QString & searchPath, QDir::searchPaths("plugins"))
 	{
@@ -116,6 +119,7 @@ void initSearchPath(QApplication * app)
 	QDir::addSearchPath("templates", QDir(QApplication::applicationDirPath()).absoluteFilePath("../templates"));
 #ifndef Q_WS_WIN
 	QDir::addSearchPath("templates", QDir(QApplication::applicationDirPath()).absoluteFilePath("../share/xinx/templates"));
+	QDir::addSearchPath("templates", QDir(QApplication::applicationDirPath()).absoluteFilePath("../lib/xinx/templates"));
 #endif /* Q_WS_WIN */
 }
 
