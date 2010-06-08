@@ -284,14 +284,16 @@ void CustomSchemeImpl::updateFormatList()
 	m_formatsListView->clear();
 
 	if (m_formats)
-		foreach(const QString & f, m_formats->formats())
 	{
-		QFormat format = m_formats->format(f);
-		QListWidgetItem * item = new QListWidgetItem(f, m_formatsListView);
-		if (format.background.isValid()) item->setBackground(format.background);
-		if (format.foreground.isValid()) item->setForeground(format.foreground);
-		item->setFont(format.toTextCharFormat().font());
-		item->setHidden(m_hiddenFormat.contains(f));
+		foreach(const QString & f, m_formats->formats())
+		{
+			QFormat format = m_formats->format(f);
+			QListWidgetItem * item = new QListWidgetItem(f, m_formatsListView);
+			if (format.background.isValid()) item->setBackground(format.background);
+			if (format.foreground.isValid()) item->setForeground(format.foreground);
+			item->setFont(format.toTextCharFormat().font());
+			item->setHidden(m_hiddenFormat.contains(f));
+		}
 	}
 
 	if (m_formatsListView->count())

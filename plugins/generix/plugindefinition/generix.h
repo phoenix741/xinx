@@ -31,6 +31,7 @@ class Gce150FileResolver;
 /* GenerixPlugin */
 
 class GenerixPlugin :   public QObject,
+		public IFilePlugin,
 		public IXinxInputOutputPlugin,
 		public IDockPlugin,
 		public IXinxPluginConfiguration,
@@ -44,6 +45,7 @@ class GenerixPlugin :   public QObject,
 	Q_INTERFACES(IXinxInputOutputPlugin)
 	Q_INTERFACES(IDockPlugin)
 	Q_INTERFACES(IXinxPluginConfiguration)
+	Q_INTERFACES(IFilePlugin)
 	Q_INTERFACES(IResolverPlugin)
 	Q_INTERFACES(IXinxPluginProjectConfiguration)
 	Q_INTERFACES(IXinxXsltParser)
@@ -61,6 +63,7 @@ public:
 	virtual QList<IProjectInitialisationStep*> loadProjectStep(XinxProject * project);
 	virtual QList<IProjectInitialisationStep*> closeProjectStep(XinxProject * project);
 
+	virtual QList<IFileTypePlugin*> fileTypes();
 
 	virtual QIODevice * loadFile(const QString & filename);
 	virtual QIODevice * saveFile(const QString & filename, const QString & oldfilename);
@@ -74,6 +77,7 @@ public:
 	virtual QList<IXinxPluginProjectConfigurationPage*> createProjectSettingsPage(QWidget * parent);
 	virtual QList<IXinxPluginNewProjectConfigurationPage*> createNewProjectSettingsPages();
 private:
+	QList<IFileTypePlugin*> m_fileTypes;
 	GenerixProjectDockImpl * m_gnxDock;
 	DictionaryDockWidgetImpl * m_dock;
 	Gce150FileResolver * m_resolver;

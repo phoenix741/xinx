@@ -9,7 +9,9 @@ DESTDIR += ../
 LIBS += -L../../components \
     -lxinxcmp \
     -L../../framework \
-    -lxinxframework
+	-lxinxframework \
+	-L../../ext/qcodeedit \
+	-lqcodeedit
 win32:LIBS += -lwsock32 \
     -llibxml2 \
     -llibxslt
@@ -17,7 +19,12 @@ unix:LIBS += -lxml2 \
     -lxslt
 TARGET = generix
 INCLUDEPATH += ../../framework \
-    ../../components
+	../../components \
+	../../ext/qcodeedit/lib \
+	../../ext/qcodeedit/lib/document \
+	../../ext/qcodeedit/lib/language \
+	../../ext/qcodeedit/lib/qnfa \
+	../../ext/qcodeedit/lib/widgets
 unix:INCLUDEPATH += /usr/include/libxml2
 RESOURCES = plugindefinition/generix.qrc
 TRANSLATIONS += plugindefinition/translations/dictionary_fr.ts
@@ -48,7 +55,11 @@ HEADERS = plugindefinition/generix.h \
     config/customgeneriximpl.h \
     config/gcesettings.h \
     config/selfgcesettings.h \
-    configuration/gceconfigurationxmlparser2.h
+	configuration/gceconfigurationxmlparser2.h \
+	editors/scheme/maqformatscheme.h \
+	editors/widgeteditor/maq/maqfileeditor.h \
+	editors/widgeteditor/maq/maqtexteditor.h \
+	plugindefinition/filetypeplugin.h
 SOURCES = plugindefinition/generix.cpp \
     docks/dictionary/dictionarydockwidgetimpl.cpp \
     docks/dictionary/dictionaryparser.cpp \
@@ -76,7 +87,11 @@ SOURCES = plugindefinition/generix.cpp \
     config/customgeneriximpl.cpp \
     config/gcesettings.cpp \
     config/selfgcesettings.cpp \
-    configuration/gceconfigurationxmlparser2.cpp
+	configuration/gceconfigurationxmlparser2.cpp \
+	editors/scheme/maqformatscheme.cpp \
+	editors/widgeteditor/maq/maqfileeditor.cpp \
+	editors/widgeteditor/maq/maqtexteditor.cpp \
+	plugindefinition/filetypeplugin.cpp
 win32:RC_FILE += rc/plugin.rc
 FORMS += ui/dictionarydockwidget.ui \
     projectproperty/std/generixprojectpageform.ui \

@@ -1,0 +1,40 @@
+<!DOCTYPE QNFA>
+<QNFA language="Maquette" extensions="std_fra" defaultLineMark="bookmark">
+	<context id="comment/single" format="comment" >
+		<start>%CR</start>
+		<stop exclusive="false">\n</stop>
+	</context>
+
+	<context id="data/string" format="string" >
+		<start>&quot;</start>
+		<stop>&quot;</stop>
+		<stop exclusive="false">\n</stop>
+		<sequence id="escape" format="escapeseq" >\\[nrtvf\\"'\n]</sequence>
+	</context>
+
+	<context id="data/chars" format="string" >
+		<start>'</start>
+		<stop>'</stop>
+		<stop exclusive="false">\n</stop>
+		<sequence id="escape" format="escapeseq" >\\[nrtvf\\"'\n]</sequence>
+	</context>
+
+	<sequence parenthesis="if:open" fold="1">T[0-9]+ si</sequence>
+	<sequence parenthesis="if:close" fold="1">T[0-9]+ fsi</sequence>
+	<sequence parenthesis="round:open">(</sequence>
+	<sequence parenthesis="round:close">)</sequence>
+
+	<list id="keywords/all" format="reservedword">
+		<word>si</word>
+		<word>fsi</word>
+		<word>else</word>
+		<word>ISQL</word>
+		<word>CODSOC</word>
+		<word>C</word>
+	</list>
+
+	<word id="data/float" format="numbers">-?[0-9]*.[0-9]+f?</word>
+	<word id="data/hexadecimal" format="numbers">0[xX][0-9a-fA-F]+[ulUL]*</word>
+	<word id="data/octal" format="numbers">0[0-7]+</word>
+	<word id="data/decimal" format="numbers">-?[0-9]+[ulUL]*</word>
+</QNFA>
