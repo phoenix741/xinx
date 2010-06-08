@@ -106,6 +106,9 @@ MainformImpl::MainformImpl(QWidget * parent) : DMainWindow(parent),  m_lastFileN
 	// Restore windows property
 	readWindowSettings();
 
+	// Initialise XINX Cache with an empty project
+	ContentView2::Manager::self()->initializeDatabase();
+
 	startTimer(1000);
 }
 

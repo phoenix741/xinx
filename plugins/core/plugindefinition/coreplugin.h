@@ -70,6 +70,8 @@ public:
 	virtual ContentView2::Parser * createParser(const QString & type);
 
 	XmlPresentationDockWidget * dock();
+private slots:
+	void snipetChanged();
 private:
 	QList<IFileTypePlugin*> m_fileTypes;
 	XinxAction::MenuList m_menus;

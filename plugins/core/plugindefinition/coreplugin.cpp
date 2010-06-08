@@ -40,6 +40,8 @@
 #include "editors/models/xsl/xslcontentviewparser.h"
 #include "editors/models/js/jscontentviewparser.h"
 #include <snipets/snipetcompletionparser.h>
+#include <snipets/snipetmanager.h>
+#include <contentview2/contentview2cache.h>
 
 // Qt header
 #include <QStringList>
@@ -89,6 +91,8 @@ bool CorePlugin::initializePlugin(const QString & lang)
 
 	ContentView2::Manager::self()->addInitializationParser(true, "Snipet", "Snipet", "*");
 	ContentView2::Manager::self()->addInitializationParser(true, "XmlCompletion", "XmlCompletion", "*");
+
+	connect(SnipetManager::self(), SIGNAL(changed()), this, SLOT(snipetChanged()));
 
 	return true;
 }
@@ -237,6 +241,11 @@ XmlPresentationDockWidget * CorePlugin::dock()
 QList<IFileResolverPlugin*> CorePlugin::fileResolvers()
 {
 	return QList<IFileResolverPlugin*>() << m_resolver;
+}
+
+void CorePlugin::snipetChanged()
+{
+	ContentView2::Manager::self()->cache()->addToCache(0, "Snipet", "Snipet", "*");
 }
 
 Q_EXPORT_PLUGIN2(coreplugin, CorePlugin)

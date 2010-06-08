@@ -47,7 +47,7 @@ public:
 
 	static SnipetManager * self();
 
-	QSqlDatabase database() const;
+	QSqlDatabase database();
 
 	CategoryItemModel * createCategoryItemModel(QObject * parent = 0);
 	SnipetItemModel * createSnipetItemModel(QObject * parent = 0);
@@ -63,26 +63,28 @@ public:
 	void duplicateSnipet(int id, QWidget * parent = 0);
 	bool removeSnipet(int id, QWidget * parent = 0);
 
-	QList<int> snipets() const;
-	QList<int> snipets(int categoryId) const;
-	bool importSnipetList(const SnipetList & list, bool imported = true, QWidget * parent = 0) const;
+	QList<int> snipets();
+	QList<int> snipets(int categoryId);
+	bool importSnipetList(const SnipetList & list, bool imported = true, QWidget * parent = 0);
 	bool exportSnipetList(const QList<int> & list, SnipetList * snipets, QWidget * parent = 0);
 
 	bool callSnipet(int id, QString * result, QWidget * parent = 0);
 	bool callSnipet(QString key, QString * result, const QString & filename = QString(), QWidget * parent = 0);
 	bool callAutomaticSnipet(QString key, QString * result, const QString & filename = QString(), QWidget * parent = 0);
 
-	bool executeSnipetScript(const QString & script, const QStringList & values, QString * result) const;
-	bool isAvailable(const QString & script, const QString & type, int id) const;
-	bool isSnipetMatch(const QString & filename, int snipetId) const;
+	bool executeSnipetScript(const QString & script, const QStringList & values, QString * result);
+	bool isAvailable(const QString & script, const QString & type, int id);
+	bool isSnipetMatch(const QString & filename, int snipetId);
 
-	int getCategoryId(const QStringList & category) const;
+	int getCategoryId(const QStringList & category);
 	QStringList getCategoryName(int id);
+signals:
+	void changed();
 private:
 	SnipetManager();
-	bool openDatabase() const;
-	bool createDatabase(QSqlDatabase db) const;
-	void closeDatabase() const;
+	bool openDatabase();
+	bool createDatabase(QSqlDatabase db);
+	void closeDatabase();
 
 	QObjectCleanupHandler m_handler;
 	static SnipetManager * s_self;
