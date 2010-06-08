@@ -120,6 +120,8 @@ void TextFileEditor::initObjects()
 
 	connect(ContentView2::Manager::self()->cache(), SIGNAL(cacheLoaded(ContentView2::File)), this, SLOT(updateImports(ContentView2::File)), Qt::BlockingQueuedConnection);
 	connect(ErrorManager::self(), SIGNAL(changed()), this, SLOT(errorChanged()));
+
+	connect(textEdit()->editor(), SIGNAL(textEdited(QKeyEvent*)), this, SLOT(updateCodec()));
 }
 
 ContentView2::CompletionModel * TextFileEditor::createModel(QSqlDatabase db, QObject * parent)
