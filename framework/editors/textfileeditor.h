@@ -188,8 +188,6 @@ protected:
 	virtual void initCompleter();
 	friend class EditorFactory;
 
-	//! Set the codec to \e text
-	void setCodec(const QString & text);
 	//! Return the current root node
 	ContentView2::Node rootNode() const;
 	//! Return the file container
