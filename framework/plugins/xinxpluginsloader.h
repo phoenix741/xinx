@@ -64,7 +64,7 @@ public:
 	/*! Return all the file type knew by XINX. */
 	QList<IFileTypePlugin*> fileTypes() const;
 	/*! Search the file type for the corresponding filename  */
-	IFileTypePlugin * matchedFileType(const QString & filename) const;
+	QList<IFileTypePlugin*> matchedFileType(const QString & filename) const;
 	/*! Return the filter for a given file type */
 	static QString fileTypeFilter(IFileTypePlugin * fileType);
 	//! Return a list of filter that can be used open dialog box
@@ -89,7 +89,5 @@ private:
 
 	static XinxPluginsLoader * s_self;
 };
-
-Q_DECLARE_METATYPE(IFileTypePlugin*);
 
 #endif /*XINXPLUGINSLOADER_H_*/

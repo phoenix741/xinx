@@ -31,7 +31,8 @@ MaquetteFormatScheme::MaquetteFormatScheme(XINXConfig * config) : XinxFormatSche
 
 void MaquetteFormatScheme::createDefaultScheme()
 {
-	QFormat comment, string, escapeseq, reservedword, numbers, blocP, bloc05, bloc10, bloc11, bloc12;
+	QFormat comment, string, escapeseq, reservedword, numbers,
+			blocP, blocV, blocT, blocPercent;
 
 	// Comment format
 	comment.foreground = Qt::darkGreen;
@@ -41,10 +42,6 @@ void MaquetteFormatScheme::createDefaultScheme()
 	string.foreground = Qt::red;
 	setFormat("string", string);
 
-	// Escape Sequence format
-	escapeseq.foreground = QColor(0xff, 0x14, 0x93);
-	setFormat("escapeseq", escapeseq);
-
 	// Reserved Word format
 	reservedword.weight = QFont::Bold;
 	setFormat("reservedword", reservedword);
@@ -52,24 +49,28 @@ void MaquetteFormatScheme::createDefaultScheme()
 	// Numbers format
 	numbers.foreground = Qt::blue;
 	setFormat("numbers", numbers);
+	setFormat("variable", numbers);
+	setFormat("variable_fictive", numbers);
 
 	// BlocP format
 	blocP.background = QColor(0xf5, 0xff, 0xbf);
 	setFormat("blocP", blocP);
 
-	// Bloc05 format
-	bloc05.background = QColor(0xff, 0xd4, 0xd4);
-	setFormat("bloc05", bloc05);
+	// Reserved Word format
+	reservedword.background = QColor(0xf5, 0xff, 0xbf);
+	reservedword.weight = QFont::Bold;
+	setFormat("maquette_word", reservedword);
 
-	// Bloc10 format
-	bloc10.background = QColor(0xc0, 0xe0, 0xff);
-	setFormat("bloc10", bloc10);
+	// BlocV format
+	blocV.background = QColor(0xff, 0xb9, 0xae);
+	setFormat("blocV", blocV);
+	setFormat("blocM", blocV);
 
-	// Bloc11 format
-	bloc11.background = QColor(0xa6, 0xd9, 0xff);
-	setFormat("bloc11", bloc11);
+	// blocPercent format
+	blocPercent.foreground = QColor(0x05, 0xb8, 0xff);
+	setFormat("blocPercent", blocPercent);
 
-	// Bloc12 format
-	bloc12.background = QColor(0x93, 0xd6, 0xff);
-	setFormat("bloc12", bloc12);
+	// blocT format
+	blocT.background = QColor(0xfe, 0x8e, 0xff);
+	setFormat("blocT", blocT);
 }

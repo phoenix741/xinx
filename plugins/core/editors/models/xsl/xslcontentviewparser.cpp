@@ -143,10 +143,10 @@ void XslContentView2Parser::readStyleSheet()
 				node.setData(QFileInfo(import).fileName(), ContentView2::Node::NODE_DISPLAY_NAME);
 				node.setData("Import", ContentView2::Node::NODE_TYPE);
 
-				IFileTypePlugin * fileType = XinxPluginsLoader::self()->matchedFileType(import);
-				if (fileType)
+				QList<IFileTypePlugin*> fileTypes = XinxPluginsLoader::self()->matchedFileType(import);
+				if (fileTypes.size() > 0)
 				{
-					node.setData(fileType->icon(), ContentView2::Node::NODE_ICON);
+					node.setData(fileTypes.at(0)->icon(), ContentView2::Node::NODE_ICON);
 				}
 				else
 				{
@@ -275,13 +275,13 @@ void XslContentView2Parser::readTemplate()
 			node.setFileId(rootNode().fileId());
 
 			// Il nous faut un parser JavaScript
-			IFileTypePlugin * ft = XinxPluginsLoader::self()->matchedFileType(s.src);
+			QList<IFileTypePlugin *> ft = XinxPluginsLoader::self()->matchedFileType(s.src);
 			ContentView2::Parser * parser = ContentView2::ParserFactory::getParserByFilename(s.src);
-			if (ft && parser)
+			if (ft.size() && parser)
 			{
 				try
 				{
-					node.setData(ft->icon(), ContentView2::Node::NODE_ICON);
+					node.setData(ft.at(0)->icon(), ContentView2::Node::NODE_ICON);
 
 					attachNode(t, node);
 

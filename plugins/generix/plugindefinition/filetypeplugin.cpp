@@ -29,12 +29,12 @@ QString MaquetteFileType::description()
 
 QString MaquetteFileType::match()
 {
-	return "*.std_fra";
+	return "*.std_fra *.eta *.maq *.txt *.rmf_fra *.pcl_fra *.xtf_fra";
 }
 
 QString MaquetteFileType::icon()
 {
-	return ":/images/typemaq.png";
+	return ":/generix/images/typemaq.png";
 }
 
 AbstractEditor * MaquetteFileType::createEditor(const QString & filename)

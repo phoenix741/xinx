@@ -30,6 +30,7 @@ namespace ContentView2
 
 class LIBEXPORT ParserFactory
 {
+	Q_DECLARE_TR_FUNCTIONS(ParserFactory);
 public:
 	ParserFactory();
 

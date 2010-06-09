@@ -39,5 +39,5 @@ QString MaquetteFileEditor::defaultFileName() const
 
 QIcon MaquetteFileEditor::icon() const
 {
-	return QIcon(":/images/typemaq.png");
+	return QIcon(":/generix/images/typemaq.png");
 }

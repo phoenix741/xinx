@@ -119,10 +119,10 @@ void ProjectPropertyImpl::loadFromProject(XinxProject * project)
 
 	foreach(QString filename, ContentView2::Manager::self()->cache()->contentsViewLoaded())
 	{
-		IFileTypePlugin * fileType = XinxPluginsLoader::self()->matchedFileType(filename);
+		QList<IFileTypePlugin *> fileTypes = XinxPluginsLoader::self()->matchedFileType(filename);
 		QString fn = QDir(project->projectPath()).relativeFilePath(filename);
-		if (fileType)
-			new QListWidgetItem(QIcon(fileType->icon()), fn, m_preloadedFiles);
+		if (fileTypes.size())
+			new QListWidgetItem(QIcon(fileTypes.at(0)->icon()), fn, m_preloadedFiles);
 		else
 			new QListWidgetItem(fn, m_preloadedFiles);
 	}

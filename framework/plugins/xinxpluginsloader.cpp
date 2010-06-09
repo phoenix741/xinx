@@ -180,9 +180,9 @@ QList<IFileTypePlugin*> XinxPluginsLoader::fileTypes() const
 	return result;
 }
 
-IFileTypePlugin * XinxPluginsLoader::matchedFileType(const QString & filename) const
+QList<IFileTypePlugin*> XinxPluginsLoader::matchedFileType(const QString & filename) const
 {
-	QList<IFileTypePlugin*> types = fileTypes();
+	QList<IFileTypePlugin*> types = fileTypes(), result;
 	foreach(IFileTypePlugin* plugin, types)
 	{
 		QStringList patterns = plugin->match().split(" ");
@@ -190,10 +190,10 @@ IFileTypePlugin * XinxPluginsLoader::matchedFileType(const QString & filename) c
 		{
 			QRegExp pattern(match, Qt::CaseInsensitive, QRegExp::Wildcard);
 			if (pattern.exactMatch(filename))
-				return plugin;
+				result << plugin;
 		}
 	}
-	return 0;
+	return result;
 }
 
 QString XinxPluginsLoader::allManagedFileFilter() const
@@ -256,11 +256,11 @@ QStringList XinxPluginsLoader::openDialogBoxFilters() const
 {
 	QStringList result;
 	QList<IFileTypePlugin*> types = fileTypes();
+	result += allManagedFileFilter();
 	foreach(IFileTypePlugin* plugin, types)
 	{
 		result += fileTypeFilter(plugin);
 	}
-	result += allManagedFileFilter();
 	return result;
 }
 

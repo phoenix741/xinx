@@ -10,123 +10,66 @@
 
 	<context format="blocP" >
 		<start>P   </start>
+		<stop exclusive="">\n</stop>
+
+		<sequence format="maquette_word">[0-9$w\-]+</sequence>
+
+		<embed target="Maquette"/>
+	</context>
+	
+	<context format="blocPercent">
+		<start>%[0-9EP$s][0-9EP$s]</start>
+		<start>&amp;[0-9EP$s][0-9EP$s]</start>
 		<stop exclusive="false">\n</stop>
 
-		<sequence format="reservedword">[0-9$w\-]+</sequence>
-
-		<word id="data/float" format="numbers">-?[0-9]*.[0-9]+f?</word>
-
-		<context id="data/string" format="string" >
-			<start>&quot;</start>
-			<stop>&quot;</stop>
-			<stop exclusive="false">\n</stop>
-			<sequence id="escape" format="escapeseq" >\\[nrtvf\\"'\n]</sequence>
-		</context>
-
-		<context id="data/chars" format="string" >
-			<start>'</start>
-			<stop>'</stop>
-			<stop exclusive="false">\n</stop>
-			<sequence id="escape" format="escapeseq" >\\[nrtvf\\"'\n]</sequence>
-		</context>
+		<embed target="Maquette"/>
 	</context>
 
-	<sequence format="bloc05" parenthesis="if05:open"  fold="1">T05$s*si</sequence>
-	<sequence format="bloc05" parenthesis="if05:close" fold="1">T05$s*fsi</sequence>
-	<context format="bloc05" >
-		<start>[%TV]05</start>
-		<stop exclusive="false">\n</stop>
+	<sequence format="blocT" parenthesis="if:open"  fold="1">T[0-9EP$s][0-9EP$s]$s*si</sequence>
+	<sequence format="blocT" parenthesis="if:close" fold="1">T[0-9EP$s][0-9EP$s]$s*fsi</sequence>
+	<sequence format="blocT">T[0-9EP$s][0-9EP$s]$s*else</sequence>
+	<sequence format="blocV">V[0-9EP$s][0-9EP$s]</sequence>
+	<sequence format="blocM">M[0-9EP$s][0-9EP$s]</sequence>
 
-		<word id="data/float" format="numbers">-?[0-9]*.[0-9]+f?</word>
-
-		<context id="data/string" format="string" >
-			<start>&quot;</start>
-			<stop>&quot;</stop>
-			<stop exclusive="false">\n</stop>
-			<sequence id="escape" format="escapeseq" >\\[nrtvf\\"'\n]</sequence>
-		</context>
-
-		<context id="data/chars" format="string" >
-			<start>'</start>
-			<stop>'</stop>
-			<stop exclusive="false">\n</stop>
-			<sequence id="escape" format="escapeseq" >\\[nrtvf\\"'\n]</sequence>
-		</context>
-	</context>
-
-	<sequence format="bloc10" parenthesis="if10:open"  fold="1">T10$s*si</sequence>
-	<sequence format="bloc10" parenthesis="if10:close" fold="1">T10$s*fsi</sequence>
-	<context format="bloc10" >
-		<start>[%TV]10</start>
-		<stop exclusive="false">\n</stop>
-
-		<word id="data/float" format="numbers">-?[0-9]*.[0-9]+f?</word>
-
-		<context id="data/string" format="string" >
-			<start>&quot;</start>
-			<stop>&quot;</stop>
-			<stop exclusive="false">\n</stop>
-			<sequence id="escape" format="escapeseq" >\\[nrtvf\\"'\n]</sequence>
-		</context>
-
-		<context id="data/chars" format="string" >
-			<start>'</start>
-			<stop>'</stop>
-			<stop exclusive="false">\n</stop>
-			<sequence id="escape" format="escapeseq" >\\[nrtvf\\"'\n]</sequence>
-		</context>
-	</context>
-
-	<sequence format="bloc11" parenthesis="if11:open"  fold="1">T11$s*si</sequence>
-	<sequence format="bloc11" parenthesis="if11:close" fold="1">T11$s*fsi</sequence>
-	<context format="bloc11" >
-		<start>[%TV]11</start>
-		<stop exclusive="false">\n</stop>
-
-		<word id="data/float" format="numbers">-?[0-9]*.[0-9]+f?</word>
-
-		<context id="data/string" format="string" >
-			<start>&quot;</start>
-			<stop>&quot;</stop>
-			<stop exclusive="false">\n</stop>
-			<sequence id="escape" format="escapeseq" >\\[nrtvf\\"'\n]</sequence>
-		</context>
-
-		<context id="data/chars" format="string" >
-			<start>'</start>
-			<stop>'</stop>
-			<stop exclusive="false">\n</stop>
-			<sequence id="escape" format="escapeseq" >\\[nrtvf\\"'\n]</sequence>
-		</context>
-	</context>
-
-	<sequence format="bloc12" parenthesis="if12:open" fold="1">T12$s*si</sequence>
-	<sequence format="bloc12" parenthesis="if12:close" fold="1">T12$s*fsi</sequence>
-	<context format="bloc12" >
-		<start>[%TV]12</start>
-		<stop exclusive="false">\n</stop>
-
-		<word id="data/float" format="numbers">-?[0-9]*.[0-9]+f?</word>
-
-		<context id="data/string" format="string" >
-			<start>&quot;</start>
-			<stop>&quot;</stop>
-			<stop exclusive="false">\n</stop>
-			<sequence id="escape" format="escapeseq" >\\[nrtvf\\"'\n]</sequence>
-		</context>
-
-		<context id="data/chars" format="string" >
-			<start>'</start>
-			<stop>'</stop>
-			<stop exclusive="false">\n</stop>
-			<sequence id="escape" format="escapeseq" >\\[nrtvf\\"'\n]</sequence>
-		</context>
-	</context>
+	<sequence format="variable">@[0-9]+</sequence>
+	<sequence format="variable_fictive">~[0-9]+</sequence>
 
 	<list id="keywords/all" format="reservedword">
-		<word>ISQL</word>
-		<word>CODSOC</word>
+		<word>include</word>
+		<word>longueur</word>
+		<word>largeur</word>
 		<word>C</word>
+		<word>CDEV</word>
+		<word>CMTL</word>
+		<word>CQTE</word>
+		<word>ISME</word>
+		<word>PROC1</word>
+		<word>PROC2</word>
+		<word>MAJACT</word>
+		<word>MAJJAL</word>
+		<word>MZNTIE</word>
+		<word>MZNCTC</word>
+		<word>MDAT</word>
+		<word>ADAT</word>
+		<word>IADD</word>
+		<word>IADR</word>
+		<word>IBAN</word>
+		<word>IRIB</word>
+		<word>ISQL</word>
+		<word>ITIE</word>
+		<word>IZOD</word>
+		<word>MZOD</word>
+		<word>EDAT</word>
+		<word>RCTS</word>
+		<word>RTAR</word>
+		<word>CODSOC</word>
+		<word>PRINTF</word>
+		<word>CTDQUI</word>
+		<word>HABZNS</word>
+		<word>RPRX</word>
+		<word>ISTK</word>
+		<word>RHQUE</word>
+		<word>RBAP</word>
 	</list>
 
 	<word id="data/float" format="numbers">-?[0-9]*.[0-9]+f?</word>
