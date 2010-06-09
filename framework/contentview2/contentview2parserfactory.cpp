@@ -21,6 +21,9 @@
 #include "contentview2/contentview2parserfactory.h"
 #include "plugins/xinxpluginsloader.h"
 
+// Qt header
+#include <QDebug>
+
 namespace ContentView2
 {
 
@@ -45,15 +48,25 @@ QString ParserFactory::getParserTypeByFilename(const QString & filename)
 {
 	if (! QFileInfo(filename).exists()) return QString();
 
-	IFileTypePlugin * fileType = XinxPluginsLoader::self()->matchedFileType(filename);
-	if (fileType)
+	QStringList parserTypes;
+	QList<IFileTypePlugin*> fileTypes = XinxPluginsLoader::self()->matchedFileType(filename);
+	foreach(IFileTypePlugin* fileType, fileTypes)
 	{
 		QString parserType = fileType->parserType();
 		if (! parserType.isEmpty())
 		{
-			return parserType;
+			parserTypes << parserType;
 		}
 	}
+
+	if (parserTypes.size() > 1)
+	{
+		qWarning() << tr("Ambigous parser for file %1").arg(filename);
+	}
+
+	if (parserTypes.size() > 0)
+		return parserTypes.at(0);
+
 	return QString();
 }
 

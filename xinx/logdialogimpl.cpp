@@ -160,10 +160,10 @@ void LogDockWidget::updateErrors()
 	{
 		QTreeWidgetItem * fileItem = new QTreeWidgetItem(m_logwidget->m_messagesWidget);
 		fileItem->setText(0, context);
-		IFileTypePlugin * fileType = XinxPluginsLoader::self()->matchedFileType(context);
-		if (fileType)
+		QList<IFileTypePlugin *> fileTypes = XinxPluginsLoader::self()->matchedFileType(context);
+		if (fileTypes.size())
 		{
-			fileItem->setIcon(0, QIcon(fileType->icon()));
+			fileItem->setIcon(0, QIcon(fileTypes.at(0)->icon()));
 		}
 
 		foreach(ErrorManager::Error err, errors.value(context))

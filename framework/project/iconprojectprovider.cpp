@@ -33,10 +33,10 @@ IconProjectProvider::~IconProjectProvider()
 
 QIcon IconProjectProvider::icon(const QFileInfo & info) const
 {
-	IFileTypePlugin * plugin = XinxPluginsLoader::self()->matchedFileType(info.fileName());
-	if (plugin)
+	QList<IFileTypePlugin*> plugin = XinxPluginsLoader::self()->matchedFileType(info.fileName());
+	if (plugin.size() > 0)
 	{
-		QIcon icon = QIcon(plugin->icon());
+		QIcon icon = QIcon(plugin.at(0)->icon());
 		if (! icon.isNull())
 			return icon;
 	}

@@ -38,6 +38,8 @@
 #include <plugins/xinxpluginsloader.h>
 #include "config/customgeneriximpl.h"
 #include "config/selfgcesettings.h"
+#include "editors/widgeteditor/maq/maqfileeditor.h"
+#include "plugindefinition/filetypeplugin.h"
 
 // Qt header
 #include <QString>
@@ -46,6 +48,7 @@
 #include <QApplication>
 #include <QDockWidget>
 #include <QDir>
+#include <QMetaType>
 
 /* GenerixProjectInitialisationStep */
 
@@ -136,6 +139,10 @@ public:
 GenerixPlugin::GenerixPlugin() : m_dock(0)
 {
 	Q_INIT_RESOURCE(generix);
+
+	qRegisterMetaType<MaquetteFileEditor>("MaquetteFileEditor");
+
+	m_fileTypes << new MaquetteFileType;
 }
 
 GenerixPlugin::~GenerixPlugin()
@@ -213,6 +220,10 @@ QList<IProjectInitialisationStep*> GenerixPlugin::closeProjectStep(XinxProject *
 	return QList<IProjectInitialisationStep*>() << new GenerixProjectDeInitialisationStep();
 }
 
+QList<IFileTypePlugin*> GenerixPlugin::fileTypes()
+{
+	return m_fileTypes;
+}
 
 QIODevice * GenerixPlugin::loadFile(const QString & filename)
 {

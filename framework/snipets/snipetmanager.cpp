@@ -69,7 +69,7 @@ SnipetManager * SnipetManager::self()
 	return s_self;
 }
 
-QSqlDatabase SnipetManager::database() const
+QSqlDatabase SnipetManager::database()
 {
 	if (!QSqlDatabase::contains("SNIPETBASE"))
 	{
@@ -111,7 +111,7 @@ SnipetMenu * SnipetManager::createSnipetMenu(const QString & title, QWidget * pa
 	return menu;
 }
 
-int SnipetManager::getCategoryId(const QStringList & category) const
+int SnipetManager::getCategoryId(const QStringList & category)
 {
 	int parentCategory = 1;
 	QSqlQuery selectQuery("SELECT id FROM categories WHERE parent_id=:parentCategory AND LOWER(name) like LOWER(:name)", database());
@@ -173,7 +173,10 @@ void SnipetManager::addCategory(int parentId, bool categoryAccess, QWidget * par
 	CategoryPropertyDlgImpl dlg(database(), parent);
 	dlg.setParentId(parentId);
 	dlg.setCategoryAccess(categoryAccess);
-	dlg.exec();
+	if (dlg.exec() == QDialog::Accepted)
+	{
+		emit changed();
+	}
 }
 
 void SnipetManager::removeCategory(int id, QWidget * parent)
@@ -214,33 +217,47 @@ void SnipetManager::removeCategory(int id, QWidget * parent)
 		result = removeQuery.exec();
 
 		Q_ASSERT(result);
+
+		emit changed();
 	}
 }
 
 void SnipetManager::modifyCategory(int id, QWidget * parent)
 {
 	CategoryPropertyDlgImpl dlg(id, database(), parent);
-	dlg.exec();
+	if (dlg.exec() == QDialog::Accepted)
+	{
+		emit changed();
+	}
 }
 
 void SnipetManager::addSnipet(int parentId, QWidget * parent)
 {
 	SnipetPropertyDlgImpl dlg(database(), parent);
 	dlg.setParentId(parentId);
-	dlg.exec();
+	if (dlg.exec() == QDialog::Accepted)
+	{
+		emit changed();
+	}
 }
 
 void SnipetManager::modifySnipet(int id, QWidget * parent)
 {
 	SnipetPropertyDlgImpl dlg(id, database(), parent);
-	dlg.exec();
+	if (dlg.exec() == QDialog::Accepted)
+	{
+		emit changed();
+	}
 }
 
 void SnipetManager::duplicateSnipet(int id, QWidget * parent)
 {
 	SnipetPropertyDlgImpl dlg(database(), parent);
 	dlg.duplicate(id);
-	dlg.exec();
+	if (dlg.exec() == QDialog::Accepted)
+	{
+		emit changed();
+	}
 }
 
 bool SnipetManager::removeSnipet(int id, QWidget * parent)
@@ -273,10 +290,12 @@ bool SnipetManager::removeSnipet(int id, QWidget * parent)
 		qWarning(qPrintable(removeSnipetQuery.lastError().text()));
 		return false;
 	}
+
+	emit changed();
 	return true;
 }
 
-QList<int> SnipetManager::snipets() const
+QList<int> SnipetManager::snipets()
 {
 	QList<int> ids;
 	QSqlQuery selectQuery("SELECT id FROM snipets", database());
@@ -297,7 +316,7 @@ QList<int> SnipetManager::snipets() const
 }
 
 //! TODO
-QList<int> SnipetManager::snipets(int categoryId) const
+QList<int> SnipetManager::snipets(int categoryId)
 {
 	return QList<int>();
 }
@@ -371,7 +390,7 @@ bool SnipetManager::exportSnipetList(const QList<int> & list, SnipetList * snipe
 	return true;
 }
 
-bool SnipetManager::importSnipetList(const SnipetList & list, bool imported, QWidget * parent) const
+bool SnipetManager::importSnipetList(const SnipetList & list, bool imported, QWidget * parent)
 {
 	QSqlQuery insertSnipetQuery("INSERT INTO snipets(name, description, shortcut, icon, auto, show_dialog, text, available_script, category_id) "
 	                            "VALUES(:name, :description, :shortcut, :icon, :auto, :dialog, :text, :available_script, :category_id)", database());
@@ -428,6 +447,8 @@ bool SnipetManager::importSnipetList(const SnipetList & list, bool imported, QWi
 			}
 		}
 	}
+
+	emit changed();
 
 	return true;
 }
@@ -494,7 +515,7 @@ bool SnipetManager::callAutomaticSnipet(QString key, QString * result, const QSt
 }
 
 
-bool SnipetManager::executeSnipetScript(const QString & script, const QStringList & values, QString * result) const
+bool SnipetManager::executeSnipetScript(const QString & script, const QStringList & values, QString * result)
 {
 	/* Process arguments */
 	QString text = script;
@@ -547,7 +568,7 @@ bool SnipetManager::executeSnipetScript(const QString & script, const QStringLis
 	return true;
 }
 
-bool SnipetManager::isAvailable(const QString & script, const QString & type, int id) const
+bool SnipetManager::isAvailable(const QString & script, const QString & type, int id)
 {
 	if (! script.isEmpty())
 	{
@@ -594,7 +615,7 @@ bool SnipetManager::isAvailable(const QString & script, const QString & type, in
 	return true;
 }
 
-bool SnipetManager::isSnipetMatch(const QString & filename, int snipetId) const
+bool SnipetManager::isSnipetMatch(const QString & filename, int snipetId)
 {
 	// Check extentions to know if the snipet can be used with this editor
 	QSqlQuery extentionsQuery("SELECT DISTINCT extention FROM snipets_extentions WHERE snipet_id=:id", database());
@@ -622,7 +643,7 @@ bool SnipetManager::isSnipetMatch(const QString & filename, int snipetId) const
 	return false;
 }
 
-bool SnipetManager::openDatabase() const
+bool SnipetManager::openDatabase()
 {
 	// Create the db object
 	QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", "SNIPETBASE");
@@ -649,7 +670,7 @@ bool SnipetManager::openDatabase() const
 	return true;
 }
 
-bool SnipetManager::createDatabase(QSqlDatabase db) const
+bool SnipetManager::createDatabase(QSqlDatabase db)
 {
 	QSqlQuery createQuery(db);
 	/* Create tables */
@@ -789,7 +810,7 @@ bool SnipetManager::createDatabase(QSqlDatabase db) const
 	return true;
 }
 
-void SnipetManager::closeDatabase() const
+void SnipetManager::closeDatabase()
 {
 	database().close();
 	QSqlDatabase::removeDatabase("SNIPETBASE");

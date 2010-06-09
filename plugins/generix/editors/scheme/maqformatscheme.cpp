@@ -18,48 +18,59 @@
  * *********************************************************************** */
 
 // Xinx header
-#include "dictionarydockwidgetimpl.h"
-#include <contentview2/contentview2manager.h>
-#include <contentview2/contentview2cache.h>
-#include <configuration/configurationmanager.h>
-#include "projectproperty/generixproject.h"
-#include "dictionaryparser.h"
+#include "maqformatscheme.h"
 
-/* DictionaryDockWidgetImpl */
+// QCodeEdit header
+#include <qformat.h>
 
-DictionaryDockWidgetImpl::DictionaryDockWidgetImpl(QWidget * parent) : QWidget(parent)
+MaquetteFormatScheme::MaquetteFormatScheme(XINXConfig * config) : XinxFormatScheme(config)
 {
-	setupUi(this);
-	setWindowTitle(tr("Dictionary"));
-	setWindowIcon(QIcon(":/generix/images/dictionary16.png"));
-
-
-	connect(ContentView2::Manager::self()->cache(), SIGNAL(cacheLoaded(ContentView2::File)), this, SLOT(update(ContentView2::File)), Qt::BlockingQueuedConnection);
+	setNameSpace("maquette");
+	createDefaultScheme();
 }
 
-DictionaryDockWidgetImpl::~DictionaryDockWidgetImpl()
+void MaquetteFormatScheme::createDefaultScheme()
 {
+	QFormat comment, string, reservedword, numbers,
+			blocP, blocV, blocT, blocPercent;
 
-}
+	// Comment format
+	comment.foreground = Qt::darkGreen;
+	setFormat("comment", comment);
 
-void DictionaryDockWidgetImpl::update(const ContentView2::File & file)
-{
-	if (file.type() == "GNX_DICO")
-	{
-		startTimer(500);
-	}
-}
+	// String format
+	string.foreground = Qt::red;
+	setFormat("string", string);
 
-void DictionaryDockWidgetImpl::on_m_filterLine_textChanged(QString filter)
-{
-	Q_UNUSED(filter);
-	startTimer(500);
-}
+	// Reserved Word format
+	reservedword.weight = QFont::Bold;
+	setFormat("reservedword", reservedword);
 
-void DictionaryDockWidgetImpl::timerEvent(QTimerEvent * event)
-{
-	killTimer(event->timerId());
+	// Numbers format
+	numbers.foreground = Qt::blue;
+	setFormat("numbers", numbers);
+	setFormat("variable", numbers);
+	setFormat("variable_fictive", numbers);
 
-	m_dictionaryTreeWidget->loadDictionaries(m_filterLine->text());
-	m_informationLbl->setText(tr("%n label(s) loaded.", "", m_dictionaryTreeWidget->invisibleRootItem()->childCount()));
+	// BlocP format
+	blocP.background = QColor(0xf5, 0xff, 0xbf);
+	setFormat("blocP", blocP);
+
+	// Reserved Word format
+	reservedword.background = QColor(0xf5, 0xff, 0xbf);
+	reservedword.weight = QFont::Bold;
+	setFormat("maquette_word", reservedword);
+
+	// BlocV format
+	blocV.background = QColor(0xff, 0xb9, 0xae);
+	setFormat("blocV", blocV);
+	setFormat("blocM", blocV);
+
+	// blocPercent format
+	blocPercent.foreground = QColor(0x05, 0xb8, 0xff);
+	setFormat("blocPercent", blocPercent);
+
+	// blocT format
+	blocT.background = QColor(0xfe, 0x8e, 0xff);
+	setFormat("blocT", blocT);
 }

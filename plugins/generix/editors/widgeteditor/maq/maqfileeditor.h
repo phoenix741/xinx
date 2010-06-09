@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * XINX                                                                    *
- * Copyright (C) 2007-2010 by Ulrich Van Den Hekke                         *
+ * Copyright (C) 2009 by Ulrich Van Den Hekke                              *
  * ulrich.vdh@shadoware.org                                                *
  *                                                                         *
  * This program is free software: you can redistribute it and/or modify    *
@@ -17,29 +17,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
+#ifndef _MAQFILEEDITOR_H_
+#define _MAQFILEEDITOR_H_
 #pragma once
-#ifndef PARSERFACTORY_H
-#define PARSERFACTORY_H
 
 // Xinx header
-#include <core/lib-config.h>
-#include <contentview2/contentview2parser.h>
+#include <editors/textfileeditor.h>
 
-namespace ContentView2
+class MaquetteFileEditor : public TextFileEditor
 {
-
-class LIBEXPORT ParserFactory
-{
-	Q_DECLARE_TR_FUNCTIONS(ParserFactory);
+	Q_OBJECT
 public:
-	ParserFactory();
+	MaquetteFileEditor(QWidget *parent = 0);
+	virtual ~MaquetteFileEditor();
 
-	static QString getParserTypeByFilename(const QString & filename);
-	static Parser * getParserByFilename(const QString & filename);
-	static Parser * getParserByType(const QString & type);
+	virtual QString defaultFileName() const;
+	virtual QIcon icon() const;
+protected:
+
+private:
 
 };
 
-}
-
-#endif // PARSERFACTORY_H
+#endif //_JSFILEEDITOR_H_

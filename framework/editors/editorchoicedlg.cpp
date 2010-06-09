@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * XINX                                                                    *
- * Copyright (C) 2009 by Ulrich Van Den Hekke                              *
+ * Copyright (C) 2007-2010 by Ulrich Van Den Hekke                         *
  * ulrich.vdh@shadoware.org                                                *
  *                                                                         *
  * This program is free software: you can redistribute it and/or modify    *
@@ -18,48 +18,44 @@
  * *********************************************************************** */
 
 // Xinx header
-#include "dictionarydockwidgetimpl.h"
-#include <contentview2/contentview2manager.h>
-#include <contentview2/contentview2cache.h>
-#include <configuration/configurationmanager.h>
-#include "projectproperty/generixproject.h"
-#include "dictionaryparser.h"
+#include "editorchoicedlg.h"
 
-/* DictionaryDockWidgetImpl */
+// Qt header
+#include <QFileInfo>
 
-DictionaryDockWidgetImpl::DictionaryDockWidgetImpl(QWidget * parent) : QWidget(parent)
-{
-	setupUi(this);
-	setWindowTitle(tr("Dictionary"));
-	setWindowIcon(QIcon(":/generix/images/dictionary16.png"));
-
-
-	connect(ContentView2::Manager::self()->cache(), SIGNAL(cacheLoaded(ContentView2::File)), this, SLOT(update(ContentView2::File)), Qt::BlockingQueuedConnection);
+EditorChoiceDlg::EditorChoiceDlg(QWidget *parent) :
+    QDialog(parent){
+    setupUi(this);
 }
 
-DictionaryDockWidgetImpl::~DictionaryDockWidgetImpl()
+void EditorChoiceDlg::setFileName(const QString & value)
 {
-
+	m_fileName->setText(QFileInfo(value).fileName());
 }
 
-void DictionaryDockWidgetImpl::update(const ContentView2::File & file)
+void EditorChoiceDlg::setFileTypes(const QList<IFileTypePlugin *> & types)
 {
-	if (file.type() == "GNX_DICO")
+	m_typeFileList->clear();
+	foreach(IFileTypePlugin* plugin, types)
 	{
-		startTimer(500);
+		QListWidgetItem * item = new QListWidgetItem(QIcon(plugin->icon()), plugin->description(), m_typeFileList);
+		item->setData(Qt::UserRole, QVariant::fromValue<IFileTypePlugin*>(plugin));
+	}
+	m_typeFileList->setCurrentRow(0);
+}
+
+IFileTypePlugin * EditorChoiceDlg::selectedType() const
+{
+	QListWidgetItem * item = m_typeFileList->currentItem();
+	if (item)
+	{
+		return item->data(Qt::UserRole).value<IFileTypePlugin*>();
 	}
 }
 
-void DictionaryDockWidgetImpl::on_m_filterLine_textChanged(QString filter)
+void EditorChoiceDlg::on_m_typeFileList_itemDoubleClicked(QListWidgetItem* item)
 {
-	Q_UNUSED(filter);
-	startTimer(500);
-}
+	Q_UNUSED(item);
 
-void DictionaryDockWidgetImpl::timerEvent(QTimerEvent * event)
-{
-	killTimer(event->timerId());
-
-	m_dictionaryTreeWidget->loadDictionaries(m_filterLine->text());
-	m_informationLbl->setText(tr("%n label(s) loaded.", "", m_dictionaryTreeWidget->invisibleRootItem()->childCount()));
+	accept();
 }

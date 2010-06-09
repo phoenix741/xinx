@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * XINX                                                                    *
- * Copyright (C) 2007-2010 by Ulrich Van Den Hekke                         *
+ * Copyright (C) 2009 by Ulrich Van Den Hekke                              *
  * ulrich.vdh@shadoware.org                                                *
  *                                                                         *
  * This program is free software: you can redistribute it and/or modify    *
@@ -17,29 +17,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-#pragma once
-#ifndef PARSERFACTORY_H
-#define PARSERFACTORY_H
-
 // Xinx header
-#include <core/lib-config.h>
-#include <contentview2/contentview2parser.h>
+#include "maqfileeditor.h"
+#include "editors/widgeteditor/maq/maqtexteditor.h"
 
-namespace ContentView2
+/* MaquetteFileEditor */
+
+MaquetteFileEditor::MaquetteFileEditor(QWidget *parent) : TextFileEditor(new MaquetteTextEditor(), parent)
 {
+}
 
-class LIBEXPORT ParserFactory
+MaquetteFileEditor::~MaquetteFileEditor()
 {
-	Q_DECLARE_TR_FUNCTIONS(ParserFactory);
-public:
-	ParserFactory();
-
-	static QString getParserTypeByFilename(const QString & filename);
-	static Parser * getParserByFilename(const QString & filename);
-	static Parser * getParserByType(const QString & type);
-
-};
 
 }
 
-#endif // PARSERFACTORY_H
+QString MaquetteFileEditor::defaultFileName() const
+{
+	return tr("noname.std_fra");
+}
+
+QIcon MaquetteFileEditor::icon() const
+{
+	return QIcon(":/generix/images/typemaq.png");
+}

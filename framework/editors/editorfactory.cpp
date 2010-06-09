@@ -23,16 +23,20 @@
 #include "plugins/xinxpluginsloader.h"
 #include "editors/textfileeditor.h"
 #include "editors/xinxcodeedit.h"
+#include "editors/editorchoicedlg.h"
+
+// Qt header
+#include <QApplication>
 
 /* Static member */
 
 EditorFactory * EditorFactory::s_self = 0;
 
-
 /* EditorFactory */
 
 EditorFactory::EditorFactory()
 {
+
 }
 
 EditorFactory::~EditorFactory()
@@ -69,15 +73,35 @@ AbstractEditor * EditorFactory::createEditor(const QString & filename)
 	Q_ASSERT(! filename.isEmpty());
 
 	AbstractEditor * editor = 0;
-	IFileTypePlugin * interface = XinxPluginsLoader::self()->matchedFileType(filename);
-	if (interface)
+	QList<IFileTypePlugin *> interfaces = XinxPluginsLoader::self()->matchedFileType(filename);
+	switch(interfaces.size())
 	{
-		editor = interface->createEditor(filename);
-	}
-	else
-	{
-		editor = new TextFileEditor(new XinxCodeEdit());
-		editor->loadFromFile(filename);
+	case 0:
+		{
+			EditorChoiceDlg dlg(qApp->activeWindow());
+			dlg.setFileName(filename);
+			dlg.setFileTypes(XinxPluginsLoader::self()->fileTypes());
+			if (dlg.exec() == QDialog::Accepted)
+			{
+				Q_ASSERT_X(dlg.selectedType(), "EditorFactory::createEditor", "No editor selected");
+				editor = dlg.selectedType()->createEditor(filename);
+			}
+		}
+		break;
+	case 1:
+		editor = interfaces.at(0)->createEditor(filename);
+		break;
+	default:
+		{
+			EditorChoiceDlg dlg(qApp->activeWindow());
+			dlg.setFileName(filename);
+			dlg.setFileTypes(interfaces);
+			if (dlg.exec() == QDialog::Accepted)
+			{
+				Q_ASSERT_X(dlg.selectedType(), "EditorFactory::createEditor", "No editor selected");
+				editor = dlg.selectedType()->createEditor(filename);
+			}
+		}
 	}
 
 	Q_ASSERT_X(editor, "EditorFactory::createEditor", "The factory can't create editor");

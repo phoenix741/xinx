@@ -1,0 +1,90 @@
+<!DOCTYPE QNFA>
+<QNFA language="Maquette" extensions="std_fra" defaultLineMark="bookmark">
+	<context id="comment/single" format="comment" >
+		<start>%CR</start>
+		<stop exclusive="false">\n</stop>
+	</context>
+
+	<sequence parenthesis="round:open">(</sequence>
+	<sequence parenthesis="round:close">)</sequence>
+
+	<context format="blocP" >
+		<start>P   </start>
+		<stop exclusive="">\n</stop>
+
+		<sequence format="maquette_word">[0-9$w\-]+</sequence>
+
+		<embed target="Maquette"/>
+	</context>
+	
+	<context format="blocPercent">
+		<start>%[0-9EP$s][0-9EP$s]</start>
+		<start>&amp;[0-9EP$s][0-9EP$s]</start>
+		<stop exclusive="false">\n</stop>
+
+		<embed target="Maquette"/>
+	</context>
+
+	<sequence format="blocT" parenthesis="if:open"  fold="1">T[0-9EP$s][0-9EP$s]$s*si</sequence>
+	<sequence format="blocT" parenthesis="if:close" fold="1">T[0-9EP$s][0-9EP$s]$s*fsi</sequence>
+	<sequence format="blocT">T[0-9EP$s][0-9EP$s]$s*else</sequence>
+	<sequence format="blocV">V[0-9EP$s][0-9EP$s]</sequence>
+	<sequence format="blocM">M[0-9EP$s][0-9EP$s]</sequence>
+
+	<sequence format="variable">@[0-9]+</sequence>
+	<sequence format="variable_fictive">~[0-9]+</sequence>
+
+	<list id="keywords/all" format="reservedword">
+		<word>include</word>
+		<word>longueur</word>
+		<word>largeur</word>
+		<word>C</word>
+		<word>CDEV</word>
+		<word>CMTL</word>
+		<word>CQTE</word>
+		<word>ISME</word>
+		<word>PROC1</word>
+		<word>PROC2</word>
+		<word>MAJACT</word>
+		<word>MAJJAL</word>
+		<word>MZNTIE</word>
+		<word>MZNCTC</word>
+		<word>MDAT</word>
+		<word>ADAT</word>
+		<word>IADD</word>
+		<word>IADR</word>
+		<word>IBAN</word>
+		<word>IRIB</word>
+		<word>ISQL</word>
+		<word>ITIE</word>
+		<word>IZOD</word>
+		<word>MZOD</word>
+		<word>EDAT</word>
+		<word>RCTS</word>
+		<word>RTAR</word>
+		<word>CODSOC</word>
+		<word>PRINTF</word>
+		<word>CTDQUI</word>
+		<word>HABZNS</word>
+		<word>RPRX</word>
+		<word>ISTK</word>
+		<word>RHQUE</word>
+		<word>RBAP</word>
+	</list>
+
+	<word id="data/float" format="numbers">-?[0-9]*.[0-9]+f?</word>
+	
+	<context id="data/string" format="string" >
+		<start>&quot;</start>
+		<stop>&quot;</stop>
+		<stop exclusive="false">\n</stop>
+		<sequence id="escape" format="escapeseq" >\\[nrtvf\\"'\n]</sequence>
+	</context>
+
+	<context id="data/chars" format="string" >
+		<start>'</start>
+		<stop>'</stop>
+		<stop exclusive="false">\n</stop>
+		<sequence id="escape" format="escapeseq" >\\[nrtvf\\"'\n]</sequence>
+	</context>
+</QNFA>

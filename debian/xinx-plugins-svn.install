@@ -1,1 +1,1 @@
-plugins/libsvnplugin.so /usr/share/xinx/plugins/
+plugins/libsvnplugin.so /usr/lib/xinx/plugins/

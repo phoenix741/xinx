@@ -59,7 +59,6 @@ public:
 	MainformImpl(QWidget * parent = 0);
 	virtual ~MainformImpl();
 public slots:
-	void newFile(const QString &filename);
 	void openFile(const QString & filename);
 	void saveFileAs(const QString & filename = QString());
 	void saveAllFile();

@@ -961,4 +961,56 @@ You may have to change min and max value !!!
     <Param defaultValue="" name="Composite View name"/>
     <Extention value="*.xsl"/>
   </Snipet>
+  <Snipet showDialog="0" key="xslbase155" icon="" automatique="1" name="Base for GCE Stylesheet (GCE155)">
+    <Description>Base pour les feuilles de styles 155</Description>
+    <Text>&lt;?xml version="1.0" encoding="ISO-8859-1"?>
+&lt;xsl:stylesheet version="1.0" exclude-result-prefixes="gnx" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:gnx="http://www.oracle.com/XSL/Transform/java/fr.generix.technicalframework.application.translation.ParserTraduc">
+	&lt;xsl:import href="{ROOT_XSL_MODULE}/e-GX.xsl"/>
+	
+	&lt;!-- Définition du nom de la feuille de style -->
+	&lt;xsl:variable name="CTXTRD">xxx.xsl&lt;/xsl:variable>
+	
+	&lt;!--
+		Import des JS spécifiques à la page
+	-->
+	&lt;xsl:template name="js.module.sheet">
+		&lt;script type="text/javascript" src="../presentation/btoe/js/xxx.js" charset="iso-8859-1">&amp;#160;&lt;/script>
+	&lt;/xsl:template>
+	&lt;!--
+		Règle principale
+	-->
+	&lt;xsl:template match="/">
+		&lt;xsl:comment>$RCSfile: xxx.xsl,v $&lt;/xsl:comment>
+		&lt;html>
+			&lt;xsl:call-template name="GnxHead"/>
+			&lt;body>
+				&lt;xsl:choose>
+					&lt;xsl:when test="/layout_data/VueUtilisateurCourantSociete/JUt_UtiView/JUt_UtiViewRow">
+						&lt;xsl:apply-templates select="/layout_data/VueUtilisateurCourantSociete/JUt_UtiView/JUt_UtiViewRow"/>
+					&lt;/xsl:when>
+					&lt;xsl:otherwise>
+						&lt;xsl:call-template name="GnxHabilitation"/>
+					&lt;/xsl:otherwise>
+				&lt;/xsl:choose>
+				&lt;xsl:call-template name="GnxError"/>
+				&lt;script type="text/javascript" charset="iso-8859-1">initOnPF ('', '', false, false, null, null, '&lt;xsl:value-of select="$LANGUAGE"/>', '&lt;xsl:value-of select="$KEYMAPPER"/>');&lt;/script>
+			&lt;/body>
+		&lt;/html>
+	&lt;/xsl:template>
+	
+	&lt;!--
+		Règle sur l'utilisateur
+	&lt;-->
+	&lt;xsl:template match="JUt_UtiViewRow">
+		&lt;!-- Code -->
+	&lt;/xsl:template>
+&lt;/xsl:stylesheet>
+
+</Text>
+    <AvailableScript></AvailableScript>
+    <Category name="GCE155">
+      <Category name="Stylesheet"/>
+    </Category>
+    <Extention value="*.xsl"/>
+  </Snipet>
 </SnipetList>

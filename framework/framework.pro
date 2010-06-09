@@ -14,13 +14,16 @@ INCLUDEPATH += ./ \
     ../ext/qcodeedit/lib/document \
     ../ext/qcodeedit/lib/language \
     ../ext/qcodeedit/lib/qnfa \
-	../ext/qcodeedit/lib/widgets
+    ../ext/qcodeedit/lib/widgets
 LIBS = -L../components \
-	-L../ext/qcodeedit
-win32:LIBS += -lwsock32 -llibxml2 -llibxslt
-unix:LIBS += -lxml2 -lxslt
+    -L../ext/qcodeedit
+win32:LIBS += -lwsock32 \
+    -llibxml2 \
+    -llibxslt
+unix:LIBS += -lxml2 \
+    -lxslt
 LIBS += -lxinxcmp \
-	-lqcodeedit
+    -lqcodeedit
 win32:RC_FILE += rc/libxinx.rc
 unix:INCLUDEPATH += /usr/include/libxml2
 DEFINES += _LIB_BUILD_
@@ -80,7 +83,8 @@ HEADERS = rcs/rcs.h \
     contentview2/contentview2manager.h \
     contentview2/contentview2parserfactory.h \
     contentview2/contentview2file.h \
-    contentview2/contentview2project.h
+    contentview2/contentview2project.h \
+    editors/editorchoicedlg.h
 SOURCES = rcs/rcs.cpp \
     plugins/xinxpluginsloader.cpp \
     plugins/xinxpluginelement.cpp \
@@ -134,11 +138,13 @@ SOURCES = rcs/rcs.cpp \
     contentview2/contentview2manager.cpp \
     contentview2/contentview2parserfactory.cpp \
     contentview2/contentview2file.cpp \
-    contentview2/contentview2project.cpp
+    contentview2/contentview2project.cpp \
+    editors/editorchoicedlg.cpp
 FORMS = snipets/callsnipetdlg.ui \
     snipets/snipetpropertydlg.ui \
     snipets/categorypropertydlg.ui \
-    rcs/commitmessages.ui
+    rcs/commitmessages.ui \
+    editors/editorchoicedlg.ui
 TRANSLATIONS += translations/libxinx_fr.ts
 profiling { 
     QMAKE_CXXFLAGS += --coverage \

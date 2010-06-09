@@ -106,6 +106,9 @@ MainformImpl::MainformImpl(QWidget * parent) : DMainWindow(parent),  m_lastFileN
 	// Restore windows property
 	readWindowSettings();
 
+	// Initialise XINX Cache with an empty project
+	ContentView2::Manager::self()->initializeDatabase();
+
 	startTimer(1000);
 }
 
@@ -1034,12 +1037,6 @@ void MainformImpl::newFile()
 	}
 }
 
-void MainformImpl::newFile(const QString &filename)
-{
-	IFileTypePlugin * plugin = XinxPluginsLoader::self()->matchedFileType(filename);
-	m_tabEditors->newEditor(plugin);
-}
-
 void MainformImpl::openRecentProject()
 {
 	QAction * action = qobject_cast<QAction*>(sender());
@@ -1173,8 +1170,8 @@ void MainformImpl::updateRecentFiles()
 		for (int i = 0; i < numRecentFiles; i++)
 		{
 			QString text = tr("&%1 %2").arg(i + 1).arg(QFileInfo(XINXProjectManager::self()->project()->session()->lastOpenedFile()[i]).fileName());
-			if (XinxPluginsLoader::self()->matchedFileType(QFileInfo(text).fileName()))
-				m_recentFileActs[i]->setIcon(QIcon(XinxPluginsLoader::self()->matchedFileType(QFileInfo(text).fileName())->icon()));
+			if (XinxPluginsLoader::self()->matchedFileType(QFileInfo(text).fileName()).size())
+				m_recentFileActs[i]->setIcon(QIcon(XinxPluginsLoader::self()->matchedFileType(QFileInfo(text).fileName()).at(0)->icon()));
 			m_recentFileActs[i]->setText(text);
 			m_recentFileActs[i]->setData(XINXProjectManager::self()->project()->session()->lastOpenedFile()[i]);
 			m_recentFileActs[i]->setVisible(true);
@@ -1352,7 +1349,7 @@ void MainformImpl::fileEditorSave(int index, bool saveAs)
 
 	const QString filename     = qobject_cast<AbstractEditor*>(m_tabEditors->editor(index))->lastFileName();
 	const QString deffilename  = qobject_cast<AbstractEditor*>(m_tabEditors->editor(index))->defaultFileName();
-	const QString filter       = XinxPluginsLoader::self()->fileTypeFilter(XinxPluginsLoader::self()->matchedFileType(filename.isEmpty() ? deffilename : filename));
+	const QString filter       = XinxPluginsLoader::self()->matchedFileType(filename.isEmpty() ? deffilename : filename).size() ? XinxPluginsLoader::self()->fileTypeFilter(XinxPluginsLoader::self()->matchedFileType(filename.isEmpty() ? deffilename : filename).at(0)) : "";
 	const bool    emptyname    = filename.isEmpty();
 
 	bool    accept      = false;

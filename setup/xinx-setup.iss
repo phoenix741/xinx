@@ -85,10 +85,10 @@ DestDir: {app}\templates\Generix; Source: ..\templates\Generix\*.xml; Components
 Source: ..\src.7z; DestDir: {app}; Components: source; Flags: replacesameversion
 Source: ..\doc\html\*.*; DestDir: {app}\doc\api; Components: documentation; Flags: replacesameversion
 
-DestDir: {app}\plugins; Source: ..\plugins\services1.dll; Components: services; Flags: replacesameversion
-DestDir: {app}\plugins; Source: ..\plugins\cvsplugin0.dll; Components: cvsplugin; Flags: replacesameversion
-DestDir: {app}\plugins; Source: ..\plugins\svnplugin0.dll; Components: svnplugin; Flags: replacesameversion
-DestDir: {app}\plugins; Source: ..\plugins\generix1.dll; Components: generixplugin; Flags: replacesameversion
+DestDir: {app}\plugins; Source: ..\plugins\services1.dll; Components: services
+DestDir: {app}\plugins; Source: ..\plugins\cvsplugin0.dll; Components: cvsplugin
+DestDir: {app}\plugins; Source: ..\plugins\svnplugin0.dll; Components: svnplugin
+DestDir: {app}\plugins; Source: ..\plugins\generix1.dll; Components: generixplugin
 
 DestDir: {app}\scripts; Source: ..\scripts\*.js; Components: scripts
 

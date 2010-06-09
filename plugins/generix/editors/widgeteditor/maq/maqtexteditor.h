@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * XINX                                                                    *
- * Copyright (C) 2007-2010 by Ulrich Van Den Hekke                         *
+ * Copyright (C) 2009 by Ulrich Van Den Hekke                              *
  * ulrich.vdh@shadoware.org                                                *
  *                                                                         *
  * This program is free software: you can redistribute it and/or modify    *
@@ -17,29 +17,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
+#ifndef MAQTEXTEDITOR_H_
+#define MAQTEXTEDITOR_H_
 #pragma once
-#ifndef PARSERFACTORY_H
-#define PARSERFACTORY_H
 
 // Xinx header
-#include <core/lib-config.h>
-#include <contentview2/contentview2parser.h>
+#include <editors/xinxcodeedit.h>
 
-namespace ContentView2
+class MaquetteTextEditor : public XinxCodeEdit
 {
-
-class LIBEXPORT ParserFactory
-{
-	Q_DECLARE_TR_FUNCTIONS(ParserFactory);
+	Q_OBJECT
 public:
-	ParserFactory();
+	MaquetteTextEditor(QWidget * parent = 0);
+	virtual ~MaquetteTextEditor();
 
-	static QString getParserTypeByFilename(const QString & filename);
-	static Parser * getParserByFilename(const QString & filename);
-	static Parser * getParserByType(const QString & type);
+	virtual bool isCommentAvailable();
+public slots:
+	virtual void commentSelectedText(bool uncomment = false);
+protected:
+	enum cursorPosition
+	{
+		cpEditComment, // in /* ... */
+		cpEditTag, // ... { ... }
+		cpEditGlobal
+	};
 
+	static cursorPosition editPosition(const XinxCodeEdit * textEdit, const QDocumentCursor & cursor);
+	cursorPosition editPosition(const QDocumentCursor & cursor);
 };
 
-}
-
-#endif // PARSERFACTORY_H
+#endif /* MAQTEXTEDITOR_H_ */

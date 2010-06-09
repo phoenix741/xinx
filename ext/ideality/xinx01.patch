@@ -1,0 +1,181 @@
+Index: lib/dbuttonbar.cpp
+===================================================================
+--- lib/dbuttonbar.cpp	(révision 1920)
++++ lib/dbuttonbar.cpp	(révision 1923)
+@@ -91,7 +91,10 @@
+ 	
+ 	a = menu->addAction(tr("Only texts"));
+ 	connect(a, SIGNAL(triggered()), this, SLOT(setShowOnlyTexts()));
+-	
++
++	a = menu->addAction(tr("Texts && Icons"));
++	connect(a, SIGNAL(triggered()), this, SLOT(setShowTextsAndIcons()));
++
+ 	menu->addSeparator();
+ 	
+ 	a = menu->addAction(tr("Exclusive"));
+@@ -177,6 +180,15 @@
+ 	return m_autoHide;
+ }
+ 
++void DButtonBar::setShowTextsAndIcons()
++{
++	foreach(QAbstractButton *b, m_buttons.buttons() )
++	{
++		DViewButton *viewButton = static_cast<DViewButton *>(b);
++		viewButton->setIconText();
++	}
++}
++
+ void DButtonBar::setShowOnlyIcons()
+ {
+ 	foreach(QAbstractButton *b, m_buttons.buttons() )
+Index: lib/dbuttonbar.h
+===================================================================
+--- lib/dbuttonbar.h	(révision 1920)
++++ lib/dbuttonbar.h	(révision 1923)
+@@ -65,6 +65,7 @@
+ 		
+ 		void setExclusive(bool excl);
+ 		void setAutoHide(bool autohide);
++		void setShowTextsAndIcons();
+ 		void setShowOnlyIcons();
+ 		void setShowOnlyTexts();
+ 		
+Index: lib/dviewbutton.cpp
+===================================================================
+--- lib/dviewbutton.cpp	(révision 1920)
++++ lib/dviewbutton.cpp	(révision 1923)
+@@ -72,19 +72,22 @@
+ 		bool isEnter;
+ };
+ 
+-DViewButton::DViewButton(Qt::ToolBarArea area, DToolView *toolView, QWidget * parent) : QToolButton(parent), m_area(area), m_toolView(toolView)
++DViewButton::DViewButton(Qt::ToolBarArea area, DToolView *toolView, QWidget * parent) : QToolButton(parent), m_area(area), m_isClicked(false), m_toolView(toolView)
+ {
+ 	setup();
+ }
+ 
+ 
+-DViewButton::DViewButton(DToolView *toolView, QWidget *parent) : QToolButton(parent), m_area(Qt::LeftToolBarArea), m_toolView(toolView)
++DViewButton::DViewButton(DToolView *toolView, QWidget *parent) : QToolButton(parent), m_area(Qt::LeftToolBarArea), m_isClicked(false), m_toolView(toolView)
+ {
+ 	setup();
+ }
+ 
+ void DViewButton::setup()
+ {
++	connect(m_toolView->toggleViewAction(), SIGNAL(triggered()), this, SLOT(viewtoggled()));
++
++	setIconText();
+ // 	setAutoExclusive(true);
+ 	setCheckable( true );
+ 	setAutoRaise(true);
+@@ -119,6 +122,11 @@
+ 	delete m_animator;
+ }
+ 
++void DViewButton::setIconText()
++{
++	setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
++}
++
+ void DViewButton::setOnlyText()
+ {
+ 	setToolButtonStyle(Qt::ToolButtonTextOnly);
+@@ -327,6 +335,7 @@
+ 	QMenu *menu = new QMenu(tr("Menu"), this);
+ 	menu->addAction(tr("Only icon"), this, SLOT(setOnlyIcon()) );
+ 	menu->addAction(tr("Only text"), this, SLOT(setOnlyText()) );
++	menu->addAction(tr("Text && Icon"), this, SLOT(setIconText()) );
+ 	menu->addSeparator();
+ 	
+ 	QAction *a = menu->addAction(tr("Mouse sensibility")/*, this, SLOT(toggleSensibility())*/);
+@@ -436,6 +445,7 @@
+ 
+ void DViewButton::toggleView()
+ {
++
+ 	QMainWindow *mw = static_cast<QMainWindow *>(m_toolView->parentWidget());
+ 	
+ 	m_toolView->setUpdatesEnabled(false);
+@@ -444,7 +454,10 @@
+ 		mw->setUpdatesEnabled( false );
+ 	}
+ 	
+-	m_toolView->toggleViewAction()->trigger();
++	if (!m_isClicked)
++	{
++		m_toolView->toggleViewAction()->trigger();
++	}
+ 	setChecked( m_toolView->isVisible() );
+ 	
+ 	
+@@ -455,6 +468,15 @@
+ 	}
+ }
+ 
++void DViewButton::viewtoggled()
++{
++	if (! m_isClicked)
++	{
++		m_isClicked = true;
++		click();
++		m_isClicked = false;
++	}
++}
+ 
+ DToolView *DViewButton::toolView() const
+ {
+Index: lib/dviewbutton.h
+===================================================================
+--- lib/dviewbutton.h	(révision 1920)
++++ lib/dviewbutton.h	(révision 1923)
+@@ -64,6 +64,7 @@
+ 		virtual void leaveEvent( QEvent* );
+ 		
+ 	public slots:
++		void setIconText();
+ 		void setOnlyText();
+ 		void setOnlyIcon();
+ 		
+@@ -72,6 +73,7 @@
+ 	private slots:
+ 		void animate();
+ 		void toggleSensibility();
++		void viewtoggled();
+ 		
+ 	private:
+ 		Qt::ToolBarArea m_area;
+@@ -84,6 +86,7 @@
+ 		bool m_blending;
+ 		
+ 		QPalette m_palette;
++		bool m_isClicked;
+ 		
+ 		DToolView *m_toolView;
+ };
+Index: lib/lib.pro
+===================================================================
+--- lib/lib.pro	(révision 1920)
++++ lib/lib.pro	(révision 1923)
+@@ -3,6 +3,8 @@
+ # Subdir relative project main directory: ./lib
+ # Target is a library:  ideality
+ 
++INCLUDEPATH += ./
++
+ HEADERS += dmainwindow.h \
+            dbuttonbar.h \
+            dviewbutton.h \
+@@ -23,4 +25,9 @@
+            dworkspacemainwindow.cpp 
+ TARGET = ideality
+ TEMPLATE = lib
+-CONFIG += static release
++CONFIG += debug
++
++MOC_DIR = ./
++OBJECTS_DIR = ./
++RCC_DIR = ./
++DESTDIR = ./

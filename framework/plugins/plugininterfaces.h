@@ -386,6 +386,8 @@ public:
 	virtual QList<IFileResolverPlugin*> fileResolvers() = 0;
 };
 
+Q_DECLARE_METATYPE(IFileTypePlugin*);
+
 Q_DECLARE_INTERFACE(IXinxPlugin, "org.shadoware.xinx.IXinxPlugin/1.0");
 Q_DECLARE_INTERFACE(IXinxXsltParser, "org.shadoware.xinx.IXinxXsltParser/1.0");
 Q_DECLARE_INTERFACE(IXinxInputOutputPlugin, "org.shadoware.xinx.IXinxInputOutputPlugin/1.0");

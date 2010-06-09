@@ -1,8 +1,8 @@
 xinx/xinx /usr/bin/
-ext/qcodeedit/libqcodeedit* /usr/lib/
-ext/ideality/lib/libideality* /usr/lib/
-framework/libxinxframework* /usr/lib/
-components/libxinxcmp* /usr/lib/
+ext/qcodeedit/libqcodeedit.so /usr/lib/
+ext/ideality/lib/libideality.so /usr/lib/
+framework/libxinxframework.so /usr/lib/
+components/libxinxcmp.so /usr/lib/
 scripts/*.js /usr/share/xinx/scripts/
 scripts/*.xq /usr/share/xinx/scripts/
 datas/*.xml /usr/share/xinx/datas/
