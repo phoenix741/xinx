@@ -1,6 +1,6 @@
 1 VERSIONINFO
-FILEVERSION 0, 9, 0, 0
-PRODUCTVERSION 0, 9, 0, 0
+FILEVERSION 0, 9, 0, 6
+PRODUCTVERSION 0, 9, 0, 6
 FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
 FILEFLAGS 0x9L
@@ -24,8 +24,8 @@ BEGIN
 			VALUE "OriginalFilename", "xinx.exe"
 			VALUE "PrivateBuild", "\0"
 			VALUE "ProductName", "XINX"
-			VALUE "FileVersion", "0, 9, 0, 0"
-			VALUE "ProductVersion", "0, 9, 0, 0"
+			VALUE "FileVersion", "0, 9, 0, 6"
+			VALUE "ProductVersion", "0, 9, 0, 6"
 			VALUE "SpecialBuild", "\0"
 		END
   END

@@ -13,21 +13,21 @@ FILESUBTYPE 0x0L
 BEGIN
   BLOCK "StringFileInfo"
   BEGIN
-      BLOCK "040904b0"
-      BEGIN
-		VALUE "Comments", "\0"
-		VALUE "CompanyName", "Ulrich Van Den Hekke"
-		VALUE "FileDescription", "Wrapper for SubVersion"
-        VALUE "FileVersion", "0, 1, 1, 0"
-        VALUE "InternalName", "subversion"
-        VALUE "LegalCopyright", "Copyleft (C) U. Van Den Hekke 2010"
-		VALUE "LegalTrademarks", "\0"
-        VALUE "OriginalFilename", "svnplugin.dll"
-		VALUE "PrivateBuild", "\0"
-        VALUE "ProductName", "XINX"
-        VALUE "ProductVersion", "0, 9, 0, 0"
-		VALUE "SpecialBuild", "\0"
-      END
+     BLOCK "040904b0"
+     BEGIN
+       VALUE "Comments", "\0"
+       VALUE "CompanyName", "Ulrich Van Den Hekke"
+       VALUE "FileDescription", "Wrapper for SubVersion"
+       VALUE "FileVersion", "0, 1, 1, 0"
+       VALUE "InternalName", "subversion"
+       VALUE "LegalCopyright", "Copyleft (C) U. Van Den Hekke 2010"
+       VALUE "LegalTrademarks", "\0"
+       VALUE "OriginalFilename", "svnplugin.dll"
+       VALUE "PrivateBuild", "\0"
+       VALUE "ProductName", "XINX"
+       VALUE "ProductVersion", "0, 9, 0, 0"
+       VALUE "SpecialBuild", "\0"
+     END
   END
   BLOCK "VarFileInfo"
   BEGIN

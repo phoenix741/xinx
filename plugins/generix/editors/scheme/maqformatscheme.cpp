@@ -31,7 +31,7 @@ MaquetteFormatScheme::MaquetteFormatScheme(XINXConfig * config) : XinxFormatSche
 
 void MaquetteFormatScheme::createDefaultScheme()
 {
-	QFormat comment, string, escapeseq, reservedword, numbers,
+	QFormat comment, string, reservedword, numbers,
 			blocP, blocV, blocT, blocPercent;
 
 	// Comment format
