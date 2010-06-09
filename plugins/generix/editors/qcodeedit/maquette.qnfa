@@ -5,6 +5,132 @@
 		<stop exclusive="false">\n</stop>
 	</context>
 
+	<sequence parenthesis="round:open">(</sequence>
+	<sequence parenthesis="round:close">)</sequence>
+
+	<context format="blocP" >
+		<start>P   </start>
+		<stop exclusive="false">\n</stop>
+
+		<sequence format="reservedword">[0-9$w\-]+</sequence>
+
+		<word id="data/float" format="numbers">-?[0-9]*.[0-9]+f?</word>
+
+		<context id="data/string" format="string" >
+			<start>&quot;</start>
+			<stop>&quot;</stop>
+			<stop exclusive="false">\n</stop>
+			<sequence id="escape" format="escapeseq" >\\[nrtvf\\"'\n]</sequence>
+		</context>
+
+		<context id="data/chars" format="string" >
+			<start>'</start>
+			<stop>'</stop>
+			<stop exclusive="false">\n</stop>
+			<sequence id="escape" format="escapeseq" >\\[nrtvf\\"'\n]</sequence>
+		</context>
+	</context>
+
+	<sequence format="bloc05" parenthesis="if05:open"  fold="1">T05$s*si</sequence>
+	<sequence format="bloc05" parenthesis="if05:close" fold="1">T05$s*fsi</sequence>
+	<context format="bloc05" >
+		<start>[%TV]05</start>
+		<stop exclusive="false">\n</stop>
+
+		<word id="data/float" format="numbers">-?[0-9]*.[0-9]+f?</word>
+
+		<context id="data/string" format="string" >
+			<start>&quot;</start>
+			<stop>&quot;</stop>
+			<stop exclusive="false">\n</stop>
+			<sequence id="escape" format="escapeseq" >\\[nrtvf\\"'\n]</sequence>
+		</context>
+
+		<context id="data/chars" format="string" >
+			<start>'</start>
+			<stop>'</stop>
+			<stop exclusive="false">\n</stop>
+			<sequence id="escape" format="escapeseq" >\\[nrtvf\\"'\n]</sequence>
+		</context>
+	</context>
+
+	<sequence format="bloc10" parenthesis="if10:open"  fold="1">T10$s*si</sequence>
+	<sequence format="bloc10" parenthesis="if10:close" fold="1">T10$s*fsi</sequence>
+	<context format="bloc10" >
+		<start>[%TV]10</start>
+		<stop exclusive="false">\n</stop>
+
+		<word id="data/float" format="numbers">-?[0-9]*.[0-9]+f?</word>
+
+		<context id="data/string" format="string" >
+			<start>&quot;</start>
+			<stop>&quot;</stop>
+			<stop exclusive="false">\n</stop>
+			<sequence id="escape" format="escapeseq" >\\[nrtvf\\"'\n]</sequence>
+		</context>
+
+		<context id="data/chars" format="string" >
+			<start>'</start>
+			<stop>'</stop>
+			<stop exclusive="false">\n</stop>
+			<sequence id="escape" format="escapeseq" >\\[nrtvf\\"'\n]</sequence>
+		</context>
+	</context>
+
+	<sequence format="bloc11" parenthesis="if11:open"  fold="1">T11$s*si</sequence>
+	<sequence format="bloc11" parenthesis="if11:close" fold="1">T11$s*fsi</sequence>
+	<context format="bloc11" >
+		<start>[%TV]11</start>
+		<stop exclusive="false">\n</stop>
+
+		<word id="data/float" format="numbers">-?[0-9]*.[0-9]+f?</word>
+
+		<context id="data/string" format="string" >
+			<start>&quot;</start>
+			<stop>&quot;</stop>
+			<stop exclusive="false">\n</stop>
+			<sequence id="escape" format="escapeseq" >\\[nrtvf\\"'\n]</sequence>
+		</context>
+
+		<context id="data/chars" format="string" >
+			<start>'</start>
+			<stop>'</stop>
+			<stop exclusive="false">\n</stop>
+			<sequence id="escape" format="escapeseq" >\\[nrtvf\\"'\n]</sequence>
+		</context>
+	</context>
+
+	<sequence format="bloc12" parenthesis="if12:open" fold="1">T12$s*si</sequence>
+	<sequence format="bloc12" parenthesis="if12:close" fold="1">T12$s*fsi</sequence>
+	<context format="bloc12" >
+		<start>[%TV]12</start>
+		<stop exclusive="false">\n</stop>
+
+		<word id="data/float" format="numbers">-?[0-9]*.[0-9]+f?</word>
+
+		<context id="data/string" format="string" >
+			<start>&quot;</start>
+			<stop>&quot;</stop>
+			<stop exclusive="false">\n</stop>
+			<sequence id="escape" format="escapeseq" >\\[nrtvf\\"'\n]</sequence>
+		</context>
+
+		<context id="data/chars" format="string" >
+			<start>'</start>
+			<stop>'</stop>
+			<stop exclusive="false">\n</stop>
+			<sequence id="escape" format="escapeseq" >\\[nrtvf\\"'\n]</sequence>
+		</context>
+	</context>
+
+	<list id="keywords/all" format="reservedword">
+		<word>ISQL</word>
+		<word>CODSOC</word>
+		<word>C</word>
+	</list>
+
+	<word id="data/float" format="numbers">-?[0-9]*.[0-9]+f?</word>
+	
 	<context id="data/string" format="string" >
 		<start>&quot;</start>
 		<stop>&quot;</stop>
@@ -18,23 +144,4 @@
 		<stop exclusive="false">\n</stop>
 		<sequence id="escape" format="escapeseq" >\\[nrtvf\\"'\n]</sequence>
 	</context>
-
-	<sequence parenthesis="if:open" fold="1">T[0-9]+ si</sequence>
-	<sequence parenthesis="if:close" fold="1">T[0-9]+ fsi</sequence>
-	<sequence parenthesis="round:open">(</sequence>
-	<sequence parenthesis="round:close">)</sequence>
-
-	<list id="keywords/all" format="reservedword">
-		<word>si</word>
-		<word>fsi</word>
-		<word>else</word>
-		<word>ISQL</word>
-		<word>CODSOC</word>
-		<word>C</word>
-	</list>
-
-	<word id="data/float" format="numbers">-?[0-9]*.[0-9]+f?</word>
-	<word id="data/hexadecimal" format="numbers">0[xX][0-9a-fA-F]+[ulUL]*</word>
-	<word id="data/octal" format="numbers">0[0-7]+</word>
-	<word id="data/decimal" format="numbers">-?[0-9]+[ulUL]*</word>
 </QNFA>

@@ -31,7 +31,7 @@ MaquetteFormatScheme::MaquetteFormatScheme(XINXConfig * config) : XinxFormatSche
 
 void MaquetteFormatScheme::createDefaultScheme()
 {
-	QFormat comment, string, danger, escapeseq, reservedword, numbers;
+	QFormat comment, string, escapeseq, reservedword, numbers, blocP, bloc05, bloc10, bloc11, bloc12;
 
 	// Comment format
 	comment.foreground = Qt::darkGreen;
@@ -40,13 +40,6 @@ void MaquetteFormatScheme::createDefaultScheme()
 	// String format
 	string.foreground = Qt::red;
 	setFormat("string", string);
-
-	// Danger format
-	danger.weight = QFont::Bold;
-	danger.waveUnderline = true;
-	danger.foreground = QColor(0xd0, 0x60, 0xd0);
-	danger.background = Qt::red;
-	setFormat("danger", danger);
 
 	// Escape Sequence format
 	escapeseq.foreground = QColor(0xff, 0x14, 0x93);
@@ -59,4 +52,24 @@ void MaquetteFormatScheme::createDefaultScheme()
 	// Numbers format
 	numbers.foreground = Qt::blue;
 	setFormat("numbers", numbers);
+
+	// BlocP format
+	blocP.background = QColor(0xf5, 0xff, 0xbf);
+	setFormat("blocP", blocP);
+
+	// Bloc05 format
+	bloc05.background = QColor(0xff, 0xd4, 0xd4);
+	setFormat("bloc05", bloc05);
+
+	// Bloc10 format
+	bloc10.background = QColor(0xc0, 0xe0, 0xff);
+	setFormat("bloc10", bloc10);
+
+	// Bloc11 format
+	bloc11.background = QColor(0xa6, 0xd9, 0xff);
+	setFormat("bloc11", bloc11);
+
+	// Bloc12 format
+	bloc12.background = QColor(0x93, 0xd6, 0xff);
+	setFormat("bloc12", bloc12);
 }
