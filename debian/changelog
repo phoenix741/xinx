@@ -1,3 +1,11 @@
+xinx (0.9.0.6) unstable; urgency=low
+
+  * #356 : Bug dans le rafraichissement des snipets
+  * Add a new snipet XSL Base 155
+  * Change some library API to manage multiple extention for a file type
+
+ -- Ulrich Van Den Hekke <xinx@shadoware.org>  Wed, 09 Jun 2010 21:59:00 +0200
+
 xinx (0.9.0.1) unstable; urgency=high
 
   * 347 : Gestion des codecs
