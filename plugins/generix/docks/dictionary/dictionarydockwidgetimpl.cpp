@@ -61,5 +61,5 @@ void DictionaryDockWidgetImpl::timerEvent(QTimerEvent * event)
 	killTimer(event->timerId());
 
 	m_dictionaryTreeWidget->loadDictionaries(m_filterLine->text());
-	m_informationLbl->setText(tr("%1 label(s) loaded.").arg(m_dictionaryTreeWidget->invisibleRootItem()->childCount()));
+	m_informationLbl->setText(tr("%n label(s) loaded.", "", m_dictionaryTreeWidget->invisibleRootItem()->childCount()));
 }
