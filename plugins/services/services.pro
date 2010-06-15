@@ -3,7 +3,7 @@ TEMPLATE = lib
 VERSION = 1.0.0.0
 CONFIG += plugin
 QT += network \
-	xml \
+    xml \
 	sql
 DESTDIR += ../
 INCLUDEPATH += ../../framework \
@@ -33,15 +33,18 @@ HEADERS = servicesplugin.h \
     wsdl.h \
     webserviceseditor.h \
     webservicesfiletype.h \
-    webservicesaction.h
+    webservicesaction.h \
+    servicesbatchdialogimpl.h
 SOURCES = servicesplugin.cpp \
     servicesprojectpropertyimpl.cpp \
     servicesprojectwizard.cpp \
     webservices.cpp \
     wsdl.cpp \
     webserviceseditor.cpp \
-    webservicesaction.cpp
+    webservicesaction.cpp \
+    servicesbatchdialogimpl.cpp
 FORMS += ui/newprojectwizard_serviceslist.ui \
-    ui/servicesprojectproperty.ui
+    ui/servicesprojectproperty.ui \
+    ui/servicesbatch.ui
 win32:RC_FILE += rc/plugin.rc
 include(../../ext/qtsoap/src/qtsoap.pri)

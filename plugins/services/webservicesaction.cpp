@@ -23,6 +23,7 @@
 #include "webservices.h"
 #include "webserviceseditor.h"
 #include <editors/editormanager.h>
+#include "servicesbatchdialogimpl.h"
 
 /* WebServicesRefreshAction */
 
@@ -98,4 +99,53 @@ void WebServicesRunAction::actionTriggered()
 	Q_ASSERT(editor);
 
 	editor->run();
+}
+
+/* WebServicesRunAllAction */
+
+WebServicesRunAllAction::WebServicesRunAllAction(QAction * a, QObject * parent) : XinxAction::Action(a, parent)
+{
+}
+
+WebServicesRunAllAction::WebServicesRunAllAction(const QString & text, const QKeySequence & shortcut, QObject * parent) : XinxAction::Action(text, shortcut, parent)
+{
+}
+
+WebServicesRunAllAction::WebServicesRunAllAction(const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent) : XinxAction::Action(icon, text, shortcut, parent)
+{
+}
+
+bool WebServicesRunAllAction::isActionVisible() const
+{
+	return XINXProjectManager::self()->project() && XINXProjectManager::self()->project()->activatedPlugin().contains("ServicesPlugin");
+}
+
+bool WebServicesRunAllAction::isActionEnabled() const
+{
+	return true;
+}
+
+bool WebServicesRunAllAction::isInToolBar() const
+{
+	return false;
+}
+
+void WebServicesRunAllAction::actionTriggered()
+{
+	ServicesBatchDialogImpl dlg;
+
+	dlg.editorWidget->setRowCount(EditorManager::self()->editorsCount());
+	for(int i = 0; i < EditorManager::self()->editorsCount(); i++)
+	{
+		WebServicesEditor * editor = qobject_cast<WebServicesEditor*>(EditorManager::self()->editor(i));
+		if(editor)
+		{
+			ServicesBatchRow * filenameItem = new ServicesBatchRow(QFileInfo(editor->getTitle()).fileName());
+			filenameItem->editor = editor;
+
+			dlg.editorWidget->setVerticalHeaderItem(i, filenameItem);
+		}
+	}
+
+	dlg.exec();
 }

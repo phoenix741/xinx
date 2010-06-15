@@ -50,7 +50,8 @@ public:
 	WebServices * service();
 	Operation * operation();
 	const QHash<QString,QString> & values();
-	void run();
+	void run(bool batch = false);
+	void runBatch();
 
 	virtual void loadFromDevice(QIODevice & d);
 	virtual void saveToDevice(QIODevice & d);
@@ -62,8 +63,12 @@ public:
 
 	virtual QIcon icon() const;
 	virtual QString defaultFileName() const;
+
+	int executionTime() const;
+	const QString & faultString() const;
 signals:
 	void updateActions();
+	void operationTerminated(const QString & faultString, int ms);
 protected:
 	virtual void initLayout();
 private slots:
@@ -84,6 +89,10 @@ private:
 
 	void store(const QString &);
 	void restore(const QString &);
+
+	int m_executionTime;
+	QString m_faultString;
+	bool m_batch;
 
 	QWidget * m_resultWidget;
 	QString m_serviceName, m_operationName, m_oldParamValue;

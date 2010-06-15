@@ -52,4 +52,18 @@ protected slots:
 	virtual void actionTriggered();
 };
 
+class WebServicesRunAllAction : public XinxAction::Action
+{
+public:
+	WebServicesRunAllAction(QAction * a, QObject * parent);
+	WebServicesRunAllAction(const QString & text, const QKeySequence & shortcut, QObject * parent);
+	WebServicesRunAllAction(const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent);
+
+	virtual bool isActionVisible() const;
+	virtual bool isActionEnabled() const;
+	virtual bool isInToolBar() const;
+protected slots:
+	virtual void actionTriggered();
+};
+
 #endif // WEBSERVICESACTION_H
