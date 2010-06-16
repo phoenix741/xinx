@@ -23,6 +23,9 @@
 #include "webservices.h"
 #include "webserviceseditor.h"
 #include <editors/editormanager.h>
+#include "servicesbatchdialogimpl.h"
+#include <QApplication>
+#include <QMessageBox>
 
 /* WebServicesRefreshAction */
 
@@ -98,4 +101,61 @@ void WebServicesRunAction::actionTriggered()
 	Q_ASSERT(editor);
 
 	editor->run();
+}
+
+/* WebServicesRunAllAction */
+
+WebServicesRunAllAction::WebServicesRunAllAction(QAction * a, QObject * parent) : XinxAction::Action(a, parent)
+{
+}
+
+WebServicesRunAllAction::WebServicesRunAllAction(const QString & text, const QKeySequence & shortcut, QObject * parent) : XinxAction::Action(text, shortcut, parent)
+{
+}
+
+WebServicesRunAllAction::WebServicesRunAllAction(const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent) : XinxAction::Action(icon, text, shortcut, parent)
+{
+}
+
+bool WebServicesRunAllAction::isActionVisible() const
+{
+	return XINXProjectManager::self()->project() && XINXProjectManager::self()->project()->activatedPlugin().contains("ServicesPlugin");
+}
+
+bool WebServicesRunAllAction::isActionEnabled() const
+{
+	return true;
+}
+
+bool WebServicesRunAllAction::isInToolBar() const
+{
+	return false;
+}
+
+void WebServicesRunAllAction::actionTriggered()
+{
+	ServicesBatchDialogImpl dlg(qApp->activeWindow());
+
+	int count = 0;
+	for(int i = 0; i < EditorManager::self()->editorsCount(); i++)
+	{
+		WebServicesEditor * editor = qobject_cast<WebServicesEditor*>(EditorManager::self()->editor(i));
+		if(editor)
+		{
+			dlg.editorWidget->setRowCount(++count);
+
+			ServicesBatchRow * filenameItem = new ServicesBatchRow(QFileInfo(editor->getTitle()).fileName());
+			filenameItem->editor = editor;
+
+			dlg.editorWidget->setVerticalHeaderItem(count - 1, filenameItem);
+		}
+	}
+	if(count == 0)
+	{
+		QMessageBox::information(qApp->activeWindow(), tr("No editor opened"), tr("Please open all stream you want launch in a editor."));
+	}
+	else
+	{
+		dlg.exec();
+	}
 }

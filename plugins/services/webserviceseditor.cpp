@@ -42,6 +42,7 @@
 #include <QDomDocument>
 #include <QSplitter>
 #include <QPlainTextEdit>
+#include <QThread>
 
 /* WebServicesEditor */
 
@@ -494,23 +495,43 @@ void WebServicesEditor::restore(const QString & paramStr)
 	textEdit()->setPlainText(m_paramValues[ paramStr ]);
 }
 
+int WebServicesEditor::executionTime() const
+{
+	return m_executionTime;
+}
+
+const QString & WebServicesEditor::faultString() const
+{
+	return m_faultString;
+}
+
 void WebServicesEditor::readResponse()
 {
-	m_benchmark->setText(tr("Server has respond in %1 ms").arg(m_benchmarkTimer.elapsed()));
+	m_executionTime = m_benchmarkTimer.elapsed();
+
+	m_benchmark->setText(tr("Server has respond in %1 ms").arg(m_executionTime));
 
 	const QtSoapMessage & response = m_http->getResponse();
 	if (response.isFault())
 	{
-		QMessageBox::warning(qApp->activeWindow(), tr("WebServices Error"), tr("Web services has error %1").arg(response.faultString().value().toString()));
+		m_faultString = response.faultString().value().toString();
+		if (!m_batch)
+			QMessageBox::warning(qApp->activeWindow(), tr("WebServices Error"), tr("Web services has error %1").arg(m_faultString));
 		m_progressBar->setVisible(false);
+
+		emit operationTerminated();
 		return;
 	}
 
 	const QtSoapType & res = response.returnValue();
 	if (! res.isValid())
 	{
-		QMessageBox::warning(qApp->activeWindow(), tr("WebServices Error"), tr("Web services has error %1").arg(tr("Invalid return value")));
+		m_faultString = tr("Invalid return value");
+		if (!m_batch)
+			QMessageBox::warning(qApp->activeWindow(), tr("WebServices Error"), tr("Web services has error %1").arg(m_faultString));
 		m_progressBar->setVisible(false);
+
+		emit operationTerminated();
 		return;
 	}
 
@@ -536,11 +557,22 @@ void WebServicesEditor::readResponse()
 	m_resultList->addItems(m_resultValues.keys());
 	m_resultEdit->setPlainText(m_resultValues.values().at(0));
 	m_progressBar->setVisible(false);
+
+	emit operationTerminated();
 }
 
-void WebServicesEditor::run()
+void WebServicesEditor::runBatch()
 {
+	run(true);
+}
+
+void WebServicesEditor::run(bool batch)
+{
+	m_batch = batch;
+
+	if(!m_batch)
 	m_progressBar->setVisible(true);
+
 	Operation * op = operation();
 
 	m_namespace = op->namespaceString();

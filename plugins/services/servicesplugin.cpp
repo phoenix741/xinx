@@ -93,11 +93,13 @@ XinxAction::MenuList ServicesPlugin::actions()
 	{
 		XinxAction::Action * refreshAction = new WebServicesRefreshAction(QIcon(":/images/reload.png"), tr("Update WebServices List"), QString(), this);
 		XinxAction::Action * runAction = new WebServicesRunAction(QIcon(":/services/images/action.png"), tr("Call the service"), QString("F9"), this);
+		XinxAction::Action * runAllAction = new WebServicesRunAllAction(tr("Launch multiple WebServices"), QString("Shift+F9"), this);
 
 		XinxAction::ActionList menu(tr("&Execute"), "execute");
 		menu.append(new XinxAction::Separator());
 		menu.append(refreshAction);
 		menu.append(runAction);
+		menu.append(runAllAction);
 		m_menus.append(menu);
 	}
 	return m_menus;
