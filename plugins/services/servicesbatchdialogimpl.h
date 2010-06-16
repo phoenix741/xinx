@@ -21,11 +21,9 @@
 #define SERVICESBATCHDIALOGIMPL_H
 
 #include "ui_servicesbatch.h"
+#include "webserviceseditor.h"
 
 #include <QPushButton>
-#include <QFutureWatcher>
-
-class WebServicesEditor;
 
 class ServicesBatchRow : public QTableWidgetItem
 {
@@ -51,7 +49,9 @@ public slots:
 	void resultReadyAt(int index);
 private:
 	QPushButton * m_launchButton;
-	QFutureWatcher<void> m_watcher;
+	QVector<WebServicesEditorPtr> m_editors;
+	QSignalMapper * m_signalMapper;
+	int m_progression;
 };
 
 #endif // SERVICESBATCHDIALOGIMPL_H

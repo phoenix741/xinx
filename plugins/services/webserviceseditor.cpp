@@ -42,6 +42,7 @@
 #include <QDomDocument>
 #include <QSplitter>
 #include <QPlainTextEdit>
+#include <QThread>
 
 /* WebServicesEditor */
 
@@ -517,6 +518,8 @@ void WebServicesEditor::readResponse()
 		if (!m_batch)
 			QMessageBox::warning(qApp->activeWindow(), tr("WebServices Error"), tr("Web services has error %1").arg(m_faultString));
 		m_progressBar->setVisible(false);
+
+		emit operationTerminated();
 		return;
 	}
 
@@ -527,6 +530,8 @@ void WebServicesEditor::readResponse()
 		if (!m_batch)
 			QMessageBox::warning(qApp->activeWindow(), tr("WebServices Error"), tr("Web services has error %1").arg(m_faultString));
 		m_progressBar->setVisible(false);
+
+		emit operationTerminated();
 		return;
 	}
 
@@ -552,6 +557,8 @@ void WebServicesEditor::readResponse()
 	m_resultList->addItems(m_resultValues.keys());
 	m_resultEdit->setPlainText(m_resultValues.values().at(0));
 	m_progressBar->setVisible(false);
+
+	emit operationTerminated();
 }
 
 void WebServicesEditor::runBatch()
@@ -563,7 +570,9 @@ void WebServicesEditor::run(bool batch)
 {
 	m_batch = batch;
 
-	m_progressBar->setVisible(true);
+	if(!m_batch)
+		m_progressBar->setVisible(true);
+
 	Operation * op = operation();
 
 	m_namespace = op->namespaceString();

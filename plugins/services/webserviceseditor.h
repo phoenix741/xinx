@@ -68,7 +68,7 @@ public:
 	const QString & faultString() const;
 signals:
 	void updateActions();
-	void operationTerminated(const QString & faultString, int ms);
+	void operationTerminated();
 protected:
 	virtual void initLayout();
 private slots:
@@ -107,5 +107,7 @@ private:
 	QtSoapHttpTransport * m_http;
 	QString m_namespace;
 };
+
+typedef WebServicesEditor* WebServicesEditorPtr;
 
 #endif // __WEBSERVICESEDITOR_H__

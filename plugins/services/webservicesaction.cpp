@@ -24,6 +24,8 @@
 #include "webserviceseditor.h"
 #include <editors/editormanager.h>
 #include "servicesbatchdialogimpl.h"
+#include <QApplication>
+#include <QMessageBox>
 
 /* WebServicesRefreshAction */
 
@@ -132,20 +134,28 @@ bool WebServicesRunAllAction::isInToolBar() const
 
 void WebServicesRunAllAction::actionTriggered()
 {
-	ServicesBatchDialogImpl dlg;
+	ServicesBatchDialogImpl dlg(qApp->activeWindow());
 
-	dlg.editorWidget->setRowCount(EditorManager::self()->editorsCount());
+	int count = 0;
 	for(int i = 0; i < EditorManager::self()->editorsCount(); i++)
 	{
 		WebServicesEditor * editor = qobject_cast<WebServicesEditor*>(EditorManager::self()->editor(i));
 		if(editor)
 		{
+			dlg.editorWidget->setRowCount(++count);
+
 			ServicesBatchRow * filenameItem = new ServicesBatchRow(QFileInfo(editor->getTitle()).fileName());
 			filenameItem->editor = editor;
 
-			dlg.editorWidget->setVerticalHeaderItem(i, filenameItem);
+			dlg.editorWidget->setVerticalHeaderItem(count - 1, filenameItem);
 		}
 	}
-
-	dlg.exec();
+	if(count == 0)
+	{
+		QMessageBox::information(qApp->activeWindow(), tr("No editor opened"), tr("Please open all stream you want launch in a editor."));
+	}
+	else
+	{
+		dlg.exec();
+	}
 }

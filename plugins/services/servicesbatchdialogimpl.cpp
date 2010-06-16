@@ -18,19 +18,6 @@
  * *********************************************************************** */
 
 #include "servicesbatchdialogimpl.h"
-#include "webserviceseditor.h"
-
-struct WebServicesEditorPtr
-{
-	WebServicesEditorPtr(WebServicesEditor * e) : editor(e) { } ;
-
-	WebServicesEditor * editor;
-
-	void run()
-	{
-		editor->runBatch();
-	}
-};
 
 ServicesBatchDialogImpl::ServicesBatchDialogImpl(QWidget *parent) : QDialog(parent)
 {
@@ -45,35 +32,63 @@ ServicesBatchDialogImpl::ServicesBatchDialogImpl(QWidget *parent) : QDialog(pare
 
 	connect(m_launchButton, SIGNAL(clicked()), this, SLOT(launchWebServices()));
 
-	connect(&m_watcher, SIGNAL(progressRangeChanged(int,int)), progressBar, SLOT(setRange(int,int)));
-	connect(&m_watcher, SIGNAL(progressValueChanged(int)), progressBar, SLOT(setValue(int)));
-	connect(&m_watcher, SIGNAL(resultReadyAt(int)), this, SLOT(resultReadyAt(int)));
+	m_signalMapper = new QSignalMapper(this);
+	connect(m_signalMapper, SIGNAL(mapped(int)), this, SLOT(resultReadyAt(int)));
 }
 
 void ServicesBatchDialogImpl::resultReadyAt(int index)
 {
-	WebServicesEditor * editor = static_cast<ServicesBatchRow*>(editorWidget->verticalHeaderItem(index))->editor;
+	m_progression++;
 
-	editorWidget->setItem(index, 0, new QTableWidgetItem(QString("%1").arg(editor->executionTime())));
-	editorWidget->setItem(index, 2, new QTableWidgetItem(editor->faultString()));
+	WebServicesEditorPtr editor = m_editors.at(index);
+
+	m_signalMapper->removeMappings(editor);
+
+	QTableWidgetItem * timingItem = new QTableWidgetItem(QString("%1 ms").arg(editor->executionTime()));
 	QTableWidgetItem * backgroundItem = new QTableWidgetItem;
 	if (editor->faultString().isEmpty())
 		backgroundItem->setBackgroundColor(Qt::green);
 	else
 		backgroundItem->setBackgroundColor(Qt::red);
+	QTableWidgetItem * faultStringItem = new QTableWidgetItem(editor->faultString());
+
+	editorWidget->setItem(index, 0, timingItem);
 	editorWidget->setItem(index, 1, backgroundItem);
+	editorWidget->setItem(index, 2, faultStringItem);
+
+	progressBar->setValue(m_progression);
+	if(m_progression == editorWidget->rowCount())
+	{
+		progressBar->hide();
+		buttonBox->setDisabled(false);
+	}
 }
+
+
+void webServicesCall(WebServicesEditorPtr &editor)
+{
+  editor->runBatch();
+}
+
 
 void ServicesBatchDialogImpl::launchWebServices()
 {
-	progressBar->show();
+	m_progression = 0;
+	buttonBox->setDisabled(true);
 
-	QList<WebServicesEditorPtr> editors;
+	progressBar->show();
+	progressBar->setMinimum(0);
+	progressBar->setMaximum(editorWidget->rowCount());
+	progressBar->setValue(0);
+
+	m_editors.clear();
 	for(int i = 0; i < editorWidget->rowCount(); i++)
 	{
-		WebServicesEditor * editor = static_cast<ServicesBatchRow*>(editorWidget->verticalHeaderItem(i))->editor;
-		editors << WebServicesEditorPtr(editor);
+		WebServicesEditorPtr editor = static_cast<ServicesBatchRow*>(editorWidget->verticalHeaderItem(i))->editor;
+		connect(editor, SIGNAL(operationTerminated()), m_signalMapper, SLOT(map()));
+		m_signalMapper->setMapping(editor, i);
+		m_editors.append(editor);
 	}
 
-	m_watcher.setFuture(QtConcurrent::map(editors, &WebServicesEditorPtr::run));
+	QtConcurrent::map(m_editors, &webServicesCall);
 }
