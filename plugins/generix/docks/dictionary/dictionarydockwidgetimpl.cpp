@@ -27,7 +27,7 @@
 
 /* DictionaryDockWidgetImpl */
 
-DictionaryDockWidgetImpl::DictionaryDockWidgetImpl(QWidget * parent) : QWidget(parent)
+DictionaryDockWidgetImpl::DictionaryDockWidgetImpl(QWidget * parent) : QWidget(parent), m_timerId(0)
 {
 	setupUi(this);
 	setWindowTitle(tr("Dictionary"));
@@ -46,20 +46,26 @@ void DictionaryDockWidgetImpl::update(const ContentView2::File & file)
 {
 	if (file.type() == "GNX_DICO")
 	{
-		startTimer(500);
+		if(m_timerId) killTimer(m_timerId);
+		m_timerId = startTimer(500);
 	}
 }
 
 void DictionaryDockWidgetImpl::on_m_filterLine_textChanged(QString filter)
 {
 	Q_UNUSED(filter);
-	startTimer(500);
+	if(m_timerId) killTimer(m_timerId);
+	m_timerId = startTimer(500);
 }
 
 void DictionaryDockWidgetImpl::timerEvent(QTimerEvent * event)
 {
-	killTimer(event->timerId());
+	if(m_timerId == event->timerId())
+	{
+		killTimer(m_timerId);
+		m_timerId = 0;
 
-	m_dictionaryTreeWidget->loadDictionaries(m_filterLine->text());
-	m_informationLbl->setText(tr("%n label(s) loaded.", "", m_dictionaryTreeWidget->invisibleRootItem()->childCount()));
+		m_dictionaryTreeWidget->loadDictionaries(m_filterLine->text());
+		m_informationLbl->setText(tr("%n label(s) loaded.", "", m_dictionaryTreeWidget->invisibleRootItem()->childCount()));
+	}
 }
