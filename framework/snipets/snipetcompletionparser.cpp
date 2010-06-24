@@ -44,6 +44,11 @@ SnipetCompletionParser::~SnipetCompletionParser()
 
 }
 
+void SnipetCompletionParser::setFilename(const QString & )
+{
+
+}
+
 void SnipetCompletionParser::load()
 {
 	clearNodes(rootNode());

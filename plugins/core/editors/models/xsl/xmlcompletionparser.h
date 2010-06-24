@@ -45,6 +45,7 @@ public:
 
 	~XmlCompletionParser();
 
+	virtual void setFilename(const QString & );
 	virtual void load();
 
 	static XmlCompletionParser * self();

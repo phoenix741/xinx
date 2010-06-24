@@ -506,7 +506,7 @@ void Cache::runParserLoad(QSqlDatabase db, const struct_cache & c)
 			return;
 		}
 
-		if (file.isCached() && QFileInfo(file.path()).exists())
+		if (file.isCached()) // If file not exist an excpetion will be throw
 		{
 			parser->setFilename(file.path());
 		}

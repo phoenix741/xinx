@@ -50,15 +50,6 @@ QHash<uint,XmlCompletionParser::InternalAttribute> XmlCompletionParser::m_attrib
 XmlCompletionParser::XmlCompletionParser() : ContentView2::Parser()
 {
 	s_self = this;
-
-	try
-	{
-		s_self->setFilename("datas:baseplugin_xml.xml");
-	}
-	catch (ContentView2::ParserException e)
-	{
-		qWarning(qPrintable(e.getMessage()));
-	}
 }
 
 XmlCompletionParser::~XmlCompletionParser()
@@ -81,6 +72,18 @@ XmlCompletionParser * XmlCompletionParser::clone()
 	XmlCompletionParser * parser = new XmlCompletionParser;
 
 	return parser;
+}
+
+void XmlCompletionParser::setFilename(const QString & filename)
+{
+	if(filename == "XmlCompletion")
+	{
+		ContentView2::Parser::setFilename("datas:baseplugin_xml.xml");
+	}
+	else
+	{
+		ContentView2::Parser::setFilename(filename);
+	}
 }
 
 void XmlCompletionParser::load()
