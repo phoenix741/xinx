@@ -50,6 +50,7 @@ public:
 	void setCurrentTemplateName(const QString & name, const QString & mode);
 
 	void setCompleteTags(CompletionTags value);
+	void setCompleteAll();
 	void setCompleteNone();
 	void setCompleteNode();
 	void setCompleteAttribute(const QString & baliseName, const QStringList & hiddenAttributeList);
@@ -60,7 +61,7 @@ public:
 protected:
 	virtual QString whereClause() const;
 private:
-	enum CompletionMode { COMPLETION_NONE_MODE, COMPLETION_NODE_MODE, COMPLETION_ATTRIBUTE_MODE, COMPLETION_VALUE_MODE };
+	enum CompletionMode { COMPLETION_NONE_MODE, COMPLETION_NODE_MODE, COMPLETION_ATTRIBUTE_MODE, COMPLETION_VALUE_MODE, COMPLETION_VALUE_ALL };
 
 	CompletionTags m_completeTags;
 	enum CompletionMode m_completionMode;

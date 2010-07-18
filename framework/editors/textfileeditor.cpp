@@ -514,6 +514,7 @@ void TextFileEditor::complete()
 		if (completionPrefix != c->completionPrefix())
 		{
 			m_completionModel->setPrefix(completionPrefix);
+			m_completionModel->select();
 			c->setCompletionPrefix(completionPrefix);
 			c->popup()->setCurrentIndex(c->completionModel()->index(0, 0));
 		}

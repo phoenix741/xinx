@@ -96,8 +96,8 @@ void XslCompletionNodeModel::setCompleteTags(CompletionTags value)
 	{
 		m_completeTags = value;
 
-		if (m_completionMode == COMPLETION_NODE_MODE)
-			select();
+		//if (m_completionMode == COMPLETION_NODE_MODE)
+			//select();
 	}
 }
 
@@ -108,8 +108,18 @@ void XslCompletionNodeModel::setCurrentTemplateName(const QString & name, const 
 		m_currentTemplateName = name;
 		m_currentTemplateMode = mode;
 
-		if (m_completionMode == COMPLETION_VALUE_MODE)
-			select();
+		//if (m_completionMode == COMPLETION_VALUE_MODE)
+			//select();
+	}
+}
+
+void XslCompletionNodeModel::setCompleteAll()
+{
+	if (m_completionMode != COMPLETION_VALUE_ALL)
+	{
+		m_completionMode = COMPLETION_VALUE_ALL;
+
+		//select();
 	}
 }
 
@@ -119,7 +129,7 @@ void XslCompletionNodeModel::setCompleteNone()
 	{
 		m_completionMode = COMPLETION_NONE_MODE;
 
-		select();
+		//select();
 	}
 }
 
@@ -129,7 +139,7 @@ void XslCompletionNodeModel::setCompleteNode()
 	{
 		m_completionMode = COMPLETION_NODE_MODE;
 
-		select();
+		//select();
 	}
 }
 
@@ -142,7 +152,7 @@ void XslCompletionNodeModel::setCompleteAttribute(const QString & baliseName, co
 		m_baliseNode          = XmlCompletionParser::self()->balise(baliseName);
 		m_hiddenAttributeList = hiddenAttributeList;
 
-		select();
+		//select();
 	}
 }
 
@@ -162,7 +172,7 @@ void XslCompletionNodeModel::setCompleteValue(const QString & baliseName, const 
 		m_attributeNode      = XmlCompletionParser::self()->baliseAttribute(baliseName, attributeName);
 		m_applyTemplateMatch = tempApplyTemplateMatch;
 
-		select();
+		//select();
 	}
 }
 
@@ -176,7 +186,7 @@ QString XslCompletionNodeModel::whereClause() const
 	{
 		// Only snipet
 	}
-	else if (m_completionMode == COMPLETION_NODE_MODE)
+	else if ((m_completionMode == COMPLETION_NODE_MODE) || (m_completionMode == COMPLETION_VALUE_ALL))
 	{
 		clause += " OR (cv_node.type='XmlBalise' ";
 		if (m_completeTags.testFlag(XslCompletionNodeModel::Xsl))
@@ -191,7 +201,7 @@ QString XslCompletionNodeModel::whereClause() const
 		}
 		clause += ")";
 	}
-	else if (m_completionMode == COMPLETION_ATTRIBUTE_MODE)
+	else if ((m_completionMode == COMPLETION_ATTRIBUTE_MODE) || (m_completionMode == COMPLETION_VALUE_ALL))
 	{
 		clause += " OR ( cv_node.type='XmlAttribute' ";
 		if (! m_hiddenAttributeList.isEmpty())
@@ -199,15 +209,13 @@ QString XslCompletionNodeModel::whereClause() const
 		clause += QString(" AND cv_node.parent_id=%1 ").arg(m_baliseNode.nodeId());
 		clause += ")";
 	}
-	else if (m_completionMode == COMPLETION_VALUE_MODE)
+	else if ((m_completionMode == COMPLETION_VALUE_MODE) || (m_completionMode == COMPLETION_VALUE_ALL))
 	{
 		clause += QString(" OR ( cv_node.type = 'XmlValue' AND cv_node.parent_id=%1 ) ").arg(m_attributeNode.nodeId());
 		clause += QString(" OR ( cv_node.type in ('XslParam', 'XslVariable') AND EXISTS ( "
-		                  "	SELECT 1 "
-						  "	FROM cv_node nodeParent LEFT JOIN cv_node_property ON nodeParent.id=cv_node_property.node_id AND cv_node_property.ord=%1"
-						  "	WHERE cv_node.parent_id=nodeParent.id "
-		                  "	  AND (nodeParent.type <> 'XslTemplate' OR ( nodeParent.name='%2' AND cv_node_property.value='%3' )))) ")
-		          .arg(ContentView2::Node::NODE_USER_VALUE).arg(m_currentTemplateName).arg(m_currentTemplateMode) ;
+						  "	SELECT 1 FROM cv_node nodeParent "
+						  " WHERE cv_node.parent_id=nodeParent.id AND (nodeParent.type <> 'XslTemplate' OR ( nodeParent.name='%1' AND nodeParent.property1='%2' )))) ")
+					.arg(m_currentTemplateName).arg(m_currentTemplateMode) ;
 		clause += QString(" OR ( cv_node.type = 'XslTemplate' ) ");
 	}
 

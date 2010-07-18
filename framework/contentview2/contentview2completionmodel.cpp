@@ -144,7 +144,7 @@ void CompletionModel::setPrefix(const QString & prefix)
 	if (m_prefix != prefix)
 	{
 		m_prefix = prefix;
-		select();
+		//select();
 	}
 }
 
