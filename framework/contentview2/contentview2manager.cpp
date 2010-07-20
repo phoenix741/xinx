@@ -28,6 +28,7 @@
 #include <QDir>
 #include <QSqlQuery>
 #include <QSqlError>
+#include <QDebug>
 
 namespace ContentView2
 {
@@ -65,12 +66,19 @@ Manager::~Manager()
 QSqlQuery Manager::getSqlQuery(const QString & query, QSqlDatabase db)
 {
 	QSqlDatabase dbUse = db.isValid() ? db :QSqlDatabase::addDatabase("QSQLITE", "CONTENTVIEW_SESSION");
+	QSqlQuery q;
 	if (! m_queries[dbUse.connectionName()].contains(query))
 	{
-		QSqlQuery q(query, dbUse);
+		//qDebug() << "Insert query in cache : " << query;
+		q = QSqlQuery(query, dbUse);
 		m_queries[dbUse.connectionName()].insert(query, q);
 	}
-	return m_queries[dbUse.connectionName()].value(query);
+	else
+	{
+		q = m_queries[dbUse.connectionName()].value(query);
+	}
+
+	return q;
 }
 
 void Manager::clearPool(const QSqlDatabase & db)

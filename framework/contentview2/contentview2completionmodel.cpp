@@ -188,7 +188,7 @@ void CompletionModel::select()
 		"ORDER BY lower(cv_node.display_name) LIMIT 50";
 
 	parameters << m_prefix;
-
+/*
 	QString debugStr = " [";
 	foreach(const QVariant & p, parameters)
 	{
@@ -204,10 +204,9 @@ void CompletionModel::select()
 	debugStr += "]";
 	qDebug(qPrintable(queryStr));
 	qDebug(qPrintable(debugStr));
-
+*/
 	// Set the query used all snipet
 	QSqlQuery query = Manager::self()->getSqlQuery(queryStr, m_db);
-	query.prepare(queryStr);
 	foreach(const QVariant & p, parameters)
 		query.addBindValue(p);
 
