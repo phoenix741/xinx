@@ -160,14 +160,18 @@ void CompletionModel::setPrefix(const QString & prefix)
  * is the equals to the file().
  * \li Select all element of the file in the cv_import table.
  */
-QString CompletionModel::whereClause() const
+QString CompletionModel::whereClause(QList<QVariant> & parameters) const
 {
-	return  "WHERE (cv_file.project_id=0 OR cv_file.project_id=:project_id) "
+	parameters << m_file.file(m_db).projectId();
+	parameters << m_file.file(m_db).fileId();
+	parameters << m_file.file(m_db).fileId();
+
+	return  "WHERE (cv_file.project_id=0 OR cv_file.project_id=?) "
 	        "AND cv_file.id=cv_node.file_id "
-	        "AND (cv_file.selection='*' OR cv_node.file_id=:id1 OR "
+			"AND (cv_file.selection='*' OR cv_node.file_id=? OR "
 	        "EXISTS (	 SELECT 1 FROM cv_import import "
 	        "WHERE import.child_id = cv_node.file_id "
-	        "AND import.parent_id = :id2)) ";
+			"AND import.parent_id = ?)) ";
 }
 
 //! Select the 5 first element return by the where clause of whereClause()
@@ -175,19 +179,37 @@ void CompletionModel::select()
 {
 	m_file.reload(m_db);
 
+	QList<QVariant> parameters;
+
 	// Order by clause
 	QString queryStr =
 	    "SELECT cv_node.display_name, cv_node.name, cv_node.icon, cv_node.id, cv_node.type, cv_node.completion_value "
-	    "FROM cv_node, cv_file " + whereClause() + " AND cv_node.display_name like ifnull(:prefix,'')||'%' "
-	    "ORDER BY lower(cv_node.display_name) LIMIT 5";
+		"FROM cv_node, cv_file " + whereClause(parameters) + " AND cv_node.display_name like ifnull(?,'')||'%' "
+		"ORDER BY lower(cv_node.display_name) LIMIT 50";
+
+	parameters << m_prefix;
+
+	QString debugStr = " [";
+	foreach(const QVariant & p, parameters)
+	{
+		if(p.type() == QVariant::String)
+		{
+			debugStr += "'" + p.toString() + "', ";
+		}
+		else
+		{
+			debugStr += QString("%1").arg(p.toInt()) + ", ";
+		}
+	}
+	debugStr += "]";
+	qDebug(qPrintable(queryStr));
+	qDebug(qPrintable(debugStr));
 
 	// Set the query used all snipet
 	QSqlQuery query = Manager::self()->getSqlQuery(queryStr, m_db);
 	query.prepare(queryStr);
-	query.bindValue(":project_id", m_file.file(m_db).projectId());
-	query.bindValue(":id1", m_file.file(m_db).fileId());
-	query.bindValue(":id2", m_file.file(m_db).fileId());
-	query.bindValue(":prefix", m_prefix);
+	foreach(const QVariant & p, parameters)
+		query.addBindValue(p);
 
 	bool result = query.exec();
 	if (result)
@@ -223,11 +245,11 @@ QSqlDatabase CompletionModel::database()
 //! Return the first finding node for the given \p name from parameters.
 ContentView2::Node CompletionModel::nodeOfWord(const QString & name) const
 {
-	QSqlQuery q = Manager::self()->getSqlQuery(QString("SELECT cv_node.id FROM cv_file, cv_node %1 AND cv_node.name = :name").arg(whereClause()), database());
-	q.bindValue(":project_id", file().file(database()).projectId());
-	q.bindValue(":id1", file().file(database()).fileId());
-	q.bindValue(":id2", file().file(database()).fileId());
-	q.bindValue(":name", name);
+	QList<QVariant> parameters;
+	QSqlQuery q = Manager::self()->getSqlQuery(QString("SELECT cv_node.id FROM cv_file, cv_node %1 AND cv_node.name = :name").arg(whereClause(parameters)), database());
+	foreach(const QVariant & p, parameters)
+		q.addBindValue(p);
+	q.addBindValue(name);
 	bool result = q.exec();
 	Q_ASSERT_X(result, "CompletionModel::nodeOfWord", qPrintable(q.lastError().text()));
 
