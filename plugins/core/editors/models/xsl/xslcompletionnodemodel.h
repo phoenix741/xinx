@@ -56,10 +56,9 @@ public:
 	void setCompleteAttribute(const QString & baliseName, const QStringList & hiddenAttributeList);
 	void setCompleteValue(const QString & baliseName, const QString & attributeName, const QString & applyTemplateMatch);
 
-	QStringList modes(QString templateName) const;
 	QStringList params(QString templateName) const;
 protected:
-	virtual QString whereClause() const;
+	virtual QString whereClause(QList<QVariant> & parameters) const;
 private:
 	enum CompletionMode { COMPLETION_NONE_MODE, COMPLETION_NODE_MODE, COMPLETION_ATTRIBUTE_MODE, COMPLETION_VALUE_MODE, COMPLETION_VALUE_ALL };
 

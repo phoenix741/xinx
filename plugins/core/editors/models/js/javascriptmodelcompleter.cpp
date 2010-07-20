@@ -44,17 +44,18 @@ void JavascriptModelCompleter::setFilter(const QString functionName)
 	}
 }
 
-QString JavascriptModelCompleter::whereClause() const
+QString JavascriptModelCompleter::whereClause(QList<QVariant> & parameters) const
 {
-	QString clause = ContentView2::CompletionModel::whereClause();
+	QString clause = ContentView2::CompletionModel::whereClause(parameters);
+	parameters << m_functionFiltre;
 
 	clause += " AND ( ( cv_node.type = 'Snipet' ) ";
 
-	clause += QString(" OR ( cv_node.type like 'Js%' AND EXISTS ( "
-	                  "	SELECT 1 "
-					  "	FROM cv_node nodeParent "
-					  "	WHERE cv_node.parent_id=nodeParent.id "
-	                  "	  AND (nodeParent.type <> 'JsFunction' OR nodeParent.name='%1' ))) ").arg(m_functionFiltre);
+	clause +=   " OR ( cv_node.type like 'Js%' AND EXISTS ( "
+				"	SELECT 1 "
+				"	FROM cv_node nodeParent "
+				"	WHERE cv_node.parent_id=nodeParent.id "
+				"	  AND (nodeParent.type <> 'JsFunction' OR nodeParent.name=? ))) ";
 
 	clause += ")";
 

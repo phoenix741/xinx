@@ -49,7 +49,7 @@ public slots:
 	virtual void select();
 
 protected:
-	virtual QString whereClause() const;
+	virtual QString whereClause(QList<QVariant> & parameters) const;
 	FileContainer file() const;
 private:
 	QSqlDatabase m_db;

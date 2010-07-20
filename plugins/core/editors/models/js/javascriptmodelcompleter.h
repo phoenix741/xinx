@@ -57,7 +57,7 @@ public slots:
 	void setFilter(const QString functionName = QString());
 
 protected:
-	virtual QString whereClause() const;
+	virtual QString whereClause(QList<QVariant> & parameters) const;
 
 private:
 	QString m_functionFiltre;

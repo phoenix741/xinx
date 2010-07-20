@@ -37,47 +37,23 @@ XslCompletionNodeModel::~XslCompletionNodeModel()
 
 }
 
-QStringList XslCompletionNodeModel::modes(QString templateName) const
-{
-	QStringList list;
-
-	QString modeQueryStr
-	= "SELECT distinct cv_node_property.value "
-	  "FROM cv_node, cv_node_property " + ContentView2::CompletionModel::whereClause() + " AND cv_node.id = cv_node_property.node_id "
-	  "AND cv_node_property.ord=:ord AND cv_node.type=:type AND cv_node.name=:name";
-
-	QSqlQuery modeQuery(modeQueryStr, database());
-	modeQuery.bindValue(":ord", ContentView2::Node::NODE_USER_VALUE);
-	modeQuery.bindValue(":type", "XslTemplate");
-	modeQuery.bindValue(":name", templateName);
-
-	bool result = modeQuery.exec();
-	Q_ASSERT_X(result, "XslCompletionNodeModel::modes", qPrintable(modeQuery.lastError().text()));
-
-	while (modeQuery.next())
-	{
-		list << modeQuery.value(0).toString();
-	}
-
-	return list;
-}
-
 QStringList XslCompletionNodeModel::params(QString templateName) const
 {
 	QStringList list;
 
+	QList<QVariant> parameters;
+
 	QString paramsQueryStr
 	= "SELECT child.name "
-	  "FROM cv_file, cv_node, cv_node child " + ContentView2::CompletionModel::whereClause() + " AND cv_node.id = child.parent_id "
-	  "AND cv_node.type=:type AND child.type=:param AND cv_node.name=:name";
+	  "FROM cv_file, cv_node, cv_node child " + ContentView2::CompletionModel::whereClause(parameters) + " AND cv_node.id = child.parent_id "
+	  "AND cv_node.type=? AND child.type=? AND cv_node.name=?";
 
 	QSqlQuery paramsQuery(paramsQueryStr, database());
-	paramsQuery.bindValue(":project_id", file().file(database()).projectId());
-	paramsQuery.bindValue(":id1", file().file(database()).fileId());
-	paramsQuery.bindValue(":id2", file().file(database()).fileId());
-	paramsQuery.bindValue(":type", "XslTemplate");
-	paramsQuery.bindValue(":param", "XslParam");
-	paramsQuery.bindValue(":name", templateName);
+	foreach(const QVariant & p, parameters)
+		paramsQuery.addBindValue(p);
+	paramsQuery.addBindValue("XslTemplate");
+	paramsQuery.addBindValue("XslParam");
+	paramsQuery.addBindValue(templateName);
 
 	bool result = paramsQuery.exec();
 	Q_ASSERT_X(result, "XslCompletionNodeModel::params", qPrintable(paramsQuery.lastError().text()));
@@ -92,55 +68,28 @@ QStringList XslCompletionNodeModel::params(QString templateName) const
 
 void XslCompletionNodeModel::setCompleteTags(CompletionTags value)
 {
-	if (value != m_completeTags)
-	{
-		m_completeTags = value;
-
-		//if (m_completionMode == COMPLETION_NODE_MODE)
-			//select();
-	}
+	m_completeTags = value;
 }
 
 void XslCompletionNodeModel::setCurrentTemplateName(const QString & name, const QString & mode)
 {
-	if ((m_currentTemplateName != name) || (m_currentTemplateMode != mode))
-	{
-		m_currentTemplateName = name;
-		m_currentTemplateMode = mode;
-
-		//if (m_completionMode == COMPLETION_VALUE_MODE)
-			//select();
-	}
+	m_currentTemplateName = name;
+	m_currentTemplateMode = mode;
 }
 
 void XslCompletionNodeModel::setCompleteAll()
 {
-	if (m_completionMode != COMPLETION_VALUE_ALL)
-	{
-		m_completionMode = COMPLETION_VALUE_ALL;
-
-		//select();
-	}
+	m_completionMode = COMPLETION_VALUE_ALL;
 }
 
 void XslCompletionNodeModel::setCompleteNone()
 {
-	if (m_completionMode != COMPLETION_NONE_MODE)
-	{
-		m_completionMode = COMPLETION_NONE_MODE;
-
-		//select();
-	}
+	m_completionMode = COMPLETION_NONE_MODE;
 }
 
 void XslCompletionNodeModel::setCompleteNode()
 {
-	if (m_completionMode != COMPLETION_NODE_MODE)
-	{
-		m_completionMode = COMPLETION_NODE_MODE;
-
-		//select();
-	}
+	m_completionMode = COMPLETION_NODE_MODE;
 }
 
 void XslCompletionNodeModel::setCompleteAttribute(const QString & baliseName, const QStringList & hiddenAttributeList)
@@ -151,8 +100,6 @@ void XslCompletionNodeModel::setCompleteAttribute(const QString & baliseName, co
 		m_baliseName          = baliseName;
 		m_baliseNode          = XmlCompletionParser::self()->balise(baliseName);
 		m_hiddenAttributeList = hiddenAttributeList;
-
-		//select();
 	}
 }
 
@@ -171,14 +118,12 @@ void XslCompletionNodeModel::setCompleteValue(const QString & baliseName, const 
 		m_attributeName      = attributeName;
 		m_attributeNode      = XmlCompletionParser::self()->baliseAttribute(baliseName, attributeName);
 		m_applyTemplateMatch = tempApplyTemplateMatch;
-
-		//select();
 	}
 }
 
-QString XslCompletionNodeModel::whereClause() const
+QString XslCompletionNodeModel::whereClause(QList<QVariant> & parameters) const
 {
-	QString clause = ContentView2::CompletionModel::whereClause();
+	QString clause = ContentView2::CompletionModel::whereClause(parameters);
 
 	clause += " AND ( ( cv_node.type = 'Snipet' ) ";
 
@@ -191,13 +136,13 @@ QString XslCompletionNodeModel::whereClause() const
 		clause += " OR (cv_node.type='XmlBalise' ";
 		if (m_completeTags.testFlag(XslCompletionNodeModel::Xsl))
 		{
-			clause += QString(" AND EXISTS (SELECT 1 FROM cv_node_property WHERE cv_node_property.node_id=cv_node.id AND cv_node_property.ord=%1 AND cv_node_property.value=%2) ")
-			          .arg((int)XmlCompletionParser::NODE_XML_TYPE).arg("stylesheet");
+			clause += " AND property1 = ?"; // XmlCompletionParser::NODE_XML_TYPE
+			parameters << "stylesheet";
 		}
 		if (m_completeTags.testFlag(XslCompletionNodeModel::Html))
 		{
-			clause += QString(" AND EXISTS (SELECT 1 FROM cv_node_property WHERE cv_node_property.node_id=cv_node.id AND cv_node_property.ord=%1 AND cv_node_property.value=%2) ")
-			          .arg((int)XmlCompletionParser::NODE_XML_TYPE).arg("html");
+			clause += " AND property1 = ?"; // XmlCompletionParser::NODE_XML_TYPE
+			parameters << "html";
 		}
 		clause += ")";
 	}
@@ -205,18 +150,39 @@ QString XslCompletionNodeModel::whereClause() const
 	{
 		clause += " OR ( cv_node.type='XmlAttribute' ";
 		if (! m_hiddenAttributeList.isEmpty())
-			clause += QString(" and cv_node.name not in ( '%1' ) ").arg(m_hiddenAttributeList.join("', '"));
-		clause += QString(" AND cv_node.parent_id=%1 ").arg(m_baliseNode.nodeId());
+		{
+			clause += " and cv_node.name not in ( ";
+			for(int i = 1; i <= m_hiddenAttributeList.size(); i++)
+			{
+				if( i == m_hiddenAttributeList.size() )
+				{
+					clause += "?";
+				}
+				else
+				{
+					clause += "?, ";
+				}
+
+				parameters << m_hiddenAttributeList.at(i - 1);
+			}
+			clause += " ) ";
+		}
+		clause += " AND cv_node.parent_id=? ";
 		clause += ")";
+
+		parameters << m_baliseNode.nodeId();
 	}
 	else if ((m_completionMode == COMPLETION_VALUE_MODE) || (m_completionMode == COMPLETION_VALUE_ALL))
 	{
-		clause += QString(" OR ( cv_node.type = 'XmlValue' AND cv_node.parent_id=%1 ) ").arg(m_attributeNode.nodeId());
-		clause += QString(" OR ( cv_node.type in ('XslParam', 'XslVariable') AND EXISTS ( "
-						  "	SELECT 1 FROM cv_node nodeParent "
-						  " WHERE cv_node.parent_id=nodeParent.id AND (nodeParent.type <> 'XslTemplate' OR ( nodeParent.name='%1' AND nodeParent.property1='%2' )))) ")
-					.arg(m_currentTemplateName).arg(m_currentTemplateMode) ;
-		clause += QString(" OR ( cv_node.type = 'XslTemplate' ) ");
+		clause +=	" OR ( cv_node.type = 'XmlValue' AND cv_node.parent_id=? ) ";
+		clause +=	" OR ( cv_node.type in ('XslParam', 'XslVariable') AND EXISTS ( "
+					"	SELECT 1 FROM cv_node nodeParent "
+					" WHERE cv_node.parent_id=nodeParent.id AND (nodeParent.type <> 'XslTemplate' OR ( nodeParent.name=? AND nodeParent.property1=? )))) ";
+		clause +=	" OR ( cv_node.type = 'XslTemplate' ) ";
+
+		parameters << m_attributeNode.nodeId();
+		parameters << m_currentTemplateName;
+		parameters << m_currentTemplateMode;
 	}
 
 	clause += ")";
