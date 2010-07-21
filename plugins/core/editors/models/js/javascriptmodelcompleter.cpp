@@ -50,13 +50,7 @@ QString JavascriptModelCompleter::whereClause(QList<QVariant> & parameters) cons
 	parameters << m_functionFiltre;
 
 	clause += " AND ( ( cv_node.type = 'Snipet' ) ";
-
-	clause +=   " OR ( cv_node.type like 'Js%' AND EXISTS ( "
-				"	SELECT 1 "
-				"	FROM cv_node nodeParent "
-				"	WHERE cv_node.parent_id=nodeParent.id "
-				"	  AND (nodeParent.type <> 'JsFunction' OR nodeParent.name=? ))) ";
-
+	clause += " OR ( cv_node.type like 'Js%' AND EXISTS (SELECT 1 FROM cv_node nodeParent WHERE cv_node.parent_id=nodeParent.id AND (nodeParent.type <> 'JsFunction' OR nodeParent.name=?))) ";
 	clause += ")";
 
 	return clause;

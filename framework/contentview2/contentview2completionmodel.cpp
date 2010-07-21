@@ -166,12 +166,42 @@ QString CompletionModel::whereClause(QList<QVariant> & parameters) const
 	parameters << m_file.file(m_db).fileId();
 	parameters << m_file.file(m_db).fileId();
 
-	return  "WHERE (cv_file.project_id=0 OR cv_file.project_id=?) "
-	        "AND cv_file.id=cv_node.file_id "
-			"AND (cv_file.selection='*' OR cv_node.file_id=? OR "
-	        "EXISTS (	 SELECT 1 FROM cv_import import "
-	        "WHERE import.child_id = cv_node.file_id "
-			"AND import.parent_id = ?)) ";
+	return  " (cv_file.project_id=0 OR cv_file.project_id=?) AND cv_file.id=cv_node.file_id "
+			"AND (cv_file.selection='*' "
+			"  OR cv_node.file_id=? "
+			"  OR EXISTS (SELECT 1 FROM cv_import import WHERE import.child_id = cv_node.file_id AND import.parent_id = ?)) ";
+}
+
+/*!
+ * \brief Return the select clause used to query the completion.
+ *
+ * This method is used to select the field used by the CompletionModel.
+ * This method can be redefined if the field name have a different name.
+ */
+QString CompletionModel::completionSelectClause() const
+{
+	return "cv_node.display_name, cv_node.name, cv_node.icon, cv_node.id, cv_node.type, cv_node.completion_value";
+}
+
+QString CompletionModel::completionTableClause() const
+{
+	return "cv_node, cv_file";
+}
+
+QString CompletionModel::completionWhereClause(QList<QVariant> & parameters) const
+{
+	QString wc = whereClause(parameters) + " AND cv_node.display_name like ifnull(?,'')||'%' ";
+
+	parameters << m_prefix;
+
+	return wc;
+}
+
+QString CompletionModel::completionSelectQuery(QList<QVariant> & parameters) const
+{
+	return "SELECT " + completionSelectClause() +
+			" FROM " + completionTableClause() +
+		   " WHERE " + completionWhereClause(parameters);
 }
 
 //! Select the 5 first element return by the where clause of whereClause()
@@ -179,15 +209,9 @@ void CompletionModel::select()
 {
 	m_file.reload(m_db);
 
+	// SELECT to use for completion
 	QList<QVariant> parameters;
-
-	// Order by clause
-	QString queryStr =
-	    "SELECT cv_node.display_name, cv_node.name, cv_node.icon, cv_node.id, cv_node.type, cv_node.completion_value "
-		"FROM cv_node, cv_file " + whereClause(parameters) + " AND cv_node.display_name like ifnull(?,'')||'%' "
-		"ORDER BY lower(cv_node.display_name) LIMIT 50";
-
-	parameters << m_prefix;
+	QString queryStr = completionSelectQuery(parameters) + " ORDER BY lower(display_name) LIMIT 50";
 /*
 	QString debugStr = " [";
 	foreach(const QVariant & p, parameters)

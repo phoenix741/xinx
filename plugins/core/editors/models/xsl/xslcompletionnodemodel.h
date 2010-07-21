@@ -58,7 +58,16 @@ public:
 
 	QStringList params(QString templateName) const;
 protected:
-	virtual QString whereClause(QList<QVariant> & parameters) const;
+	virtual QString completionSnipetSelectQuery(QList<QVariant> & parameters) const;
+	virtual QString completionNodeSelectQuery(QList<QVariant> & parameters) const;
+	virtual QString completionAttributeSelectQuery(QList<QVariant> & parameters) const;
+	virtual QString completionValueVariableSelectQuery(QList<QVariant> & parameters) const;
+	virtual QString completionValueTemplateSelectQuery(QList<QVariant> & parameters) const;
+	virtual QString completionValueHtmlSelectQuery(QList<QVariant> & parameters) const;
+
+	virtual QString completionSelectQuery(QList<QVariant> & parameters) const;
+
+	virtual QString completionSelectClause() const;
 private:
 	enum CompletionMode { COMPLETION_NONE_MODE, COMPLETION_NODE_MODE, COMPLETION_ATTRIBUTE_MODE, COMPLETION_VALUE_MODE, COMPLETION_VALUE_ALL };
 

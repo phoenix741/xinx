@@ -50,6 +50,12 @@ public slots:
 
 protected:
 	virtual QString whereClause(QList<QVariant> & parameters) const;
+
+	virtual QString completionSelectClause() const;
+	virtual QString completionTableClause() const;
+	virtual QString completionWhereClause(QList<QVariant> & parameters) const;
+	virtual QString completionSelectQuery(QList<QVariant> & parameters) const;
+
 	FileContainer file() const;
 private:
 	QSqlDatabase m_db;
