@@ -54,7 +54,8 @@ FORMS += ui/about.ui \
     customdialog/ui/customtools.ui \
     customdialog/ui/custommodules.ui \
     ui/templatedialog.ui \
-    ui/newversion.ui
+    ui/newversion.ui \
+    customdialog/ui/customcontentview.ui
 HEADERS += customdialog/customgeneralimpl.h \
     customdialog/customprojectimpl.h \
     customdialog/customeditorimpl.h \
