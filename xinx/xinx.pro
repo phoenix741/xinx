@@ -1,9 +1,7 @@
 include(../project_mode.pri)
 TEMPLATE = app
-
 VERSION = 0.9.0.0
 DEFINES += XINX_VERSION=$$replace(VERSION,"\.",",")
-
 win32:QMAKE_RC = windres \
     -DXINX_VERSION=$$replace(VERSION,"\.",",")
 win32:RC_FILE += rc/xinx.rc
@@ -12,7 +10,7 @@ QT += xml \
     script \
     xmlpatterns \
     webkit \
-	sql
+    sql
 DESTDIR += ./
 PRE_TARGETDEPS = ../plugins/libcoreplugin.a
 INCLUDEPATH += ../framework \
@@ -22,19 +20,19 @@ INCLUDEPATH += ../framework \
     ../ext/qcodeedit/lib/document \
     ../ext/qcodeedit/lib/language \
     ../ext/qcodeedit/lib/qnfa \
-	../ext/qcodeedit/lib/widgets \
-	../ext/ideality/lib
+    ../ext/qcodeedit/lib/widgets \
+    ../ext/ideality/lib
 LIBS += -L../framework \
     -L../plugins \
     -L../components \
     -L../ext/qcodeedit \
-	-L../framework/ \
-	-L../ext/ideality/lib/ \
+    -L../framework/ \
+    -L../ext/ideality/lib/ \
     -lcoreplugin \
     -lxinxframework \
     -lxinxcmp \
     -lqcodeedit \
-	-lideality
+    -lideality
 RESOURCES += application.qrc
 FORMS += ui/about.ui \
     ui/projectdirectorywidget.ui \
@@ -85,7 +83,8 @@ HEADERS += customdialog/customgeneralimpl.h \
     welcomdlgimpl.h \
     welcomdlgimpl_p.h \
     templatedialogimpl.h \
-    newversionwizardimpl.h
+    newversionwizardimpl.h \
+    customdialog/customcontentviewimpl.h
 SOURCES += customdialog/customgeneralimpl.cpp \
     customdialog/customprojectimpl.cpp \
     customdialog/customeditorimpl.cpp \
@@ -115,7 +114,8 @@ SOURCES += customdialog/customgeneralimpl.cpp \
     xinxprojectwizard/projectwizard.cpp \
     welcomdlgimpl.cpp \
     templatedialogimpl.cpp \
-    newversionwizardimpl.cpp
+    newversionwizardimpl.cpp \
+    customdialog/customcontentviewimpl.cpp
 TRANSLATIONS += translations/xinx_fr.ts
 CONFIG(debug, debug|release):exists( $$[QT_INSTALL_DATA]/qtc-debugging-helper/gdbmacros.cpp ) { 
     message( "Add GDB Macro to program..." )
