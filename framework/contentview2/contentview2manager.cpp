@@ -155,11 +155,13 @@ void Manager::createDatabase(QSqlDatabase db)
 	Q_ASSERT_X(result, "Manager::createDatabase", qPrintable(q.lastError().text()));
 	result = q.exec("CREATE INDEX cv_node_idx1 on cv_node (parent_id ASC)");
 	Q_ASSERT_X(result, "Manager::createDatabase", qPrintable(q.lastError().text()));
-	result = q.exec("CREATE INDEX cv_node_idx2 on cv_node (file_id ASC, name ASC, type ASC)");
+	result = q.exec("CREATE INDEX cv_node_idx2 on cv_node (name ASC, type ASC, file_id ASC)");
 	Q_ASSERT_X(result, "Manager::createDatabase", qPrintable(q.lastError().text()));
 	result = q.exec("CREATE INDEX cv_node_idx3 on cv_node (parent_id ASC, hash ASC)");
 	Q_ASSERT_X(result, "Manager::createDatabase", qPrintable(q.lastError().text()));
-	result = q.exec("CREATE INDEX cv_node_idx4 on cv_node (type ASC, display_name ASC, file_id ASC)");
+	result = q.exec("CREATE INDEX cv_node_idx4 on cv_node (type ASC, display_name ASC)");
+	Q_ASSERT_X(result, "Manager::createDatabase", qPrintable(q.lastError().text()));
+	result = q.exec("CREATE INDEX cv_node_idx5 on cv_node (parent_id ASC, type ASC)");
 	Q_ASSERT_X(result, "Manager::createDatabase", qPrintable(q.lastError().text()));
 	result = q.exec("CREATE INDEX cv_node_property_idx1 on cv_node_property (node_id ASC, ord ASC)");
 	Q_ASSERT_X(result, "Manager::createDatabase", qPrintable(q.lastError().text()));
