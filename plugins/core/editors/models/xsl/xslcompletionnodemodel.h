@@ -50,17 +50,26 @@ public:
 	void setCurrentTemplateName(const QString & name, const QString & mode);
 
 	void setCompleteTags(CompletionTags value);
+	void setCompleteAll();
 	void setCompleteNone();
 	void setCompleteNode();
 	void setCompleteAttribute(const QString & baliseName, const QStringList & hiddenAttributeList);
 	void setCompleteValue(const QString & baliseName, const QString & attributeName, const QString & applyTemplateMatch);
 
-	QStringList modes(QString templateName) const;
 	QStringList params(QString templateName) const;
 protected:
-	virtual QString whereClause() const;
+	virtual QString completionSnipetSelectQuery(QList<QVariant> & parameters) const;
+	virtual QString completionNodeSelectQuery(QList<QVariant> & parameters) const;
+	virtual QString completionAttributeSelectQuery(QList<QVariant> & parameters) const;
+	virtual QString completionValueVariableSelectQuery(QList<QVariant> & parameters) const;
+	virtual QString completionValueTemplateSelectQuery(QList<QVariant> & parameters) const;
+	virtual QString completionValueHtmlSelectQuery(QList<QVariant> & parameters) const;
+
+	virtual QString completionSelectQuery(QList<QVariant> & parameters) const;
+
+	virtual QString completionSelectClause() const;
 private:
-	enum CompletionMode { COMPLETION_NONE_MODE, COMPLETION_NODE_MODE, COMPLETION_ATTRIBUTE_MODE, COMPLETION_VALUE_MODE };
+	enum CompletionMode { COMPLETION_NONE_MODE, COMPLETION_NODE_MODE, COMPLETION_ATTRIBUTE_MODE, COMPLETION_VALUE_MODE, COMPLETION_VALUE_ALL };
 
 	CompletionTags m_completeTags;
 	enum CompletionMode m_completionMode;

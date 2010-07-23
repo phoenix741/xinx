@@ -46,6 +46,8 @@ private slots:
 private:
 	virtual void timerEvent(QTimerEvent * event);
 
+	int m_timerId;
+
 };
 
 #endif // DICTIONARYDOCKWIDGET_H

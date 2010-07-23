@@ -51,6 +51,7 @@ IFileTypePlugin * EditorChoiceDlg::selectedType() const
 	{
 		return item->data(Qt::UserRole).value<IFileTypePlugin*>();
 	}
+	return 0;
 }
 
 void EditorChoiceDlg::on_m_typeFileList_itemDoubleClicked(QListWidgetItem* item)

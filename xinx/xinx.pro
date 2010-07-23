@@ -1,9 +1,7 @@
 include(../project_mode.pri)
 TEMPLATE = app
-
 VERSION = 0.9.0.0
 DEFINES += XINX_VERSION=$$replace(VERSION,"\.",",")
-
 win32:QMAKE_RC = windres \
     -DXINX_VERSION=$$replace(VERSION,"\.",",")
 win32:RC_FILE += rc/xinx.rc
@@ -54,7 +52,8 @@ FORMS += ui/about.ui \
     customdialog/ui/customtools.ui \
     customdialog/ui/custommodules.ui \
     ui/templatedialog.ui \
-    ui/newversion.ui
+    ui/newversion.ui \
+    customdialog/ui/customcontentview.ui
 HEADERS += customdialog/customgeneralimpl.h \
     customdialog/customprojectimpl.h \
     customdialog/customeditorimpl.h \
@@ -84,7 +83,8 @@ HEADERS += customdialog/customgeneralimpl.h \
     welcomdlgimpl.h \
     welcomdlgimpl_p.h \
     templatedialogimpl.h \
-    newversionwizardimpl.h
+    newversionwizardimpl.h \
+    customdialog/customcontentviewimpl.h
 SOURCES += customdialog/customgeneralimpl.cpp \
     customdialog/customprojectimpl.cpp \
     customdialog/customeditorimpl.cpp \
@@ -114,7 +114,8 @@ SOURCES += customdialog/customgeneralimpl.cpp \
     xinxprojectwizard/projectwizard.cpp \
     welcomdlgimpl.cpp \
     templatedialogimpl.cpp \
-    newversionwizardimpl.cpp
+    newversionwizardimpl.cpp \
+    customdialog/customcontentviewimpl.cpp
 TRANSLATIONS += translations/xinx_fr.ts
 CONFIG(debug, debug|release):exists( $$[QT_INSTALL_DATA]/qtc-debugging-helper/gdbmacros.cpp ) { 
     message( "Add GDB Macro to program..." )

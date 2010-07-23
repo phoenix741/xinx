@@ -40,6 +40,7 @@
 #include <QTextCursor>
 #include <QStack>
 #include <QModelIndex>
+#include <QDebug>
 
 // Define
 #define EOWREGEXP   "[~!@\\$#%\\^&\\*\\(\\)\\+\\{\\}|\"<>,/;'\\[\\]\\\\=\\s]"
@@ -107,11 +108,13 @@ QCompleter * XslTextEditor::completer()
 {
 	QCompleter * completer = XmlTextEditor::completer();
 
-	if (completer && m_model)
+	if (completer && m_model && (m_lastPosition.position() != textCursor().position()))
 	{
+		m_lastPosition = textCursor();
+
 		QString templateName, templateMode, nodeName, paramName, applyTemplateMatch;
-		getTemplate(textCursor(), &templateName, &templateMode);
-		cursorPosition pos = editPosition(textCursor(), nodeName, paramName);
+		getTemplate(m_lastPosition, &templateName, &templateMode);
+		cursorPosition pos = editPosition(m_lastPosition, nodeName, paramName);
 
 		switch (pos)
 		{
@@ -119,7 +122,7 @@ QCompleter * XslTextEditor::completer()
 			m_model->setCompleteNode();
 			break;
 		case cpEditParamName:
-			m_model->setCompleteAttribute(nodeName, paramOfNode(textCursor()));
+			m_model->setCompleteAttribute(nodeName, paramOfNode(m_lastPosition));
 			break;
 		case cpEditParamValue:
 			if ((nodeName == "xsl:apply-templates") && (paramName == "mode"))

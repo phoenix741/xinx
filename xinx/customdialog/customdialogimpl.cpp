@@ -28,6 +28,7 @@
 #include "customsnipetimpl.h"
 #include "customtoolsimpl.h"
 #include "custommodulesimpl.h"
+#include "customcontentviewimpl.h"
 
 #include <plugins/xinxpluginsloader.h>
 
@@ -49,6 +50,7 @@ CustomDialogImpl::CustomDialogImpl(QWidget * parent, Qt::WFlags f)  : QDialog(pa
 	m_pages << new CustomSyntaxImpl(this);
 	m_pages << new CustomSnipetImpl(this);
 	m_pages << new CustomToolsImpl(this);
+	m_pages << new CustomContentViewImpl(this);
 
 	foreach(XinxPluginElement * plugin, XinxPluginsLoader::self()->plugins())
 	{

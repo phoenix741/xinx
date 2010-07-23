@@ -1037,7 +1037,10 @@ bool XinxCodeEdit::keyPressEvent(QKeyEvent * e, QEditor * editor)
 	if (!c || !isShortcut)
 		callParent = localKeyPressExecute(e);
 
-	if (callParent) return false;
+	if (callParent)
+	{
+		return false;
+	}
 
 	postKeyPressEvent(e, editor);
 
@@ -1054,11 +1057,13 @@ void XinxCodeEdit::postKeyPressEvent(QKeyEvent * e, QEditor * editor)
 
 	const bool ctrlOrShift = e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
 	if (!c || (ctrlOrShift && e->text().isEmpty()))
+	{
 		return ;
+	}
 
 	static QString eow(EOW);   // end of word
 	bool hasModifier = (e->modifiers() & (Qt::ControlModifier | Qt::AltModifier));    // && !ctrlOrShift;
-	QString completionPrefix = textUnderCursor(textCursor()), result;
+	QString completionPrefix = textUnderCursor(textCursor());
 
 	if (!isShortcut && (hasModifier || e->text().isEmpty() || completionPrefix.length() < 2 || eow.contains(e->text().right(1))))
 	{
@@ -1066,15 +1071,21 @@ void XinxCodeEdit::postKeyPressEvent(QKeyEvent * e, QEditor * editor)
 		return ;
 	}
 
+	ContentView2::CompletionModel * model = dynamic_cast<ContentView2::CompletionModel*>(c->model());
 	if (completionPrefix != c->completionPrefix())
 	{
-		ContentView2::CompletionModel * model = dynamic_cast<ContentView2::CompletionModel*>(c->model());
 		if (model)
 		{
 			model->setPrefix(completionPrefix);
+			model->select();
 		}
 		c->setCompletionPrefix(completionPrefix);
 		c->popup()->setCurrentIndex(c->completionModel()->index(0, 0));
+	}
+	else
+	{
+		if (model)
+			model->select();
 	}
 
 	int x, y, h, w;

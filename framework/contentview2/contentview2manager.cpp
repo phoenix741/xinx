@@ -28,6 +28,7 @@
 #include <QDir>
 #include <QSqlQuery>
 #include <QSqlError>
+#include <QDebug>
 
 namespace ContentView2
 {
@@ -65,12 +66,19 @@ Manager::~Manager()
 QSqlQuery Manager::getSqlQuery(const QString & query, QSqlDatabase db)
 {
 	QSqlDatabase dbUse = db.isValid() ? db :QSqlDatabase::addDatabase("QSQLITE", "CONTENTVIEW_SESSION");
+	QSqlQuery q;
 	if (! m_queries[dbUse.connectionName()].contains(query))
 	{
-		QSqlQuery q(query, dbUse);
+		//qDebug() << "Insert query in cache : " << query;
+		q = QSqlQuery(query, dbUse);
 		m_queries[dbUse.connectionName()].insert(query, q);
 	}
-	return m_queries[dbUse.connectionName()].value(query);
+	else
+	{
+		q = m_queries[dbUse.connectionName()].value(query);
+	}
+
+	return q;
 }
 
 void Manager::clearPool(const QSqlDatabase & db)
@@ -98,18 +106,22 @@ void Manager::initializeDatabase()
 	m_cache->initializeCache();
 }
 
-void Manager::openDatabase()
+QString Manager::fileName() const
 {
-	// Create the db object
-	QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", "CONTENTVIEW_SESSION");
 	QFileInfo fileInfo("datas:contentview.db");
 	QString databaseFileName = fileInfo.absoluteFilePath();
 	if (! fileInfo.exists())
 	{
 		databaseFileName = QDir(QDir::searchPaths("datas").at(0)).absoluteFilePath("contentview.db");
 	}
+	return databaseFileName;
+}
 
-	db.setDatabaseName(databaseFileName);
+void Manager::openDatabase()
+{
+	// Create the db object
+	QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", "CONTENTVIEW_SESSION");
+	db.setDatabaseName(fileName());
 	bool result = db.open();
 	Q_ASSERT_X(result, "Manager::openDatabase", qPrintable(db.lastError().text()));
 	db.exec("PRAGMA synchronous=OFF");
@@ -119,6 +131,72 @@ void Manager::openDatabase()
 	QStringList tables = db.tables();
 	if (! tables.contains("cv_file"))
 		createDatabase(db);
+}
+
+void Manager::compactDatabase()
+{
+	database().exec("VACUUM");
+}
+
+void Manager::rebuildIndex()
+{
+	destroyIndex();
+	createIndex();
+}
+
+void Manager::destroyIndex()
+{
+	QSqlQuery q(database());
+	bool result;
+
+	/* Destroy Index */
+	result = q.exec("DROP INDEX IF EXISTS cv_project_idx1");
+	Q_ASSERT_X(result, "Manager::destroyIndex", qPrintable(q.lastError().text()));
+	result = q.exec("DROP INDEX IF EXISTS cv_file_idx1");
+	Q_ASSERT_X(result, "Manager::destroyIndex", qPrintable(q.lastError().text()));
+	result = q.exec("DROP INDEX IF EXISTS cv_file_idx3");
+	Q_ASSERT_X(result, "Manager::destroyIndex", qPrintable(q.lastError().text()));
+	result = q.exec("DROP INDEX IF EXISTS cv_import_idx1");
+	Q_ASSERT_X(result, "Manager::destroyIndex", qPrintable(q.lastError().text()));
+	result = q.exec("DROP INDEX IF EXISTS cv_node_idx1");
+	Q_ASSERT_X(result, "Manager::destroyIndex", qPrintable(q.lastError().text()));
+	result = q.exec("DROP INDEX IF EXISTS cv_node_idx2");
+	Q_ASSERT_X(result, "Manager::destroyIndex", qPrintable(q.lastError().text()));
+	result = q.exec("DROP INDEX IF EXISTS cv_node_idx3");
+	Q_ASSERT_X(result, "Manager::destroyIndex", qPrintable(q.lastError().text()));
+	result = q.exec("DROP INDEX IF EXISTS cv_node_idx4");
+	Q_ASSERT_X(result, "Manager::destroyIndex", qPrintable(q.lastError().text()));
+	result = q.exec("DROP INDEX IF EXISTS cv_node_idx5");
+	Q_ASSERT_X(result, "Manager::destroyIndex", qPrintable(q.lastError().text()));
+	result = q.exec("DROP INDEX IF EXISTS cv_node_property_idx1");
+	Q_ASSERT_X(result, "Manager::destroyIndex", qPrintable(q.lastError().text()));
+}
+
+void Manager::createIndex()
+{
+	QSqlQuery q(database());
+	bool result;
+	/* Create Index */
+	result = q.exec("CREATE INDEX cv_project_idx1 on cv_project (path ASC)");
+	Q_ASSERT_X(result, "Manager::createIndex", qPrintable(q.lastError().text()));
+	result = q.exec("CREATE UNIQUE INDEX cv_file_idx1 on cv_file (path ASC, project_id ASC, cached ASC)");
+	Q_ASSERT_X(result, "Manager::createIndex", qPrintable(q.lastError().text()));
+	result = q.exec("CREATE INDEX cv_file_idx3 on cv_file (root_id ASC)");
+	Q_ASSERT_X(result, "Manager::createIndex", qPrintable(q.lastError().text()));
+	result = q.exec("CREATE INDEX cv_import_idx1 on cv_import (parent_id ASC)");
+	Q_ASSERT_X(result, "Manager::createIndex", qPrintable(q.lastError().text()));
+	result = q.exec("CREATE INDEX cv_node_idx1 on cv_node (parent_id ASC)");
+	Q_ASSERT_X(result, "Manager::createIndex", qPrintable(q.lastError().text()));
+	result = q.exec("CREATE INDEX cv_node_idx2 on cv_node (name ASC, type ASC, file_id ASC)");
+	Q_ASSERT_X(result, "Manager::createIndex", qPrintable(q.lastError().text()));
+	result = q.exec("CREATE INDEX cv_node_idx3 on cv_node (parent_id ASC, hash ASC)");
+	Q_ASSERT_X(result, "Manager::createIndex", qPrintable(q.lastError().text()));
+	result = q.exec("CREATE INDEX cv_node_idx4 on cv_node (type ASC, display_name ASC)");
+	Q_ASSERT_X(result, "Manager::createIndex", qPrintable(q.lastError().text()));
+	result = q.exec("CREATE INDEX cv_node_idx5 on cv_node (parent_id ASC, type ASC)");
+	Q_ASSERT_X(result, "Manager::createIndex", qPrintable(q.lastError().text()));
+	result = q.exec("CREATE INDEX cv_node_property_idx1 on cv_node_property (node_id ASC, ord ASC)");
+	Q_ASSERT_X(result, "Manager::createIndex", qPrintable(q.lastError().text()));
 }
 
 void Manager::createDatabase(QSqlDatabase db)
@@ -136,26 +214,11 @@ void Manager::createDatabase(QSqlDatabase db)
 	Q_ASSERT_X(result, "Manager::createDatabase", qPrintable(q.lastError().text()));
 	result = q.exec("CREATE TABLE cv_node_property (node_id INTEGER NOT NULL, ord INTEGER NOT NULL, value TEXT)");
 	Q_ASSERT_X(result, "Manager::createDatabase", qPrintable(q.lastError().text()));
-	/* Create Index */
-	result = q.exec("CREATE INDEX cv_project_idx1 on cv_project (path ASC)");
-	Q_ASSERT_X(result, "Manager::createDatabase", qPrintable(q.lastError().text()));
-	result = q.exec("CREATE UNIQUE INDEX cv_file_idx1 on cv_file (path ASC, project_id ASC, cached ASC)");
-	Q_ASSERT_X(result, "Manager::createDatabase", qPrintable(q.lastError().text()));
-	result = q.exec("CREATE INDEX cv_file_idx3 on cv_file (root_id ASC)");
-	Q_ASSERT_X(result, "Manager::createDatabase", qPrintable(q.lastError().text()));
-	result = q.exec("CREATE INDEX cv_import_idx1 on cv_import (parent_id ASC)");
-	Q_ASSERT_X(result, "Manager::createDatabase", qPrintable(q.lastError().text()));
-	result = q.exec("CREATE INDEX cv_node_idx1 on cv_node (parent_id ASC)");
-	Q_ASSERT_X(result, "Manager::createDatabase", qPrintable(q.lastError().text()));
-	result = q.exec("CREATE INDEX cv_node_idx2 on cv_node (file_id ASC, name ASC, type ASC)");
-	Q_ASSERT_X(result, "Manager::createDatabase", qPrintable(q.lastError().text()));
-	result = q.exec("CREATE INDEX cv_node_idx3 on cv_node (parent_id ASC, hash ASC)");
-	Q_ASSERT_X(result, "Manager::createDatabase", qPrintable(q.lastError().text()));
-	result = q.exec("CREATE INDEX cv_node_property_idx1 on cv_node_property (node_id ASC, ord ASC)");
-	Q_ASSERT_X(result, "Manager::createDatabase", qPrintable(q.lastError().text()));
 	/* Insert */
 	result = q.exec(QString("INSERT INTO cv_project(id, name, path) VALUES (0, '%1', '/')").arg(tr("General")));
 	Q_ASSERT_X(result, "Manager::createDatabase", qPrintable(q.lastError().text()));
+
+	createIndex();
 }
 
 void Manager::closeDatabase()

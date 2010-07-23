@@ -132,7 +132,8 @@ ContentView2::CompletionModel * TextFileEditor::createModel(QSqlDatabase db, QOb
 void TextFileEditor::initCompleter()
 {
 	m_completionModel = createModel(ContentView2::Manager::self()->database(), this);
-	connect(ContentView2::Manager::self()->cache(), SIGNAL(cacheLoaded()), m_completionModel, SLOT(select()), Qt::BlockingQueuedConnection);
+	// Est-ce vraiment utile ?
+	//connect(ContentView2::Manager::self()->cache(), SIGNAL(cacheLoaded()), m_completionModel, SLOT(select()), Qt::BlockingQueuedConnection);
 
 	QCompleter * completer = new QCompleter(textEdit());
 	completer->setModel(m_completionModel);
@@ -514,6 +515,7 @@ void TextFileEditor::complete()
 		if (completionPrefix != c->completionPrefix())
 		{
 			m_completionModel->setPrefix(completionPrefix);
+			m_completionModel->select();
 			c->setCompletionPrefix(completionPrefix);
 			c->popup()->setCurrentIndex(c->completionModel()->index(0, 0));
 		}

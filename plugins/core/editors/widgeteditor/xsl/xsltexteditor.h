@@ -29,6 +29,9 @@
 #include <QStringList>
 #include <QHash>
 
+// QCodeEdit header
+#include <document/qdocumentcursor.h>
+
 /* XslTextEditor */
 
 class XslCompletionNodeModel;
@@ -51,6 +54,7 @@ private:
 	void getTemplate(const QDocumentCursor & cursor, QString * name, QString * mode);
 
 	XslCompletionNodeModel * m_model;
+	QDocumentCursor m_lastPosition;
 };
 
 #endif /*XSLTEXTEDITOR_H_*/

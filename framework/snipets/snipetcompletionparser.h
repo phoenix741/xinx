@@ -31,6 +31,7 @@ public:
 	SnipetCompletionParser();
 	virtual ~SnipetCompletionParser();
 
+	virtual void setFilename(const QString & );
 	virtual void load();
 
 private:

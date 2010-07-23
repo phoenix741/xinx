@@ -46,9 +46,6 @@ Name: assoxml; Description: Associate XSL stylesheet with {#AppName}; Flags: unc
 Name: assojs; Description: Associate JS with {#AppName}; Flags: unchecked
 Name: assofws; Description: Associate WebServices stream with {#AppName}; Flags: unchecked
 
-[Run]
-Filename: {app}\bin\xinx.exe; Parameters: "--snipet --init ""{app}\datas\template.xml"""; WorkingDir: {app}; Components: application; StatusMsg: Création de la base de données de Snipets; Tasks: ; Languages: 
-
 [Files]
 Source: ..\COPYING; DestDir: {app}; Components: application
 
