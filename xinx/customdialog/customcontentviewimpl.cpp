@@ -21,9 +21,13 @@
 #include "customcontentviewimpl.h"
 #include <contentview2/contentview2manager.h>
 
+// Qt header
+#include <QFileInfo>
+
 CustomContentViewImpl::CustomContentViewImpl(QWidget *parent) : QWidget(parent)
 {
 	setupUi(this);
+	updateInformations();
 }
 
 CustomContentViewImpl::~CustomContentViewImpl()
@@ -41,6 +45,47 @@ QString CustomContentViewImpl::name()
 	return windowTitle();
 }
 
+void CustomContentViewImpl::updateInformations()
+{
+	int cntProject, cntFile, cntNode, fileSize;
+
+	QSqlQuery countQuery(ContentView2::Manager::self()->database());
+	countQuery.prepare("SELECT count(1) FROM cv_project");
+	countQuery.exec();
+	countQuery.first();
+	cntProject = countQuery.value(0).toInt();
+
+	countQuery.prepare("SELECT count(1) FROM cv_file");
+	countQuery.exec();
+	countQuery.first();
+	cntFile = countQuery.value(0).toInt();
+
+	countQuery.prepare("SELECT count(1) FROM cv_node");
+	countQuery.exec();
+	countQuery.first();
+	cntNode = countQuery.value(0).toInt();
+
+	fileSize = QFileInfo(ContentView2::Manager::self()->fileName()).size();
+
+
+	QString summary = 			"Summary\n"
+								"=======\n"
+								"\n"
+								"Statistique\n"
+								"-----------\n"
+								"Number of project : %1\n"
+								"Number of files : %2\n"
+								"Number of nodes : %3\n"
+								"\n"
+								"Size of File   :\n"
+								"----------------\n"
+								"contentview.db : %4kb\n";
+	summary = summary.arg(cntProject).arg(cntFile).arg(cntNode).arg((double)fileSize / 1024, 0, 'f', 2);
+
+	m_sumaryEdit->setPlainText(summary);
+}
+
+
 QWidget * CustomContentViewImpl::settingsDialog()
 {
 	return this;
@@ -48,12 +93,12 @@ QWidget * CustomContentViewImpl::settingsDialog()
 
 bool CustomContentViewImpl::loadSettingsDialog()
 {
-
+	return true;
 }
 
 bool CustomContentViewImpl::saveSettingsDialog()
 {
-
+	return true;
 }
 
 bool CustomContentViewImpl::cancelSettingsDialog()
@@ -73,18 +118,13 @@ bool CustomContentViewImpl::isVisible()
 
 void CustomContentViewImpl::on_m_compactBaseBtn_clicked()
 {
-	QSqlDatabase db = ContentView2::Manager::self()->database();
-	{
-		db.exec("VACUUM");
-	}
+	ContentView2::Manager::self()->compactDatabase();
+	updateInformations();
 }
 
 void CustomContentViewImpl::on_m_reindexBaseBtn_clicked()
 {
-
+	ContentView2::Manager::self()->rebuildIndex();
+	updateInformations();
 }
 
-void CustomContentViewImpl::on_m_cleanBaseBtn_clicked()
-{
-
-}

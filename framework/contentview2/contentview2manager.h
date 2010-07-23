@@ -55,6 +55,8 @@ public:
 	void addInitializationParser(bool isGlobal, const QString & path, const QString & type, const QString & selection);
 	void initializeDatabase();
 
+	QString fileName() const;
+
 	QSqlQuery getSqlQuery(const QString & query, QSqlDatabase db = QSqlDatabase());
 	void clearPool(const QSqlDatabase & db);
 
@@ -62,7 +64,13 @@ public:
 	Cache * cache();
 
 	static Manager * self();
+
+	void compactDatabase();
+	void rebuildIndex();
 private:
+	void destroyIndex();
+	void createIndex();
+
 	void openDatabase();
 	void createDatabase(QSqlDatabase db);
 	void closeDatabase();

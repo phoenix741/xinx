@@ -27,9 +27,9 @@
 
 class CustomContentViewImpl : public QWidget, public Ui::CustomContentView, public IXinxPluginConfigurationPage
 {
-Q_OBJECT
+	Q_OBJECT
 public:
-    explicit CustomContentViewImpl(QWidget *parent = 0);
+	CustomContentViewImpl(QWidget *parent = 0);
 	virtual ~CustomContentViewImpl();
 
 	virtual QPixmap image();
@@ -41,13 +41,10 @@ public:
 	virtual bool cancelSettingsDialog();
 	virtual bool isSettingsValid();
 	virtual bool isVisible();
-signals:
 
-public slots:
-
-
+private:
+	void updateInformations();
 private slots:
-	void on_m_cleanBaseBtn_clicked();
 	void on_m_reindexBaseBtn_clicked();
 	void on_m_compactBaseBtn_clicked();
 };
