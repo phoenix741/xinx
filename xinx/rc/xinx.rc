@@ -1,6 +1,8 @@
+#include "../../framework/core/version.h"
+
 1 VERSIONINFO
-FILEVERSION 0, 9, 0, 6
-PRODUCTVERSION 0, 9, 0, 6
+FILEVERSION FILEVER
+PRODUCTVERSION PRODUCTVER
 FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
 FILEFLAGS 0x9L
@@ -24,8 +26,8 @@ BEGIN
 			VALUE "OriginalFilename", "xinx.exe"
 			VALUE "PrivateBuild", "\0"
 			VALUE "ProductName", "XINX"
-			VALUE "FileVersion", "0, 9, 0, 6"
-			VALUE "ProductVersion", "0, 9, 0, 6"
+			VALUE "FileVersion", STRFILEVER
+			VALUE "ProductVersion", STRPRODUCTVER
 			VALUE "SpecialBuild", "\0"
 		END
   END
