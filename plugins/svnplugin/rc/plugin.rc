@@ -1,6 +1,8 @@
+#include "../../../framework/core/version.h"
+
 1 VERSIONINFO
-FILEVERSION 0, 1, 1, 0
-PRODUCTVERSION 0, 9, 0, 0
+FILEVERSION FILEVER
+PRODUCTVERSION PRODUCTVER
 FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
 FILEFLAGS 0x9L
@@ -18,14 +20,14 @@ BEGIN
 		VALUE "Comments", "\0"
 		VALUE "CompanyName", "Ulrich Van Den Hekke"
 		VALUE "FileDescription", "Wrapper for SubVersion"
-        VALUE "FileVersion", "0, 1, 1, 0"
         VALUE "InternalName", "subversion"
         VALUE "LegalCopyright", "Copyleft (C) U. Van Den Hekke 2010"
 		VALUE "LegalTrademarks", "\0"
         VALUE "OriginalFilename", "svnplugin.dll"
 		VALUE "PrivateBuild", "\0"
         VALUE "ProductName", "XINX"
-        VALUE "ProductVersion", "0, 9, 0, 0"
+		VALUE "FileVersion", STRFILEVER
+		VALUE "ProductVersion", STRPRODUCTVER
 		VALUE "SpecialBuild", "\0"
       END
   END

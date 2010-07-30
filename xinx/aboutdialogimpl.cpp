@@ -28,7 +28,7 @@ AboutDialogImpl::AboutDialogImpl(QWidget * parent, Qt::WFlags f)
 {
 	setupUi(this);
 
-	m_labelVersion->setText(m_labelVersion->text().arg(qVersion()));
+	m_labelVersion->setText(tr("<b>XINX %1 (use Qt %2)</b>").arg(LONG_VERSION_STRING).arg(qVersion()));
 
 	m_aboutLabel->setText("<b>XINX</b> Is Not only XML<br/>"
 	                      "(c) 2006-2009, Ulrich Van Den Hekke<br/>"

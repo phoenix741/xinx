@@ -646,6 +646,8 @@ void XinxCodeEdit::updateFont()
 		QDocument::setShowSpaces(QDocument::ShowTrailing | QDocument::ShowLeading | QDocument::ShowTabs);
 	else
 		QDocument::setShowSpaces(QDocument::ShowNone);
+
+	m_editor->editor()->setLineWrapping(XINXConfig::self()->config().editor.wrapLine);
 }
 
 //! Insert the selection where the cursor is (and replace the selection if any). This method indent the text.

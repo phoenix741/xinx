@@ -22,7 +22,7 @@
 #define _LIB_CONFIG_H_
 
 #include <qglobal.h>
-
+#include <core/version.h>
 /*!
     \macro LIBEXPORT
     \brief Macro needed for cross-platform shared libraries creation
@@ -40,9 +40,5 @@
 #else
 #   define LIBEXPORT
 #endif
-
-#define str(s) #s
-#define xstr(s) str(s)
-#define VERSION_STRING "v" xstr(VERSION_MAJOR) "." xstr(VERSION_MINOR) "." xstr(VERSION_RELEASE)
 
 #endif // _LIB_CONFIG_H_

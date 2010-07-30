@@ -52,6 +52,13 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QCheckBox" name="m_wrapLineChk">
+        <property name="text">
+         <string>Wrap Line</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
