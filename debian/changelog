@@ -1,3 +1,9 @@
+xinx (0.9.0.8) unstable; urgency=low
+
+  * Add the possibility to wrap line
+
+ -- Ulrich Van Den Hekke <xinx@shadoware.org>  Fri, 30 Jul 2010 12:00:00 +0200
+
 xinx (0.9.0.7) unstable; urgency=low
 
   * 363 : Lenteur lors du déplacement danx XINX
