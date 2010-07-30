@@ -1,7 +1,7 @@
 #define VERSION_MAJOR     0
 #define VERSION_MINOR     9
-#define VERSION_RELEASE   1
-#define VERSION_BUILD     0
+#define VERSION_RELEASE   0
+#define VERSION_BUILD     8
 
 #define str(s) #s
 #define xstr(s) str(s)
