@@ -202,6 +202,7 @@ AppSettings::struct_editor AppSettings::getDefaultEditor()
 	value.hideCloseTab = false;
 	value.closeButtonOnEachTab = false;
 	value.automaticModelRefreshTimeout = 1000;
+	value.wrapLine = false;
 
 	return value;
 }
@@ -224,6 +225,7 @@ AppSettings::struct_editor AppSettings::getSettingsEditor(AppSettingsSettings * 
 	value.hideCloseTab = settings->value("Hide Close Tab", defaultValue.hideCloseTab).toBool();
 	value.closeButtonOnEachTab = settings->value("Close Button on each Tab", defaultValue.closeButtonOnEachTab).toBool();
 	value.automaticModelRefreshTimeout = settings->value("Automatic Model Refresh Timeout", defaultValue.automaticModelRefreshTimeout).toInt();
+	value.wrapLine = settings->value ("Wrap Line", defaultValue.wrapLine).toBool();
 
 	settings->endGroup();
 	return value;
@@ -246,7 +248,7 @@ void AppSettings::setSettingsEditor(AppSettingsSettings * settings, const QStrin
 	settings->setValue("Auto Highlight", value.autoHighlight, defaultValue.autoHighlight);
 	settings->setValue("Hide Close Tab", value.hideCloseTab, defaultValue.hideCloseTab);
 	settings->setValue("Close Button on each Tab", value.closeButtonOnEachTab, defaultValue.closeButtonOnEachTab);
-	settings->setValue("Automatic Model Refresh Timeout", value.automaticModelRefreshTimeout, defaultValue.automaticModelRefreshTimeout);
+	settings->setValue ("Wrap Line", value.wrapLine, defaultValue.wrapLine);
 
 	settings->endGroup();
 }

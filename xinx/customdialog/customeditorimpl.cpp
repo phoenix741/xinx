@@ -90,6 +90,9 @@ bool CustomEditorImpl::loadSettingsDialog()
 	// Text content refresh
 	m_refreshContentTimeoutSpinBox->setValue(XINXConfig::self()->config().editor.automaticModelRefreshTimeout);
 
+	// Wrap Line
+	m_wrapLineChk->setChecked(XINXConfig::self()->config().editor.wrapLine);
+
 	return true;
 }
 
@@ -126,6 +129,9 @@ bool CustomEditorImpl::saveSettingsDialog()
 
 	// Text content refresh
 	XINXConfig::self()->config().editor.automaticModelRefreshTimeout = m_refreshContentTimeoutSpinBox->value();
+
+	// Wrap Line
+	XINXConfig::self()->config().editor.wrapLine = m_wrapLineChk->isChecked();
 
 	return true;
 }

@@ -66,6 +66,7 @@ public:
 		bool hideCloseTab;
 		bool closeButtonOnEachTab;
 		int automaticModelRefreshTimeout;
+		bool wrapLine;
 	};
 
 	struct struct_rcs

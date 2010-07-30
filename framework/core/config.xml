@@ -29,6 +29,7 @@
 		<value name="Hide Close Tab" type="bool" default="false"/>
 		<value name="Close Button on each Tab" type="bool" default="false"/>
 		<value name="Automatic Model Refresh Timeout" type="int" default="1000"/>
+		<value name="Wrap Line" type="bool" default="false"/>
 	</type>
 	<type name="QFormat">
 		<value name="italic" type="bool" default="false"/>
