@@ -98,9 +98,14 @@ private:
 	QString m_lastProjectOpenedPlace;
 	QStringList m_fileToAdd;
 
+	bool fileEditorMayBeSave(QList<AbstractEditor*> editors);
 	bool fileEditorMayBeSave(int index);
-	void fileEditorSave(int index, bool saveAs);
-	void fileEditorSave(int index);
+
+	void fileEditorSave(AbstractEditor *, bool saveAs = false);
+	void fileEditorSaveAs(AbstractEditor *);
+	void fileEditorRefreshFile(AbstractEditor *);
+
+	void fileEditorSave(int index, bool saveAs = false);
 	void fileEditorSaveAs(int index);
 	void fileEditorClose(int index);
 	void fileEditorRefreshFile(int index);

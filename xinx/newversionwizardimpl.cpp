@@ -94,7 +94,7 @@ void NewVersionWizardImpl::loadFromConfig()
 	if (XINXConfig::self()->config().editor.showTabulationAndSpace) cnt++;
 	if (XINXConfig::self()->config().editor.highlightCurrentLine) cnt++;
 	if (XINXConfig::self()->config().editor.autoHighlight) cnt++;
-	if (XINXConfig::self()->config().editor.autoindentOnSaving) cnt++;
+	if (XINXConfig::self()->config().editor.autoindentOnSaving == "true") cnt++;
 
 	m_listSlider->setValue(cnt);
 
@@ -108,7 +108,7 @@ void NewVersionWizardImpl::loadFromConfig()
 	m_listEffect->item(2)->setCheckState(XINXConfig::self()->config().editor.autoHighlight ? Qt::Checked : Qt::Unchecked);
 
 	// Pretty print on saving
-	m_listEffect->item(3)->setCheckState(XINXConfig::self()->config().editor.autoindentOnSaving ? Qt::Checked : Qt::Unchecked);
+	m_listEffect->item(3)->setCheckState(XINXConfig::self()->config().editor.autoindentOnSaving == "true" ? Qt::Checked : Qt::Unchecked);
 }
 
 void NewVersionWizardImpl::saveToConfig()
@@ -149,7 +149,10 @@ void NewVersionWizardImpl::saveToConfig()
 	XINXConfig::self()->config().editor.autoHighlight = m_listEffect->item(2)->checkState() == Qt::Checked;
 
 	// Pretty print on saving
-	XINXConfig::self()->config().editor.autoindentOnSaving = m_listEffect->item(3)->checkState() == Qt::Checked;
+	if (m_listEffect->item(3)->checkState() == Qt::Checked)
+		XINXConfig::self()->config().editor.autoindentOnSaving = "true";
+	else
+		XINXConfig::self()->config().editor.autoindentOnSaving = "false";
 }
 
 void NewVersionWizardImpl::on_m_listSlider_valueChanged(int value)

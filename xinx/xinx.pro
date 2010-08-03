@@ -53,7 +53,8 @@ FORMS += ui/about.ui \
     customdialog/ui/custommodules.ui \
     ui/templatedialog.ui \
     ui/newversion.ui \
-    customdialog/ui/customcontentview.ui
+    customdialog/ui/customcontentview.ui \
+    ui/savingdialog.ui
 HEADERS += customdialog/customgeneralimpl.h \
     customdialog/customprojectimpl.h \
     customdialog/customeditorimpl.h \
@@ -84,7 +85,8 @@ HEADERS += customdialog/customgeneralimpl.h \
     welcomdlgimpl_p.h \
     templatedialogimpl.h \
     newversionwizardimpl.h \
-    customdialog/customcontentviewimpl.h
+    customdialog/customcontentviewimpl.h \
+    savingdialog.h
 SOURCES += customdialog/customgeneralimpl.cpp \
     customdialog/customprojectimpl.cpp \
     customdialog/customeditorimpl.cpp \
@@ -115,7 +117,8 @@ SOURCES += customdialog/customgeneralimpl.cpp \
     welcomdlgimpl.cpp \
     templatedialogimpl.cpp \
     newversionwizardimpl.cpp \
-    customdialog/customcontentviewimpl.cpp
+    customdialog/customcontentviewimpl.cpp \
+    savingdialog.cpp
 TRANSLATIONS += translations/xinx_fr.ts
 CONFIG(debug, debug|release):exists( $$[QT_INSTALL_DATA]/qtc-debugging-helper/gdbmacros.cpp ) { 
     message( "Add GDB Macro to program..." )

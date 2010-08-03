@@ -244,7 +244,7 @@ void TextFileEditor::loadFromDevice(QIODevice & d)
 
 void TextFileEditor::saveToDevice(QIODevice & d)
 {
-	if (XINXConfig::self()->config().editor.autoindentOnSaving) autoIndent();
+	if (XINXConfig::self()->config().editor.autoindentOnSaving == "true") autoIndent();
 	m_eol = DEFAULT_EOL; // Don't conserve the EOL
 	d.setTextModeEnabled(true);
 	QTextStream text(&d);

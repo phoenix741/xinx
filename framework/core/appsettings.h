@@ -54,7 +54,7 @@ public:
 	struct struct_editor
 	{
 		QString defaultTextCodec;
-		bool autoindentOnSaving;
+		QString autoindentOnSaving;
 		bool popupWhenFileModified;
 		bool createBackupFile;
 		int tabulationSize;

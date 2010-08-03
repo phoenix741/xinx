@@ -134,7 +134,7 @@
  *
  * \param parent Parent and containers of the editor.
  */
-AbstractEditor::AbstractEditor(QWidget * parent)  : QFrame(parent), m_isSaving(false), m_modified(false)
+AbstractEditor::AbstractEditor(QWidget * parent)  : QFrame(parent), m_isSaving(false), m_modified(false), m_neverModified(true)
 {
 	initObjects();
 }
@@ -148,7 +148,7 @@ AbstractEditor::AbstractEditor(QWidget * parent)  : QFrame(parent), m_isSaving(f
  *
  * \param editor The original editor used for copy.
  */
-AbstractEditor::AbstractEditor(const AbstractEditor & editor) : QFrame(qobject_cast<QWidget*>(editor.parent())), m_isSaving(false), m_modified(false)
+AbstractEditor::AbstractEditor(const AbstractEditor & editor) : QFrame(qobject_cast<QWidget*>(editor.parent())), m_isSaving(false), m_modified(false), m_neverModified(true)
 {
 	initObjects();
 }
@@ -485,6 +485,7 @@ void AbstractEditor::loadFromFile(const QString & fileName)
 	delete file;
 
 	setModified(false);
+	m_neverModified = true;
 }
 
 /*!
@@ -627,6 +628,13 @@ bool AbstractEditor::isModified()
 	return m_modified;
 }
 
+/*!
+ * \brief Return true if the editor have never been modified by the user, else return false
+ */
+bool AbstractEditor::hasNeverBeenModified()
+{
+	return m_neverModified;
+}
 
 /*!
  * \brief Set the modified attribute in local.
@@ -637,6 +645,7 @@ void AbstractEditor::setModified(bool isModified)
 	if (m_modified != isModified)
 	{
 		m_modified = isModified;
+		m_neverModified = false;
 		emit modificationChanged(isModified);
 	}
 }
@@ -664,7 +673,10 @@ void AbstractEditor::serialize(XinxProjectSessionEditor * data, bool content)
 {
 	Q_UNUSED(content);
 	data->writeProperty("ClassName", metaObject()->className());   // Store the class name
-	data->writeProperty("FileName", QVariant(QDir(data->projectPath()).relativeFilePath(m_lastFileName)));
+	if (!m_lastFileName.isEmpty())
+		data->writeProperty("FileName", QVariant(QDir(data->projectPath()).relativeFilePath(m_lastFileName)));
+	else
+		data->writeProperty("FileName", QVariant(QString()));
 	data->writeProperty("Modified", QVariant(m_modified));
 }
 
@@ -681,7 +693,7 @@ void AbstractEditor::deserialize(XinxProjectSessionEditor * data)
 	// Dont't read the class name, already read.
 	const QString lastFileName = data->readProperty("FileName").toString();
 
-	if (QFileInfo(lastFileName).isRelative())
+	if (QFileInfo(lastFileName).isRelative() && !lastFileName.isEmpty())
 		m_lastFileName = QDir(data->projectPath()).absoluteFilePath(lastFileName);
 	else
 		m_lastFileName = lastFileName;
@@ -689,7 +701,6 @@ void AbstractEditor::deserialize(XinxProjectSessionEditor * data)
 	m_modified = data->readProperty("Modified").toBool();
 
 	activateWatcher();
-
 }
 
 /*!

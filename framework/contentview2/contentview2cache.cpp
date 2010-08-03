@@ -177,7 +177,7 @@ void Cache::initializeCache()
 
 			QMutexLocker locker (&m_mutex);
 			m_parsers.append(fileCache);
-			if (QFileInfo(path).exists())
+			if (QFileInfo(path).exists() && !QFileInfo(path).isDir())
 				m_watcher->addPath(path);
 		}
 		cacheQuery.finish();
