@@ -1,3 +1,12 @@
+xinx (0.9.0.9) unstable; urgency=low
+
+  * 366 : Pretty print à la fermeture de XINX
+  * 359 : Couleur trop rouge !!!!
+  * 364 : Evol: Ajouter la fonctionnalité "Aller à la ligne"
+  * 367 : Erreur XINX
+
+ -- Ulrich Van Den Hekke <xinx@shadoware.org>  Wed, 04 Aug 2010 14:31:06 +0200
+
 xinx (0.9.0.8) unstable; urgency=low
 
   * Add the possibility to wrap line
