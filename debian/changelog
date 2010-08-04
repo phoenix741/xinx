@@ -7,8 +7,12 @@ xinx (0.9.1.0) unstable; urgency=low
   * Change some library API to manage multiple extention for a file type
   * 347 : Gestion des codecs
   * 355 : Problème encoding quand on est en UTF-8
+  * 366 : Pretty print à la fermeture de XINX
+  * 359 : Couleur trop rouge !!!!
+  * 364 : Evol: Ajouter la fonctionnalité "Aller à la ligne"
+  * 367 : Erreur XINX
 
- -- Ulrich Van Den Hekke <xinx@shadoware.org>  Fri, 30 Jul 2010 12:00:00 +0200
+ -- Ulrich Van Den Hekke <xinx@shadoware.org>  Wed, 04 Aug 2010 14:35:18 +0200
 
 xinx (0.9.0.0) unstable; urgency=low
 
