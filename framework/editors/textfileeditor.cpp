@@ -393,6 +393,12 @@ void TextFileEditor::updateModel()
 		return ;
 	}
 
+	parser->setFilename(lastFileName());
+	if (XINXProjectManager::self()->project())
+	{
+		parser->setWorkingPath(XINXProjectManager::self()->project()->projectPath());
+	}
+
 	m_buffer->close();
 	if (codec())
 	{

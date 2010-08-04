@@ -131,7 +131,7 @@ Node Parser::rootNode() const
 /*!
  * \brief Set the filename
  */
-void Parser::setFilename(const QString & filename)
+void Parser::openFilename(const QString & filename)
 {
 	QFile * file = new QFile(filename);
 
@@ -144,17 +144,46 @@ void Parser::setFilename(const QString & filename)
 	}
 
 	delete m_device;
-	m_filename = filename;
+	setFilename(filename);
 	m_device = file;
+}
+
+/*!
+ * \brief Set the file name location and change the working path
+ */
+void Parser::setFilename(const QString & filename)
+{
+	if (filename != m_filename)
+	{
+		setWorkingPath(QFileInfo(filename).absolutePath());
+		m_filename = filename;
+	}
 }
 
 /*!
  * \brief Get the filename
  */
-QString Parser::filename() const
+const QString & Parser::filename() const
 {
 	return m_filename;
 }
+
+/*!
+ * \brief Set the working path (where the parser must run and find import)
+ */
+void Parser::setWorkingPath(const QString & path)
+{
+	m_workingPath = path;
+}
+
+/*!
+ * \brief Get the working path (where the parser must run and find import)
+ */
+const QString & Parser::workingPath() const
+{
+	return m_workingPath;
+}
+
 
 /*!
  * \brief Set the device
@@ -228,13 +257,7 @@ void Parser::attachNode(const Node & parent, Node & child)
 //! Return the location (absolute path) of the filename, with the help of the \e parent node
 QString Parser::locationOf(const QString & relativeFilename)
 {
-	QString fn = filename();
-	if (XINXProjectManager::self()->project() && fn.isEmpty())
-		fn = XINXProjectManager::self()->project()->projectPath();
-	else
-		fn = QFileInfo(filename()).absolutePath();
-
-	return ExternalFileResolver::self()->resolveFileName(relativeFilename, fn);
+	return ExternalFileResolver::self()->resolveFileName(relativeFilename, workingPath());
 }
 
 } // namespace ContentView2

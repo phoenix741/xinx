@@ -49,7 +49,7 @@
  *
  * The new ContentView system is based on a Sqlite database. All the classes
  * of this namespace is used to simplify and manage the access of this class.
- *
+ *loca
  * You can use classes ContentView2::Node, ContentView2::File, and ContentView2::Project
  * to access to the content of the table without any query.
  *
@@ -508,7 +508,7 @@ void Cache::runParserLoad(QSqlDatabase db, const struct_cache & c)
 
 		if (file.isCached()) // If file not exist an excpetion will be throw
 		{
-			parser->setFilename(file.path());
+			parser->openFilename(file.path());
 		}
 
 		parser->setRootNode(Node(db, file.rootId()));

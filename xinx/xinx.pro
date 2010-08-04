@@ -1,9 +1,5 @@
 include(../project_mode.pri)
 TEMPLATE = app
-VERSION = 0.9.0.0
-DEFINES += XINX_VERSION=$$replace(VERSION,"\.",",")
-win32:QMAKE_RC = windres \
-    -DXINX_VERSION=$$replace(VERSION,"\.",",")
 win32:RC_FILE += rc/xinx.rc
 CONFIG += warn_on
 QT += xml \

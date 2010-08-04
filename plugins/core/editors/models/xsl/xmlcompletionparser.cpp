@@ -74,15 +74,15 @@ XmlCompletionParser * XmlCompletionParser::clone()
 	return parser;
 }
 
-void XmlCompletionParser::setFilename(const QString & filename)
+void XmlCompletionParser::openFilename(const QString & filename)
 {
 	if(filename == "XmlCompletion")
 	{
-		ContentView2::Parser::setFilename("datas:baseplugin_xml.xml");
+		ContentView2::Parser::openFilename("datas:baseplugin_xml.xml");
 	}
 	else
 	{
-		ContentView2::Parser::setFilename(filename);
+		ContentView2::Parser::openFilename(filename);
 	}
 }
 
