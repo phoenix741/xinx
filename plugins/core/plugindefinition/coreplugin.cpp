@@ -158,8 +158,12 @@ XinxAction::MenuList CorePlugin::actions()
 {
 	if (m_menus.size() == 0)
 	{
+		XinxAction::Action * gotoLineAction = new GotoLineAction(tr("Go to &Line ..."), QString("Ctrl+G"), this);
 		XinxAction::Action * commentAction = new CommentAction(tr("&Comment"), QString("Ctrl+Shift+C"), this);
 		XinxAction::Action * uncommentAction = new UncommentAction(tr("&Uncomment"), QString("Ctrl+Shift+D"), this);
+
+		gotoLineAction->action()->setStatusTip(tr("Move the cursor to line, choose by user"));
+		gotoLineAction->action()->setWhatsThis(tr("This action open a dialog box to choose the line number where you want to go."));
 
 		commentAction->action()->setStatusTip(tr("Comment the selected text"));
 		commentAction->action()->setWhatsThis(tr("Comment the selected text by using the language syntax. <ul><li>In <b>XML</b> like format <i>&lt;!-- comment --&gt;</i></li> <li>In <b>Javascript</b> : <i>/* comment */</i> </li></ul>"));
@@ -172,8 +176,11 @@ XinxAction::MenuList CorePlugin::actions()
 		XinxAction::ActionList editMenu(tr("&Edit"), "edit");
 		XinxAction::ActionList runMenu(tr("&Execute"), "execute");
 
+		editMenu.append(gotoLineAction);
+		editMenu.append(new XinxAction::Separator);
 		editMenu.append(commentAction);
 		editMenu.append(uncommentAction);
+
 		runMenu.append(runAction);
 
 		m_menus.append(editMenu);

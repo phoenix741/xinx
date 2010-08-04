@@ -59,4 +59,19 @@ protected slots:
 	virtual void actionTriggered();
 };
 
+class GotoLineAction : public XinxAction::Action
+{
+	Q_OBJECT
+public:
+	GotoLineAction(QAction * a, QObject * parent);
+	GotoLineAction(const QString & text, const QKeySequence & shortcut, QObject * parent);
+	GotoLineAction(const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent);
+
+	virtual bool isInToolBar() const;
+	virtual bool isActionVisible() const;
+	virtual bool isActionEnabled() const;
+protected slots:
+	virtual void actionTriggered();
+};
+
 #endif // _COMMENTACTIONS_H_

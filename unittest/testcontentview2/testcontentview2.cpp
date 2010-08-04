@@ -219,7 +219,7 @@ void TestContentView2::testParser()
 
 		parser = new XslContentView2Parser;
 		parser->setRootNode(m_root);
-		parser->setFilename(m_filename);
+		parser->openFilename(m_filename);
 		parser->setDatabase(db);
 		parser->load();
 		delete parser;
