@@ -7,7 +7,7 @@
     </mark>
     <mark>
         <id>error</id>
-        <color>red</color>
+		<color>#FFDDDD</color>
         <icon>:/images/warning.png</icon>
         <user>false</user>
         <focus>true</focus>
@@ -17,7 +17,7 @@
     </mark>
     <mark>
         <id>bookmark</id>
-        <color>#FFDF40</color>
+		<color>#FFFF90</color>
         <icon>:/images/bookmark.png</icon>
         <user>true</user>
         <focus>false</focus>

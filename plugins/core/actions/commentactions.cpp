@@ -30,6 +30,7 @@
 
 // Qt header
 #include <QDebug>
+#include <QInputDialog>
 
 /* CommentAction */
 
@@ -109,4 +110,53 @@ void UncommentAction::actionTriggered()
 	TextFileEditor * editor = qobject_cast<TextFileEditor*>(EditorManager::self()->currentEditor());
 	editor->textEdit()->commentSelectedText(true);
 }
+
+/* GotoLineAction */
+
+GotoLineAction::GotoLineAction(QAction * a, QObject * parent) : XinxAction::Action(a, parent)
+{
+}
+
+GotoLineAction::GotoLineAction(const QString & text, const QKeySequence & shortcut, QObject * parent) : XinxAction::Action(text, shortcut, parent)
+{
+}
+
+GotoLineAction::GotoLineAction(const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent) : XinxAction::Action(icon, text, shortcut, parent)
+{
+}
+
+bool GotoLineAction::isInToolBar() const
+{
+	return false;
+}
+
+bool GotoLineAction::isActionVisible() const
+{
+	if (! EditorManager::self()) return false;
+	TextFileEditor * tfe = qobject_cast<TextFileEditor*>(EditorManager::self()->currentEditor());
+	if (! tfe)                   return false;
+	return true;
+
+}
+
+bool GotoLineAction::isActionEnabled() const
+{
+	if (! EditorManager::self()) return false;
+	TextFileEditor * editor = qobject_cast<TextFileEditor*>(EditorManager::self()->currentEditor());
+	if (! editor) return false;
+	return true;
+}
+
+void GotoLineAction::actionTriggered()
+{
+	TextFileEditor * editor = qobject_cast<TextFileEditor*>(EditorManager::self()->currentEditor());
+	int currentLine = editor->textEdit()->currentRow() + 1;
+	int maxLine     = editor->textEdit()->countRow();
+
+	bool ok;
+	int line = QInputDialog::getInt(qApp->activeWindow(), tr("Goto Line"), tr("Line:"), currentLine, 1, maxLine, 1, &ok);
+	if (ok)
+		editor->textEdit()->gotoLine(line);
+}
+
 

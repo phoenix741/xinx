@@ -44,7 +44,7 @@ SnipetCompletionParser::~SnipetCompletionParser()
 
 }
 
-void SnipetCompletionParser::setFilename(const QString & )
+void SnipetCompletionParser::openFilename(const QString & )
 {
 
 }

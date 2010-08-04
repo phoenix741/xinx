@@ -151,6 +151,7 @@ XsltParser::XsltParser()
 	{
 		initialized = true;
 		xmlSubstituteEntitiesDefault(1);
+		xmlLineNumbersDefault(1);
 		xmlLoadExtDtdDefaultValue = 1;
 
 		xmlRegisterInputCallbacks(xsltParserInputMatchCallback, xsltParserInputOpenCallback,
@@ -185,7 +186,9 @@ bool XsltParser::loadStylesheet(const QString & filename)
 	d->m_errors.clear();
 	xmlSetStructuredErrorFunc(d, xsltParserErrorFunc);
 	xmlSetGenericErrorFunc(d, xsltParserGenericErrorFunc);
+	//xsltSetGenericDebugFunc(d, xsltParserGenericErrorFunc);
 	d->m_stylesheet = xsltParseStylesheetFile((const xmlChar *) qPrintable(filename));
+	//xsltSetGenericDebugFunc(0, 0);
 	xmlSetGenericErrorFunc(0, 0);
 	xmlSetStructuredErrorFunc(0, 0);
 
@@ -197,7 +200,9 @@ bool XsltParser::loadXmlFile(const QByteArray & data)
 	d->m_errors.clear();
 	xmlSetStructuredErrorFunc(d, xsltParserErrorFunc);
 	xmlSetGenericErrorFunc(d, xsltParserGenericErrorFunc);
+	//xsltSetGenericDebugFunc(d, xsltParserGenericErrorFunc);
 	d->m_xmlDoc = xmlParseMemory(data, data.size());
+	//xsltSetGenericDebugFunc(0, 0);
 	xmlSetGenericErrorFunc(0, 0);
 	xmlSetStructuredErrorFunc(0, 0);
 
@@ -209,7 +214,9 @@ bool XsltParser::loadXmlFile(const QString & filename)
 	d->m_errors.clear();
 	xmlSetStructuredErrorFunc(d, xsltParserErrorFunc);
 	xmlSetGenericErrorFunc(d, xsltParserGenericErrorFunc);
+	//xsltSetGenericDebugFunc(d, xsltParserGenericErrorFunc);
 	d->m_xmlDoc = xmlParseFile(qPrintable(filename));
+	//xsltSetGenericDebugFunc(0, 0);
 	xmlSetGenericErrorFunc(0, 0);
 	xmlSetStructuredErrorFunc(0, 0);
 
@@ -225,7 +232,9 @@ QString XsltParser::getOutput() const
 
 	xmlSetStructuredErrorFunc(d, xsltParserErrorFunc);
 	xmlSetGenericErrorFunc(d, xsltParserGenericErrorFunc);
+	//xsltSetGenericDebugFunc(d, xsltParserGenericErrorFunc);
 	xsltSaveResultToString(&buffer, &bufferSize, d->m_res, d->m_stylesheet);
+	//xsltSetGenericDebugFunc(0, 0);
 	xmlSetGenericErrorFunc(0, 0);
 	xmlSetStructuredErrorFunc(0, 0);
 
@@ -249,6 +258,7 @@ bool XsltParser::process()
 
 	xmlSetStructuredErrorFunc(d, xsltParserErrorFunc);
 	xmlSetGenericErrorFunc(d, xsltParserGenericErrorFunc);
+	//xsltSetGenericDebugFunc(d, xsltParserGenericErrorFunc);
 	xsltTransformContextPtr ctxt = xsltNewTransformContext(d->m_stylesheet, d->m_xmlDoc);
 	if (ctxt == NULL)
 	{
@@ -260,6 +270,7 @@ bool XsltParser::process()
 	registerPlugin(ctxt);
 
 	d->m_res = xsltApplyStylesheetUser(d->m_stylesheet, d->m_xmlDoc, 0, 0, 0, ctxt);
+	//xsltSetGenericDebugFunc(0, 0);
 	xmlSetGenericErrorFunc(0, 0);
 	xmlSetStructuredErrorFunc(0, 0);
 

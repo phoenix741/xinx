@@ -48,6 +48,7 @@
 #include <contentview2/contentview2manager.h>
 #include <dtoolview.h>
 #include <dviewbutton.h>
+#include "savingdialog.h"
 
 // Qt header
 #include <QObject>
@@ -1090,23 +1091,7 @@ void MainformImpl::fileEditorRefreshFile(int index)
 	AbstractEditor * ed = qobject_cast<AbstractEditor*>(m_tabEditors->editor(index));
 	if (ed)
 	{
-		bool act = ! ed->isModified();
-
-		if (! act)
-		{
-			QMessageBox::StandardButton ret;
-			ret = QMessageBox::question(this, tr("Application"),
-			                            tr("The document %1 has been modified.\n"
-			                               "Do you really want refresh this?").arg(ed->getTitle()),
-			                            QMessageBox::Yes | QMessageBox::No);
-			act = (ret == QMessageBox::Yes);
-		}
-		if (act)
-		{
-			ScriptManager::self()->callScriptsBeforeLoad();
-			ed->loadFromFile();
-			ScriptManager::self()->callScriptsAfterLoad();
-		}
+		fileEditorRefreshFile(ed);
 	}
 }
 
@@ -1317,38 +1302,53 @@ void MainformImpl::updateRCS()
 		RCSManager::self()->setCurrentRCS(QString());
 }
 
+bool MainformImpl::fileEditorMayBeSave(QList<AbstractEditor*> editors)
+{
+	SavingDialog savingDlg(this);
+	foreach(AbstractEditor * editor, editors)
+	{
+		if(editor && (editor->isModified() || (TabEditor::isTextFileEditor(editor) && (!editor->hasNeverBeenModified()) && XINXConfig::self()->config().editor.autoindentOnSaving == "closing")))
+			savingDlg.addEditor(editor);
+	}
+
+	if(savingDlg.countEditor())
+	{
+		if (savingDlg.exec() == QDialog::Rejected)
+			return false;
+
+		foreach(AbstractEditor * editor, savingDlg.selectedEditor())
+		{
+			if(XINXConfig::self()->config().editor.autoindentOnSaving == "closing")
+			{
+				if (TabEditor::isTextFileEditor(editor))
+				{
+					TextFileEditor * te = static_cast<TextFileEditor*>(editor);
+					te->autoIndent();
+				}
+			}
+			fileEditorSave(editor);
+		}
+	}
+
+	return true;
+}
+
 bool MainformImpl::fileEditorMayBeSave(int index)
 {
 	Q_ASSERT(index >= 0);
 	Q_ASSERT(index < m_tabEditors->count());
 
 	AbstractEditor * ed = qobject_cast<AbstractEditor*>(m_tabEditors->editor(index));
-	if (ed && ed->isModified())
-	{
-		QMessageBox::StandardButton ret;
-		ret = QMessageBox::warning(this, tr("Application"),
-		                           tr("The document %1 has been modified.\n"
-		                              "Do you want to save your changes?").arg(ed->getTitle()),
-		                           QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
-		if (ret == QMessageBox::Save)
-		{
-			fileEditorSave(index);
-		}
-		else if (ret == QMessageBox::Cancel)
-			return false;
-	}
 
-	return true;
+	return fileEditorMayBeSave(QList<AbstractEditor*>() << ed);
 }
 
-void MainformImpl::fileEditorSave(int index, bool saveAs)
+void MainformImpl::fileEditorSave(AbstractEditor * editor, bool saveAs)
 {
-	Q_ASSERT(index >= 0);
-	Q_ASSERT(index < m_tabEditors->count());
-	Q_ASSERT(qobject_cast<AbstractEditor*>(m_tabEditors->editor(index)));
+	Q_ASSERT_X(editor, "MainformImpl::fileEditorSave", "Editor must be initialized");
 
-	const QString filename     = qobject_cast<AbstractEditor*>(m_tabEditors->editor(index))->lastFileName();
-	const QString deffilename  = qobject_cast<AbstractEditor*>(m_tabEditors->editor(index))->defaultFileName();
+	const QString filename     = editor->lastFileName();
+	const QString deffilename  = editor->defaultFileName();
 	const QString filter       = XinxPluginsLoader::self()->matchedFileType(filename.isEmpty() ? deffilename : filename).size() ? XinxPluginsLoader::self()->fileTypeFilter(XinxPluginsLoader::self()->matchedFileType(filename.isEmpty() ? deffilename : filename).at(0)) : "";
 	const bool    emptyname    = filename.isEmpty();
 
@@ -1384,30 +1384,54 @@ void MainformImpl::fileEditorSave(int index, bool saveAs)
 		RCSManager::self()->addFileOperation(RCSManager::RCS_ADD, QStringList() << newFilename, this);
 
 	ScriptManager::self()->callScriptsBeforeSave();
-	qobject_cast<AbstractEditor*>(m_tabEditors->editor(index))->saveToFile(newFilename);
+	editor->saveToFile(newFilename);
 	m_projectDock->refreshPath(QFileInfo(newFilename).absoluteFilePath());
 	ScriptManager::self()->callScriptsAfterSave();
 
 	RCSManager::self()->validFileOperations();
 
-	statusBar()->showMessage(tr("File %1 saved").arg(m_tabEditors->editor(index)->getTitle()), 2000);
+	statusBar()->showMessage(tr("File %1 saved").arg(editor->getTitle()), 2000);
 }
 
-void MainformImpl::fileEditorSave(int index)
+void MainformImpl::fileEditorSaveAs(AbstractEditor * editor)
+{
+	fileEditorSave(editor, true);
+}
+
+void MainformImpl::fileEditorRefreshFile(AbstractEditor * editor)
+{
+	Q_ASSERT_X(editor, "MainformImpl::fileEditorSave", "Editor must be initialized");
+
+	bool act = ! editor->isModified();
+
+	if (! act)
+	{
+		QMessageBox::StandardButton ret;
+		ret = QMessageBox::question(this, tr("Application"),
+									tr("The document %1 has been modified.\n"
+									   "Do you really want refresh this?").arg(editor->getTitle()),
+									QMessageBox::Yes | QMessageBox::No);
+		act = (ret == QMessageBox::Yes);
+	}
+	if (act)
+	{
+		ScriptManager::self()->callScriptsBeforeLoad();
+		editor->loadFromFile();
+		ScriptManager::self()->callScriptsAfterLoad();
+	}
+}
+
+void MainformImpl::fileEditorSave(int index, bool saveAs)
 {
 	Q_ASSERT(index >= 0);
 	Q_ASSERT(index < m_tabEditors->count());
 	Q_ASSERT(qobject_cast<AbstractEditor*>(m_tabEditors->editor(index)));
 
-	fileEditorSave(index, false);
+	fileEditorSave(qobject_cast<AbstractEditor*>(m_tabEditors->editor(index)), saveAs);
 }
 
 void MainformImpl::fileEditorSaveAs(int index)
 {
-	Q_ASSERT(index >= 0);
-	Q_ASSERT(index < m_tabEditors->count());
-	Q_ASSERT(qobject_cast<AbstractEditor*>(m_tabEditors->editor(index)));
-
 	fileEditorSave(index, true);
 }
 
@@ -1871,25 +1895,32 @@ void MainformImpl::closeFile()
 bool MainformImpl::closeAllFile()
 {
 	m_tabEditors->setUpdatesEnabled(false);
+
+	QList<AbstractEditor*> editors;
 	for (int i = m_tabEditors->count() - 1; i >= 0; i--)
 	{
-		if (fileEditorMayBeSave(i))
+		editors << m_tabEditors->editor(i);
+	}
+
+	if(fileEditorMayBeSave(editors))
+	{
+		for (int i = m_tabEditors->count() - 1; i >= 0; i--)
 		{
 			m_contentDock->updateModel(NULL);
 			AbstractEditor * editor = m_tabEditors->editor(i);
 			m_tabEditors->removeTab(i);
 			delete editor;
 		}
-		else
-		{
-			m_tabEditors->setUpdatesEnabled(true);
-			return false;
-		}
-	}
-	m_tabEditors->setUpdatesEnabled(true);
 
-	updateActions();
-	return true;
+		m_tabEditors->setUpdatesEnabled(true);
+		updateActions();
+		return true;
+	}
+	else
+	{
+		m_tabEditors->setUpdatesEnabled(true);
+		return false;
+	}
 }
 
 void MainformImpl::newProject()

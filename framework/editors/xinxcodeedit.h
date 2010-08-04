@@ -60,6 +60,7 @@ public:
 
 	int currentColumn();
 	int currentRow();
+	int countRow();
 
 	QString textUnderCursor(const QDocumentCursor & cursor, bool deleteWord = false, bool dot = true);
 	void setTextCursor(const QDocumentCursor & cursor);

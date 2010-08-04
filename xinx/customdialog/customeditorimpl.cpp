@@ -71,7 +71,9 @@ bool CustomEditorImpl::loadSettingsDialog()
 	m_popupWhenFileModifiedCheckBox->setChecked(XINXConfig::self()->config().editor.popupWhenFileModified);
 
 	// Pretty print on saving
-	m_prettyPrintOnSavingCheckBox->setChecked(XINXConfig::self()->config().editor.autoindentOnSaving);
+	m_prettyPrintNeverRadioButton->setChecked(XINXConfig::self()->config().editor.autoindentOnSaving == "false");
+	m_prettyPrintOnSavingRadioButton->setChecked(XINXConfig::self()->config().editor.autoindentOnSaving == "true");
+	m_prettyPrintOnClosingRadioButton->setChecked(XINXConfig::self()->config().editor.autoindentOnSaving == "closing");
 
 	// Tab close button
 	if (XINXConfig::self()->config().editor.closeButtonOnEachTab)
@@ -105,7 +107,18 @@ bool CustomEditorImpl::saveSettingsDialog()
 	XINXConfig::self()->config().editor.popupWhenFileModified = m_popupWhenFileModifiedCheckBox->isChecked();
 
 	// Pretty print on saving
-	XINXConfig::self()->config().editor.autoindentOnSaving = m_prettyPrintOnSavingCheckBox->isChecked();
+	if(m_prettyPrintNeverRadioButton->isChecked())
+	{
+		XINXConfig::self()->config().editor.autoindentOnSaving = "false";
+	}
+	else if(m_prettyPrintOnSavingRadioButton->isChecked())
+	{
+		XINXConfig::self()->config().editor.autoindentOnSaving = "true";
+	}
+	else if(m_prettyPrintOnClosingRadioButton->isChecked())
+	{
+		XINXConfig::self()->config().editor.autoindentOnSaving = "closing";
+	}
 
 	// Tab close button
 	if (m_closeBtnRadioButton->isChecked())

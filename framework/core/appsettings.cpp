@@ -191,7 +191,7 @@ AppSettings::struct_editor AppSettings::getDefaultEditor()
 	struct_editor value;
 
 	value.defaultTextCodec = "ISO-8859-1";
-	value.autoindentOnSaving = false;
+	value.autoindentOnSaving = "false";
 	value.popupWhenFileModified = true;
 	value.createBackupFile = true;
 	value.tabulationSize = 4;
@@ -213,7 +213,7 @@ AppSettings::struct_editor AppSettings::getSettingsEditor(AppSettingsSettings * 
 	settings->beginGroup(path);
 
 	value.defaultTextCodec = settings->value("Default Text Codec", defaultValue.defaultTextCodec).toString();
-	value.autoindentOnSaving = settings->value("Autoindent On Saving", defaultValue.autoindentOnSaving).toBool();
+	value.autoindentOnSaving = settings->value( "Autoindent On Saving", defaultValue.autoindentOnSaving ).toString();
 	value.popupWhenFileModified = settings->value("Popup When File Modified", defaultValue.popupWhenFileModified).toBool();
 	value.createBackupFile = settings->value("Create Backup File", defaultValue.createBackupFile).toBool();
 	value.tabulationSize = settings->value("Tabulation Size", defaultValue.tabulationSize).toInt();
@@ -237,7 +237,7 @@ void AppSettings::setSettingsEditor(AppSettingsSettings * settings, const QStrin
 	settings->beginGroup(path);
 
 	settings->setValue("Default Text Codec", value.defaultTextCodec, defaultValue.defaultTextCodec);
-	settings->setValue("Autoindent On Saving", value.autoindentOnSaving, defaultValue.autoindentOnSaving);
+	settings->setValue( "Autoindent On Saving", value.autoindentOnSaving, defaultValue.autoindentOnSaving );
 	settings->setValue("Popup When File Modified", value.popupWhenFileModified, defaultValue.popupWhenFileModified);
 	settings->setValue("Create Backup File", value.createBackupFile, defaultValue.createBackupFile);
 	settings->setValue("Tabulation Size", value.tabulationSize, defaultValue.tabulationSize);

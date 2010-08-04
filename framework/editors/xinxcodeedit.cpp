@@ -196,6 +196,12 @@ int XinxCodeEdit::currentRow()
 	return m_editor->editor()->cursor().lineNumber();
 }
 
+//! Return the number of row of the editor
+int XinxCodeEdit::countRow()
+{
+	return document()->lines();
+}
+
 //! Returns a pointer to the underlying document.
 QDocument * XinxCodeEdit::document() const
 {

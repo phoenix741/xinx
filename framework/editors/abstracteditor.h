@@ -88,6 +88,7 @@ public:
 	virtual QString defaultFileName() const = 0;
 
 	virtual bool isModified();
+	virtual bool hasNeverBeenModified();
 
 	virtual void serialize(XinxProjectSessionEditor * data, bool content);
 	virtual void deserialize(XinxProjectSessionEditor * data);
@@ -132,7 +133,7 @@ private:
 	void activateWatcher();
 	void setWatcher(const QString & path);
 
-	bool m_isSaving, m_modified;
+	bool m_isSaving, m_modified, m_neverModified;
 	QPointer<FileWatcher> m_watcher;
 	QString m_lastFileName;
 	QAction * m_undoAction, * m_redoAction, * m_cutAction, * m_copyAction, * m_pasteAction;

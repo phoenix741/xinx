@@ -269,7 +269,7 @@ QSqlDatabase CompletionModel::database()
 ContentView2::Node CompletionModel::nodeOfWord(const QString & name) const
 {
 	QList<QVariant> parameters;
-	QSqlQuery q = Manager::self()->getSqlQuery(QString("SELECT cv_node.id FROM cv_file, cv_node %1 AND cv_node.name = :name").arg(whereClause(parameters)), database());
+	QSqlQuery q = Manager::self()->getSqlQuery(QString("SELECT cv_node.id FROM cv_file, cv_node WHERE %1 AND cv_node.name = ?").arg(whereClause(parameters)), database());
 	foreach(const QVariant & p, parameters)
 		q.addBindValue(p);
 	q.addBindValue(name);

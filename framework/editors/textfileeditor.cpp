@@ -244,7 +244,7 @@ void TextFileEditor::loadFromDevice(QIODevice & d)
 
 void TextFileEditor::saveToDevice(QIODevice & d)
 {
-	if (XINXConfig::self()->config().editor.autoindentOnSaving) autoIndent();
+	if (XINXConfig::self()->config().editor.autoindentOnSaving == "true") autoIndent();
 	m_eol = DEFAULT_EOL; // Don't conserve the EOL
 	d.setTextModeEnabled(true);
 	QTextStream text(&d);
@@ -391,6 +391,12 @@ void TextFileEditor::updateModel()
 	if (! parser) {
 		emit contentChanged();
 		return ;
+	}
+
+	parser->setFilename(lastFileName());
+	if (XINXProjectManager::self()->project())
+	{
+		parser->setWorkingPath(XINXProjectManager::self()->project()->projectPath());
 	}
 
 	m_buffer->close();

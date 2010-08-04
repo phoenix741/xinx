@@ -1,16 +1,12 @@
 include(../project_mode.pri)
 TEMPLATE = app
-VERSION = 0.9.0.0
-DEFINES += XINX_VERSION=$$replace(VERSION,"\.",",")
-win32:QMAKE_RC = windres \
-    -DXINX_VERSION=$$replace(VERSION,"\.",",")
 win32:RC_FILE += rc/xinx.rc
 CONFIG += warn_on
 QT += xml \
     script \
     xmlpatterns \
     webkit \
-	sql
+    sql
 DESTDIR += ./
 PRE_TARGETDEPS = ../plugins/libcoreplugin.a
 INCLUDEPATH += ../framework \
@@ -20,19 +16,19 @@ INCLUDEPATH += ../framework \
     ../ext/qcodeedit/lib/document \
     ../ext/qcodeedit/lib/language \
     ../ext/qcodeedit/lib/qnfa \
-	../ext/qcodeedit/lib/widgets \
-	../ext/ideality/lib
+    ../ext/qcodeedit/lib/widgets \
+    ../ext/ideality/lib
 LIBS += -L../framework \
     -L../plugins \
     -L../components \
     -L../ext/qcodeedit \
-	-L../framework/ \
-	-L../ext/ideality/lib/ \
+    -L../framework/ \
+    -L../ext/ideality/lib/ \
     -lcoreplugin \
     -lxinxframework \
     -lxinxcmp \
     -lqcodeedit \
-	-lideality
+    -lideality
 RESOURCES += application.qrc
 FORMS += ui/about.ui \
     ui/projectdirectorywidget.ui \
@@ -53,7 +49,8 @@ FORMS += ui/about.ui \
     customdialog/ui/custommodules.ui \
     ui/templatedialog.ui \
     ui/newversion.ui \
-    customdialog/ui/customcontentview.ui
+    customdialog/ui/customcontentview.ui \
+    ui/savingdialog.ui
 HEADERS += customdialog/customgeneralimpl.h \
     customdialog/customprojectimpl.h \
     customdialog/customeditorimpl.h \
@@ -84,7 +81,8 @@ HEADERS += customdialog/customgeneralimpl.h \
     welcomdlgimpl_p.h \
     templatedialogimpl.h \
     newversionwizardimpl.h \
-    customdialog/customcontentviewimpl.h
+    customdialog/customcontentviewimpl.h \
+    savingdialog.h
 SOURCES += customdialog/customgeneralimpl.cpp \
     customdialog/customprojectimpl.cpp \
     customdialog/customeditorimpl.cpp \
@@ -115,7 +113,8 @@ SOURCES += customdialog/customgeneralimpl.cpp \
     welcomdlgimpl.cpp \
     templatedialogimpl.cpp \
     newversionwizardimpl.cpp \
-    customdialog/customcontentviewimpl.cpp
+    customdialog/customcontentviewimpl.cpp \
+    savingdialog.cpp
 TRANSLATIONS += translations/xinx_fr.ts
 CONFIG(debug, debug|release):exists( $$[QT_INSTALL_DATA]/qtc-debugging-helper/gdbmacros.cpp ) { 
     message( "Add GDB Macro to program..." )

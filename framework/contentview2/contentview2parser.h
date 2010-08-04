@@ -56,8 +56,11 @@ public:
 	Node rootNode() const;
 
 
-	virtual void setFilename(const QString & filename);
-	QString filename() const;
+	virtual void openFilename(const QString & filename);
+	void setFilename(const QString & filename);
+	const QString & filename() const;
+	void setWorkingPath(const QString & path);
+	const QString & workingPath() const;
 	void setInputDevice(QIODevice * device);
 	QIODevice * inputDevice() const;
 	void setDatabase(const QSqlDatabase & db);
@@ -78,7 +81,7 @@ protected:
 private:
 	QList< QPair<uint,uint> > m_attachedNode;
 	unsigned long m_decaledLine;
-	QString m_filename;
+	QString m_filename, m_workingPath;
 	QPointer<QIODevice> m_device;
 	Node m_rootNode;
 	QStringList m_imports;
