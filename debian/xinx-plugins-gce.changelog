@@ -1,3 +1,9 @@
+xinx (0.1.1.1) unstable; urgency=low
+
+  * Framework API change
+
+ -- Ulrich Van Den Hekke <slave@farm-squeeze>  Thu, 05 Aug 2010 08:28:35 +0200
+
 xinx (0.1.1.0) unstable; urgency=low
 
   * 332 :  Developpement de maquette Gx

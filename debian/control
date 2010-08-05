@@ -25,7 +25,7 @@ Description: An XSL Stylesheet editor
 Package: xinx-plugins-services
 Section: devel
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, xinx (>= 0.9.0.0)
+Depends: ${shlibs:Depends}, ${misc:Depends}, xinx (>= 0.9.0.9)
 Description: An is an XSL Stylesheet editor
  This is an XSL Stylesheet editor that can be used to edit little or big
  project. XINX has many features such as completion on balises, on
@@ -40,7 +40,7 @@ Description: An is an XSL Stylesheet editor
 Package: xinx-plugins-cvs
 Section: devel
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, xinx (>= 0.9.0.0), cvs | cvsnt
+Depends: ${shlibs:Depends}, ${misc:Depends}, xinx (>= 0.9.0.9), cvs | cvsnt
 Description: An XSL Stylesheet editor
  This is an XSL Stylesheet editor that can be used to edit little or big
  project. XINX has many features such as completion on balises, on
@@ -56,7 +56,7 @@ Description: An XSL Stylesheet editor
 Package: xinx-plugins-svn
 Section: devel
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, xinx (>= 0.9.0.0), subversion
+Depends: ${shlibs:Depends}, ${misc:Depends}, xinx (>= 0.9.0.9), subversion
 Description: An XSL Stylesheet editor
  This is an XSL Stylesheet editor that can be used to edit little or big
  project. XINX has many features such as completion on balises, on
@@ -72,7 +72,7 @@ Description: An XSL Stylesheet editor
 Package: xinx-plugins-gce
 Section: devel
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, xinx (>= 0.9.0.0)
+Depends: ${shlibs:Depends}, ${misc:Depends}, xinx (>= 0.9.0.9)
 Description: XINX is XSL Stylesheet editor
  This is an XSL Stylesheet editor that can be used to edit little or big
  project. XINX has many features such as completion on balises, on
