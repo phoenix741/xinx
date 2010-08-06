@@ -1383,10 +1383,10 @@ void MainformImpl::fileEditorSave(AbstractEditor * editor, bool saveAs)
 	if (! QFile(newFilename).exists())
 		RCSManager::self()->addFileOperation(RCSManager::RCS_ADD, QStringList() << newFilename, this);
 
-	ScriptManager::self()->callScriptsBeforeSave();
+	ScriptManager::self()->callScriptsBeforeSave(editor);
 	editor->saveToFile(newFilename);
 	m_projectDock->refreshPath(QFileInfo(newFilename).absoluteFilePath());
-	ScriptManager::self()->callScriptsAfterSave();
+	ScriptManager::self()->callScriptsAfterSave(editor);
 
 	RCSManager::self()->validFileOperations();
 
@@ -1415,9 +1415,9 @@ void MainformImpl::fileEditorRefreshFile(AbstractEditor * editor)
 	}
 	if (act)
 	{
-		ScriptManager::self()->callScriptsBeforeLoad();
+		ScriptManager::self()->callScriptsBeforeLoad(editor);
 		editor->loadFromFile();
-		ScriptManager::self()->callScriptsAfterLoad();
+		ScriptManager::self()->callScriptsAfterLoad(editor);
 	}
 }
 
@@ -1859,21 +1859,12 @@ void MainformImpl::openFile(const QString & filename)
 	}
 
 	// Load the file in the editor
-	ScriptManager::self()->callScriptsBeforeLoad();
-
+	ScriptManager::self()->callScriptsBeforeLoad(EditorManager::self()->currentEditor());
 	m_tabEditors->openFilename(QDir::fromNativeSeparators(filename));
 	updateRecentFiles();
 	updateActions();
-	ScriptManager::self()->callScriptsAfterLoad();
+	ScriptManager::self()->callScriptsAfterLoad(EditorManager::self()->currentEditor());
 	statusBar()->showMessage(tr("File loaded"), 2000);
-}
-
-void MainformImpl::saveFileAs(const QString & name)
-{
-	if (! m_tabEditors->currentEditor()) return;  // Can't save the editor if no editor to save.
-	ScriptManager::self()->callScriptsBeforeSave();
-	qobject_cast<TextFileEditor*>(m_tabEditors->currentEditor())->saveToFile(name);
-	ScriptManager::self()->callScriptsAfterSave();
 }
 
 void MainformImpl::saveAllFile()

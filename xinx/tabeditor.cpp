@@ -380,10 +380,10 @@ void TabEditor::tabRemoved(int index)
 
 void TabEditor::slotModifiedChange()
 {
-	Q_ASSERT(currentIndex() >= 0);
-	Q_ASSERT(currentEditor());
+	AbstractEditor * editor = qobject_cast<AbstractEditor*>(sender());
+	Q_ASSERT(editor);
 
-	updateTabWidget(currentEditor());
+	updateTabWidget(editor);
 }
 
 void TabEditor::slotCursorPositionChanged()

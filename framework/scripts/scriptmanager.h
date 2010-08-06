@@ -74,10 +74,10 @@ public:
 
 	static ScriptManager * self();
 
-	void callScriptsBeforeSave();
-	void callScriptsAfterSave();
-	void callScriptsBeforeLoad();
-	void callScriptsAfterLoad();
+	void callScriptsBeforeSave(AbstractEditor * editor);
+	void callScriptsAfterSave(AbstractEditor * editor);
+	void callScriptsBeforeLoad(AbstractEditor * editor);
+	void callScriptsAfterLoad(AbstractEditor * editor);
 public slots:
 	void loadScripts();
 signals:
@@ -92,6 +92,7 @@ private:
 	QScriptEngine m_engine;
 	QList<ScriptValue> m_objects;
 	QPointer<XinxProject> m_project;
+	AbstractEditor * m_editor;
 
 	static ScriptManager * s_self;
 };

@@ -207,7 +207,7 @@ void ScriptValue::callScript()
 
 /* ScriptManager */
 
-ScriptManager::ScriptManager()
+ScriptManager::ScriptManager() : m_editor(0)
 {
 	qScriptRegisterMetaType(&m_engine, &documentSearchOptionToScriptValue, &documentSearchOptionFromScriptValue);
 
@@ -282,32 +282,52 @@ void ScriptManager::loadScript(const QString & filename)
 	m_filenames << filename;
 }
 
-void ScriptManager::callScriptsBeforeSave()
+void ScriptManager::callScriptsBeforeSave(AbstractEditor * editor)
 {
+	AbstractEditor * currentEditor = m_editor;
+	setCurrentEditeur(editor);
+
 	foreach(ScriptValue v, m_objects)
-	if (v.isCallBeforeSave())
-		v.callScriptBeforeSave();
+		if (v.isCallBeforeSave())
+			v.callScriptBeforeSave();
+
+	setCurrentEditeur(currentEditor);
 }
 
-void ScriptManager::callScriptsAfterSave()
+void ScriptManager::callScriptsAfterSave(AbstractEditor * editor)
 {
+	AbstractEditor * currentEditor = m_editor;
+	setCurrentEditeur(editor);
+
 	foreach(ScriptValue v, m_objects)
-	if (v.isCallAfterSave())
-		v.callScriptAfterSave();
+		if (v.isCallAfterSave())
+			v.callScriptAfterSave();
+
+	setCurrentEditeur(currentEditor);
 }
 
-void ScriptManager::callScriptsBeforeLoad()
+void ScriptManager::callScriptsBeforeLoad(AbstractEditor * editor)
 {
+	AbstractEditor * currentEditor = m_editor;
+	setCurrentEditeur(editor);
+
 	foreach(ScriptValue v, m_objects)
-	if (v.isCallBeforeLoad())
-		v.callScriptBeforeLoad();
+		if (v.isCallBeforeLoad())
+			v.callScriptBeforeLoad();
+
+	setCurrentEditeur(currentEditor);
 }
 
-void ScriptManager::callScriptsAfterLoad()
+void ScriptManager::callScriptsAfterLoad(AbstractEditor * editor)
 {
+	AbstractEditor * currentEditor = m_editor;
+	setCurrentEditeur(editor);
+
 	foreach(ScriptValue v, m_objects)
-	if (v.isCallAfterLoad())
-		v.callScriptAfterLoad();
+		if (v.isCallAfterLoad())
+			v.callScriptAfterLoad();
+
+	setCurrentEditeur(currentEditor);
 }
 
 const QList<ScriptValue> & ScriptManager::objects() const
@@ -365,6 +385,7 @@ void ScriptManager::setCurrentEditeur(AbstractEditor * editor)
 		m_engine.globalObject().setProperty("textEdit", UndefinedValue);
 		m_engine.globalObject().setProperty("editor", UndefinedValue);
 	}
+	m_editor = editor;
 }
 
 ScriptManager * ScriptManager::self()

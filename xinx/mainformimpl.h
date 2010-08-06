@@ -60,7 +60,6 @@ public:
 	virtual ~MainformImpl();
 public slots:
 	void openFile(const QString & filename);
-	void saveFileAs(const QString & filename = QString());
 	void saveAllFile();
 	void closeFile();
 	bool closeAllFile();
