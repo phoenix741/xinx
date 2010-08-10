@@ -32,7 +32,7 @@ public:
 	AbstractEditor * m_editor;
 };
 
-EditorItem::EditorItem(AbstractEditor * editor, QListWidget * parent) : QListWidgetItem(editor->lastFileName(), parent), m_editor(editor)
+EditorItem::EditorItem(AbstractEditor * editor, QListWidget * parent) : QListWidgetItem(editor->getLongTitle(), parent), m_editor(editor)
 {
 
 }

@@ -42,6 +42,8 @@ public slots:
 private:
 	QHash<QString,QString> m_tools;
 
+	void init();
+
 private slots:
 	void on_m_listSlider_valueChanged(int value);
 };
