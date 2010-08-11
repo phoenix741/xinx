@@ -85,6 +85,8 @@ public:
 	virtual QString fileExample() const;
 
 	virtual QString parserType();
+
+	virtual QString defaultFileName();
 };
 
 /* XMLFileType */
@@ -105,6 +107,8 @@ public:
 	virtual QString fileExample() const;
 
 	virtual QString parserType();
+
+	virtual QString defaultFileName();
 };
 
 /* XSLStyleSheetFileType */
@@ -120,6 +124,8 @@ public:
 	virtual AbstractEditor * createEditor(const QString & filename);
 
 	virtual QString parserType();
+
+	virtual QString defaultFileName();
 };
 
 /* HTMLFileType */
@@ -133,6 +139,8 @@ public:
 	virtual QString icon();
 
 	virtual AbstractEditor * createEditor(const QString & filename);
+
+	virtual QString defaultFileName();
 };
 
 /* JSFileType */
@@ -153,6 +161,8 @@ public:
 	virtual QString fileExample() const;
 
 	virtual QString parserType();
+
+	virtual QString defaultFileName();
 };
 
 /* CSSFileType */
@@ -173,6 +183,8 @@ public:
 	virtual QString fileExample() const;
 
 	virtual QString parserType();
+
+	virtual QString defaultFileName();
 };
 
 /* XQFileType */
@@ -196,6 +208,8 @@ public:
 	virtual QString fileExample() const;
 
 	virtual QString parserType();
+
+	virtual QString defaultFileName();
 };
 
 #endif // _FILETYPEPLUGIN_H_

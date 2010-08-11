@@ -81,6 +81,11 @@ QString TextFileType::parserType()
 	return QString();
 }
 
+QString TextFileType::defaultFileName()
+{
+	return tr("noname") + ".txt";
+}
+
 /* XMLFileType */
 
 QString XMLFileType::description()
@@ -156,6 +161,12 @@ QString XMLFileType::parserType()
 	return 0;
 }
 
+QString XMLFileType::defaultFileName()
+{
+	return tr("noname") + ".xml";
+}
+
+
 /* XSLStyleSheetFileType */
 
 QString XSLStyleSheetFileType::description()
@@ -188,6 +199,11 @@ QString XSLStyleSheetFileType::parserType()
 	return "XSL";
 }
 
+QString XSLStyleSheetFileType::defaultFileName()
+{
+	return tr("noname") + ".xsl";
+}
+
 /* HTMLFileType */
 
 QString HTMLFileType::description()
@@ -213,6 +229,11 @@ AbstractEditor * HTMLFileType::createEditor(const QString & filename)
 		editor->loadFromFile(filename);
 
 	return editor;
+}
+
+QString HTMLFileType::defaultFileName()
+{
+	return tr("noname") + ".html";
 }
 
 /* JSFileType */
@@ -283,6 +304,11 @@ QString JSFileType::parserType()
 	return "JS";
 }
 
+QString JSFileType::defaultFileName()
+{
+	return tr("noname") + ".js";
+}
+
 /* CSSFileType */
 
 
@@ -345,6 +371,11 @@ QString CSSFileType::fileExample() const
 QString CSSFileType::parserType()
 {
 	return "CSS";
+}
+
+QString CSSFileType::defaultFileName()
+{
+	return tr("noname") + ".css";
 }
 
 /* XQFileType */
@@ -445,3 +476,9 @@ QString XQFileType::parserType()
 {
 	return QString();
 }
+
+QString XQFileType::defaultFileName()
+{
+	return tr("noname") + ".xq";
+}
+

@@ -57,6 +57,13 @@ public:
 	{
 		return QString();
 	}
+
+
+	virtual QString defaultFileName()
+	{
+		return tr("noname") + ".fws";
+	}
+
 };
 
 #endif //  _WEBSERVICESFILETYPE_H_
