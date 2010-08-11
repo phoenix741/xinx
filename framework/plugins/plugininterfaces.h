@@ -292,7 +292,7 @@ public:
 	/// Description of each revision control system
 	virtual QString descriptionOfRCS(const QString & rcs) = 0;
 	/*!
-	 * Create a revision control system for the revision control system \e rcs
+	 * \brief Create a revision control system for the revision control system \e rcs
 	 * and the path \e basePath.
 	 */
 	virtual RCS * createRCS(const QString & rcs, const QString & basePath = QString()) = 0;
@@ -313,7 +313,16 @@ public:
 	virtual QString match() = 0;
 	//! Return the icon for the filte type.
 	virtual QString icon() = 0;
+	/*!
+	 * \brief Return the default file name to use by the editor in case of
+	 * no file is defined.
+	 */
+	virtual QString defaultFileName() = 0;
 
+	/*!
+	 * \brief Define the name of the parser type to use to
+	 * define the content view to show.
+	 */
 	virtual QString parserType() = 0;
 
 	//! Create an editor with the given filename
