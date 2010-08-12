@@ -60,6 +60,7 @@ class MaquetteFileType : public QObject, public IFileTextPlugin
 {
 	Q_OBJECT
 public:
+	virtual QString name();
 	virtual QString description();
 	virtual QString match();
 	virtual QString icon();
