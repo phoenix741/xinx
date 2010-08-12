@@ -59,13 +59,6 @@ CorePlugin::CorePlugin() : m_dock(0)
 {
 	Q_INIT_RESOURCE(coreplugin);
 
-	qRegisterMetaType<StyleSheetEditor>("StyleSheetEditor");
-	qRegisterMetaType<XmlFileEditor>("XmlFileEditor");
-	qRegisterMetaType<HtmlFileEditor>("HtmlFileEditor");
-	qRegisterMetaType<JSFileEditor>("JSFileEditor");
-	qRegisterMetaType<CSSFileEditor>("CSSFileEditor");
-	qRegisterMetaType<XQFileEditor>("XQFileEditor");
-
 	m_fileTypes << new XSLStyleSheetFileType;
 	m_fileTypes << new XMLFileType;
 	m_fileTypes << new HTMLFileType;

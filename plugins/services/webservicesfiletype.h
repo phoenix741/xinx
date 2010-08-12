@@ -32,7 +32,7 @@ class WebServicesFileType : public QObject, public IFileTypePlugin
 public:
 	virtual QString name()
 	{
-		return metaObject()->className();
+		return "WebServicesEditor";
 	}
 
 	virtual QString description()

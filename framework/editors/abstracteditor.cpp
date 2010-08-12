@@ -685,8 +685,8 @@ QString AbstractEditor::defaultFileName() const
 void AbstractEditor::serialize(XinxProjectSessionEditor * data, bool content)
 {
 	Q_UNUSED(content);
-	data->writeProperty("ClassName", metaObject()->className());   // Store the class name
-	data->writeProperty("FileTypeInterface", m_fileTypePlugin->name()); // Store the file type interface
+
+	data->writeProperty("ClassName", m_fileTypePlugin->name());
 
 	if (!m_lastFileName.isEmpty())
 		data->writeProperty("FileName", QVariant(QDir(data->projectPath()).relativeFilePath(m_lastFileName)));
@@ -734,18 +734,14 @@ void AbstractEditor::deserialize(XinxProjectSessionEditor * data)
 AbstractEditor * AbstractEditor::deserializeEditor(XinxProjectSessionEditor * data)
 {
 	QString name = data->readProperty("ClassName").toString();
-
-	int id = QMetaType::type(qPrintable(name));
-	if (id != -1)
+	IFileTypePlugin * plugin = XinxPluginsLoader::self()->fileType(name);
+	if (plugin)
 	{
-		void * editorPtr = QMetaType::construct(id);
-		if (editorPtr)
-		{
-			AbstractEditor * editor = static_cast<AbstractEditor*>(editorPtr);
-			editor->deserialize(data);
-			return editor;
-		}
+		AbstractEditor * editor = plugin->createEditor();
+		editor->deserialize(data);
+		return editor;
 	}
+
 	return NULL;
 }
 

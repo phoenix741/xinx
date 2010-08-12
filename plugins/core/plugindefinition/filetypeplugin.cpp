@@ -26,7 +26,7 @@
 
 QString TextFileType::name()
 {
-	return metaObject()->className();
+	return "TextFileEditor";
 }
 
 QString TextFileType::description()
@@ -95,7 +95,7 @@ QString TextFileType::defaultFileName()
 
 QString XMLFileType::name()
 {
-	return metaObject()->className();
+	return "XmlFileEditor";
 }
 
 QString XMLFileType::description()
@@ -181,7 +181,7 @@ QString XMLFileType::defaultFileName()
 
 QString XSLStyleSheetFileType::name()
 {
-	return metaObject()->className();
+	return "StyleSheetEditor";
 }
 
 QString XSLStyleSheetFileType::description()
@@ -223,7 +223,7 @@ QString XSLStyleSheetFileType::defaultFileName()
 
 QString HTMLFileType::name()
 {
-	return metaObject()->className();
+	return "HtmlFileEditor";
 }
 
 QString HTMLFileType::description()
@@ -260,7 +260,7 @@ QString HTMLFileType::defaultFileName()
 
 QString JSFileType::name()
 {
-	return metaObject()->className();
+	return "JSFileEditor";
 }
 
 QString JSFileType::description()
@@ -337,6 +337,11 @@ QString JSFileType::defaultFileName()
 /* CSSFileType */
 
 
+QString CSSFileType::name()
+{
+	return "CSSFileEditor";
+}
+
 QString CSSFileType::description()
 {
 	return tr("Cascading Style Sheet");
@@ -404,6 +409,12 @@ QString CSSFileType::defaultFileName()
 }
 
 /* XQFileType */
+
+
+QString XQFileType::name()
+{
+	return "XQFileEditor";
+}
 
 XQFileType::XQFileType()
 {

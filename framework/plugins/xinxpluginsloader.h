@@ -63,6 +63,8 @@ public:
 
 	/*! Return all the file type knew by XINX. */
 	QList<IFileTypePlugin*> fileTypes() const;
+	/*! Return the file type with the name \p name */
+	IFileTypePlugin * fileType(const QString & name) const;
 	/*! Search the file type for the corresponding filename  */
 	QList<IFileTypePlugin*> matchedFileType(const QString & filename) const;
 	/*! Return the filter for a given file type */

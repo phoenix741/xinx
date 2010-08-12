@@ -180,6 +180,19 @@ QList<IFileTypePlugin*> XinxPluginsLoader::fileTypes() const
 	return result;
 }
 
+IFileTypePlugin* XinxPluginsLoader::fileType(const QString & name) const
+{
+	QList<IFileTypePlugin*> list = fileTypes();
+	foreach(IFileTypePlugin * type, list)
+	{
+		if(type->name() == name)
+		{
+			return type;
+		}
+	}
+	return NULL;
+}
+
 QList<IFileTypePlugin*> XinxPluginsLoader::matchedFileType(const QString & filename) const
 {
 	QList<IFileTypePlugin*> types = fileTypes(), result;

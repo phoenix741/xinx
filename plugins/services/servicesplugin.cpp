@@ -38,8 +38,6 @@ ServicesPlugin::ServicesPlugin()
 {
 	Q_INIT_RESOURCE(servicesplugin);
 
-	qRegisterMetaType<WebServicesEditor>("WebServicesEditor");
-
 	WebServicesManager::self();
 	m_fileTypes << new WebServicesFileType;
 }

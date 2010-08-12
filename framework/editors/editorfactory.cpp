@@ -110,7 +110,6 @@ AbstractEditor * EditorFactory::createEditor(const QString & filename)
 	editor = interface->createEditor(filename);
 	Q_ASSERT_X(editor, "EditorFactory::createEditor", "The factory can't create editor");
 
-	editor->setFileTypePluginInterface(interface);
 	editor->initLayout();
 	if (qobject_cast<TextFileEditor*>(editor))
 		qobject_cast<TextFileEditor*>(editor)->initCompleter();

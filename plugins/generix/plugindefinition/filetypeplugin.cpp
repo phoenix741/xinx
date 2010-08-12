@@ -24,7 +24,7 @@
 
 QString MaquetteFileType::name()
 {
-	return metaObject()->className();
+	return "MaquetteFileEditor";
 }
 
 QString MaquetteFileType::description()

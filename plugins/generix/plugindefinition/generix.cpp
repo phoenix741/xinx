@@ -140,8 +140,6 @@ GenerixPlugin::GenerixPlugin() : m_dock(0)
 {
 	Q_INIT_RESOURCE(generix);
 
-	qRegisterMetaType<MaquetteFileEditor>("MaquetteFileEditor");
-
 	m_fileTypes << new MaquetteFileType;
 }
 
