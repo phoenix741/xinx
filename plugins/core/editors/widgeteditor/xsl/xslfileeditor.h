@@ -40,14 +40,10 @@ class StyleSheetEditor : public TextFileEditor
 {
 	Q_OBJECT
 public:
-	StyleSheetEditor(QWidget *parent = 0);
+	StyleSheetEditor(IFileTypePlugin * fileType = 0, QWidget *parent = 0);
 	virtual ~StyleSheetEditor();
 
-	virtual QString defaultFileName() const;
-
 	virtual bool autoIndent();
-
-	virtual QIcon icon() const;
 
 	void launchStylesheetParsing(const QString & xmlfile);
 	static XmlPresentationDockWidget * xmlPresentationDockWidget();

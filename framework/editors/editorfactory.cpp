@@ -59,11 +59,13 @@ AbstractEditor * EditorFactory::createEditor(IFileTypePlugin * interface)
 {
 	AbstractEditor * editor = interface ? interface->createEditor() : new TextFileEditor(new XinxCodeEdit());
 
+	Q_ASSERT_X(editor, "EditorFactory::createEditor", "The interface can't create editor");
+
+	editor->setFileTypePluginInterface(interface);
+
 	editor->initLayout();
 	if (qobject_cast<TextFileEditor*>(editor))
 		qobject_cast<TextFileEditor*>(editor)->initCompleter();
-
-	Q_ASSERT_X(editor, "EditorFactory::createEditor", "The interface can't create editor");
 
 	return editor;
 }
@@ -74,6 +76,7 @@ AbstractEditor * EditorFactory::createEditor(const QString & filename)
 
 	AbstractEditor * editor = 0;
 	QList<IFileTypePlugin *> interfaces = XinxPluginsLoader::self()->matchedFileType(filename);
+	IFileTypePlugin * interface;
 	switch(interfaces.size())
 	{
 	case 0:
@@ -84,12 +87,12 @@ AbstractEditor * EditorFactory::createEditor(const QString & filename)
 			if (dlg.exec() == QDialog::Accepted)
 			{
 				Q_ASSERT_X(dlg.selectedType(), "EditorFactory::createEditor", "No editor selected");
-				editor = dlg.selectedType()->createEditor(filename);
+				interface = dlg.selectedType();
 			}
 		}
 		break;
 	case 1:
-		editor = interfaces.at(0)->createEditor(filename);
+		interface = interfaces.at(0);
 		break;
 	default:
 		{
@@ -99,13 +102,15 @@ AbstractEditor * EditorFactory::createEditor(const QString & filename)
 			if (dlg.exec() == QDialog::Accepted)
 			{
 				Q_ASSERT_X(dlg.selectedType(), "EditorFactory::createEditor", "No editor selected");
-				editor = dlg.selectedType()->createEditor(filename);
+				interface = dlg.selectedType();
 			}
 		}
 	}
 
+	editor = interface->createEditor(filename);
 	Q_ASSERT_X(editor, "EditorFactory::createEditor", "The factory can't create editor");
 
+	editor->setFileTypePluginInterface(interface);
 	editor->initLayout();
 	if (qobject_cast<TextFileEditor*>(editor))
 		qobject_cast<TextFileEditor*>(editor)->initCompleter();

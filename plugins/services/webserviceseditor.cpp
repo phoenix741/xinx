@@ -46,7 +46,7 @@
 
 /* WebServicesEditor */
 
-WebServicesEditor::WebServicesEditor(QWidget *parent) : TextFileEditor(new XmlTextEditor(), parent)
+WebServicesEditor::WebServicesEditor(IFileTypePlugin * fileType, QWidget *parent) : TextFileEditor(new XmlTextEditor(), fileType, parent)
 {
 	initObjects();
 }
@@ -361,15 +361,6 @@ void WebServicesEditor::deserialize(XinxProjectSessionEditor * data)
 	textEdit()->setTextCursor(tc);
 }
 
-QIcon WebServicesEditor::icon() const
-{
-	return QIcon(":/services/images/typefws.png");
-}
-
-QString WebServicesEditor::defaultFileName() const
-{
-	return tr("noname.fws");
-}
 
 void WebServicesEditor::paramListEditingFinished()
 {

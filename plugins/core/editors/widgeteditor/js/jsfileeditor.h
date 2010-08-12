@@ -30,11 +30,8 @@ class JSFileEditor : public TextFileEditor
 {
 	Q_OBJECT
 public:
-	JSFileEditor(QWidget *parent = 0);
+	JSFileEditor(IFileTypePlugin * fileType = 0, QWidget *parent = 0);
 	virtual ~JSFileEditor();
-
-	virtual QString defaultFileName() const;
-	virtual QIcon icon() const;
 
 	JavascriptModelCompleter * completionModel() const;
 protected:

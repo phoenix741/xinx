@@ -26,7 +26,7 @@
 
 /* XQFileEditor */
 
-XQFileEditor::XQFileEditor(QWidget *parent) : TextFileEditor(new XQTextEditor(), parent)
+XQFileEditor::XQFileEditor(IFileTypePlugin * fileType, QWidget *parent) : TextFileEditor(new XQTextEditor(), fileType, parent)
 {
 	m_completionModel = new XQModelCompleter();
 
@@ -38,16 +38,6 @@ XQFileEditor::XQFileEditor(QWidget *parent) : TextFileEditor(new XQTextEditor(),
 XQFileEditor::~XQFileEditor()
 {
 	delete m_completionModel;
-}
-
-QString XQFileEditor::defaultFileName() const
-{
-	return tr("noname.xq");
-}
-
-QIcon XQFileEditor::icon() const
-{
-	return QIcon(":/images/typexq.png");
 }
 
 XQModelCompleter * XQFileEditor::completionModel() const

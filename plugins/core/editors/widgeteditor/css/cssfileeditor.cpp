@@ -24,7 +24,7 @@
 
 /* StyleSheetContainer */
 
-CSSFileEditor::CSSFileEditor(QWidget *parent) : TextFileEditor(new CSSTextEditor(), parent)
+CSSFileEditor::CSSFileEditor(IFileTypePlugin * fileType, QWidget *parent) : TextFileEditor(new CSSTextEditor(), fileType, parent)
 {
 }
 
@@ -36,14 +36,4 @@ CSSFileEditor::~CSSFileEditor()
 ContentView2::Parser * CSSFileEditor::createParser()
 {
 	return new CSSFileContentParser();
-}
-
-QString CSSFileEditor::defaultFileName() const
-{
-	return tr("noname.css");
-}
-
-QIcon CSSFileEditor::icon() const
-{
-	return QIcon(":/images/typecss.png");
 }

@@ -35,6 +35,7 @@
 class QAction;
 class XinxProjectSessionEditor;
 class QAbstractItemModel;
+class IFileTypePlugin;
 
 class LIBEXPORT AbstractEditor : public QFrame
 {
@@ -54,7 +55,7 @@ public:
 	};
 	Q_DECLARE_FLAGS(SearchOptions, SearchOption)
 
-	AbstractEditor(QWidget * parent = 0);
+	AbstractEditor(IFileTypePlugin * fileType = 0, QWidget * parent = 0);
 	virtual ~AbstractEditor();
 
 	virtual QString getTitle() const;
@@ -73,7 +74,7 @@ public:
 	QAction * undoAction();
 	QAction * redoAction();
 
-	virtual QIcon icon() const;
+	QIcon icon() const;
 
 	virtual void loadFromDevice(QIODevice & d) = 0;
 	virtual void saveToDevice(QIODevice & d) = 0;
@@ -85,7 +86,7 @@ public:
 	virtual void updateModel() = 0;
 
 	const QString & lastFileName() const;
-	virtual QString defaultFileName() const = 0;
+	QString defaultFileName() const;
 
 	virtual bool isModified();
 	virtual bool hasNeverBeenModified();
@@ -95,6 +96,9 @@ public:
 	static AbstractEditor * deserializeEditor(XinxProjectSessionEditor * data);
 
 	virtual BookmarkEditorInterface * bookmarkInterface() = 0;
+
+	void setFileTypePluginInterface(IFileTypePlugin * value);
+	IFileTypePlugin * fileTypePluginInterface() const;
 public slots :
 	virtual void initSearch(AbstractEditor::SearchOptions & options) = 0;
 	virtual bool find(const QString & text, AbstractEditor::SearchOptions options) = 0;
@@ -133,6 +137,7 @@ private:
 	void activateWatcher();
 	void setWatcher(const QString & path);
 
+	IFileTypePlugin * m_fileTypePlugin;
 	bool m_isSaving, m_modified, m_neverModified;
 	QPointer<FileWatcher> m_watcher;
 	QString m_lastFileName;

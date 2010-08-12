@@ -46,22 +46,12 @@
 
 /* XmlFileEditor */
 
-XmlFileEditor::XmlFileEditor(QWidget *parent) : TextFileEditor(new XmlTextEditor(), parent)
+XmlFileEditor::XmlFileEditor(IFileTypePlugin * fileType, QWidget *parent) : TextFileEditor(new XmlTextEditor(), fileType, parent)
 {
 }
 
 XmlFileEditor::~XmlFileEditor()
 {
-}
-
-QString XmlFileEditor::defaultFileName() const
-{
-	return tr("noname.xml");
-}
-
-QIcon XmlFileEditor::icon() const
-{
-	return QIcon(":/images/typexml.png");
 }
 
 bool XmlFileEditor::autoIndent()

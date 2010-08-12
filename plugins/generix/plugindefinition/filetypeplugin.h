@@ -72,6 +72,8 @@ public:
 	virtual QString fileExample() const;
 
 	virtual QString parserType();
+
+	virtual QString defaultFileName();
 };
 
 

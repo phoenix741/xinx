@@ -47,7 +47,7 @@
 
 /* HtmlFileEditor */
 
-HtmlFileEditor::HtmlFileEditor(QWidget *parent) : TextFileEditor(new XslTextEditor(), parent), m_htmlTempFile(0)
+HtmlFileEditor::HtmlFileEditor(IFileTypePlugin * fileType, QWidget *parent) : TextFileEditor(new XslTextEditor(), fileType, parent), m_htmlTempFile(0)
 {
 	initObjects();
 }
@@ -101,16 +101,6 @@ void HtmlFileEditor::initLayout()
 XslCompletionNodeModel * HtmlFileEditor::completionModel() const
 {
 	return m_completionModel;
-}
-
-QString HtmlFileEditor::defaultFileName() const
-{
-	return tr("noname.html");
-}
-
-QIcon HtmlFileEditor::icon() const
-{
-	return QIcon(":/images/typehtml.png");
 }
 
 void HtmlFileEditor::detectCodec(QIODevice & d)

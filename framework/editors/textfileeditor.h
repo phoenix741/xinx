@@ -84,7 +84,7 @@ public:
 	 * \param editor TextEditor to use to print file to screen (center widget)
 	 * \param parent Parent of the editor.
 	 */
-	TextFileEditor(XinxCodeEdit * editor = 0, QWidget *parent = 0);
+	TextFileEditor(XinxCodeEdit * editor = 0, IFileTypePlugin * interface = 0, QWidget *parent = 0);
 	/*! Destructor of the FileEditor.*/
 	virtual ~TextFileEditor();
 
@@ -93,7 +93,6 @@ public:
 	 * \return The text editor widget used by the file editor.
 	 */
 	virtual XinxCodeEdit * textEdit() const;
-	virtual QString defaultFileName() const;
 
 	virtual void loadFromFile(const QString & fileName = QString());
 	virtual void saveToFile(const QString & fileName = QString());

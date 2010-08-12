@@ -39,7 +39,7 @@ QString MaquetteFileType::icon()
 
 AbstractEditor * MaquetteFileType::createEditor(const QString & filename)
 {
-	MaquetteFileEditor * editor = new MaquetteFileEditor();
+	MaquetteFileEditor * editor = new MaquetteFileEditor(this);
 
 	if (! filename.isEmpty())
 		editor->loadFromFile(filename);
@@ -96,3 +96,9 @@ QString MaquetteFileType::parserType()
 {
 	return 0;
 }
+
+QString MaquetteFileType::defaultFileName()
+{
+	return tr("noname") + ".maq";
+}
+

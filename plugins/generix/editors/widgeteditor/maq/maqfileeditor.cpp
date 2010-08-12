@@ -23,21 +23,11 @@
 
 /* MaquetteFileEditor */
 
-MaquetteFileEditor::MaquetteFileEditor(QWidget *parent) : TextFileEditor(new MaquetteTextEditor(), parent)
+MaquetteFileEditor::MaquetteFileEditor(IFileTypePlugin * fileType, QWidget *parent) : TextFileEditor(new MaquetteTextEditor(), fileType, parent)
 {
 }
 
 MaquetteFileEditor::~MaquetteFileEditor()
 {
 
-}
-
-QString MaquetteFileEditor::defaultFileName() const
-{
-	return tr("noname.std_fra");
-}
-
-QIcon MaquetteFileEditor::icon() const
-{
-	return QIcon(":/generix/images/typemaq.png");
 }

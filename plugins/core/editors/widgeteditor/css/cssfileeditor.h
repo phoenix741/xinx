@@ -30,11 +30,8 @@ class CSSFileEditor : public TextFileEditor
 {
 	Q_OBJECT
 public:
-	CSSFileEditor(QWidget *parent = 0);
+	CSSFileEditor(IFileTypePlugin * fileType = 0, QWidget *parent = 0);
 	virtual ~CSSFileEditor();
-
-	virtual QString defaultFileName() const;
-	virtual QIcon icon() const;
 protected:
 	virtual ContentView2::Parser * createParser();
 private:

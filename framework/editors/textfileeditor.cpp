@@ -66,7 +66,7 @@
 #endif
 #endif
 
-TextFileEditor::TextFileEditor(XinxCodeEdit * editor, QWidget *parent) : AbstractEditor(parent), m_codec(XINXConfig::self()->config().editor.defaultTextCodec), m_view(editor), m_eol(DEFAULT_EOL), m_completionModel(0)
+TextFileEditor::TextFileEditor(XinxCodeEdit * editor, IFileTypePlugin * interface, QWidget *parent) : AbstractEditor(interface, parent), m_codec(XINXConfig::self()->config().editor.defaultTextCodec), m_view(editor), m_eol(DEFAULT_EOL), m_completionModel(0)
 {
 	initObjects();
 }
@@ -163,11 +163,6 @@ BookmarkTextEditorInterface * TextFileEditor::bookmarkTextInterface()
 XinxCodeEdit * TextFileEditor::textEdit() const
 {
 	return m_view;
-}
-
-QString TextFileEditor::defaultFileName() const
-{
-	return tr("noname.txt");
 }
 
 void TextFileEditor::selectAll()

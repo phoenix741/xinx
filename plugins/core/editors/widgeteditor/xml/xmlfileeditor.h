@@ -40,14 +40,10 @@ class XmlFileEditor : public TextFileEditor
 {
 	Q_OBJECT
 public:
-	XmlFileEditor(QWidget *parent = 0);
+	XmlFileEditor(IFileTypePlugin * fileType = 0, QWidget *parent = 0);
 	virtual ~XmlFileEditor();
 
-	virtual QString defaultFileName() const;
-
 	virtual bool autoIndent();
-
-	virtual QIcon icon() const;
 protected:
 	virtual void detectCodec(QIODevice & d);
 

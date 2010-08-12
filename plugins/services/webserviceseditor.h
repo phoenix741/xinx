@@ -44,7 +44,7 @@ class WebServicesEditor : public TextFileEditor
 {
 	Q_OBJECT
 public:
-	WebServicesEditor(QWidget *parent = 0);
+	WebServicesEditor(IFileTypePlugin * fileType = 0, QWidget *parent = 0);
 	~WebServicesEditor();
 
 	WebServices * service();
@@ -60,9 +60,6 @@ public:
 	virtual void deserialize(XinxProjectSessionEditor * data);
 
 	virtual bool autoIndent();
-
-	virtual QIcon icon() const;
-	virtual QString defaultFileName() const;
 
 	int executionTime() const;
 	const QString & faultString() const;

@@ -40,14 +40,10 @@ class HtmlFileEditor : public TextFileEditor
 {
 	Q_OBJECT
 public:
-	HtmlFileEditor(QWidget *parent = 0);
+	HtmlFileEditor(IFileTypePlugin * fileType = 0, QWidget *parent = 0);
 	virtual ~HtmlFileEditor();
 
-	virtual QString defaultFileName() const;
-
 	virtual bool autoIndent();
-
-	virtual QIcon icon() const;
 
 	virtual void showHtml();
 

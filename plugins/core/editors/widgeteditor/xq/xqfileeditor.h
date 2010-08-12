@@ -29,11 +29,9 @@ class XQFileEditor : public TextFileEditor
 {
 	Q_OBJECT
 public:
-	XQFileEditor(QWidget *parent = 0);
+	XQFileEditor(IFileTypePlugin * fileType = 0, QWidget *parent = 0);
 	virtual ~XQFileEditor();
 
-	virtual QString defaultFileName() const;
-	virtual QIcon icon() const;
 	XQModelCompleter * completionModel() const;
 private:
 	XQModelCompleter * m_completionModel;

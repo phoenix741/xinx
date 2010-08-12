@@ -28,7 +28,7 @@
 
 /* StyleSheetContainer */
 
-JSFileEditor::JSFileEditor(QWidget *parent) : TextFileEditor(new JSTextEditor(), parent), m_completionModel(0)
+JSFileEditor::JSFileEditor(IFileTypePlugin * fileType, QWidget *parent) : TextFileEditor(new JSTextEditor(), fileType, parent), m_completionModel(0)
 {
 
 }
@@ -52,16 +52,6 @@ ContentView2::CompletionModel * JSFileEditor::createModel(QSqlDatabase db, QObje
 		qobject_cast<JSTextEditor*>(textEdit())->setModel(m_completionModel);
 	}
 	return m_completionModel;
-}
-
-QString JSFileEditor::defaultFileName() const
-{
-	return tr("noname.js");
-}
-
-QIcon JSFileEditor::icon() const
-{
-	return QIcon(":/images/typejs.png");
 }
 
 JavascriptModelCompleter * JSFileEditor::completionModel() const

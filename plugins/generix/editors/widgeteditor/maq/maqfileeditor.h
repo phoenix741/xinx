@@ -28,11 +28,8 @@ class MaquetteFileEditor : public TextFileEditor
 {
 	Q_OBJECT
 public:
-	MaquetteFileEditor(QWidget *parent = 0);
+	MaquetteFileEditor(IFileTypePlugin * fileType = 0, QWidget *parent = 0);
 	virtual ~MaquetteFileEditor();
-
-	virtual QString defaultFileName() const;
-	virtual QIcon icon() const;
 protected:
 
 private:

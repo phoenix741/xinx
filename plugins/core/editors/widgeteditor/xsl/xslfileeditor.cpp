@@ -50,7 +50,7 @@
 
 /* StyleSheetEditor */
 
-StyleSheetEditor::StyleSheetEditor(QWidget *parent) : TextFileEditor(new XslTextEditor(), parent), m_completionModel(0)
+StyleSheetEditor::StyleSheetEditor(IFileTypePlugin * fileType, QWidget *parent) : TextFileEditor(new XslTextEditor(), fileType, parent), m_completionModel(0)
 {
 	initObjects();
 }
@@ -167,16 +167,6 @@ ContentView2::CompletionModel * StyleSheetEditor::createModel(QSqlDatabase db, Q
 XslCompletionNodeModel * StyleSheetEditor::completionModel() const
 {
 	return m_completionModel;
-}
-
-QString StyleSheetEditor::defaultFileName() const
-{
-	return tr("noname.xsl");
-}
-
-QIcon StyleSheetEditor::icon() const
-{
-	return QIcon(":/images/typexsl.png");
 }
 
 bool StyleSheetEditor::autoIndent()

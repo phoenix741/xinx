@@ -134,7 +134,7 @@
  *
  * \param parent Parent and containers of the editor.
  */
-AbstractEditor::AbstractEditor(QWidget * parent)  : QFrame(parent), m_isSaving(false), m_modified(false), m_neverModified(true)
+AbstractEditor::AbstractEditor(IFileTypePlugin * fileType, QWidget * parent)  : QFrame(parent), m_fileTypePlugin(fileType), m_isSaving(false), m_modified(false), m_neverModified(true)
 {
 	initObjects();
 }
@@ -281,14 +281,6 @@ AbstractEditor::~AbstractEditor()
 /*!
  * \fn virtual void AbstractEditor::updateModel() = 0
  * \brief Update the content of the model from the content of the editor
- */
-
-/*!
- * \fn virtual QString AbstractEditor::defaultFileName() const = 0
- * \brief Return the file name name to use if no filename is defined (ie. noname.txt)
- *
- * This method is used to known the file extention, and the default file name to propose
- * to the user when saving.
  */
 
 /*!
@@ -617,7 +609,10 @@ QAction * AbstractEditor::pasteAction()
  */
 QIcon AbstractEditor::icon() const
 {
-	return QIcon(":/images/typeunknown.png");
+	if (m_fileTypePlugin)
+		return QIcon(m_fileTypePlugin->icon());
+	else
+		return QIcon(":/images/typeunknown.png");
 }
 
 /*!
@@ -657,6 +652,24 @@ const QString & AbstractEditor::lastFileName() const
 {
 	return m_lastFileName;
 }
+
+
+/*!
+ * \fn QString AbstractEditor::defaultFileName() const
+ * \brief Return the file name name to use if no filename is defined (ie. noname.txt)
+ *
+ * This method is used to known the file extention, and the default file name to propose
+ * to the user when saving.
+ */
+
+QString AbstractEditor::defaultFileName() const
+{
+	if (m_fileTypePlugin)
+		return m_fileTypePlugin->defaultFileName();
+	else
+		return QString();
+}
+
 
 /*!
  * \brief Serialize the editor and return the value in a XinxProjectSessionEditor.
@@ -732,6 +745,30 @@ AbstractEditor * AbstractEditor::deserializeEditor(XinxProjectSessionEditor * da
 		}
 	}
 	return NULL;
+}
+
+/*!
+ * \brief Set the file type plugin.
+ *
+ * The IFileTypePlugin is used to give the default file name to use and the
+ * icon of the editor to use.
+ *
+ * \param value The new IFileTypePlugin
+ * \sa fileTypePluginInterface()
+ */
+void AbstractEditor::setFileTypePluginInterface(IFileTypePlugin * value)
+{
+	m_fileTypePlugin = value;
+}
+
+/*!
+ * \brief Get the current file type plugin.
+ * \return The current IFileTypePlugin
+ * \sa  setFileTypePluginInterface()
+ */
+IFileTypePlugin * AbstractEditor::fileTypePluginInterface() const
+{
+	return m_fileTypePlugin;
 }
 
 void AbstractEditor::fileChanged()

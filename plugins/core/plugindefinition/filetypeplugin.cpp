@@ -41,7 +41,7 @@ QString TextFileType::icon()
 
 AbstractEditor * TextFileType::createEditor(const QString & filename)
 {
-	TextFileEditor * editor = new TextFileEditor();
+	TextFileEditor * editor = new TextFileEditor(0, this);
 
 	if (! filename.isEmpty())
 		editor->loadFromFile(filename);
@@ -105,7 +105,7 @@ QString XMLFileType::icon()
 
 AbstractEditor * XMLFileType::createEditor(const QString & filename)
 {
-	XmlFileEditor * editor = new XmlFileEditor();
+	XmlFileEditor * editor = new XmlFileEditor(this);
 
 	if (! filename.isEmpty())
 		editor->loadFromFile(filename);
@@ -186,7 +186,7 @@ QString XSLStyleSheetFileType::icon()
 
 AbstractEditor * XSLStyleSheetFileType::createEditor(const QString & filename)
 {
-	StyleSheetEditor * editor = new StyleSheetEditor();
+	StyleSheetEditor * editor = new StyleSheetEditor(this);
 
 	if (! filename.isEmpty())
 		editor->loadFromFile(filename);
@@ -255,7 +255,7 @@ QString JSFileType::icon()
 
 AbstractEditor * JSFileType::createEditor(const QString & filename)
 {
-	JSFileEditor * editor = new JSFileEditor();
+	JSFileEditor * editor = new JSFileEditor(this);
 
 	if (! filename.isEmpty())
 		editor->loadFromFile(filename);
@@ -329,7 +329,7 @@ QString CSSFileType::icon()
 
 AbstractEditor * CSSFileType::createEditor(const QString & filename)
 {
-	CSSFileEditor * editor = new CSSFileEditor();
+	CSSFileEditor * editor = new CSSFileEditor(this);
 
 	if (! filename.isEmpty())
 		editor->loadFromFile(filename);
@@ -410,7 +410,7 @@ QString XQFileType::icon()
 
 AbstractEditor * XQFileType::createEditor(const QString & filename)
 {
-	XQFileEditor * editor = new XQFileEditor();
+	XQFileEditor * editor = new XQFileEditor(this);
 
 	if (! filename.isEmpty())
 		editor->loadFromFile(filename);
