@@ -73,6 +73,7 @@ class TextFileType : public QObject, public IFileTextPlugin
 {
 	Q_OBJECT
 public:
+	virtual QString name();
 	virtual QString description();
 	virtual QString match();
 	virtual QString icon();
@@ -95,6 +96,7 @@ class XMLFileType : public QObject, public IFileTextPlugin
 {
 	Q_OBJECT
 public:
+	virtual QString name();
 	virtual QString description();
 	virtual QString match();
 	virtual QString icon();
@@ -117,6 +119,7 @@ class XSLStyleSheetFileType : public XMLFileType
 {
 	Q_OBJECT
 public:
+	virtual QString name();
 	virtual QString description();
 	virtual QString match();
 	virtual QString icon();
@@ -134,6 +137,7 @@ class HTMLFileType : public XMLFileType
 {
 	Q_OBJECT
 public:
+	virtual QString name();
 	virtual QString description();
 	virtual QString match();
 	virtual QString icon();
@@ -149,6 +153,7 @@ class JSFileType : public QObject, public IFileTextPlugin
 {
 	Q_OBJECT
 public:
+	virtual QString name();
 	virtual QString description();
 	virtual QString match();
 	virtual QString icon();
@@ -171,6 +176,7 @@ class CSSFileType : public QObject, public IFileTextPlugin
 {
 	Q_OBJECT
 public:
+	virtual QString name();
 	virtual QString description();
 	virtual QString match();
 	virtual QString icon();
@@ -196,6 +202,7 @@ public:
 	XQFileType();
 	virtual ~XQFileType();
 
+	virtual QString name();
 	virtual QString description();
 	virtual QString match();
 	virtual QString icon();

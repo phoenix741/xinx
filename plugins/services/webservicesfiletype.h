@@ -30,6 +30,11 @@ class WebServicesFileType : public QObject, public IFileTypePlugin
 {
 	Q_OBJECT
 public:
+	virtual QString name()
+	{
+		return metaObject()->className();
+	}
+
 	virtual QString description()
 	{
 		return tr("Web Services Stream");

@@ -22,6 +22,11 @@
 
 /* MaquetteFileType */
 
+QString MaquetteFileType::name()
+{
+	return metaObject()->className();
+}
+
 QString MaquetteFileType::description()
 {
 	return tr("Generix Maquette File");

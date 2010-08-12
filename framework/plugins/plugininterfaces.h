@@ -307,6 +307,8 @@ public:
 	//! Destroy a file type
 	virtual ~IFileTypePlugin() {}
 
+	//! The name of the file type plugin
+	virtual QString name() = 0;
 	//! A description of a file type
 	virtual QString description() = 0;
 	//! Used to choose a file in a dialog box

@@ -686,6 +686,8 @@ void AbstractEditor::serialize(XinxProjectSessionEditor * data, bool content)
 {
 	Q_UNUSED(content);
 	data->writeProperty("ClassName", metaObject()->className());   // Store the class name
+	data->writeProperty("FileTypeInterface", m_fileTypePlugin->name()); // Store the file type interface
+
 	if (!m_lastFileName.isEmpty())
 		data->writeProperty("FileName", QVariant(QDir(data->projectPath()).relativeFilePath(m_lastFileName)));
 	else

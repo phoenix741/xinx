@@ -24,6 +24,11 @@
 
 /* TextFileType */
 
+QString TextFileType::name()
+{
+	return metaObject()->className();
+}
+
 QString TextFileType::description()
 {
 	return tr("Text File");
@@ -87,6 +92,11 @@ QString TextFileType::defaultFileName()
 }
 
 /* XMLFileType */
+
+QString XMLFileType::name()
+{
+	return metaObject()->className();
+}
 
 QString XMLFileType::description()
 {
@@ -169,6 +179,11 @@ QString XMLFileType::defaultFileName()
 
 /* XSLStyleSheetFileType */
 
+QString XSLStyleSheetFileType::name()
+{
+	return metaObject()->className();
+}
+
 QString XSLStyleSheetFileType::description()
 {
 	return tr("XSL Stylesheet");
@@ -206,6 +221,11 @@ QString XSLStyleSheetFileType::defaultFileName()
 
 /* HTMLFileType */
 
+QString HTMLFileType::name()
+{
+	return metaObject()->className();
+}
+
 QString HTMLFileType::description()
 {
 	return tr("HTML File");
@@ -237,6 +257,11 @@ QString HTMLFileType::defaultFileName()
 }
 
 /* JSFileType */
+
+QString JSFileType::name()
+{
+	return metaObject()->className();
+}
 
 QString JSFileType::description()
 {
