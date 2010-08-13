@@ -87,7 +87,6 @@ MainformImpl::MainformImpl(QWidget * parent) : DMainWindow(parent),  m_lastFileN
 	createMainForm();
 	createMenus();
 
-	registerTypes();
 	createTabEditorButton();
 	createStatusBar();
 	createDockWidget();
@@ -791,11 +790,6 @@ void MainformImpl::createPluginsActions()
 			}
 		}
 	}
-}
-
-void MainformImpl::registerTypes()
-{
-	qRegisterMetaType<TextFileEditor>("TextFileEditor");
 }
 
 void MainformImpl::createDockWidget()

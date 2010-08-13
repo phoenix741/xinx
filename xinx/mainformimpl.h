@@ -89,7 +89,6 @@ private:
 	void createFindReplace();
 	void createTools();
 	void createRCS();
-	void registerTypes();
 	void connectSignals();
 
 	// Editor
