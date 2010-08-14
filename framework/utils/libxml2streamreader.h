@@ -17,59 +17,59 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-#pragma once
-#ifndef _XSLCONTENTVIEW2PARSER_H_
-#define _XSLCONTENTVIEW2PARSER_H_
+#ifndef LIBXML2STREAMREADER_H
+#define LIBXML2STREAMREADER_H
 
-// Xinx header
-#include <contentview2/contentview2parser.h>
-
-// Qt header
-#include <QApplication>
 #include <QXmlStreamReader>
 
-class QTextCodec;
+class PrivateLibXml2StreamReader;
 
-/* XslContentViewParser */
-
-class XslContentView2Parser : public ContentView2::Parser, private QXmlStreamReader
+class LibXml2StreamReader
 {
-	Q_DECLARE_TR_FUNCTIONS(XslContentView2Parser)
 public:
-	XslContentView2Parser();
-	virtual ~XslContentView2Parser();
+	LibXml2StreamReader();
+	LibXml2StreamReader(QIODevice * device);
+	~LibXml2StreamReader();
 
-	virtual void load();
+	QString documentEncoding () const;
+	QString documentVersion () const;
 
+	QXmlStreamReader::Error error () const;
+	QString errorString () const;
+	bool hasError () const;
+
+	bool isStartElement () const;
+	bool isCharacters () const;
+	bool isCDATA () const;
+	bool isEntityReference () const;
+	bool isEntity () const;
+	bool isProcessingInstruction () const;
+	bool isComment () const;
+	bool isStartDocument () const;
+	bool isDocumentType () const;
+	bool isDocumentFragment () const;
+	bool isWhitespace () const;
+	bool isEndElement () const;
+
+	qint64	characterOffset () const;
+	qint64	columnNumber () const;
+	qint64 lineNumber () const;
+
+	QIODevice *	device () const;
+	void setDevice ( QIODevice * device );
+
+	void raiseError ( const QString & message = QString() );
+
+	QString readElementText ();
+	void skipCurrentElement ();
+	bool atEnd () const;
+	void readNext ();
+
+	QString name () const;
+	QString prefix () const;
+	QString text () const;
 private:
-	struct struct_xsl_variable
-	{
-		bool isParam;
-		int line;
-		QString name;
-		QString value;
-	};
-	struct struct_script
-	{
-		int line;
-		QString src;
-		QString content;
-		QString title;
-	};
-
-	void readStyleSheet();
-	void readUnknownElement();
-	void readVariable();
-	void readTemplate(QList<struct_xsl_variable> & t, QList<struct_script> & s);
-	void readTemplate();
-	QString readElementText();
-
-	ContentView2::Node attacheNewTemplateNode(ContentView2::Node parent, const QString & name, const QString & mode, int line);
-	void attacheNewParamsNode(ContentView2::Node parent, const QString & name, const QString & value,  int line);
-	void attacheNewVariableNode(ContentView2::Node parent, const QString & filename, const QString & value, int line);
-
-	QTextCodec * m_codec;
+	PrivateLibXml2StreamReader * d;
 };
 
-
-#endif /* _XSLCONTENTVIEW2PARSER_H_ */
+#endif // LIBXML2STREAMREADER_H

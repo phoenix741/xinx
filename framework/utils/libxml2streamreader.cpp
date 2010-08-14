@@ -17,59 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-#pragma once
-#ifndef _XSLCONTENTVIEW2PARSER_H_
-#define _XSLCONTENTVIEW2PARSER_H_
+#include "libxml2streamreader.h"
 
-// Xinx header
-#include <contentview2/contentview2parser.h>
-
-// Qt header
-#include <QApplication>
-#include <QXmlStreamReader>
-
-class QTextCodec;
-
-/* XslContentViewParser */
-
-class XslContentView2Parser : public ContentView2::Parser, private QXmlStreamReader
+LibXml2StreamReader::LibXml2StreamReader()
 {
-	Q_DECLARE_TR_FUNCTIONS(XslContentView2Parser)
-public:
-	XslContentView2Parser();
-	virtual ~XslContentView2Parser();
-
-	virtual void load();
-
-private:
-	struct struct_xsl_variable
-	{
-		bool isParam;
-		int line;
-		QString name;
-		QString value;
-	};
-	struct struct_script
-	{
-		int line;
-		QString src;
-		QString content;
-		QString title;
-	};
-
-	void readStyleSheet();
-	void readUnknownElement();
-	void readVariable();
-	void readTemplate(QList<struct_xsl_variable> & t, QList<struct_script> & s);
-	void readTemplate();
-	QString readElementText();
-
-	ContentView2::Node attacheNewTemplateNode(ContentView2::Node parent, const QString & name, const QString & mode, int line);
-	void attacheNewParamsNode(ContentView2::Node parent, const QString & name, const QString & value,  int line);
-	void attacheNewVariableNode(ContentView2::Node parent, const QString & filename, const QString & value, int line);
-
-	QTextCodec * m_codec;
-};
-
-
-#endif /* _XSLCONTENTVIEW2PARSER_H_ */
+}

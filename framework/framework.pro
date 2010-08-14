@@ -84,7 +84,8 @@ HEADERS = rcs/rcs.h \
     contentview2/contentview2parserfactory.h \
     contentview2/contentview2file.h \
     contentview2/contentview2project.h \
-    editors/editorchoicedlg.h
+    editors/editorchoicedlg.h \
+    utils/libxml2streamreader.h
 SOURCES = rcs/rcs.cpp \
     plugins/xinxpluginsloader.cpp \
     plugins/xinxpluginelement.cpp \
@@ -139,7 +140,8 @@ SOURCES = rcs/rcs.cpp \
     contentview2/contentview2parserfactory.cpp \
     contentview2/contentview2file.cpp \
     contentview2/contentview2project.cpp \
-    editors/editorchoicedlg.cpp
+    editors/editorchoicedlg.cpp \
+    utils/libxml2streamreader.cpp
 FORMS = snipets/callsnipetdlg.ui \
     snipets/snipetpropertydlg.ui \
     snipets/categorypropertydlg.ui \
