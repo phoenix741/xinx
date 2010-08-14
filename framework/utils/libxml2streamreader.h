@@ -20,16 +20,23 @@
 #ifndef LIBXML2STREAMREADER_H
 #define LIBXML2STREAMREADER_H
 
+// Xinx header
+#include <core/lib-config.h>
+
+// Qt header
+#include <QIODevice>
 #include <QXmlStreamReader>
 
 class PrivateLibXml2StreamReader;
 
-class LibXml2StreamReader
+class LIBEXPORT LibXml2StreamReader
 {
 public:
 	LibXml2StreamReader();
 	LibXml2StreamReader(QIODevice * device);
 	~LibXml2StreamReader();
+
+	QString attribute(const QString & name);
 
 	QString documentEncoding () const;
 	QString documentVersion () const;
@@ -51,7 +58,6 @@ public:
 	bool isWhitespace () const;
 	bool isEndElement () const;
 
-	qint64	characterOffset () const;
 	qint64	columnNumber () const;
 	qint64 lineNumber () const;
 
