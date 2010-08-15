@@ -41,7 +41,6 @@ public:
 	QString documentEncoding () const;
 	QString documentVersion () const;
 
-	QXmlStreamReader::Error error () const;
 	QString errorString () const;
 	bool hasError () const;
 

@@ -34,13 +34,17 @@ public:
 
 	xmlTextReaderPtr m_reader;
 	int m_ret;
+
+	bool m_hasError;
+	QString m_errorString;
 };
 
 PrivateLibXml2StreamReader::PrivateLibXml2StreamReader()
 {
-	m_ret    = 1;
-	m_device = NULL;
-	m_reader = NULL;
+	m_ret      = 1;
+	m_hasError = false;
+	m_device   = NULL;
+	m_reader   = NULL;
 }
 
 /* Static member */
@@ -56,6 +60,24 @@ int libxml2close (void * context)
 	PrivateLibXml2StreamReader * d = (PrivateLibXml2StreamReader*)context;
 	d->m_device->close();
 	return 0;
+}
+
+void libxml2error (void * arg, const char * msg, xmlParserSeverities severity, xmlTextReaderLocatorPtr locator)
+{
+	PrivateLibXml2StreamReader * d = (PrivateLibXml2StreamReader*)arg;
+
+	d->m_errorString = QString::fromAscii(msg);
+	d->m_hasError    = true;
+	d->m_ret         = 0;
+}
+
+void libxml2structured_error (void *userData, xmlErrorPtr error)
+{
+	PrivateLibXml2StreamReader * d = (PrivateLibXml2StreamReader*)userData;
+
+	//d->m_errorString = QString::fromAscii(msg);
+	d->m_hasError    = true;
+	d->m_ret         = 0;
 }
 
 /* LibXml2StreamReader */
@@ -88,19 +110,14 @@ QString LibXml2StreamReader::documentVersion () const
 	return QString::fromUtf8((char*)xmlTextReaderConstXmlVersion(d->m_reader));
 }
 
-QXmlStreamReader::Error LibXml2StreamReader::error () const
-{
-
-}
-
 QString LibXml2StreamReader::errorString () const
 {
-
+	return d->m_errorString;
 }
 
 bool LibXml2StreamReader::hasError () const
 {
-
+	return d->m_hasError;
 }
 
 QString LibXml2StreamReader::attribute(const QString & name)
@@ -198,12 +215,16 @@ void LibXml2StreamReader::setDevice ( QIODevice * device )
 
 		d->m_device = device;
 		d->m_reader = xmlReaderForIO(libxml2read, libxml2close, d, NULL, NULL, 0);
+		xmlTextReaderSetErrorHandler(d->m_reader, libxml2error, d);
+		xmlTextReaderSetStructuredErrorHandler(d->m_reader, libxml2structured_error, d);
 	}
 }
 
 void LibXml2StreamReader::raiseError ( const QString & message )
 {
-
+	d->m_errorString = message;
+	d->m_hasError    = true;
+	d->m_ret         = 0;
 }
 
 QString LibXml2StreamReader::readElementText ()
@@ -257,7 +278,8 @@ bool LibXml2StreamReader::atEnd () const
 
 void LibXml2StreamReader::readNext ()
 {
-	d->m_ret = xmlTextReaderRead(d->m_reader);
+	if (!d->m_hasError)
+		d->m_ret = xmlTextReaderRead(d->m_reader);
 }
 
 QString LibXml2StreamReader::name () const
