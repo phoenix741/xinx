@@ -73,6 +73,9 @@ public:
 	QString name () const;
 	QString prefix () const;
 	QString text () const;
+
+	void setNamespaceProcessing (bool value);
+	bool namespaceProcessing() const;
 private:
 	PrivateLibXml2StreamReader * d;
 };

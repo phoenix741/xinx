@@ -35,16 +35,17 @@ public:
 	xmlTextReaderPtr m_reader;
 	int m_ret;
 
-	bool m_hasError;
+	bool m_hasError, m_namespaceProcesssing;
 	QString m_errorString;
 };
 
 PrivateLibXml2StreamReader::PrivateLibXml2StreamReader()
 {
-	m_ret      = 1;
-	m_hasError = false;
-	m_device   = NULL;
-	m_reader   = NULL;
+	m_ret                  = 1;
+	m_hasError             = false;
+	m_namespaceProcesssing = true;
+	m_device               = NULL;
+	m_reader               = NULL;
 }
 
 /* Static member */
@@ -206,7 +207,7 @@ QIODevice *	LibXml2StreamReader::device () const
 
 void LibXml2StreamReader::setDevice ( QIODevice * device )
 {
-	if (d->m_device == device)
+	if (d->m_device != device)
 	{
 		if (d->m_device)
 		{
@@ -229,46 +230,57 @@ void LibXml2StreamReader::raiseError ( const QString & message )
 
 QString LibXml2StreamReader::readElementText ()
 {
-	xmlChar * value = xmlTextReaderReadString(d->m_reader);
-	QString returnedValue = QString::fromUtf8((char*)value);
-	xmlFree(value);
+	Q_ASSERT(xmlTextReaderNodeType(d->m_reader) == XML_READER_TYPE_ELEMENT);
+
+	QString returnedValue;
+	if (!xmlTextReaderIsEmptyElement(d->m_reader))
+	{
+		xmlChar * value;
+		int startLevel, level;
+		bool endLoop = false;
+		startLevel = level = xmlTextReaderDepth (d->m_reader);
+
+		int ret = xmlTextReaderRead(d->m_reader);
+		while (ret == 1)
+		{
+			switch (xmlTextReaderNodeType(d->m_reader))
+			{
+			case XML_READER_TYPE_CDATA:
+			case XML_READER_TYPE_ENTITY_REFERENCE:
+			case XML_READER_TYPE_TEXT:
+				value = xmlTextReaderReadString(d->m_reader);
+				returnedValue += QString::fromUtf8((char*)value);
+				xmlFree(value);
+				break;
+			case XML_READER_TYPE_END_ELEMENT:
+				if(startLevel == level)
+				{
+					endLoop = true;
+				}
+				else
+				{
+					level--;
+				}
+				break;
+			case XML_READER_TYPE_ELEMENT:
+				if (!xmlTextReaderIsEmptyElement(d->m_reader))
+					level++;
+				break;
+			}
+
+			if (endLoop)
+				break;
+
+			ret = xmlTextReaderRead(d->m_reader);
+		}
+	}
 
 	return returnedValue;
 }
 
 void LibXml2StreamReader::skipCurrentElement ()
 {
-	Q_ASSERT(xmlTextReaderNodeType(d->m_reader) == XML_READER_TYPE_ELEMENT);
-
-	if (!xmlTextReaderIsEmptyElement(d->m_reader))
-	{
-		int startLevel, level;
-		startLevel = level = xmlTextReaderDepth (d->m_reader);
-
-		int ret = xmlTextReaderRead(d->m_reader);
-		while (ret == 1)
-		{
-			if (xmlTextReaderNodeType(d->m_reader) == XML_READER_TYPE_END_ELEMENT)
-			{
-				if(startLevel == level)
-				{
-					break;
-				}
-				else
-				{
-					level--;
-				}
-			}
-
-			if (xmlTextReaderNodeType(d->m_reader) == XML_READER_TYPE_ELEMENT)
-			{
-				if (!xmlTextReaderIsEmptyElement(d->m_reader))
-					level++;
-			}
-
-			ret = xmlTextReaderRead(d->m_reader);
-		}
-	}
+	readElementText();
 }
 
 bool LibXml2StreamReader::atEnd () const
@@ -284,12 +296,18 @@ void LibXml2StreamReader::readNext ()
 
 QString LibXml2StreamReader::name () const
 {
-	return QString::fromUtf8((char*)xmlTextReaderConstName(d->m_reader));
+	if (d->m_namespaceProcesssing)
+		return QString::fromUtf8((char*)xmlTextReaderConstLocalName(d->m_reader));
+	else
+		return QString::fromUtf8((char*)xmlTextReaderConstName(d->m_reader));
 }
 
 QString LibXml2StreamReader::prefix () const
 {
-	return QString::fromUtf8((char*)xmlTextReaderConstPrefix(d->m_reader));
+	if (d->m_namespaceProcesssing)
+		return QString::fromUtf8((char*)xmlTextReaderConstPrefix(d->m_reader));
+	else
+		return QString();
 }
 
 QString LibXml2StreamReader::text () const
@@ -301,3 +319,13 @@ QString LibXml2StreamReader::text () const
 	return returnedValue;
 }
 
+
+void LibXml2StreamReader::setNamespaceProcessing (bool value)
+{
+	d->m_namespaceProcesssing = value;
+}
+
+bool LibXml2StreamReader::namespaceProcessing() const
+{
+	return d->m_namespaceProcesssing;
+}

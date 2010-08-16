@@ -66,7 +66,7 @@ void XslContentView2Parser::load()
 
 		if (isStartDocument())
 		{
-			m_codec = QTextCodec::codecForName(documentEncoding().toString().toLatin1());
+			m_codec = QTextCodec::codecForName(documentEncoding().toLatin1());
 		}
 
 		if (isStartElement())
@@ -78,43 +78,16 @@ void XslContentView2Parser::load()
 		}
 	}
 
-	if (error())    // Else completion can be more difficulte
+	if (hasError())    // Else completion can be more difficulte
 	{
 		throw ContentView2::ParserException(errorString(), lineNumber(), columnNumber());
 	}
 }
 
-QString XslContentView2Parser::readElementText()
-{
-	Q_ASSERT(isStartElement());
-
-	QString result;
-
-	while (! atEnd())
-	{
-		QXmlStreamReader::TokenType type = readNext();
-
-		if (isEndElement()) break;
-
-		switch (type)
-		{
-		case Characters:
-		case EntityReference:
-			result += text().toString().trimmed();
-			break;
-		case StartElement:
-			result += readElementText();
-		default:
-			continue;
-		}
-	}
-
-	return result;
-}
 
 void XslContentView2Parser::readStyleSheet()
 {
-	Q_ASSERT(isStartElement() && QXmlStreamReader::name() == "stylesheet");
+	Q_ASSERT(isStartElement() && LibXml2StreamReader::name() == "stylesheet");
 
 	while (!atEnd())
 	{
@@ -125,15 +98,15 @@ void XslContentView2Parser::readStyleSheet()
 
 		if (isStartElement())
 		{
-			if (QXmlStreamReader::name() == "param")
+			if (LibXml2StreamReader::name() == "param")
 				readVariable();
-			else if (QXmlStreamReader::name() == "variable")
+			else if (LibXml2StreamReader::name() == "variable")
 				readVariable();
-			else if (QXmlStreamReader::name() == "template")
+			else if (LibXml2StreamReader::name() == "template")
 				readTemplate();
-			else if ((QXmlStreamReader::name() == "import") || (QXmlStreamReader::name() == "include"))
+			else if ((LibXml2StreamReader::name() == "import") || (LibXml2StreamReader::name() == "include"))
 			{
-				const QString import = attributes().value("href").toString();
+				const QString import = attribute("href");
 				const QString calculateImport = addImport(import);
 
 				ContentView2::Node node;
@@ -154,34 +127,34 @@ void XslContentView2Parser::readStyleSheet()
 				}
 				attachNode(rootNode(), node);
 
-				readElementText();
+				skipCurrentElement();
 			}
 			else
-				readUnknownElement();
+				skipCurrentElement();
 		}
 	}
 }
 
 void XslContentView2Parser::readVariable()
 {
-	Q_ASSERT(isStartElement() && ((QXmlStreamReader::name() == "param") || (QXmlStreamReader::name() == "variable")));
+	Q_ASSERT(isStartElement() && ((LibXml2StreamReader::name() == "param") || (LibXml2StreamReader::name() == "variable")));
 
 	int ln = lineNumber();
-	QString name  = attributes().value("name").toString();
+	QString name  = attribute("name");
 	QString value;
-	if (attributes().value("select").isEmpty())
+	if (attribute("select").isEmpty())
 	{
 		value = readElementText();
 	}
 	else
 	{
-		value = attributes().value("select").toString();
-		readUnknownElement();
+		value = attribute("select");
+		skipCurrentElement();
 	}
 
 	if (rootNode().isValid())
 	{
-		if (QXmlStreamReader::name() == "param")
+		if (LibXml2StreamReader::name() == "param")
 			attacheNewParamsNode(rootNode(), name.trimmed(), value, ln);
 		else
 			attacheNewVariableNode(rootNode(), name.trimmed(), value, ln);
@@ -201,24 +174,24 @@ void XslContentView2Parser::readTemplate(QList<struct_xsl_variable> & variables,
 
 		if (isStartElement())
 		{
-			if ((QXmlStreamReader::name() == "param") || (QXmlStreamReader::name() == "variable"))
+			if ((LibXml2StreamReader::name() == "param") || (LibXml2StreamReader::name() == "variable"))
 			{
 				struct struct_xsl_variable v;
-				v.isParam = QXmlStreamReader::name() == "param";
+				v.isParam = LibXml2StreamReader::name() == "param";
 				v.line  = lineNumber();
-				v.name  = attributes().value("name").toString();
-				if (attributes().value("select").isEmpty())
+				v.name  = attribute("name");
+				if (attribute("select").isEmpty())
 				{
 					v.value = readElementText();
 				}
 				else
 				{
-					v.value = attributes().value("select").toString();
-					readUnknownElement();
+					v.value = attribute("select");
+					skipCurrentElement();
 				}
 				variables += v;
 			}
-			else if (QXmlStreamReader::name() == "script")
+			else if (LibXml2StreamReader::name() == "script")
 			{
 				struct struct_script s;
 				s.line = lineNumber();
@@ -227,7 +200,7 @@ void XslContentView2Parser::readTemplate(QList<struct_xsl_variable> & variables,
 				s.src = "script.js";
 				scripts += s;
 			}
-			else if (QXmlStreamReader::name() == "style")
+			else if (LibXml2StreamReader::name() == "style")
 			{
 				struct struct_script s;
 				s.line = lineNumber();
@@ -244,10 +217,10 @@ void XslContentView2Parser::readTemplate(QList<struct_xsl_variable> & variables,
 
 void XslContentView2Parser::readTemplate()
 {
-	Q_ASSERT(isStartElement() && QXmlStreamReader::name() == "template");
+	Q_ASSERT(isStartElement() && LibXml2StreamReader::name() == "template");
 
-	QStringList templates = (attributes().value("name").isEmpty() ? attributes().value("match").toString() : attributes().value("name").toString()).split("|", QString::SkipEmptyParts);
-	QString mode = attributes().value("mode").toString();
+	QStringList templates = (attribute("name").isEmpty() ? attribute("match") : attribute("name")).split("|", QString::SkipEmptyParts);
+	QString mode = attribute("mode");
 	int line = lineNumber();
 
 	QList<struct_xsl_variable> variables;
@@ -316,22 +289,6 @@ void XslContentView2Parser::readTemplate()
 			else
 				attacheNewVariableNode(t, v.name.trimmed(), v.value.trimmed(), v.line);
 		}
-	}
-}
-
-void XslContentView2Parser::readUnknownElement()
-{
-	Q_ASSERT(isStartElement());
-
-	while (!atEnd())
-	{
-		readNext();
-
-		if (isEndElement())
-			break;
-
-		if (isStartElement())
-			readUnknownElement();
 	}
 }
 

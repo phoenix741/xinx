@@ -23,6 +23,7 @@
 
 // Xinx header
 #include <contentview2/contentview2parser.h>
+#include <utils/libxml2streamreader.h>
 
 // Qt header
 #include <QApplication>
@@ -32,7 +33,7 @@ class QTextCodec;
 
 /* XslContentViewParser */
 
-class XslContentView2Parser : public ContentView2::Parser, private QXmlStreamReader
+class XslContentView2Parser : public ContentView2::Parser, private LibXml2StreamReader
 {
 	Q_DECLARE_TR_FUNCTIONS(XslContentView2Parser)
 public:
@@ -58,11 +59,9 @@ private:
 	};
 
 	void readStyleSheet();
-	void readUnknownElement();
 	void readVariable();
 	void readTemplate(QList<struct_xsl_variable> & t, QList<struct_script> & s);
 	void readTemplate();
-	QString readElementText();
 
 	ContentView2::Node attacheNewTemplateNode(ContentView2::Node parent, const QString & name, const QString & mode, int line);
 	void attacheNewParamsNode(ContentView2::Node parent, const QString & name, const QString & value,  int line);
