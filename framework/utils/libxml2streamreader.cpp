@@ -36,16 +36,19 @@ public:
 	int m_ret;
 
 	bool m_hasError, m_namespaceProcesssing;
+	bool m_simulateEndElement, m_isSimulatedEndElement;
 	QString m_errorString;
 };
 
 PrivateLibXml2StreamReader::PrivateLibXml2StreamReader()
 {
-	m_ret                  = 1;
-	m_hasError             = false;
-	m_namespaceProcesssing = true;
-	m_device               = NULL;
-	m_reader               = NULL;
+	m_ret                   = 1;
+	m_hasError              = false;
+	m_namespaceProcesssing  = true;
+	m_simulateEndElement    = false;
+	m_isSimulatedEndElement = false;
+	m_device                = NULL;
+	m_reader                = NULL;
 }
 
 /* Static member */
@@ -187,7 +190,7 @@ bool LibXml2StreamReader::isWhitespace () const
 
 bool LibXml2StreamReader::isEndElement () const
 {
-	return xmlTextReaderNodeType(d->m_reader) == XML_READER_TYPE_END_ELEMENT;
+	return (xmlTextReaderNodeType(d->m_reader) == XML_READER_TYPE_END_ELEMENT) || d->m_isSimulatedEndElement;
 }
 
 qint64 LibXml2StreamReader::columnNumber () const
@@ -197,7 +200,12 @@ qint64 LibXml2StreamReader::columnNumber () const
 
 qint64 LibXml2StreamReader::lineNumber () const
 {
-	return xmlTextReaderGetParserLineNumber(d->m_reader);
+	xmlNodePtr node = xmlTextReaderCurrentNode(d->m_reader);
+	if (node)
+	{
+		return xmlGetLineNo(node);
+	}
+	return 0;
 }
 
 QIODevice *	LibXml2StreamReader::device () const
@@ -240,8 +248,8 @@ QString LibXml2StreamReader::readElementText ()
 		bool endLoop = false;
 		startLevel = level = xmlTextReaderDepth (d->m_reader);
 
-		int ret = xmlTextReaderRead(d->m_reader);
-		while (ret == 1)
+		d->m_ret = xmlTextReaderRead(d->m_reader);
+		while (d->m_ret == 1)
 		{
 			switch (xmlTextReaderNodeType(d->m_reader))
 			{
@@ -271,9 +279,12 @@ QString LibXml2StreamReader::readElementText ()
 			if (endLoop)
 				break;
 
-			ret = xmlTextReaderRead(d->m_reader);
+			d->m_ret = xmlTextReaderRead(d->m_reader);
 		}
 	}
+
+	d->m_isSimulatedEndElement = false;
+	d->m_simulateEndElement    = false;
 
 	return returnedValue;
 }
@@ -291,7 +302,22 @@ bool LibXml2StreamReader::atEnd () const
 void LibXml2StreamReader::readNext ()
 {
 	if (!d->m_hasError)
-		d->m_ret = xmlTextReaderRead(d->m_reader);
+	{
+		if (!d->m_simulateEndElement)
+		{
+			d->m_ret = xmlTextReaderRead(d->m_reader);
+			if (isStartElement() && xmlTextReaderIsEmptyElement(d->m_reader))
+			{
+				d->m_simulateEndElement = true;
+			}
+			d->m_isSimulatedEndElement = false;
+		}
+		else
+		{
+			d->m_simulateEndElement = false;
+			d->m_isSimulatedEndElement = true;
+		}
+	}
 }
 
 QString LibXml2StreamReader::name () const
