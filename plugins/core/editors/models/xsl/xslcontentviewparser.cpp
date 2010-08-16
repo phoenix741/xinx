@@ -60,6 +60,8 @@ void XslContentView2Parser::load()
 
 	clearNodes(rootNode());
 
+	validate(QFileInfo("datas:xslt.xsd").canonicalFilePath());
+
 	while (! atEnd())
 	{
 		readNext();

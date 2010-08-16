@@ -76,6 +76,8 @@ public:
 
 	void setNamespaceProcessing (bool value);
 	bool namespaceProcessing() const;
+
+	bool validate(const QString & uri);
 private:
 	PrivateLibXml2StreamReader * d;
 };

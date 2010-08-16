@@ -70,18 +70,36 @@ void libxml2error (void * arg, const char * msg, xmlParserSeverities severity, x
 {
 	PrivateLibXml2StreamReader * d = (PrivateLibXml2StreamReader*)arg;
 
+	switch (severity)
+	{
+	case XML_PARSER_SEVERITY_VALIDITY_WARNING:
+	case XML_PARSER_SEVERITY_WARNING:
+	case XML_PARSER_SEVERITY_VALIDITY_ERROR:
+		break;
+	case XML_PARSER_SEVERITY_ERROR:
+		d->m_hasError    = true;
+		d->m_ret         = 0;
+	}
+
 	d->m_errorString = QString::fromAscii(msg);
-	d->m_hasError    = true;
-	d->m_ret         = 0;
 }
 
 void libxml2structured_error (void *userData, xmlErrorPtr error)
 {
 	PrivateLibXml2StreamReader * d = (PrivateLibXml2StreamReader*)userData;
 
-	//d->m_errorString = QString::fromAscii(msg);
-	d->m_hasError    = true;
-	d->m_ret         = 0;
+	switch(error->level)
+	{
+	case XML_ERR_NONE:
+	case XML_ERR_WARNING:
+		break;
+	case XML_ERR_ERROR:
+	case XML_ERR_FATAL:
+		d->m_hasError    = true;
+		d->m_ret         = 0;
+	}
+
+	d->m_errorString = QString::fromAscii(error->message);
 }
 
 /* LibXml2StreamReader */
@@ -222,8 +240,10 @@ void LibXml2StreamReader::setDevice ( QIODevice * device )
 			xmlFreeTextReader(d->m_reader);
 		}
 
+		int options = 0;
+
 		d->m_device = device;
-		d->m_reader = xmlReaderForIO(libxml2read, libxml2close, d, NULL, NULL, 0);
+		d->m_reader = xmlReaderForIO(libxml2read, libxml2close, d, NULL, NULL, options);
 		xmlTextReaderSetErrorHandler(d->m_reader, libxml2error, d);
 		xmlTextReaderSetStructuredErrorHandler(d->m_reader, libxml2structured_error, d);
 	}
@@ -354,4 +374,36 @@ void LibXml2StreamReader::setNamespaceProcessing (bool value)
 bool LibXml2StreamReader::namespaceProcessing() const
 {
 	return d->m_namespaceProcesssing;
+}
+
+bool LibXml2StreamReader::validate(const QString & uri)
+{
+	if (d->m_reader)
+	{
+		int ret = -1;
+		xmlSchemaParserCtxtPtr schema = xmlSchemaNewParserCtxt(uri.toLatin1().data());
+		if(schema)
+		{
+			xmlSchemaPtr parsedSchema = xmlSchemaParse(schema);
+			if (parsedSchema)
+			{
+				xmlSchemaValidCtxtPtr validSchema = xmlSchemaNewValidCtxt(parsedSchema);
+				if (validSchema)
+				{
+					ret = xmlTextReaderSchemaValidateCtxt(d->m_reader, validSchema, 0);
+					xmlSchemaFreeValidCtxt(validSchema);
+				}
+				xmlSchemaFree(parsedSchema);
+			}
+			xmlSchemaFreeParserCtxt(schema);
+		}
+
+
+		if (ret == -1)
+			return false;
+		else
+			return true;
+	}
+
+	return false;
 }
