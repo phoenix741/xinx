@@ -18,7 +18,7 @@
  * *********************************************************************** */
 
 // Xinx header
-#include "svnpluginwrapper.h"
+#include "svnplugin.h"
 #include "rcs_svn.h"
 
 // Qt header
@@ -29,32 +29,32 @@
 
 /* SVNPlugin */
 
-SVNPluginWrapper::SVNPluginWrapper()
+SVNPlugin::SVNPlugin()
 {
-	Q_INIT_RESOURCE(svnpluginwrapper);
+	Q_INIT_RESOURCE(svnplugin);
 }
 
-bool SVNPluginWrapper::initializePlugin(const QString & lang)
+bool SVNPlugin::initializePlugin(const QString & lang)
 {
 	QTranslator * tranlator = new QTranslator(this);
-	tranlator->load(QString(":/translations/svnpluginwrapper_%1").arg(lang));
+	tranlator->load(QString(":/translations/svnplugin_%1").arg(lang));
 	qApp->installTranslator(tranlator);
 
 	return true;
 }
 
-QVariant SVNPluginWrapper::getPluginAttribute(const enum IXinxPlugin::PluginAttribute & attr)
+QVariant SVNPlugin::getPluginAttribute(const enum IXinxPlugin::PluginAttribute & attr)
 {
 	switch (attr)
 	{
 	case PLG_NAME:
-		return tr("Wrapper for SubVersion");
+		return tr("SubVersion");
 	case PLG_DESCRIPTION:
-		return tr("Enable using SubVersion throw a wrapper of the svn commande.");
+		return tr("Enable using SubVersion directly.");
 	case PLG_AUTHOR:
 		return "Ulrich Van Den Hekke";
 	case PLG_ICON:
-		return QPixmap(":/images/svnwrapper.png");
+		return QPixmap(":/images/repos_svn.png");
 	case PLG_EMAIL:
 		return "ulrich.vdh@shadoware.org";
 	case PLG_WEBSITE:
@@ -67,36 +67,25 @@ QVariant SVNPluginWrapper::getPluginAttribute(const enum IXinxPlugin::PluginAttr
 	return QVariant();
 }
 
-QList< QPair<QString,QString> > SVNPluginWrapper::pluginTools()
+QStringList SVNPlugin::rcs()
 {
-	QList< QPair<QString,QString> > tools;
-#ifdef Q_WS_WIN
-	tools.append(qMakePair(QString("svn"), QString("%1/Subversion/bin/svn.exe").arg("C:/Program Files")));
-#else
-	tools.append(qMakePair(QString("svn"), QString("/usr/bin/svn")));
-#endif // Q_WS_WIN
-	return tools;
+	return QStringList() << "svn";
 }
 
-QStringList SVNPluginWrapper::rcs()
+QString SVNPlugin::descriptionOfRCS(const QString & rcs)
 {
-	return QStringList() << "svnwrapper";
-}
-
-QString SVNPluginWrapper::descriptionOfRCS(const QString & rcs)
-{
-	if (rcs.toLower() == "svnwrapper")
-		return tr("SVN - Subversion Wrapper");
+	if (rcs.toLower() == "svn")
+		return tr("SVN - Subversion");
 	return QString();
 }
 
-RCS * SVNPluginWrapper::createRCS(const QString & rcs, const QString & basePath)
+RCS * SVNPlugin::createRCS(const QString & rcs, const QString & basePath)
 {
-	if (rcs.toLower() == "svnwrapper")
+	if (rcs.toLower() == "svn")
 	{
 		return new RCS_SVN(basePath);
 	}
 	return NULL;
 }
 
-Q_EXPORT_PLUGIN2(svnpluginwrapper, SVNPluginWrapper)
+Q_EXPORT_PLUGIN2(svnplugin, SVNPlugin)

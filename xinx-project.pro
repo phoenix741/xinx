@@ -11,6 +11,7 @@ SUBDIRS += external_qcodeedit \
 	xinx_testgenerix \
 	plugins_core \
 	plugins_cvsplugin \
+	plugins_svnplugin \
 	plugins_svnpluginwrapper \
 	plugins_services \
 	plugins_generix \
@@ -43,6 +44,8 @@ plugins_core.subdir = plugins/core
 plugins_cvsplugin.depends = xinx_components
 plugins_cvsplugin.subdir = plugins/cvsplugin
 plugins_cvsplugin.depends = xinx_components xinx_library
+plugins_svnplugin.subdir = plugins/svnplugin
+plugins_svnplugin.depends = xinx_components xinx_library
 plugins_svnpluginwrapper.subdir = plugins/svnpluginwrapper
 plugins_svnpluginwrapper.depends = xinx_components xinx_library
 plugins_services.subdir = plugins/services
