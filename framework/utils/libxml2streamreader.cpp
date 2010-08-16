@@ -380,24 +380,7 @@ bool LibXml2StreamReader::validate(const QString & uri)
 {
 	if (d->m_reader)
 	{
-		int ret = -1;
-		xmlSchemaParserCtxtPtr schema = xmlSchemaNewParserCtxt(uri.toLatin1().data());
-		if(schema)
-		{
-			xmlSchemaPtr parsedSchema = xmlSchemaParse(schema);
-			if (parsedSchema)
-			{
-				xmlSchemaValidCtxtPtr validSchema = xmlSchemaNewValidCtxt(parsedSchema);
-				if (validSchema)
-				{
-					ret = xmlTextReaderSchemaValidateCtxt(d->m_reader, validSchema, 0);
-					xmlSchemaFreeValidCtxt(validSchema);
-				}
-				xmlSchemaFree(parsedSchema);
-			}
-			xmlSchemaFreeParserCtxt(schema);
-		}
-
+		int ret = xmlTextReaderSchemaValidate(d->m_reader, uri.toLatin1().data());
 
 		if (ret == -1)
 			return false;

@@ -40,6 +40,7 @@
 
 #include <QXmlSchema>
 #include <QXmlSchemaValidator>
+#include <QSourceLocation>
 
 /* XslContentView2Parser */
 
@@ -94,9 +95,8 @@ void XslContentView2Parser::load()
 		throw ContentView2::ParserException(errorString(), lineNumber(), columnNumber());
 	}
 
-	/*
 	QXmlSchema schema;
-	schema.load(QUrl(QFileInfo("datas:xslt.xsd").absoluteFilePath()));
+	schema.load(QUrl(QFileInfo("datas:xslt.xsd").canonicalFilePath()));
 
 	if (schema.isValid()) {
 		inputDevice()->reset();
@@ -104,7 +104,7 @@ void XslContentView2Parser::load()
 		QXmlSchemaValidator validator(schema);
 		validator.setMessageHandler(this);
 		validator.validate(inputDevice());
-	}*/
+	}
 }
 
 QString XslContentView2Parser::readElementText()
