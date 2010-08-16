@@ -18,7 +18,7 @@
  * *********************************************************************** */
 
 // Xinx header
-#include "svnplugin.h"
+#include "svnpluginwrapper.h"
 #include "rcs_svn.h"
 
 // Qt header
@@ -29,21 +29,21 @@
 
 /* SVNPlugin */
 
-SVNPlugin::SVNPlugin()
+SVNPluginWrapper::SVNPluginWrapper()
 {
-	Q_INIT_RESOURCE(svnplugin);
+	Q_INIT_RESOURCE(svnpluginwrapper);
 }
 
-bool SVNPlugin::initializePlugin(const QString & lang)
+bool SVNPluginWrapper::initializePlugin(const QString & lang)
 {
 	QTranslator * tranlator = new QTranslator(this);
-	tranlator->load(QString(":/translations/svnplugin_%1").arg(lang));
+	tranlator->load(QString(":/translations/svnpluginwrapper_%1").arg(lang));
 	qApp->installTranslator(tranlator);
 
 	return true;
 }
 
-QVariant SVNPlugin::getPluginAttribute(const enum IXinxPlugin::PluginAttribute & attr)
+QVariant SVNPluginWrapper::getPluginAttribute(const enum IXinxPlugin::PluginAttribute & attr)
 {
 	switch (attr)
 	{
@@ -67,7 +67,7 @@ QVariant SVNPlugin::getPluginAttribute(const enum IXinxPlugin::PluginAttribute &
 	return QVariant();
 }
 
-QList< QPair<QString,QString> > SVNPlugin::pluginTools()
+QList< QPair<QString,QString> > SVNPluginWrapper::pluginTools()
 {
 	QList< QPair<QString,QString> > tools;
 #ifdef Q_WS_WIN
@@ -78,19 +78,19 @@ QList< QPair<QString,QString> > SVNPlugin::pluginTools()
 	return tools;
 }
 
-QStringList SVNPlugin::rcs()
+QStringList SVNPluginWrapper::rcs()
 {
 	return QStringList() << "svn";
 }
 
-QString SVNPlugin::descriptionOfRCS(const QString & rcs)
+QString SVNPluginWrapper::descriptionOfRCS(const QString & rcs)
 {
 	if (rcs.toLower() == "svn")
 		return tr("SVN - Subversion");
 	return QString();
 }
 
-RCS * SVNPlugin::createRCS(const QString & rcs, const QString & basePath)
+RCS * SVNPluginWrapper::createRCS(const QString & rcs, const QString & basePath)
 {
 	if (rcs.toLower() == "svn")
 	{
@@ -99,4 +99,4 @@ RCS * SVNPlugin::createRCS(const QString & rcs, const QString & basePath)
 	return NULL;
 }
 
-Q_EXPORT_PLUGIN2(svnplugin, SVNPlugin)
+Q_EXPORT_PLUGIN2(svnpluginwrapper, SVNPluginWrapper)

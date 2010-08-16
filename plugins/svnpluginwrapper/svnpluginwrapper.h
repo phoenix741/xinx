@@ -24,13 +24,13 @@
 // Xinx header
 #include <plugins/plugininterfaces.h>
 
-class SVNPlugin : public QObject, public IRCSPlugin
+class SVNPluginWrapper : public QObject, public IRCSPlugin
 {
 	Q_OBJECT
 	Q_INTERFACES(IXinxPlugin)
 	Q_INTERFACES(IRCSPlugin)
 public:
-	SVNPlugin();
+	SVNPluginWrapper();
 
 	virtual bool initializePlugin(const QString & lang);
 	virtual QVariant getPluginAttribute(const enum IXinxPlugin::PluginAttribute & attr);
