@@ -5,8 +5,8 @@ CONFIG += plugin \
     staticlib
 QT += xml \
     xmlpatterns \
-	webkit \
-	sql
+    webkit \
+    sql
 DESTDIR += ../
 RESOURCES += plugindefinition/coreplugin.qrc
 TARGET = coreplugin
@@ -17,7 +17,7 @@ INCLUDEPATH += ./ \
     ../../ext/qcodeedit/lib/document \
     ../../ext/qcodeedit/lib/language \
     ../../ext/qcodeedit/lib/qnfa \
-	../../ext/qcodeedit/lib/widgets
+    ../../ext/qcodeedit/lib/widgets
 HEADERS = docks/datastream/xmlpresentationdockwidget.h \
     docks/datastream/xquerydialogimpl.h \
     docks/datastream/xmlpresentationdockthread.h \
@@ -36,7 +36,7 @@ HEADERS = docks/datastream/xmlpresentationdockwidget.h \
     editors/models/xq/xquery_keyword.h \
     editors/models/xsl/xslcompletionnodemodel.h \
     editors/models/xsl/xslcontentviewparser.h \
-	editors/models/xsl/xmlcompletionparser.h \
+    editors/models/xsl/xmlcompletionparser.h \
     editors/models/js/javascriptmodelcompleter.h \
     editors/models/js/jscontentviewparser.h \
     editors/models/css/cssmodeldata.h \
@@ -56,7 +56,8 @@ HEADERS = docks/datastream/xmlpresentationdockwidget.h \
     plugindefinition/filetypeplugin.h \
     actions/stylesheetaction.h \
     actions/commentactions.h \
-	pluginresolver/manualfileresolver.h
+    pluginresolver/manualfileresolver.h \
+    actions/validationaction.h
 SOURCES = docks/datastream/xmlpresentationdockthread.cpp \
     docks/datastream/xquerydialogimpl.cpp \
     docks/datastream/xmlpresentationdockwidget.cpp \
@@ -75,7 +76,7 @@ SOURCES = docks/datastream/xmlpresentationdockthread.cpp \
     editors/models/xq/xqmodelcompleter.cpp \
     editors/models/xsl/xslcompletionnodemodel.cpp \
     editors/models/xsl/xslcontentviewparser.cpp \
-	editors/models/xsl/xmlcompletionparser.cpp \
+    editors/models/xsl/xmlcompletionparser.cpp \
     editors/models/js/javascriptmodelcompleter.cpp \
     editors/models/js/jscontentviewparser.cpp \
     editors/models/css/cssmodeldata.cpp \
@@ -95,7 +96,8 @@ SOURCES = docks/datastream/xmlpresentationdockthread.cpp \
     plugindefinition/filetypeplugin.cpp \
     actions/stylesheetaction.cpp \
     actions/commentactions.cpp \
-	pluginresolver/manualfileresolver.cpp
+    pluginresolver/manualfileresolver.cpp \
+    actions/validationaction.cpp
 TRANSLATIONS += plugindefinition/translations/coreplugin_fr.ts
 FORMS += config/editorsconfigform.ui \
     config/xmlpresconfigform.ui \
@@ -103,4 +105,3 @@ FORMS += config/editorsconfigform.ui \
     pluginproperty/searchpathlistprjpageform.ui \
     docks/datastream/xquery.ui \
     docks/datastream/xmlpresentationwidget.ui
-

@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * XINX                                                                    *
- * Copyright (C) 2009 by Ulrich Van Den Hekke                              *
+ * Copyright (C) 2006-2010 by Ulrich Van Den Hekke                         *
  * ulrich.vdh@shadoware.org                                                *
  *                                                                         *
  * This program is free software: you can redistribute it and/or modify    *
@@ -17,22 +17,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-#ifndef _STYLESHEETACTION_H_
-#define _STYLESHEETACTION_H_
+#ifndef VALIDATIONACTION_H
+#define VALIDATIONACTION_H
 #pragma once
 
 // Xinx header
 #include <actions/actioninterface.h>
 
+// Qt header
+#include <QAbstractMessageHandler>
+
 class XmlPresentationDockWidget;
 
-class StyleSheetAction : public XinxAction::Action
+class ValidationAction : public XinxAction::Action
 {
 	Q_OBJECT
 public:
-	StyleSheetAction(QAction * a, QObject * parent);
-	StyleSheetAction(const QString & text, const QKeySequence & shortcut, QObject * parent);
-	StyleSheetAction(const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent);
+	ValidationAction(QAction * a, QObject * parent);
+	ValidationAction(const QString & text, const QKeySequence & shortcut, QObject * parent);
+	ValidationAction(const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent);
 
 	virtual bool isActionVisible() const;
 	virtual bool isActionEnabled() const;
@@ -40,9 +43,7 @@ public:
 protected slots:
 	virtual void actionTriggered();
 private:
-	void setXmlPresentationDockWidget(XmlPresentationDockWidget * value) const;
-
-	mutable XmlPresentationDockWidget * m_dock;
 };
 
-#endif // _STYLESHEETACTION_H_
+
+#endif // VALIDATIONACTION_H

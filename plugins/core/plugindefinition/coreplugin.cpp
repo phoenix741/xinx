@@ -28,6 +28,7 @@
 
 #include "actions/stylesheetaction.h"
 #include "actions/commentactions.h"
+#include "actions/validationaction.h"
 
 #include <project/xinxproject.h>
 #include "pluginproperty/parserprojectpropertyimpl.h"
@@ -166,6 +167,8 @@ XinxAction::MenuList CorePlugin::actions()
 
 		XinxAction::Action * runAction = new StyleSheetAction(QIcon(":/images/run.png"), tr("Process stylesheet"), QString("F9"), this);
 
+		XinxAction::Action * validateAction = new ValidationAction(tr("&Validate ..."), QString(), this);
+
 		XinxAction::ActionList editMenu(tr("&Edit"), "edit");
 		XinxAction::ActionList runMenu(tr("&Execute"), "execute");
 
@@ -175,6 +178,7 @@ XinxAction::MenuList CorePlugin::actions()
 		editMenu.append(uncommentAction);
 
 		runMenu.append(runAction);
+		runMenu.append(validateAction);
 
 		m_menus.append(editMenu);
 		m_menus.append(runMenu);

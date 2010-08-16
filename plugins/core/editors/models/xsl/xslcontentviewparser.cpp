@@ -95,8 +95,11 @@ void XslContentView2Parser::load()
 		throw ContentView2::ParserException(errorString(), lineNumber(), columnNumber());
 	}
 
+	/*
+	 * Can't load the schema
+
 	QXmlSchema schema;
-	schema.load(QUrl(QFileInfo("datas:xslt.xsd").canonicalFilePath()));
+	schema.load(QUrl(QFileInfo("datas:schema-for-xslt20.xsd").canonicalFilePath()));
 
 	if (schema.isValid()) {
 		inputDevice()->reset();
@@ -105,6 +108,7 @@ void XslContentView2Parser::load()
 		validator.setMessageHandler(this);
 		validator.validate(inputDevice());
 	}
+	*/
 }
 
 QString XslContentView2Parser::readElementText()

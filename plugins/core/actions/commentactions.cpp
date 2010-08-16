@@ -136,7 +136,6 @@ bool GotoLineAction::isActionVisible() const
 	TextFileEditor * tfe = qobject_cast<TextFileEditor*>(EditorManager::self()->currentEditor());
 	if (! tfe)                   return false;
 	return true;
-
 }
 
 bool GotoLineAction::isActionEnabled() const
