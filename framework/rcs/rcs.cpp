@@ -272,14 +272,6 @@ RCS::~RCS()
  * The file name must be in the base path
  * \sa getBasePath(), searchFileToAddOrRemove()
  */
-/*!
- * \fn virtual QList<RCS::struct_rcs_infos> RCS::infoList(const QString & path, const QStringList & nameFilters, QDir::Filters filters = QDir::NoFilter, QDir::SortFlags sort = QDir::NoSort) = 0
- * \brief Return all the file for the directory \e path.
- * \param path Name of the directory where search the information
- * \param nameFilters Filter to use with the directory
- * \param filters Filter for the directory
- * \param sort Sort of the list
- */
 
 /*!
  * \fn virtual void RCS::abort() = 0

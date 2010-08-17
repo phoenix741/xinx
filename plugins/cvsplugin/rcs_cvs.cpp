@@ -69,10 +69,10 @@ RCS::struct_rcs_infos RCS_CVS::info(const QString & path)
 	return rcsInfos;
 }
 
-QList<RCS::struct_rcs_infos> RCS_CVS::infoList(const QString & path, const QStringList & nameFilters, QDir::Filters filters, QDir::SortFlags sort)
+QList<RCS::struct_rcs_infos> RCS_CVS::infos(const QString & path)
 {
+	return QList<struct_rcs_infos>();
 }
-
 
 RCS::rcsOperation RCS_CVS::operationOfState(RCS::rcsState state)
 {

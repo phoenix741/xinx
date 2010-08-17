@@ -28,6 +28,10 @@
 #include <QDir>
 #include <QApplication>
 
+// Svn
+#include <svncpp/status.hpp>
+#include <apr_time.h>
+
 /* RCS_SVN */
 
 RCS_SVN::RCS_SVN(const QString & basePath) : RCS(basePath)
@@ -44,12 +48,67 @@ RCS_SVN::~RCS_SVN()
 
 RCS::struct_rcs_infos RCS_SVN::info(const QString & path)
 {
-
+	QList<struct_rcs_infos> list = infos(path);
+	if (list.size())
+		return list.at(0);
+	else
+	{
+		RCS::struct_rcs_infos rcsInfos = { QDir::fromNativeSeparators(path), RCS::Unknown, "0", QDateTime() };
+		rcsInfos.state = RCS::Unknown;
+		rcsInfos.version = "0";
+		rcsInfos.rcsDate = QDateTime();
+		return rcsInfos;
+	}
 }
 
-QList<RCS::struct_rcs_infos> RCS_SVN::infoList(const QString & path, const QStringList & nameFilters, QDir::Filters filters, QDir::SortFlags sort)
+QList<RCS::struct_rcs_infos> RCS_SVN::infos(const QString & path)
 {
+	QList<RCS::struct_rcs_infos> result;
+	try
+	{
+		svn::StatusEntries entries = m_client->status(qPrintable(path), true, true, true, false, false);
+	
+		for(int i = 0; i < entries.size(); i++)
+		{
+			svn::Status status = entries.at(i);
+	
+			RCS::struct_rcs_infos rcsInfos = { QDir::fromNativeSeparators(status.path()), RCS::Unknown, "0", QDateTime() };
+			if (status.isVersioned())
+			{
+				/* 		Updated,
+			LocallyModified,
+			LocallyAdded,
+			LocallyRemoved,
+			NeedsCheckout,
+			NeedPatch,
+			UnresolvedConflict,
+			FileHadConflictsOnMerge,
+			Unknown*/
+				rcsInfos.version = QString("%1").arg (status.entry().revision());
+				if (status.entry().isDeleted())
+					rcsInfos.state = RCS::LocallyRemoved;
+				if (status.entry().schedule() == svn_wc_schedule_add)
+					rcsInfos.state = RCS::LocallyAdded;
+				if (status.entry().schedule() == svn_wc_schedule_delete)
+					rcsInfos.state = RCS::LocallyRemoved;
+				if (status.entry().schedule() == svn_wc_schedule_replace)
+					rcsInfos.state = RCS::LocallyModified;
+				if (status.entry().schedule() == svn_wc_schedule_normal)
+					rcsInfos.state = RCS::Updated;
+	
+				uint cmtDate  = status.entry().cmtDate();
+				rcsInfos.rcsDate = QDateTime::fromTime_t(cmtDate);
+			}
+	
+			result << rcsInfos;
+		}
+	}
+	catch(svn::ClientException e)
+	{
+		emit log(RCS::LogError, e.message());
+	}
 
+	return result;
 }
 
 RCS::FilesOperation RCS_SVN::operations(const QStringList & paths)

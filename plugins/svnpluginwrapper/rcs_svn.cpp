@@ -144,8 +144,9 @@ RCS::struct_rcs_infos RCS_SVN::info(const QString & path)
 	}
 }
 
-QList<RCS::struct_rcs_infos> RCS_SVN::infoList(const QString & path, const QStringList & nameFilters, QDir::Filters filters, QDir::SortFlags sort)
+QList<RCS::struct_rcs_infos> RCS_SVN::infos(const QString & path)
 {
+	return QList<RCS::struct_rcs_infos>();
 }
 
 RCS::FilesOperation RCS_SVN::operations(const QString & path)

@@ -105,7 +105,7 @@ public:
 
 	virtual FilesOperation operations(const QStringList & path) = 0;
 	virtual struct_rcs_infos info(const QString & path) = 0;
-	virtual QList<struct_rcs_infos> infoList(const QString & path, const QStringList & nameFilters, QDir::Filters filters = QDir::NoFilter, QDir::SortFlags sort = QDir::NoSort) = 0;
+	virtual QList<struct_rcs_infos> infos(const QString & path) = 0;
 
 	/* Working Directory */
 
