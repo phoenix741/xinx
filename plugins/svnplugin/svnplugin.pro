@@ -7,7 +7,7 @@ DESTDIR += ../
 
 LIBS = -L../../framework -lxinxframework -lsvncpp
 # apr
-LIBS += -lapr-1 -laprutil-1 -lapriconv-1 -lxml
+LIBS += -lapr-1 -laprutil-1 -lxml
 # svn
 LIBS += -lsvn_client-1 -lsvn_wc-1 -lsvn_ra-1 -lsvn_delta-1 -lsvn_subr-1
 

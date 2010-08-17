@@ -83,28 +83,54 @@ QList<RCS::struct_rcs_infos> RCS_SVN::infos(const QString & path)
 			RCS::struct_rcs_infos rcsInfos = { QDir::fromNativeSeparators(status.path()), RCS::Unknown, "0", QDateTime() };
 			if (status.isVersioned())
 			{
-				/* 		Updated,
-			LocallyModified,
-			LocallyAdded,
-			LocallyRemoved,
-			NeedsCheckout,
-			NeedPatch,
-			UnresolvedConflict,
-			FileHadConflictsOnMerge,
-			Unknown*/
 				rcsInfos.version = QString("%1").arg (status.entry().revision());
-				if (status.entry().isDeleted())
-					rcsInfos.state = RCS::LocallyRemoved;
-				if (status.entry().schedule() == svn_wc_schedule_add)
-					rcsInfos.state = RCS::LocallyAdded;
-				if (status.entry().schedule() == svn_wc_schedule_delete)
-					rcsInfos.state = RCS::LocallyRemoved;
-				if (status.entry().schedule() == svn_wc_schedule_replace)
-					rcsInfos.state = RCS::LocallyModified;
-				if (status.entry().schedule() == svn_wc_schedule_normal)
+				switch (status.textStatus())
+				{
+				case svn_wc_status_none:
+					rcsInfos.state = RCS::Unknown;
+					break;
+				case svn_wc_status_unversioned:
+					rcsInfos.state = RCS::Unknown;
+					break;
+				case svn_wc_status_normal:
 					rcsInfos.state = RCS::Updated;
+					break;
+				case svn_wc_status_added:
+					rcsInfos.state = RCS::LocallyAdded;
+					break;
+				case svn_wc_status_missing:
+					rcsInfos.state = RCS::NeedsCheckout;
+					break;
+				case svn_wc_status_deleted:
+					rcsInfos.state = RCS::LocallyRemoved;
+					break;
+				case svn_wc_status_replaced:
+					rcsInfos.state = RCS::LocallyModified;
+					break;
+				case svn_wc_status_modified:
+					rcsInfos.state = RCS::LocallyModified;
+					break;
+				case svn_wc_status_merged:
+					rcsInfos.state = RCS::LocallyModified;
+					break;
+				case svn_wc_status_conflicted:
+					rcsInfos.state = RCS::FileHadConflictsOnMerge;
+					break;
+				case svn_wc_status_ignored:
+					rcsInfos.state = RCS::UnresolvedConflict;
+					break;
+				case svn_wc_status_obstructed:
+					rcsInfos.state = RCS::Unknown;
+					break;
+				case svn_wc_status_external:
+					rcsInfos.state = RCS::Updated;
+					break;
+				case svn_wc_status_incomplete:
+					rcsInfos.state = RCS::NeedsCheckout;
+					break;
+				}
 	
-				uint cmtDate  = status.entry().cmtDate();
+				uint cmtDate  = (quint64)status.entry().cmtDate() / 1000000;
 				rcsInfos.rcsDate = QDateTime::fromTime_t(cmtDate);
 			}
 	
