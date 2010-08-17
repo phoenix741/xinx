@@ -64,9 +64,17 @@ RCS::struct_rcs_infos RCS_SVN::info(const QString & path)
 QList<RCS::struct_rcs_infos> RCS_SVN::infos(const QString & path)
 {
 	QList<RCS::struct_rcs_infos> result;
+	svn::StatusEntries entries;
 	try
 	{
-		svn::StatusEntries entries = m_client->status(qPrintable(path), true, true, true, false, false);
+		try
+		{
+			entries = m_client->status(qPrintable(path), true, true, true, false, false);
+		}
+		catch(svn::ClientException e)
+		{
+			entries = m_client->status(qPrintable(path), true, true, false, false, false);
+		}
 	
 		for(int i = 0; i < entries.size(); i++)
 		{
