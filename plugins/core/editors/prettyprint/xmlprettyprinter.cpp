@@ -43,10 +43,6 @@ void XMLPrettyPrinter::setText(const QString & text)
 void XMLPrettyPrinter::process()
 {
 	addData(m_text);
-	//QByteArray buffer = m_text.toUtf8();
-	//QBuffer dev( &buffer );
-	//dev.open( QIODevice::ReadOnly );
-	//setDevice( &dev );
 
 	m_resultBuffer.open(QIODevice::WriteOnly | QIODevice::Truncate);
 	m_result.setDevice(&m_resultBuffer);
@@ -55,7 +51,6 @@ void XMLPrettyPrinter::process()
 	constructXML();
 
 	m_resultBuffer.close();
-	//clear();
 
 	if (error())
 		throw XMLPrettyPrinterException(errorString(), lineNumber(), columnNumber());
@@ -105,7 +100,7 @@ void XMLPrettyPrinter::constructXML(int level)
 		else if (! plainText.isEmpty())
 		{
 			plainText = plainText.replace(QChar(QChar::Nbsp), "&#160;");
-			m_result << plainText.trimmed();
+			m_result << plainText;
 			plainText = QString();
 		}
 
