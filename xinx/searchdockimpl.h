@@ -17,44 +17,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-#ifndef RCSLOGDIALOGIMPL_H
-#define RCSLOGDIALOGIMPL_H
+#ifndef SEARCHDOCKIMPL_H
+#define SEARCHDOCKIMPL_H
 #pragma once
 
 // Xinx header
-#include <rcs/rcs.h>
-#include <editors/abstracteditor.h>
-#include "ui_logform.h"
+#include "ui_searchdock.h"
 
 // Qt header
 #include <QDockWidget>
 
-class PrivateLogDockWidget;
-
-class LogDockWidget : public QWidget
+class SearchDockWidgetImpl : public QWidget
 {
 	Q_OBJECT
 public:
-	LogDockWidget(QWidget * parent = 0);
-	virtual ~LogDockWidget();
+	SearchDockWidgetImpl(QWidget * parent = 0);
+	virtual ~SearchDockWidgetImpl();
 
 	void init();
 	void end();
 
 	void setDock(QDockWidget * dock);
+	QDockWidget * dock() const;
 public slots:
-	void log(RCS::rcsLog niveau, const QString & info);
 	void find(const QString & filename, const QString & text, int line);
-	void updateErrors();
 signals:
 	void open(const QString & filename, int line);
 protected slots:
 	void doubleClicked(const QModelIndex & index);;
 private:
-	Ui::LogWidget * m_logwidget;
+	Ui::SearchDockWidget * _widget;
 	QDockWidget * m_dock;
 };
-#endif
+
+#endif /* SEARCHDOCKIMPL_H */
 
 
 

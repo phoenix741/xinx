@@ -41,7 +41,9 @@
 
 class FileContentDockWidget;
 class ProjectDirectoryDockWidget;
-class LogDockWidget;
+class ErrorDockWidgetImpl;
+class SearchDockWidgetImpl;
+class RCSLogDockWidgetImpl;
 class XmlPresentationDockWidget;
 class SnipetDockWidget;
 class ReplaceDialogImpl;
@@ -118,7 +120,9 @@ private:
 	// Dock
 	FileContentDockWidget * m_contentDock;
 	ProjectDirectoryDockWidget * m_projectDock;
-	LogDockWidget * m_logDock;
+	ErrorDockWidgetImpl * m_errorDock;
+	RCSLogDockWidgetImpl * m_rcsLogDock;
+	SearchDockWidgetImpl * m_searchDock;
 	SnipetDockWidget * m_snipetsDock;
 	QDockWidget * m_logDockView;
 
