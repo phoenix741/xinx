@@ -35,8 +35,10 @@ FORMS += ui/about.ui \
     ui/projectproperty.ui \
     ui/replace.ui \
     ui/newprojectwizard_project.ui \
-    ui/logform.ui \
-    ui/snipetlistwidget.ui \
+	ui/errordock.ui \
+	ui/rcsdock.ui \
+	ui/searchdock.ui \
+	ui/snipetlistwidget.ui \
     ui/welcomdlg.ui \
     customdialog/ui/customdialog.ui \
     customdialog/ui/customgeneral.ui \
@@ -74,8 +76,10 @@ HEADERS += customdialog/customgeneralimpl.h \
     tabeditor.h \
     uniqueapplication.h \
     searchfilethread.h \
-    logdialogimpl.h \
-    xinxprojectwizard/projectconverter.h \
+	errordockimpl.h \
+	rcslogdockimpl.h \
+	searchdockimpl.h \
+	xinxprojectwizard/projectconverter.h \
     xinxprojectwizard/projectwizard.h \
     welcomdlgimpl.h \
     welcomdlgimpl_p.h \
@@ -107,8 +111,10 @@ SOURCES += customdialog/customgeneralimpl.cpp \
     uniqueapplication.cpp \
     newprojectwizard.cpp \
     searchfilethread.cpp \
-    logdialogimpl.cpp \
-    xinxprojectwizard/projectconverter.cpp \
+	errordockimpl.cpp \
+	rcslogdockimpl.cpp \
+	searchdockimpl.cpp \
+	xinxprojectwizard/projectconverter.cpp \
     xinxprojectwizard/projectwizard.cpp \
     welcomdlgimpl.cpp \
     templatedialogimpl.cpp \

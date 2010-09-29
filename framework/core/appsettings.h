@@ -67,6 +67,7 @@ public:
 		bool closeButtonOnEachTab;
 		int automaticModelRefreshTimeout;
 		bool wrapLine;
+		bool closeErrorDockAutomatically;
 	};
 
 	struct struct_rcs

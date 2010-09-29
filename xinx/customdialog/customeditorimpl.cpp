@@ -95,6 +95,9 @@ bool CustomEditorImpl::loadSettingsDialog()
 	// Wrap Line
 	m_wrapLineChk->setChecked(XINXConfig::self()->config().editor.wrapLine);
 
+	// Autoclose error dock
+	m_autoCloseError->setChecked(XINXConfig::self()->config().editor.closeErrorDockAutomatically);
+
 	return true;
 }
 
@@ -145,6 +148,9 @@ bool CustomEditorImpl::saveSettingsDialog()
 
 	// Wrap Line
 	XINXConfig::self()->config().editor.wrapLine = m_wrapLineChk->isChecked();
+
+	// Autoclose error dock
+	XINXConfig::self()->config().editor.closeErrorDockAutomatically = m_autoCloseError->isChecked();
 
 	return true;
 }

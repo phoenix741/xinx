@@ -203,6 +203,7 @@ AppSettings::struct_editor AppSettings::getDefaultEditor()
 	value.closeButtonOnEachTab = false;
 	value.automaticModelRefreshTimeout = 1000;
 	value.wrapLine = false;
+	value.closeErrorDockAutomatically = true;
 
 	return value;
 }
@@ -226,6 +227,7 @@ AppSettings::struct_editor AppSettings::getSettingsEditor(AppSettingsSettings * 
 	value.closeButtonOnEachTab = settings->value("Close Button on each Tab", defaultValue.closeButtonOnEachTab).toBool();
 	value.automaticModelRefreshTimeout = settings->value("Automatic Model Refresh Timeout", defaultValue.automaticModelRefreshTimeout).toInt();
 	value.wrapLine = settings->value ("Wrap Line", defaultValue.wrapLine).toBool();
+	value.closeErrorDockAutomatically = settings->value( "Close Error Dock Automatically", defaultValue.closeErrorDockAutomatically ).toBool();
 
 	settings->endGroup();
 	return value;
@@ -237,7 +239,7 @@ void AppSettings::setSettingsEditor(AppSettingsSettings * settings, const QStrin
 	settings->beginGroup(path);
 
 	settings->setValue("Default Text Codec", value.defaultTextCodec, defaultValue.defaultTextCodec);
-	settings->setValue( "Autoindent On Saving", value.autoindentOnSaving, defaultValue.autoindentOnSaving );
+	settings->setValue("Autoindent On Saving", value.autoindentOnSaving, defaultValue.autoindentOnSaving );
 	settings->setValue("Popup When File Modified", value.popupWhenFileModified, defaultValue.popupWhenFileModified);
 	settings->setValue("Create Backup File", value.createBackupFile, defaultValue.createBackupFile);
 	settings->setValue("Tabulation Size", value.tabulationSize, defaultValue.tabulationSize);
@@ -248,7 +250,9 @@ void AppSettings::setSettingsEditor(AppSettingsSettings * settings, const QStrin
 	settings->setValue("Auto Highlight", value.autoHighlight, defaultValue.autoHighlight);
 	settings->setValue("Hide Close Tab", value.hideCloseTab, defaultValue.hideCloseTab);
 	settings->setValue("Close Button on each Tab", value.closeButtonOnEachTab, defaultValue.closeButtonOnEachTab);
-	settings->setValue ("Wrap Line", value.wrapLine, defaultValue.wrapLine);
+	settings->setValue("Automatic Model Refresh Timeout", value.automaticModelRefreshTimeout, defaultValue.automaticModelRefreshTimeout );
+	settings->setValue("Wrap Line", value.wrapLine, defaultValue.wrapLine);
+	settings->setValue("Close Error Dock Automatically", value.closeErrorDockAutomatically, defaultValue.closeErrorDockAutomatically );
 
 	settings->endGroup();
 }

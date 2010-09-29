@@ -22,7 +22,9 @@
 #include "filecontentdockwidget.h"
 #include "projectdirectorydockwidget.h"
 #include "replacedialogimpl.h"
-#include "logdialogimpl.h"
+#include "errordockimpl.h"
+#include "rcslogdockimpl.h"
+#include "searchdockimpl.h"
 #include "snipetdockwidget.h"
 #include "aboutdialogimpl.h"
 #include "customdialog/customdialogimpl.h"
@@ -832,14 +834,29 @@ void MainformImpl::createDockWidget()
 	m_menus["windows"]->addAction(action);
 
 
-	m_logDock = new LogDockWidget(this);
-	connect(m_logDock, SIGNAL(open(QString,int)), this, SLOT(openFile(QString,int)));
-	connect(ErrorManager::self(), SIGNAL(changed()), m_logDock, SLOT(updateErrors()));
-	m_logDockView = addToolView(m_logDock, Qt::BottomDockWidgetArea);
-	m_logDockView->setObjectName(QString::fromUtf8("m_logDock"));
+	m_errorDock = new ErrorDockWidgetImpl(this);
+	connect(m_errorDock, SIGNAL(open(QString,int)), this, SLOT(openFile(QString,int)));
+	connect(ErrorManager::self(), SIGNAL(changed()), m_errorDock, SLOT(updateErrors()));
+	view = addToolView(m_errorDock, Qt::BottomDockWidgetArea);
+	view->setObjectName(QString::fromUtf8("m_errorDock"));
 	action = view->toggleViewAction();
 	m_menus["windows"]->addAction(action);
-	m_logDock->setDock(m_logDockView);
+	m_errorDock->setDock(view);
+
+	m_rcsLogDock = new RCSLogDockWidgetImpl(this);
+	m_logDockView = addToolView(m_rcsLogDock, Qt::BottomDockWidgetArea);
+	m_logDockView->setObjectName(QString::fromUtf8("m_rcsLogDock"));
+	action = m_logDockView->toggleViewAction();
+	m_menus["windows"]->addAction(action);
+	m_rcsLogDock->setDock(m_logDockView);
+
+	m_searchDock = new SearchDockWidgetImpl(this);
+	connect(m_searchDock, SIGNAL(open(QString,int)), this, SLOT(openFile(QString,int)));
+	view = addToolView(m_searchDock, Qt::BottomDockWidgetArea);
+	view->setObjectName(QString::fromUtf8("m_searchDock"));
+	action = view->toggleViewAction();
+	m_menus["windows"]->addAction(action);
+	m_searchDock->setDock(view);
 
 	// Load dock from plugins and assign automatic shortcut
 	int dockShortcut = 4;
@@ -910,7 +927,7 @@ void MainformImpl::createRCS()
 {
 	connect(RCSManager::self(), SIGNAL(operationStarted()), this, SLOT(logStart()));
 	connect(RCSManager::self(), SIGNAL(operationTerminated()), this, SLOT(rcsLogTerminated()));
-	connect(RCSManager::self(), SIGNAL(log(RCS::rcsLog,QString)), m_logDock, SLOT(log(RCS::rcsLog,QString)));
+	connect(RCSManager::self(), SIGNAL(log(RCS::rcsLog,QString)), m_rcsLogDock, SLOT(log(RCS::rcsLog,QString)));
 }
 
 void MainformImpl::callSnipetAction(int snipetId)
@@ -1471,8 +1488,8 @@ void MainformImpl::printFile()
 
 void MainformImpl::logStart()
 {
-	m_logDock->init();
-	m_rcsVisible = m_logDock->isVisible();
+	m_rcsLogDock->init();
+	m_rcsVisible = m_rcsLogDock->isVisible();
 	m_logDockView->show();
 }
 
@@ -1484,7 +1501,7 @@ void MainformImpl::logTimeout()
 
 void MainformImpl::rcsLogTerminated()
 {
-	m_logDock->end();
+	m_rcsLogDock->end();
 	if ((!m_rcsVisible) && m_logDockView->isVisible() && XINXConfig::self()->config().project.closeVersionManagementLog)
 		m_timer->start(5000);
 }
@@ -1571,11 +1588,11 @@ void MainformImpl::findInFiles(const QString & directory, const QString & from, 
 	m_searchNextAct->setEnabled(false);
 	m_searchPreviousAct->setEnabled(false);
 	m_replaceAct->setEnabled(false);
-	m_logDock->init();
-	m_logDockView->setVisible(true);
+	m_searchDock->init();
+	m_searchDock->dock()->setVisible(true);
 
 	SearchFileThread * threadSearch = new SearchFileThread();
-	connect(threadSearch, SIGNAL(find(QString,QString,int)), m_logDock, SLOT(find(QString,QString,int)), Qt::BlockingQueuedConnection);
+	connect(threadSearch, SIGNAL(find(QString,QString,int)), m_searchDock, SLOT(find(QString,QString,int)), Qt::BlockingQueuedConnection);
 	connect(threadSearch, SIGNAL(end()), this, SLOT(findEnd()));
 
 	threadSearch->setPath(directory);
@@ -1590,7 +1607,7 @@ void MainformImpl::findEnd()
 	m_searchPreviousAct->setEnabled(true);
 	m_replaceAct->setEnabled(true);
 
-	m_logDock->end();
+	m_searchDock->end();
 
 	QMessageBox::information(this, tr("Search End"), tr("All string are finded"));
 }

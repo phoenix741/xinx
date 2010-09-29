@@ -3304,7 +3304,7 @@ void QEditor::resizeEvent(QResizeEvent *)
 	//qDebug("page step : %i", viewportSize.height() / ls);
 
 	//if ( isCursorVisible() && flag(LineWrap) )
-	//	ensureCursorVisible();
+		ensureCursorVisible();
 }
 
 /*!
