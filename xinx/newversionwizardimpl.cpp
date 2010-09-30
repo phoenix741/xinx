@@ -31,6 +31,22 @@ NewVersionWizardImpl::NewVersionWizardImpl()
 {
 	setupUi(this);
 
+	init();
+}
+
+NewVersionWizardImpl::NewVersionWizardImpl(QWidget * parent) : QWizard(parent)
+{
+	setupUi(this);
+
+	init();
+}
+
+NewVersionWizardImpl::~NewVersionWizardImpl()
+{
+}
+
+void NewVersionWizardImpl::init()
+{
 	// Font encodings
 	QList<QByteArray> encodings = QTextCodec::availableCodecs();
 	qSort(encodings);
@@ -38,15 +54,6 @@ NewVersionWizardImpl::NewVersionWizardImpl()
 	{
 		m_encodingComboBox->addItem(encoding);
 	}
-}
-
-NewVersionWizardImpl::NewVersionWizardImpl(QWidget * parent) : QWizard(parent)
-{
-	setupUi(this);
-}
-
-NewVersionWizardImpl::~NewVersionWizardImpl()
-{
 }
 
 void NewVersionWizardImpl::loadFromConfig()
