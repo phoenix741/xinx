@@ -4,7 +4,7 @@
 		<Plugin name="GenerixPlugin"/>
 	</Plugins>
     <Properties>
-        <Property name="searchPathList" value="langue/fra/nav/&lt;project&gt;;;langue/fra/nav;;.;;langue/fra;;langue"/>
+        <Property name="searchPathList" value="langue/fra/nav;;.;;langue/fra;;langue"/>
     </Properties>
     <WizardPage>
         <Page name="StdProjectName"/>

@@ -19,6 +19,7 @@
 
 // Xinx header
 #include "servicesprojectwizard.h"
+#include "servicesprojectpropertyimpl.h"
 #include <project/xinxproject.h>
 
 /* ServicesListPageImpl */
@@ -53,12 +54,9 @@ bool ServicesListPageImpl::pageIsVisible() const
 
 bool ServicesListPageImpl::saveSettingsDialog(XinxProject * project)
 {
-	project->writeProperty("hasWebServices", true);
+	project->writeProperty("webServiceVersion", WEBSERVICE_VERSION_CURRENT);
 
-	QStringList services;
-	foreach(const QString & value, m_webServicesWidget->values())
-	services += value;
-
+	const QStringList services = m_webServicesWidget->values();
 
 	int index = 0;
 	foreach(const QString & link, services)

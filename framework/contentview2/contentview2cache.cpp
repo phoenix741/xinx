@@ -671,6 +671,8 @@ void Cache::terminate()
 void Cache::run()
 {
 	m_terminate = false;
+
+	try
 	{
 		QSqlDatabase db = QSqlDatabase::cloneDatabase(Manager::self()->database(), "CONTENTVIEW_SESSION_THREAD");
 		db.open();
@@ -720,6 +722,10 @@ void Cache::run()
 
 		/* Clear QSqlQueries */
 		Manager::self()->clearPool(db);
+	}
+	catch(std::exception exception)
+	{
+		qWarning() << tr("Exception not catched : %1").arg(exception.what());
 	}
 
 	QSqlDatabase::database("CONTENTVIEW_SESSION_THREAD").close();
