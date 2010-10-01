@@ -1,6 +1,7 @@
 #define AppName "XINX"
 #define AppVersion GetFileVersion("..\xinx\xinx.exe")
 #define QTDIR GetEnv("QTDIR")
+#define LIBXML2 GetEnv("LIBXML2")
 #define QtVersion GetFileVersion( GetEnv("QTDIR") + "\bin\QtCore4.dll" );
 
 [Setup]
@@ -57,12 +58,13 @@ Source: ..\ext\ideality\lib\ideality.dll; DestDir: {app}\bin; Components: applic
 
 Source: {#QTDIR}\..\mingw\bin\mingwm10.dll; DestDir: {app}\bin; Components: application
 Source: {#QTDIR}\..\mingw\bin\libgcc_s_dw2-1.dll; DestDir: {app}\bin; Components: application
-Source: {#QTDIR}\..\mingw\bin\libxml2.dll; DestDir: {app}\bin; Components: application
-Source: {#QTDIR}\..\mingw\bin\libxslt.dll; DestDir: {app}\bin; Components: application
-Source: {#QTDIR}\..\mingw\bin\iconv.dll; DestDir: {app}\bin; Components: application
-Source: {#QTDIR}\..\mingw\bin\iconv.exe; DestDir: {app}\bin; Components: application
-Source: {#QTDIR}\..\mingw\bin\libexslt.dll; DestDir: {app}\bin; Components: application
-Source: {#QTDIR}\..\mingw\bin\xsltproc.exe; DestDir: {app}\bin; Components: application
+
+Source: {#LIBXML2}\lib\libxml2.dll; DestDir: {app}\bin; Components: application
+Source: {#LIBXML2}\lib\libxslt.dll; DestDir: {app}\bin; Components: application
+Source: {#LIBXML2}\bin\iconv.dll; DestDir: {app}\bin; Components: application
+Source: {#LIBXML2}\bin\iconv.exe; DestDir: {app}\bin; Components: application
+Source: {#LIBXML2}\lib\libexslt.dll; DestDir: {app}\bin; Components: application
+Source: {#LIBXML2}\bin\xsltproc.exe; DestDir: {app}\bin; Components: application
 
 Source: {#QTDIR}\bin\phonon4.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile; Tasks: ; Languages: 
 Source: {#QTDIR}\bin\QtCore4.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile; Tasks: ; Languages: 
@@ -192,7 +194,7 @@ begin
 end;
 
 procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
-var VersionString            : String;
+var
 	DialogReturn			 : Integer;
 	UninstallRegisteryMsg	 : String;
 begin
