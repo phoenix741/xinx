@@ -58,8 +58,9 @@ bool SearchPathListFormImpl::loadSettingsDialog()
 {
 	if (! m_project) return true;
 
-	QStringList searchPathList = m_project->readProperty("searchPathList").toString().split(";;"),
-	                             searchPathList_fromNativeSeparators;
+	const QString searchPathListStr  = m_project->readProperty("searchPathList").toString();
+	const QStringList searchPathList = searchPathListStr.split(";;", QString::SkipEmptyParts);
+	QStringList searchPathList_fromNativeSeparators;
 
 	foreach(QString path, searchPathList)
 	{
@@ -74,15 +75,17 @@ bool SearchPathListFormImpl::saveSettingsDialog()
 {
 	if (! m_project) return true;
 
-	QStringList searchPathList = m_searchPathList->values(),
-	                             searchPathList_toNativeSeparators;
+	const QStringList searchPathList = m_searchPathList->values();
+	QStringList searchPathList_toNativeSeparators;
 
 	foreach(QString path, searchPathList)
 	{
 		searchPathList_toNativeSeparators.append(QDir::toNativeSeparators(path));
 	}
 
-	m_project->writeProperty("searchPathList",  m_searchPathList->values());   // toNativeSeparators
+	const QString searchPathListStr = searchPathList_toNativeSeparators.join(";;");
+
+	m_project->writeProperty("searchPathList",  searchPathListStr);   // toNativeSeparators
 
 	return true;
 }
