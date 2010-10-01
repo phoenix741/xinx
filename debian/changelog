@@ -1,5 +1,6 @@
 xinx (0.9.1.0) unstable; urgency=low
 
+  [ Ulrich Van Den Hekke ]
   * Add the possibility to wrap line
   * 363 : Lenteur lors du déplacement danx XINX
   * 356 : Bug dans le rafraichissement des snipets
@@ -11,8 +12,12 @@ xinx (0.9.1.0) unstable; urgency=low
   * 359 : Couleur trop rouge !!!!
   * 364 : Evol: Ajouter la fonctionnalité "Aller à la ligne"
   * 367 : Erreur XINX
+  * 375 : Amélioration gestion journal des erreurs
+  * 376 : Pretty print avec xinx
+  * Some bug fix on the project property page and on the wizard
+  * Some buf fix on the new version wizard
 
- -- Ulrich Van Den Hekke <xinx@shadoware.org>  Wed, 04 Aug 2010 14:35:18 +0200
+ -- Ulrich VANDENHEKKE <phoenix@server.eden.lan>  Fri, 01 Oct 2010 14:10:13 +0200
 
 xinx (0.9.0.0) unstable; urgency=low
 
