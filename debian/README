@@ -1,10 +1,1 @@
-The Debian Package xinx
-----------------------------
-
-Welcom to the new version of XINX.
-
-This new version use a new system of Template, of plugins, of completion.
-Please make a backup of your Snipet before let the installer erase it. The configuration will be stored differently, so all your settings will be erased too.
-Please think to backup your registery key before install XINX.
-
- -- Ulrich Van Den Hekke <xinx@shadoware.org>  Sun, 02 Mar 2008 20:05:49 +0100
+../README
