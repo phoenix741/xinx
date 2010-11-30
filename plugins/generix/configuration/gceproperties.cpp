@@ -64,7 +64,7 @@ void GceProperties::readGceProperties(const QString & propertiesFileName)
 		return ;
 	}
 
-	// Récupération de la racine
+	// Get root node
 	xmlNodePtr root = xmlDocGetRootElement(document);
 	if (root == NULL)
 	{
@@ -84,8 +84,15 @@ void GceProperties::readGceProperties(const QString & propertiesFileName)
 
 	/* ConfigurationDef */
 
-	const xmlChar * configurationDefPath = (xmlChar*)"string(/config/application/configurationDefinition/definition/@name)";
-	xmlXPathObjectPtr xpathObj = xmlXPathEvalExpression(configurationDefPath, xpathCtx);
+	// Read configuration file without xmlns
+	xmlXPathObjectPtr xpathObj = xmlXPathEvalExpression((xmlChar*)"string(/config/application/configurationDefinition/definition/@name)", xpathCtx);
+
+	// If we don't find an valid string, we try to read the same xpath, with an xmlns (for version post 1.60)
+	if (! (xpathObj && xpathObj->stringval[0]))
+	{
+		xmlXPathRegisterNs(xpathCtx, (xmlChar*)"x", (xmlChar*)"http://www.generix.fr/technicalframework/gceproperties");
+		xpathObj = xmlXPathEvalExpression((xmlChar*)"string(/x:config/x:application/x:configurationDefinition/x:definition/@name)", xpathCtx);
+	}
 	m_configurationDef = QDir(m_directoryPath).absoluteFilePath(QLatin1String((char*)xpathObj->stringval));
 	xmlXPathFreeObject(xpathObj);
 
