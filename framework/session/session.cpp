@@ -44,6 +44,7 @@ void PrivateSession::save(const QString & saveName)
 
 	QSettings settings;
 	settings.beginGroup ("sessions");
+	settings.remove (saveName);
 	settings.beginGroup (saveName);
 
 	settings.setValue ("name", _current_session_name);
