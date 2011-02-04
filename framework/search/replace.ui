@@ -321,9 +321,7 @@
   <tabstop>m_projectFilesRadioButton</tabstop>
   <tabstop>m_customFilesRadioButton</tabstop>
  </tabstops>
- <resources>
-  <include location="../../xinx/application.qrc"/>
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>m_replaceCheckBox</sender>
@@ -610,6 +608,22 @@
     <hint type="destinationlabel">
      <x>540</x>
      <y>267</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_customFilesRadioButton</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>m_directoryWidget</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>446</x>
+     <y>187</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>402</x>
+     <y>68</y>
     </hint>
    </hints>
   </connection>

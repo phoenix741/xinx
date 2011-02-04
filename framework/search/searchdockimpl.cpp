@@ -121,6 +121,8 @@ void SearchDockWidgetImpl::find(const QString & filename, const QString & text, 
 	item->setData(0, Qt::UserRole + 1, line);
 	item->setData(1, Qt::UserRole, filename);
 	item->setData(1, Qt::UserRole + 1, line);
+	item->setData(2, Qt::UserRole, filename);
+	item->setData(2, Qt::UserRole + 1, line);
 	_widget->m_searchTreeWidget->addTopLevelItem(item);
 	_widget->m_searchTreeWidget->scrollToItem(item);
 }
