@@ -27,6 +27,7 @@
 // Qt header
 #include <QStringList>
 #include <QHash>
+#include "editors/models/html_xsl_base/definition_balisenode.h"
 
 /* XPathBalise */
 
@@ -35,6 +36,16 @@ struct XPathBalise
 	QString name;
 	QHash<QString,QString> attributes;
 };
+
+namespace Core {
+
+namespace BaliseDefinition {
+
+	class XmlContextType;
+
+}
+
+}
 
 /* XmlTextEditor */
 
@@ -45,36 +56,17 @@ public:
 	XmlTextEditor(QWidget * parent = 0);
 	virtual ~XmlTextEditor();
 
-	virtual QCompleter * completer();
-
-	QStringList paramOfNode(const QDocumentCursor & cursor);
-	QList<XPathBalise> xpath(const QDocumentCursor & cursor, const QStringList & includeOnly = QStringList(), const QString & prefix = QString(), const  QStringList & attributeName = QStringList());
-
-	static QString xpathToString(const QList<XPathBalise> & xp);
-
 	virtual bool isCommentAvailable();
+
+	virtual QDocumentCursor insertCompletionParam(Core::BaliseDefinition::XmlContextType * context, QDocumentCursor & tc, QSharedPointer<Core::BaliseDefinition::BaliseNode> balise, bool movePosition);
+	virtual QDocumentCursor insertCompletionValue(Core::BaliseDefinition::XmlContextType * context, QDocumentCursor & tc, QSharedPointer<Core::BaliseDefinition::AttributeNode> attribute);
+	virtual QDocumentCursor insertCompletionBalises(Core::BaliseDefinition::XmlContextType * context, QDocumentCursor & tc, QSharedPointer<Core::BaliseDefinition::BaliseNode> balise);
 public slots:
 	virtual void commentSelectedText(bool uncomment = false);
 protected slots:
-	virtual void insertCompletion(const QModelIndex& index);
-	virtual void insertCompletionValue(QDocumentCursor & tc, QString node, QString param);
-	virtual QDocumentCursor insertCompletionParam(QDocumentCursor & tc, QString node, bool movePosition = true);
-	virtual QDocumentCursor insertCompletionBalises(QDocumentCursor & tc, QString node);
-	virtual void insertCompletionAccolade(QDocumentCursor & tc, QString node, QString param, QString value, const QModelIndex & index);
 protected:
 	virtual bool localKeyPressExecute(QKeyEvent * e);
 	virtual bool processKeyPress(QKeyEvent *);
-
-	enum cursorPosition
-	{
-		cpEditComment, // <!-- XXXXX  -->
-		cpEditNodeName, // <XXXXX>
-		cpEditParamName, // <..... XXXXX=".." XXXX=.. XXXX/>
-		cpEditParamValue, // <..... ....=XXXXX ....="XXXXX XXXXX=XXXX"
-		cpNone
-	};
-
-	cursorPosition editPosition(const QDocumentCursor & cursor, QString & nodeName, QString & paramName);
 private:
 	void key_shenter(bool back);
 };

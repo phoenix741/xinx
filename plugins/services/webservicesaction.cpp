@@ -19,80 +19,68 @@
 
 // Xinx Action
 #include "webservicesaction.h"
-#include <project/xinxproject.h>
+#include <project/xinxprojectproject.h>
 #include "webservices.h"
 #include "webserviceseditor.h"
 #include <editors/editormanager.h>
+#include <editors/abstracteditor.h>
 #include "servicesbatchdialogimpl.h"
 #include <QApplication>
 #include <QMessageBox>
 
+inline static WebServicesManager * projectWebServicesManager(AbstractEditor * editor)
+{
+	return WebServicesManager::manager(editor->project());
+}
+
+inline static bool projectIsActivated(AbstractEditor * editor)
+{
+	if (!editor) return false;
+
+	XinxProject::Project * project = editor->project();
+	if (! (project && project->activatedPlugin().contains("ServicesPlugin") && project->containsObject("webservices"))) return false;
+
+	Q_ASSERT_X(projectWebServicesManager(editor), "projectIsActivated", "The object webservices should be created");
+
+	return true;
+}
+
 /* WebServicesRefreshAction */
 
-WebServicesRefreshAction::WebServicesRefreshAction(QAction * a, QObject * parent) : XinxAction::Action(a, parent)
+WebServicesRefreshAction::WebServicesRefreshAction() : XinxAction::Action(QIcon(":/images/reload.png"), tr("Update WebServices List"), QString())
 {
+
 }
 
-WebServicesRefreshAction::WebServicesRefreshAction(const QString & text, const QKeySequence & shortcut, QObject * parent) : XinxAction::Action(text, shortcut, parent)
+bool WebServicesRefreshAction::isVisible() const
 {
-}
-
-WebServicesRefreshAction::WebServicesRefreshAction(const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent) : XinxAction::Action(icon, text, shortcut, parent)
-{
-}
-
-bool WebServicesRefreshAction::isActionVisible() const
-{
-	return XINXProjectManager::self()->project() && XINXProjectManager::self()->project()->activatedPlugin().contains("ServicesPlugin");
-}
-
-bool WebServicesRefreshAction::isActionEnabled() const
-{
-	return XINXProjectManager::self()->project() && XINXProjectManager::self()->project()->activatedPlugin().contains("ServicesPlugin");
-}
-
-bool WebServicesRefreshAction::isInToolBar() const
-{
-	return false;
+	return projectIsActivated(currentEditor());
 }
 
 void WebServicesRefreshAction::actionTriggered()
 {
-	WebServicesManager::self()->updateWebServicesList();
+	projectWebServicesManager(currentEditor())->updateWebServicesList();
 }
 
 /* WebServicesRunAction */
 
-WebServicesRunAction::WebServicesRunAction(QAction * a, QObject * parent) : XinxAction::Action(a, parent)
+WebServicesRunAction::WebServicesRunAction() : XinxAction::Action(QIcon(":/services/images/action.png"), tr("Call the service"), QString("F9"))
 {
 }
 
-WebServicesRunAction::WebServicesRunAction(const QString & text, const QKeySequence & shortcut, QObject * parent) : XinxAction::Action(text, shortcut, parent)
+bool WebServicesRunAction::isVisible() const
 {
+	return projectIsActivated(currentEditor());
 }
 
-WebServicesRunAction::WebServicesRunAction(const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent) : XinxAction::Action(icon, text, shortcut, parent)
-{
-}
-
-bool WebServicesRunAction::isActionVisible() const
-{
-	return XINXProjectManager::self()->project() && XINXProjectManager::self()->project()->activatedPlugin().contains("ServicesPlugin");
-}
-
-bool WebServicesRunAction::isActionEnabled() const
+bool WebServicesRunAction::isEnabled() const
 {
 	if (qobject_cast<WebServicesEditor*>(EditorManager::self()->currentEditor()))
 	{
 		WebServicesEditor * editor = qobject_cast<WebServicesEditor*>(EditorManager::self()->currentEditor());
-		return editor->service() && editor->operation() && XINXProjectManager::self()->project() && XINXProjectManager::self()->project()->activatedPlugin().contains("ServicesPlugin");
+		return editor->service() && editor->operation() && EditorManager::self()->currentEditor()->project() && EditorManager::self()->currentEditor()->project()->activatedPlugin().contains("ServicesPlugin");
 	}
 	return false;
-}
-
-bool WebServicesRunAction::isInToolBar() const
-{
-	return true;
 }
 
 void WebServicesRunAction::actionTriggered()
@@ -105,31 +93,13 @@ void WebServicesRunAction::actionTriggered()
 
 /* WebServicesRunAllAction */
 
-WebServicesRunAllAction::WebServicesRunAllAction(QAction * a, QObject * parent) : XinxAction::Action(a, parent)
+WebServicesRunAllAction::WebServicesRunAllAction() : XinxAction::Action(tr("Launch multiple WebServices"), QString("Shift+F9"))
 {
 }
 
-WebServicesRunAllAction::WebServicesRunAllAction(const QString & text, const QKeySequence & shortcut, QObject * parent) : XinxAction::Action(text, shortcut, parent)
+bool WebServicesRunAllAction::isVisible() const
 {
-}
-
-WebServicesRunAllAction::WebServicesRunAllAction(const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent) : XinxAction::Action(icon, text, shortcut, parent)
-{
-}
-
-bool WebServicesRunAllAction::isActionVisible() const
-{
-	return XINXProjectManager::self()->project() && XINXProjectManager::self()->project()->activatedPlugin().contains("ServicesPlugin");
-}
-
-bool WebServicesRunAllAction::isActionEnabled() const
-{
-	return true;
-}
-
-bool WebServicesRunAllAction::isInToolBar() const
-{
-	return false;
+	return projectIsActivated(currentEditor());
 }
 
 void WebServicesRunAllAction::actionTriggered()

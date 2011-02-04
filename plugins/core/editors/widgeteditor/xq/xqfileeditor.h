@@ -23,18 +23,13 @@
 
 // Xinx header
 #include <editors/textfileeditor.h>
-#include "editors/models/xq/xqmodelcompleter.h"
 
 class XQFileEditor : public TextFileEditor
 {
 	Q_OBJECT
 public:
-	XQFileEditor(IFileTypePlugin * fileType = 0, QWidget *parent = 0);
+	XQFileEditor(QWidget *parent = 0);
 	virtual ~XQFileEditor();
-
-	XQModelCompleter * completionModel() const;
-private:
-	XQModelCompleter * m_completionModel;
 };
 
 #endif //_XQFILEEDITOR_H_

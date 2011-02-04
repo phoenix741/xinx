@@ -44,7 +44,7 @@ public:
 
 	Ui::XmlPresentationWidget * m_xmlPresentationWidget;
 	QString m_openingFile;
-	QString m_dataStreamLocation;
+	QStringList m_dataStreamLocation;
 
 	QPointer<XmlPresentationModel> m_model;
 	QPointer<RecursiveSortFilterProxyModel> m_sortFilterModel;

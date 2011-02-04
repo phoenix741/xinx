@@ -18,7 +18,6 @@
  * *********************************************************************** */
 
 // Xinx header
-#include <project/xinxproject.h>
 #include <editors/xinxcodeedit.h>
 #include "webserviceseditor.h"
 #include "webservices.h"
@@ -26,6 +25,7 @@
 #include <editors/prettyprint/xmlprettyprinter.h>
 #include <editors/widgeteditor/xml/xmltexteditor.h>
 #include <editors/bookmarktexteditorinterface.h>
+#include <session/sessioneditor.h>
 
 // Qt header
 #include <QToolButton>
@@ -46,7 +46,7 @@
 
 /* WebServicesEditor */
 
-WebServicesEditor::WebServicesEditor(IFileTypePlugin * fileType, QWidget *parent) : TextFileEditor(new XmlTextEditor(), fileType, parent)
+WebServicesEditor::WebServicesEditor(QWidget *parent) : TextFileEditor(new XmlTextEditor(), parent)
 {
 	initObjects();
 }
@@ -83,7 +83,6 @@ void WebServicesEditor::initObjects()
 	//m_resultEdit->editor()->setContextMenuPolicy( Qt::NoContextMenu );
 	m_resultEdit->setHighlighter("XML");
 
-	connect(WebServicesManager::self(), SIGNAL(changed()), this, SLOT(webServicesChanged()));
 	connect(m_servicesList, SIGNAL(activated(int)), this, SLOT(webServicesActivated(int)));
 	connect(m_actionList, SIGNAL(activated(int)), this, SLOT(webServicesParamActivated(int)));
 	connect(m_paramList, SIGNAL(activated(int)), this, SLOT(webServicesValueActivated()));
@@ -149,6 +148,15 @@ void WebServicesEditor::initLayout()
 	splitter->addWidget(m_resultWidget);
 }
 
+void WebServicesEditor::setProject(XinxProject::Project* project)
+{
+	if (project != TextFileEditor::project())
+	{
+		connect(WebServicesManager::manager(project), SIGNAL(changed()), this, SLOT(webServicesChanged()));
+		TextFileEditor::setProject(project);
+	}
+}
+
 bool WebServicesEditor::autoIndent()
 {
 	try
@@ -164,7 +172,7 @@ bool WebServicesEditor::autoIndent()
 	}
 	catch (XMLPrettyPrinterException e)
 	{
-		ErrorManager::self()->addMessage(lastFileName(), e.m_line, ErrorManager::MessageError, e);
+		ErrorManager::self()->addMessage(lastFileName(), e.m_line, QtCriticalMsg, e);
 		return false;
 	}
 	return true;
@@ -276,7 +284,7 @@ void WebServicesEditor::saveToDevice(QIODevice & d)
 	document.save(out, 3);
 }
 
-void WebServicesEditor::serialize(XinxProjectSessionEditor * data, bool content)
+void WebServicesEditor::serialize(XinxSession::SessionEditor * data, bool content)
 {
 	AbstractEditor::serialize(data, content);
 	store(m_paramList->currentText());
@@ -305,7 +313,7 @@ void WebServicesEditor::serialize(XinxProjectSessionEditor * data, bool content)
 	data->writeProperty("BookmarkCount", QVariant(i));
 }
 
-void WebServicesEditor::deserialize(XinxProjectSessionEditor * data)
+void WebServicesEditor::deserialize(XinxSession::SessionEditor * data)
 {
 	int position = 0;
 	QString key, value, param;
@@ -371,7 +379,7 @@ void WebServicesEditor::paramListEditingFinished()
 void WebServicesEditor::loadServicesList()
 {
 	m_servicesList->clear();
-	foreach(WebServices * ed, *(WebServicesManager::self()))
+	foreach(WebServices * ed, WebServicesManager::manager(project())->list())
 	if (! ed->name().isEmpty())
 		m_servicesList->addItem(QIcon(":/services/images/services.png"), ed->name(), qVariantFromValue((void*)ed));
 

@@ -23,7 +23,7 @@
 
 // Xinx header
 #include "ui_xmlpresconfigform.h"
-#include <plugins/plugininterfaces.h>
+#include <plugins/interfaces/gui.h>
 
 class XmlPresConfigFormImpl : public QWidget, public Ui::XmlPresConfigForm, public IXinxPluginConfigurationPage
 {

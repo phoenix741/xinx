@@ -1,21 +1,21 @@
-/* *********************************************************************** *
- * XINX                                                                    *
- * Copyright (C) 2007-2010 by Ulrich Van Den Hekke                         *
- * ulrich.vdh@shadoware.org                                                *
- *                                                                         *
- * This program is free software: you can redistribute it and/or modify    *
- * it under the terms of the GNU General Public License as published by    *
- * the Free Software Foundation, either version 3 of the License, or       *
- * (at your option) any later version.                                     *
- *                                                                         *
- * This program is distributed in the hope that it will be useful,         *
- * but WITHOUT ANY WARRANTY; without even the implied warranty of          *
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *
- * GNU General Public License for more details.                            *
- *                                                                         *
- * You should have received a copy of the GNU General Public License       *
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
- * *********************************************************************** */
+/*
+ XINX
+ Copyright (C) 2007-2011 by Ulrich Van Den Hekke
+ xinx@shadoware.org
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful.
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 #pragma once
 #ifndef _XINXCODEEDIT_H_
@@ -23,6 +23,7 @@
 
 // Xinx header
 #include <core/lib-config.h>
+#include <contentview3/definitions.h>
 
 // Qt header
 #include <QWidget>
@@ -38,6 +39,11 @@ class QCompleter;
 class QModelIndex;
 class XINXConfig;
 
+namespace CodeCompletion
+{
+class Completer;
+}
+
 class LIBEXPORT XinxCodeEdit : public QWidget, private QEditor::InputBinding
 {
 	Q_OBJECT
@@ -52,8 +58,8 @@ public:
 	enum FindFlag { FindBackward = 0x01, FindCaseSensitively = 0x02, FindWholeWords = 0x04 };
 	Q_DECLARE_FLAGS(FindFlags, FindFlag);
 
-	XinxCodeEdit(QWidget * parent = 0);
-	XinxCodeEdit(bool action, QWidget * parent = 0);
+	explicit XinxCodeEdit(QWidget * parent = 0);
+	explicit XinxCodeEdit(bool action, QWidget * parent = 0);
 	virtual ~XinxCodeEdit();
 
 	const QString & filename() const;
@@ -74,8 +80,11 @@ public:
 	QEditor * editor() const;
 	QDocument * document() const;
 
-	virtual void setCompleter(QCompleter * completer);
-	virtual QCompleter * completer();
+	virtual void setCompleter(CodeCompletion::Completer* completer);
+	virtual CodeCompletion::Completer * completer();
+
+	void setFile(ContentView3::FilePtrWeak file);
+	ContentView3::FilePtrWeak file() const;
 
 	void setTabStopWidth(int width);
 	int tabStopWidth() const;
@@ -147,21 +156,19 @@ protected:
 
 	virtual bool processKeyPress(QKeyEvent *);
 	virtual bool localKeyPressExecute(QKeyEvent * e);
-
-	virtual void insertSnipet(const QString & snipet);
 private slots:
 	void slotMarkChanged(QDocumentLineHandle* line, int type, bool enabled);
 private:
 	void init(bool action);
 	void uploSelectedText(bool upper = true);
 	void key_home(bool);
-	void key_snipet();
 	bool isModified();
 
 	QCodeEdit * m_editor;
 	QDocumentSearch * m_matchingText;
-	QCompleter * m_completer;
+	CodeCompletion::Completer * m_completer;
 	QString m_matchingTextString, m_filename;
+	ContentView3::FilePtrWeak _file;
 };
 
 class LIBEXPORT XinxCodeEditAction : public XinxCodeEdit

@@ -44,7 +44,7 @@ class WebServicesEditor : public TextFileEditor
 {
 	Q_OBJECT
 public:
-	WebServicesEditor(IFileTypePlugin * fileType = 0, QWidget *parent = 0);
+	WebServicesEditor(QWidget *parent = 0);
 	~WebServicesEditor();
 
 	WebServices * service();
@@ -56,13 +56,15 @@ public:
 	virtual void loadFromDevice(QIODevice & d);
 	virtual void saveToDevice(QIODevice & d);
 
-	virtual void serialize(XinxProjectSessionEditor * data, bool content);
-	virtual void deserialize(XinxProjectSessionEditor * data);
+	virtual void serialize(XinxSession::SessionEditor * data, bool content);
+	virtual void deserialize(XinxSession::SessionEditor * data);
 
 	virtual bool autoIndent();
 
 	int executionTime() const;
 	const QString & faultString() const;
+
+    virtual void setProject(XinxProject::Project* project);
 signals:
 	void updateActions();
 	void operationTerminated();

@@ -102,20 +102,21 @@ private:
 
 typedef QList<WebServices*> WebServicesList;
 
-class XinxProject;
+namespace XinxProject
+{
+	class Project;
+};
 
-class WebServicesManager : public QObject, public WebServicesList
+class WebServicesManager : public QObject
 {
 	Q_OBJECT
 public:
-	WebServicesManager(const WebServicesManager & manager);
-	WebServicesManager();
+	WebServicesManager(XinxProject::Project * project);
 	virtual ~WebServicesManager();
 
-	void setProject(XinxProject * project);
+	const WebServicesList & list() const;
 
-	static WebServicesManager * self();
-
+	static WebServicesManager * manager(XinxProject::Project * project);
 public slots:
 	void updateWebServicesList();
 
@@ -126,12 +127,12 @@ private slots:
 	void responseReady();
 
 private:
+	WebServicesList _list;
 	QPointer<QHttp> m_http;
 	QPointer<QProgressDialog> m_httpDialog;
 	QString m_httpString;
 	bool m_hasFinished, m_isUpdate;
-
-	static WebServicesManager * s_self;
+	XinxProject::Project * _project;
 };
 
 #endif // __WEBSERVICES_H__

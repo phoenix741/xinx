@@ -30,20 +30,13 @@
 
 /* StyleSheetAction */
 
-StyleSheetAction::StyleSheetAction(QAction * a, QObject * parent) : XinxAction::Action(a, parent), m_dock(0)
-{
-}
-
-StyleSheetAction::StyleSheetAction(const QString & text, const QKeySequence & shortcut, QObject * parent) : XinxAction::Action(text, shortcut, parent), m_dock(0)
-{
-}
-
-StyleSheetAction::StyleSheetAction(const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent) : XinxAction::Action(icon, text, shortcut, parent), m_dock(0)
+StyleSheetAction::StyleSheetAction() : XinxAction::Action(QIcon(":/images/run.png"), tr("Process stylesheet"), QString("F9")), m_dock(0)
 {
 }
 
 void StyleSheetAction::setXmlPresentationDockWidget(XmlPresentationDockWidget * value) const
 {
+	// FIXME:  N'est peut-être plus util
 	if (m_dock != value)
 	{
 		if (m_dock != 0)
@@ -54,12 +47,12 @@ void StyleSheetAction::setXmlPresentationDockWidget(XmlPresentationDockWidget * 
 	}
 }
 
-bool StyleSheetAction::isActionVisible() const
+bool StyleSheetAction::isVisible() const
 {
 	return (SelfWebPluginSettings::self()->config().stylesheetParsing.viewer.type != "none");
 }
 
-bool StyleSheetAction::isActionEnabled() const
+bool StyleSheetAction::isEnabled() const
 {
 	if ((SelfWebPluginSettings::self()->config().stylesheetParsing.viewer.type != "none") && EditorManager::self())
 	{
@@ -77,11 +70,6 @@ bool StyleSheetAction::isActionEnabled() const
 		}
 	}
 	return false;
-}
-
-bool StyleSheetAction::isInToolBar() const
-{
-	return true;
 }
 
 void StyleSheetAction::actionTriggered()

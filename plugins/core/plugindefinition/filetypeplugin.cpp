@@ -44,14 +44,9 @@ QString TextFileType::icon()
 	return ":/images/typeunknown.png";
 }
 
-AbstractEditor * TextFileType::createEditor(const QString & filename)
+AbstractEditor * TextFileType::createEditor()
 {
-	TextFileEditor * editor = new TextFileEditor(0, this);
-
-	if (! filename.isEmpty())
-		editor->loadFromFile(filename);
-
-	return editor;
+	return new TextFileEditor(0);
 }
 
 QString TextFileType::highlighterId() const
@@ -113,14 +108,9 @@ QString XMLFileType::icon()
 	return ":/images/typexml.png";
 }
 
-AbstractEditor * XMLFileType::createEditor(const QString & filename)
+AbstractEditor * XMLFileType::createEditor()
 {
-	XmlFileEditor * editor = new XmlFileEditor(this);
-
-	if (! filename.isEmpty())
-		editor->loadFromFile(filename);
-
-	return editor;
+	return new XmlFileEditor();
 }
 
 QString XMLFileType::highlighterId() const
@@ -199,14 +189,9 @@ QString XSLStyleSheetFileType::icon()
 	return ":/images/typexsl.png";
 }
 
-AbstractEditor * XSLStyleSheetFileType::createEditor(const QString & filename)
+AbstractEditor * XSLStyleSheetFileType::createEditor()
 {
-	StyleSheetEditor * editor = new StyleSheetEditor(this);
-
-	if (! filename.isEmpty())
-		editor->loadFromFile(filename);
-
-	return editor;
+	return new StyleSheetEditor();
 }
 
 QString XSLStyleSheetFileType::parserType()
@@ -241,14 +226,9 @@ QString HTMLFileType::icon()
 	return ":/images/typehtml.png";
 }
 
-AbstractEditor * HTMLFileType::createEditor(const QString & filename)
+AbstractEditor * HTMLFileType::createEditor()
 {
-	HtmlFileEditor * editor = new HtmlFileEditor();
-
-	if (! filename.isEmpty())
-		editor->loadFromFile(filename);
-
-	return editor;
+	return new HtmlFileEditor();
 }
 
 QString HTMLFileType::defaultFileName()
@@ -278,14 +258,9 @@ QString JSFileType::icon()
 	return ":/images/typejs.png";
 }
 
-AbstractEditor * JSFileType::createEditor(const QString & filename)
+AbstractEditor * JSFileType::createEditor()
 {
-	JSFileEditor * editor = new JSFileEditor(this);
-
-	if (! filename.isEmpty())
-		editor->loadFromFile(filename);
-
-	return editor;
+	return new JSFileEditor();
 }
 
 QString JSFileType::highlighterId() const
@@ -357,14 +332,9 @@ QString CSSFileType::icon()
 	return ":/images/typecss.png";
 }
 
-AbstractEditor * CSSFileType::createEditor(const QString & filename)
+AbstractEditor * CSSFileType::createEditor()
 {
-	CSSFileEditor * editor = new CSSFileEditor(this);
-
-	if (! filename.isEmpty())
-		editor->loadFromFile(filename);
-
-	return editor;
+	return new CSSFileEditor();
 }
 
 QString CSSFileType::highlighterId() const
@@ -444,14 +414,9 @@ QString XQFileType::icon()
 	return ":/images/typexq.png";
 }
 
-AbstractEditor * XQFileType::createEditor(const QString & filename)
+AbstractEditor * XQFileType::createEditor()
 {
-	XQFileEditor * editor = new XQFileEditor(this);
-
-	if (! filename.isEmpty())
-		editor->loadFromFile(filename);
-
-	return editor;
+	return new XQFileEditor();
 }
 
 QString XQFileType::highlighterId() const

@@ -26,42 +26,34 @@
 
 class WebServicesRefreshAction : public XinxAction::Action
 {
+	Q_OBJECT
 public:
-	WebServicesRefreshAction(QAction * a, QObject * parent);
-	WebServicesRefreshAction(const QString & text, const QKeySequence & shortcut, QObject * parent);
-	WebServicesRefreshAction(const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent);
+	WebServicesRefreshAction();
 
-	virtual bool isActionVisible() const;
-	virtual bool isActionEnabled() const;
-	virtual bool isInToolBar() const;
+	virtual bool isVisible() const;
 protected slots:
 	virtual void actionTriggered();
 };
 
 class WebServicesRunAction : public XinxAction::Action
 {
+	Q_OBJECT
 public:
-	WebServicesRunAction(QAction * a, QObject * parent);
-	WebServicesRunAction(const QString & text, const QKeySequence & shortcut, QObject * parent);
-	WebServicesRunAction(const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent);
+	WebServicesRunAction();
 
-	virtual bool isActionVisible() const;
-	virtual bool isActionEnabled() const;
-	virtual bool isInToolBar() const;
+	virtual bool isVisible() const;
+	virtual bool isEnabled() const;
 protected slots:
 	virtual void actionTriggered();
 };
 
 class WebServicesRunAllAction : public XinxAction::Action
 {
+	Q_OBJECT
 public:
-	WebServicesRunAllAction(QAction * a, QObject * parent);
-	WebServicesRunAllAction(const QString & text, const QKeySequence & shortcut, QObject * parent);
-	WebServicesRunAllAction(const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent);
+	WebServicesRunAllAction();
 
-	virtual bool isActionVisible() const;
-	virtual bool isActionEnabled() const;
-	virtual bool isInToolBar() const;
+	virtual bool isVisible() const;
 protected slots:
 	virtual void actionTriggered();
 };

@@ -23,7 +23,7 @@
 
 // Xinx header
 #include <core/exceptions.h>
-#include <rcs/rcs.h>
+#include <versioncontrol/rcs.h>
 #include "entries.h"
 
 // Qt header

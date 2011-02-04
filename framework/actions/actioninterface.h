@@ -1,21 +1,21 @@
-/* *********************************************************************** *
- * XINX                                                                    *
- * Copyright (C) 2007-2010 by Ulrich Van Den Hekke                         *
- * ulrich.vdh@shadoware.org                                                *
- *                                                                         *
- * This program is free software: you can redistribute it and/or modify    *
- * it under the terms of the GNU General Public License as published by    *
- * the Free Software Foundation, either version 3 of the License, or       *
- * (at your option) any later version.                                     *
- *                                                                         *
- * This program is distributed in the hope that it will be useful,         *
- * but WITHOUT ANY WARRANTY; without even the implied warranty of          *
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *
- * GNU General Public License for more details.                            *
- *                                                                         *
- * You should have received a copy of the GNU General Public License       *
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
- * *********************************************************************** */
+/*
+ XINX
+ Copyright (C) 2007-2011 by Ulrich Van Den Hekke
+ xinx@shadoware.org
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful.
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 #pragma once
 #ifndef ACTIONINTERFACE_H
@@ -29,66 +29,68 @@
 #include <QAction>
 #include <QKeySequence>
 #include <QIcon>
+#include <QPointer>
+
+class AbstractEditor;
 
 namespace XinxAction
 {
 
-class LIBEXPORT MenuItem
+class ActionManager;
+
+class LIBEXPORT MenuItem : public QObject
 {
+	Q_OBJECT
 public:
+	MenuItem(QAction * a = 0);
 	virtual ~MenuItem();
+
+	QAction * action() const;
+
+	virtual bool isEnabled() const;
+	virtual bool isVisible() const;
+
+public slots:
+	void updateActionState();
+protected:
+	QAction * m_action;
 };
 
 class LIBEXPORT Separator : public MenuItem
 {
+	Q_OBJECT
 public:
+	Separator();
 	virtual ~Separator();
+
+	virtual bool isVisible() const;
+	void setVisible(bool value);
+private:
+	bool _visible;
 };
 
-class LIBEXPORT Action : public QObject, public MenuItem
+class LIBEXPORT Action : public MenuItem
 {
 	Q_OBJECT
 public:
-	Action(QAction * a, QObject * parent);
-	Action(const QString & text, const QKeySequence & shortcut, QObject * parent);
-	Action(const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent);
+	Action(QAction * a);
+	Action(const QString & text);
+	Action(const QString & text, const QKeySequence & shortcut);
+	Action(const QIcon & icon, const QString & text, const QKeySequence & shortcut);
 	virtual ~Action();
 
-	QAction * action() const;
+protected:
+	void addEditorSignals(const char * signal);
 
-	virtual bool isActionVisible() const;
-	virtual bool isActionEnabled() const;
-	virtual bool isInToolBar() const;
-	virtual bool isInPopupMenu() const;
-
-public slots:
-	void updateActionState();
+	void setCurrentEditor(AbstractEditor * editor);
+	AbstractEditor * currentEditor() const;
 protected slots:
 	virtual void actionTriggered();
 private:
-	QAction * m_action;
-};
+	QPointer<AbstractEditor> _editor;
+	QList<const char *> _signals;
 
-class LIBEXPORT ActionList : public QList<MenuItem*>
-{
-public:
-	ActionList(const QString & menu);
-	ActionList(const QString & menu, const QString & id);
-
-	const QString & menu() const;
-	const QString & menuId() const;
-
-	void updateActionsState();
-private:
-	QString m_menu, m_menuId;
-};
-
-class LIBEXPORT MenuList : public QList<ActionList>
-{
-public:
-	MenuList();
-
-	void updateMenuState();
+	friend class ActionManager;
 };
 
 }

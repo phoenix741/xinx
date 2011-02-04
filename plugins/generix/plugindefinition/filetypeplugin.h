@@ -65,7 +65,7 @@ public:
 	virtual QString match();
 	virtual QString icon();
 
-	virtual AbstractEditor * createEditor(const QString & filename);
+	virtual AbstractEditor * createEditor();
 
 	virtual QString highlighterId() const;
 	virtual XinxFormatScheme * createFormatScheme(XINXConfig * config) const;

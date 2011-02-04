@@ -22,15 +22,15 @@
 #pragma once
 
 // Xinx header
-#include <plugins/plugininterfaces.h>
+#include <plugins/interfaces/plugin.h>
+#include <plugins/interfaces/gui.h>
+#include <plugins/interfaces/files.h>
 #include <actions/actioninterface.h>
 
-class ServicesPlugin : public QObject, public IFilePlugin, public IXinxPluginProjectConfiguration
+class ServicesPlugin : public QObject, public IXinxPlugin, public IFilePlugin, public IXinxPluginProjectConfiguration, public IXinxInputOutputPlugin
 {
 	Q_OBJECT
-	Q_INTERFACES(IXinxPlugin)
-	Q_INTERFACES(IFilePlugin)
-	Q_INTERFACES(IXinxPluginProjectConfiguration)
+	Q_INTERFACES(IXinxPlugin IFilePlugin IXinxPluginProjectConfiguration IXinxInputOutputPlugin)
 public:
 	ServicesPlugin();
 	virtual ~ServicesPlugin();
@@ -38,16 +38,19 @@ public:
 	virtual bool initializePlugin(const QString & lang);
 	virtual QVariant getPluginAttribute(const enum IXinxPlugin::PluginAttribute & attr);
 
+	virtual void generateActionMenu ();
+
 	virtual QList<IFileTypePlugin*> fileTypes();
-
-	virtual XinxAction::MenuList actions();
-
 	virtual QList<IXinxPluginProjectConfigurationPage*> createProjectSettingsPage(QWidget * parent);
-
 	virtual QList<IXinxPluginNewProjectConfigurationPage*> createNewProjectSettingsPages();
+
+    virtual QList< IProjectInitialisationStep* > loadProjectStep(XinxProject::Project* project);
+    virtual QList< IProjectInitialisationStep* > closeProjectStep(XinxProject::Project* project);
+    virtual QString getFilename(AbstractEditor* editor, const QString& filename, const QString& defaultFilename, const QString& filter, bool saveAs, bool& accept, QWidget* widget = 0);
+    virtual QIODevice* loadFile(AbstractEditor* editor, const QString& filename);
+    virtual QIODevice* saveFile(AbstractEditor* editor, const QString& filename, const QString& oldfilename);
 private:
 	QList<IFileTypePlugin*> m_fileTypes;
-	XinxAction::MenuList m_menus;
 };
 
 #endif /* SERVICESPLUGIN_H_*/

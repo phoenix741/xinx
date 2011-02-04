@@ -18,7 +18,7 @@
  * *********************************************************************** */
 
 // Xinx header
-#include <project/xinxproject.h>
+#include <project/xinxprojectproject.h>
 #include "servicesprojectpropertyimpl.h"
 
 // Qt header
@@ -28,11 +28,9 @@
 
 /* ServicesProjectPropertyImpl */
 
-ServicesProjectPropertyImpl::ServicesProjectPropertyImpl(QWidget* parent, Qt::WFlags fl) : QWidget(parent, fl), Ui::ServicesProjectProperty()
+ServicesProjectPropertyImpl::ServicesProjectPropertyImpl(QWidget* parent, Qt::WFlags fl) : QWidget(parent, fl), Ui::ServicesProjectProperty(), m_project(0)
 {
 	setupUi(this);
-
-	m_project = XINXProjectManager::self()->project();
 
 	m_http = new QHttp(this);
 	m_httpProgressDialog = new QProgressDialog(this);
@@ -59,13 +57,15 @@ QString ServicesProjectPropertyImpl::name()
 	return windowTitle();
 }
 
-void ServicesProjectPropertyImpl::setProject(XinxProject * project)
+void ServicesProjectPropertyImpl::setProject(XinxProject::Project * project)
 {
 	m_project = project;
 }
 
 bool ServicesProjectPropertyImpl::loadSettingsDialog()
 {
+	Q_ASSERT_X(m_project, "ServicesProjectPropertyImpl::saveSettingsDialog()", "Project must be defined");
+
 	QStringList links;
 	QString link;
 	int index = 0;
@@ -91,6 +91,8 @@ bool ServicesProjectPropertyImpl::loadSettingsDialog()
 
 bool ServicesProjectPropertyImpl::saveSettingsDialog()
 {
+	Q_ASSERT_X(m_project, "ServicesProjectPropertyImpl::saveSettingsDialog()", "Project must be defined");
+
 	int index = 0;
 	m_project->writeProperty("webServiceVersion", WEBSERVICE_VERSION_CURRENT);
 	foreach(const QString & link, m_servicesList->values())

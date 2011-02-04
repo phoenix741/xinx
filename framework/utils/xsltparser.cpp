@@ -1,25 +1,26 @@
-/* *********************************************************************** *
- * XINX                                                                    *
- * Copyright (C) 2007-2010 by Ulrich Van Den Hekke                         *
- * ulrich.vdh@shadoware.org                                                *
- *                                                                         *
- * This program is free software: you can redistribute it and/or modify    *
- * it under the terms of the GNU General Public License as published by    *
- * the Free Software Foundation, either version 3 of the License, or       *
- * (at your option) any later version.                                     *
- *                                                                         *
- * This program is distributed in the hope that it will be useful,         *
- * but WITHOUT ANY WARRANTY; without even the implied warranty of          *
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *
- * GNU General Public License for more details.                            *
- *                                                                         *
- * You should have received a copy of the GNU General Public License       *
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
- * *********************************************************************** */
+/*
+ XINX
+ Copyright (C) 2007-2011 by Ulrich Van Den Hekke
+ xinx@shadoware.org
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful.
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 // Xinx header
 #include "xsltparser.h"
-#include <project/xinxproject.h>
+#include <project/xinxprojectmanager.h>
+#include <project/xinxprojectproject.h>
 #include <project/externalfileresolver.h>
 
 // Qt header
@@ -28,6 +29,7 @@
 #include <QFile>
 #include <QBuffer>
 #include <QFileInfo>
+#include <QUuid>
 
 // Libxml header
 #include <libxslt/xsltInternals.h>
@@ -36,19 +38,7 @@
 
 static bool initialized = false;
 
-/* PrivateXsltParser */
-
-class PrivateXsltParser
-{
-public:
-	xsltStylesheetPtr m_stylesheet;
-	xmlDocPtr m_xmlDoc, m_res;
-	QList<XsltParser::ErrorMessage> m_errors;
-
-	friend void xsltParserErrorFunc(void * parser, xmlErrorPtr error);
-};
-
-/* xmlRegisterCallback */
+/* Static Callback */
 
 static int xsltParserInputMatchCallback(char const * filename)
 {
@@ -56,7 +46,7 @@ static int xsltParserInputMatchCallback(char const * filename)
 	return 1;
 }
 
-static void* xsltParserInputOpenCallback(char const * filename)
+void* xsltParserInputOpenCallback(const char* filename)
 {
 	QFile f(filename);
 	if (! f.open(QIODevice::ReadOnly))
@@ -66,7 +56,8 @@ static void* xsltParserInputOpenCallback(char const * filename)
 
 	QString bufferString(QString::fromLatin1(f.readAll()));
 
-	if (XINXProjectManager::self()->project())
+	XinxProject::Project * project = XinxProject::Manager::self()->projectOfFile(filename);
+	if (project)
 	{
 		QRegExp importRegExp("(<xsl:import[^>]+href\\s*=\\s*\")(.*)(\".*>)");
 		importRegExp.setMinimal(true);
@@ -74,7 +65,7 @@ static void* xsltParserInputOpenCallback(char const * filename)
 		while ((position = importRegExp.indexIn(bufferString, position)) >= 0)
 		{
 			QString href = importRegExp.cap(2);
-			QString resolvedRef = ExternalFileResolver::self()->resolveFileName(href, QFileInfo(filename).absolutePath());
+			QString resolvedRef = project->resolver()->resolveFileName(href, QFileInfo(filename).absolutePath());
 
 			bufferString.replace(importRegExp.pos(2), href.length(), resolvedRef);
 
@@ -82,28 +73,43 @@ static void* xsltParserInputOpenCallback(char const * filename)
 		}
 	}
 
-	QBuffer * b = new QBuffer;
-	b->setData(bufferString.toLatin1());
-	if (! b->open(QIODevice::ReadOnly))
+	QBuffer * buffer = new QBuffer;
+	buffer->setData(bufferString.toLatin1());
+	if (! buffer->open(QIODevice::ReadOnly))
 	{
-		delete b;
+		delete buffer;
 		return 0;
 	}
 
-	return b;
+	return buffer;
 }
 
 static int xsltParserInputReadCallback(void * context, char * buffer, int len)
 {
-	QBuffer * f = static_cast<QBuffer*>(context);
-	return f->read(buffer, len);
+	QBuffer * b = static_cast<QBuffer*>(context);
+	return b->read(buffer, len);
 }
 
 static int xsltParserInputCloseCallback(void * context)
 {
-	delete static_cast<QBuffer*>(context);
+	QBuffer * b = static_cast<QBuffer*>(context);
+	delete b;
 	return 0;
 }
+
+/* PrivateXsltParser */
+
+class PrivateXsltParser
+{
+public:
+	XinxProject::Project * _project;
+
+	xsltStylesheetPtr m_stylesheet;
+	xmlDocPtr m_xmlDoc, m_res;
+	QList<XsltParser::ErrorMessage> m_errors;
+
+	friend void xsltParserErrorFunc(void * parser, xmlErrorPtr error);
+};
 
 /* Error parsing */
 
@@ -143,9 +149,10 @@ XsltParser::XsltParser()
 {
 	d = new PrivateXsltParser;
 
-	d->m_stylesheet = NULL;
-	d->m_xmlDoc     = NULL;
-	d->m_res        = NULL;
+	d->_project      = NULL;
+	d->m_stylesheet  = NULL;
+	d->m_xmlDoc      = NULL;
+	d->m_res         = NULL;
 
 	if (! initialized)
 	{
@@ -154,8 +161,7 @@ XsltParser::XsltParser()
 		xmlLineNumbersDefault(1);
 		xmlLoadExtDtdDefaultValue = 1;
 
-		xmlRegisterInputCallbacks(xsltParserInputMatchCallback, xsltParserInputOpenCallback,
-		                          xsltParserInputReadCallback,  xsltParserInputCloseCallback);
+		xmlRegisterInputCallbacks(xsltParserInputMatchCallback, xsltParserInputOpenCallback, xsltParserInputReadCallback,  xsltParserInputCloseCallback);
 
 	}
 }
@@ -169,17 +175,20 @@ XsltParser::~XsltParser()
 	delete d;
 }
 
+void XsltParser::setProject(XinxProject::Project * project)
+{
+	d->_project = project;
+}
+
+XinxProject::Project * XsltParser::project()
+{
+	return d->_project;
+}
+
 const QList<XsltParser::ErrorMessage> & XsltParser::errors() const
 {
 	return d->m_errors;
 }
-
-/*bool XsltParser::loadStylesheet( const QByteArray & data ) {
-    xmlDocPtr xslDoc = xmlParseMemory( data, data.size() );
-    d->m_stylesheet = xsltParseStylesheetDoc( xslDoc );
-
-    return d->m_stylesheet;
-}*/
 
 bool XsltParser::loadStylesheet(const QString & filename)
 {

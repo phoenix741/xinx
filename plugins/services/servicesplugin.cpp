@@ -18,13 +18,14 @@
  * *********************************************************************** */
 
 // Xinx header
-#include <project/xinxproject.h>
 #include "servicesplugin.h"
 #include "servicesprojectpropertyimpl.h"
 #include "servicesprojectwizard.h"
 #include "webservices.h"
 #include "webservicesfiletype.h"
 #include "webservicesaction.h"
+#include <actions/actionmanager.h>
+#include <project/xinxprojectproject.h>
 
 // Qt header
 #include <QString>
@@ -32,13 +33,38 @@
 #include <QTranslator>
 #include <QApplication>
 
+class OpenWebServicesObjectStep : public IProjectInitialisationStep
+{
+public:
+	OpenWebServicesObjectStep(XinxProject::Project * project) : _project(project)
+	{
+	}
+
+    virtual ~OpenWebServicesObjectStep()
+    {
+	}
+
+    virtual QString name()
+    {
+		return ServicesPlugin::tr("Open WebServices project");
+	}
+
+    virtual bool process()
+    {
+		_project->addObject("webservice", new WebServicesManager(_project));
+
+		return true;
+	}
+
+	XinxProject::Project* _project;
+};
+
 /* ServicesPlugin */
 
 ServicesPlugin::ServicesPlugin()
 {
 	Q_INIT_RESOURCE(servicesplugin);
 
-	WebServicesManager::self();
 	m_fileTypes << new WebServicesFileType;
 }
 
@@ -85,22 +111,23 @@ QList<IFileTypePlugin*> ServicesPlugin::fileTypes()
 	return m_fileTypes;
 }
 
-XinxAction::MenuList ServicesPlugin::actions()
+void ServicesPlugin::generateActionMenu ()
 {
-	if (m_menus.size() == 0)
-	{
-		XinxAction::Action * refreshAction = new WebServicesRefreshAction(QIcon(":/images/reload.png"), tr("Update WebServices List"), QString(), this);
-		XinxAction::Action * runAction = new WebServicesRunAction(QIcon(":/services/images/action.png"), tr("Call the service"), QString("F9"), this);
-		XinxAction::Action * runAllAction = new WebServicesRunAllAction(tr("Launch multiple WebServices"), QString("Shift+F9"), this);
+	XinxAction::Action * refreshAction = new WebServicesRefreshAction;
+	XinxAction::Action * runAction = new WebServicesRunAction;
+	XinxAction::Action * runAllAction = new WebServicesRunAllAction;
 
-		XinxAction::ActionList menu(tr("&Execute"), "execute");
-		menu.append(new XinxAction::Separator());
-		menu.append(refreshAction);
-		menu.append(runAction);
-		menu.append(runAllAction);
-		m_menus.append(menu);
-	}
-	return m_menus;
+	XinxAction::ActionManager::self ()->insertNameOfMenu("execute", tr("&Execute"));
+
+
+	XinxAction::ActionManager::self()->addToolBarSeparator("execute");
+	XinxAction::ActionManager::self()->addToolBarItem("execute", runAction);
+	XinxAction::ActionManager::self()->addToolBarItem("execute", refreshAction);
+
+	XinxAction::ActionManager::self()->addMenuSeparator("execute");
+	XinxAction::ActionManager::self()->addMenuItem("execute", runAllAction);
+	XinxAction::ActionManager::self()->addMenuItem("execute", runAction);
+	XinxAction::ActionManager::self()->addMenuItem("execute", refreshAction);
 }
 
 QList<IXinxPluginProjectConfigurationPage*> ServicesPlugin::createProjectSettingsPage(QWidget * parent)
@@ -116,5 +143,31 @@ QList<IXinxPluginNewProjectConfigurationPage*> ServicesPlugin::createNewProjectS
 	pages << new ServicesListPageImpl();
 	return pages;
 }
+
+QList< IProjectInitialisationStep* > ServicesPlugin::loadProjectStep(XinxProject::Project* project)
+{
+	return QList<IProjectInitialisationStep*>() << new OpenWebServicesObjectStep(project);
+}
+
+QList< IProjectInitialisationStep* > ServicesPlugin::closeProjectStep(XinxProject::Project* project)
+{
+	return QList<IProjectInitialisationStep*>();
+}
+
+QString ServicesPlugin::getFilename(AbstractEditor* editor, const QString& filename, const QString& defaultFilename, const QString& filter, bool saveAs, bool& accept, QWidget* widget)
+{
+	return QString();
+}
+
+QIODevice* ServicesPlugin::loadFile(AbstractEditor* editor, const QString& filename)
+{
+	return NULL;
+}
+
+QIODevice* ServicesPlugin::saveFile(AbstractEditor* editor, const QString& filename, const QString& oldfilename)
+{
+	return NULL;
+}
+
 
 Q_EXPORT_PLUGIN2(servicesplugin, ServicesPlugin)

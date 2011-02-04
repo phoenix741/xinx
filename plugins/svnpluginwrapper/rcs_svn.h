@@ -22,7 +22,7 @@
 #pragma once
 
 // Xinx header
-#include <rcs/rcs.h>
+#include <versioncontrol/rcs.h>
 
 // Qt header
 #include <QProcess>

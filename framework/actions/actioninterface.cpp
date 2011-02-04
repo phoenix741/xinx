@@ -1,25 +1,30 @@
-/* *********************************************************************** *
- * XINX                                                                    *
- * Copyright (C) 2007-2010 by Ulrich Van Den Hekke                         *
- * ulrich.vdh@shadoware.org                                                *
- *                                                                         *
- * This program is free software: you can redistribute it and/or modify    *
- * it under the terms of the GNU General Public License as published by    *
- * the Free Software Foundation, either version 3 of the License, or       *
- * (at your option) any later version.                                     *
- *                                                                         *
- * This program is distributed in the hope that it will be useful,         *
- * but WITHOUT ANY WARRANTY; without even the implied warranty of          *
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *
- * GNU General Public License for more details.                            *
- *                                                                         *
- * You should have received a copy of the GNU General Public License       *
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
- * *********************************************************************** */
+/*
+ XINX
+ Copyright (C) 2007-2011 by Ulrich Van Den Hekke
+ xinx@shadoware.org
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful.
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 // Xinx header
 #include "actioninterface.h"
 #include <core/xinxcore.h>
+#include <editors/editormanager.h>
+#include <editors/abstracteditor.h>
+
+// Qt header
+#include <QTimer>
 
 /*!
  * \namespace XinxAction
@@ -47,9 +52,52 @@ using namespace XinxAction;
  * to define the type of the element in the menu.
  */
 
+
+MenuItem::MenuItem(QAction * a) : m_action(a)
+{
+
+}
+
 //! Destroy the menu item
 MenuItem::~MenuItem()
 {
+}
+
+//! This method return the QAction object
+QAction * MenuItem::action() const
+{
+	return m_action;
+}
+
+/*!
+ * \brief This method return true if the action can be called
+ *
+ * \note This method should be redefine in child class.
+ *
+ * By default this method return \e true.
+ */
+bool MenuItem::isEnabled() const
+{
+	return true;
+}
+
+//! Use methode isVisible() and isEnabled() to update the status of the action.
+void MenuItem::updateActionState()
+{
+	m_action->setVisible(isVisible());
+	m_action->setEnabled(isEnabled());
+}
+
+/*!
+ * \brief This method must return true if the action is visible to user
+ *
+ * \note This method should be redefine in child class.
+ *
+ * By default this method return \e true.
+ */
+bool MenuItem::isVisible() const
+{
+	return true;
 }
 
 /* Separator */
@@ -64,9 +112,25 @@ MenuItem::~MenuItem()
  * This class represent a separator. For a separator there is no data expected.
  */
 
+Separator::Separator() : _visible(true)
+{
+	m_action = new QAction(this);
+	m_action->setSeparator (true);
+}
+
 //! Destroy the separator
 Separator::~Separator()
 {
+}
+
+bool Separator::isVisible() const
+{
+	return _visible;
+}
+
+void Separator::setVisible(bool value)
+{
+	_visible = value;
 }
 
 /* Action */
@@ -88,8 +152,21 @@ Separator::~Separator()
  *
  * This method set enabled and visible to true.
  */
-Action::Action(QAction * a, QObject * parent) : QObject(parent), m_action(a)
+Action::Action(QAction * a) : MenuItem(a), _editor(0)
 {
+	updateActionState();
+	connect(m_action, SIGNAL(triggered()), this, SLOT(actionTriggered()));
+}
+
+/*!
+* \brief Create an action with the text \e text.
+*
+* This methode create a QAction object with the different information from parameters and
+* use him self as parent of the QAction.
+*/
+Action::Action(const QString& text): _editor(0)
+{
+	m_action = new QAction(text, this);
 	updateActionState();
 	connect(m_action, SIGNAL(triggered()), this, SLOT(actionTriggered()));
 }
@@ -100,7 +177,7 @@ Action::Action(QAction * a, QObject * parent) : QObject(parent), m_action(a)
  * This methode create a QAction object with the different information from parameters and
  * use him self as parent of the QAction.
  */
-Action::Action(const QString & text, const QKeySequence & shortcut, QObject * parent) : QObject(parent)
+Action::Action(const QString & text, const QKeySequence & shortcut) : _editor(0)
 {
 	m_action = new QAction(text, this);
 	m_action->setShortcut(shortcut);
@@ -114,7 +191,7 @@ Action::Action(const QString & text, const QKeySequence & shortcut, QObject * pa
  * This methode create a QAction object with the different information from parameters and
  * use him self as parent of the QAction.
  */
-Action::Action(const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent) : QObject(parent)
+Action::Action(const QIcon & icon, const QString & text, const QKeySequence & shortcut) : _editor(0)
 {
 	m_action = new QAction(icon, text, this);
 	m_action->setShortcut(shortcut);
@@ -125,67 +202,6 @@ Action::Action(const QIcon & icon, const QString & text, const QKeySequence & sh
 //! Destroy the action
 Action::~Action()
 {
-}
-
-//! This method return the QAction object
-QAction * Action::action() const
-{
-	return m_action;
-}
-
-/*!
- * \brief This method must return true if the action is visible to user
- *
- * \note This method should be redefine in child class.
- *
- * By default this method return \e true.
- */
-bool Action::isActionVisible() const
-{
-	return true;
-}
-
-/*!
- * \brief This method return true if the action can be called
- *
- * \note This method should be redefine in child class.
- *
- * By default this method return \e true.
- */
-bool Action::isActionEnabled() const
-{
-	return true;
-}
-
-/*!
- * \brief This method must return true if the action can be add to the toolbar
- *
- * \note This method should be redefine in child class.
- *
- * By default this method return \e true.
- */
-bool Action::isInToolBar() const
-{
-	return true;
-}
-
-/*!
- * \brief This method must return true if the action can be add to the popup menu
- *
- * \note This method should be redefine in child class.
- *
- * By default this method return \e true.
- */
-bool Action::isInPopupMenu() const
-{
-	return true;
-}
-
-//! Use methode isActionVisible() and isActionEnabled() to update the status of the action.
-void Action::updateActionState()
-{
-	m_action->setVisible(isActionVisible());
-	m_action->setEnabled(isActionEnabled());
 }
 
 /*!
@@ -199,77 +215,32 @@ void Action::actionTriggered()
 {
 }
 
-/* ActionList */
-
-/*!
- * \class XinxAction::ActionList
- * \ingroup XinxAction
- * \since 0.8.1.0
- *
- * \brief Class to manage a list of action (a Menu)
- *
- * This class is a list of action. This also the synonym for a menu. This list as
- * also a name and a method to refresh the state of each action.
- */
-
-
-//! Create the list with the name \e menu and the id \e menu
-ActionList::ActionList(const QString & menu) : m_menu(menu), m_menuId(menu)
+void Action::addEditorSignals(const char* signal)
 {
+	_signals.append(signal);
 }
 
-//! Create the list with the name \e menu and the id \e id
-ActionList::ActionList(const QString & menu, const QString & id) : m_menu(menu), m_menuId(id)
+AbstractEditor* Action::currentEditor() const
 {
+	return _editor;
 }
 
-//! Return the name of the list
-const QString & ActionList::menu() const
+void Action::setCurrentEditor(AbstractEditor * editor)
 {
-	return m_menu;
-}
-
-//! Return the id of the menu
-const QString & ActionList::menuId() const
-{
-	return m_menuId;
-}
-
-//! Update the state (visible, and enable) of all actions in the menu
-void ActionList::updateActionsState()
-{
-	foreach(MenuItem * item, *this)
+	if (_editor && _signals.count())
 	{
-		Action * action = dynamic_cast<Action*>(item);
-		if (action)
-			action->updateActionState();
+		foreach(const char * signal, _signals)
+		{
+			disconnect(_editor, signal, this, SLOT(updateActionState()));
+		}
 	}
-}
-
-/* MenuList */
-
-/*!
- * \class XinxAction::MenuList
- * \ingroup XinxAction
- * \since 0.8.1.0
- *
- * \brief Class to manage a list of ActionList (Menu)
- *
- * This list is a list of menu used in the plugin interface. A method
- * to refresh all menu of a plugin exists.
- */
-
-//! Create the menu list
-MenuList::MenuList()
-{
-}
-
-//! Update the state (visible, and enable) of all menu.
-void MenuList::updateMenuState()
-{
-	foreach(ActionList menu, *this)
+	_editor = editor;
+	if (_editor && _signals.count())
 	{
-		menu.updateActionsState();
+		foreach(const char * signal, _signals)
+		{
+			connect(_editor, signal, this, SLOT(updateActionState()));
+		}
 	}
 }
 

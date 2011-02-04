@@ -23,7 +23,7 @@
 
 // Xinx header
 #include "ui_derivationdialog.h"
-#include <project/xinxproject.h>
+#include <project/xinxprojectproject.h>
 
 // Qt header
 #include <QDialog>
@@ -34,19 +34,20 @@ class DerivationDialogImpl : public QDialog, Ui::DerivationDialog
 {
 	Q_OBJECT
 public:
-	DerivationDialogImpl(QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint);
+	 DerivationDialogImpl(XinxProject::Project * project, QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint);
 	virtual ~DerivationDialogImpl();
 
 	void load(const QString & filename, const QString & filter);
 	QString getNewPath() const;
 
-	static bool isDerivableFile(const QString & filename);
+	static bool isDerivableFile(XinxProject::Project * project, const QString & filename);
 
 private slots:
 	void changePath();
 
 private:
 	QString m_filename, m_relativeFilename;
+	 XinxProject::Project * _project;
 };
 
 #endif // DERIVATIONDIALOGIMPL_H

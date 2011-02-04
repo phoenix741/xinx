@@ -19,7 +19,6 @@
 
 // Xinx header
 #include "newgenerixderivation1page.h"
-#include <project/xinxproject.h>
 #include "projectproperty/generixproject.h"
 #include "configuration/configurationfile.h"
 
@@ -58,7 +57,7 @@ bool NewGenerixDerivation1Page::isComplete() const
 	return true;
 }
 
-bool NewGenerixDerivation1Page::saveSettingsDialog(XinxProject * project)
+bool NewGenerixDerivation1Page::saveSettingsDialog(XinxProject::Project* project)
 {
 	Q_UNUSED(project);
 	return true;

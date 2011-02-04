@@ -23,7 +23,7 @@
 
 // Xinx header
 #include <ui_gnxprojectdock.h>
-#include <project/xinxproject.h>
+#include <project/xinxprojectproject.h>
 
 // Qt header
 #include <QWidget>
@@ -50,10 +50,9 @@ public:
 	GenerixProjectDockImpl(QWidget * parent = 0);
 	virtual ~GenerixProjectDockImpl();
 
-	void setProject(XinxProject * project);
+	void setProject(XinxProject::Project * project);
 private slots:
 	void on_m_prefixCombo_activated(QString text);
-	void projectChanged();
 	void editorChanged(int index);
 private:
 	GenerixProject * m_gnxProject;

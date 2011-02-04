@@ -1,31 +1,35 @@
-/* *********************************************************************** *
- * XINX                                                                    *
- * Copyright (C) 2007-2010 by Ulrich Van Den Hekke                         *
- * ulrich.vdh@shadoware.org                                                *
- *                                                                         *
- * This program is free software: you can redistribute it and/or modify    *
- * it under the terms of the GNU General Public License as published by    *
- * the Free Software Foundation, either version 3 of the License, or       *
- * (at your option) any later version.                                     *
- *                                                                         *
- * This program is distributed in the hope that it will be useful,         *
- * but WITHOUT ANY WARRANTY; without even the implied warranty of          *
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *
- * GNU General Public License for more details.                            *
- *                                                                         *
- * You should have received a copy of the GNU General Public License       *
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
- * *********************************************************************** */
+/*
+ XINX
+ Copyright (C) 2007-2011 by Ulrich Van Den Hekke
+ xinx@shadoware.org
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful.
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 // Xinx header
 #include "editors/abstracteditor.h"
-#include "project/xinxproject.h"
+#include <project/xinxprojectproject.h>
 #include "borderlayout.h"
-#include "core/xinxconfig.h"
-#include "plugins/xinxpluginsloader.h"
+#include <core/xinxconfig.h>
+#include <plugins/xinxpluginsloader.h>
+#include <plugins/xinxpluginelement.h>
+#include <plugins/interfaces/files.h>
+#include <session/sessioneditor.h>
+#include <project/xinxprojectmanager.h>
+#include <editors/editorfactory.h>
 
 // Qt header
-#include <QAction>
 #include <QLabel>
 #include <QPushButton>
 #include <QFileInfo>
@@ -50,6 +54,11 @@
  * This base class contains minimum method necessary to construct an editor.
  * An editor has a name, a title, and method related with clipboard.
  *
+ * An editor is based on the QFrame object. Your widgets must be added in the QFrame object,
+ * with help of a QLayout. You can use BorderLayout of the components library or Qt layout.
+ *
+ * The layout of the frame will be created later by EditorFactory. For this you must re-implemente initLayout()
+ *
  * \section ContentView Editor Content View
  *
  * The editor has a model for show content of it. The best way is to use
@@ -63,7 +72,7 @@
  *
  * \section Serialization Editor Serialization
  *
- * An editor can be serialized and deserialized in a XinxProjectSessionEditor
+ * An editor can be serialized and deserialized in a XinxSession::SessionEditor
  * (this object save datas in XML Document). For this child editor must registered
  * by using :
  *
@@ -124,17 +133,12 @@
  */
 
 
+
 /*!
  * \brief Create an objects of type AbstractEditor.
- *
- * An editor is based on the QFrame object. Your widgets must be added in the QFrame object,
- * with help of a QLayout. You can use BorderLayout of the components library or Qt layout.
- *
- * The layout of the frame will be created later by EditorFactory. For this you must re-implemente initLayout()
- *
  * \param parent Parent and containers of the editor.
  */
-AbstractEditor::AbstractEditor(IFileTypePlugin * fileType, QWidget * parent)  : QFrame(parent), m_fileTypePlugin(fileType), m_isSaving(false), m_modified(false), m_neverModified(true)
+AbstractEditor::AbstractEditor(QWidget* parent): QFrame(parent), _project(0), m_fileTypePlugin(0), m_isSaving(false), m_modified(false), m_neverModified(true)
 {
 	initObjects();
 }
@@ -160,28 +164,6 @@ void AbstractEditor::initObjects()
 {
 	setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
 	setLineWidth(2);
-
-	m_undoAction = new QAction(QIcon(":/images/undo.png"), AbstractEditor::tr("&Undo"), this);
-	m_undoAction->setEnabled(false);
-	QObject::connect(m_undoAction, SIGNAL(triggered()), this, SLOT(undo()));
-	QObject::connect(this, SIGNAL(undoAvailable(bool)), m_undoAction, SLOT(setEnabled(bool)));
-	m_redoAction = new QAction(QIcon(":/images/redo.png"), AbstractEditor::tr("&Redo"), this);
-	m_redoAction->setEnabled(false);
-	QObject::connect(m_redoAction, SIGNAL(triggered()), this, SLOT(redo()));
-	QObject::connect(this, SIGNAL(redoAvailable(bool)), m_redoAction, SLOT(setEnabled(bool)));
-
-	m_cutAction = new QAction(QIcon(":/images/editcut.png"), AbstractEditor::tr("&Cut"), this);
-	m_cutAction->setEnabled(false);
-	QObject::connect(m_cutAction, SIGNAL(triggered()), this, SLOT(cut()));
-	QObject::connect(this, SIGNAL(copyAvailable(bool)), m_cutAction, SLOT(setEnabled(bool)));
-	m_copyAction = new QAction(QIcon(":/images/editcopy.png"), AbstractEditor::tr("C&opy"), this);
-	m_copyAction->setEnabled(false);
-	QObject::connect(m_copyAction, SIGNAL(triggered()), this, SLOT(copy()));
-	QObject::connect(this, SIGNAL(copyAvailable(bool)), m_copyAction, SLOT(setEnabled(bool)));
-	m_pasteAction = new QAction(QIcon(":/images/editpaste.png"), AbstractEditor::tr("&Paste"), this);
-	m_pasteAction->setEnabled(true);
-	QObject::connect(m_pasteAction, SIGNAL(triggered()), this, SLOT(paste()));
-	QObject::connect(this, SIGNAL(pasteAvailable(bool)), m_pasteAction, SLOT(setEnabled(bool)));
 }
 
 /*!
@@ -460,7 +442,7 @@ void AbstractEditor::loadFromFile(const QString & fileName)
 	{
 		if (e->isActivated() && qobject_cast<IXinxInputOutputPlugin*>(e->plugin()))
 		{
-			file = qobject_cast<IXinxInputOutputPlugin*>(e->plugin())->loadFile(m_lastFileName);
+			file = qobject_cast<IXinxInputOutputPlugin*>(e->plugin())->loadFile(this, m_lastFileName);
 			if (file) break;
 		}
 	}
@@ -510,7 +492,7 @@ void AbstractEditor::saveToFile(const QString & fileName)
 	{
 		if (e->isActivated() && qobject_cast<IXinxInputOutputPlugin*>(e->plugin()))
 		{
-			file = qobject_cast<IXinxInputOutputPlugin*>(e->plugin())->saveFile(fileName, m_lastFileName);
+			file = qobject_cast<IXinxInputOutputPlugin*>(e->plugin())->saveFile(this, fileName, m_lastFileName);
 			if (file) break;
 		}
 	}
@@ -541,66 +523,6 @@ void AbstractEditor::saveToFile(const QString & fileName)
 	m_isSaving = false;
 	activateWatcher();
 	setModified(false);
-}
-
-/*!
- * \brief Return the action used to undo operations in the editor.
- *
- * This action call the \e undo().
- * \return Return the action to undo.
- * \sa undo(), undoAvailable()
- */
-QAction * AbstractEditor::undoAction()
-{
-	return m_undoAction;
-}
-
-/*!
- * \brief Return the action used to redo operations in the editor.
- *
- * This action call the \e redo().
- * \return Return the action to redo.
- * \sa redo(), redoAvailable()
- */
-QAction * AbstractEditor::redoAction()
-{
-	return m_redoAction;
-}
-
-/*!
- * \brief Return the action used to cut a selected text in the editor.
- *
- * This action call the \e cut().
- * \return Return the action to cut.
- * \sa cut(), copyAvailable(), canCopy()
- */
-QAction * AbstractEditor::cutAction()
-{
-	return m_cutAction;
-}
-
-/*!
- * \brief Return the action used to copy a selected text in the editor.
- *
- * This action call the \e copy().
- * \return Return the action to copy.
- * \sa copy(), copyAvailable(), canCopy()
- */
-QAction * AbstractEditor::copyAction()
-{
-	return m_copyAction;
-}
-
-/*!
- * \brief Return the action used to past a text in the editor.
- *
- * This action call the \e paste().
- * \return Return the action to paste.
- * \sa copy(), pasteAvailable(), canPaste()
- */
-QAction * AbstractEditor::pasteAction()
-{
-	return m_pasteAction;
 }
 
 /*!
@@ -672,27 +594,25 @@ QString AbstractEditor::defaultFileName() const
 
 
 /*!
- * \brief Serialize the editor and return the value in a XinxProjectSessionEditor.
+ * \brief Serialize the editor and return the value in a XinxSession::SessionEditor.
  *
  * The serialization save internal data of the editor (modified, content,
- * position of cursor, file name, ...). The format of the data depend of XinxProjectSessionEditor.
+ * position of cursor, file name, ...). The format of the data depend of XinxSession::SessionEditor.
  *
  * \param data where datas must be stored.
  * \param content If true, the editor save the modifed content, else the editor must save only
  * the state.
  * \sa deserialze(), deserialzeEditor()
  */
-void AbstractEditor::serialize(XinxProjectSessionEditor * data, bool content)
+void AbstractEditor::serialize(XinxSession::SessionEditor * data, bool content)
 {
 	Q_UNUSED(content);
 
-	data->writeProperty("ClassName", m_fileTypePlugin->name());
-
-	if (!m_lastFileName.isEmpty())
-		data->writeProperty("FileName", QVariant(QDir(data->projectPath()).relativeFilePath(m_lastFileName)));
-	else
-		data->writeProperty("FileName", QVariant(QString()));
-	data->writeProperty("Modified", QVariant(m_modified));
+	data->writeProperty ("ClassName", m_fileTypePlugin->name());
+	data->writeProperty ("FileName", _project ? QDir(_project->projectPath ()).relativeFilePath (m_lastFileName) : m_lastFileName);
+	data->writeProperty ("Modified", QVariant(m_modified));
+	data->writeProperty ("Project", _project ? _project->projectPath () : QString());
+	data->writeProperty ("Informations", m_fileTypePlugin ? m_fileTypePlugin->name () : QString());
 }
 
 /*!
@@ -703,17 +623,25 @@ void AbstractEditor::serialize(XinxProjectSessionEditor * data, bool content)
  * \param data from what the data must be read
  * \sa serialize(), deserializeEditor()
  */
-void AbstractEditor::deserialize(XinxProjectSessionEditor * data)
+void AbstractEditor::deserialize(XinxSession::SessionEditor * data)
 {
 	// Dont't read the class name, already read.
-	const QString lastFileName = data->readProperty("FileName").toString();
+	const QString	file_type_name		= data->readProperty ("Informations").toString ();
+	const QString	project_path		= data->readProperty ("Project").toString ();
+	const QString	relative_file_name	= data->readProperty ("FileName").toString ();
+	const bool		modified			= data->readProperty ("Modified").toBool ();
 
-	if (QFileInfo(lastFileName).isRelative() && !lastFileName.isEmpty())
-		m_lastFileName = QDir(data->projectPath()).absoluteFilePath(lastFileName);
+	m_fileTypePlugin					= EditorFactory::self()->interfaceOfName(file_type_name);
+	XinxProject::Project * project		= XinxProject::Manager::self ()->projectOfPath(project_path);
+
+	setProject (project);
+
+	if (QFileInfo(relative_file_name).isRelative() && !relative_file_name.isEmpty())
+		m_lastFileName = QDir(_project->projectPath ()).absoluteFilePath(relative_file_name);
 	else
-		m_lastFileName = lastFileName;
+		m_lastFileName = relative_file_name;
 
-	m_modified = data->readProperty("Modified").toBool();
+	m_modified = modified;
 
 	activateWatcher();
 }
@@ -731,13 +659,14 @@ void AbstractEditor::deserialize(XinxProjectSessionEditor * data)
  * \return An editor
  * \sa serialize(), deserialize()
  */
-AbstractEditor * AbstractEditor::deserializeEditor(XinxProjectSessionEditor * data)
+AbstractEditor * AbstractEditor::deserializeEditor(XinxSession::SessionEditor * data)
 {
 	QString name = data->readProperty("ClassName").toString();
 	IFileTypePlugin * plugin = XinxPluginsLoader::self()->fileType(name);
 	if (plugin)
 	{
 		AbstractEditor * editor = plugin->createEditor();
+		editor->setFileTypePluginInterface (plugin);
 		editor->deserialize(data);
 		return editor;
 	}
@@ -767,6 +696,16 @@ void AbstractEditor::setFileTypePluginInterface(IFileTypePlugin * value)
 IFileTypePlugin * AbstractEditor::fileTypePluginInterface() const
 {
 	return m_fileTypePlugin;
+}
+
+void AbstractEditor::setProject(XinxProject::Project * project)
+{
+	_project = project;
+}
+
+XinxProject::Project * AbstractEditor::project() const
+{
+	return _project;
 }
 
 void AbstractEditor::fileChanged()

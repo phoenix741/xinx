@@ -28,7 +28,7 @@ class MaquetteFileEditor : public TextFileEditor
 {
 	Q_OBJECT
 public:
-	MaquetteFileEditor(IFileTypePlugin * fileType = 0, QWidget *parent = 0);
+	MaquetteFileEditor(QWidget* parent = 0);
 	virtual ~MaquetteFileEditor();
 protected:
 

@@ -126,6 +126,7 @@ RCS::struct_rcs_infos RCS_SVN::info(const QString & path)
 		{
 			QString filename = QDir::fromNativeSeparators(QDir(absolutePath).absoluteFilePath(eol.at(3)));
 
+			rcsInfos.filename = filename;
 			m_infos.insert(filename, rcsInfos);
 		}
 
@@ -137,6 +138,7 @@ RCS::struct_rcs_infos RCS_SVN::info(const QString & path)
 		return m_infos.value(QDir::fromNativeSeparators(path));
 	else
 	{
+		rcsInfos.filename = QString();
 		rcsInfos.state = RCS::Unknown;
 		rcsInfos.version = "0";
 		rcsInfos.rcsDate = QDateTime();

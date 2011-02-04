@@ -39,7 +39,9 @@
 #include <QPainter>
 #include <QPaintEvent>
 
-class XinxLineEditButton : public QWidget
+#include <components-config.h>
+
+class COMPONENTSEXPORT XinxLineEditButton : public QWidget
 {
 	Q_OBJECT
 public:
@@ -57,7 +59,7 @@ private:
 	QPixmap m_pixmap;
 };
 
-class XinxLineEdit : public QLineEdit
+class COMPONENTSEXPORT XinxLineEdit : public QLineEdit
 {
 	Q_OBJECT
 public:

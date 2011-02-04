@@ -27,7 +27,7 @@
 
 // Xinx header
 #include "configuration/gceinterface.h"
-#include <project/xinxproject.h>
+#include <project/xinxprojectproject.h>
 
 class ConfigurationManager : public QObject
 {
@@ -35,10 +35,10 @@ class ConfigurationManager : public QObject
 public:
 	virtual ~ConfigurationManager();
 
-	GceInterface * getInterfaceOfProject(XinxProject * project);
+	GceInterface * getInterfaceOfProject(XinxProject::Project * project);
 	GceInterface * getInterfaceOfDirectory(const QString & directory);
 
-	void loadDictionary(XinxProject * project);
+	void loadDictionary(XinxProject::Project * project);
 
 	void cleanCache();
 
@@ -51,7 +51,7 @@ private:
 
 	QFileSystemWatcher * m_watcher;
 	QHash<QString,QString> m_fileToGceInterfaceKey;
-	QHash<QString,XinxProject*> m_fileToDictionaryKey;
+	QHash<QString,XinxProject::Project*> m_fileToDictionaryKey;
 
 	QHash<QString,GceInterface*> m_interface;
 

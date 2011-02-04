@@ -42,14 +42,9 @@ QString MaquetteFileType::icon()
 	return ":/generix/images/typemaq.png";
 }
 
-AbstractEditor * MaquetteFileType::createEditor(const QString & filename)
+AbstractEditor * MaquetteFileType::createEditor()
 {
-	MaquetteFileEditor * editor = new MaquetteFileEditor(this);
-
-	if (! filename.isEmpty())
-		editor->loadFromFile(filename);
-
-	return editor;
+	return new MaquetteFileEditor();
 }
 
 QString MaquetteFileType::highlighterId() const

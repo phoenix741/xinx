@@ -23,7 +23,7 @@
 
 // Xinx header
 #include "ui_generixderivationoptionspage.h"
-#include <plugins/plugininterfaces.h>
+#include <plugins/interfaces/gui.h>
 
 class GenerixDerivationOptionsPageImpl : public QWidget, public Ui::GenerixDerivationOptionsPage, public IXinxPluginProjectConfigurationPage
 {
@@ -32,7 +32,7 @@ public:
 	GenerixDerivationOptionsPageImpl(QWidget * parent = 0, Qt::WFlags f = 0);
 	virtual ~GenerixDerivationOptionsPageImpl();
 
-	virtual void setProject(XinxProject * project);
+	virtual void setProject(XinxProject::Project * project);
 
 	virtual QPixmap image();
 	virtual QString name();
@@ -44,7 +44,7 @@ public:
 	virtual bool isSettingsValid();
 	virtual bool isVisible();
 private:
-	XinxProject * m_project;
+	XinxProject::Project * m_project;
 };
 
 #endif // _GENERIXDERIVATIONOPTIONSPAGE_H_

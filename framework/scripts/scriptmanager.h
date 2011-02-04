@@ -1,21 +1,21 @@
-/* *********************************************************************** *
- * XINX                                                                    *
- * Copyright (C) 2007-2010 by Ulrich Van Den Hekke                         *
- * ulrich.vdh@shadoware.org                                                *
- *                                                                         *
- * This program is free software: you can redistribute it and/or modify    *
- * it under the terms of the GNU General Public License as published by    *
- * the Free Software Foundation, either version 3 of the License, or       *
- * (at your option) any later version.                                     *
- *                                                                         *
- * This program is distributed in the hope that it will be useful,         *
- * but WITHOUT ANY WARRANTY; without even the implied warranty of          *
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *
- * GNU General Public License for more details.                            *
- *                                                                         *
- * You should have received a copy of the GNU General Public License       *
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
- * *********************************************************************** */
+/*
+ XINX
+ Copyright (C) 2007-2011 by Ulrich Van Den Hekke
+ xinx@shadoware.org
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful.
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 #pragma once
 #ifndef __SCRIPTMANAGER_H__
@@ -30,8 +30,23 @@
 #include <QScriptEngine>
 #include <QPointer>
 
+/*!
+ * \defgroup XinxScript
+ * \brief Define class used to make script with XINX
+ *
+ * FIXME: Fix the documentation
+ *
+ * Note : to access to the current project, we must use the project editor.
+ *
+ * FIXME: Provide a way to access to the manager (defaultProject, and project or the project of a file)
+ */
+
 class AbstractEditor;
-class XinxProject;
+
+namespace XinxProject
+{
+class Parameters;
+};
 
 class LIBEXPORT ScriptValue
 {
@@ -82,8 +97,6 @@ public slots:
 	void loadScripts();
 signals:
 	void changed();
-private slots:
-	void projectChange();
 private:
 	ScriptManager();
 	void loadScript(const QString & filename);
@@ -91,7 +104,7 @@ private:
 	QStringList m_filenames;
 	QScriptEngine m_engine;
 	QList<ScriptValue> m_objects;
-	QPointer<XinxProject> m_project;
+	QPointer<XinxProject::Parameters> m_project;
 	AbstractEditor * m_editor;
 
 	static ScriptManager * s_self;

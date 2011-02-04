@@ -59,7 +59,7 @@ GceInterface * GceInterfaceFactory::createGceInterface(const QString & path)
 		return NULL;
 	}
 
-	// Si aucun des fichiers n'est trouvé, nous ne somme pas dans une WebModule Generix. Il n'y a donc pas
+	// Si aucun des fichiers n'est trouvÃ©, nous ne somme pas dans une WebModule Generix. Il n'y a donc pas
 	// de fichier de configuration. On peut laisser tomber.
 	return NULL;
 }

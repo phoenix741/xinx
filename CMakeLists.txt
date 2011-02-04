@@ -1,0 +1,24 @@
+project(xinx-project)
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules/")
+cmake_minimum_required(VERSION 2.8.0)
+
+add_subdirectory(components)
+add_subdirectory(framework)
+add_subdirectory(plugins/core)
+add_subdirectory(plugins/empty)
+add_subdirectory(plugins/cvsplugin)
+add_subdirectory(plugins/svnplugin)
+add_subdirectory(plugins/svnpluginwrapper)
+add_subdirectory(plugins/services)
+add_subdirectory(plugins/generix)
+add_subdirectory(xinx)
+
+file(COPY templates DESTINATION ./)
+file(COPY datas DESTINATION ./)
+file(COPY scripts DESTINATION ./)
+
+find_package(Doxygen)
+if (DOXYGEN_FOUND)
+	add_custom_target(doc ${DOXYGEN_EXECUTABLE} ${CMAKE_SOURCE_DIR}/Doxyfile WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+endif(DOXYGEN_FOUND)
+

@@ -22,7 +22,7 @@
 
 // Xinx header
 #include "ui_newgenerixderivation2page.h"
-#include <plugins/plugininterfaces.h>
+#include <plugins/interfaces/gui.h>
 
 // Qt header
 #include <QWizardPage>
@@ -35,7 +35,7 @@ public:
 
 	virtual QString pagePluginId() const;
 	virtual bool pageIsVisible() const;
-	virtual bool saveSettingsDialog(XinxProject * project);
+	virtual bool saveSettingsDialog(XinxProject::Project * project);
 
 	virtual void initializePage();
 };

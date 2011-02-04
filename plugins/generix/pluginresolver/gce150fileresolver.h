@@ -22,7 +22,7 @@
 #pragma once
 
 // Xinx header
-#include <plugins/plugininterfaces.h>
+#include <plugins/interfaces/resolver.h>
 
 // Qt header
 #include <QApplication>
@@ -39,8 +39,7 @@ public:
 	static QString staticId();
 	virtual QString id();
 	virtual QString name();
-	virtual bool isActivated();
-	virtual QString resolveFileName(const QString & nameToResolve, const QString & currentPath = QString());
+	virtual bool resolveFileName ( const QString& nameToResolve, QString& resolvedName, const QString& currentPath = QString(), XinxProject::Project* project = 0 );
 };
 
 #endif // GCE150FILERESOLVER_H

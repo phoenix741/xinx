@@ -17,24 +17,38 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
+#pragma once
 #ifndef CSSMODELDATA_H_
 #define CSSMODELDATA_H_
-#pragma once
 
 // Xinx header
-#include <contentview2/contentview2parser.h>
+#include <contentview3/parser.h>
 
 // Qt header
 #include <QApplication>
 
-class CSSFileContentParser : public ContentView2::Parser
+namespace Core
 {
-	Q_DECLARE_TR_FUNCTIONS(CSSFileContentParser)
-public:
-	CSSFileContentParser();
-	virtual ~CSSFileContentParser();
 
-	virtual void load();
+namespace CascadingStyleSheet
+{
+
+class IdNode;
+class TagNode;
+class ClassNode;
+class IdentifierNode;
+class PropertyNode;
+
+class Parser : public ContentView3::Parser
+{
+	Q_OBJECT
+public:
+	Parser();
+	virtual ~Parser();
+
+	virtual QString name() const;
+protected:
+	virtual void parse();
 
 private:
 	enum ParsingState
@@ -45,11 +59,15 @@ private:
 
 	int m_line;
 
-	ContentView2::Node attacheNewPropertyNode(ContentView2::Node parent, const QString & name, int line);
-	ContentView2::Node attacheNewIdentifierNode(ContentView2::Node parent, const QString & name, int line);
-	ContentView2::Node attacheNewClassNode(ContentView2::Node parent, const QString & name, int line);
-	ContentView2::Node attacheNewTagNode(ContentView2::Node parent, const QString & name, int line);
-	ContentView2::Node attacheNewIdNode(ContentView2::Node parent, const QString & name, int line);
+	QSharedPointer<PropertyNode> attacheNewPropertyNode(const ContentView3::NodePtr & parent, const QString & name, int line);
+	QSharedPointer<IdentifierNode> attacheNewIdentifierNode(const ContentView3::NodePtr & parent, const QString & name, int line);
+	QSharedPointer<ClassNode> attacheNewClassNode(const ContentView3::NodePtr & parent, const QString & name, int line);
+	QSharedPointer<TagNode> attacheNewTagNode(const ContentView3::NodePtr & parent, const QString & name, int line);
+	QSharedPointer<IdNode> attacheNewIdNode(const ContentView3::NodePtr & parent, const QString & name, int line);
 };
+
+}
+
+}
 
 #endif /*CSSMODELDATA_H_*/

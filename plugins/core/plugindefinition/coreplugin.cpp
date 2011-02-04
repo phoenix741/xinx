@@ -26,23 +26,31 @@
 
 #include "filetypeplugin.h"
 
+#include <actions/actionmanager.h>
+#include "actions/bookmarkactions.h"
+#include "actions/clipboardactions.h"
+#include "actions/editoractions.h"
+#include "actions/texteditoractions.h"
 #include "actions/stylesheetaction.h"
 #include "actions/commentactions.h"
 #include "actions/validationaction.h"
 
-#include <project/xinxproject.h>
 #include "pluginproperty/parserprojectpropertyimpl.h"
 #include "pluginproperty/searchpathlistprjpageform.h"
 
 #include "pluginresolver/manualfileresolver.h"
 
-#include <contentview2/contentview2manager.h>
-#include "editors/models/xsl/xmlcompletionparser.h"
-#include "editors/models/xsl/xslcontentviewparser.h"
+#include "editors/models/html_xsl_base/xmlcompletionparser.h"
+#include "editors/models/xsl/stylesheet_parser.h"
 #include "editors/models/js/jscontentviewparser.h"
-#include <snipets/snipetcompletionparser.h>
-#include <snipets/snipetmanager.h>
-#include <contentview2/contentview2cache.h>
+#include <contentview3/cache.h>
+#include <editors/models/html_xsl_base/xmlcontextparser.h>
+#include <editors/models/html_xsl_base/itemmodelfactory.h>
+#include <editors/models/xsl/itemmodelfactory.h>
+#include <editors/models/css/csscontextparser.h>
+#include <editors/models/js/jscontextparser.h>
+#include <codecompletion/snipets/snipetcontextparser.h>
+#include <codecompletion/snipets/snipetitemmodelfactory.h>
 
 // Qt header
 #include <QStringList>
@@ -83,11 +91,6 @@ bool CorePlugin::initializePlugin(const QString & lang)
 
 	m_resolver = new ManualFileResolver();
 
-	ContentView2::Manager::self()->addInitializationParser(true, "Snipet", "Snipet", "*");
-	ContentView2::Manager::self()->addInitializationParser(true, "XmlCompletion", "XmlCompletion", "*");
-
-	connect(SnipetManager::self(), SIGNAL(changed()), this, SLOT(snipetChanged()));
-
 	return true;
 }
 
@@ -120,27 +123,19 @@ QList<IFileTypePlugin*> CorePlugin::fileTypes()
 	return m_fileTypes;
 }
 
-ContentView2::Parser * CorePlugin::createParser(const QString & type)
+ContentView3::Parser * CorePlugin::createContentParser(const QString & type)
 {
 	if (type == "XSL")
 	{
-		return new XslContentView2Parser();
+		return new Core::Stylesheet::Parser;
 	}
 	else if (type == "JS")
 	{
-		return new JsContentViewParser();
+		return new Core::JavaScript::Parser;
 	}
 	else if (type == "CSS")
 	{
-		return new CSSFileContentParser();
-	}
-	else if (type == "Snipet")
-	{
-		return new SnipetCompletionParser();
-	}
-	else if (type == "XmlCompletion")
-	{
-		return XmlCompletionParser::self()->clone();
+		return new Core::CascadingStyleSheet::Parser;
 	}
 	else
 	{
@@ -148,42 +143,130 @@ ContentView2::Parser * CorePlugin::createParser(const QString & type)
 	}
 }
 
-XinxAction::MenuList CorePlugin::actions()
+QList<CodeCompletion::ContextParser*> CorePlugin::createContextParser() const
 {
-	if (m_menus.size() == 0)
-	{
-		XinxAction::Action * gotoLineAction = new GotoLineAction(tr("Go to &Line ..."), QString("Ctrl+G"), this);
-		XinxAction::Action * commentAction = new CommentAction(tr("&Comment"), QString("Ctrl+Shift+C"), this);
-		XinxAction::Action * uncommentAction = new UncommentAction(tr("&Uncomment"), QString("Ctrl+Shift+D"), this);
+	QList< CodeCompletion::ContextParser* > result;
 
-		gotoLineAction->action()->setStatusTip(tr("Move the cursor to line, choose by user"));
-		gotoLineAction->action()->setWhatsThis(tr("This action open a dialog box to choose the line number where you want to go."));
+	result << new CodeCompletion::SnipetContextParser;
+	result << new Core::BaliseDefinition::XmlContextParser;
+	result << new Core::CascadingStyleSheet::CssContextParser;
+	result << new Core::JavaScript::JsContextParser;
 
-		commentAction->action()->setStatusTip(tr("Comment the selected text"));
-		commentAction->action()->setWhatsThis(tr("Comment the selected text by using the language syntax. <ul><li>In <b>XML</b> like format <i>&lt;!-- comment --&gt;</i></li> <li>In <b>Javascript</b> : <i>/* comment */</i> </li></ul>"));
+	return result;
+}
 
-		uncommentAction->action()->setStatusTip(tr("Uncomment the selected text if commented"));
-		uncommentAction->action()->setWhatsThis(tr("See the comment helper function"));
+QList<CodeCompletion::ItemModelFactory*> CorePlugin::createItemModelFactory() const
+{
+	QList<CodeCompletion::ItemModelFactory*> result;
 
-		XinxAction::Action * runAction = new StyleSheetAction(QIcon(":/images/run.png"), tr("Process stylesheet"), QString("F9"), this);
+	result << new CodeCompletion::SnipetItemModelFactory;
+	result << new Core::BaliseDefinition::ItemModelFactory;
+	result << new Core::Stylesheet::ItemModelFactory;
 
-		XinxAction::Action * validateAction = new ValidationAction(tr("&Validate ..."), QString(), this);
+	return result;
+}
 
-		XinxAction::ActionList editMenu(tr("&Edit"), "edit");
-		XinxAction::ActionList runMenu(tr("&Execute"), "execute");
+void CorePlugin::generateActionMenu ()
+{
+	XinxAction::ActionManager::self()->insertNameOfMenu("edit", tr("&Edit"));
+	XinxAction::ActionManager::self()->insertNameOfMenu("bookmark", tr("&Bookmark"));
+	XinxAction::ActionManager::self()->insertNameOfMenu("execute", tr("&Execute"));
 
-		editMenu.append(gotoLineAction);
-		editMenu.append(new XinxAction::Separator);
-		editMenu.append(commentAction);
-		editMenu.append(uncommentAction);
+	XinxAction::Action * undoAction = new UndoAction;
+	XinxAction::Action * redoAction = new RedoAction;
+	XinxAction::Action * cutAction = new CutAction;
+	XinxAction::Action * copyAction = new CopyAction;
+	XinxAction::Action * pasteAction = new PasteAction;
+	XinxAction::Action * selectAllAction = new SelectAllAction;
+	XinxAction::Action * duplicateLinesAction = new DuplicateLinesAction;
+	XinxAction::Action * moveLineUpAction = new MoveLineUpAction;
+	XinxAction::Action * moveLineDownAction = new MoveLineDownAction;
+	XinxAction::Action * upperSelectedTextAction = new UpperSelectedTextAction;
+	XinxAction::Action * lowerSelectedTextAction = new LowerSelectedTextAction;
+	XinxAction::Action * showSpecialCharsAction = new ShowSpecialCharsAction;
+	XinxAction::Action * indentAction = new IndentAction;
+	XinxAction::Action * unindentAction = new UnindentAction;
+	XinxAction::Action * autoIndentAction = new AutoIndentAction;
+	XinxAction::Action * highlightWordAction = new HighlightWordAction;
+	XinxAction::Action * completeAction = new CompleteAction;
+	XinxAction::Action * gotoLineAction = new GotoLineAction;
+	XinxAction::Action * commentAction = new CommentAction;
+	XinxAction::Action * uncommentAction = new UncommentAction;
 
-		runMenu.append(runAction);
-		runMenu.append(validateAction);
+	XinxAction::Action * bookmarkAction = new BookmarkAction;
+	XinxAction::Action * previousBookmarkAction = new PreviousBookmarkAction;
+	XinxAction::Action * nextBookmarkAction = new NextBookmarkAction;
+	XinxAction::Action * clearAllBookmarkAction = new ClearAllBookmarkAction;
 
-		m_menus.append(editMenu);
-		m_menus.append(runMenu);
-	}
-	return m_menus;
+	XinxAction::Action * styleSheetAction = new StyleSheetAction;
+	XinxAction::Action * validationAction = new ValidationAction;
+
+	XinxAction::ActionManager::self()->addMenuItem("execute", validationAction);
+	XinxAction::ActionManager::self()->addMenuItem("execute", styleSheetAction);
+
+	XinxAction::ActionManager::self()->addMenuItem("bookmark", clearAllBookmarkAction);
+	XinxAction::ActionManager::self()->addMenuSeparator("bookmark");
+	XinxAction::ActionManager::self()->addMenuItem("bookmark", nextBookmarkAction);
+	XinxAction::ActionManager::self()->addMenuItem("bookmark", previousBookmarkAction);
+	XinxAction::ActionManager::self()->addMenuItem("bookmark", bookmarkAction);
+
+	XinxAction::ActionManager::self()->addMenuItem("edit", uncommentAction);
+	XinxAction::ActionManager::self()->addMenuItem("edit", commentAction);
+	XinxAction::ActionManager::self()->addMenuSeparator("edit");
+	XinxAction::ActionManager::self()->addMenuItem("edit", gotoLineAction);
+	XinxAction::ActionManager::self()->addMenuItem("edit", completeAction);
+	XinxAction::ActionManager::self()->addMenuItem("edit", highlightWordAction);
+	XinxAction::ActionManager::self()->addMenuSeparator("edit");
+	XinxAction::ActionManager::self()->addMenuItem("edit", autoIndentAction);
+	XinxAction::ActionManager::self()->addMenuItem("edit", unindentAction);
+	XinxAction::ActionManager::self()->addMenuItem("edit", indentAction);
+	XinxAction::ActionManager::self()->addMenuSeparator("edit");
+	XinxAction::ActionManager::self()->addMenuItem("edit", showSpecialCharsAction);
+	XinxAction::ActionManager::self()->addMenuItem("edit", lowerSelectedTextAction);
+	XinxAction::ActionManager::self()->addMenuItem("edit", upperSelectedTextAction);
+	XinxAction::ActionManager::self()->addMenuSeparator("edit");
+	XinxAction::ActionManager::self()->addMenuItem("edit", moveLineDownAction);
+	XinxAction::ActionManager::self()->addMenuItem("edit", moveLineUpAction);
+	XinxAction::ActionManager::self()->addMenuItem("edit", duplicateLinesAction);
+	XinxAction::ActionManager::self()->addMenuItem("edit", selectAllAction);
+	XinxAction::ActionManager::self()->addMenuSeparator("edit");
+	XinxAction::ActionManager::self()->addMenuItem("edit", pasteAction);
+	XinxAction::ActionManager::self()->addMenuItem("edit", copyAction);
+	XinxAction::ActionManager::self()->addMenuItem("edit", cutAction);
+	XinxAction::ActionManager::self()->addMenuSeparator("edit");
+	XinxAction::ActionManager::self()->addMenuItem("edit", redoAction);
+	XinxAction::ActionManager::self()->addMenuItem("edit", undoAction);
+
+	XinxAction::ActionManager::self()->addToolBarItem("execute", styleSheetAction);
+
+	XinxAction::ActionManager::self()->addToolBarItem("edit", showSpecialCharsAction);
+	XinxAction::ActionManager::self()->addToolBarSeparator("edit");
+	XinxAction::ActionManager::self()->addToolBarItem("edit", lowerSelectedTextAction);
+	XinxAction::ActionManager::self()->addToolBarItem("edit", upperSelectedTextAction);
+	XinxAction::ActionManager::self()->addToolBarSeparator("edit");
+	XinxAction::ActionManager::self()->addToolBarItem("edit", moveLineDownAction);
+	XinxAction::ActionManager::self()->addToolBarItem("edit", moveLineUpAction);
+	XinxAction::ActionManager::self()->addToolBarSeparator("edit");
+	XinxAction::ActionManager::self()->addToolBarItem("edit", pasteAction);
+	XinxAction::ActionManager::self()->addToolBarItem("edit", copyAction);
+	XinxAction::ActionManager::self()->addToolBarItem("edit", cutAction);
+	XinxAction::ActionManager::self()->addToolBarSeparator("edit");
+	XinxAction::ActionManager::self()->addToolBarItem("edit", redoAction);
+	XinxAction::ActionManager::self()->addToolBarItem("edit", undoAction);
+
+	XinxAction::ActionManager::self()->addPopupItem(styleSheetAction);
+	XinxAction::ActionManager::self()->addPopupSeparator();
+	XinxAction::ActionManager::self()->addPopupItem(uncommentAction);
+	XinxAction::ActionManager::self()->addPopupItem(commentAction);
+	XinxAction::ActionManager::self()->addPopupSeparator();
+	XinxAction::ActionManager::self()->addPopupItem(gotoLineAction);
+	XinxAction::ActionManager::self()->addPopupSeparator();
+	XinxAction::ActionManager::self()->addPopupItem(pasteAction);
+	XinxAction::ActionManager::self()->addPopupItem(copyAction);
+	XinxAction::ActionManager::self()->addPopupItem(cutAction);
+	XinxAction::ActionManager::self()->addPopupSeparator();
+	XinxAction::ActionManager::self()->addPopupItem(redoAction);
+	XinxAction::ActionManager::self()->addPopupItem(undoAction);
 }
 
 QList< QPair<QString,QString> > CorePlugin::pluginTools()
@@ -245,11 +328,6 @@ XmlPresentationDockWidget * CorePlugin::dock()
 QList<IFileResolverPlugin*> CorePlugin::fileResolvers()
 {
 	return QList<IFileResolverPlugin*>() << m_resolver;
-}
-
-void CorePlugin::snipetChanged()
-{
-	ContentView2::Manager::self()->cache()->addToCache(0, "Snipet", "Snipet", "*");
 }
 
 Q_EXPORT_PLUGIN2(coreplugin, CorePlugin)

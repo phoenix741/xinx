@@ -33,9 +33,11 @@
 
 #include <qcombobox.h>
 
+#include <components-config.h>
+
 class XinxColorComboInternal;
 
-class XinxColorCombo : public QComboBox
+class COMPONENTSEXPORT XinxColorCombo : public QComboBox
 {
 	Q_OBJECT
 	Q_CLASSINFO("Author", "Martin Jones")

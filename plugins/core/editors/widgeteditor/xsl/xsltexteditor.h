@@ -24,6 +24,7 @@
 // Xinx header
 #include <editors/xinxcodeedit.h>
 #include "editors/widgeteditor/xml/xmltexteditor.h"
+#include "editors/models/xsl/stylesheet_templatenode.h"
 
 // Qt header
 #include <QStringList>
@@ -36,6 +37,14 @@
 
 class XslCompletionNodeModel;
 
+namespace Core
+{
+namespace Stylesheet
+{
+	class TemplateNode;
+}
+}
+
 class XslTextEditor : public XmlTextEditor
 {
 	Q_OBJECT
@@ -43,18 +52,11 @@ public:
 	XslTextEditor(QWidget * parent = 0);
 	virtual ~XslTextEditor();
 
-	virtual QCompleter * completer();
+    virtual QDocumentCursor insertCompletionBalises(Core::BaliseDefinition::XmlContextType* context, QDocumentCursor& tc, QSharedPointer< Core::BaliseDefinition::BaliseNode > balise);
 
-	virtual QDocumentCursor insertCompletionBalises(QDocumentCursor & tc, QString node);
-	virtual void insertCompletionAccolade(QDocumentCursor & tc, QString node, QString param, QString value, const QModelIndex & index);
+	QSharedPointer<Core::Stylesheet::TemplateNode> localNodeOfTemplate(const ContentView3::NodePtr & node, const QString & templateName, bool isNamed);
+	QSharedPointer<Core::Stylesheet::TemplateNode> globalNodeOfTemplate(const QString & templateName, bool isNamed);
 
-	void setModel(XslCompletionNodeModel * model);
-private:
-	QString paramValue(const QDocumentCursor & cursor, const QString & param);
-	void getTemplate(const QDocumentCursor & cursor, QString * name, QString * mode);
-
-	XslCompletionNodeModel * m_model;
-	QDocumentCursor m_lastPosition;
 };
 
 #endif /*XSLTEXTEDITOR_H_*/

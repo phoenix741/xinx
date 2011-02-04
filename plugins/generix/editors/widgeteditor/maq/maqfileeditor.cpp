@@ -23,7 +23,7 @@
 
 /* MaquetteFileEditor */
 
-MaquetteFileEditor::MaquetteFileEditor(IFileTypePlugin * fileType, QWidget *parent) : TextFileEditor(new MaquetteTextEditor(), fileType, parent)
+MaquetteFileEditor::MaquetteFileEditor(QWidget *parent) : TextFileEditor(new MaquetteTextEditor(), parent)
 {
 }
 

@@ -64,7 +64,7 @@ void GceProperties::readGceProperties(const QString & propertiesFileName)
 		return ;
 	}
 
-	// Récupération de la racine
+	// Get root node
 	xmlNodePtr root = xmlDocGetRootElement(document);
 	if (root == NULL)
 	{
@@ -84,37 +84,51 @@ void GceProperties::readGceProperties(const QString & propertiesFileName)
 
 	/* ConfigurationDef */
 
-	const xmlChar * configurationDefPath = (xmlChar*)"string(/config/application/configurationDefinition/definition/@name)";
-	xmlXPathObjectPtr xpathObj = xmlXPathEvalExpression(configurationDefPath, xpathCtx);
+	// Read configuration file without xmlns
+	xmlXPathObjectPtr xpathObj = xmlXPathEvalExpression((xmlChar*)"string(/config/application/configurationDefinition/definition/@name)", xpathCtx);
+
+	// If we don't find an valid string, we try to read the same xpath, with an xmlns (for version post 1.60)
+	if (! (xpathObj && xpathObj->stringval && xpathObj->stringval[0]))
+	{
+		xmlXPathRegisterNs(xpathCtx, (xmlChar*)"gce", (xmlChar*)"http://www.generix.fr/technicalframework/gceproperties");
+		xpathObj = xmlXPathEvalExpression((xmlChar*)"string(/gce:config/gce:application/gce:configurationDefinition/gce:definition/@name)", xpathCtx);
+	}
 	m_configurationDef = QDir(m_directoryPath).absoluteFilePath(QLatin1String((char*)xpathObj->stringval));
 	xmlXPathFreeObject(xpathObj);
 
 	/* Policies */
 
-	const xmlChar * policiesPath = (xmlChar*)"/config/application/presentation/alias/policy";
-	xpathObj = xmlXPathEvalExpression(policiesPath, xpathCtx);
-	xmlNodeSetPtr policies = xpathObj->nodesetval;
-	for (int i = 0; i < policies->nodeNr; i++)
+	xpathObj = xmlXPathEvalExpression((xmlChar*)"/config/application/presentation/alias/policy", xpathCtx);
+	// If we don't find an valid string, we try to read the same xpath, with an xmlns (for version post 1.60)
+	if (! (xpathObj && xpathObj->nodesetval && xpathObj->nodesetval->nodeNr))
 	{
-		if (policies->nodeTab[i]->type != XML_ELEMENT_NODE) continue;
-		QStringList mappingList;
-
-		xmlNodePtr policy = policies->nodeTab[i];
-		QString policyName = QLatin1String((char*)xmlGetProp(policy, (xmlChar*)"name"));
-		xmlNodePtr mappings = policies->nodeTab[i]->children;
-		for (xmlNodePtr mapping = mappings; mapping != NULL; mapping = mapping->next)
+		xpathObj = xmlXPathEvalExpression((xmlChar*)"/gce:config/gce:application/gce:presentation/gce:alias/gce:policy", xpathCtx);
+	}
+	if (xpathObj && xpathObj->nodesetval)
+	{
+		xmlNodeSetPtr policies = xpathObj->nodesetval;
+		for (int i = 0; i < policies->nodeNr; i++)
 		{
-			if (mapping->type == XML_ELEMENT_NODE)
+			if (policies->nodeTab[i]->type != XML_ELEMENT_NODE) continue;
+			QStringList mappingList;
+
+			xmlNodePtr policy = policies->nodeTab[i];
+			QString policyName = QLatin1String((char*)xmlGetProp(policy, (xmlChar*)"name"));
+			xmlNodePtr mappings = policies->nodeTab[i]->children;
+			for (xmlNodePtr mapping = mappings; mapping != NULL; mapping = mapping->next)
 			{
-				QString mappingValue = QLatin1String((char*)xmlGetProp(mapping, (xmlChar*)"value"));
-				mappingList.append(mappingValue);
+				if (mapping->type == XML_ELEMENT_NODE)
+				{
+					QString mappingValue = QLatin1String((char*)xmlGetProp(mapping, (xmlChar*)"value"));
+					mappingList.append(mappingValue);
+				}
 			}
+
+			m_policy.insert(policyName, mappingList);
 		}
 
-		m_policy.insert(policyName, mappingList);
+		xmlXPathFreeObject(xpathObj);
 	}
-
-	xmlXPathFreeObject(xpathObj);
 
 	/* Cleanup */
 

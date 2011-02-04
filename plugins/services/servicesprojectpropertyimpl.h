@@ -27,7 +27,7 @@
 
 // Xinx header
 #include "ui_servicesprojectproperty.h"
-#include <plugins/plugininterfaces.h>
+#include <plugins/interfaces/gui.h>
 
 // Qt header
 #include <QWidget>
@@ -44,7 +44,7 @@ public:
 	virtual QPixmap image();
 	virtual QString name();
 
-	virtual void setProject(XinxProject * project);
+	virtual void setProject(XinxProject::Project * project);
 
 	virtual bool loadSettingsDialog();
 	virtual bool saveSettingsDialog();
@@ -67,7 +67,7 @@ private:
 	QHttp * m_http;
 	QProgressDialog * m_httpProgressDialog;
 	QString m_url;
-	XinxProject * m_project;
+	XinxProject::Project * m_project;
 };
 
 #endif // SERVICESPROJECTPROPERTYIMPL_H

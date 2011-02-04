@@ -20,41 +20,20 @@
 // Xinx header
 #include "jsfileeditor.h"
 #include "editors/widgeteditor/js/jstexteditor.h"
-#include "editors/models/js/javascriptmodelcompleter.h"
-#include "editors/models/js/jscontentviewparser.h"
 
 // Qt header
 #include <QCompleter>
 
 /* StyleSheetContainer */
 
-JSFileEditor::JSFileEditor(IFileTypePlugin * fileType, QWidget *parent) : TextFileEditor(new JSTextEditor(), fileType, parent), m_completionModel(0)
+JSFileEditor::JSFileEditor(QWidget *parent) : TextFileEditor(new JSTextEditor(), parent)
 {
 
 }
 
 JSFileEditor::~JSFileEditor()
 {
-	qobject_cast<JSTextEditor*>(textEdit())->setModel(0);
+
 }
 
-ContentView2::Parser * JSFileEditor::createParser()
-{
-	return new JsContentViewParser();
-}
 
-ContentView2::CompletionModel * JSFileEditor::createModel(QSqlDatabase db, QObject * parent)
-{
-	if (! m_completionModel)
-	{
-		m_completionModel = new JavascriptModelCompleter(db, fileContainer(), parent);
-
-		qobject_cast<JSTextEditor*>(textEdit())->setModel(m_completionModel);
-	}
-	return m_completionModel;
-}
-
-JavascriptModelCompleter * JSFileEditor::completionModel() const
-{
-	return m_completionModel;
-}

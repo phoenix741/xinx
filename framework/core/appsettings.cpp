@@ -294,8 +294,8 @@ AppSettings::struct_project AppSettings::getDefaultProject()
 {
 	struct_project value;
 
-	value.openTheLastProjectAtStart = false;
-	value.saveWithSessionByDefault = false;
+	value.openTheLastSessionAtStart = false;
+	value.singleProjectMode = false;
 	value.defaultPath = QDir(qApp->applicationDirPath()).absoluteFilePath("project");
 	value.closeVersionManagementLog = true;
 	value.automaticProjectDirectoryRefreshTimeout = 500;
@@ -308,9 +308,9 @@ AppSettings::struct_project AppSettings::getSettingsProject(AppSettingsSettings 
 	struct_project value;
 	settings->beginGroup(path);
 
-	value.lastOpenedProject = settings->value("Last opened project", defaultValue.lastOpenedProject).toString();
-	value.openTheLastProjectAtStart = settings->value("Open the last project at start", defaultValue.openTheLastProjectAtStart).toBool();
-	value.saveWithSessionByDefault = settings->value("Save With Session By Default", defaultValue.saveWithSessionByDefault).toBool();
+	value.lastOpenedSession = settings->value( "Last opened session", defaultValue.lastOpenedSession ).toString();
+	value.openTheLastSessionAtStart = settings->value( "Open the last session at start", defaultValue.openTheLastSessionAtStart ).toBool();
+	value.singleProjectMode = settings->value( "Single Project Mode", defaultValue.singleProjectMode ).toBool();
 	value.defaultPath = settings->value("Default Path", defaultValue.defaultPath).toString();
 	value.recentProjectFiles = settings->value("Recent Project Files", defaultValue.recentProjectFiles).toStringList();
 	value.closeVersionManagementLog = settings->value("Close Version Management Log", defaultValue.closeVersionManagementLog).toBool();
@@ -325,9 +325,9 @@ void AppSettings::setSettingsProject(AppSettingsSettings * settings, const QStri
 	struct_project defaultValue = getDefaultProject();
 	settings->beginGroup(path);
 
-	settings->setValue("Last opened project", value.lastOpenedProject, defaultValue.lastOpenedProject);
-	settings->setValue("Open the last project at start", value.openTheLastProjectAtStart, defaultValue.openTheLastProjectAtStart);
-	settings->setValue("Save With Session By Default", value.saveWithSessionByDefault, defaultValue.saveWithSessionByDefault);
+	settings->setValue( "Last opened session", value.lastOpenedSession, defaultValue.lastOpenedSession );
+	settings->setValue( "Open the last session at start", value.openTheLastSessionAtStart, defaultValue.openTheLastSessionAtStart );
+	settings->setValue( "Single Project Mode", value.singleProjectMode, defaultValue.singleProjectMode );
 	settings->setValue("Default Path", value.defaultPath, defaultValue.defaultPath);
 	settings->setValue("Recent Project Files", value.recentProjectFiles, defaultValue.recentProjectFiles);
 	settings->setValue("Close Version Management Log", value.closeVersionManagementLog, defaultValue.closeVersionManagementLog);

@@ -58,22 +58,12 @@ void MessageHandler::handleMessage (QtMsgType type, const QString & description,
 
 /* ValidationAction */
 
-ValidationAction::ValidationAction(QAction * a, QObject * parent) : XinxAction::Action(a, parent)
+ValidationAction::ValidationAction() : XinxAction::Action(tr("&Validate ..."), QString())
 {
 
 }
 
-ValidationAction::ValidationAction(const QString & text, const QKeySequence & shortcut, QObject * parent) : XinxAction::Action(text, shortcut, parent)
-{
-
-}
-
-ValidationAction::ValidationAction(const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent) : XinxAction::Action(icon, text, shortcut, parent)
-{
-
-}
-
-bool ValidationAction::isActionVisible() const
+bool ValidationAction::isVisible() const
 {
 	if (! EditorManager::self()) return false;
 	TextFileEditor * tfe = qobject_cast<TextFileEditor*>(EditorManager::self()->currentEditor());
@@ -81,21 +71,6 @@ bool ValidationAction::isActionVisible() const
 	XmlTextEditor * xte  = qobject_cast<XmlTextEditor*>(tfe->textEdit());
 	if (! xte) return false;
 	return true;
-}
-
-bool ValidationAction::isActionEnabled() const
-{
-	if (! EditorManager::self()) return false;
-	TextFileEditor * tfe = qobject_cast<TextFileEditor*>(EditorManager::self()->currentEditor());
-	if(! tfe) return false;
-	XmlTextEditor * xte  = qobject_cast<XmlTextEditor*>(tfe->textEdit());
-	if (! xte) return false;
-	return true;
-}
-
-bool ValidationAction::isInToolBar() const
-{
-	return false;
 }
 
 void ValidationAction::actionTriggered()

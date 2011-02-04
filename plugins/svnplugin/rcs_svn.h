@@ -22,7 +22,7 @@
 #pragma once
 
 // Xinx header
-#include <rcs/rcs.h>
+#include <versioncontrol/rcs.h>
 
 // Qt header
 #include <QProcess>
@@ -32,6 +32,55 @@
 // Svncpp header
 #include <svncpp/context.hpp>
 #include <svncpp/client.hpp>
+#include <svncpp/context_listener.hpp>
+
+class SubVersionContextListener : public QObject, public svn::ContextListener
+{
+	Q_OBJECT
+public:
+	SubVersionContextListener();
+	virtual ~SubVersionContextListener();
+
+	virtual bool contextGetLogin(const std::string& realm, std::string& username, std::string& password, bool& maySave);
+	virtual void contextNotify(const char* path, svn_wc_notify_action_t action, svn_node_kind_t kind, const char* mime_type, svn_wc_notify_state_t content_state, svn_wc_notify_state_t prop_state, svn_revnum_t revision);
+	virtual bool contextCancel();
+
+	virtual bool contextGetLogMessage(std::string& msg);
+	virtual SslServerTrustAnswer contextSslServerTrustPrompt(const svn::ContextListener::SslServerTrustData& data, apr_uint32_t& acceptedFailures);
+	virtual bool contextSslClientCertPrompt(std::string& certFile);
+	virtual bool contextSslClientCertPwPrompt(std::string& password, const std::string& realm, bool& maySave);
+
+	struct
+	{
+		bool result;
+		QString realm;
+		QString username;
+		QString password;
+		bool may_be_save;
+	} _login;
+
+	struct
+	{
+		bool result;
+		QString file_name;
+	} _certificate_prompt;
+
+	struct
+	{
+		bool result;
+		QString password;
+		QString realm;
+		bool may_be_save;
+	} _certificate_password_prompt;
+signals:
+	void signal_login();
+	void signal_cert_prompt();
+	void signal_cert_password_prompt();
+public slots:
+	void slot_login();
+	void slot_cert_prompt();
+	void slot_cert_password_prompt();
+};
 
 class RCS_SVN : public RCS
 {

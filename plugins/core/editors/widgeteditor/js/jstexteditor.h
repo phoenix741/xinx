@@ -24,18 +24,12 @@
 // Xinx header
 #include <editors/xinxcodeedit.h>
 
-class JavascriptModelCompleter;
-
 class JSTextEditor : public XinxCodeEdit
 {
 	Q_OBJECT
 public:
 	JSTextEditor(QWidget * parent = 0);
 	virtual ~JSTextEditor();
-
-	virtual QCompleter * completer();
-
-	void setModel(JavascriptModelCompleter * model);
 
 	virtual bool isCommentAvailable();
 public slots:
@@ -45,7 +39,7 @@ protected:
 	{
 		cpEditLongComment, // in /* ... */
 		cpEditSimpleComment, // in // ...
-		cpEditFunction, // in function ....() {Â .... }
+		cpEditFunction, // in function ....() { .... }
 		cpEditParams, // in function .... ( .... )
 		cpEditGlobal
 	};
@@ -54,7 +48,6 @@ protected:
 	cursorPosition editPosition(const QDocumentCursor & cursor);
 
 	QString m_functionName;
-	JavascriptModelCompleter * m_model;
 };
 
 #endif /*JSTEXTEDITOR_H_*/

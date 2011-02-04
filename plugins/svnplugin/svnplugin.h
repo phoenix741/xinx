@@ -22,13 +22,13 @@
 #pragma once
 
 // Xinx header
-#include <plugins/plugininterfaces.h>
+#include <plugins/interfaces/plugin.h>
+#include <plugins/interfaces/versioncontrol.h>
 
-class SVNPlugin : public QObject, public IRCSPlugin
+class SVNPlugin : public QObject, public IXinxPlugin, public IRCSPlugin
 {
 	Q_OBJECT
-	Q_INTERFACES(IXinxPlugin)
-	Q_INTERFACES(IRCSPlugin)
+	Q_INTERFACES(IXinxPlugin IRCSPlugin)
 public:
 	SVNPlugin();
 

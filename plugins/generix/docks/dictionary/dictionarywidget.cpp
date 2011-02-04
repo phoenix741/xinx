@@ -19,13 +19,6 @@
 
 // Xinx header
 #include "dictionarywidget.h"
-#include <contentview2/contentview2manager.h>
-#include <contentview2/contentview2project.h>
-#include <project/xinxproject.h>
-
-// Qt header
-#include <QSqlQuery>
-#include <QSqlError>
 
 /* DictionaryWidget */
 
@@ -36,36 +29,35 @@ DictionaryWidget::DictionaryWidget(QWidget * parent) : QTreeWidget(parent)
 
 void DictionaryWidget::loadDictionaries(const QString & prefix)
 {
+	 /* FIXME: Use the new method
 	try
 	{
-		ContentView2::Project project(ContentView2::Manager::self()->database(),
-		                              XINXProjectManager::self()->project());
-
-		QSqlQuery query(ContentView2::Manager::self()->database());
+		ContentView2::Project project(XinxProject::Manager::self()->project());
 
 		QString whereClause =   "SELECT distinct display_name, name, icon "
-		                        "FROM cv_node, cv_file "
-		                        "WHERE cv_file.project_id=:project_id "
-		                        "  AND cv_node.file_id=cv_file.id "
-		                        "  AND cv_node.type = 'XslVariable' "
-		                        "  AND cv_file.type = 'GNX_DICO' %1 "
-		                        "ORDER BY lower(display_name) LIMIT 200";
+								"FROM cv_node, cv_file "
+								"WHERE cv_file.project_id=:project_id "
+								"  AND cv_node.file_id=cv_file.id "
+								"  AND cv_node.type = 'XslVariable' "
+								"  AND cv_file.type = 'GNX_DICO' %1 "
+								"ORDER BY lower(display_name) LIMIT 200";
 
 		if (!prefix.isEmpty())
 		{
 			whereClause = whereClause.arg(
-			                  "  AND (cv_node.name like '%'||ifnull(:prefix1, '')||'%' "
+							  "  AND (cv_node.name like '%'||ifnull(:prefix1, '')||'%' "
 							  "   OR EXISTS (SELECT 1 FROM cv_node cv_node2 "
 							  " WHERE cv_node2.parent_id=cv_node.id "
-			                  "   AND cv_node2.name like '%'||ifnull(:prefix2, '')||'%')) "
-			              );
+							  "   AND cv_node2.name like '%'||ifnull(:prefix2, '')||'%')) "
+						  );
 		}
 		else
 		{
 			whereClause = whereClause.arg("");
 		}
 
-		query.prepare(whereClause);
+		QSqlQuery query = ContentView2::Manager::self()->database()->prepare(whereClause);
+
 		query.bindValue(":project_id", project.projectId());
 
 		if (!prefix.isEmpty())
@@ -83,17 +75,18 @@ void DictionaryWidget::loadDictionaries(const QString & prefix)
 			label->setText(0, query.value(0).toString());
 			label->setIcon(0, QIcon(query.value(2).toString()));
 
-			QSqlQuery childQuery(ContentView2::Manager::self()->database());
-			childQuery.prepare("SELECT distinct cv_node2.property1, cv_node2.property2, cv_node2.name, cv_node2.icon "
-							   "FROM cv_file, cv_node, cv_node cv_node2 "
-			                   "WHERE cv_file.project_id=:project_id "
-			                   "  AND cv_node.file_id=cv_file.id "
-			                   "  AND cv_node.type = 'XslVariable' "
-			                   "  AND cv_node.name = :node_name "
-			                   "  AND cv_file.type = 'GNX_DICO' "
-							   "  AND cv_node2.parent_id = cv_node.id "
-			                   "  AND cv_node2.type = 'DICTIONARY_LABEL' "
-			                   "ORDER BY cv_node2.property1, cv_node2.property2, lower(cv_node2.name) ");
+			QSqlQuery childQuery = ContentView2::Manager::self()->database()->prepare(
+								"SELECT distinct cv_node2.property1, cv_node2.property2, cv_node2.name, cv_node2.icon "
+								"FROM cv_file, cv_node, cv_node cv_node2 "
+								"WHERE cv_file.project_id=:project_id "
+								"  AND cv_node.file_id=cv_file.id "
+								"  AND cv_node.type = 'XslVariable' "
+								"  AND cv_node.name = :node_name "
+								"  AND cv_file.type = 'GNX_DICO' "
+								"  AND cv_node2.parent_id = cv_node.id "
+								"  AND cv_node2.type = 'DICTIONARY_LABEL' "
+								"ORDER BY cv_node2.property1, cv_node2.property2, lower(cv_node2.name) "
+								);
 			childQuery.bindValue(":project_id", project.projectId());
 			childQuery.bindValue(":node_name", label->text(0));
 			bool result = childQuery.exec();
@@ -164,10 +157,15 @@ void DictionaryWidget::loadDictionaries(const QString & prefix)
 				item->setText(0, nameStr);
 				item->setIcon(0, QIcon(iconStr));
 			}
+
+			childQuery.finish ();
 		}
+
+		query.finish ();
 	}
 	catch (ContentView2::ProjectException e)
 	{
 
 	}
+	*/
 }

@@ -22,7 +22,6 @@
 
 // Xinx header
 #include "configuration/configurationfile.h"
-#include "docks/dictionary/dictionaryparser.h"
 #include <core/exceptions.h>
 
 class GceInterfaceException : public XinxException

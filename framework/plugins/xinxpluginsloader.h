@@ -1,21 +1,21 @@
-/* *********************************************************************** *
- * XINX                                                                    *
- * Copyright (C) 2007-2010 by Ulrich Van Den Hekke                         *
- * ulrich.vdh@shadoware.org                                                *
- *                                                                         *
- * This program is free software: you can redistribute it and/or modify    *
- * it under the terms of the GNU General Public License as published by    *
- * the Free Software Foundation, either version 3 of the License, or       *
- * (at your option) any later version.                                     *
- *                                                                         *
- * This program is distributed in the hope that it will be useful,         *
- * but WITHOUT ANY WARRANTY; without even the implied warranty of          *
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *
- * GNU General Public License for more details.                            *
- *                                                                         *
- * You should have received a copy of the GNU General Public License       *
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
- * *********************************************************************** */
+/*
+ XINX
+ Copyright (C) 2007-2011 by Ulrich Van Den Hekke
+ xinx@shadoware.org
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful.
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 #pragma once
 #ifndef XINXPLUGINSLOADER_H_
@@ -24,16 +24,21 @@
 // Xinx header
 #include <core/lib-config.h>
 #include <core/xinxcore.h>
-#include <plugins/xinxpluginelement.h>
 
 // Qt header
 #include <QHash>
+#include <QMap>
+#include <QString>
 #include <QDir>
 #include <QObject>
 #include <QIcon>
 #include <QPair>
 
 class RCS;
+class XinxPluginElement;
+class IFileTypePlugin;
+class XinxFormatScheme;
+class XINXConfig;
 
 /*! The class XINX Plugins Loader is used to load all plugins and proposed some facilities method. */
 class LIBEXPORT XinxPluginsLoader : public QObject
@@ -48,18 +53,6 @@ public:
 	QList<XinxPluginElement*> plugins() const;
 	/*! Plugin of name \e name. */
 	XinxPluginElement * plugin(const QString & name);
-
-	/*!
-	 * List all the revision control that can be used. The Result is a list of
-	 * QPair. The first element is the key and the second element is the description.
-	 */
-	QList< QPair<QString,QString> > revisionsControls() const;
-	/*!
-	 * Method called by XINX to create a Revision control system.
-	 * \param revision The system to use.
-	 * \param basePath The path used in the constructor.
-	 */
-	RCS * createRevisionControl(QString revision, QString basePath) const;
 
 	/*! Return all the file type knew by XINX. */
 	QList<IFileTypePlugin*> fileTypes() const;

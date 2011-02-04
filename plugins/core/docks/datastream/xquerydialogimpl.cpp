@@ -122,7 +122,8 @@ XQueryDialogImpl::XQueryDialogImpl(QWidget * parent, Qt::WindowFlags f) : QDialo
 	XQModelCompleter * completionModel = new XQModelCompleter(m_queryTextEdit);
 	QCompleter * completer = new QCompleter(m_queryTextEdit);
 	completer->setModel(completionModel);
-	m_queryTextEdit->setCompleter(completer);
+	//FIXME: Ne fonctionne plus. Doit utiliser le nouveau système ! Obligatoire
+//	m_queryTextEdit->setCompleter(completer);
 
 	QPushButton * evaluateBtn = new QPushButton(tr("&Evaluate"));
 	evaluateBtn->setDefault(true);

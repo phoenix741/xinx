@@ -15,3 +15,4 @@ Le raccourcis <b>Ctrl+U</b> vous permet d'afficher les mots identiques dans le f
 Vous trouvez Windows moche, plusieurs thèmes vous sont proposé dans les propiétés de XINX.
 N'hesitez pas à contribuez : vous pouvez developpez, écrire la documentation, des snipets, des scripts, ou juste signaler un bug ou demander une évolution. C'est gratuit et vous rester auteur de vos patchs.
 Si vous voulez supporter le projet envoyer des dons à l'auteur, il les acceptera.
+Si vous voulez accéder à la définitions d'un template, d'une variable, ... vous pouvez presser la touche CTRL et cliquer sur le mot désigner. <b>XINX</b> vous déplacera automatiquement vers la définition de ce mot.

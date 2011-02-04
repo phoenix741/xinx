@@ -1,21 +1,21 @@
-/* *********************************************************************** *
- * XINX                                                                    *
- * Copyright (C) 2007-2010 by Ulrich Van Den Hekke                         *
- * ulrich.vdh@shadoware.org                                                *
- *                                                                         *
- * This program is free software: you can redistribute it and/or modify    *
- * it under the terms of the GNU General Public License as published by    *
- * the Free Software Foundation, either version 3 of the License, or       *
- * (at your option) any later version.                                     *
- *                                                                         *
- * This program is distributed in the hope that it will be useful,         *
- * but WITHOUT ANY WARRANTY; without even the implied warranty of          *
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *
- * GNU General Public License for more details.                            *
- *                                                                         *
- * You should have received a copy of the GNU General Public License       *
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
- * *********************************************************************** */
+/*
+ XINX
+ Copyright (C) 2007-2011 by Ulrich Van Den Hekke
+ xinx@shadoware.org
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful.
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 // Xinx header
 #include "core/exceptions.h"
@@ -28,10 +28,10 @@
 #include <QFile>
 #include <QThread>
 #include <QApplication>
-#include <QErrorMessage>
 #include <QFile>
 #include <QTextStream>
 #include <QTimer>
+#include <QMessageBox>
 
 // Std header for exception
 #include <iostream>
@@ -56,31 +56,24 @@ static void xinxMessageHandler(QtMsgType t, const char * m)
 	if (t == QtDebugMsg) return;
 #endif /* _XINX_RELEASE_MODE_ */
 
-	QString rich, plain;
+	QString error;
 
 	switch (t)
 	{
 	case QtDebugMsg:
 	default:
-		rich = QErrorMessage::tr("Debug Message:");
-		plain = QErrorMessage::tr("DEBUG");
+		error = ExceptionManager::tr("DEBUG");
 		break;
 	case QtWarningMsg:
-		rich = QErrorMessage::tr("WARNING");
+		error = ExceptionManager::tr("WARNING");
 		break;
 	case QtFatalMsg:
-		rich = QErrorMessage::tr("FATAL");
+		error = ExceptionManager::tr("FATAL");
 	}
-	rich = QString::fromLatin1("<p><b>%1</b></p>").arg(rich);
-	rich += Qt::escape(QLatin1String(m));
 
-	// ### work around text engine quirk
-	if (rich.endsWith(QLatin1String("</p>")))
-		rich.chop(4);
+	error += " : " + QLatin1String(m);
 
-	plain += " : " + QLatin1String(m);
-
-	ExceptionManager::self()->notifyError(rich, plain, t);
+	ExceptionManager::self()->notifyError(error, t, t != QtDebugMsg);
 }
 
 /* ExceptionManager */
@@ -99,9 +92,6 @@ static void xinxMessageHandler(QtMsgType t, const char * m)
 
 ExceptionManager::ExceptionManager()
 {
-	m_dialog = new QErrorMessage(0);
-	m_dialog->setWindowTitle(qApp->applicationName());
-
 	QFile exceptionFilterFile(":/rc/exceptionfilter.txt");
 	if (exceptionFilterFile.open(QIODevice::ReadOnly))
 	{
@@ -112,7 +102,6 @@ ExceptionManager::ExceptionManager()
 
 ExceptionManager::~ExceptionManager()
 {
-	delete m_dialog;
 	if (s_self == this)
 		s_self = 0;
 }
@@ -150,33 +139,13 @@ QStringList ExceptionManager::stackTrace() const
 }
 
 /*!
- * \brief The dialog created and used to show message.
- *
- * This dialog is automatically called when Qt macro (qDebug, ...) is used.
- */
-QErrorMessage * ExceptionManager::errorDialog() const
-{
-	return m_dialog;
-}
-
-/*!
  * \brief Show a dialog and save the error in a trace file.
  * \param error Message to store in the file
- * \param plainError Stack to store when the error occure.
  * \param t The message type.
+ * \param showMessage If set to false, the message isn't show to the user. If the \e t is QtFatalMsg the message is always show.
  */
-void ExceptionManager::notifyError(QString error, QString plainError, QtMsgType t)
+void ExceptionManager::notifyError(QString error, QtMsgType t, bool showMessage)
 {
-	if (t == QtFatalMsg)
-	{
-		// On restore les signaux pour eviter d'etre perturbe pendant la phase de sauvegarde ...
-		std::signal(SIGSEGV, SIG_DFL);
-		std::signal(SIGABRT, SIG_DFL);
-		std::signal(SIGINT, SIG_DFL);
-		std::signal(SIGTERM, SIG_DFL);
-		emit errorTriggered();
-	}
-
 	foreach(const QString & filter, m_exceptionFilter)
 	{
 		if (QRegExp(filter).exactMatch(error))
@@ -192,31 +161,38 @@ void ExceptionManager::notifyError(QString error, QString plainError, QtMsgType 
 		QTextStream text(&file);
 		text << QDateTime::currentDateTime().toString();
 		text << " : ";
-		text << plainError;
+		text << error;
 		text << "\n";
 		file.close();
 	}
 
-	std::cout << qPrintable(plainError) << std::endl;
-
-	if (t == QtDebugMsg) return;
-
-	if (QThread::currentThread() == qApp->thread())
-		m_dialog->showMessage(error);
-	else
-		QMetaObject::invokeMethod(m_dialog, "showMessage", Qt::QueuedConnection, Q_ARG(QString, error));
+	std::cout << qPrintable(error) << std::endl;
 
 	if (t == QtFatalMsg)
 	{
-		if (QThread::currentThread() == qApp->thread())
-		{
-			m_dialog->exec(); // Pour ne pas quitter de suite
-		}
-		else
-		{
-			QMetaObject::invokeMethod(m_dialog, "exec", Qt::BlockingQueuedConnection, Q_ARG(QString, error));
-		}
+		QMessageBox::critical (0, qApp->applicationName (),
+										tr("Oh boy ! A fatal error occur with the message :\n%1\n"
+										   "Please forgive me, i try to recover your work.").arg (error));
+
+		// On restore les signaux pour eviter d'etre perturbe pendant la phase de sauvegarde ...
+		std::signal(SIGSEGV, SIG_DFL);
+		std::signal(SIGABRT, SIG_DFL);
+		std::signal(SIGINT, SIG_DFL);
+		std::signal(SIGTERM, SIG_DFL);
+		emit errorTriggered();
+
+#ifndef _XINX_RELEASE_MODE_
 		abort();
+#else
+		exit();
+#endif /* _XINX_RELEASE_MODE_ */
+	}
+	else
+	{
+		if (showMessage)
+		{
+			ErrorManager::self ()->addMessage (qApp->applicationName (), -1, t, error);
+		}
 	}
 }
 
@@ -242,6 +218,11 @@ ExceptionManager * ExceptionManager::self()
  *
  * This base class include a message in the exception, and save the stack.
  */
+
+XinxException::XinxException() : m_locationLine(-1)
+{
+
+}
 
 XinxException::XinxException(const QString & message) : m_message(message), m_locationLine(-1)
 {
@@ -316,6 +297,9 @@ const QStringList & XinxException::getStack() const
 
 ErrorManager::ErrorManager()
 {
+	qRegisterMetaType<QtMsgType>("QtMsgType");
+	qRegisterMetaType<XinxException>("XinxException");
+
 	m_timer.setSingleShot(true);
 	m_timer.setInterval(500);
 	connect(&m_timer, SIGNAL(timeout()), this, SIGNAL(changed()));
@@ -361,7 +345,7 @@ void ErrorManager::clearMessages(const QString & context)
 		QMetaObject::invokeMethod(&m_timer, "start", Qt::BlockingQueuedConnection);
 }
 
-void ErrorManager::addMessage(const QString & context, int line, MessageType t, const QString & message, const QStringList & parameters)
+void ErrorManager::addMessage(const QString & context, int line, QtMsgType t, const QString & message, const QStringList & parameters)
 {
 	const QString ctxt = m_contextTranslation.value(context).isEmpty() ? context : m_contextTranslation.value(context);
 
@@ -375,7 +359,7 @@ void ErrorManager::addMessage(const QString & context, int line, MessageType t, 
 		QMetaObject::invokeMethod(&m_timer, "start", Qt::BlockingQueuedConnection);
 }
 
-void ErrorManager::addMessage(const QString & context, int line, MessageType t, const XinxException & exception)
+void ErrorManager::addMessage(const QString & context, int line, QtMsgType t, const XinxException & exception)
 {
 	const QString ctxt = m_contextTranslation.value(context).isEmpty() ? context : m_contextTranslation.value(context);
 

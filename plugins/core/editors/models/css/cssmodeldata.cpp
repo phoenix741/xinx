@@ -19,6 +19,11 @@
 
 // Xinx header
 #include "cssmodeldata.h"
+#include "css_propertynode.h"
+#include "css_identifiernode.h"
+#include "css_classnode.h"
+#include "css_idnode.h"
+#include "css_tagnode.h"
 
 // Qt header
 #include <QFileInfo>
@@ -27,28 +32,36 @@
 #include <QImage>
 #include <QVariant>
 
-/* CSSFileContentParser */
+namespace Core
+{
 
-CSSFileContentParser::CSSFileContentParser() : ContentView2::Parser()
+namespace CascadingStyleSheet
+{
+
+/* Parser */
+
+Parser::Parser() : ContentView3::Parser()
 {
 
 }
 
-CSSFileContentParser::~CSSFileContentParser()
+Parser::~Parser()
 {
 
 }
 
-void CSSFileContentParser::load()
+QString Parser::name() const
 {
-	if (! rootNode().isValid()) return;
+	return "CSS";
+}
 
-	rootNode().setData(":/images/typecss.png", ContentView2::Node::NODE_ICON);
-	rootNode().update(database());
+void Parser::parse()
+{
+	ContentView3::NodePtr node = rootNode();
+	node->clearChilds();
+	node->setIcon(":/images/typecss.png");
 
-	clearNodes(rootNode());
-
-	QString text = inputDevice()->readAll();
+	QString text = device()->readAll();
 
 	if (text.isEmpty())
 	{
@@ -60,7 +73,7 @@ void CSSFileContentParser::load()
 	QRegExp keywordExpression("[A-Za-z_][A-Za-z0-9_-:.]*");
 	QRegExp indentifierExpression("[^\n]*;");
 
-	QList<ContentView2::Node> elements;
+	QList<ContentView3::NodePtr> elements;
 
 	int pos;
 	ParsingState state = CssDefault;
@@ -107,9 +120,10 @@ void CSSFileContentParser::load()
 				if (pos == i)
 				{
 					const int iLength = indentifierExpression.matchedLength();
-					foreach(ContentView2::Node element, elements)
+					QListIterator<ContentView3::NodePtr> it(elements);
+					while (it.hasNext ())
 					{
-						attacheNewPropertyNode(element, indentifierExpression.cap(), m_line);
+						attacheNewPropertyNode(it.next (), indentifierExpression.cap(), m_line);
 					}
 					i += iLength - 1;
 				}
@@ -181,7 +195,7 @@ void CSSFileContentParser::load()
 	}
 }
 
-ContentView2::Node CSSFileContentParser::attacheNewPropertyNode(ContentView2::Node parent, const QString & name, int line)
+QSharedPointer<PropertyNode> Parser::attacheNewPropertyNode(const ContentView3::NodePtr & parent, const QString& name, int line)
 {
 	QStringList property = name.split(':');
 	QString n, v;
@@ -194,71 +208,41 @@ ContentView2::Node CSSFileContentParser::attacheNewPropertyNode(ContentView2::No
 	if (v.endsWith(';'))
 		v.chop(1);
 
-
-	ContentView2::Node node;
-	node.setLine(line);
-	node.setData(name, ContentView2::Node::NODE_NAME);
-	node.setData("CssProperty", ContentView2::Node::NODE_TYPE);
-	node.setData(":/images/html_value.png", ContentView2::Node::NODE_ICON);
-	node.setData(n, ContentView2::Node::NODE_DISPLAY_NAME);
-	node.setData(tr("Element at line : %1\nValue : %2").arg(line).arg(v), ContentView2::Node::NODE_DISPLAY_TIPS);
-	attachNode(parent, node);
+	QSharedPointer<PropertyNode> node = PropertyNode::create(n, parent);
+	node->setLine(line);
+	node->setValue(v);
 
 	return node;
 }
 
-ContentView2::Node CSSFileContentParser::attacheNewIdentifierNode(ContentView2::Node parent, const QString & name, int line)
+QSharedPointer<IdentifierNode> Parser::attacheNewIdentifierNode(const ContentView3::NodePtr & parent, const QString& name, int line)
 {
-	ContentView2::Node node;
-	node.setLine(line);
-	node.setData(name, ContentView2::Node::NODE_NAME);
-	node.setData("CssIdentifier", ContentView2::Node::NODE_TYPE);
-	node.setData(":/images/noeud.png", ContentView2::Node::NODE_ICON);
-	node.setData(name, ContentView2::Node::NODE_DISPLAY_NAME);
-	node.setData(tr("Element at line : %1").arg(line), ContentView2::Node::NODE_DISPLAY_TIPS);
-	attachNode(parent, node);
-
+	QSharedPointer<IdentifierNode> node = IdentifierNode::create(name, parent);
+	node->setLine(line);
 	return node;
 }
 
-ContentView2::Node CSSFileContentParser::attacheNewClassNode(ContentView2::Node parent, const QString & name, int line)
+QSharedPointer<ClassNode> Parser::attacheNewClassNode(const ContentView3::NodePtr & parent, const QString& name, int line)
 {
-	ContentView2::Node node;
-	node.setLine(line);
-	node.setData(name, ContentView2::Node::NODE_NAME);
-	node.setData("CssClass", ContentView2::Node::NODE_TYPE);
-	node.setData(":/images/noeud.png", ContentView2::Node::NODE_ICON);
-	node.setData(name, ContentView2::Node::NODE_DISPLAY_NAME);
-	node.setData(tr("Element at line : %1").arg(line), ContentView2::Node::NODE_DISPLAY_TIPS);
-	attachNode(parent, node);
-
+	QSharedPointer<ClassNode> node = ClassNode::create(name, parent);
+	node->setLine(line);
 	return node;
 }
 
-ContentView2::Node CSSFileContentParser::attacheNewTagNode(ContentView2::Node parent, const QString & name, int line)
+QSharedPointer<TagNode> Parser::attacheNewTagNode(const ContentView3::NodePtr & parent, const QString& name, int line)
 {
-	ContentView2::Node node;
-	node.setLine(line);
-	node.setData(name, ContentView2::Node::NODE_NAME);
-	node.setData("CssTag", ContentView2::Node::NODE_TYPE);
-	node.setData(":/images/noeud.png", ContentView2::Node::NODE_ICON);
-	node.setData(name, ContentView2::Node::NODE_DISPLAY_NAME);
-	node.setData(tr("Element at line : %1").arg(line), ContentView2::Node::NODE_DISPLAY_TIPS);
-	attachNode(parent, node);
-
+	QSharedPointer<TagNode> node = TagNode::create(name, parent);
+	node->setLine(line);
 	return node;
 }
 
-ContentView2::Node CSSFileContentParser::attacheNewIdNode(ContentView2::Node parent, const QString & name, int line)
+QSharedPointer<IdNode> Parser::attacheNewIdNode(const ContentView3::NodePtr & parent, const QString& name, int line)
 {
-	ContentView2::Node node;
-	node.setLine(line);
-	node.setData(name, ContentView2::Node::NODE_NAME);
-	node.setData("CssId", ContentView2::Node::NODE_TYPE);
-	node.setData(":/images/noeud.png", ContentView2::Node::NODE_ICON);
-	node.setData(name, ContentView2::Node::NODE_DISPLAY_NAME);
-	node.setData(tr("Element at line : %1").arg(line), ContentView2::Node::NODE_DISPLAY_TIPS);
-	attachNode(parent, node);
-
+	QSharedPointer<IdNode> node = IdNode::create(name, parent);
+	node->setLine(line);
 	return node;
+}
+
+}
+
 }

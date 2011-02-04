@@ -23,7 +23,7 @@
 
 // Xinx header
 #include "ui_customize.h"
-#include "plugins/plugininterfaces.h"
+#include "plugins/interfaces/gui.h"
 #include "pluginsettings.h"
 
 class CustomizePlugin : public QWidget, public Ui::CustomizePlugin, public IXinxPluginConfigurationPage

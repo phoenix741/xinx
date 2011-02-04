@@ -45,9 +45,6 @@ BusinessViewListDelegate::~BusinessViewListDelegate()
 
 void BusinessViewListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-	GenerixProject * gnxProject = static_cast<GenerixProject*>(XINXProjectManager::self()->project().data());
-	if (! gnxProject) return ;
-
 	painter->save();
 
 	QStyleOptionViewItem myOption = option;
@@ -84,15 +81,19 @@ void BusinessViewListDelegate::paint(QPainter *painter, const QStyleOptionViewIt
 
 	QString filename = index.model()->data(index, Qt::UserRole + 1).toString();
 	int configurationIndex = index.model()->data(index, Qt::UserRole + 0).toInt();
+	QString projectPath = index.model()->data(index, Qt::UserRole + 3).toString();
 
 	QString display = QString("%1 (%2)").arg(index.model()->data(index).toString()).arg(index.model()->data(index, Qt::UserRole + 2).toString());
-	QString description = (configurationIndex >= 0 ? QString("%1 - ").arg(configurationIndex) : QString()) + QDir(gnxProject->webModuleLocation()).relativeFilePath(filename);
+	QString description = (configurationIndex >= 0 ? QString("%1 - ").arg(configurationIndex) : QString()) + QDir(projectPath).relativeFilePath(filename);
 
 	if (myOption.state & QStyle::State_Selected)
 		painter->setPen(myOption.palette.color(QPalette::HighlightedText));
 
 	painter->setFont(titleFont);
 	display = titleOpt.fontMetrics.elidedText(display, Qt::ElideRight, maxTextLength);
+
+
+
 	painter->drawText(
 	    SEPARATOR_SIZE,
 	    SEPARATOR_SIZE + myOption.rect.top(),
@@ -132,7 +133,7 @@ QSize BusinessViewListDelegate::sizeHint(const QStyleOptionViewItem &option, con
 
 /* GenerixProjectDockImpl */
 
-GenerixProjectDockImpl::GenerixProjectDockImpl(QWidget * parent) : QWidget(parent)
+GenerixProjectDockImpl::GenerixProjectDockImpl(QWidget * parent) : QWidget(parent), m_gnxProject(0)
 {
 	setupUi(this);
 	setWindowTitle(tr("Generix Business View"));
@@ -143,14 +144,13 @@ GenerixProjectDockImpl::GenerixProjectDockImpl(QWidget * parent) : QWidget(paren
 	setProject(0);
 
 	connect(dynamic_cast<QObject*>(EditorManager::self()), SIGNAL(currentChanged(int)), this, SLOT(editorChanged(int)));
-	connect(XINXProjectManager::self(), SIGNAL(changed()), this, SLOT(projectChanged()));
 }
 
 GenerixProjectDockImpl::~GenerixProjectDockImpl()
 {
 }
 
-void GenerixProjectDockImpl::setProject(XinxProject * project)
+void GenerixProjectDockImpl::setProject(XinxProject::Project * project)
 {
 	m_gnxProject = static_cast<GenerixProject*>(project);
 
@@ -163,11 +163,6 @@ void GenerixProjectDockImpl::setProject(XinxProject * project)
 	}
 	m_prefixCombo->setVisible(m_gnxProject && (m_gnxProject->prefixes().size() > 0));
 	m_prefixLabel->setVisible(m_gnxProject && (m_gnxProject->prefixes().size() > 0));
-}
-
-void GenerixProjectDockImpl::projectChanged()
-{
-	setProject(XINXProjectManager::self()->project());
 }
 
 void GenerixProjectDockImpl::editorChanged(int index)
@@ -190,6 +185,7 @@ void GenerixProjectDockImpl::editorChanged(int index)
 				item->setData(Qt::UserRole + 0, information.configurationNumber());
 				item->setData(Qt::UserRole + 1, information.configurationFileName());
 				item->setData(Qt::UserRole + 2, information.targetName());
+				item->setData(Qt::UserRole + 3, m_gnxProject->projectPath());
 				m_businessViewList->addItem(item);
 			}
 		}

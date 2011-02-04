@@ -1,21 +1,21 @@
-/* *********************************************************************** *
- * XINX                                                                    *
- * Copyright (C) 2007-2010 by Ulrich Van Den Hekke                         *
- * ulrich.vdh@shadoware.org                                                *
- *                                                                         *
- * This program is free software: you can redistribute it and/or modify    *
- * it under the terms of the GNU General Public License as published by    *
- * the Free Software Foundation, either version 3 of the License, or       *
- * (at your option) any later version.                                     *
- *                                                                         *
- * This program is distributed in the hope that it will be useful,         *
- * but WITHOUT ANY WARRANTY; without even the implied warranty of          *
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *
- * GNU General Public License for more details.                            *
- *                                                                         *
- * You should have received a copy of the GNU General Public License       *
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
- * *********************************************************************** */
+/*
+ XINX
+ Copyright (C) 2007-2011 by Ulrich Van Den Hekke
+ xinx@shadoware.org
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful.
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 // Xinx header
 #include "editorfactory.h"
@@ -24,13 +24,10 @@
 #include "editors/textfileeditor.h"
 #include "editors/xinxcodeedit.h"
 #include "editors/editorchoicedlg.h"
+#include "project/xinxprojectmanager.h"
 
 // Qt header
 #include <QApplication>
-
-/* Static member */
-
-EditorFactory * EditorFactory::s_self = 0;
 
 /* EditorFactory */
 
@@ -41,83 +38,70 @@ EditorFactory::EditorFactory()
 
 EditorFactory::~EditorFactory()
 {
-	if (s_self == this)
-		s_self = NULL;
+
 }
 
-EditorFactory * EditorFactory::self()
+IFileTypePlugin * EditorFactory::interfaceOfName(const QString & name)
 {
-	if (s_self == 0)
+	QList<IFileTypePlugin*> interfaces = XinxPluginsLoader::self()->fileTypes();
+	foreach(IFileTypePlugin* interface, interfaces)
 	{
-		s_self = new EditorFactory();
-		XINXStaticDeleter::self()->addObject(s_self);
+		if (interface->name () == name)
+		{
+			return interface;
+		}
 	}
-	return s_self;
+	return 0;
 }
 
 AbstractEditor * EditorFactory::createEditor(IFileTypePlugin * interface)
 {
+	Q_ASSERT_X(interface, "EditorFactory::createEditor", "Interface not defined");
+
 	AbstractEditor * editor = interface ? interface->createEditor() : new TextFileEditor(new XinxCodeEdit());
 
-	Q_ASSERT_X(editor, "EditorFactory::createEditor", "The interface can't create editor");
+	Q_ASSERT_X(editor, "EditorFactory::createEditor", "The factory can't create editor");
 
 	editor->setFileTypePluginInterface(interface);
 
 	editor->initLayout();
-	if (qobject_cast<TextFileEditor*>(editor))
-		qobject_cast<TextFileEditor*>(editor)->initCompleter();
 
 	return editor;
 }
 
-AbstractEditor * EditorFactory::createEditor(const QString & filename)
+AbstractEditor * EditorFactory::createEditor(const QString& filename, IFileTypePlugin* interface, XinxProject::Project* project)
 {
 	Q_ASSERT(! filename.isEmpty());
 
-	AbstractEditor * editor = 0;
-	QList<IFileTypePlugin *> interfaces = XinxPluginsLoader::self()->matchedFileType(filename);
-	IFileTypePlugin * interface;
-	switch(interfaces.size())
+	/* If no interface defined, we must ask for one */
+	if (!interface)
 	{
-	case 0:
+		EditorChoiceDlg dlg(qApp->activeWindow());
+		dlg.setFileName(filename);
+		if ((dlg.count () > 1) && (dlg.exec() != QDialog::Accepted))
 		{
-			EditorChoiceDlg dlg(qApp->activeWindow());
-			dlg.setFileName(filename);
-			dlg.setFileTypes(XinxPluginsLoader::self()->fileTypes());
-			if (dlg.exec() == QDialog::Accepted)
-			{
-				Q_ASSERT_X(dlg.selectedType(), "EditorFactory::createEditor", "No editor selected");
-				interface = dlg.selectedType();
-			}
+			/* The user cancel the operation */
+			return NULL;
 		}
-		break;
-	case 1:
-		interface = interfaces.at(0);
-		break;
-	default:
-		{
-			EditorChoiceDlg dlg(qApp->activeWindow());
-			dlg.setFileName(filename);
-			dlg.setFileTypes(interfaces);
-			if (dlg.exec() == QDialog::Accepted)
-			{
-				Q_ASSERT_X(dlg.selectedType(), "EditorFactory::createEditor", "No editor selected");
-				interface = dlg.selectedType();
-			}
-		}
+
+		interface = dlg.selectedType();
+		Q_ASSERT_X(interface, "EditorFactory::createEditor", "No editor selected");
 	}
 
-	editor = interface->createEditor(filename);
-	Q_ASSERT_X(editor, "EditorFactory::createEditor", "The factory can't create editor");
+	/* If no project is defined we must find one */
+	if (!project)
+	{
+		project = XinxProject::Manager::self ()->projectOfFile(filename);
+	}
 
-	editor->initLayout();
-	if (qobject_cast<TextFileEditor*>(editor))
-		qobject_cast<TextFileEditor*>(editor)->initCompleter();
+	AbstractEditor * editor = createEditor(interface);
+	editor->setProject (project);
+	editor->loadFromFile (filename);
 
 	return editor;
 }
 
-AbstractEditor * EditorFactory::createEditor(XinxProjectSessionEditor * session)
+AbstractEditor * EditorFactory::createEditor(XinxSession::SessionEditor * session)
 {
 	Q_ASSERT(session);
 
@@ -126,8 +110,6 @@ AbstractEditor * EditorFactory::createEditor(XinxProjectSessionEditor * session)
 	Q_ASSERT_X(editor, "EditorFactory::createEditor", "The factory can't deserialize the editor");
 
 	editor->initLayout();
-	if (qobject_cast<TextFileEditor*>(editor))
-		qobject_cast<TextFileEditor*>(editor)->initCompleter();
 
 	return editor;
 }

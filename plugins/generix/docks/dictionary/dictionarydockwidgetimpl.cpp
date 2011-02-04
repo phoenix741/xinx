@@ -19,11 +19,8 @@
 
 // Xinx header
 #include "dictionarydockwidgetimpl.h"
-#include <contentview2/contentview2manager.h>
-#include <contentview2/contentview2cache.h>
 #include <configuration/configurationmanager.h>
 #include "projectproperty/generixproject.h"
-#include "dictionaryparser.h"
 
 /* DictionaryDockWidgetImpl */
 
@@ -34,14 +31,13 @@ DictionaryDockWidgetImpl::DictionaryDockWidgetImpl(QWidget * parent) : QWidget(p
 	setWindowIcon(QIcon(":/generix/images/dictionary16.png"));
 
 
-	connect(ContentView2::Manager::self()->cache(), SIGNAL(cacheLoaded(ContentView2::File)), this, SLOT(update(ContentView2::File)), Qt::BlockingQueuedConnection);
 }
 
 DictionaryDockWidgetImpl::~DictionaryDockWidgetImpl()
 {
 
 }
-
+/*
 void DictionaryDockWidgetImpl::update(const ContentView2::File & file)
 {
 	if (file.type() == "GNX_DICO")
@@ -50,7 +46,7 @@ void DictionaryDockWidgetImpl::update(const ContentView2::File & file)
 		m_timerId = startTimer(500);
 	}
 }
-
+*/
 void DictionaryDockWidgetImpl::on_m_filterLine_textChanged(QString filter)
 {
 	Q_UNUSED(filter);
@@ -60,6 +56,7 @@ void DictionaryDockWidgetImpl::on_m_filterLine_textChanged(QString filter)
 
 void DictionaryDockWidgetImpl::timerEvent(QTimerEvent * event)
 {
+	 // FIXME : Toujours de la même méthode ?
 	if(m_timerId == event->timerId())
 	{
 		killTimer(m_timerId);

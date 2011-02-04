@@ -34,22 +34,15 @@
 
 /* CommentAction */
 
-CommentAction::CommentAction(QAction * a, QObject * parent) : XinxAction::Action(a, parent)
+CommentAction::CommentAction() : XinxAction::Action(tr("&Comment"), QString("Ctrl+Shift+C"))
 {
-	connect(dynamic_cast<QObject*>(EditorManager::self()), SIGNAL(currentChanged(int)), this, SLOT(updateSignals()));
+	action()->setStatusTip(tr("Comment the selected text"));
+	action()->setWhatsThis(tr("Comment the selected text by using the language syntax. <ul><li>In <b>XML</b> like format <i>&lt;!-- comment --&gt;</i></li> <li>In <b>Javascript</b> : <i>/* comment */</i> </li></ul>"));
+
+	addEditorSignals(SIGNAL(copyAvailable(bool)));
 }
 
-CommentAction::CommentAction(const QString & text, const QKeySequence & shortcut, QObject * parent) : XinxAction::Action(text, shortcut, parent)
-{
-	connect(dynamic_cast<QObject*>(EditorManager::self()), SIGNAL(currentChanged(int)), this, SLOT(updateSignals()));
-}
-
-CommentAction::CommentAction(const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent) : XinxAction::Action(icon, text, shortcut, parent)
-{
-	connect(dynamic_cast<QObject*>(EditorManager::self()), SIGNAL(currentChanged(int)), this, SLOT(updateSignals()));
-}
-
-bool CommentAction::isActionVisible() const
+bool CommentAction::isVisible() const
 {
 	if (! EditorManager::self()) return false;
 	TextFileEditor * tfe = qobject_cast<TextFileEditor*>(EditorManager::self()->currentEditor());
@@ -57,17 +50,12 @@ bool CommentAction::isActionVisible() const
 	return tfe->textEdit()->isCommentAvailable();
 }
 
-bool CommentAction::isActionEnabled() const
+bool CommentAction::isEnabled() const
 {
 	if (! EditorManager::self()) return false;
 	TextFileEditor * editor = qobject_cast<TextFileEditor*>(EditorManager::self()->currentEditor());
 	if (! editor) return false;
 	return editor->textEdit()->textCursor().hasSelection();
-}
-
-bool CommentAction::isInToolBar() const
-{
-	return false;
 }
 
 void CommentAction::actionTriggered()
@@ -76,86 +64,36 @@ void CommentAction::actionTriggered()
 	editor->textEdit()->commentSelectedText();
 }
 
-void CommentAction::updateSignals()
-{
-	if (! m_editor.isNull())
-	{
-		m_editor->disconnect(action());
-	}
-
-	TextFileEditor * editor = qobject_cast<TextFileEditor*>(EditorManager::self()->currentEditor());
-	if (editor)
-	{
-		m_editor = editor;
-		connect(m_editor->textEdit(), SIGNAL(copyAvailable(bool)), action(), SLOT(setEnabled(bool)));
-	}
-}
-
 /* UncommentAction */
 
-UncommentAction::UncommentAction(QAction * a, QObject * parent) : CommentAction(a, parent)
+UncommentAction::UncommentAction() : XinxAction::Action(tr("&Uncomment"), QString("Ctrl+Shift+D"))
 {
+	action()->setStatusTip(tr("Uncomment the selected text if commented"));
+	action()->setWhatsThis(tr("See the comment helper function"));
+
+	addEditorSignals(SIGNAL(copyAvailable(bool)));
 }
 
-UncommentAction::UncommentAction(const QString & text, const QKeySequence & shortcut, QObject * parent) : CommentAction(text, shortcut, parent)
+bool UncommentAction::isEnabled() const
 {
+	if (! EditorManager::self()) return false;
+	TextFileEditor * editor = qobject_cast<TextFileEditor*>(EditorManager::self()->currentEditor());
+	if (! editor) return false;
+	return editor->textEdit()->textCursor().hasSelection();
 }
 
-UncommentAction::UncommentAction(const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent) : CommentAction(icon, text, shortcut, parent)
+bool UncommentAction::isVisible() const
 {
+	if (! EditorManager::self()) return false;
+	TextFileEditor * tfe = qobject_cast<TextFileEditor*>(EditorManager::self()->currentEditor());
+	if (! tfe)                   return false;
+	return tfe->textEdit()->isCommentAvailable();
 }
 
 void UncommentAction::actionTriggered()
 {
 	TextFileEditor * editor = qobject_cast<TextFileEditor*>(EditorManager::self()->currentEditor());
 	editor->textEdit()->commentSelectedText(true);
-}
-
-/* GotoLineAction */
-
-GotoLineAction::GotoLineAction(QAction * a, QObject * parent) : XinxAction::Action(a, parent)
-{
-}
-
-GotoLineAction::GotoLineAction(const QString & text, const QKeySequence & shortcut, QObject * parent) : XinxAction::Action(text, shortcut, parent)
-{
-}
-
-GotoLineAction::GotoLineAction(const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent) : XinxAction::Action(icon, text, shortcut, parent)
-{
-}
-
-bool GotoLineAction::isInToolBar() const
-{
-	return false;
-}
-
-bool GotoLineAction::isActionVisible() const
-{
-	if (! EditorManager::self()) return false;
-	TextFileEditor * tfe = qobject_cast<TextFileEditor*>(EditorManager::self()->currentEditor());
-	if (! tfe)                   return false;
-	return true;
-}
-
-bool GotoLineAction::isActionEnabled() const
-{
-	if (! EditorManager::self()) return false;
-	TextFileEditor * editor = qobject_cast<TextFileEditor*>(EditorManager::self()->currentEditor());
-	if (! editor) return false;
-	return true;
-}
-
-void GotoLineAction::actionTriggered()
-{
-	TextFileEditor * editor = qobject_cast<TextFileEditor*>(EditorManager::self()->currentEditor());
-	int currentLine = editor->textEdit()->currentRow() + 1;
-	int maxLine     = editor->textEdit()->countRow();
-
-	bool ok;
-	int line = QInputDialog::getInt(qApp->activeWindow(), tr("Goto Line"), tr("Line:"), currentLine, 1, maxLine, 1, &ok);
-	if (ok)
-		editor->textEdit()->gotoLine(line);
 }
 
 

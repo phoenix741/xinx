@@ -23,8 +23,7 @@
 #include <core/filewatcher.h>
 #include "configuration/gceinterfacefactory.h"
 #include "projectproperty/generixproject.h"
-#include <contentview2/contentview2cache.h>
-#include <contentview2/contentview2manager.h>
+#include "docks/dictionary/dictionary_parser.h"
 
 /* Global */
 
@@ -116,7 +115,7 @@ GceInterface * ConfigurationManager::getInterfaceOfDirectory(const QString & dir
 	return interface;
 }
 
-GceInterface * ConfigurationManager::getInterfaceOfProject(XinxProject * project)
+GceInterface * ConfigurationManager::getInterfaceOfProject(XinxProject::Project * project)
 {
 	GenerixProject * gnxProject = static_cast<GenerixProject*>(project);
 	if (gnxProject)
@@ -129,7 +128,7 @@ GceInterface * ConfigurationManager::getInterfaceOfProject(XinxProject * project
 	}
 }
 
-void ConfigurationManager::loadDictionary(XinxProject * project)
+void ConfigurationManager::loadDictionary(XinxProject::Project * project)
 {
 	GceInterface* gce = getInterfaceOfProject(project);
 	if (gce)
@@ -137,7 +136,18 @@ void ConfigurationManager::loadDictionary(XinxProject * project)
 		QStringList dictionaries = getInterfaceOfProject(project)->dictionnaries();
 		foreach(const QString & filename, dictionaries)
 		{
-			ContentView2::Manager::self()->cache()->addToCache(project, filename, "GNX_DICO", "*");
+			QFile * device = new QFile(filename);
+			if (device->open(QFile::ReadOnly))
+			{
+				ContentView3::FilePtr file = project->cache ()->cachedFile (filename);
+
+				Generix::Dictionary::Parser * dictionaryParser = new Generix::Dictionary::Parser();
+				dictionaryParser->setFile(file);
+				dictionaryParser->setDevice(device);
+
+				project->cache ()->addFileToCache (dictionaryParser, false, ContentView3::Cache::PROJECT);
+			}
+
 		}
 	}
 }

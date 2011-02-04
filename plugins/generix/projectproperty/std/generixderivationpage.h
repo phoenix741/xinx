@@ -24,7 +24,7 @@
 // Xinx header
 #include "ui_generixderivationpage.h"
 #include "projectproperty/generixproject.h"
-#include <plugins/plugininterfaces.h>
+#include <plugins/interfaces/gui.h>
 
 // Qt header
 #include <QAbstractTableModel>
@@ -79,7 +79,7 @@ public:
 	GenerixDerivationPathPageImpl(QWidget * parent = 0, Qt::WFlags f = 0);
 	virtual ~GenerixDerivationPathPageImpl();
 
-	virtual void setProject(XinxProject * project);
+	virtual void setProject(XinxProject::Project * project);
 
 	virtual QPixmap image();
 	virtual QString name();
@@ -97,7 +97,7 @@ private slots:
 	void derivationLineChanged(const QModelIndex & current);
 
 private:
-	XinxProject * m_project;
+	XinxProject::Project * m_project;
 	QPointer<DerivationPathTableModel> m_model;
 	QPointer<DerivationDirectoryEditDelegate> m_delegate;
 };

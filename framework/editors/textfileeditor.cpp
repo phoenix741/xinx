@@ -1,21 +1,21 @@
-/* *********************************************************************** *
- * XINX                                                                    *
- * Copyright (C) 2007-2010 by Ulrich Van Den Hekke                         *
- * ulrich.vdh@shadoware.org                                                *
- *                                                                         *
- * This program is free software: you can redistribute it and/or modify    *
- * it under the terms of the GNU General Public License as published by    *
- * the Free Software Foundation, either version 3 of the License, or       *
- * (at your option) any later version.                                     *
- *                                                                         *
- * This program is distributed in the hope that it will be useful,         *
- * but WITHOUT ANY WARRANTY; without even the implied warranty of          *
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *
- * GNU General Public License for more details.                            *
- *                                                                         *
- * You should have received a copy of the GNU General Public License       *
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
- * *********************************************************************** */
+/*
+ XINX
+ Copyright (C) 2007-2011 by Ulrich Van Den Hekke
+ xinx@shadoware.org
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful.
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 // xinx header
 #include "editors/textfileeditor.h"
@@ -23,15 +23,21 @@
 #include "editors/bookmarktexteditorinterface.h"
 #include "actions/actioninterface.h"
 #include "plugins/xinxpluginsloader.h"
-#include "project/xinxproject.h"
+#include "project/xinxprojectproject.h"
+#include "session/sessioneditor.h"
 #include "core/xinxconfig.h"
 #include "borderlayout.h"
-#include "contentview2/contentview2completionmodel.h"
-#include "contentview2/contentview2manager.h"
-#include "contentview2/contentview2cache.h"
-#include "contentview2/contentview2node.h"
-#include "contentview2/contentview2parser.h"
-#include "contentview2/contentview2treemodel.h"
+#include <plugins/xinxpluginelement.h>
+#include <actions/actionmanager.h>
+#include <plugins/interfaces/codecompletion.h>
+
+#include <contentview3/parserfactory.h>
+#include <contentview3/parser.h>
+#include <contentview3/treemodel.h>
+#include <contentview3/filenode.h>
+#include <codecompletion/completer.h>
+#include <codecompletion/model.h>
+#include <codecompletion/pool.h>
 
 // Qt header
 #include <QScrollBar>
@@ -51,7 +57,6 @@
 #include <QCompleter>
 #include <QAbstractItemView>
 #include <QTextCodec>
-#include <QUuid>
 #include <QBuffer>
 
 /* TextFileEditor */
@@ -66,32 +71,91 @@
 #endif
 #endif
 
-TextFileEditor::TextFileEditor(XinxCodeEdit * editor, IFileTypePlugin * interface, QWidget *parent) : AbstractEditor(interface, parent), m_codec(XINXConfig::self()->config().editor.defaultTextCodec), m_view(editor), m_eol(DEFAULT_EOL), m_completionModel(0)
+/*!
+ * \ingroup XinxEditors
+ * \class TextFileEditor
+ * Class used to represent a file editor. A file editor have a XinxCodeEditor class, who show the line in the document,
+ * folding, ....
+ * The File Editor is a subclass of Editor and implements all its pure virtual method.
+ *
+ * The File Editor propose a method to read the FileName : getFileName(), and the default suffix (for save as) to use (getSuffix).
+ * If a file is open, getTitle() return the file name otherwise it return noname.
+ *
+ * FileEditor has also two methode for load and save file.
+ *
+ * An \e TextFileEditor load and unload the content view model editor when
+ * reading the device. The content model is based on a ContentViewParser and
+ * some ContentViewNode.
+ */
+
+/*!
+ * \enum TextFileEditor::EndOfLineType
+ * \brief Type of End Of Line that the editor can understand.
+ */
+
+/*!
+ * \var TextFileEditor::WindowsEndOfLine
+ * \brief The end of line is terminated by \\r\\n
+ */
+
+/*!
+ * \var TextFileEditor::UnixEndOfLine
+ * \brief The end of line is terminated by \\n
+ */
+
+/*!
+ * \var TextFileEditor::MacEndOfLine
+ * \brief The end of line is terminated by \\r\\n
+ */
+
+
+/*!
+ * Construct a TextFileEditor with the help of a XinxCodeEdit and a parent.
+ * \param editor XinxCodeEdit to use to print file to screen (center widget)
+ * \param parent Parent and containers of the editor.
+ */
+TextFileEditor::TextFileEditor(XinxCodeEdit* editor, QWidget* parent): AbstractEditor(parent), _modification_timer(0), _move_timer(0), m_codec(XINXConfig::self()->config().editor.defaultTextCodec), m_view(editor), m_eol(DEFAULT_EOL), m_bookmarkInterface(0), _model(0), _completion_model(0), _completer(0)
 {
 	initObjects();
 }
 
+/*! Destructor of the FileEditor.*/
 TextFileEditor::~TextFileEditor()
 {
-	ContentView2::Manager::self()->cache()->unregisterPath(m_uuid);
-	ErrorManager::self()->clearMessages(m_uuid);
-	ErrorManager::self()->removeContextTranslation(m_uuid);
-	delete m_model;
+	ErrorManager::self()->clearMessages(lastFileName());
 }
+
+/*!
+ * \fn void TextFileEditor::selectionAvailable(bool yes);
+ * \brief Signal emitted when a text is selected or deselected.
+ * \param yes The value is true if a part of the text is selected, else the value is false.
+ */
+
+/*!
+ * \fn void TextFileEditor::positionInEditorChanged(const QModelIndex & index);
+ * \brief Signal emited when the position in the editor is changed. The \e index give
+ * the position of the cursor in the ContentViewModel.
+ */
+
+/*!
+ * \fn void TextFileEditor::codecChanged();
+ * \brief This signal is emited when the codec is modified.
+ */
+
 
 void TextFileEditor::initObjects()
 {
-	m_buffer = new QBuffer(this);
-	m_uuid   = QUuid::createUuid().toString();
-	m_file   = ContentView2::FileContainer(XINXProjectManager::self()->project(), m_uuid, false);
-	ContentView2::Manager::self()->cache()->registerPath(m_uuid);
+	_modification_timer = new QTimer();
+	_modification_timer->setSingleShot(true);
+	_modification_timer->setInterval(XINXConfig::self()->config().editor.automaticModelRefreshTimeout);
+	connect(_modification_timer, SIGNAL(timeout()), this, SLOT(updateModel()));
 
-	m_keyTimer = new QTimer();
-	m_keyTimer->setSingleShot(true);
-	m_keyTimer->setInterval(XINXConfig::self()->config().editor.automaticModelRefreshTimeout);
-	connect(m_keyTimer, SIGNAL(timeout()), this, SLOT(updateModel()));
+	_move_timer = new QTimer();
+	_move_timer->setSingleShot(true);
+	_move_timer->setInterval(100);
+	connect(_move_timer, SIGNAL(timeout()), this, SLOT(updateContext()));
 
-	// Set filter event layout.
+	// Set the internal editor used by textfileeditor
 	if (! m_view)
 		m_view = new XinxCodeEdit(this);
 	else
@@ -100,8 +164,6 @@ void TextFileEditor::initObjects()
 	setContextMenuPolicy(Qt::DefaultContextMenu);
 	m_view->setContextMenuPolicy(Qt::NoContextMenu);
 	m_view->editor()->setContextMenuPolicy(Qt::NoContextMenu);
-	//installEventFilter( this );
-	//m_view->installEventFilter( this );
 
 	m_bookmarkInterface = new BookmarkTextEditorInterface(this);
 	m_bookmarkInterface->setTextEditor(m_view);
@@ -112,32 +174,35 @@ void TextFileEditor::initObjects()
 	connect(m_view, SIGNAL(redoAvailable(bool)), this, SIGNAL(redoAvailable(bool)));
 
 	connect(m_view->editor(), SIGNAL(contentModified(bool)), this, SLOT(setModified(bool)));
-	connect(textEdit()->document(), SIGNAL(contentsChanged()), this, SLOT(textChanged()));
+	connect(m_view->document(), SIGNAL(contentsChanged()), this, SLOT(textChanged()));
+	connect(m_view->editor(), SIGNAL(cursorPositionChanged()), this, SLOT(cursorPositionChanged()) );
 
 	connect(m_view, SIGNAL(searchWord(QString)), this, SLOT(searchWord(QString)));
 
-	m_model = new ContentView2::TreeModel(ContentView2::Manager::self()->database(), m_file, this);
-
-	connect(ContentView2::Manager::self()->cache(), SIGNAL(cacheLoaded(ContentView2::File)), this, SLOT(updateImports(ContentView2::File)), Qt::BlockingQueuedConnection);
 	connect(ErrorManager::self(), SIGNAL(changed()), this, SLOT(errorChanged()));
 
-	connect(textEdit()->editor(), SIGNAL(textEdited(QKeyEvent*)), this, SLOT(updateCodec()));
+	connect(m_view->editor(), SIGNAL(textEdited(QKeyEvent*)), this, SLOT(updateCodec()));
+
+	/* Completer */
+	_completer			= new CodeCompletion::Completer(this);
+	_completion_model	= new CodeCompletion::Model(_completer);
+
+	_completer->setModel (_completion_model);
+	_completer->setContext (_context);
+	_completer->setEditor (this);
+
+	_model = new ContentView3::TreeModel(this);
+
+	setFile(ContentView3::File::create ());
 }
 
-ContentView2::CompletionModel * TextFileEditor::createModel(QSqlDatabase db, QObject * parent)
+void TextFileEditor::setProject(XinxProject::Project* project)
 {
-	return new ContentView2::CompletionModel(db, m_file, parent);
-}
-
-void TextFileEditor::initCompleter()
-{
-	m_completionModel = createModel(ContentView2::Manager::self()->database(), this);
-	// Est-ce vraiment utile ?
-	//connect(ContentView2::Manager::self()->cache(), SIGNAL(cacheLoaded()), m_completionModel, SLOT(select()), Qt::BlockingQueuedConnection);
-
-	QCompleter * completer = new QCompleter(textEdit());
-	completer->setModel(m_completionModel);
-	textEdit()->setCompleter(completer);
+	if (AbstractEditor::project() != project)
+	{
+		AbstractEditor::setProject(project);
+		_file->setProject(project);
+	}
 }
 
 void TextFileEditor::initLayout()
@@ -160,28 +225,33 @@ BookmarkTextEditorInterface * TextFileEditor::bookmarkTextInterface()
 	return m_bookmarkInterface;
 }
 
+/*!
+ * Return the text editor corresponding on the file editor. This editor can't be null.
+ * \return The text editor widget used by the file editor.
+ */
 XinxCodeEdit * TextFileEditor::textEdit() const
 {
 	return m_view;
 }
 
+/*! Method used to select all the text in the editor. The call is sent to the TextEditor. */
 void TextFileEditor::selectAll()
 {
-	textEdit()->editor()->selectAll();
+	m_view->editor()->selectAll();
 }
 
 void TextFileEditor::loadFromFile(const QString & fileName)
 {
-	ErrorManager::self()->addContextTranslation(m_uuid, fileName);
+	_file->setFilename(fileName);
 	AbstractEditor::loadFromFile(fileName);
-	textEdit()->setFilename(fileName);
+	m_view->setFilename(fileName);
 }
 
 void TextFileEditor::saveToFile(const QString & fileName)
 {
-	ErrorManager::self()->addContextTranslation(m_uuid, fileName);
+	_file->setFilename(fileName);
 	AbstractEditor::saveToFile(fileName);
-	textEdit()->setFilename(fileName);
+	m_view->setFilename(fileName);
 }
 
 void TextFileEditor::detectEOL(QIODevice & d)
@@ -218,7 +288,7 @@ void TextFileEditor::detectCodec(QIODevice & d)
 
 void TextFileEditor::loadFromDevice(QIODevice & d)
 {
-	m_keyTimer->stop();
+	_modification_timer->stop();
 
 	detectEOL(d);
 	detectCodec(d);
@@ -232,7 +302,7 @@ void TextFileEditor::loadFromDevice(QIODevice & d)
 		textBuffer.replace("\r", "\n");
 	}
 	m_view->setPlainText(textBuffer);
-	m_keyTimer->stop();
+	_modification_timer->stop();
 
 	updateModel();
 }
@@ -253,19 +323,32 @@ void TextFileEditor::setModified(bool isModified)
 	AbstractEditor::setModified(isModified);
 }
 
+CodeCompletion::Context TextFileEditor::context()
+{
+	return _context;
+}
+
+/*!
+ * The default implementation return null
+ * \sa contentViewModel()
+ */
 QAbstractItemModel * TextFileEditor::model()  const
 {
 	return contentViewModel();
 }
 
-ContentView2::TreeModel * TextFileEditor::contentViewModel() const
+/*!
+ * Return the model used in the edi	tor as model() but with the type ContentViewModel
+ * \sa model()
+ */
+ContentView3::TreeModel * TextFileEditor::contentViewModel() const
 {
-	return m_model;
+	return _model;
 }
 
 void TextFileEditor::initSearch(SearchOptions & options)
 {
-	m_cursorStart = textEdit()->textCursor();
+	m_cursorStart = m_view->textCursor();
 	m_cursorEnd   = QDocumentCursor();
 
 	QDocumentCursor selectionStart = m_cursorStart.selectionStart();
@@ -296,7 +379,7 @@ void TextFileEditor::initSearch(SearchOptions & options)
 		m_cursorStart.moveTo(selectionStart);
 	}
 
-	textEdit()->setTextCursor(m_cursorStart);
+	m_view->setTextCursor(m_cursorStart);
 }
 
 bool TextFileEditor::find(const QString & text, SearchOptions options)
@@ -315,11 +398,11 @@ bool TextFileEditor::find(const QString & text, SearchOptions options)
 
 	if (options.testFlag(REGULAR_EXPRESSION))
 	{
-		finded = textEdit()->find(QRegExp(text), tc, flags);
+		finded = m_view->find(QRegExp(text), tc, flags);
 	}
 	else
 	{
-		finded = textEdit()->find(text, tc, flags);
+		finded = m_view->find(text, tc, flags);
 	}
 
 	if (! finded.isNull())
@@ -337,7 +420,7 @@ bool TextFileEditor::find(const QString & text, SearchOptions options)
 		}
 
 		m_cursorStart = finded;
-		textEdit()->setTextCursor(finded);
+		m_view->setTextCursor(finded);
 	}
 
 	return !finded.isNull();
@@ -373,83 +456,110 @@ void TextFileEditor::replace(const QString & from, const QString & to, SearchOpt
 
 }
 
-ContentView2::Parser * TextFileEditor::createParser()
+//! Create a parser for the text editor (based on the paser type of the interface)
+ContentView3::Parser * TextFileEditor::createParser()
 {
-	return 0;
+	Q_ASSERT_X(fileTypePluginInterface(), "TextFileEditor::createParser", "An interface must be defined on an editor");
+
+	if (fileTypePluginInterface())
+	{
+		const QString parserName = fileTypePluginInterface()->parserType();
+		if (parserName.isEmpty()) return NULL;
+
+		return ContentView3::ParserFactory::getParserByType(parserName);
+	}
+
+	return NULL;
 }
 
+/*!
+ * \brief Update content view and completion with the content of the text editor.
+ *
+ * The default implementation create the parser by using \e createParser() with the content
+ * of the editor, and run it.
+ */
 void TextFileEditor::updateModel()
 {
 	updateCodec();
 
-	ContentView2::Parser * parser = createParser();
-	if (! parser) {
-		emit contentChanged();
-		return ;
-	}
+	ContentView3::Parser * parser = createParser();
+	if (parser) {
+		connect(parser, SIGNAL(jobEnding()), this, SLOT(fileParsed()));
 
-	parser->setFilename(lastFileName());
-	if (XINXProjectManager::self()->project())
-	{
-		parser->setWorkingPath(XINXProjectManager::self()->project()->projectPath());
-	}
+		QBuffer * buffer = new QBuffer;
+		if (codec())
+		{
+			buffer->setData(codec()->fromUnicode(m_view->toPlainText()));
+		}
+		else
+		{
+			buffer->setData(qPrintable(m_view->toPlainText()));
+		}
 
-	m_buffer->close();
-	if (codec())
-	{
-		m_buffer->setData(codec()->fromUnicode(textEdit()->toPlainText()));
-	}
-	else
-	{
-		m_buffer->setData(qPrintable(textEdit()->toPlainText()));
-	}
-	m_buffer->open(QBuffer::ReadOnly);
+		if (buffer->open(QBuffer::ReadOnly))
+		{
+			parser->setFile (_file);
+			if (project ())
+			{
+				parser->setWorkingPath (project ()->projectPath ());
+			}
 
-	parser->setInputDevice(m_buffer);
+			parser->setDevice (buffer);
 
-	ContentView2::Manager::self()->cache()->addToCache(XINXProjectManager::self()->project(), m_uuid, QString(), "M", parser);
+			project ()->cache ()->addFileToCache (parser, true, ContentView3::Cache::NONE);
+		}
+		else
+		{
+			delete buffer;
+			delete parser;
+		}
+	}
 
 	emit contentChanged();
 }
 
+void TextFileEditor::fileParsed()
+{
+	_model->reload();
+	//_completion_model->updateModel ();
+	qDebug() << "File " << _file->filename() << " reloaded.";
+}
+
 void TextFileEditor::textChanged()
 {
-	m_keyTimer->start();
+	_modification_timer->start();
 }
 
 void TextFileEditor::errorChanged()
 {
 	QList<int> lines;
-	const QString ctxt = lastFileName().isEmpty() ? m_uuid : lastFileName();
-	foreach(ErrorManager::Error err, ErrorManager::self()->errors().value(ctxt))
+	foreach(ErrorManager::Error err, ErrorManager::self()->errors().value(lastFileName()))
 	{
 		if (! lines.contains(err.line))
 			lines << err.line - 1;
 	}
-	textEdit()->setErrors(lines);
+	m_view->setErrors(lines);
 }
 
-void TextFileEditor::updateImports(const ContentView2::File & file)
+void TextFileEditor::setFile(ContentView3::FilePtr file)
 {
-	if ((file.path() == m_uuid) && (!file.isCached()))
+	if (_file != file)
 	{
-		m_file.reload(ContentView2::Manager::self()->database());
-		m_model->select();
+		_file = file;
+		_file->setProject(project());
 
-		QCompleter * c = textEdit()->completer();
-
-		if (c && c->completionModel()->rowCount())
-		{
-			c->popup()->setCurrentIndex(c->completionModel()->index(0, 0));
-		}
+		_context.setFile (_file.toWeakRef ());
+		_model->setFile(_file);
+		m_view->setFile(_file.toWeakRef ());
 	}
 }
 
-ContentView2::FileContainer TextFileEditor::fileContainer() const
+ContentView3::FilePtr TextFileEditor::file() const
 {
-	return m_file;
+	return _file;
 }
 
+//! Set the codec to \e text
 void TextFileEditor::setCodecName(const QString & text)
 {
 	if (m_codec != text)
@@ -459,11 +569,13 @@ void TextFileEditor::setCodecName(const QString & text)
 	}
 }
 
+//! Get the codec name
 const QString & TextFileEditor::codecName() const
 {
 	return m_codec;
 }
 
+//! The codec used to read and write the file. By Default, the codec is defined in options.
 QTextCodec * TextFileEditor::codec() const
 {
 	QTextCodec * codec = QTextCodec::codecForName(m_codec.toAscii());
@@ -480,118 +592,126 @@ void TextFileEditor::updateCodec()
 
 }
 
+void TextFileEditor::cursorPositionChanged()
+{
+	const int line = m_view->currentRow() + 1;
+	const int column = m_view->currentColumn() + 1;
+	const QString text = QString("   %1 x %2   ").arg(line, 3, 10, QLatin1Char('0')).arg(column, 3, 10, QLatin1Char('0'));
+	emit positionChanged(text);
+
+	_move_timer->start ();
+}
+
+void TextFileEditor::updateContext()
+{
+	_move_timer->stop ();
+	_context.setFilename (lastFileName ());
+	CodeCompletion::Pool::self()->updateContext(this, _context);
+}
+
+/*!
+ * Return the EndOfLine of the document. This can't be modified.
+ * A newly created editor is in platform end of line type. Saving a file converte the
+ * EndOfLine to the platform behavour.
+ */
 TextFileEditor::EndOfLineType TextFileEditor::eol() const
 {
 	return m_eol;
 }
 
+/*! Auto indent all the document (named Pretty Print). */
 bool TextFileEditor::autoIndent()
 {
-	ErrorManager::self()->addMessage(lastFileName(), -1, ErrorManager::MessageWarning, tr("Can't indent this type of document"), QStringList());
+	ErrorManager::self()->addMessage(lastFileName(), -1, QtWarningMsg, tr("Can't indent this type of document"), QStringList());
 	return false;
 }
 
-ContentView2::Node TextFileEditor::rootNode() const
-{
-	if (m_file.isValid(ContentView2::Manager::self()->database()))
-	{
-		int rootId = m_file.file(ContentView2::Manager::self()->database()).rootId();
-		return ContentView2::Node(ContentView2::Manager::self()->database(), rootId);
-	}
-	else
-	{
-		return ContentView2::Node();
-	}
-}
-
+/*! Call the completer of the text on the current position of the cursor, if possible. */
 void TextFileEditor::complete()
 {
-	QDocumentCursor cursor = textEdit()->textCursor();
-
-	QString completionPrefix = textEdit()->textUnderCursor(cursor);
-	QCompleter * c = textEdit()->completer();
-
-	if (c)
+	if (_completer)
 	{
-		if (completionPrefix != c->completionPrefix())
-		{
-			m_completionModel->setPrefix(completionPrefix);
-			m_completionModel->select();
-			c->setCompletionPrefix(completionPrefix);
-			c->popup()->setCurrentIndex(c->completionModel()->index(0, 0));
-		}
-
-		int x, y, h, w;
-		QPoint pos = textEdit()->editor()->mapFromContents(textEdit()->textCursor().documentPosition());
-		textEdit()->editor()->getPanelMargins(&x, &y, &h, &w);
-		QRect cr(pos.x() + x, pos.y() + textEdit()->document()->fontMetrics().height(), 1, 1);
-
-		cr.setWidth(c->popup()->sizeHintForColumn(0) + c->popup()->verticalScrollBar()->sizeHint().width());
-		c->complete(cr);
+		_completer->complete(false);
 	}
 }
 
 void TextFileEditor::contextMenuEvent(QContextMenuEvent * contextMenuEvent)
 {
-	QMenu * menu = new QMenu(m_view);
+	QScopedPointer<QMenu> menu(new QMenu(m_view));
 
-	foreach(XinxPluginElement * e, XinxPluginsLoader::self()->plugins())
+	foreach(XinxAction::MenuItem * item, XinxAction::ActionManager::self ()->popup())
 	{
+		item->updateActionState();
+		menu->addAction(item->action());
+	}
 
-		// Si le plugin est activé
-		if (e->isActivated() && qobject_cast<IXinxPlugin*>(e->plugin()))
+	menu->exec(contextMenuEvent->globalPos());
+}
+
+ContentView3::NodePtr TextFileEditor::localNodeOfWord(const ContentView3::NodePtr & node, const QString & word)
+{
+	foreach(ContentView3::NodePtr child, node->childs())
+	{
+		if (child->name() == word)
 		{
-			XinxAction::MenuList menuList = qobject_cast<IXinxPlugin*>(e->plugin())->actions();
-
-			// Pour chaque menu
-			foreach(const XinxAction::ActionList & aMenu, menuList)
-			{
-
-				// Pour chaque élemént du menu
-				foreach(XinxAction::MenuItem * item, aMenu)
-				{
-					XinxAction::Action* xinxAction = dynamic_cast<XinxAction::Action*>(item);
-					if (xinxAction && xinxAction->isInPopupMenu())
-					{
-						xinxAction->updateActionState();
-
-						menu->addAction(xinxAction->action());
-					}
-				}
-
-				menu->addSeparator();
-			}
+			return child;
+		}
+		else
+		{
+			ContentView3::NodePtr recursiveNode = localNodeOfWord (child, word);
+			if (recursiveNode)
+				return recursiveNode;
 		}
 	}
 
-	menu->addAction(undoAction());
-	menu->addAction(redoAction());
-	menu->addSeparator();
-	menu->addAction(cutAction());
-	menu->addAction(copyAction());
-	menu->addAction(pasteAction());
+	return ContentView3::NodePtr();
+}
 
-	menu->exec(contextMenuEvent->globalPos());
-	delete menu;
+ContentView3::NodePtr TextFileEditor::globalNodeOfWord(const QString & word)
+{
+	ContentView3::NodePtr node = localNodeOfWord (_file->rootNode().dynamicCast<ContentView3::Node> (), word);
+	if (node.isNull () && project ())
+	{
+		foreach(const ContentView3::FilePtr & import, project()->cache ()->importOf(_file))
+		{
+			node = localNodeOfWord (import->rootNode().dynamicCast<ContentView3::Node> (), word);
+			if (node)
+			{
+				break;
+			}
+		}
+	}
+	return node;
 }
 
 void TextFileEditor::searchWord(const QString & word)
 {
-	textEdit()->completer();
-	ContentView2::Node n = m_completionModel->nodeOfWord(word);
-	if (n.isValid())
+	ContentView3::NodePtr n = globalNodeOfWord (word);
+	if (n)
 	{
-		ContentView2::File file = n.file(ContentView2::Manager::self()->database());
-		if (file.isCached())
-			emit open(file.path(), n.line());
-		else
-			emit open(QString(), n.line());
-		return;
+		const QString filename = n->filename();
+		emit open(filename, n->line());
+
+		return; /* Founded */
 	}
 	QMessageBox::information(this, tr("Search Word"), tr("Word %1 not found").arg(word));
 }
 
-void TextFileEditor::serialize(XinxProjectSessionEditor * data, bool content)
+/*!
+ * \brief Indicate if the snipet must be show or not in the completion list
+ * \since 0.9.1.0
+ *
+ * Used by CodeCompletion::SnipetContextParser to know if snipet must be added
+ * This methode must subclassed, if the return value must be different.
+ *
+ * By default this method return always true.
+ */
+bool TextFileEditor::isSnipetMustBeShow() const
+{
+	return true;
+}
+
+void TextFileEditor::serialize(XinxSession::SessionEditor * data, bool content)
 {
 	AbstractEditor::serialize(data, content);
 
@@ -610,8 +730,10 @@ void TextFileEditor::serialize(XinxProjectSessionEditor * data, bool content)
 	data->writeProperty("BookmarkCount", QVariant(i));
 }
 
-void TextFileEditor::deserialize(XinxProjectSessionEditor * data)
+void TextFileEditor::deserialize(XinxSession::SessionEditor * data)
 {
+	AbstractEditor::deserialize(data);
+
 	int position = 0;
 	QString text;
 
@@ -621,13 +743,9 @@ void TextFileEditor::deserialize(XinxProjectSessionEditor * data)
 	if (! text.isEmpty())
 	{
 		m_view->setPlainText(text);
-
-		AbstractEditor::deserialize(data);
 	}
 	else
 	{
-		AbstractEditor::deserialize(data);
-
 		if (! lastFileName().isEmpty())
 			loadFromFile(lastFileName());
 	}
@@ -639,52 +757,52 @@ void TextFileEditor::deserialize(XinxProjectSessionEditor * data)
 		m_bookmarkInterface->setBookmark(data->readProperty(QString("Bookmark_%1").arg(i)).toInt(), true);
 	}
 
-	QDocumentCursor tc(textEdit()->editor()->document());
+	QDocumentCursor tc(m_view->editor()->document());
 	tc.movePosition(position, QDocumentCursor::Right);
 	m_view->setTextCursor(tc);
 }
 
 bool TextFileEditor::canCopy()
 {
-	return textEdit()->textCursor().hasSelection();
+	return m_view->textCursor().hasSelection();
 }
 
 bool TextFileEditor::canPaste()
 {
-	return textEdit()->canPaste();
+	return m_view->canPaste();
 }
 
 bool TextFileEditor::canUndo()
 {
-	return textEdit()->editor()->canUndo();
+	return m_view->editor()->canUndo();
 }
 
 bool TextFileEditor::canRedo()
 {
-	return textEdit()->editor()->canRedo();
+	return m_view->editor()->canRedo();
 }
 
 void TextFileEditor::undo()
 {
-	textEdit()->editor()->undo();
+	m_view->editor()->undo();
 }
 
 void TextFileEditor::redo()
 {
-	textEdit()->editor()->redo();
+	m_view->editor()->redo();
 }
 
 void TextFileEditor::cut()
 {
-	textEdit()->editor()->cut();
+	m_view->editor()->cut();
 }
 
 void TextFileEditor::copy()
 {
-	textEdit()->editor()->copy();
+	m_view->editor()->copy();
 }
 
 void TextFileEditor::paste()
 {
-	textEdit()->editor()->paste();
+	m_view->editor()->paste();
 }

@@ -18,14 +18,18 @@
  * *********************************************************************** */
 
 // Xinx header
-#include "uniqueapplication.h"
-#include "mainformimpl.h"
+#include <core/uniqueapplication.h>
+#include <application/mainformimpl.h>
 #include <snipets/snipetmanager.h>
 #include <snipets/snipetlist.h>
 #include <core/xinxconfig.h>
 #include <core/exceptions.h>
 #include <plugins/xinxpluginsloader.h>
-#include "newversionwizardimpl.h"
+#include <application/newversionwizardimpl.h>
+#include <editors/editormanager.h>
+#include <session/sessionmanager.h>
+#include <project/xinxprojectmanager.h>
+#include <core/version.h>
 
 // QCodeEdit header
 #include <qlinemarksinfocenter.h>
@@ -43,6 +47,7 @@
 #include <QBitmap>
 #include <QStyleFactory>
 #include <QDesktopServices>
+#include <QtPlugin>
 
 // C++ header
 #include <csignal>
@@ -63,7 +68,7 @@ public:
 	}
 };
 
-void backup_appli_signal(int signal)
+static void backup_appli_signal(int signal)
 {
 	std::signal(SIGSEGV, SIG_DFL);
 	std::signal(SIGABRT, SIG_DFL);
@@ -72,7 +77,7 @@ void backup_appli_signal(int signal)
 	throw SignalSegFaultException(signal);
 }
 
-void initSearchPath(QApplication * app)
+static void initSearchPath(QApplication * app)
 {
 	const QString configDirectory    = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
 	const QString homeDirectory      = QDir::home().absoluteFilePath(configDirectory);
@@ -92,7 +97,7 @@ void initSearchPath(QApplication * app)
 #ifndef Q_WS_WIN
 	QDir::addSearchPath("datas", QDir(QApplication::applicationDirPath()).absoluteFilePath("../share/xinx/datas"));
 	QDir::addSearchPath("datas", QDir(QApplication::applicationDirPath()).absoluteFilePath("../lib/xinx/datas"));
-#endif /* Q_WS_WIN */
+#endif // Q_WS_WIN
 
 	// ... for scripts ...
 	QDir::addSearchPath("scripts", scriptDirectory);
@@ -100,7 +105,7 @@ void initSearchPath(QApplication * app)
 #ifndef Q_WS_WIN
 	QDir::addSearchPath("scripts", QDir(QApplication::applicationDirPath()).absoluteFilePath("../share/xinx/scripts"));
 	QDir::addSearchPath("scripts", QDir(QApplication::applicationDirPath()).absoluteFilePath("../lib/xinx/scripts"));
-#endif /* Q_WS_WIN */
+#endif // Q_WS_WIN
 
 	// ... for plugins ...
 	QDir::addSearchPath("plugins", pluginsDirectory);
@@ -108,7 +113,7 @@ void initSearchPath(QApplication * app)
 #ifndef Q_WS_WIN
 	QDir::addSearchPath("plugins", QDir(QApplication::applicationDirPath()).absoluteFilePath("../share/xinx/plugins"));
 	QDir::addSearchPath("plugins", QDir(QApplication::applicationDirPath()).absoluteFilePath("../lib/xinx/plugins"));
-#endif /* Q_WS_WIN */
+#endif // Q_WS_WIN
 	foreach(const QString & searchPath, QDir::searchPaths("plugins"))
 	{
 		app->addLibraryPath(searchPath);
@@ -120,10 +125,10 @@ void initSearchPath(QApplication * app)
 #ifndef Q_WS_WIN
 	QDir::addSearchPath("templates", QDir(QApplication::applicationDirPath()).absoluteFilePath("../share/xinx/templates"));
 	QDir::addSearchPath("templates", QDir(QApplication::applicationDirPath()).absoluteFilePath("../lib/xinx/templates"));
-#endif /* Q_WS_WIN */
+#endif // Q_WS_WIN
 }
 
-void processSnipetArguments(const QStringList & args)
+static void processSnipetArguments(const QStringList & args)
 {
 	for (int i = 0 ; i < args.count() ; i++)
 	{
@@ -170,7 +175,7 @@ int main(int argc, char *argv[])
 	{
 		QStringList args = app.arguments();
 
-		app.setOrganizationName("Shadoware");
+		app.setOrganizationName("Shadoware.Org");
 		app.setOrganizationDomain("Shadoware.Org");
 		app.setApplicationName("XINX");
 
@@ -191,7 +196,7 @@ int main(int argc, char *argv[])
 			splash.show();
 			app.processEvents();
 
-			/* Load the exception manager */
+			// Load the exception manager
 			splash.showMessage(QApplication::translate("SplashScreen", "Install exception handler ..."));
 			app.processEvents();
 			ExceptionManager::installExceptionHandler();
@@ -201,10 +206,8 @@ int main(int argc, char *argv[])
 			app.processEvents();
 			initSearchPath(&app);
 
-			/*
-			 * To have the lang and style loaded earlier in the process, we load configuration of XINX
-			 * XINX Config doens't have call to another Big instance (has XinxPluginsLoader)
-			 */
+			// To have the lang and style loaded earlier in the process, we load configuration of XINX
+			// XINX Config doens't have call to another Big instance (has XinxPluginsLoader)
 			splash.showMessage(QApplication::translate("SplashScreen", "Load configuration ..."));
 			app.processEvents();
 
@@ -232,7 +235,7 @@ int main(int argc, char *argv[])
 			tranlator_components.load(QString(":/translations/xinxcomponents_%1").arg(XINXConfig::self()->config().language));
 			app.installTranslator(&tranlator_components);
 
-			/* Load available marks (for QCodeEdit use) */
+			// Load available marks (for QCodeEdit use)
 			splash.showMessage(QApplication::translate("SplashScreen", "Load available marks ..."));
 			app.processEvents();
 			QLineMarksInfoCenter::instance()->loadMarkTypes(":/qcodeedit/marks.qxm");
@@ -246,11 +249,28 @@ int main(int argc, char *argv[])
 			app.processEvents();
 			app.attachMainWindow(mainWin = new MainformImpl());
 
-			if ((args.count() == 1) && (XINXConfig::self()->config().project.openTheLastProjectAtStart) && (! XINXConfig::self()->config().project.lastOpenedProject.isEmpty()))
+			bool recovering = false;
+			if (XinxSession::Session::sessionsNames ().contains (RECOVER_SESSION))
 			{
-				splash.showMessage(QApplication::translate("SplashScreen", "Load last opened project ..."));
+				QMessageBox::StandardButton result = QMessageBox::question (&splash, QApplication::translate("SplashScreen", "Recover"), QApplication::translate("SplashScreen", "There's an existing recover session. Do you wan try to recover ?"), QMessageBox::Yes | QMessageBox::No);
+				if (result == QMessageBox::Yes)
+				{
+					recovering = true;
+				}
+			}
+
+			if (recovering)
+			{
+				splash.showMessage(QApplication::translate("SplashScreen", "Recovering ..."));
 				app.processEvents();
-				mainWin->openProject(XINXConfig::self()->config().project.lastOpenedProject);
+				XinxSession::SessionManager::self()->restoreSession(RECOVER_SESSION);
+				XinxSession::SessionManager::self()->deleteRecoverSession();
+			}
+			else if ((args.count() == 1) && (XINXConfig::self()->config().project.openTheLastSessionAtStart) && (! XINXConfig::self()->config().project.lastOpenedSession.isEmpty()))
+			{
+				splash.showMessage(QApplication::translate("SplashScreen", "Load last session ..."));
+				app.processEvents();
+				XinxSession::SessionManager::self()->restoreSession(XINXConfig::self()->config().project.lastOpenedSession);
 			}
 
 			if (args.count() > 1)
@@ -262,7 +282,8 @@ int main(int argc, char *argv[])
 				it++;
 				while (it != args.end())
 				{
-					if (QFile(*it).exists()) mainWin->openFile(*it);
+					if (QFile(*it).exists())
+						EditorManager::self()->openFile(*it);
 					it++;
 				}
 			}
@@ -280,9 +301,9 @@ int main(int argc, char *argv[])
 				XINXConfig::self()->config().version = VERSION_STRING;
 			}
 
-			if ((args.count() == 1) && !((XINXConfig::self()->config().project.openTheLastProjectAtStart) && (! XINXConfig::self()->config().project.lastOpenedProject.isEmpty())))
+			if ((!recovering) && (args.count() == 1) && !((XINXConfig::self()->config().project.openTheLastSessionAtStart) && (! XINXConfig::self()->config().project.lastOpenedSession.isEmpty())))
 			{
-				mainWin->openWelcomDialog();
+				XinxProject::Manager::self()->openWelcomDialog();
 			}
 
 			int result = app.exec();
@@ -312,12 +333,14 @@ int main(int argc, char *argv[])
 	catch (XinxException e)
 	{
 		qFatal("In main : %s", qPrintable(e.getMessage()));
-		return false;
+		return 2;
 	}
 	catch (...)
 	{
 		qFatal("In main : Generic Exception");
 		return 1;
 	}
+
+	return 0;
 }
 

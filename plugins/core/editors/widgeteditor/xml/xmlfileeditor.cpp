@@ -20,8 +20,6 @@
 // Xinx header
 #include "xmlfileeditor.h"
 #include "editors/prettyprint/xmlprettyprinter.h"
-#include "editors/models/xsl/xslcompletionnodemodel.h"
-#include "editors/models/xsl/xslcontentviewparser.h"
 #include "xmltexteditor.h"
 #include <borderlayout.h>
 #include <plugins/xinxpluginsloader.h>
@@ -29,7 +27,7 @@
 #include "docks/datastream/xmlpresentationdockwidget.h"
 #include "config/selfwebpluginsettings.h"
 #include <core/xinxconfig.h>
-#include <project/xinxproject.h>
+#include <project/xinxprojectproject.h>
 
 // Qt header
 #include <QXmlStreamReader>
@@ -46,7 +44,7 @@
 
 /* XmlFileEditor */
 
-XmlFileEditor::XmlFileEditor(IFileTypePlugin * fileType, QWidget *parent) : TextFileEditor(new XmlTextEditor(), fileType, parent)
+XmlFileEditor::XmlFileEditor(QWidget *parent) : TextFileEditor(new XmlTextEditor(), parent)
 {
 }
 
@@ -71,7 +69,7 @@ bool XmlFileEditor::autoIndent()
 	}
 	catch (XMLPrettyPrinterException e)
 	{
-		ErrorManager::self()->addMessage(lastFileName(), e.m_line, ErrorManager::MessageError, e);
+		ErrorManager::self()->addMessage(lastFileName(), e.m_line, QtCriticalMsg, e);
 		return false;
 	}
 	return true;

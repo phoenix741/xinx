@@ -19,7 +19,7 @@
 
 // Xinx header
 #include "manualfileresolver.h"
-#include "project/xinxproject.h"
+#include "project/xinxprojectproject.h"
 
 // Qt header
 #include <QDir>
@@ -49,33 +49,28 @@ QString ManualFileResolver::name()
 	return tr("Manual Resolver");
 }
 
-bool ManualFileResolver::isActivated()
+QStringList ManualFileResolver::searchPathList(XinxProject::Project * project) const
 {
-	return true;
-}
-
-QStringList ManualFileResolver::searchPathList() const
-{
-	QStringList searchList = XINXProjectManager::self()->project()->readProperty("searchPathList").toString().split(";;");
+	QStringList searchList = project->readProperty("searchPathList").toString().split(";;");
 	QMutableStringListIterator it(searchList);
 	while (it.hasNext())
 	{
-		QString path = QDir(XINXProjectManager::self()->project()->projectPath()).absoluteFilePath(it.next());
+		QString path = QDir(project->projectPath()).absoluteFilePath(it.next());
 		it.setValue(path);
 	}
 	return searchList;
 }
 
-QString ManualFileResolver::resolveFileName(const QString & nameToResolve, const QString & currentPath)
+bool ManualFileResolver::resolveFileName ( const QString& nameToResolve, QString& resolvedName, const QString& currentPath, XinxProject::Project* project )
 {
 	QStringList searchList;
 
 	if (! currentPath.isEmpty())
 		searchList << currentPath;
 
-	if (XINXProjectManager::self()->project())
+	if (project)
 	{
-		searchList += searchPathList();
+		searchList += searchPathList(project);
 	}
 
 	QString absPath = QString();
@@ -91,7 +86,9 @@ QString ManualFileResolver::resolveFileName(const QString & nameToResolve, const
 	}
 
 	if (finded)
-		return absPath;
+	{
+		resolvedName = absPath;
+	}
 
-	return nameToResolve;
+	return true;
 }

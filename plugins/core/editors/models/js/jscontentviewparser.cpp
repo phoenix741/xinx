@@ -19,73 +19,82 @@
 
 // Xinx header
 #include "editors/models/js/jscontentviewparser.h"
-#include <contentview2/contentview2node.h>
+#include "js_paramnode.h"
+#include "js_variablenode.h"
+#include "js_functionnode.h"
 
 // Qt header
 #include <QIODevice>
 #include <QIcon>
 #include <QVariant>
 
-/* JsContentViewParser */
+namespace Core
+{
 
-JsContentViewParser::JsContentViewParser() : ContentView2::Parser()
+namespace JavaScript
+{
+
+/* Parser */
+
+Parser::Parser() : ContentView3::Parser()
 {
 }
 
-JsContentViewParser::~JsContentViewParser()
+Parser::~Parser()
 {
 }
 
-void JsContentViewParser::load()
+QString Parser::name() const
 {
-	if (! rootNode().isValid()) return;
+	return "JS";
+}
 
-	rootNode().setData(":/images/typejs.png", ContentView2::Node::NODE_ICON);
-	rootNode().update(database());
-
-	clearNodes(rootNode());
-
+void Parser::parse()
+{
 	m_line = 1;
 
 	enum JAVASCRIPT_TOKEN type;
 	QString name;
 
-	ContentView2::Node function = rootNode();
+	ContentView3::NodePtr function = rootNode();
 	int bloc = 0;
+
+	function->clearChilds();
+	function->setIcon(":/images/typejs.png");
 
 	do
 	{
-		if (!inputDevice()) break;
-		nextIdentifier(inputDevice(), type, name);
+		if (!device()) break;
+		nextIdentifier(device(), type, name);
 		switch (type)
 		{
 		case TOKEN_IDENTIFIER:
-			if (name == "var")    // variable
+			if (name == "var") // variable
 			{
 				if (bloc == 0)
-					loadVariables(function, inputDevice());
-				else if (function.isValid())
-					loadVariables(function, inputDevice());
+					loadVariables(rootNode(), device());
+				else if (function)
+					loadVariables(function, device());
 				else
-					throw ContentView2::ParserException(tr("Can't attach variable to function ?"), m_line);
+					throw ContentView3::ParserException(tr("Can't attach variable to function ?"), m_line);
 			}
 			else if (name == "function")
 			{
-				function = loadFunction(rootNode(), inputDevice());
+				function = loadFunction(rootNode(), device());
 			}
 			else
 				do
 				{
-					nextIdentifier(inputDevice(), type, name);
+					nextIdentifier(device(), type, name);
 					if (type == TOKEN_EOF)
-						throw ContentView2::ParserException(tr("End of file is prematured"), m_line);
+						throw ContentView3::ParserException(tr("End of file is prematured"), m_line);
 				}
 				while ((type != TOKEN_PONCTUATION) || ((name != ";") && (name != "{") && (name != "}")));
 
 			if ((type == TOKEN_PONCTUATION) && (name == "{")) bloc ++;
 			if ((type == TOKEN_PONCTUATION) && (name == "}"))
 			{
-				if ((bloc == 1) && function.isValid())
+				if ((bloc == 1) && function)
 					function = rootNode();
 				bloc --;
 			}
@@ -94,22 +103,22 @@ void JsContentViewParser::load()
 			if (name == "{") bloc++;
 			if (name == "}")
 			{
-				if ((bloc == 1) && function.isValid())
+				if ((bloc == 1) && function)
 					function = rootNode();
 				bloc --;
 			}
 			if (bloc < 0)
-				throw ContentView2::ParserException(tr("Too many '}'"), m_line);
+				throw ContentView3::ParserException(tr("Too many '}'"), m_line);
 		case TOKEN_EOF:
 			break;
 		default:
-			throw ContentView2::ParserException(tr("I wait something but i don't know what !"), m_line);
+			throw ContentView3::ParserException(tr("I wait something but i don't know what !"), m_line);
 		}
 	}
-	while (! inputDevice()->atEnd());
+	while (! device()->atEnd());
 }
 
-void JsContentViewParser::nextIdentifier(QIODevice * device, enum JAVASCRIPT_TOKEN & symbType, QString & symbName)
+void Parser::nextIdentifier(QIODevice * device, enum JAVASCRIPT_TOKEN & symbType, QString & symbName)
 {
 	char ch, c;
 	QString st;
@@ -276,7 +285,7 @@ void JsContentViewParser::nextIdentifier(QIODevice * device, enum JAVASCRIPT_TOK
 	while (state != STATE_END);
 }
 
-void JsContentViewParser::loadInstruction(QIODevice * buffer, QString & name, JAVASCRIPT_TOKEN & type)
+void Parser::loadInstruction(QIODevice * buffer, QString & name, JAVASCRIPT_TOKEN & type)
 {
 	// Compter les parantheses. Aller jusqu'au point virgule. Si on trouve un identifier suivis de paranthese
 	// alors appel (1er = identifier).sinon constante, operation, ...
@@ -295,19 +304,19 @@ void JsContentViewParser::loadInstruction(QIODevice * buffer, QString & name, JA
 			crochet--;
 		nextIdentifier(buffer, type, name);
 		if (type == TOKEN_EOF)
-			throw ContentView2::ParserException(tr("End of file is prematured"), m_line);
+			throw ContentView3::ParserException(tr("End of file is prematured"), m_line);
 	};
 }
 
 
-void JsContentViewParser::loadVariables(ContentView2::Node parent, QIODevice * buffer)
+void Parser::loadVariables(const ContentView3::NodePtr & parent, QIODevice * buffer)
 {
 	enum JAVASCRIPT_TOKEN type;
 	QString name;
 
 	nextIdentifier(buffer, type, name);
 	if (type != TOKEN_IDENTIFIER)
-		throw ContentView2::ParserException(tr("I wait an identifier"), m_line);
+		throw ContentView3::ParserException(tr("I wait an identifier"), m_line);
 
 	attacheNewVariableNode(parent, name, m_line);
 	//variables << new JavaScriptVariables( this, name, m_line );
@@ -320,7 +329,7 @@ void JsContentViewParser::loadVariables(ContentView2::Node parent, QIODevice * b
 		loadIdentifier = true;
 
 		if (type == TOKEN_EOF)
-			throw ContentView2::ParserException(tr("End of file is prematured"), m_line);
+			throw ContentView3::ParserException(tr("End of file is prematured"), m_line);
 
 		if ((type == TOKEN_PONCTUATION) && (name == ";"))
 			cont = false;
@@ -329,7 +338,7 @@ void JsContentViewParser::loadVariables(ContentView2::Node parent, QIODevice * b
 			nextIdentifier(buffer, type, name);
 
 			if (type != TOKEN_IDENTIFIER)
-				throw ContentView2::ParserException(tr("I wait an identifier."), m_line);
+				throw ContentView3::ParserException(tr("I wait an identifier."), m_line);
 
 			attacheNewVariableNode(parent, name, m_line);
 		}
@@ -342,27 +351,27 @@ void JsContentViewParser::loadVariables(ContentView2::Node parent, QIODevice * b
 	while (cont);
 }
 
-ContentView2::Node JsContentViewParser::loadFunction(ContentView2::Node parent, QIODevice * buffer)
+ContentView3::NodePtr Parser::loadFunction(const ContentView3::NodePtr & parent, QIODevice * buffer)
 {
 	enum JAVASCRIPT_TOKEN type;
 	QString name;
 
 	nextIdentifier(buffer, type, name);
 	if (type != TOKEN_IDENTIFIER)
-		throw ContentView2::ParserException(tr("I wait an identifier."), m_line);
+		throw ContentView3::ParserException(tr("I wait an identifier."), m_line);
 
-	ContentView2::Node function = attacheNewFunctionNode(parent, name, m_line);
+	ContentView3::NodePtr function = attacheNewFunctionNode(parent, name, m_line);
 
 	nextIdentifier(buffer, type, name);
 
 	if (!((type == TOKEN_PONCTUATION) && (name == "(")))
-		throw ContentView2::ParserException(tr("I wait a '('"), m_line);
+		throw ContentView3::ParserException(tr("I wait a '('"), m_line);
 
 	do
 	{
 		nextIdentifier(buffer, type, name);
 		if (type == TOKEN_EOF)
-			throw ContentView2::ParserException(tr("End of file is prematured"), m_line);
+			throw ContentView3::ParserException(tr("End of file is prematured"), m_line);
 
 		if (type == TOKEN_IDENTIFIER)
 			attacheNewParamNode(function, name, m_line);
@@ -371,7 +380,7 @@ ContentView2::Node JsContentViewParser::loadFunction(ContentView2::Node parent, 
 		{
 			nextIdentifier(buffer, type, name);
 			if (type == TOKEN_EOF)
-				throw ContentView2::ParserException(tr("End of file is prematured"), m_line);
+				throw ContentView3::ParserException(tr("End of file is prematured"), m_line);
 		}
 	}
 	while ((type != TOKEN_PONCTUATION) || (name != ")"));
@@ -379,46 +388,25 @@ ContentView2::Node JsContentViewParser::loadFunction(ContentView2::Node parent, 
 	return function;
 }
 
-void JsContentViewParser::attacheNewParamNode(ContentView2::Node parent, const QString & name, int line)
+void Parser::attacheNewParamNode(const ContentView3::NodePtr & parent, const QString & name, int line)
 {
-	ContentView2::Node node;
-	node.setFileId(rootNode().fileId());
-	node.setLine(line);
-	node.setData(name, ContentView2::Node::NODE_NAME);
-	node.setData("JsParam", ContentView2::Node::NODE_TYPE);
-	node.setData(":/images/html_value.png", ContentView2::Node::NODE_ICON);
-	node.setData(name, ContentView2::Node::NODE_DISPLAY_NAME);
-	node.setData(tr("Element at line : %1").arg(line), ContentView2::Node::NODE_DISPLAY_TIPS);
-
-	attachNode(parent, node);
+	QSharedPointer<ParamNode> node = ParamNode::create(name, parent);
+	node->setLine(line);
 }
 
-void JsContentViewParser::attacheNewVariableNode(ContentView2::Node parent, const QString & name, int line)
+void Parser::attacheNewVariableNode(const ContentView3::NodePtr & parent, const QString & name, int line)
 {
-	ContentView2::Node node;
-	node.setFileId(rootNode().fileId());
-	node.setLine(line);
-	node.setData(name, ContentView2::Node::NODE_NAME);
-	node.setData("JsVariable", ContentView2::Node::NODE_TYPE);
-	node.setData(":/images/variable.png", ContentView2::Node::NODE_ICON);
-	node.setData(name, ContentView2::Node::NODE_DISPLAY_NAME);
-	node.setData(tr("Element at line : %1").arg(line), ContentView2::Node::NODE_DISPLAY_TIPS);
-
-	attachNode(parent, node);
+	QSharedPointer<VariableNode> node = VariableNode::create(name, parent);
+	node->setLine(line);
 }
 
-ContentView2::Node JsContentViewParser::attacheNewFunctionNode(ContentView2::Node parent, const QString & name, int line)
+ContentView3::NodePtr Parser::attacheNewFunctionNode(const ContentView3::NodePtr & parent, const QString & name, int line)
 {
-	ContentView2::Node node;
-	node.setFileId(rootNode().fileId());
-	node.setLine(line);
-	node.setData(name, ContentView2::Node::NODE_NAME);
-	node.setData("JsFunction", ContentView2::Node::NODE_TYPE);
-	node.setData(":/images/noeud.png", ContentView2::Node::NODE_ICON);
-	node.setData(name, ContentView2::Node::NODE_DISPLAY_NAME);
-	node.setData(tr("Element at line : %1").arg(line), ContentView2::Node::NODE_DISPLAY_TIPS);
-
-	attachNode(parent, node);
-
+	QSharedPointer<FunctionNode> node = FunctionNode::create(name, parent);
+	node->setLine(line);
 	return node;
+}
+
+}
+
 }

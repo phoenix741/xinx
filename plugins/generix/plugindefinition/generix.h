@@ -22,7 +22,12 @@
 #pragma once
 
 // Xinx header
-#include <plugins/plugininterfaces.h>
+#include <plugins/interfaces/plugin.h>
+#include <plugins/interfaces/files.h>
+#include <plugins/interfaces/gui.h>
+#include <plugins/interfaces/resolver.h>
+#include <plugins/interfaces/xsltparser.h>
+#include <plugins/interfaces/codecompletion.h>
 #include "docks/dictionary/dictionarydockwidgetimpl.h"
 #include "docks/project/generixprojectdock.h"
 
@@ -31,6 +36,7 @@ class Gce150FileResolver;
 /* GenerixPlugin */
 
 class GenerixPlugin :   public QObject,
+		public IXinxPlugin,
 		public IFilePlugin,
 		public IXinxInputOutputPlugin,
 		public IDockPlugin,
@@ -38,18 +44,11 @@ class GenerixPlugin :   public QObject,
 		public IResolverPlugin,
 		public IXinxPluginProjectConfiguration,
 		public IXinxXsltParser,
-		public IContentViewParserPlugin
+		public IContentViewParserPlugin,
+		public ICodeCompletionPlugin
 {
 	Q_OBJECT
-	Q_INTERFACES(IXinxPlugin)
-	Q_INTERFACES(IXinxInputOutputPlugin)
-	Q_INTERFACES(IDockPlugin)
-	Q_INTERFACES(IXinxPluginConfiguration)
-	Q_INTERFACES(IFilePlugin)
-	Q_INTERFACES(IResolverPlugin)
-	Q_INTERFACES(IXinxPluginProjectConfiguration)
-	Q_INTERFACES(IXinxXsltParser)
-	Q_INTERFACES(IContentViewParserPlugin)
+	Q_INTERFACES(IXinxPlugin IXinxInputOutputPlugin IDockPlugin IXinxPluginConfiguration IFilePlugin IResolverPlugin IXinxPluginProjectConfiguration IXinxXsltParser IContentViewParserPlugin ICodeCompletionPlugin)
 public:
 	GenerixPlugin();
 	virtual ~GenerixPlugin();
@@ -57,17 +56,19 @@ public:
 	virtual bool initializePlugin(const QString & lang);
 	virtual QVariant getPluginAttribute(const enum IXinxPlugin::PluginAttribute & attr);
 
-	ContentView2::Parser * createParser(const QString & type);
-	virtual XsltParser * createXsltParser();
+	virtual ContentView3::Parser * createContentParser(const QString & type);
+	virtual QList<CodeCompletion::ContextParser*> createContextParser() const;
+	virtual QList<CodeCompletion::ItemModelFactory*> createItemModelFactory() const;
+	virtual XsltParser * createXsltParser(AbstractEditor* editor);
 
-	virtual QList<IProjectInitialisationStep*> loadProjectStep(XinxProject * project);
-	virtual QList<IProjectInitialisationStep*> closeProjectStep(XinxProject * project);
+	virtual QList<IProjectInitialisationStep*> loadProjectStep(XinxProject::Project * project);
+	virtual QList<IProjectInitialisationStep*> closeProjectStep(XinxProject::Project * project);
 
 	virtual QList<IFileTypePlugin*> fileTypes();
 
-	virtual QIODevice * loadFile(const QString & filename);
-	virtual QIODevice * saveFile(const QString & filename, const QString & oldfilename);
-	virtual QString getFilename(const QString & filename, const QString & defaultFilename, const QString & filter, bool saveAs, bool & accept, QWidget * widget = 0);
+	virtual QIODevice * loadFile(AbstractEditor * editor, const QString & filename);
+	virtual QIODevice * saveFile(AbstractEditor * editor, const QString & filename, const QString & oldfilename);
+	virtual QString getFilename(AbstractEditor * editor, const QString & filename, const QString & defaultFilename, const QString & filter, bool saveAs, bool & accept, QWidget * widget = 0);
 
 	virtual QList<QWidget*> createDocksWidget(QWidget * parent);
 

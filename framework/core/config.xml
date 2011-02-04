@@ -3,9 +3,9 @@
 	<include>#include &lt;QDir&gt;</include>
 	<include>#include &lt;QApplication&gt;</include>
 	<type name="Project">
-		<value name="Last opened project" type="string"/>
-		<value name="Open the last project at start" type="bool" default="no"/>
-		<value name="Save With Session By Default" type="bool" default="no"/>
+		<value name="Last opened session" type="string"/>
+		<value name="Open the last session at start" type="bool" default="no"/>
+		<value name="Single Project Mode" type="bool" default="no"/>
 		<value name="Default Path" type="string" defaultInstruction="QDir( qApp->applicationDirPath() ).absoluteFilePath( &quot;project&quot; )"/>
 		<value name="Recent Project Files" type="stringlist"/>
 		<value name="Close Version Management Log" type="bool" default="true"/>

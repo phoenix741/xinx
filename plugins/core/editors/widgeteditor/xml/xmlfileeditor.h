@@ -40,7 +40,7 @@ class XmlFileEditor : public TextFileEditor
 {
 	Q_OBJECT
 public:
-	XmlFileEditor(IFileTypePlugin * fileType = 0, QWidget *parent = 0);
+	XmlFileEditor(QWidget *parent = 0);
 	virtual ~XmlFileEditor();
 
 	virtual bool autoIndent();

@@ -33,43 +33,26 @@ class CommentAction : public XinxAction::Action
 {
 	Q_OBJECT
 public:
-	CommentAction(QAction * a, QObject * parent);
-	CommentAction(const QString & text, const QKeySequence & shortcut, QObject * parent);
-	CommentAction(const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent);
+	CommentAction();
 
-	virtual bool isInToolBar() const;
-	virtual bool isActionVisible() const;
-	virtual bool isActionEnabled() const;
+	virtual bool isVisible() const;
+	virtual bool isEnabled() const;
 protected slots:
 	virtual void actionTriggered();
-private slots:
-	void updateSignals();
+//private slots:
+//	void updateSignals();
 private:
 	QPointer<TextFileEditor> m_editor;
 };
 
-class UncommentAction : public CommentAction
+class UncommentAction : public XinxAction::Action
 {
 	Q_OBJECT
 public:
-	UncommentAction(QAction * a, QObject * parent);
-	UncommentAction(const QString & text, const QKeySequence & shortcut, QObject * parent);
-	UncommentAction(const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent);
-protected slots:
-	virtual void actionTriggered();
-};
+	UncommentAction();
 
-class GotoLineAction : public XinxAction::Action
-{
-	Q_OBJECT
-public:
-	GotoLineAction(QAction * a, QObject * parent);
-	GotoLineAction(const QString & text, const QKeySequence & shortcut, QObject * parent);
-	GotoLineAction(const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent);
-
-	virtual bool isInToolBar() const;
-	virtual bool isActionVisible() const;
-	virtual bool isActionEnabled() const;
+	virtual bool isVisible() const;
+	virtual bool isEnabled() const;
 protected slots:
 	virtual void actionTriggered();
 };

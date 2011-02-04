@@ -45,7 +45,7 @@ bool NewGenerixDerivation3Page::pageIsVisible() const
 	return field("generix.derivation").toBool() || (version >= version150);
 }
 
-bool NewGenerixDerivation3Page::saveSettingsDialog(XinxProject * project)
+bool NewGenerixDerivation3Page::saveSettingsDialog(XinxProject::Project * project)
 {
 	QStringList prefixes;
 	static_cast<GenerixProject*>(project)->setCreateMissingDirectory(m_missingDirChk->isChecked());

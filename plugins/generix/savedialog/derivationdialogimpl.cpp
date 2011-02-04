@@ -26,7 +26,7 @@
 
 /* DerivationDialogImpl */
 
-DerivationDialogImpl::DerivationDialogImpl(QWidget * parent, Qt::WindowFlags f) : QDialog(parent, f)
+DerivationDialogImpl::DerivationDialogImpl(XinxProject::Project* project, QWidget* parent, Qt::WFlags f) : QDialog(parent, f), _project(project)
 {
 	setupUi(this);
 
@@ -44,7 +44,7 @@ DerivationDialogImpl::~DerivationDialogImpl()
 
 void DerivationDialogImpl::load(const QString & filename, const QString & filter)
 {
-	GenerixProject * gnxProject = static_cast<GenerixProject*>(XINXProjectManager::self()->project().data());
+	GenerixProject * gnxProject = static_cast<GenerixProject*>(_project);
 	if (! gnxProject) return;
 
 	m_directoryEdit->lineEdit()->setFilter(filter);
@@ -102,9 +102,9 @@ QString DerivationDialogImpl::getNewPath() const
 	return m_directoryEdit->lineEdit()->text();
 }
 
-bool DerivationDialogImpl::isDerivableFile(const QString & filename)
+bool DerivationDialogImpl::isDerivableFile(XinxProject::Project * p, const QString & filename)
 {
-	GenerixProject * project = static_cast<GenerixProject*>(XINXProjectManager::self()->project().data());
+	GenerixProject * project = static_cast<GenerixProject*>(p);
 	if (! project) return false;
 
 	QString absoluteFilename;
@@ -130,7 +130,7 @@ bool DerivationDialogImpl::isDerivableFile(const QString & filename)
 
 void DerivationDialogImpl::changePath()
 {
-	GenerixProject * gnxProject = static_cast<GenerixProject*>(XINXProjectManager::self()->project().data());
+	GenerixProject * gnxProject = static_cast<GenerixProject*>(_project);
 	if (! gnxProject) return;
 
 	if (m_derivationChk->isChecked() && m_derivationPathList->currentItem() && m_prefixList->currentItem())

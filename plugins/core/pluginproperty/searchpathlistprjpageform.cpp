@@ -18,7 +18,7 @@
  * *********************************************************************** */
 
 // Xinx header
-#include <project/xinxproject.h>
+#include <project/xinxprojectproject.h>
 #include "searchpathlistprjpageform.h"
 #include "pluginresolver/manualfileresolver.h"
 
@@ -105,7 +105,7 @@ bool SearchPathListFormImpl::isVisible()
 	return ManualFileResolver::staticId().compare(m_currentResolverName) == 0;
 }
 
-void SearchPathListFormImpl::setProject(XinxProject * project)
+void SearchPathListFormImpl::setProject(XinxProject::Project * project)
 {
 	m_project = project;
 }

@@ -19,7 +19,7 @@
 
 // Xinx header
 #include "xmlpresentationdockthread.h"
-#include <project/xinxproject.h>
+#include <project/xinxprojectmanager.h>
 #include <config/selfwebpluginsettings.h>
 #include "xquerydialogimpl.h"
 #include <editors/editormanager.h>
@@ -52,7 +52,7 @@ XmlPresentationDockThread::XmlPresentationDockThread(XmlPresentationDockWidget *
 
 	initXmlPresentationCombo();
 
-	connect(XINXProjectManager::self(), SIGNAL(changed()), this, SLOT(projectChanged()));
+	connect(XinxProject::Manager::self(), SIGNAL(changed()), this, SLOT(projectChanged()));
 	connect(m_xmlPresentationWidget->m_refreshToolButton, SIGNAL(clicked()), this, SLOT(initXmlPresentationCombo()));
 	connect(m_xmlPresentationWidget->m_evaluateToolButton, SIGNAL(clicked()), this, SLOT(evaluate()));
 
@@ -96,17 +96,16 @@ void XmlPresentationDockThread::adaptColumns()
 
 void XmlPresentationDockThread::projectChanged()
 {
-	QString dataStreamLocation;
-	if (XINXProjectManager::self()->project())
+	m_dataStreamLocation.clear();
+	foreach (XinxProject::Project * project, XinxProject::Manager::self()->projects())
 	{
-		const QString rel  = XINXProjectManager::self()->project()->readProperty("dataStreamLocation").toString();
-		dataStreamLocation = QDir(XINXProjectManager::self()->project()->projectPath()).absoluteFilePath(rel);
+		const QString rel  = project->readProperty("dataStreamLocation").toString();
+		m_dataStreamLocation << QDir(project->projectPath()).absoluteFilePath(rel);
 	}
-	if (dataStreamLocation != m_dataStreamLocation)
-	{
-		m_dataStreamLocation = dataStreamLocation;
-		initXmlPresentationCombo();
-	}
+	m_dataStreamLocation.sort();
+	m_dataStreamLocation.removeDuplicates();
+	
+	initXmlPresentationCombo();
 }
 
 void XmlPresentationDockThread::initXmlPresentationCombo()
@@ -120,14 +119,21 @@ void XmlPresentationDockThread::initXmlPresentationCombo()
 	m_xmlPresentationWidget->m_presentationComboBox->addItem(tr("<No presentation file>"));
 	m_xmlPresentationWidget->m_presentationComboBox->addItem(tr("<Choose an XML file ...>"));
 
-	if (XINXProjectManager::self()->project())
+	QAbstractItemModel * model = m_xmlPresentationWidget->m_presentationComboBox->model();
+	foreach (const QString & dataStreamLocation, m_dataStreamLocation)
 	{
-		QDir dataStreamDir(m_dataStreamLocation);
+		m_xmlPresentationWidget->m_presentationComboBox->addItem(dataStreamLocation);
+		QModelIndex index = model->index(m_xmlPresentationWidget->m_presentationComboBox->count() - 1, 0);
+		model->setData(index, QVariant(Qt::AlignCenter), Qt::TextAlignmentRole);
+		
+		QDir dataStreamDir(dataStreamLocation);
 		if (dataStreamDir.exists())
 		{
 			QStringList files = dataStreamDir.entryList(QStringList() << "*.xml", QDir::Files | QDir::Readable);
 			foreach(const QString & file, files)
-			m_xmlPresentationWidget->m_presentationComboBox->addItem(file);
+			{
+				m_xmlPresentationWidget->m_presentationComboBox->addItem(file, dataStreamLocation);
+			}
 		}
 	}
 
@@ -148,6 +154,7 @@ void XmlPresentationDockThread::initXmlPresentationCombo()
 	}
 	else
 		presentationActivated(0);
+	
 	m_xmlPresentationWidget->m_presentationComboBox->blockSignals(false);
 }
 
@@ -167,11 +174,14 @@ void XmlPresentationDockThread::presentationActivated(int index)
 	}
 	else if (index == 1)
 	{
+		QString location;
+		if (m_dataStreamLocation.size())
+		{
+			location = m_dataStreamLocation.at(0);
+		}
+		
 		// Open a file
-		QString name = QFileDialog::getOpenFileName(m_parent,
-		               tr("Open a presentation file"),
-		               m_dataStreamLocation,
-		               tr("Presentation XML File (*.xml)"));
+		QString name = QFileDialog::getOpenFileName(m_parent, tr("Open a presentation file"), location, tr("Presentation XML File (*.xml)"));
 		if (name.isEmpty())
 		{
 			m_xmlPresentationWidget->m_presentationComboBox->setCurrentIndex(0);
@@ -185,7 +195,9 @@ void XmlPresentationDockThread::presentationActivated(int index)
 	else
 	{
 		// Open the file
-		QString name = QDir(m_dataStreamLocation).absoluteFilePath(m_xmlPresentationWidget->m_presentationComboBox->itemText(index));
+		const QString location = m_xmlPresentationWidget->m_presentationComboBox->itemData(index).toString();
+		const QString file     = m_xmlPresentationWidget->m_presentationComboBox->itemText(index);
+		const QString name = QDir(location).absoluteFilePath(file);
 		setComboToolTip(name);
 		open(name);
 	}

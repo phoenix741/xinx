@@ -1,0 +1,16 @@
+<ProjectTemplate name="Projet GCE (c) Generix">
+	<Plugins>
+		<Plugin name="GenerixPlugin"/>
+	</Plugins>
+    <Properties>
+        <Property name="searchPathList" value="langue/fra/nav;;.;;langue/fra;;langue"/>
+    </Properties>
+    <WizardPage>
+        <Page name="StdProjectName"/>
+        <Page name="GenerixInformation"/>
+        <Page name="GenerixDerivation1"/>
+        <Page name="GenerixDerivation2"/>
+        <Page name="GenerixDerivation3"/>
+        <Page name="StdProjectRevision"/>
+    </WizardPage>
+</ProjectTemplate>

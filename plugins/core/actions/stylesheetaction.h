@@ -30,13 +30,10 @@ class StyleSheetAction : public XinxAction::Action
 {
 	Q_OBJECT
 public:
-	StyleSheetAction(QAction * a, QObject * parent);
-	StyleSheetAction(const QString & text, const QKeySequence & shortcut, QObject * parent);
-	StyleSheetAction(const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent);
+	StyleSheetAction();
 
-	virtual bool isActionVisible() const;
-	virtual bool isActionEnabled() const;
-	virtual bool isInToolBar() const;
+	virtual bool isVisible() const;
+	virtual bool isEnabled() const;
 protected slots:
 	virtual void actionTriggered();
 private:

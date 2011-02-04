@@ -1,21 +1,21 @@
-/* *********************************************************************** *
- * XINX                                                                    *
- * Copyright (C) 2007-2010 by Ulrich Van Den Hekke                         *
- * ulrich.vdh@shadoware.org                                                *
- *                                                                         *
- * This program is free software: you can redistribute it and/or modify    *
- * it under the terms of the GNU General Public License as published by    *
- * the Free Software Foundation, either version 3 of the License, or       *
- * (at your option) any later version.                                     *
- *                                                                         *
- * This program is distributed in the hope that it will be useful,         *
- * but WITHOUT ANY WARRANTY; without even the implied warranty of          *
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *
- * GNU General Public License for more details.                            *
- *                                                                         *
- * You should have received a copy of the GNU General Public License       *
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
- * *********************************************************************** */
+/*
+ XINX
+ Copyright (C) 2007-2011 by Ulrich Van Den Hekke
+ xinx@shadoware.org
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful.
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 // Xinx header
 #include "directoryedit.h"
@@ -28,6 +28,7 @@
 #include <QToolButton>
 #include <QHBoxLayout>
 #include <QToolButton>
+#include <QKeyEvent>
 
 /* CompleterDirModel */
 
@@ -113,9 +114,10 @@ QVariant CompleterDirModel::data(const QModelIndex &index, int role) const
  * \brief Construct a DirectoryEdit object.
  * \param parent The parent widget of the object.
  */
-DirectoryEdit::DirectoryEdit(QWidget * parent) : QLineEdit(parent), m_fileMustExist(true)
+DirectoryEdit::DirectoryEdit(QWidget * parent) : QLineEdit(parent), m_error(false), m_directory(true), m_fileMustExist(true), m_ignoreCursorPositionChanged(false)
 {
 	connect(this, SIGNAL(textChanged(QString)), this, SLOT(slotTextChanged(QString)));
+	connect(this, SIGNAL(cursorPositionChanged(int,int)), this, SLOT(slotEditorCursorPositionChanged(int,int)));
 	QCompleter * completer = new QCompleter(this);
 	this->setCompleter(completer);
 	completer->setModel(new CompleterDirModel(completer));
@@ -126,9 +128,10 @@ DirectoryEdit::DirectoryEdit(QWidget * parent) : QLineEdit(parent), m_fileMustEx
  * \param contents Content of the Line edit.
  * \param parent The parent widget of the object.
  */
-DirectoryEdit::DirectoryEdit(const QString & contents, QWidget * parent) : QLineEdit(contents, parent)
+DirectoryEdit::DirectoryEdit(const QString & contents, QWidget * parent) : QLineEdit(contents, parent), m_error(false), m_directory(true), m_fileMustExist(true), m_ignoreCursorPositionChanged(false)
 {
 	connect(this, SIGNAL(textChanged(QString)), this, SLOT(slotTextChanged(QString)));
+	connect(this, SIGNAL(cursorPositionChanged(int,int)), this, SLOT(slotEditorCursorPositionChanged(int,int)));
 }
 
 /*!
@@ -174,16 +177,212 @@ const QString & DirectoryEdit::filter() const
 }
 
 /*!
+ * \brief Set the limit from where the user can start editing
+ * \param value The position of the first char that the user car edit.
+ *
+ * If the value is different of 0, the user can't edit first \e value characters.
+ *
+ * \sa editLimit();
+ */
+void DirectoryEdit::setPrefix(const QString & value)
+{
+	if (m_prefix != value)
+	{
+		m_prefix = value;
+		setText(text());
+	}
+}
+
+/*!
+ * \brief Get the value of the edit limit
+ * \sa setEditLimit()
+ */
+const QString & DirectoryEdit::prefix() const
+{
+	return m_prefix;
+}
+
+/*!
+ * \brief This property indicate if the widget is used to edit directory or file
+ * \sa setDirectory()
+ */
+bool DirectoryEdit::isDirectory() const
+{
+	return m_directory;
+}
+
+/*!
+ * \brief Set to false to edit file.
+ *
+ * This method is used to tell if we edit directory or file. If we edit file, and user
+ * edit a directory, the editor show the field in red.
+ *
+ * \sa isDirectory()
+ */
+void DirectoryEdit::setDirectory(bool value)
+{
+	if (m_directory != value)
+	{
+		m_directory = value;
+		slotTextChanged(text());
+	}
+}
+
+/*!
+ * \brief Return true if the line edit is in error
+ *
+ * The Line edit can be in an error if the waiting text is a file and we want a directory (or inverse).
+ * Or if the file must exist and this file does'nt exist.
+ */
+bool DirectoryEdit::isError() const
+{
+	return m_error;
+}
+
+/*!
+ * \reimp
+ */
+void DirectoryEdit::setText(const QString & value)
+{
+	if (value.startsWith (m_prefix))
+	{
+		QLineEdit::setText (value);
+	}
+	else
+	{
+		QLineEdit::setText (m_prefix + value);
+	}
+}
+
+/*!
+ * \reimp
+ */
+void DirectoryEdit::selectAll ()
+{
+	setSelection (m_prefix.size (), text ().size () - m_prefix.size ());
+}
+
+/*!
+ * \reimp
+ */
+void DirectoryEdit::clear()
+{
+	setText (m_prefix);
+	setCursorPosition (m_prefix.size ());
+}
+
+/*!
+ * \reimp
+ */
+void DirectoryEdit::keyPressEvent(QKeyEvent *event)
+{
+	if (!event->text().isEmpty() && cursorPosition() < m_prefix.size())
+		setCursorPosition(m_prefix.size());
+
+	switch (event->key()) {
+	case Qt::Key_End:
+	case Qt::Key_Home:
+		if (event->modifiers() & Qt::ShiftModifier) {
+			int currentPos = cursorPosition();
+			const QString text = displayText();
+			if (event->key() == Qt::Key_End) {
+				if (currentPos == 0 && !m_prefix.isEmpty()) {
+					break; // let lineedit handle this
+				} else {
+					setSelection(currentPos, text.size() - currentPos);
+				}
+			} else {
+				if (currentPos <= m_prefix.size()) {
+					break; // let lineedit handle this
+				} else {
+					setSelection(currentPos, m_prefix.size() - currentPos);
+				}
+			}
+			event->accept();
+			return;
+		}
+		break;
+	case Qt::Key_Backspace:
+		if (cursorPosition() == m_prefix.size())
+		{
+			event->ignore();
+			return;
+		}
+		break;
+#ifdef Q_WS_X11 // only X11
+	case Qt::Key_U:
+		if (event->modifiers() & Qt::ControlModifier) {
+			event->accept();
+			if (!isReadOnly())
+				clear();
+			return;
+		}
+		break;
+#endif
+
+	default:
+		if (event == QKeySequence::SelectAll) {
+			selectAll();
+			event->accept();
+			return;
+		}
+		break;
+	}
+
+	QLineEdit::keyPressEvent (event);
+}
+
+/*!
+ * \internal
+ */
+void DirectoryEdit::slotEditorCursorPositionChanged(int oldpos, int newpos)
+{
+	if (!hasSelectedText() && !m_ignoreCursorPositionChanged) {
+		m_ignoreCursorPositionChanged = true;
+
+		bool allowSelection = true;
+		int pos = -1;
+		if (newpos < m_prefix.size() && newpos != 0) {
+			if (oldpos == 0) {
+				allowSelection = false;
+				pos = m_prefix.size();
+			} else {
+				pos = oldpos;
+			}
+		}
+
+		if (pos != -1) {
+			const int selSize = selectionStart() >= 0 && allowSelection
+								? (selectedText().size() * (newpos < pos ? -1 : 1)) - newpos + pos
+								: 0;
+
+			const bool wasBlocked = blockSignals(true);
+			if (selSize != 0) {
+				setSelection(pos - selSize, selSize);
+			} else {
+				setCursorPosition(pos);
+			}
+			blockSignals(wasBlocked);
+		}
+		m_ignoreCursorPositionChanged = false;
+	}
+}
+
+
+/*!
  * \brief Slot called when the text changed.
  *
  * This method change the color of the text if the directory \p text not exist.
  */
 void DirectoryEdit::slotTextChanged(QString text)
 {
+	QFileInfo fileInfo(text);
 	QFile file(text);
 	QPalette palette(this->palette());
 
-	if ((!m_fileMustExist) || file.exists())
+	m_error = (m_directory != fileInfo.isDir ()) || (m_fileMustExist && !file.exists ());
+
+	if (!m_error)
 	{
 		palette.setColor(QPalette::Text, QColor());
 	}
@@ -198,14 +397,13 @@ void DirectoryEdit::slotTextChanged(QString text)
  * \brief Open a dialog to change the path in the line editor.
  * \param parent The parent windows of the dialog to open
  * \param defaultValue The value to propose, if there is no value in the editor.
- * \param directory If \p true, user must choose a directory, else a file
  */
-void DirectoryEdit::changePath(QWidget * parent, const QString & defaultValue, bool directory)
+void DirectoryEdit::changePath(QWidget * parent, const QString & defaultValue)
 {
 	QString value = this->text();
 	if (value.isEmpty()) value = defaultValue;
 
-	if (directory)
+	if (m_directory)
 		value = QFileDialog::getExistingDirectory(parent, tr("Change the path"), value);
 	else if (m_fileMustExist)
 		value = QFileDialog::getOpenFileName(parent, tr("Change the file"), value, m_filter, &m_filter);
@@ -227,7 +425,6 @@ public:
 
 	DirectoryEdit * m_lineEdit;
 	QToolButton * m_button;
-	bool m_directory;
 	QString m_default;
 private:
 };
@@ -271,7 +468,7 @@ PrivateDirectoryEditWidget::PrivateDirectoryEditWidget(QWidget * o)
 DirectoryEditWidget::DirectoryEditWidget(bool isDirectory, QWidget * parent) : QWidget(parent)
 {
 	d = new PrivateDirectoryEditWidget(this);
-	d->m_directory = isDirectory;
+	d->m_lineEdit->setDirectory (isDirectory);
 	connect(d->m_button, SIGNAL(clicked()), this, SLOT(changePath()));
 }
 
@@ -282,7 +479,6 @@ DirectoryEditWidget::DirectoryEditWidget(bool isDirectory, QWidget * parent) : Q
 DirectoryEditWidget::DirectoryEditWidget(QWidget * parent) : QWidget(parent)
 {
 	d = new PrivateDirectoryEditWidget(this);
-	d->m_directory = true;
 	connect(d->m_button, SIGNAL(clicked()), this, SLOT(changePath()));
 }
 
@@ -301,7 +497,7 @@ DirectoryEditWidget::~DirectoryEditWidget()
  */
 bool DirectoryEditWidget::isDirectory() const
 {
-	return d->m_directory;
+	return d->m_lineEdit->isDirectory ();
 }
 
 /*!
@@ -311,7 +507,7 @@ bool DirectoryEditWidget::isDirectory() const
  */
 void DirectoryEditWidget::setDirectory(bool value)
 {
-	d->m_directory = value;
+	d->m_lineEdit->setDirectory (value);
 }
 
 /*!
@@ -338,7 +534,7 @@ void DirectoryEditWidget::setDefaultValue(const QString & value)
  */
 void DirectoryEditWidget::changePath()
 {
-	d->m_lineEdit->changePath(parentWidget(), d->m_default, d->m_directory);
+	d->m_lineEdit->changePath(parentWidget(), d->m_default);
 }
 
 void DirectoryEditWidget::focusInEvent(QFocusEvent * event)

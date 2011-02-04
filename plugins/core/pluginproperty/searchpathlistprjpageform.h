@@ -23,7 +23,11 @@
 
 // Xinx header
 #include "ui_searchpathlistprjpageform.h"
-#include "plugins/plugininterfaces.h"
+#include <plugins/interfaces/gui.h>
+
+namespace XinxProject {
+class Project;
+}
 
 class SearchPathListFormImpl : public QWidget, public Ui::SearchPathListForm, public IXinxPluginProjectConfigurationPage
 {
@@ -42,9 +46,9 @@ public:
 	virtual bool isSettingsValid();
 	virtual bool isVisible();
 
-	virtual void setProject(XinxProject * project);
+	virtual void setProject(XinxProject::Project * project);
 public:
-	XinxProject * m_project;
+	XinxProject::Project * m_project;
 	QString m_currentResolverName;
 };
 

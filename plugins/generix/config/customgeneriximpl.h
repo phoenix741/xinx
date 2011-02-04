@@ -23,7 +23,7 @@
 
 // Xinx header
 #include "ui_customgenerix.h"
-#include <plugins/plugininterfaces.h>
+#include <plugins/interfaces/gui.h>
 
 class CustomGenerixImpl : public QWidget, public Ui::CustomGenerix, public IXinxPluginConfigurationPage
 {

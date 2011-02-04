@@ -30,10 +30,10 @@ class CSSFileEditor : public TextFileEditor
 {
 	Q_OBJECT
 public:
-	CSSFileEditor(IFileTypePlugin * fileType = 0, QWidget *parent = 0);
+	CSSFileEditor(QWidget *parent = 0);
 	virtual ~CSSFileEditor();
 protected:
-	virtual ContentView2::Parser * createParser();
+	virtual ContentView3::Parser * createParser();
 private:
 	CSSFileContentParser * m_parser;
 };

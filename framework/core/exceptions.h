@@ -1,21 +1,21 @@
-/* *********************************************************************** *
- * XINX                                                                    *
- * Copyright (C) 2007-2010 by Ulrich Van Den Hekke                         *
- * ulrich.vdh@shadoware.org                                                *
- *                                                                         *
- * This program is free software: you can redistribute it and/or modify    *
- * it under the terms of the GNU General Public License as published by    *
- * the Free Software Foundation, either version 3 of the License, or       *
- * (at your option) any later version.                                     *
- *                                                                         *
- * This program is distributed in the hope that it will be useful,         *
- * but WITHOUT ANY WARRANTY; without even the implied warranty of          *
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *
- * GNU General Public License for more details.                            *
- *                                                                         *
- * You should have received a copy of the GNU General Public License       *
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
- * *********************************************************************** */
+/*
+ XINX
+ Copyright (C) 2007-2011 by Ulrich Van Den Hekke
+ xinx@shadoware.org
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful.
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 #ifndef __EXCEPTIONS_H__
 #define __EXCEPTIONS_H__
@@ -34,14 +34,14 @@
 // Std header
 #include <exception>
 
-class QErrorMessage;
 class QWidget;
 class XinxErrorMessage;
 
 class LIBEXPORT XinxException : public std::exception
 {
 public:
-	XinxException(const QString & message);
+	XinxException();
+	explicit XinxException(const QString & message);
 	XinxException(const QString & assertion, const QString & locationFile, int locationLine, const QString & locationMethod, const QString & message);
 	virtual ~XinxException() throw();
 
@@ -71,13 +71,12 @@ public:
 
 	QStringList stackTrace() const;
 
-	QErrorMessage * errorDialog() const;
-
 	static ExceptionManager * self();
 
 	static void installExceptionHandler();
 
-	void notifyError(QString error, QString plainError, QtMsgType t = QtWarningMsg);
+public slots:
+	void notifyError(QString error, QtMsgType t = QtWarningMsg, bool showMessage = true);
 signals:
 	void errorTriggered();
 private:
@@ -86,7 +85,6 @@ private:
 	static ExceptionManager * s_self;
 
 	QHash<unsigned long,QStringList> m_stackTrace;
-	QErrorMessage * m_dialog;
 	QStringList m_exceptionFilter;
 };
 
@@ -94,16 +92,10 @@ class LIBEXPORT ErrorManager : public QObject
 {
 	Q_OBJECT
 public:
-	enum MessageType
-	{
-		MessageInformation = 0x01,
-		MessageWarning     = 0x02,
-		MessageError       = 0x04
-	};
 	struct Error
 	{
 		int line;
-		MessageType type;
+		QtMsgType type;
 		QString message;
 		QStringList parameters;
 
@@ -117,14 +109,14 @@ public:
 
 	static ErrorManager * self();
 
+	const QMap<QString, QList<Error> > & errors() const;
+public slots:
 	void addContextTranslation(const QString & context, const QString & translation);
 	void removeContextTranslation(const QString & context);
 
 	void clearMessages(const QString & context);
-	void addMessage(const QString & context, int line, MessageType t, const QString & message, const QStringList & parameters);
-	void addMessage(const QString & context, int line, MessageType t, const XinxException & exception);
-
-	const QMap<QString, QList<Error> > & errors() const;
+	void addMessage(const QString & context, int line, QtMsgType t, const QString & message, const QStringList & parameters = QStringList());
+	void addMessage(const QString & context, int line, QtMsgType t, const XinxException & exception);
 signals:
 	void changed();
 private:

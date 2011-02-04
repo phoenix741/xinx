@@ -1,3 +1,4 @@
+
 /* *********************************************************************** *
  * XINX                                                                    *
  * Copyright (C) 2009 by Ulrich Van Den Hekke                              *
@@ -26,6 +27,7 @@
 #include <QVariant>
 #include <QTranslator>
 #include <QApplication>
+#include <QPixmap>
 
 /* SVNPlugin */
 

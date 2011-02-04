@@ -24,6 +24,7 @@
 
 /* DerivationDirectoryEditDelegate */
 
+// FIXME: Make it a column delegate (possibility to re-use another delegate from framework)
 DerivationDirectoryEditDelegate::DerivationDirectoryEditDelegate(QObject *parent) : QItemDelegate(parent)
 {
 }
@@ -256,7 +257,7 @@ GenerixDerivationPathPageImpl::~GenerixDerivationPathPageImpl()
 {
 }
 
-void GenerixDerivationPathPageImpl::setProject(XinxProject * project)
+void GenerixDerivationPathPageImpl::setProject(XinxProject::Project * project)
 {
 	if (m_project != project)
 	{

@@ -22,36 +22,36 @@
 #pragma once
 
 // Xinx header
-#include <project/xinxproject.h>
+#include <project/xinxprojectproject.h>
 
 /*!
  * Cet objet s'utilise avec un static_cast<> sur l'objet XinxProject.
- * Il ne doit donc contenir aucun membre, et aucune méthode virtuelle.
+ * Il ne doit donc contenir aucun membre, et aucune mthode virtuelle.
  * Il ne contient par ailleurs aucun constructeur car il n'y a pas lieu
  * de construire un objet avec cette classe.
  *
- * Si le projet est un projet "Generix", alors il peut gérer la dérivation,
+ * Si le projet est un projet "Generix", alors il peut grer la drivation,
  * ou non.
- * Dans tous les cas il faut définir l'emplacement du module (normallement le
- * même que le dossier projet. Cela permet de déterminer la version et donc le
- * resolver à utiliser.
+ * Dans tous les cas il faut dfinir l'emplacement du module (normallement le
+ * mme que le dossier projet. Cela permet de dterminer la version et donc le
+ * resolver  utiliser.
  *
- * En cas de dérivation, il faut définir le dossier de destination ainsi que le
+ * En cas de drivation, il faut dÃ©finir le dossier de destination ainsi que le
  * dossier source. Les fichiers ne se trouvant pas dans le dossier de destination
- * (ou un sous-dossier) sont alors considéré comme standard. --Cela implique donc
- * que le dossier source ne peux pas être un sous-dossier du dossier de destination
+ * (ou un sous-dossier) sont alors considr comme standard. --Cela implique donc
+ * que le dossier source ne peux pas tre un sous-dossier du dossier de destination
  * --
- * Lors de la sauvegarde d'un fichier standard, une dérivation est proposé. L'application
- * propose alors de sauvegarder le fichier dans le dossier de dérivation (mais en utilisant la
- * même structure que le dossier source).
- * Si necessaire le fichier est préfixé (prefixe par défant non vide), et le fichier source et
- * copié également dans le dossier de destination.
+ * Lors de la sauvegarde d'un fichier standard, une drivation est propos. L'application
+ * propose alors de sauvegarder le fichier dans le dossier de drivation (mais en utilisant la
+ * mme structure que le dossier source).
+ * Si necessaire le fichier est prfix (prefixe par dfant non vide), et le fichier source et
+ * copi galement dans le dossier de destination.
  *
- * En cas de sauvegarde d'un nouveau fichier, le dossier de dérivation sera alors proposé. Il
- * n'y a plus de notion de sous-dossier de destination par type d'extention (Necessitera peut-être
+ * En cas de sauvegarde d'un nouveau fichier, le dossier de dÃ©rivation sera alors propos. Il
+ * n'y a plus de notion de sous-dossier de destination par type d'extention (Necessitera peut-tre
  * une confirmation sur la mailing-liste utilisateur).
  */
-class GenerixProject : public XinxProject
+class GenerixProject : public XinxProject::Project
 {
 public:
 	bool isGenerixActivated() const;
@@ -61,7 +61,7 @@ public:
 	void setWebModuleLocation(const QString & value);
 	QString webModuleLocation() const;
 
-	/* Options de dérivation */
+	/* Options de drivation */
 
 	class DerivationPath
 	{

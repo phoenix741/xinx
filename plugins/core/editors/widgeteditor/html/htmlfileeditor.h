@@ -27,12 +27,10 @@
 // Qt header
 #include <QProcess>
 
-class XslCompletionNodeModel;
 class QWebView;
 class XmlPresentationDockWidget;
 class QTemporaryFile;
 class QTabWidget;
-class XslTextEditor;
 
 /* HtmlFileEditor */
 
@@ -40,18 +38,15 @@ class HtmlFileEditor : public TextFileEditor
 {
 	Q_OBJECT
 public:
-	HtmlFileEditor(IFileTypePlugin * fileType = 0, QWidget *parent = 0);
+	HtmlFileEditor(QWidget *parent = 0);
 	virtual ~HtmlFileEditor();
 
 	virtual bool autoIndent();
 
 	virtual void showHtml();
-
-	XslCompletionNodeModel * completionModel() const;
 protected:
 	virtual void detectCodec(QIODevice & d);
 	virtual void initLayout();
-	virtual ContentView2::CompletionModel * createModel(QSqlDatabase db, QObject * parent = 0);
 
 protected slots:
 	virtual void updateCodec();
@@ -62,7 +57,6 @@ private:
 	void initObjects();
 
 	QTabWidget * m_tabWidget;
-	XslCompletionNodeModel * m_completionModel;
 	QWebView * m_htmlView;
 	QTemporaryFile * m_htmlTempFile;
 };

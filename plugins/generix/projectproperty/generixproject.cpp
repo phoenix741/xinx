@@ -19,7 +19,6 @@
 
 // Xinx header
 #include "generixproject.h"
-#include <project/xinxproject.h>
 
 /* GenerixProject */
 

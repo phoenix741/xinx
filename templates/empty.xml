@@ -1,4 +1,4 @@
-<ProjectTemplate name="Empty">
+<ProjectTemplate name="Empty Project">
     <WizardPage>
         <Page name="StdProjectName"/>
         <Page name="StdProjectRevision"/>

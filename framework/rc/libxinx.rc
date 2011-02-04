@@ -1,4 +1,4 @@
-#include "..\core\version.h"
+#include <core\version.h>
 1 VERSIONINFO
 FILEVERSION FILEVER
 PRODUCTVERSION PRODUCTVER

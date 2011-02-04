@@ -22,15 +22,15 @@
 #pragma once
 
 // Xinx header
-#include <plugins/plugininterfaces.h>
+#include <plugins/interfaces/plugin.h>
+#include <plugins/interfaces/versioncontrol.h>
+#include <plugins/interfaces/gui.h>
 #include "pluginsettings.h"
 
-class CVSPlugin : public QObject, public IXinxPluginConfiguration, public IRCSPlugin
+class CVSPlugin : public QObject, public IXinxPlugin, public IXinxPluginConfiguration, public IRCSPlugin
 {
 	Q_OBJECT
-	Q_INTERFACES(IXinxPlugin)
-	Q_INTERFACES(IXinxPluginConfiguration)
-	Q_INTERFACES(IRCSPlugin)
+	Q_INTERFACES(IXinxPlugin IXinxPluginConfiguration IRCSPlugin)
 public:
 	CVSPlugin();
 	virtual ~CVSPlugin();

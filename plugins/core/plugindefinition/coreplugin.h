@@ -22,7 +22,11 @@
 #pragma once
 
 // Xinx header
-#include <plugins/plugininterfaces.h>
+#include <plugins/interfaces/plugin.h>
+#include <plugins/interfaces/gui.h>
+#include <plugins/interfaces/resolver.h>
+#include <plugins/interfaces/files.h>
+#include <plugins/interfaces/codecompletion.h>
 #include <actions/actioninterface.h>
 #include "docks/datastream/xmlpresentationdockwidget.h"
 
@@ -30,21 +34,17 @@ class WebPluginSettings;
 class ManualFileResolver;
 
 class CorePlugin :  public QObject,
+		public IXinxPlugin,
 		public IFilePlugin,
 		public IResolverPlugin,
 		public IXinxPluginConfiguration,
 		public IXinxPluginProjectConfiguration,
 		public IDockPlugin,
-		public IContentViewParserPlugin
+		public IContentViewParserPlugin,
+		public ICodeCompletionPlugin
 {
 	Q_OBJECT
-	Q_INTERFACES(IXinxPlugin)
-	Q_INTERFACES(IXinxPluginConfiguration)
-	Q_INTERFACES(IXinxPluginProjectConfiguration)
-	Q_INTERFACES(IResolverPlugin)
-	Q_INTERFACES(IFilePlugin)
-	Q_INTERFACES(IDockPlugin)
-	Q_INTERFACES(IContentViewParserPlugin)
+	Q_INTERFACES(IXinxPlugin IXinxPluginConfiguration IXinxPluginProjectConfiguration IResolverPlugin IFilePlugin IDockPlugin IContentViewParserPlugin ICodeCompletionPlugin)
 public:
 	CorePlugin();
 	virtual ~CorePlugin();
@@ -54,7 +54,7 @@ public:
 
 	virtual QList<IFileTypePlugin*> fileTypes();
 
-	virtual XinxAction::MenuList actions();
+	virtual void generateActionMenu();
 
 	virtual QList< QPair<QString,QString> > pluginTools();
 
@@ -67,14 +67,13 @@ public:
 
 	virtual QList<IFileResolverPlugin*> fileResolvers();
 
-	virtual ContentView2::Parser * createParser(const QString & type);
+	virtual ContentView3::Parser * createContentParser(const QString & type);
+	virtual QList<CodeCompletion::ContextParser*> createContextParser() const;
+	virtual QList<CodeCompletion::ItemModelFactory*> createItemModelFactory() const;
 
 	XmlPresentationDockWidget * dock();
-private slots:
-	void snipetChanged();
 private:
 	QList<IFileTypePlugin*> m_fileTypes;
-	XinxAction::MenuList m_menus;
 
 	ManualFileResolver * m_resolver;
 	XmlPresentationDockWidget * m_dock;

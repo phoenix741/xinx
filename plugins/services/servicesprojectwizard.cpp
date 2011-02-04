@@ -20,7 +20,7 @@
 // Xinx header
 #include "servicesprojectwizard.h"
 #include "servicesprojectpropertyimpl.h"
-#include <project/xinxproject.h>
+#include <project/xinxprojectproject.h>
 
 /* ServicesListPageImpl */
 
@@ -52,7 +52,7 @@ bool ServicesListPageImpl::pageIsVisible() const
 	return true;
 }
 
-bool ServicesListPageImpl::saveSettingsDialog(XinxProject * project)
+bool ServicesListPageImpl::saveSettingsDialog(XinxProject::Project * project)
 {
 	project->writeProperty("webServiceVersion", WEBSERVICE_VERSION_CURRENT);
 

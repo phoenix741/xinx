@@ -6,3 +6,4 @@
 .*Plugin verification data mismatch in.*
 .*Le fichier.*n'est pas un plugin Qt valide..*
 .*Donn.es de v.rification du plugin diff.rente dans.*
+.*QThreadStorage: Thread .* exited after QThreadStorage .* destroyed.*

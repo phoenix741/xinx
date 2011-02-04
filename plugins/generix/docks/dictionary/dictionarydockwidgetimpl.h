@@ -28,11 +28,6 @@
 #include <QWidget>
 
 class DictionaryModel;
-namespace ContentView2
-{
-class Parser;
-class File;
-}
 
 class DictionaryDockWidgetImpl : public QWidget, private Ui::DictionaryDockWidget
 {
@@ -42,7 +37,6 @@ public:
 	virtual ~DictionaryDockWidgetImpl();
 private slots:
 	void on_m_filterLine_textChanged(QString filter);
-	void update(const ContentView2::File & file);
 private:
 	virtual void timerEvent(QTimerEvent * event);
 

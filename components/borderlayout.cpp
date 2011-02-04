@@ -42,7 +42,7 @@
  ****************************************************************************/
 
 // Qt header
-#include <QtGui>
+#include <QWidgetItem>
 
 // Components header
 #include "borderlayout.h"

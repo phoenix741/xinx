@@ -78,9 +78,9 @@ public:
 
 	struct struct_project
 	{
-		QString lastOpenedProject;
-		bool openTheLastProjectAtStart;
-		bool saveWithSessionByDefault;
+		QString lastOpenedSession;
+		bool openTheLastSessionAtStart;
+		bool singleProjectMode;
 		QString defaultPath;
 		QStringList recentProjectFiles;
 		bool closeVersionManagementLog;

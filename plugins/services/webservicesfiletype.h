@@ -48,14 +48,9 @@ public:
 		return ":/services/images/typefws.png";
 	};
 
-	virtual AbstractEditor * createEditor(const QString & filename)
+	virtual AbstractEditor * createEditor()
 	{
-		WebServicesEditor * editor = new WebServicesEditor();
-
-		if (! filename.isEmpty())
-			editor->loadFromFile(filename);
-
-		return editor;
+		return new WebServicesEditor();
 	}
 
 	virtual QString parserType()

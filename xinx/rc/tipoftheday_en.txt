@@ -15,3 +15,4 @@ Shortcut <b>Ctrl+U</b>, highlight same word in the editor.
 You find windows ugly, you can use different theme with <b>XINX</b>.
 Don't hesite to contribute : You can developpe, write documentation, snipets, scripts, or just report a bug or ask for an evolution. It's free and you can stay the author of patch.
 If you want support the project, you can send donation to the author, he will be happy.
+You can access to the definition of a template, or a variable by pressing Ctrl and clicking on the word.

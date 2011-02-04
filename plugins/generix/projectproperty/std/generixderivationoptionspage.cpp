@@ -34,7 +34,7 @@ GenerixDerivationOptionsPageImpl::~GenerixDerivationOptionsPageImpl()
 {
 }
 
-void GenerixDerivationOptionsPageImpl::setProject(XinxProject * project)
+void GenerixDerivationOptionsPageImpl::setProject(XinxProject::Project * project)
 {
 	m_project = project;
 }

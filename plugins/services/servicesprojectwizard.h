@@ -25,7 +25,7 @@
 #include <QWizard>
 
 // Xinx header
-#include <plugins/plugininterfaces.h>
+#include <plugins/interfaces/gui.h>
 #include "ui_newprojectwizard_serviceslist.h"
 
 class ServicesListPageImpl : public IXinxPluginNewProjectConfigurationPage, public Ui::ServicesListPage
@@ -36,7 +36,7 @@ public:
 
 	QVariant field(const QString &name) const;
 
-	virtual bool saveSettingsDialog(XinxProject * project);
+	virtual bool saveSettingsDialog(XinxProject::Project * project);
 
 	virtual QString pagePluginId() const;
 	virtual bool pageIsVisible() const;

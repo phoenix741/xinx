@@ -20,8 +20,6 @@
 // Xinx header
 #include "htmlfileeditor.h"
 #include "editors/prettyprint/xmlprettyprinter.h"
-#include "editors/models/xsl/xslcompletionnodemodel.h"
-#include "editors/models/xsl/xslcontentviewparser.h"
 #include "editors/widgeteditor/xsl/xsltexteditor.h"
 #include <borderlayout.h>
 #include <plugins/xinxpluginsloader.h>
@@ -29,7 +27,7 @@
 #include "docks/datastream/xmlpresentationdockwidget.h"
 #include "config/selfwebpluginsettings.h"
 #include <core/xinxconfig.h>
-#include <project/xinxproject.h>
+#include <project/xinxprojectproject.h>
 
 // Qt header
 #include <QXmlStreamReader>
@@ -47,15 +45,14 @@
 
 /* HtmlFileEditor */
 
-HtmlFileEditor::HtmlFileEditor(IFileTypePlugin * fileType, QWidget *parent) : TextFileEditor(new XslTextEditor(), fileType, parent), m_htmlTempFile(0)
+HtmlFileEditor::HtmlFileEditor(QWidget *parent) : TextFileEditor(new XslTextEditor(), parent), m_htmlTempFile(0)
 {
 	initObjects();
 }
 
 HtmlFileEditor::~HtmlFileEditor()
 {
-	qobject_cast<XslTextEditor*>(textEdit())->setModel(0);
-	delete m_completionModel;
+
 }
 
 void HtmlFileEditor::initObjects()
@@ -64,25 +61,11 @@ void HtmlFileEditor::initObjects()
 	m_htmlView->load(QUrl("about:blank"));
 	m_htmlView->setMinimumHeight(100);
 
-	m_completionModel = 0;
-
 	m_tabWidget = new QTabWidget(this);
 	m_tabWidget->setTabShape(QTabWidget::Triangular);
 	m_tabWidget->setTabPosition(QTabWidget::South);
 
 	connect(m_tabWidget, SIGNAL(currentChanged(int)), this, SLOT(tabIndexChange(int)));
-}
-
-ContentView2::CompletionModel * HtmlFileEditor::createModel(QSqlDatabase db, QObject * parent)
-{
-	if (! m_completionModel)
-	{
-		m_completionModel = new XslCompletionNodeModel(db, fileContainer(), parent);
-		m_completionModel->setCompleteTags(XslCompletionNodeModel::Html);
-
-		qobject_cast<XslTextEditor*>(textEdit())->setModel(m_completionModel);
-	}
-	return m_completionModel;
 }
 
 void HtmlFileEditor::initLayout()
@@ -96,11 +79,6 @@ void HtmlFileEditor::initLayout()
 	hbox->setMargin(0);
 
 	setLayout(hbox);
-}
-
-XslCompletionNodeModel * HtmlFileEditor::completionModel() const
-{
-	return m_completionModel;
 }
 
 void HtmlFileEditor::detectCodec(QIODevice & d)
@@ -132,7 +110,7 @@ bool HtmlFileEditor::autoIndent()
 	}
 	catch (XMLPrettyPrinterException e)
 	{
-		ErrorManager::self()->addMessage(lastFileName(), e.m_line, ErrorManager::MessageError, e);
+		ErrorManager::self()->addMessage(lastFileName(), e.m_line, QtCriticalMsg, e);
 		return false;
 	}
 	return true;
@@ -153,9 +131,8 @@ void HtmlFileEditor::showHtml()
 	// Get HTML text
 	QString htmlText = textEdit()->toPlainText();
 
-	QString moduleInternetAdresse = XINXProjectManager::self()->project() ?
-	                                QDir(XINXProjectManager::self()->project()->projectPath()).absoluteFilePath(
-	                                    XINXProjectManager::self()->project()->readProperty("moduleInternetAdresse").toString()
+	QString moduleInternetAdresse = project() ?
+									QDir(project()->projectPath()).absoluteFilePath(project()->readProperty("moduleInternetAdresse").toString()
 	                                ) : lastFileName();
 
 	m_htmlView->setHtml(htmlText, QUrl(moduleInternetAdresse));

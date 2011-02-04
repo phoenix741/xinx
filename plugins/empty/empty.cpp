@@ -25,6 +25,7 @@
 #include <QVariant>
 #include <QTranslator>
 #include <QApplication>
+#include <QPixmap>
 
 /* EmptyPlugin */
 

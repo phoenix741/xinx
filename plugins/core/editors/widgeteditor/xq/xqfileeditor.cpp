@@ -26,21 +26,11 @@
 
 /* XQFileEditor */
 
-XQFileEditor::XQFileEditor(IFileTypePlugin * fileType, QWidget *parent) : TextFileEditor(new XQTextEditor(), fileType, parent)
+XQFileEditor::XQFileEditor(QWidget *parent) : TextFileEditor(new XQTextEditor(), parent)
 {
-	m_completionModel = new XQModelCompleter();
-
-	QCompleter * completer = new QCompleter(textEdit());
-	completer->setModel(m_completionModel);
-	textEdit()->setCompleter(completer);
 }
 
 XQFileEditor::~XQFileEditor()
 {
-	delete m_completionModel;
-}
 
-XQModelCompleter * XQFileEditor::completionModel() const
-{
-	return m_completionModel;
 }

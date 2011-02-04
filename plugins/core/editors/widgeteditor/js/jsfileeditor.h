@@ -24,21 +24,13 @@
 // Xinx header
 #include <editors/textfileeditor.h>
 
-class JavascriptModelCompleter;
-
 class JSFileEditor : public TextFileEditor
 {
 	Q_OBJECT
 public:
-	JSFileEditor(IFileTypePlugin * fileType = 0, QWidget *parent = 0);
+	JSFileEditor(QWidget *parent = 0);
 	virtual ~JSFileEditor();
 
-	JavascriptModelCompleter * completionModel() const;
-protected:
-	virtual ContentView2::Parser * createParser();
-	virtual ContentView2::CompletionModel * createModel(QSqlDatabase db, QObject * parent = 0);
-private:
-	JavascriptModelCompleter * m_completionModel;
 };
 
 #endif //_JSFILEEDITOR_H_

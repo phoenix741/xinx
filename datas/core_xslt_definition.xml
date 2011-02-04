@@ -1,0 +1,174 @@
+<definition>
+	<balise name="apply-imports" />
+	<balise name="apply-templates">
+		<attribute name="mode" />
+		<attribute name="select" default="true" />
+	</balise>
+	<balise name="attribute">
+		<attribute name="namespace" />
+		<attribute name="name" default="true" />
+		<attribute name="xml:space" />
+	</balise>
+	<balise name="attribute-set">
+		<attribute name="use-attribute-sets" />
+		<attribute name="name" />
+	</balise>
+	<balise name="call-template">
+		<attribute name="name" default="true" />
+	</balise>
+	<balise name="choose">
+		<attribute name="xml:space" />
+		<balise name="when" default="true">
+			<attribute name="test" default="true" />
+			<attribute name="xml:space" />
+		</balise>
+		<balise name="otherwise" default="true">
+			<attribute name="xml:space" />
+		</balise>
+	</balise>
+	<balise name="comment">
+		<attribute name="xml:space" />
+	</balise>
+	<balise name="copy">
+		<attribute name="use-attribute-sets" />
+		<attribute name="xml:space" />
+	</balise>
+	<balise name="copy-of">
+		<attribute name="select" default="true" />
+	</balise>
+	<balise name="decimal-format">
+		<attribute name="minus-sign" />
+		<attribute name="zero-digit" />
+		<attribute name="decimal-separator" />
+		<attribute name="digit" />
+		<attribute name="NaN" />
+		<attribute name="pattern-separator" />
+		<attribute name="per-mille" />
+		<attribute name="name" />
+		<attribute name="grouping-separator" />
+		<attribute name="infinity" />
+		<attribute name="percent" />
+	</balise>
+	<balise name="element">
+		<attribute name="namespace" />
+		<attribute name="use-attribute-sets" />
+		<attribute name="name" default="true" />
+		<attribute name="xml:space" />
+	</balise>
+	<balise name="fallback">
+		<attribute name="xml:space" />
+	</balise>
+	<balise name="for-each">
+		<attribute name="select" default="true" />
+		<attribute name="xml:space" />
+	</balise>
+	<balise name="if">
+		<attribute name="test" default="true" />
+		<attribute name="xml:space" />
+	</balise>
+	<balise name="import">
+		<attribute name="href" default="true" />
+	</balise>
+	<balise name="include">
+		<attribute name="href" default="true" />
+	</balise>
+	<balise name="key">
+		<attribute name="use" />
+		<attribute name="name" />
+		<attribute name="match" />
+	</balise>
+	<balise name="message">
+		<attribute name="terminate" />
+		<attribute name="xml:space" />
+	</balise>
+	<balise name="namespace-alias">
+		<attribute name="result-prefix" />
+		<attribute name="stylesheet-prefix" />
+	</balise>
+	<balise name="number">
+		<attribute name="letter-value" />
+		<attribute name="format" />
+		<attribute name="count" />
+		<attribute name="from" />
+		<attribute name="value" />
+		<attribute name="grouping-size" />
+		<attribute name="level" />
+		<attribute name="grouping-separator" />
+		<attribute name="lang" />
+	</balise>
+	<balise name="output">
+		<attribute name="version" />
+		<attribute name="method" >
+			<value>xml</value>
+			<value>html</value>
+			<value>text</value>
+		</attribute>
+		<attribute name="standalone" />
+		<attribute name="doctype-public" />
+		<attribute name="omit-xml-declaration" />
+		<attribute name="cdata-section-elements" />
+		<attribute name="encoding" />
+		<attribute name="doctype-system" />
+		<attribute name="indent" />
+		<attribute name="media-type" />
+	</balise>
+	<balise name="param">
+		<attribute name="name" default="true"/>
+		<attribute name="select" />
+	</balise>
+	<balise name="preserve-space">
+		<attribute name="elements" />
+	</balise>
+	<balise name="processing-instruction">
+		<attribute name="name" />
+		<attribute name="xml:space" />
+	</balise>
+	<balise name="sort">
+		<attribute name="case-order" />
+		<attribute name="data-type" />
+		<attribute name="order" />
+		<attribute name="select" />
+		<attribute name="lang" />
+	</balise>
+	<balise name="strip-space">
+		<attribute name="elements" />
+	</balise>
+	<balise name="stylesheet">
+		<attribute name="version" />
+		<attribute name="xmlns:xsl" />
+		<attribute name="id" />
+		<attribute name="xml:space" />
+		<attribute name="extension-element-prefixes" />
+		<attribute name="exclude-result-prefixes" />
+	</balise>
+	<balise name="template">
+		<attribute name="mode" />
+		<attribute name="priority" />
+		<attribute name="name" />
+		<attribute name="xml:space" />
+		<attribute name="match" default="true" />
+	</balise>
+	<balise name="text">
+		<attribute name="disable-output-escaping" />
+	</balise>
+	<balise name="transform">
+		<attribute name="version" />
+		<attribute name="xmlns:xsl" />
+		<attribute name="id" />
+		<attribute name="xml:space" />
+		<attribute name="extension-element-prefixes" />
+		<attribute name="exclude-result-prefixes" />
+	</balise>
+	<balise name="value-of">
+		<attribute name="disable-output-escaping" />
+		<attribute name="select" default="true" />
+	</balise>
+	<balise name="variable">
+		<attribute name="name" default="true" />
+		<attribute name="select" />
+	</balise>
+	<balise name="with-param">
+		<attribute name="name" default="true" />
+		<attribute name="select" />
+	</balise>
+</definition>

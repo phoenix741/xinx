@@ -27,6 +27,8 @@ TARGET = ideality
 TEMPLATE = lib
 CONFIG += debug
 
+DEFINES += IDEALITY_BUILD
+
 MOC_DIR = ./
 OBJECTS_DIR = ./
 RCC_DIR = ./

@@ -19,9 +19,7 @@
 
 // Xinx header
 #include "generix.h"
-#include <contentview2/contentview2node.h>
-#include "docks/dictionary/dictionaryparser.h"
-#include <project/xinxproject.h>
+#include <project/xinxprojectproject.h>
 #include "pluginresolver/gce150fileresolver.h"
 #include "projectproperty/wizard/newgenerixinformationpageimpl.h"
 #include "projectproperty/wizard/newgenerixderivation1page.h"
@@ -33,13 +31,15 @@
 #include <project/externalfileresolver.h>
 #include <configuration/configurationmanager.h>
 #include <savedialog/derivationdialogimpl.h>
-#include <rcs/rcsmanager.h>
 #include "parser/generixxsltparser.h"
 #include <plugins/xinxpluginsloader.h>
 #include "config/customgeneriximpl.h"
 #include "config/selfgcesettings.h"
 #include "editors/widgeteditor/maq/maqfileeditor.h"
 #include "plugindefinition/filetypeplugin.h"
+#include <project/xinxprojectproject.h>
+#include <docks/dictionary/dictionary_parser.h>
+#include <docks/dictionary/itemmodelfactory.h>
 
 // Qt header
 #include <QString>
@@ -55,9 +55,9 @@
 class GenerixProjectInitialisationStep1 : public IProjectInitialisationStep
 {
 public:
-	XinxProject * m_project;
+	XinxProject::Project * m_project;
 
-	GenerixProjectInitialisationStep1(XinxProject * project) : m_project(project)
+	GenerixProjectInitialisationStep1(XinxProject::Project * project) : m_project(project)
 	{
 
 	}
@@ -83,9 +83,9 @@ public:
 class GenerixProjectInitialisationStep2 : public IProjectInitialisationStep
 {
 public:
-	XinxProject * m_project;
+	XinxProject::Project * m_project;
 
-	GenerixProjectInitialisationStep2(XinxProject * project) : m_project(project)
+	GenerixProjectInitialisationStep2(XinxProject::Project * project) : m_project(project)
 	{
 
 	}
@@ -182,11 +182,11 @@ QVariant GenerixPlugin::getPluginAttribute(const enum IXinxPlugin::PluginAttribu
 	return QVariant();
 }
 
-ContentView2::Parser * GenerixPlugin::createParser(const QString & type)
+ContentView3::Parser * GenerixPlugin::createContentParser(const QString & type)
 {
 	if (type == "GNX_DICO")
 	{
-		return new DictionaryParser();
+		return new Generix::Dictionary::Parser();
 	}
 	else
 	{
@@ -194,9 +194,22 @@ ContentView2::Parser * GenerixPlugin::createParser(const QString & type)
 	}
 }
 
-XsltParser * GenerixPlugin::createXsltParser()
+QList<CodeCompletion::ContextParser*> GenerixPlugin::createContextParser() const
 {
-	GenerixProject * project = static_cast<GenerixProject*>(XINXProjectManager::self()->project().data());
+	QList<CodeCompletion::ContextParser*> ctxtparsers;
+	return ctxtparsers;
+}
+
+QList<CodeCompletion::ItemModelFactory*> GenerixPlugin::createItemModelFactory() const
+{
+	QList<CodeCompletion::ItemModelFactory*> factories;
+	factories << new Generix::Dictionary::ItemModelFactory;
+	return factories;
+}
+
+XsltParser * GenerixPlugin::createXsltParser(AbstractEditor * editor)
+{
+	GenerixProject * project = static_cast<GenerixProject*>(editor->project());
 	if (project && project->isGenerixActivated())
 	{
 		return new GenerixXsltParser();
@@ -205,14 +218,14 @@ XsltParser * GenerixPlugin::createXsltParser()
 		return 0;
 }
 
-QList<IProjectInitialisationStep*> GenerixPlugin::loadProjectStep(XinxProject * project)
+QList<IProjectInitialisationStep*> GenerixPlugin::loadProjectStep(XinxProject::Project * project)
 {
 	return QList<IProjectInitialisationStep*>()
 	       << new GenerixProjectInitialisationStep1(project)
 	       << new GenerixProjectInitialisationStep2(project);
 }
 
-QList<IProjectInitialisationStep*> GenerixPlugin::closeProjectStep(XinxProject * project)
+QList<IProjectInitialisationStep*> GenerixPlugin::closeProjectStep(XinxProject::Project * project)
 {
 	Q_UNUSED(project);
 	return QList<IProjectInitialisationStep*>() << new GenerixProjectDeInitialisationStep();
@@ -223,15 +236,16 @@ QList<IFileTypePlugin*> GenerixPlugin::fileTypes()
 	return m_fileTypes;
 }
 
-QIODevice * GenerixPlugin::loadFile(const QString & filename)
+QIODevice * GenerixPlugin::loadFile(AbstractEditor * editor, const QString & filename)
 {
-	Q_UNUSED(filename);
-	return 0;
+	 Q_UNUSED(editor);
+	 Q_UNUSED(filename);
+	 return 0;
 }
 
-QIODevice * GenerixPlugin::saveFile(const QString & filename, const QString & oldfilename)
+QIODevice * GenerixPlugin::saveFile(AbstractEditor * editor, const QString & filename, const QString & oldfilename)
 {
-	GenerixProject * gnxProject = static_cast<GenerixProject*>(XINXProjectManager::self()->project().data());
+	GenerixProject * gnxProject = static_cast<GenerixProject*>(editor->project());
 	if (!(gnxProject && gnxProject->isGenerixActivated() && gnxProject->copySourceFileInDerivationPath()) || (filename == oldfilename))
 	{
 		return 0;
@@ -243,14 +257,14 @@ QIODevice * GenerixPlugin::saveFile(const QString & filename, const QString & ol
 	if (! QFile::exists(stdfilename))
 	{
 		QFile::copy(oldfilename, stdfilename);
-		RCSManager::self()->addFileOperation(RCSManager::RCS_ADD, QStringList() << stdfilename);
+		gnxProject->rcsProxy()->addFileOperation(VersionControl::RCSProxy::RCS_ADD, QStringList() << stdfilename);
 	}
 	return 0;
 }
 
-QString GenerixPlugin::getFilename(const QString & filename, const QString & defaultFilename, const QString & filter, bool saveAs, bool & accept, QWidget * widget)
+QString GenerixPlugin::getFilename(AbstractEditor* editor, const QString& filename, const QString& defaultFilename, const QString& filter, bool saveAs, bool& accept, QWidget* widget)
 {
-	GenerixProject * gnxProject = static_cast<GenerixProject*>(XINXProjectManager::self()->project().data());
+	 GenerixProject * gnxProject = static_cast<GenerixProject*>(editor->project());
 	if (!(gnxProject && gnxProject->isGenerixActivated()))
 	{
 		accept = false;
@@ -258,9 +272,9 @@ QString GenerixPlugin::getFilename(const QString & filename, const QString & def
 	}
 
 	accept = true;
-	if (saveAs || DerivationDialogImpl::isDerivableFile(filename))
+	if (saveAs || DerivationDialogImpl::isDerivableFile(gnxProject, filename))
 	{
-		DerivationDialogImpl dlg(widget);
+		DerivationDialogImpl dlg(gnxProject, widget);
 		if (!filename.isEmpty())
 		{
 			dlg.load(filename, filter);

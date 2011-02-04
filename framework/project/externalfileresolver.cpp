@@ -1,47 +1,42 @@
-/* *********************************************************************** *
- * XINX                                                                    *
- * Copyright (C) 2007-2010 by Ulrich Van Den Hekke                         *
- * ulrich.vdh@shadoware.org                                                *
- *                                                                         *
- * This program is free software: you can redistribute it and/or modify    *
- * it under the terms of the GNU General Public License as published by    *
- * the Free Software Foundation, either version 3 of the License, or       *
- * (at your option) any later version.                                     *
- *                                                                         *
- * This program is distributed in the hope that it will be useful,         *
- * but WITHOUT ANY WARRANTY; without even the implied warranty of          *
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *
- * GNU General Public License for more details.                            *
- *                                                                         *
- * You should have received a copy of the GNU General Public License       *
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
- * *********************************************************************** */
+/*
+ XINX
+ Copyright (C) 2007-2011 by Ulrich Van Den Hekke
+ xinx@shadoware.org
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful.
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 // Xinx header
 #include "externalfileresolver.h"
 #include "core/xinxcore.h"
 #include "plugins/xinxpluginsloader.h"
+#include <plugins/xinxpluginelement.h>
+#include <plugins/interfaces/resolver.h>
 
 // Qt header
 #include <QDir>
 #include <QDebug>
 
-/* Static member */
-
-ExternalFileResolver * ExternalFileResolver::s_self = 0;
-
 /* ExternalFileResolver */
 
-ExternalFileResolver::ExternalFileResolver()
+ExternalFileResolver::ExternalFileResolver(XinxProject::Project * project) : _project(project)
 {
 }
 
 ExternalFileResolver::~ExternalFileResolver()
 {
-	if (s_self == this)
-	{
-		s_self = 0;
-	}
+
 }
 
 QStringList ExternalFileResolver::externalFileResoverNames() const
@@ -108,32 +103,30 @@ QString ExternalFileResolver::resolveFileName(const QString & nameToResolve, con
 
 		foreach(IFileResolverPlugin * resolver, resolverPlugin->fileResolvers())
 		{
-			if (resolver->isActivated())
+			resolvedName = nameToResolve;
+			bool hasResolve = resolver->resolveFileName(nameToResolve, resolvedName, currentPath, _project);
+			if (hasResolve && QFile::exists(resolvedName))
 			{
-				resolvedName = resolver->resolveFileName(nameToResolve, currentPath);
-				if (QFile::exists(resolvedName))
-				{
-					m_externalFileResolverCache.insert(qMakePair(nameToResolve, currentPath), resolvedName);
-					return QFileInfo(resolvedName).canonicalFilePath();
-				}
+				m_externalFileResolverCache.insert(qMakePair(nameToResolve, currentPath), resolvedName);
+				return QFileInfo(resolvedName).canonicalFilePath();
 			}
 		}
 	}
 
-	return QFileInfo(QDir(currentPath).absoluteFilePath(nameToResolve)).canonicalFilePath();
+	/* Failed to find the rigth file with resolver */
+	resolvedName = QDir(currentPath).absoluteFilePath(nameToResolve);
+	if (QFile::exists (resolvedName))
+	{
+		return QFileInfo(resolvedName).canonicalFilePath();
+	}
+	else
+	{
+		/* The file doesn't exist */
+		return resolvedName;
+	}
 }
 
 void ExternalFileResolver::clearCache()
 {
 	m_externalFileResolverCache.clear();
-}
-
-ExternalFileResolver * ExternalFileResolver::self()
-{
-	if (! s_self)
-	{
-		s_self = new ExternalFileResolver();
-		XINXStaticDeleter::self()->add(s_self);
-	}
-	return s_self;
 }

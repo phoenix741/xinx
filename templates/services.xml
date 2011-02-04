@@ -1,4 +1,4 @@
-<ProjectTemplate name="Services">
+<ProjectTemplate name="Web Services Project">
 	<Plugins>
 		<Plugin name="ServicesPlugin"/>
 	</Plugins>

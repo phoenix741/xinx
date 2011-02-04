@@ -20,8 +20,6 @@
 // Xinx header
 #include "editors/widgeteditor/xsl/xslfileeditor.h"
 #include "editors/prettyprint/xmlprettyprinter.h"
-#include "editors/models/xsl/xslcompletionnodemodel.h"
-#include "editors/models/xsl/xslcontentviewparser.h"
 #include "editors/widgeteditor/xsl/xsltexteditor.h"
 #include <borderlayout.h>
 #include <plugins/xinxpluginsloader.h>
@@ -29,11 +27,11 @@
 #include "docks/datastream/xmlpresentationdockwidget.h"
 #include "config/selfwebpluginsettings.h"
 #include <core/xinxconfig.h>
-#include <project/xinxproject.h>
+#include <project/xinxprojectproject.h>
 #include <utils/xsltparser.h>
 #include <plugins/xinxpluginsloader.h>
-#include <contentview2/contentview2treemodel.h>
-#include <contentview2/contentview2manager.h>
+#include <plugins/xinxpluginelement.h>
+#include <plugins/interfaces/xsltparser.h>
 
 // Qt header
 #include <QXmlStreamReader>
@@ -50,14 +48,14 @@
 
 /* StyleSheetEditor */
 
-StyleSheetEditor::StyleSheetEditor(IFileTypePlugin * fileType, QWidget *parent) : TextFileEditor(new XslTextEditor(), fileType, parent), m_completionModel(0)
+StyleSheetEditor::StyleSheetEditor(QWidget *parent) : TextFileEditor(new XslTextEditor(), parent)
 {
 	initObjects();
 }
 
 StyleSheetEditor::~StyleSheetEditor()
 {
-	qobject_cast<XslTextEditor*>(textEdit())->setModel(0);
+
 }
 
 void StyleSheetEditor::initObjects()
@@ -67,10 +65,6 @@ void StyleSheetEditor::initObjects()
 	m_htmlView->setMinimumHeight(100);
 
 	m_sourceView = new XslTextEditor(this);
-
-	connect(textEdit()->editor(), SIGNAL(cursorPositionChanged()), this, SLOT(cursorPositionChanged()));
-
-	m_completionModel = 0;
 
 	m_tabWidget = new QTabWidget(this);
 	m_tabWidget->setTabShape(QTabWidget::Triangular);
@@ -147,28 +141,6 @@ void StyleSheetEditor::detectCodec(QIODevice & d)
 	d.reset();
 }
 
-ContentView2::Parser * StyleSheetEditor::createParser()
-{
-	return new XslContentView2Parser();
-}
-
-ContentView2::CompletionModel * StyleSheetEditor::createModel(QSqlDatabase db, QObject * parent)
-{
-	if (! m_completionModel)
-	{
-		m_completionModel = new XslCompletionNodeModel(db, fileContainer(), parent);
-		m_completionModel->setCompleteTags(XslCompletionNodeModel::NoTags);
-
-		qobject_cast<XslTextEditor*>(textEdit())->setModel(m_completionModel);
-	}
-	return m_completionModel;
-}
-
-XslCompletionNodeModel * StyleSheetEditor::completionModel() const
-{
-	return m_completionModel;
-}
-
 bool StyleSheetEditor::autoIndent()
 {
 	try
@@ -186,7 +158,7 @@ bool StyleSheetEditor::autoIndent()
 	}
 	catch (XMLPrettyPrinterException e)
 	{
-		ErrorManager::self()->addMessage(lastFileName(), e.m_line, ErrorManager::MessageError, e);
+		ErrorManager::self()->addMessage(lastFileName(), e.m_line, QtCriticalMsg, e);
 		return false;
 	}
 	return true;
@@ -214,7 +186,7 @@ void StyleSheetEditor::launchStylesheetParsing(const QString & xmlfile)
 	{
 		if (plugin->isActivated() && qobject_cast<IXinxXsltParser*>(plugin->plugin()))
 		{
-			xsltParser = qobject_cast<IXinxXsltParser*>(plugin->plugin())->createXsltParser();
+			xsltParser = qobject_cast<IXinxXsltParser*>(plugin->plugin())->createXsltParser(this);
 			if (xsltParser) break;
 		}
 	}
@@ -223,12 +195,12 @@ void StyleSheetEditor::launchStylesheetParsing(const QString & xmlfile)
 		xsltParser = new XsltParser();
 
 	QString moduleInternetAdresse = lastFileName();
-	if (XINXProjectManager::self()->project())
+	if (project())
 	{
-		const QString resultPageAdresse = XINXProjectManager::self()->project()->readProperty("moduleInternetAdresse").toString();
+		const QString resultPageAdresse = project()->readProperty("moduleInternetAdresse").toString();
 		if (QFileInfo(resultPageAdresse).isRelative())
 		{
-			moduleInternetAdresse = QDir(XINXProjectManager::self()->project()->projectPath()).absoluteFilePath(resultPageAdresse);
+			moduleInternetAdresse = QDir(project()->projectPath()).absoluteFilePath(resultPageAdresse);
 		}
 		else
 		{
@@ -251,7 +223,7 @@ void StyleSheetEditor::launchStylesheetParsing(const QString & xmlfile)
 error:
 	foreach(const XsltParser::ErrorMessage & e, xsltParser->errors())
 	{
-		ErrorManager::self()->addMessage(textEdit()->filename(), e.line, e.isWarning ? ErrorManager::MessageWarning : ErrorManager::MessageError, e.message);
+		ErrorManager::self()->addMessage(textEdit()->filename(), e.line, e.isWarning ? QtWarningMsg : QtCriticalMsg, e.message, QStringList());
 	}
 
 	delete xsltParser;
@@ -270,6 +242,8 @@ XmlPresentationDockWidget * StyleSheetEditor::xmlPresentationDockWidget()
 
 void StyleSheetEditor::cursorPositionChanged()
 {
+	TextFileEditor::cursorPositionChanged();
+	/* FIXME: Emplacement dans le model
 	if (model())
 	{
 		XslTextEditor * te = qobject_cast<XslTextEditor*>(textEdit());
@@ -291,11 +265,11 @@ void StyleSheetEditor::cursorPositionChanged()
 			const QString baliseAttributeMatch = b.attributes["match"];
 			const QString baliseAttributeMode  = b.attributes["mode"];
 
-			const QList<int> childs = n.childs(ContentView2::Manager::self()->database());
+			const QList<int> childs = n.childs();
 
 			foreach(uint childId, childs)
 			{
-				ContentView2::Node child(ContentView2::Manager::self()->database(), childId);
+				ContentView2::Node child(childId);
 
 				const QString childName  = child.data().toString();
 				const QString childType  = child.data(ContentView2::Node::NODE_TYPE).toString();
@@ -331,4 +305,5 @@ void StyleSheetEditor::cursorPositionChanged()
 
 		emit positionInEditorChanged(indexToSelect);
 	}
+	*/
 }

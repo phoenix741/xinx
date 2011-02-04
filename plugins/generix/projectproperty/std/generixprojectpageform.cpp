@@ -19,18 +19,16 @@
 
 // Xinx header
 #include "generixprojectpageform.h"
-#include <project/xinxproject.h>
+#include <project/xinxprojectproject.h>
 #include <core/xinxconfig.h>
 #include "configuration/configurationmanager.h"
 #include "projectproperty/generixproject.h"
 
 /* GenerixProjectPageFormImpl */
 
-GenerixProjectPageFormImpl::GenerixProjectPageFormImpl(QWidget * parent, Qt::WindowFlags f) : QWidget(parent, f)
+GenerixProjectPageFormImpl::GenerixProjectPageFormImpl(QWidget * parent, Qt::WindowFlags f) : QWidget(parent, f), m_project(0)
 {
 	setupUi(this);
-
-	m_project = XINXProjectManager::self()->project();
 
 	qRegisterMetaType<ConfigurationVersion>("ConfigurationVersion");
 	connect(m_webModuleLocation->lineEdit(), SIGNAL(textChanged(QString)), this, SLOT(updateInformations()));
@@ -40,7 +38,7 @@ GenerixProjectPageFormImpl::~GenerixProjectPageFormImpl()
 {
 }
 
-void GenerixProjectPageFormImpl::setProject(XinxProject * project)
+void GenerixProjectPageFormImpl::setProject(XinxProject::Project * project)
 {
 	m_project = project;
 }

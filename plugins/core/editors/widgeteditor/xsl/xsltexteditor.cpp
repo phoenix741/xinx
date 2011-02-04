@@ -19,36 +19,17 @@
 
 // Xinx header
 #include "xsltexteditor.h"
-#include "config/selfwebpluginsettings.h"
-#include "editors/models/xsl/xslcompletionnodemodel.h"
-#include "editors/models/xsl/xslcontentviewparser.h"
-
-#include <plugins/xinxpluginsloader.h>
-#include <core/xinxconfig.h>
-#include <editors/xinxlanguagefactory.h>
-
-// QCodeEdit header
-#include <qlanguagedefinition.h>
-#include <qdocumentcursor.h>
+#include <config/selfwebpluginsettings.h>
+#include <editors/models/html_xsl_base/xmlcontexttype.h>
+#include <contentview3/file.h>
+#include <contentview3/filenode.h>
 #include <qdocumentline.h>
-
-// Qt header
-#include <QKeyEvent>
-#include <QTextBlock>
-#include <QCompleter>
-#include <QTextDocument>
-#include <QTextCursor>
-#include <QStack>
-#include <QModelIndex>
-#include <QDebug>
-
-// Define
-#define EOWREGEXP   "[~!@\\$#%\\^&\\*\\(\\)\\+\\{\\}|\"<>,/;'\\[\\]\\\\=\\s]"
-#define isEditBalise(value) ((value == cpEditNodeName) || (value == cpEditParamName) || (value == cpEditParamValue))
+#include <project/xinxprojectproject.h>
 
 /* XslTextEditor */
+#include <editors/models/xsl/stylesheet_paramnode.h>
 
-XslTextEditor::XslTextEditor(QWidget * parent) : XmlTextEditor(parent), m_model(0)
+XslTextEditor::XslTextEditor(QWidget * parent) : XmlTextEditor(parent)
 {
 
 }
@@ -58,90 +39,43 @@ XslTextEditor::~XslTextEditor()
 
 }
 
-void XslTextEditor::setModel(XslCompletionNodeModel * model)
+QSharedPointer<Core::Stylesheet::TemplateNode> XslTextEditor::localNodeOfTemplate(const ContentView3::NodePtr& node, const QString& templateName, bool isNamed)
 {
-	m_model = model;
-}
-
-QString XslTextEditor::paramValue(const QDocumentCursor & cursor, const QString & param)
-{
-	QString text;
-	QDocumentCursor lt = find("<", cursor, XinxCodeEdit::FindBackward);
-	QDocumentCursor c = find(QRegExp(param + "=\"[^\"]*\""), cursor, XinxCodeEdit::FindBackward);
-
-	if ((! c.isNull()) && (lt < c))
+	foreach(ContentView3::NodePtr child, node->childs())
 	{
-		text = c.selectedText();
-	}
-	else
-	{
-		QDocumentCursor gt = find(">", cursor);
-		QDocumentCursor c = find(QRegExp(param + "=\"[^\"]*\""), cursor);
-		if ((! c.isNull()) && (c < gt))
+		QSharedPointer<Core::Stylesheet::TemplateNode> templateNode = child.dynamicCast<Core::Stylesheet::TemplateNode>();
+		if (templateNode && (templateNode->name() == templateName) &&  templateNode->isNamedTemplate() == isNamed)
 		{
-			text = c.selectedText();
-		}
-		else
-			return QString();
-	}
-
-	text.remove(0, param.length() + 2).chop(1);
-	return text;
-}
-
-void XslTextEditor::getTemplate(const QDocumentCursor & cursor, QString * name, QString * mode)
-{
-	if ((name == 0) && (mode == 0)) return ;
-	*name = QString();
-	*mode = QString();
-	QDocumentCursor c = find("xsl:template", cursor, XinxCodeEdit::FindBackward);
-	if (! c.isNull())
-	{
-		*name  = paramValue(c, "name");
-		if (name->isEmpty())
-			*name = paramValue(c, "match");
-		*mode  = paramValue(c, "mode");
-	}
-}
-
-QCompleter * XslTextEditor::completer()
-{
-	QCompleter * completer = XmlTextEditor::completer();
-
-	if (completer && m_model && (m_lastPosition.position() != textCursor().position()))
-	{
-		m_lastPosition = textCursor();
-
-		QString templateName, templateMode, nodeName, paramName, applyTemplateMatch;
-		getTemplate(m_lastPosition, &templateName, &templateMode);
-		cursorPosition pos = editPosition(m_lastPosition, nodeName, paramName);
-
-		switch (pos)
-		{
-		case cpEditNodeName:
-			m_model->setCompleteNode();
-			break;
-		case cpEditParamName:
-			m_model->setCompleteAttribute(nodeName, paramOfNode(m_lastPosition));
-			break;
-		case cpEditParamValue:
-			if ((nodeName == "xsl:apply-templates") && (paramName == "mode"))
-				applyTemplateMatch = paramValue(textCursor(), "select");
-
-			m_model->setCompleteValue(nodeName, paramName, applyTemplateMatch);
-			m_model->setCurrentTemplateName(templateName, templateMode);
-			break;
-		case cpEditComment:
-		case cpNone:
-			m_model->setCompleteNone();
-			break;
+			return templateNode;
 		}
 	}
-	return completer;
+
+	return QSharedPointer<Core::Stylesheet::TemplateNode> ();
 }
 
 
-QDocumentCursor XslTextEditor::insertCompletionBalises(QDocumentCursor & tc, QString node)
+QSharedPointer<Core::Stylesheet::TemplateNode> XslTextEditor::globalNodeOfTemplate(const QString& templateName, bool isNamed)
+{
+	ContentView3::FilePtr filePtr = file().toStrongRef();
+	if (filePtr.isNull()) return QSharedPointer<Core::Stylesheet::TemplateNode>();
+
+	QSharedPointer<Core::Stylesheet::TemplateNode> node = localNodeOfTemplate (filePtr->rootNode().dynamicCast<ContentView3::Node> (), templateName, isNamed);
+	if (node.isNull () && filePtr->project())
+	{
+		foreach(const ContentView3::FilePtr & import, filePtr->project()->cache ()->importOf(filePtr))
+		{
+			node = localNodeOfTemplate (import->rootNode().dynamicCast<ContentView3::Node> (), templateName, isNamed);
+			if (node)
+			{
+				break;
+			}
+		}
+	}
+	return node;
+}
+
+
+QDocumentCursor XslTextEditor::insertCompletionBalises(Core::BaliseDefinition::XmlContextType* context, QDocumentCursor& tc, QSharedPointer< Core::BaliseDefinition::BaliseNode > balise)
 {
 	QString indent = tc.line().text();
 	indent = indent.left(indent.indexOf(QRegExp("\\S")));
@@ -149,21 +83,42 @@ QDocumentCursor XslTextEditor::insertCompletionBalises(QDocumentCursor & tc, QSt
 	QDocumentCursor position = QDocumentCursor();
 	int cnt = 0;
 
-	if (m_model && SelfWebPluginSettings::self()->config().xml.addDefaultSubBalise && (node == "xsl:call-template"))
+	if (SelfWebPluginSettings::self()->config().xml.addDefaultSubBalise)
 	{
-		QString nodeName = paramValue(tc, "name");
-		if (! nodeName.isEmpty())
+		bool isNamed = false;
+		QString templateName;
+		if (context->balise().baliseName() == "call-template")
 		{
-			foreach(const QString & param, m_model->params(nodeName))
+			templateName = context->balise().attributes().value("name");
+			isNamed = true;
+		}
+		else if (context->balise().baliseName() == "apply-templates")
+		{
+			templateName = context->balise().attributes().value("match");
+		}
+
+		if (! templateName.isEmpty())
+		{
+			QSharedPointer<Core::Stylesheet::TemplateNode> templateNode = globalNodeOfTemplate(templateName, isNamed);
+
+			if (templateNode)
 			{
-				tc.insertText("\n" + indent + "\t");
-				tc.insertText("<xsl:with-param name=\"" + param + "\" select=\"\"/>");
-				if (position.isNull())
+				foreach(ContentView3::NodePtr child, templateNode->childs())
 				{
-					position = tc;
-					position.movePosition(3, QDocumentCursor::Left);
+					QSharedPointer<Core::Stylesheet::ParamNode> paramNode = child.dynamicCast<Core::Stylesheet::ParamNode>();
+
+					if (paramNode && paramNode->value().isEmpty())
+					{
+						tc.insertText("\n" + indent + "\t");
+						tc.insertText("<xsl:with-param name=\"" + paramNode->name() + "\" select=\"\"/>");
+						if (position.isNull())
+						{
+							position = tc;
+							position.movePosition(3, QDocumentCursor::Left);
+						}
+						cnt++;
+					}
 				}
-				cnt++;
 			}
 		}
 	}
@@ -173,33 +128,13 @@ QDocumentCursor XslTextEditor::insertCompletionBalises(QDocumentCursor & tc, QSt
 
 	if (position.isNull())
 	{
-		position = XmlTextEditor::insertCompletionBalises(tc, node);
+		position = XmlTextEditor::insertCompletionBalises(context, tc, balise);
 	}
 	else
 	{
-		XmlTextEditor::insertCompletionBalises(tc, node);
+		XmlTextEditor::insertCompletionBalises(context, tc, balise);
 		tc.moveTo(position);
 	}
 
 	return position;
-}
-
-void XslTextEditor::insertCompletionAccolade(QDocumentCursor & tc, QString node, QString param, QString value, const QModelIndex & index)
-{
-	XmlTextEditor::insertCompletionAccolade(tc, node, param, value, index);
-
-	QStringList list = paramOfNode(tc);
-	QCompleter * c = completer();
-	if ((node == "xsl:apply-templates") && (c->completionModel()->data(index).toString().indexOf("[") >= 0) && !list.contains("mode"))
-	{
-		QString mode = c->completionModel()->data(index).toString();
-		mode = mode.mid(mode.indexOf('[') + 1);
-		mode.remove(mode.indexOf(']'), mode.length());
-
-		QDocumentCursor tc2 = find("\"", tc);
-		tc2.moveTo(tc2.selectionEnd());
-		tc2.insertText(" mode=\"" + mode + "\"");
-		tc2.insertText("/>");
-		tc = tc2;
-	}
 }

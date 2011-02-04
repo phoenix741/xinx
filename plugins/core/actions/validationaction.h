@@ -33,13 +33,9 @@ class ValidationAction : public XinxAction::Action
 {
 	Q_OBJECT
 public:
-	ValidationAction(QAction * a, QObject * parent);
-	ValidationAction(const QString & text, const QKeySequence & shortcut, QObject * parent);
-	ValidationAction(const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent);
+	ValidationAction();
 
-	virtual bool isActionVisible() const;
-	virtual bool isActionEnabled() const;
-	virtual bool isInToolBar() const;
+	virtual bool isVisible() const;
 protected slots:
 	virtual void actionTriggered();
 private:

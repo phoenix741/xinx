@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>NewVersionWizard</class>
+ <widget class="QWizard" name="NewVersionWizard">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>589</width>
+    <height>403</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Welcom in XINX</string>
+  </property>
+  <widget class="QWizardPage" name="welcomPage">
+   <property name="title">
+    <string>First Installation</string>
+   </property>
+   <property name="subTitle">
+    <string/>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>This is the first installation of &lt;span style=&quot; font-weight:600;&quot;&gt;XINX&lt;/span&gt; or you upgrade from an old version.  This wizard will help you to define or redefine some important &lt;span style=&quot; font-weight:600;&quot;&gt;XINX&lt;/span&gt; options.</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>Next, in the custom dialog, you can modifiy more options to customize &lt;span style=&quot; font-weight:600;&quot;&gt;XINX&lt;/span&gt; as you want, to improve your developpement.</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_3">
+      <property name="text">
+       <string>Please report, if necessary, all options that you need and that &lt;span style=&quot; font-weight:600;&quot;&gt;XINX&lt;/span&gt; don't have.</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWizardPage" name="applicationPage">
+   <property name="title">
+    <string>Global Application Settings</string>
+   </property>
+   <property name="subTitle">
+    <string>In this page, we adjust global settings, used by the application for accesibility (as lang, or automatic task) or for the creation of new project</string>
+   </property>
+   <layout class="QFormLayout" name="formLayout">
+    <property name="fieldGrowthPolicy">
+     <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+    </property>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_4">
+      <property name="text">
+       <string>&amp;Language :</string>
+      </property>
+      <property name="buddy">
+       <cstring>m_langComboBox</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QComboBox" name="m_langComboBox">
+      <property name="whatsThis">
+       <string>&lt;p&gt;Langue in which &lt;b&gt;XINX&lt;/b&gt; must be used.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Modification take effect at restart.&lt;/i&gt;&lt;/p&gt;</string>
+      </property>
+      <item>
+       <property name="text">
+        <string>(en) English</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../../xinx/application.qrc">
+         <normaloff>:/images/usa.png</normaloff>:/images/usa.png</iconset>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>(fr_FR) French</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../../xinx/application.qrc">
+         <normaloff>:/images/france.png</normaloff>:/images/france.png</iconset>
+       </property>
+      </item>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QCheckBox" name="m_autoRefreshDirectoryChk">
+      <property name="text">
+       <string>Auto refresh directory dock</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QCheckBox" name="m_openLastSessionCheckBox">
+      <property name="whatsThis">
+       <string>Open the last opened project (&lt;i&gt;if any, it's the opened project when &lt;b&gt;XINX&lt;/b&gt; is closed&lt;/i&gt;), when &lt;b&gt;XINX&lt;/b&gt; is started.</string>
+      </property>
+      <property name="text">
+       <string>&amp;Open the last project at start</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="label_5">
+      <property name="text">
+       <string>Default open &amp;project directory :</string>
+      </property>
+      <property name="buddy">
+       <cstring>m_projectPathLineEdit</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="DirectoryEditWidget" name="m_projectPathLineEdit" native="true">
+      <property name="focusPolicy">
+       <enum>Qt::TabFocus</enum>
+      </property>
+      <property name="whatsThis">
+       <string>&lt;p&gt;This the path where the save dialog must be opened when you create a new project.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;As the author set the project path to the Application Server path, this path is now the project path. You can safely use another path, but in &lt;i&gt;New Project Wizard&lt;/i&gt;, the Application Server path would be wrong.&lt;/i&gt;&lt;/p&gt;</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="QComboBox" name="m_encodingComboBox">
+      <property name="whatsThis">
+       <string>&lt;p&gt;Choose the default text encoding, when the text encoding can't be found.
+
+&lt;i&gt;Some editor, can redefined the text encoding (ie: XML and derivated editor). This encoding is used by editor as JavaScript and other&lt;/i&gt;&lt;/p&gt;</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="label_15">
+      <property name="text">
+       <string>Default text &amp;encoding :</string>
+      </property>
+      <property name="buddy">
+       <cstring>m_encodingComboBox</cstring>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWizardPage" name="editorPage">
+   <property name="title">
+    <string>Edtior Settings Page</string>
+   </property>
+   <property name="subTitle">
+    <string>In this page we adjust settins used by the editor. In this page we can adjust effect, used to facilitate the edition (has show the current line, space, tabulation).</string>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QCheckBox" name="m_popupWhenFileModifiedCheckBox">
+      <property name="whatsThis">
+       <string>&lt;p&gt;Alert user when the file is modified by an extern application. The user has the choice to open the new file (&lt;u&gt;and loose his change&lt;/u&gt;) or keep current file.&lt;/p&gt;</string>
+      </property>
+      <property name="text">
+       <string>&amp;Popup when file modifed</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QCheckBox" name="m_createBakCheckBox">
+      <property name="whatsThis">
+       <string>&lt;p&gt;Create a backup file before saving the file. The backup file is stored in the same directory that the original file. &lt;/p&gt;
+&lt;p&gt;The backup is created by copy the modified file before he his saved.&lt;/p&gt;</string>
+      </property>
+      <property name="text">
+       <string>&amp;Create backup file when saving (.bak)</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="groupBox">
+      <property name="title">
+       <string>&amp;Graphics effect</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QSlider" name="m_listSlider">
+         <property name="maximum">
+          <number>4</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="tickPosition">
+          <enum>QSlider::TicksBothSides</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QListWidget" name="m_listEffect">
+         <item>
+          <property name="text">
+           <string>Show tabulation and space in the editor</string>
+          </property>
+          <property name="checkState">
+           <enum>Unchecked</enum>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Show current line</string>
+          </property>
+          <property name="checkState">
+           <enum>Unchecked</enum>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Auto highlight same word</string>
+          </property>
+          <property name="checkState">
+           <enum>Unchecked</enum>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Pretty Print on saving</string>
+          </property>
+          <property name="checkState">
+           <enum>Unchecked</enum>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWizardPage" name="toolsPage">
+   <property name="title">
+    <string>Tools Settings Page</string>
+   </property>
+   <property name="subTitle">
+    <string>In this page you can define path to tools that can be use by XINX.</string>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_3">
+    <item row="0" column="0">
+     <widget class="QTableView" name="m_toolsTable">
+      <property name="whatsThis">
+       <string>&lt;p&gt;List of tools used by &lt;b&gt;XINX&lt;/b&gt; and all plugins. Tools are external application called by this application.&lt;/p&gt;
+&lt;p&gt;If the tool can't be find, the text color will be &lt;span style=&quot;color:#ff0000;&quot;&gt;red&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;To edit a tool, double click (or presse F2) on the path of the tool.&lt;/p&gt;</string>
+      </property>
+      <property name="alternatingRowColors">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWizardPage" name="conclustionPage">
+   <property name="title">
+    <string>Conclusion</string>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_2">
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_6">
+      <property name="text">
+       <string>We have now customize XINX. You can adjsute XINX settings by opening the good &quot;Customize dialog&quot;. In the tools menu.</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_7">
+      <property name="text">
+       <string>Have fun with XINX.</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QCheckBox" name="m_customizeChk">
+      <property name="text">
+       <string>&amp;Open the customize dialog page to made more settings.</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>DirectoryEditWidget</class>
+   <extends>QWidget</extends>
+   <header>directoryedit.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../../xinx/application.qrc"/>
+ </resources>
+ <connections/>
+</ui>

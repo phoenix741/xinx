@@ -105,7 +105,7 @@ bool NewGenerixDerivation2Page::pageIsVisible() const
 	return field("generix.derivation").toBool() || (version >= version150);
 }
 
-bool NewGenerixDerivation2Page::saveSettingsDialog(XinxProject * project)
+bool NewGenerixDerivation2Page::saveSettingsDialog(XinxProject::Project* project)
 {
 	const bool isDerivation = field("generix.derivation").toBool();
 

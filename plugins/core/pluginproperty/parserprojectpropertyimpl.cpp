@@ -19,8 +19,11 @@
 
 // Xinx header
 #include "parserprojectpropertyimpl.h"
-#include <project/xinxproject.h>
+#include <project/xinxprojectproject.h>
 #include <core/xinxconfig.h>
+
+// Qt header
+#include <QGridLayout>
 
 /* ParserProjectPropertyImpl */
 
@@ -28,7 +31,6 @@ ParserProjectPropertyImpl::ParserProjectPropertyImpl(QWidget * parent, Qt::Windo
 {
 	setupUi(this);
 	m_labelDataStream->setBuddy(m_dataStreamEdit->lineEdit());
-	m_project = XINXProjectManager::self()->project();
 	m_dataStreamEdit->setDefaultValue(XINXConfig::self()->config().project.defaultPath);
 }
 
@@ -36,7 +38,7 @@ ParserProjectPropertyImpl::~ParserProjectPropertyImpl()
 {
 }
 
-void ParserProjectPropertyImpl::setProject(XinxProject * project)
+void ParserProjectPropertyImpl::setProject(XinxProject::Project * project)
 {
 	m_project = project;
 }
@@ -141,7 +143,7 @@ bool WebPluginProjectPropertyWizard::pageIsVisible() const
 	return true;
 }
 
-bool WebPluginProjectPropertyWizard::saveSettingsDialog(XinxProject * project)
+bool WebPluginProjectPropertyWizard::saveSettingsDialog(XinxProject::Project * project)
 {
 	project->writeProperty("dataStreamLocation", m_dataStreamEdit->lineEdit()->text());
 	project->writeProperty("moduleInternetAdresse", m_urlLocationEdit->text());

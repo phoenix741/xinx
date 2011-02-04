@@ -20,7 +20,7 @@
 // Xinx header
 #include "newgenerixinformationpageimpl.h"
 #include "configuration/gceinterfacefactory.h"
-#include <project/xinxproject.h>
+#include <project/xinxprojectproject.h>
 #include <project/externalfileresolver.h>
 #include "projectproperty/generixproject.h"
 #include "pluginresolver/gce150fileresolver.h"
@@ -62,7 +62,7 @@ bool NewGenerixInformationPageImpl::pageIsVisible() const
 	return true;
 }
 
-bool NewGenerixInformationPageImpl::saveSettingsDialog(XinxProject * project)
+bool NewGenerixInformationPageImpl::saveSettingsDialog(XinxProject::Project * project)
 {
 	static_cast<GenerixProject*>(project)->setWebModuleLocation(m_webModuleLocation->lineEdit()->text());
 	project->writeProperty("dataStreamLocation", m_dataStreamEdit->lineEdit()->text());
@@ -89,7 +89,7 @@ void NewGenerixInformationPageImpl::updateInformations()
 	setField("generix.adresse", moduleInternetAdresse);
 	setField("generix.dataStream", dataStreamLocation);
 
-	GceInterface * interface = GceInterfaceFactory::createGceInterface(webModuleLocation);
+	QScopedPointer<GceInterface> interface(GceInterfaceFactory::createGceInterface(webModuleLocation));
 	if (interface)
 	{
 		setField("generix.version", QVariant::fromValue(interface->version()));
@@ -111,6 +111,4 @@ void NewGenerixInformationPageImpl::updateInformations()
 	{
 		setField("generix.version", QVariant::fromValue(ConfigurationVersion()));
 	}
-
-	delete interface;
 }

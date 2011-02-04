@@ -24,8 +24,9 @@
 
 /* StyleSheetContainer */
 
-CSSFileEditor::CSSFileEditor(IFileTypePlugin * fileType, QWidget *parent) : TextFileEditor(new CSSTextEditor(), fileType, parent)
+CSSFileEditor::CSSFileEditor(QWidget *parent) : TextFileEditor(new CSSTextEditor(), parent)
 {
+
 }
 
 CSSFileEditor::~CSSFileEditor()
@@ -33,7 +34,7 @@ CSSFileEditor::~CSSFileEditor()
 
 }
 
-ContentView2::Parser * CSSFileEditor::createParser()
+ContentView3::Parser * CSSFileEditor::createParser()
 {
-	return new CSSFileContentParser();
+	return new Core::CascadingStyleSheet::Parser();
 }

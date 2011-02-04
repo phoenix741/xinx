@@ -1,21 +1,21 @@
-/* *********************************************************************** *
- * XINX                                                                    *
- * Copyright (C) 2007-2010 by Ulrich Van Den Hekke                         *
- * ulrich.vdh@shadoware.org                                                *
- *                                                                         *
- * This program is free software: you can redistribute it and/or modify    *
- * it under the terms of the GNU General Public License as published by    *
- * the Free Software Foundation, either version 3 of the License, or       *
- * (at your option) any later version.                                     *
- *                                                                         *
- * This program is distributed in the hope that it will be useful,         *
- * but WITHOUT ANY WARRANTY; without even the implied warranty of          *
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *
- * GNU General Public License for more details.                            *
- *                                                                         *
- * You should have received a copy of the GNU General Public License       *
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
- * *********************************************************************** */
+/*
+ XINX
+ Copyright (C) 2007-2011 by Ulrich Van Den Hekke
+ xinx@shadoware.org
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful.
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 // Xinx header
 #include "editors/xinxcodeedit_p.h"
@@ -23,8 +23,9 @@
 #include "editors/xinxlanguagefactory.h"
 #include "editors/xinxformatscheme.h"
 #include "snipets/snipetmanager.h"
-#include "contentview2/contentview2node.h"
-#include "contentview2/contentview2completionmodel.h"
+#include <contentview3/node.h>
+#include <codecompletion/model.h>
+#include <codecompletion/completer.h>
 
 // Qt header
 #include <QHBoxLayout>
@@ -53,8 +54,8 @@
  * Definition of the characters that can't be in a word.
  */
 #define EOW             "~!@$#%^&*()+{}|\"<>?,/;'[]\\="
-#define EOWREGEXP       "[^A-Za-z0-9_:\\-]"
-#define EOWREGEXPDOT    "[^A-Za-z0-9_:\\-\\.]"
+#define EOWREGEXP       "[^A-Za-z0-9_\\-]"
+#define EOWREGEXPDOT    "[^A-Za-z0-9_\\-\\.]"
 
 
 /* XinxCodeEdit */
@@ -523,26 +524,32 @@ void XinxCodeEdit::setMatchingText(QString text)
 }
 
 //! Set the completer \e completer to the editor
-void XinxCodeEdit::setCompleter(QCompleter * completer)
+void XinxCodeEdit::setCompleter(CodeCompletion::Completer * completer)
 {
 	if (completer != m_completer)
 	{
 		if (m_completer) m_completer->disconnect(this);
 		completer->setWidget(m_editor->editor());
-		completer->setCompletionMode(QCompleter::PopupCompletion);
-		completer->setCaseSensitivity(Qt::CaseInsensitive);
-		completer->setCompletionRole(Qt::DisplayRole);
 		connect(completer, SIGNAL(activated(const QModelIndex &)), this, SLOT(insertCompletion(const QModelIndex &)));
 		m_completer = completer;
 	}
 }
 
 //! Return the editor setted.
-QCompleter * XinxCodeEdit::completer()
+CodeCompletion::Completer * XinxCodeEdit::completer()
 {
 	return m_completer;
 }
 
+void XinxCodeEdit::setFile(ContentView3::FilePtrWeak file)
+{
+	_file = file;
+}
+
+ContentView3::FilePtrWeak XinxCodeEdit::file() const
+{
+	return _file;
+}
 
 //! Returns whether text can be pasted from the clipboard into the textedit.
 bool XinxCodeEdit::canPaste()
@@ -686,39 +693,11 @@ void XinxCodeEdit::insertText(const QString & text)
 /*! Insert the completion based on the QCompleter */
 void XinxCodeEdit::insertCompletion(const QModelIndex& index)
 {
-	QDocumentCursor tc = textCursor();
-	QCompleter * c = completer();
-
-	QString completion = c->completionModel()->data(index).toString(),
-	                     prefix     = c->completionPrefix();
-
-	textUnderCursor(tc, true);
-	tc = textCursor();
-
-	if (c->completionModel()->data(index, ContentView2::Node::NODE_TYPE).toString() == "Snipet")
+	if (m_completer)
 	{
-		insertSnipet(completion);
-	}
-	else
-	{
-		tc.insertText(completion);
-	}
-
-	setTextCursor(tc);
-}
-
-/*!
- * Insert the snipet \e snipet.
- */
-void XinxCodeEdit::insertSnipet(const QString & snipet)
-{
-	QString result;
-	if (SnipetManager::self()->callSnipet(snipet, &result, m_filename, qApp->activeWindow()))
-	{
-		insertText(result);
+		m_completer->complete(index);
 	}
 }
-
 
 /*! In the editor go to the line \e line. */
 void XinxCodeEdit::gotoLine(int line)
@@ -965,8 +944,6 @@ QString XinxCodeEdit::name() const
  */
 bool XinxCodeEdit::localKeyPressExecute(QKeyEvent * e)
 {
-	bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_Space);   // CTRL+Space
-
 	if ((e->key() == Qt::Key_Home) && (e->modifiers() == Qt::ShiftModifier || e->modifiers() == Qt::NoModifier))
 	{
 		key_home(e->modifiers() == Qt::ShiftModifier);
@@ -980,23 +957,8 @@ bool XinxCodeEdit::localKeyPressExecute(QKeyEvent * e)
 		e->accept();
 		return false;
 	}
-	else if (isShortcut)
-	{
-		key_snipet();
-		e->ignore();
-		return false;
-	}
 
 	return true;
-}
-
-void XinxCodeEdit::key_snipet()
-{
-	QString snipet = textUnderCursor(textCursor(), true), result;
-	if (SnipetManager::self()->callSnipet(snipet, &result, m_filename, qApp->activeWindow()))
-	{
-		insertText(result);
-	}
 }
 
 void XinxCodeEdit::key_home(bool select)
@@ -1018,12 +980,12 @@ void XinxCodeEdit::key_home(bool select)
 		setTextCursor(cursorStart);
 }
 
+// FIXME : Fix the completion : localKeyPressExecute, postKeyPressEvent, keyPressEvent, postKeyPressEvent
 bool XinxCodeEdit::keyPressEvent(QKeyEvent * e, QEditor * editor)
 {
 	Q_UNUSED(editor);
-	QCompleter * c = completer();
 
-	if (c && c->popup()->isVisible())
+	if (m_completer && m_completer->popup()->isVisible())
 	{
 		// The following keys are forwarded by the completer to the widget
 		switch (e->key())
@@ -1042,7 +1004,7 @@ bool XinxCodeEdit::keyPressEvent(QKeyEvent * e, QEditor * editor)
 
 	bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_E);     // CTRL+E
 	bool callParent = false;
-	if (!c || !isShortcut)
+	if (!m_completer || !isShortcut)
 		callParent = localKeyPressExecute(e);
 
 	if (callParent)
@@ -1057,51 +1019,37 @@ bool XinxCodeEdit::keyPressEvent(QKeyEvent * e, QEditor * editor)
 
 void XinxCodeEdit::postKeyPressEvent(QKeyEvent * e, QEditor * editor)
 {
-	QCompleter * c = completer();
-	bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_E);     // CTRL+E
-
 	if (e->isAccepted())
 		processKeyPress(e);
 
 	const bool ctrlOrShift = e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
-	if (!c || (ctrlOrShift && e->text().isEmpty()))
+	if (!m_completer || (ctrlOrShift && e->text().isEmpty()))
 	{
 		return ;
 	}
 
 	static QString eow(EOW);   // end of word
+	bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_E);     // CTRL+E
 	bool hasModifier = (e->modifiers() & (Qt::ControlModifier | Qt::AltModifier));    // && !ctrlOrShift;
 	QString completionPrefix = textUnderCursor(textCursor());
 
 	if (!isShortcut && (hasModifier || e->text().isEmpty() || completionPrefix.length() < 2 || eow.contains(e->text().right(1))))
 	{
-		c->popup()->hide();
+		m_completer->popup()->hide();
 		return ;
 	}
 
-	ContentView2::CompletionModel * model = dynamic_cast<ContentView2::CompletionModel*>(c->model());
-	if (completionPrefix != c->completionPrefix())
-	{
-		if (model)
-		{
-			model->setPrefix(completionPrefix);
-			model->select();
-		}
-		c->setCompletionPrefix(completionPrefix);
-		c->popup()->setCurrentIndex(c->completionModel()->index(0, 0));
-	}
-	else
-	{
-		if (model)
-			model->select();
-	}
+	m_completer->complete(true, completionPrefix);
+}
 
-	int x, y, h, w;
-	QPoint pos = m_editor->editor()->mapFromContents(textCursor().documentPosition());
-	m_editor->editor()->getPanelMargins(&x, &y, &h, &w);
-	QRect cr(pos.x() + x, pos.y() + document()->fontMetrics().height(), 1, 1);
-	cr.setWidth(c->popup()->sizeHintForColumn(0) + c->popup()->verticalScrollBar()->sizeHint().width());
-	c->complete(cr);   // popup it up!
+/*!
+ * Process to do when a user press a key.
+ * This method is called when the editor ask to add some text automatically. (ie:
+ * close a bracket, ...)
+ */
+bool XinxCodeEdit::processKeyPress(QKeyEvent *)
+{
+	return true;
 }
 
 void XinxCodeEdit::postMousePressEvent(QMouseEvent *event, QEditor * editor)
@@ -1151,16 +1099,6 @@ bool XinxCodeEdit::dropEvent(QDropEvent *e, QEditor *editor)
 		return true;
 	}
 	return false;
-}
-
-/*!
- * Process to do when a user press a key.
- * This method is called when the editor ask to add some text automatically. (ie:
- * close a bracket, ...)
- */
-bool XinxCodeEdit::processKeyPress(QKeyEvent *)
-{
-	return true;
 }
 
 /* XinxCodeEditAction */

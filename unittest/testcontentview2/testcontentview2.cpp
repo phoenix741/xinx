@@ -91,8 +91,8 @@ void TestContentView2::initTestCase()
 	XinxPluginsLoader::self()->loadPlugins();
 
 	// Init Project
-	XinxProject * project = new XinxProject("../doc/examples/imports1/imports.xinx_project");
-	XINXProjectManager::self()->setCurrentProject(project);
+	XinxProject::Parameters * project = new XinxProject::Parameters("../doc/examples/imports1/imports.xinx_project");
+	XinxProject::Manager::self()->setCurrentProject(project);
 
 	m_filename = QFileInfo("../doc/examples/imports1/imports.xsl").canonicalFilePath();
 }
@@ -109,16 +109,16 @@ void TestContentView2::testProject()
 	{
 		try
 		{
-			m_project = ContentView2::Project(ContentView2::Manager::self()->database(), XINXProjectManager::self()->project());
+			m_project = ContentView2::Project(XinxProject::Manager::self()->project());
 		}
 		catch (ContentView2::ProjectException e)
 		{
-			m_project.setProjectName(XINXProjectManager::self()->project()->projectName());
-			m_project.setProjectPath(XINXProjectManager::self()->project()->fileName());
-			m_project.create(ContentView2::Manager::self()->database());
+			m_project.setProjectName(XinxProject::Manager::self()->project()->projectName());
+			m_project.setProjectPath(XinxProject::Manager::self()->project()->fileName());
+			m_project.create();
 
 			m_project.setProjectName(tr("My test project"));
-			m_project.update(ContentView2::Manager::self()->database());
+			m_project.update();
 		}
 	}
 	catch (ContentView2::ProjectException e)
@@ -132,28 +132,28 @@ void TestContentView2::testFile()
 	if (! m_project.isValid())
 		QSKIP("No project defined", SkipAll);
 
-	ContentView2::FileContainer container(XINXProjectManager::self()->project(), m_filename, true);
+	ContentView2::FileContainer container(XinxProject::Manager::self()->project(), m_filename, true);
 	try
 	{
-		QVERIFY(!container.isValid(ContentView2::Manager::self()->database()));
+		QVERIFY(!container.isValid());
 
 		m_file.setProject(m_project);
 		m_file.setPath(m_filename);
 		m_file.setIsCached(true);
 		m_file.setType("XSL");
-		m_file.create(ContentView2::Manager::self()->database());
+		m_file.create();
 
-		QVERIFY(container.isValid(ContentView2::Manager::self()->database()));
+		QVERIFY(container.isValid());
 
-		m_file.destroyNodes(ContentView2::Manager::self()->database());
-		m_file.destroyImports(ContentView2::Manager::self()->database());
+		m_file.destroyNodes();
+		m_file.destroyImports();
 
 		m_file.setIsLoaded(false);
 		m_file.setDatmod(QFileInfo(m_filename).lastModified());
 
-		m_file.update(ContentView2::Manager::self()->database());
+		m_file.update();
 
-		container.reload(ContentView2::Manager::self()->database());
+		container.reload();
 	}
 	catch (ContentView2::FileException e)
 	{
@@ -184,10 +184,10 @@ void TestContentView2::testNode()
 		m_root.setData("UV09", ContentView2::Node::NODE_USER_VALUE + 8);
 		m_root.setData("UV10", ContentView2::Node::NODE_USER_VALUE + 9);
 		m_root.setData("UV11", ContentView2::Node::NODE_USER_VALUE + 10);
-		m_root.create(ContentView2::Manager::self()->database());
+		m_root.create();
 
 		m_file.setRoot(m_root);
-		m_file.update(ContentView2::Manager::self()->database());
+		m_file.update();
 	}
 	catch (ContentView2::NodeException e)
 	{
@@ -210,32 +210,29 @@ void TestContentView2::testParser()
 	if (! m_root.isValid())
 		QSKIP("No root defined", SkipAll);
 
-	QSqlDatabase db = ContentView2::Manager::self()->database();
-
 	XslContentView2Parser * parser = 0;
 	try
 	{
-		db.transaction();
+		ContentView2::Manager::self()->startTransaction();
 
 		parser = new XslContentView2Parser;
 		parser->setRootNode(m_root);
 		parser->openFilename(m_filename);
-		parser->setDatabase(db);
 		parser->load();
 		delete parser;
 		parser = 0;
 
-		db.commit();
+		ContentView2::Manager::self()->commitTransaction();
 
-		m_root.reload(db);
+		m_root.reload();
 
-		QList<int> childs = m_root.childs(db);
+		QList<int> childs = m_root.childs();
 		QCOMPARE(childs.size(), 3);
 
 		QStringList childsName;
 		foreach(int childId, childs)
 		{
-			ContentView2::Node childNode(db, childId);
+			ContentView2::Node childNode(childId);
 			childsName.append(childNode.data(ContentView2::Node::NODE_NAME).toString());
 		}
 
@@ -245,7 +242,7 @@ void TestContentView2::testParser()
 	catch (ContentView2::ParserException e)
 	{
 		QFAIL(qPrintable(e.getMessage()));
-		db.rollback();
+		ContentView2::Manager::self()->rollbackTransaction();
 	}
 	catch (ContentView2::NodeException e)
 	{
@@ -256,7 +253,7 @@ void TestContentView2::testParser()
 
 void TestContentView2::cleanupTestCase()
 {
-	XINXProjectManager::self()->deleteProject();
+	XinxProject::Manager::self()->deleteProject();
 }
 
 QTEST_MAIN(TestContentView2)

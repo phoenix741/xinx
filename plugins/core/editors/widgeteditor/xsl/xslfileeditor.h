@@ -40,20 +40,16 @@ class StyleSheetEditor : public TextFileEditor
 {
 	Q_OBJECT
 public:
-	StyleSheetEditor(IFileTypePlugin * fileType = 0, QWidget *parent = 0);
+	StyleSheetEditor(QWidget *parent = 0);
 	virtual ~StyleSheetEditor();
 
 	virtual bool autoIndent();
 
 	void launchStylesheetParsing(const QString & xmlfile);
 	static XmlPresentationDockWidget * xmlPresentationDockWidget();
-
-	XslCompletionNodeModel * completionModel() const;
 protected:
 	virtual void detectCodec(QIODevice & d);
 	virtual void initLayout();
-	virtual ContentView2::Parser * createParser();
-	virtual ContentView2::CompletionModel * createModel(QSqlDatabase db, QObject * parent = 0);
 private slots:
 	void cursorPositionChanged();
 	void tabIndexChange(int);
@@ -65,7 +61,6 @@ private:
 
 	XslTextEditor * m_sourceView;
 	QTabWidget * m_tabWidget;
-	XslCompletionNodeModel * m_completionModel;
 	QWebView * m_htmlView;
 };
 

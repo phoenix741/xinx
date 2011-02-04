@@ -21,7 +21,7 @@
 #define EMPTYPLUGIN_H_
 
 // Xinx header
-#include <plugins/plugininterfaces.h>
+#include <plugins/interfaces/plugin.h>
 
 class EmptyPlugin : public QObject, public IXinxPlugin
 {

@@ -23,12 +23,15 @@
 
 #include <qglobal.h>
 
-#if defined(QT_SHARED) || defined(QT_PLUGIN)
-# define D_IDEAL_EXPORT Q_GUI_EXPORT
+#ifdef Q_WS_WIN
+#   ifdef IDEALITY_BUILD
+#       define D_IDEAL_EXPORT Q_DECL_EXPORT
+#   else
+#       define D_IDEAL_EXPORT Q_DECL_IMPORT
+#   endif
 #else
-# define D_IDEAL_EXPORT
+#   define D_IDEAL_EXPORT
 #endif
-
 
 #endif // DIDEALITY_H
 

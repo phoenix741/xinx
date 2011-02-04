@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>NewFileWizard</class>
+ <widget class="QWizard" name="NewFileWizard">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>569</width>
+    <height>420</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Create a new File</string>
+  </property>
+  <widget class="QWizardPage" name="filenamePage">
+   <property name="title">
+    <string>Choose the name</string>
+   </property>
+   <property name="subTitle">
+    <string>This wizard will help you to create a new file. In this page you are invited to choose a name for the file.</string>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>What is the name of the file you want to create ? The file will be used to determine the project and the type of the file.</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="_directory_base_label">
+      <property name="text">
+       <string>The file name must be in a sub-directory of :</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="_directory_base">
+      <property name="text">
+       <string notr="true">/home/foo/myproject/</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="DirectoryEditWidget" name="_new_file_name" native="true"/>
+    </item>
+    <item>
+     <widget class="FileTypeSelector" name="_file_type_selector" native="true"/>
+    </item>
+    <item>
+     <spacer name="verticalSpacer">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>201</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWizardPage" name="templatePage">
+   <property name="title">
+    <string>Choose a template</string>
+   </property>
+   <property name="subTitle">
+    <string>In this page you can select the base template that you want to use to init the new file. You can select a licence to put in the head of your file too.</string>
+   </property>
+   <layout class="QFormLayout" name="formLayout">
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>Please select a &amp;licence file to put in the head of the file :</string>
+      </property>
+      <property name="buddy">
+       <cstring>comboBox</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QComboBox" name="comboBox"/>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_3">
+      <property name="text">
+       <string>Please select the &amp;template to use to create the file : </string>
+      </property>
+      <property name="buddy">
+       <cstring>comboBox_2</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QComboBox" name="comboBox_2"/>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>DirectoryEditWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">directoryedit.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>FileTypeSelector</class>
+   <extends>QWidget</extends>
+   <header>editors/filetypeselector.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

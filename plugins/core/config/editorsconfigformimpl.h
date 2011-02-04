@@ -23,7 +23,7 @@
 
 // Xinx header
 #include "ui_editorsconfigform.h"
-#include <plugins/plugininterfaces.h>
+#include <plugins/interfaces/gui.h>
 
 class EditorsConfigFormImpl : public QWidget, public Ui::EditorsConfigForm, public IXinxPluginConfigurationPage
 {

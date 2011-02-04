@@ -47,9 +47,10 @@
 
 #include <QLayout>
 #include <QRect>
-#include <QWidgetItem>
 
-class BorderLayout : public QLayout
+#include <components-config.h>
+
+class COMPONENTSEXPORT BorderLayout : public QLayout
 {
 	Q_OBJECT
 public:
