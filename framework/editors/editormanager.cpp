@@ -151,6 +151,33 @@ void PrivateEditorManager::openRecentFile()
 	}
 }
 
+void PrivateEditorManager::closeAllExcpet()
+{
+	int item = getClickedTab();
+	if (item == -1) item = tabWidget()->currentIndex();
+
+	tabWidget()->setUpdatesEnabled(false);
+
+	QList<AbstractEditor*> editors;
+	for (int i = tabWidget()->count() - 1; i >= 0; i--)
+	{
+		if (i != item)
+		{
+			editors << _manager->editor(i);
+		}
+	}
+
+	if(editorMayBeSave(editors))
+	{
+		foreach(AbstractEditor * e, editors)
+		{
+			_manager->closeFile(e, false); // Confirmation already made
+		}
+	}
+
+	tabWidget()->setUpdatesEnabled(true);
+}
+
 void PrivateEditorManager::createOpenSubMenu()
 {
 	QAction * openAction = new QAction(QIcon(":/images/fileopen.png"), tr("&Open ..."), this);
@@ -243,6 +270,11 @@ void PrivateEditorManager::createActions()
 	_close_all_action->setToolTip(tr("Close All document"));
 	_close_all_action->setStatusTip(tr("Close All document"));
 	connect(_close_all_action, SIGNAL(triggered()), _manager, SLOT(closeAllFile()));
+
+	_close_all_except_action = new QAction(tr("C&lose All except current"), this);
+	_close_all_except_action->setToolTip (tr("Close all document except the current"));
+	_close_all_except_action->setStatusTip (tr("Close all document except the current"));
+	connect(_close_all_except_action, SIGNAL(triggered()), this, SLOT(closeAllExcpet()));
 
 	_copy_filename_action = new QAction(tr("&Copy filename to Clipboard"), this);
 	connect(_copy_filename_action, SIGNAL(triggered()), _manager, SLOT(copyFileNameToClipboard()));
@@ -427,6 +459,7 @@ bool PrivateEditorManager::eventFilter(QObject* obj, QEvent* event)
 				menu->addSeparator();
 				menu->addAction(_close_action);
 				menu->addAction(_close_all_action);
+				menu->addAction (_close_all_except_action);
 				menu->addSeparator();
 				menu->addAction(_copy_filename_action);
 				menu->addAction(_copy_path_action);

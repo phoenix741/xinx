@@ -108,6 +108,7 @@ public:
 	QAction * _print_action;
 	QAction * _close_action;
 	QAction * _close_all_action;
+	QAction * _close_all_except_action;
 	QAction * _copy_filename_action;
 	QAction * _copy_path_action;
 
@@ -116,6 +117,7 @@ public:
 public slots:
 	void newFile();
 	void openRecentFile();
+	void closeAllExcpet();
 	void updateRecentFiles();
 	void tabCloseRequested(int index);
 	void slotModifiedChange();
