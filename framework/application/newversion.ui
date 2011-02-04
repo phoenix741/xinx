@@ -53,6 +53,50 @@
     </item>
    </layout>
   </widget>
+  <widget class="QWizardPage" name="licencePage">
+   <property name="title">
+    <string>Licence Page</string>
+   </property>
+   <property name="subTitle">
+    <string>In this page you can see the licence of XINX. XINX is a free software and you can use it freely but you should read it the licence file to learn more about your right.</string>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout_3">
+    <item>
+     <widget class="QTextEdit" name="_licenceWidget"/>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="_acceptRadioButton">
+        <property name="text">
+         <string>Yes, i read it and accept the licence</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="_refuseRadioButton">
+        <property name="text">
+         <string>No, i don't accept the licence</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
   <widget class="QWizardPage" name="applicationPage">
    <property name="title">
     <string>Global Application Settings</string>
@@ -306,7 +350,7 @@
   <customwidget>
    <class>DirectoryEditWidget</class>
    <extends>QWidget</extends>
-   <header>directoryedit.h</header>
+   <header location="global">directoryedit.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

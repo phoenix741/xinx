@@ -27,6 +27,8 @@
 
 // Qt header
 #include <QTextCodec>
+#include <QFile>
+#include <QTextStream>
 
 /* PrivateNewVersionWizardImpl */
 
@@ -57,6 +59,15 @@ PrivateNewVersionWizardImpl::~PrivateNewVersionWizardImpl()
 
 void PrivateNewVersionWizardImpl::init()
 {
+	// Licence
+	QFile licenceFile(":/document/licence.html");
+	if (licenceFile.open(QIODevice::ReadOnly))
+	{
+		QTextStream textStream(&licenceFile);
+
+		_ui->_licenceWidget->setHtml(textStream.readAll());
+	}
+
 	// Font encodings
 	QList<QByteArray> encodings = QTextCodec::availableCodecs();
 	qSort(encodings);
@@ -67,16 +78,19 @@ void PrivateNewVersionWizardImpl::init()
 }
 
 
+
 /* NewVersionWizardImpl */
 
 NewVersionWizardImpl::NewVersionWizardImpl()
 {
 	d = new PrivateNewVersionWizardImpl(this);
+	connect(this, SIGNAL(currentIdChanged(int)), this, SLOT(slotCurrentIdChanged(int)));
 }
 
 NewVersionWizardImpl::NewVersionWizardImpl(QWidget * parent) : QWizard(parent)
 {
 	d = new PrivateNewVersionWizardImpl(this);
+	connect(this, SIGNAL(currentIdChanged(int)), this, SLOT(slotCurrentIdChanged(int)));
 }
 
 NewVersionWizardImpl::~NewVersionWizardImpl()
@@ -196,6 +210,20 @@ void NewVersionWizardImpl::on_m_listSlider_valueChanged(int value)
 	{
 		d->_ui->m_listEffect->item(i)->setCheckState(i < value ? Qt::Checked : Qt::Unchecked);
 	}
+}
+
+void NewVersionWizardImpl::slotCurrentIdChanged ( int id )
+{
+	if (page(id) == d->_ui->licencePage)
+	{
+		d->_ui->_refuseRadioButton->setChecked(true);
+		button (QWizard::NextButton)->setEnabled (false);
+	}
+}
+
+void NewVersionWizardImpl::on__acceptRadioButton_toggled(bool value)
+{
+	button (QWizard::NextButton)->setEnabled (value);
 }
 
 void NewVersionWizardImpl::accept()

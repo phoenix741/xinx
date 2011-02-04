@@ -42,6 +42,8 @@ public slots:
 	virtual void accept();
 private slots:
 	void on_m_listSlider_valueChanged(int value);
+	void on__acceptRadioButton_toggled(bool value);
+	void slotCurrentIdChanged ( int id );
 private:
 	PrivateNewVersionWizardImpl * d;
 	friend class PrivateNewVersionWizardImpl;

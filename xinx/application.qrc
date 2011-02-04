@@ -1,4 +1,7 @@
 <RCC>
+	<qresource prefix="/document" >
+		<file alias="licence.html">../licence.html</file>
+	</qresource>
     <qresource prefix="/" >
         <file alias="translations/xinxcomponents_fr.qm" >../components/translations/xinxcomponents_fr.qm</file>
         <file alias="translations/libxinx_fr.qm" >../framework/translations/libxinx_fr.qm</file>

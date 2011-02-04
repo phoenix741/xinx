@@ -21,6 +21,8 @@
 #include "aboutdialogimpl.h"
 #include <core/exceptions.h>
 #include <core/version.h>
+#include <QFile>
+#include <QTextStream>
 
 /* AboutDialogImpl */
 
@@ -69,6 +71,14 @@ AboutDialogImpl::AboutDialogImpl(QWidget * parent, Qt::WFlags f)
 	                      "<br/>"
 	                      "And all people who help me in some ways and i have forgotten to mention"
 	                     );
+
+	QFile licenceFile(":/document/licence.html");
+	if (licenceFile.open(QIODevice::ReadOnly))
+	{
+		QTextStream textStream(&licenceFile);
+
+		_licence->setHtml(textStream.readAll());
+	}
 }
 
 
