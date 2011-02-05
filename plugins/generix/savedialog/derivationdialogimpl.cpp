@@ -78,21 +78,20 @@ void DerivationDialogImpl::load(const QString & filename, const QString & filter
 	noprefix->setSelected(true);
 	noprefix->setData(Qt::UserRole, true);
 
-	if (! gnxProject->defaultPrefix().isEmpty())
+	QStringList prefixes = gnxProject->prefixes();
+	foreach(const QString & prefix, prefixes)
 	{
-		QStringList prefixes = gnxProject->prefixes();
-		foreach(const QString & prefix, prefixes)
+		QListWidgetItem * item = new QListWidgetItem(prefix, m_prefixList);
+		if (! gnxProject->defaultPrefix().isEmpty() && gnxProject->defaultPrefix() == prefix)
 		{
-			QListWidgetItem * item = new QListWidgetItem(prefix, m_prefixList);
-			if (gnxProject->defaultPrefix() == prefix)
-			{
-				item->setData(Qt::UserRole, false);
-				prefixIndex = index;
-			}
-			index++;
+			item->setData(Qt::UserRole, false);
+			prefixIndex = index;
 		}
+		index++;
 	}
 	m_prefixList->setCurrentRow(prefixIndex);
+	m_prefixList->setVisible(!prefixes.isEmpty());
+	_prefixLabel->setVisible(!prefixes.isEmpty());
 
 	changePath();
 }
