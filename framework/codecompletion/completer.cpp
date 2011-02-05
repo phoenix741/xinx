@@ -134,6 +134,9 @@ void Completer::resizeColumns(int oldSize, int newSize)
 
 void Completer::complete(bool automaticCall, const QString & prefix)
 {
+	QTime _complete_timer;
+	_complete_timer.start();
+
 	if (d->_model)
 	{
 		if (! prefix.isEmpty ())
@@ -169,6 +172,8 @@ void Completer::complete(bool automaticCall, const QString & prefix)
 		setCurrentRow (index.row ());
 		popup()->setCurrentIndex (index);
 	}
+
+	qDebug() << "Complete in " << _complete_timer.elapsed() << " ms";
 }
 
 void Completer::complete(int row)

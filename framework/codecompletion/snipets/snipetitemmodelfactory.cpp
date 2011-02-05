@@ -22,16 +22,16 @@
 #include <snipets/snipetmanager.h>
 #include <codecompletion/model.h>
 #include "snipetitem.h"
+#include "snipetcontexttype.h"
 
 // Qt header
 #include <QSqlQuery>
 #include <QSqlError>
-#include "snipetcontexttype.h"
-
+#include <QDebug>
 
 namespace CodeCompletion
 {
-	
+
 /* SnipetItemModelFactory */
 
 SnipetItemModelFactory::SnipetItemModelFactory()
@@ -56,7 +56,7 @@ void SnipetItemModelFactory::generate()
 
 		bool result = selectQuery.exec();
 		Q_ASSERT(result);
-		
+
 		if (! result)
 		{
 			qWarning(qPrintable(selectQuery.lastError().text()));
@@ -69,7 +69,7 @@ void SnipetItemModelFactory::generate()
 			const QString shortcut = selectQuery.value(2).toString();
 			const QString name = selectQuery.value(3).toString();
 
-			if (shortcut.startsWith(context().prefix()), Qt::CaseInsensitive)
+			if (shortcut.startsWith(context().prefix(), Qt::CaseInsensitive))
 			{
 				SnipetItem * item = new SnipetItem(shortcut, name);
 				if (icon.isEmpty())

@@ -90,7 +90,6 @@ QList< QSharedPointer<BaliseNode> > BaliseNode::balises() const
 
 void BaliseNode::addBalise(QSharedPointer<BaliseNode> node)
 {
-	qDebug() << "Balise " << this->name() << " add node " << node->name();
 	_balises.insert(node->name(), node);
 	addChild(node);
 

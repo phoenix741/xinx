@@ -175,7 +175,8 @@ void Cache::addFileToCache(ContentView3::Parser* parser, bool force, ContentView
 			information._parser_name = parser->name ();
 			d->_files.insert(file->filename(), information);
 
-			if (QFileInfo(file->filename()).exists() && ! d->_watcher->files().contains(file->filename()))
+			QFileInfo fileInformation(file->filename());
+			if (fileInformation.exists() && !file->filename().startsWith("datas:") && ! d->_watcher->files().contains(file->filename()))
 				d->_watcher->addPath(file->filename());
 		}
 	}
