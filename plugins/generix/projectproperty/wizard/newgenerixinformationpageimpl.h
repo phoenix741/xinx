@@ -34,15 +34,13 @@ public:
 	NewGenerixInformationPageImpl();
 	virtual ~NewGenerixInformationPageImpl();
 
-	virtual bool isComplete() const;
-
 	virtual QString pagePluginId() const;
 	virtual bool pageIsVisible() const;
 	virtual bool saveSettingsDialog(XinxProject::Project * project);
 
 	virtual void initializePage();
 private slots:
-	void updateInformations();
+	void updateInformations(const QString & path);
 };
 
 #endif // NEWGENERIXINFORMATIONPAGEIMPL_H

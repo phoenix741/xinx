@@ -34,11 +34,9 @@ NewGenerixInformationPageImpl::NewGenerixInformationPageImpl()
 	labelDataStream->setBuddy(m_dataStreamEdit->lineEdit());
 
 	qRegisterMetaType<ConfigurationVersion>("ConfigurationVersion");
-	registerField("generix.webmodule*", m_webModuleLocation->lineEdit());
 	registerField("generix.version", m_configurationVersionLabel, "version");
 	registerField("generix.adresse", m_urlLocationEdit->lineEdit());
 	registerField("generix.dataStream", m_dataStreamEdit->lineEdit());
-	connect(m_webModuleLocation->lineEdit(), SIGNAL(textChanged(QString)), this, SLOT(updateInformations()));
 }
 
 NewGenerixInformationPageImpl::~NewGenerixInformationPageImpl()
@@ -50,13 +48,6 @@ QString NewGenerixInformationPageImpl::pagePluginId() const
 	return "GenerixInformation";
 }
 
-bool NewGenerixInformationPageImpl::isComplete() const
-{
-	if (! QWizardPage::isComplete()) return false;
-	if (! QDir(QDir::fromNativeSeparators(m_webModuleLocation->lineEdit()->text())).exists()) return false;
-	return true;
-}
-
 bool NewGenerixInformationPageImpl::pageIsVisible() const
 {
 	return true;
@@ -64,7 +55,6 @@ bool NewGenerixInformationPageImpl::pageIsVisible() const
 
 bool NewGenerixInformationPageImpl::saveSettingsDialog(XinxProject::Project * project)
 {
-	static_cast<GenerixProject*>(project)->setWebModuleLocation(m_webModuleLocation->lineEdit()->text());
 	project->writeProperty("dataStreamLocation", m_dataStreamEdit->lineEdit()->text());
 	project->writeProperty("moduleInternetAdresse", m_urlLocationEdit->lineEdit()->text());
 
@@ -74,12 +64,12 @@ bool NewGenerixInformationPageImpl::saveSettingsDialog(XinxProject::Project * pr
 void NewGenerixInformationPageImpl::initializePage()
 {
 	m_messageLabel->setVisible(false);
-	m_webModuleLocation->lineEdit()->setText(field("project.path").toString());
+	updateInformations(field("project.path").toString());
 }
 
-void NewGenerixInformationPageImpl::updateInformations()
+void NewGenerixInformationPageImpl::updateInformations(const QString & path)
 {
-	const QString webModuleLocation     = m_webModuleLocation->lineEdit()->text();
+	const QString webModuleLocation     = path;
 	const QString dataStreamLocation    = QDir(QDir(webModuleLocation).absoluteFilePath("../../../log")).canonicalPath();
 	QString moduleInternetAdresse = QDir(QDir(webModuleLocation).absoluteFilePath("presentation/common")).canonicalPath();
 	if (moduleInternetAdresse.isEmpty() || !QDir(moduleInternetAdresse).exists())

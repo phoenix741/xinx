@@ -31,7 +31,6 @@ GenerixProjectPageFormImpl::GenerixProjectPageFormImpl(QWidget * parent, Qt::Win
 	setupUi(this);
 
 	qRegisterMetaType<ConfigurationVersion>("ConfigurationVersion");
-	connect(m_webModuleLocation->lineEdit(), SIGNAL(textChanged(QString)), this, SLOT(updateInformations()));
 }
 
 GenerixProjectPageFormImpl::~GenerixProjectPageFormImpl()
@@ -55,15 +54,13 @@ QString GenerixProjectPageFormImpl::name()
 
 bool GenerixProjectPageFormImpl::loadSettingsDialog()
 {
-	m_webModuleLocation->lineEdit()->setText(static_cast<GenerixProject*>(m_project)->webModuleLocation());
+	updateInformations();
 
 	return true;
 }
 
 bool GenerixProjectPageFormImpl::saveSettingsDialog()
 {
-	static_cast<GenerixProject*>(m_project)->setWebModuleLocation(m_webModuleLocation->lineEdit()->text());
-
 	return true;
 }
 
@@ -79,7 +76,6 @@ QWidget * GenerixProjectPageFormImpl::settingsDialog()
 
 bool GenerixProjectPageFormImpl::isSettingsValid()
 {
-	if (! QDir(QDir::fromNativeSeparators(m_webModuleLocation->lineEdit()->text())).exists()) return false;
 	return true;
 }
 
@@ -91,10 +87,10 @@ bool GenerixProjectPageFormImpl::isVisible()
 
 void GenerixProjectPageFormImpl::updateInformations()
 {
-	GceInterface * interface = ConfigurationManager::self()->getInterfaceOfDirectory(m_webModuleLocation->lineEdit()->text());
+	GceInterface * interface = ConfigurationManager::self()->getInterfaceOfDirectory(m_project->projectPath());
 	if (interface)
 	{
-		m_propertyFileLabel->setText(QDir(m_webModuleLocation->lineEdit()->text()).relativeFilePath(interface->rootFilename()));
+		m_propertyFileLabel->setText(QDir(m_project->projectPath()).relativeFilePath(interface->rootFilename()));
 		m_configurationVersionLabel->setVersion(interface->version());
 		m_dictionaryCount->setText(QString("%1 dictionaries").arg(interface->dictionnaries().count()));
 		m_businessViewLabel->setText(QString("%1 businessviews").arg(interface->businessViews().count()));

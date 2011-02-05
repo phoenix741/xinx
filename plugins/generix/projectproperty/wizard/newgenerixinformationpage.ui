@@ -55,42 +55,16 @@
       <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
      </property>
      <item row="0" column="0">
-      <widget class="QLabel" name="label">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>&amp;Webmodule location :</string>
-       </property>
-       <property name="buddy">
-        <cstring>m_webModuleLocation</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="DirectoryEditWidget" name="m_webModuleLocation" native="true">
-       <property name="focusPolicy">
-        <enum>Qt::StrongFocus</enum>
-       </property>
-       <property name="directory" stdset="0">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
       <widget class="QLabel" name="label_8">
        <property name="text">
         <string>Version :</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
+     <item row="0" column="1">
       <widget class="ConfigurationVersionLabel" name="m_configurationVersionLabel"/>
      </item>
-     <item row="2" column="0">
+     <item row="1" column="0">
       <widget class="QLabel" name="labelDataStream">
        <property name="text">
         <string>Location of the &amp;data stream :</string>
@@ -100,7 +74,14 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="0">
+     <item row="1" column="1">
+      <widget class="DirectoryEditWidget" name="m_dataStreamEdit" native="true">
+       <property name="focusPolicy">
+        <enum>Qt::StrongFocus</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
       <widget class="QLabel" name="label_4">
        <property name="text">
         <string>Location of the &amp;running page :</string>
@@ -111,13 +92,6 @@
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="DirectoryEditWidget" name="m_dataStreamEdit" native="true">
-       <property name="focusPolicy">
-        <enum>Qt::StrongFocus</enum>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
       <widget class="DirectoryEditWidget" name="m_urlLocationEdit" native="true">
        <property name="focusPolicy">
         <enum>Qt::StrongFocus</enum>
