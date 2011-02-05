@@ -24,6 +24,7 @@
 // Xinx header
 #include <core/lib-config.h>
 #include <core/xinxcore.h>
+#include <core/xinxsingleton.h>
 
 // Qt header
 #include <QStringList>
@@ -63,7 +64,7 @@ private:
 #define EXCEPT_ELSE(assertion, Exception, method, ...) \
 	(assertion ? qt_noop() : throw Exception(#assertion, __FILE__,__LINE__, method, __VA_ARGS__));
 
-class LIBEXPORT ExceptionManager : public QObject
+class LIBEXPORT ExceptionManager : public XinxLibSingleton<ExceptionManager>
 {
 	Q_OBJECT
 public:
@@ -71,10 +72,7 @@ public:
 
 	QStringList stackTrace() const;
 
-	static ExceptionManager * self();
-
 	static void installExceptionHandler();
-
 public slots:
 	void notifyError(QString error, QtMsgType t = QtWarningMsg, bool showMessage = true);
 signals:
@@ -82,13 +80,12 @@ signals:
 private:
 	ExceptionManager();
 
-	static ExceptionManager * s_self;
-
 	QHash<unsigned long,QStringList> m_stackTrace;
 	QStringList m_exceptionFilter;
+	friend class XinxLibSingleton<ExceptionManager>;
 };
 
-class LIBEXPORT ErrorManager : public QObject
+class LIBEXPORT ErrorManager : public XinxLibSingleton<ErrorManager>
 {
 	Q_OBJECT
 public:
@@ -107,8 +104,6 @@ public:
 
 	virtual ~ErrorManager();
 
-	static ErrorManager * self();
-
 	const QMap<QString, QList<Error> > & errors() const;
 public slots:
 	void addContextTranslation(const QString & context, const QString & translation);
@@ -122,11 +117,10 @@ signals:
 private:
 	ErrorManager();
 
-	static ErrorManager * s_self;
-
 	QHash<QString,QString> m_contextTranslation;
 	QMap<QString, QList<Error> > m_errors;
 	QTimer m_timer;
+	friend class XinxLibSingleton<ErrorManager>;
 };
 
 #endif /* __EXCEPTIONS_H__ */

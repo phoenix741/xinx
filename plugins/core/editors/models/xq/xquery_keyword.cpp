@@ -21,13 +21,10 @@
 #include "xquery_keyword.h"
 #include <core/xinxcore.h>
 
-/* Static */
-XQueryKeyword * XQueryKeyword::s_self = 0;
-
 
 /* XQueryKeyword */
 
-XQueryKeyword::XQueryKeyword() : QObject()
+XQueryKeyword::XQueryKeyword()
 {
 	/* Accessors */
 	m_keywords.insert("node-name",    "accessors");
@@ -138,18 +135,7 @@ XQueryKeyword::XQueryKeyword() : QObject()
 
 XQueryKeyword::~XQueryKeyword()
 {
-	if (this == s_self)
-		s_self = 0;
-}
 
-XQueryKeyword * XQueryKeyword::self()
-{
-	if (s_self == 0)
-	{
-		s_self = new XQueryKeyword();
-		XINXStaticDeleter::self()->addObject(s_self);
-	}
-	return s_self;
 }
 
 const QHash<QString,QString> & XQueryKeyword::keywords() const

@@ -29,7 +29,7 @@
 #include "configuration/gceinterface.h"
 #include <project/xinxprojectproject.h>
 
-class ConfigurationManager : public QObject
+class ConfigurationManager : public XinxSingleton<ConfigurationManager>
 {
 	Q_OBJECT
 public:
@@ -41,12 +41,9 @@ public:
 	void loadDictionary(XinxProject::Project * project);
 
 	void cleanCache();
-
-	static ConfigurationManager * self();
 private slots:
 	void clearCache(const QString & filename);
 private:
-
 	ConfigurationManager();
 
 	QFileSystemWatcher * m_watcher;
@@ -55,7 +52,7 @@ private:
 
 	QHash<QString,GceInterface*> m_interface;
 
-	static ConfigurationManager * s_self;
+	friend class XinxSingleton<ConfigurationManager>;
 };
 
 #endif // CONFIGURATIONMANAGER_H

@@ -25,8 +25,6 @@
 // Qt header
 #include <QDir>
 
-SelfWebPluginSettings * SelfWebPluginSettings::s_self = 0;
-
 SelfWebPluginSettings::SelfWebPluginSettings() : WebPluginSettings()
 {
 	load();
@@ -34,20 +32,7 @@ SelfWebPluginSettings::SelfWebPluginSettings() : WebPluginSettings()
 
 SelfWebPluginSettings::~SelfWebPluginSettings()
 {
-	if (s_self == this)
-	{
-		s_self = 0;
-	}
-}
 
-SelfWebPluginSettings * SelfWebPluginSettings::self()
-{
-	if (! s_self)
-	{
-		s_self = new SelfWebPluginSettings();
-		XINXStaticDeleter::self()->add(s_self);
-	}
-	return s_self;
 }
 
 void SelfWebPluginSettings::save()

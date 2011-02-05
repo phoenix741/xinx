@@ -22,10 +22,6 @@
 #include "core/exceptions.h"
 #include "core/xinxcore.h"
 
-/* Static member */
-
-XinxThreadManager * XinxThreadManager::s_self = NULL;
-
 /* XinxThreadManager */
 
 XinxThreadManager::XinxThreadManager() : m_threadCount(0), m_threadClassCount(0)
@@ -35,8 +31,7 @@ XinxThreadManager::XinxThreadManager() : m_threadCount(0), m_threadClassCount(0)
 
 XinxThreadManager::~XinxThreadManager()
 {
-	if (this == s_self)
-		s_self = NULL;
+
 }
 
 int XinxThreadManager::getThreadCount() const
@@ -47,17 +42,6 @@ int XinxThreadManager::getThreadCount() const
 int XinxThreadManager::getThreadClassCount() const
 {
 	return m_threadClassCount;
-}
-
-XinxThreadManager * XinxThreadManager::self()
-{
-	if (! s_self)
-	{
-		s_self = new XinxThreadManager();
-		XINXStaticDeleter::self()->add(s_self);
-	}
-
-	return s_self;
 }
 
 /* XinxThread */

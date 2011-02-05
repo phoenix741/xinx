@@ -37,26 +37,20 @@ ToolsNotDefinedException::ToolsNotDefinedException(const QString & tool) : XinxE
 
 }
 
-/* Static member */
-
-XINXConfig * XINXConfig::s_self = 0;
-
 /* XINXConfig */
 
-XINXConfig::XINXConfig(const XINXConfig & origine) : QObject(), AppSettings(origine)
+XINXConfig::XINXConfig(const XINXConfig & origine) : AppSettings(origine)
 {
 
 }
 
-XINXConfig::XINXConfig() : QObject(), AppSettings()
+XINXConfig::XINXConfig() : AppSettings()
 {
 
 }
 
 XINXConfig::~XINXConfig()
 {
-	if (this == s_self)
-		s_self = NULL;
 
 }
 
@@ -155,16 +149,6 @@ void XINXConfig::addDefaultTool(const QString & tool, const QString & defaultVal
 		AppSettingsSettings settings("Shadoware.Org", "XINX");
 		setSettingsHash_QString(&settings, "Tools", config().tools);
 	}
-}
-
-XINXConfig * XINXConfig::self()
-{
-	if (s_self == 0)
-	{
-		s_self = new XINXConfig();
-		XINXStaticDeleter::self()->addObject(s_self);
-	}
-	return s_self;
 }
 
 AppSettings::struct_globals XINXConfig::getDefaultGlobals()

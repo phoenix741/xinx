@@ -45,7 +45,7 @@ public:
  * Represente the configuration of XINX. The configuration of unique for a
  * unique process.
  */
-class LIBEXPORT XINXConfig : public QObject, public AppSettings
+class LIBEXPORT XINXConfig : public XinxLibSingleton<XINXConfig>, public AppSettings
 {
 	Q_OBJECT
 public:
@@ -55,9 +55,6 @@ public:
 	XINXConfig();
 	/*! Destroy the configuration object */
 	virtual ~XINXConfig();
-
-	/*! Self create a XINX configuration file if necessary */
-	static XINXConfig * self();
 
 	//! Get a created format scheme
 	XinxFormatScheme * scheme(const QString & highlighter);
@@ -108,7 +105,6 @@ protected:
 	virtual struct_globals getDefaultGlobals();
 	virtual struct_editor getDefaultEditor();
 private:
-	static XINXConfig * s_self;
 	QPointer<XinxLanguageFactory> m_languages;
 	QHash<QString,XinxFormatScheme*> m_formatScheme;
 };

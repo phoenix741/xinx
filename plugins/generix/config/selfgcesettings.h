@@ -23,22 +23,20 @@
 
 // Xinx header
 #include "gcesettings.h"
+#include <core/xinxsingleton.h>
 
-class SelfGceSettings : public QObject, public GceSettings
+class SelfGceSettings : public XinxSingleton<SelfGceSettings>, public GceSettings
 {
 	Q_OBJECT
 public:
 	virtual ~SelfGceSettings();
-
-	static SelfGceSettings * self();
 
 	virtual void save();
 signals:
 	void changed();
 private:
 	SelfGceSettings();
-
-	static SelfGceSettings * s_self;
+	friend class XinxSingleton<SelfGceSettings>;
 };
 
 #endif /* SELFGENERIXSETTINGS_H_ */

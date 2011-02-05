@@ -25,10 +25,6 @@
 #include "projectproperty/generixproject.h"
 #include "docks/dictionary/dictionary_parser.h"
 
-/* Global */
-
-ConfigurationManager * ConfigurationManager::s_self = 0;
-
 /* ConfigurationManager */
 
 ConfigurationManager::ConfigurationManager()
@@ -39,24 +35,10 @@ ConfigurationManager::ConfigurationManager()
 
 ConfigurationManager::~ConfigurationManager()
 {
-	if (s_self == this)
-	{
-		s_self = 0;
-	}
 	foreach(GceInterface * interface, m_interface.values())
 	{
 		delete interface;
 	}
-}
-
-ConfigurationManager * ConfigurationManager::self()
-{
-	if (! s_self)
-	{
-		s_self = new ConfigurationManager();
-		XINXStaticDeleter::self()->add(s_self);
-	}
-	return s_self;
 }
 
 void ConfigurationManager::cleanCache()

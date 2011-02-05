@@ -41,10 +41,6 @@
 #include <QDebug>
 #include <QDir>
 
-/* Static member */
-
-SnipetManager * SnipetManager::s_self = 0;
-
 /* SnipetManager */
 
 SnipetManager::SnipetManager()
@@ -56,18 +52,6 @@ SnipetManager::~SnipetManager()
 {
 	m_handler.clear();
 	closeDatabase();
-	if (s_self == this)
-		s_self = NULL;
-}
-
-SnipetManager * SnipetManager::self()
-{
-	if (s_self == 0)
-	{
-		s_self = new SnipetManager();
-		XINXStaticDeleter::self()->addObject(s_self);
-	}
-	return s_self;
 }
 
 QSqlDatabase SnipetManager::database()

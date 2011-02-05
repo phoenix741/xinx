@@ -24,6 +24,7 @@
 // Xinx header
 #include <core/lib-config.h>
 #include <core/xinxcore.h>
+#include <core/xinxsingleton.h>
 
 // Qt header
 #include <QThread>
@@ -37,7 +38,7 @@ class XinxThread;
  *
  * To be used, each created thread must be a XinxThread (derivated from a QThread).
  */
-class LIBEXPORT XinxThreadManager : public QObject
+class LIBEXPORT XinxThreadManager : public XinxLibSingleton<XinxThreadManager>
 {
 	Q_OBJECT
 public:
@@ -48,21 +49,17 @@ public:
 	int getThreadCount() const;
 	/// Get the number of thread class object created
 	int getThreadClassCount() const;
-
-	/// Get the static member and create it if needed.
-	static XinxThreadManager * self();
 signals:
 	/// Signal emited when the number of running thread, or object change.
 	void threadCountChange();
 private:
 	XinxThreadManager();
 
-	static XinxThreadManager * s_self;
-
 	int m_threadCount, m_threadClassCount;
 	QMutex m_mutex;
 
 	friend class XinxThread;
+	friend class XinxLibSingleton<XinxThreadManager>;
 };
 
 /*!

@@ -22,6 +22,7 @@
 
 // Qt header
 #include <QObject>
+#include <QMutexLocker>
 
 // Xinx header
 #include "xinxcore.h"
@@ -31,15 +32,19 @@ template<class T> class LIBEXPORT XinxLibSingleton : public QObject
 public:
 	~XinxLibSingleton()
 	{
-		
+		_self = 0;
 	}
 
 	static T * self()
 	{
 		if (_self == NULL)
 		{
-			_self = new T;
-			_self->initialisation();
+			QMutexLocker locker(&_self_mutex);
+			if (_self == NULL)
+			{
+				_self = new T;
+				_self->initialisation();
+			}
 		}
 
 		return _self;
@@ -58,24 +63,30 @@ protected:
 
 private:
 	static T * _self;
+	static QMutex _self_mutex;
 };
 
 template <typename T> T * XinxLibSingleton<T>::_self = NULL;
+template <typename T> QMutex XinxLibSingleton<T>::_self_mutex;
 
 template<class T> class XinxSingleton : public QObject
 {
 public:
 	~XinxSingleton()
 	{
-
+		_self = 0;
 	}
 
 	static T * self()
 	{
 		if (_self == NULL)
 		{
-			_self = new T;
-			_self->initialisation();
+			QMutexLocker locker(&_self_mutex);
+			if (_self == NULL)
+			{
+				_self = new T;
+				_self->initialisation();
+			}
 		}
 
 		return _self;
@@ -94,8 +105,10 @@ protected:
 
 private:
 	static T * _self;
+	static QMutex _self_mutex;
 };
 
 template <typename T> T * XinxSingleton<T>::_self = NULL;
+template <typename T> QMutex XinxSingleton<T>::_self_mutex;
 
 #endif // XINXSINGLETON_H

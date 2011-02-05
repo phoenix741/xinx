@@ -24,6 +24,7 @@
 // Xinx header
 #include <core/lib-config.h>
 #include <core/xinxcore.h>
+#include <core/xinxsingleton.h>
 
 // Qt header
 #include <QHash>
@@ -41,7 +42,7 @@ class XinxFormatScheme;
 class XINXConfig;
 
 /*! The class XINX Plugins Loader is used to load all plugins and proposed some facilities method. */
-class LIBEXPORT XinxPluginsLoader : public QObject
+class LIBEXPORT XinxPluginsLoader : public XinxLibSingleton<XinxPluginsLoader>
 {
 	Q_OBJECT
 public:
@@ -71,9 +72,6 @@ public:
 	QString exampleOfHighlighter(const QString & name) const;
 	//! Create a format scheme for the given highlighter
 	XinxFormatScheme * scheme(const QString & highlighter, XINXConfig * config);
-
-	/*! Create a plugin loader object */
-	static XinxPluginsLoader * self();
 private:
 	XinxPluginsLoader();
 
@@ -81,8 +79,7 @@ private:
 	QString allManagedFileFilter() const;
 
 	QMap<QString, XinxPluginElement*> m_plugins;
-
-	static XinxPluginsLoader * s_self;
+	friend class XinxLibSingleton<XinxPluginsLoader>;
 };
 
 #endif /*XINXPLUGINSLOADER_H_*/

@@ -23,6 +23,7 @@
 
 // Xinx header
 #include <core/lib-config.h>
+#include <core/xinxsingleton.h>
 
 // Qt header
 #include <QObject>
@@ -76,7 +77,7 @@ private:
 };
 
 
-class LIBEXPORT ScriptManager : public QObject
+class LIBEXPORT ScriptManager : public XinxLibSingleton<ScriptManager>
 {
 	Q_OBJECT
 public:
@@ -86,8 +87,6 @@ public:
 	QScriptEngine & engine();
 
 	void setCurrentEditeur(AbstractEditor * editor);
-
-	static ScriptManager * self();
 
 	void callScriptsBeforeSave(AbstractEditor * editor);
 	void callScriptsAfterSave(AbstractEditor * editor);
@@ -106,8 +105,7 @@ private:
 	QList<ScriptValue> m_objects;
 	QPointer<XinxProject::Parameters> m_project;
 	AbstractEditor * m_editor;
-
-	static ScriptManager * s_self;
+	friend class XinxLibSingleton<ScriptManager>;
 };
 
 Q_DECLARE_METATYPE(QScriptValue)

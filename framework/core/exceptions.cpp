@@ -44,11 +44,6 @@
 #   include <cxxabi.h>
 #endif
 
-/* Static member */
-
-ExceptionManager * ExceptionManager::s_self = 0;
-ErrorManager     * ErrorManager::s_self     = 0;
-
 /* Message Handler */
 
 static void xinxMessageHandler(QtMsgType t, const char * m)
@@ -103,8 +98,7 @@ ExceptionManager::ExceptionManager()
 
 ExceptionManager::~ExceptionManager()
 {
-	if (s_self == this)
-		s_self = 0;
+
 }
 
 /*!
@@ -199,20 +193,6 @@ void ExceptionManager::notifyError(QString error, QtMsgType t, bool showMessage)
 		}
 	}
 }
-
-/*!
- * \brief Return the exception manager of the application and created it if needed.
- */
-ExceptionManager * ExceptionManager::self()
-{
-	if (! s_self)
-	{
-		s_self = new ExceptionManager();
-		XINXStaticDeleter::self()->addObject(s_self);
-	}
-	return s_self;
-}
-
 
 /* XinxException */
 
@@ -311,20 +291,7 @@ ErrorManager::ErrorManager()
 
 ErrorManager::~ErrorManager()
 {
-	if (this == s_self)
-	{
-		s_self = 0;
-	}
-}
 
-ErrorManager * ErrorManager::self()
-{
-	if (! s_self)
-	{
-		s_self = new ErrorManager();
-		XINXStaticDeleter::self()->addObject(s_self);
-	}
-	return s_self;
 }
 
 void ErrorManager::addContextTranslation(const QString & context, const QString & translation)

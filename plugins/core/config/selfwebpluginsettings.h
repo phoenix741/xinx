@@ -23,22 +23,20 @@
 
 // Xinx header
 #include "webpluginsettings.h"
+#include <core/xinxsingleton.h>
 
-class SelfWebPluginSettings : public QObject, public WebPluginSettings
+class SelfWebPluginSettings : public XinxSingleton<SelfWebPluginSettings>, public WebPluginSettings
 {
 	Q_OBJECT
 public:
 	virtual ~SelfWebPluginSettings();
-
-	static SelfWebPluginSettings * self();
 
 	virtual void save();
 signals:
 	void changed();
 private:
 	SelfWebPluginSettings();
-
-	static SelfWebPluginSettings * s_self;
+	friend class XinxSingleton<SelfWebPluginSettings>;
 };
 
 #endif /*SELFWEBPLUGINSETTINGS_H_*/

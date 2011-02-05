@@ -45,10 +45,6 @@
 #endif
 
 
-/* Static member */
-
-ScriptManager * ScriptManager::s_self = 0;
-
 /* Global script function */
 
 static QScriptValue alert(QScriptContext * context, QScriptEngine *)
@@ -364,19 +360,6 @@ void ScriptManager::setCurrentEditeur(AbstractEditor * editor)
 		m_engine.globalObject().setProperty("editor", UndefinedValue);
 	}
 	m_editor = editor;
-}
-
-ScriptManager * ScriptManager::self()
-{
-	static QMutex selfMutex;
-
-	QMutexLocker locker(&selfMutex);
-	if (s_self == 0)
-	{
-		s_self = new ScriptManager();
-		XINXStaticDeleter::self()->addObject(s_self);
-	}
-	return s_self;
 }
 
 

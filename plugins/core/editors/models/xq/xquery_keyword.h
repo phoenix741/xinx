@@ -21,26 +21,27 @@
 #define XQUERY_KEYWORD_H_
 #pragma once
 
+// Xinx header
+#include <core/xinxsingleton.h>
+
 // Qt header
 #include <QHash>
 #include <QString>
 
 /* XQueryKeyword */
 
-class XQueryKeyword : public QObject
+class XQueryKeyword : public XinxSingleton<XQueryKeyword>
 {
 	Q_OBJECT
 public:
 	~XQueryKeyword();
-	static XQueryKeyword * self();
 
 	const QHash<QString,QString> & keywords() const;
 private:
 	XQueryKeyword();
 
 	QHash<QString,QString> m_keywords;
-
-	static XQueryKeyword * s_self;
+	friend class XinxSingleton<XQueryKeyword>;
 };
 
 #endif /* XQUERY_KEYWORD_H_ */

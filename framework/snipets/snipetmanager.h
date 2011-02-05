@@ -24,6 +24,7 @@
 // Xinx header
 #include <core/lib-config.h>
 #include <snipets/snipetlist.h>
+#include <core/xinxsingleton.h>
 
 // Qt header
 #include <QObject>
@@ -39,13 +40,11 @@ class QSqlDatabase;
  * The goal of SnipetDataBaseManager is too manage the new snipet interface
  * of XINX. This interface create table if necessary in the SQL database.
  */
-class LIBEXPORT SnipetManager : public QObject
+class LIBEXPORT SnipetManager : public XinxLibSingleton<SnipetManager>
 {
 	Q_OBJECT
 public:
 	~SnipetManager();
-
-	static SnipetManager * self();
 
 	QSqlDatabase database();
 
@@ -87,7 +86,7 @@ private:
 	void closeDatabase();
 
 	QObjectCleanupHandler m_handler;
-	static SnipetManager * s_self;
+	friend class XinxLibSingleton<SnipetManager>;
 };
 
 #endif /* _SNIPETMANAGER_H_ */

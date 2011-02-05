@@ -36,10 +36,6 @@
 #include <qlanguagefactory.h>
 #include <qnfadefinition.h>
 
-/* Static member */
-
-XinxPluginsLoader * XinxPluginsLoader::s_self = 0;
-
 /* Static function */
 
 static bool pluginsLessThan(XinxPluginElement * s1, XinxPluginElement * s2)
@@ -59,18 +55,6 @@ XinxPluginsLoader::XinxPluginsLoader()
 XinxPluginsLoader::~XinxPluginsLoader()
 {
 	qDeleteAll(plugins());
-	if (s_self == this)
-		s_self = NULL;
-}
-
-XinxPluginsLoader * XinxPluginsLoader::self()
-{
-	if (s_self == 0)
-	{
-		s_self = new XinxPluginsLoader();
-		XINXStaticDeleter::self()->addObject(s_self);
-	}
-	return s_self;
 }
 
 QList<XinxPluginElement*> XinxPluginsLoader::plugins() const

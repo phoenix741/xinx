@@ -25,8 +25,6 @@
 // Qt header
 #include <QDir>
 
-SelfGceSettings * SelfGceSettings::s_self = 0;
-
 SelfGceSettings::SelfGceSettings() : GceSettings()
 {
 	load();
@@ -34,20 +32,7 @@ SelfGceSettings::SelfGceSettings() : GceSettings()
 
 SelfGceSettings::~SelfGceSettings()
 {
-	if (s_self == this)
-	{
-		s_self = 0;
-	}
-}
 
-SelfGceSettings * SelfGceSettings::self()
-{
-	if (! s_self)
-	{
-		s_self = new SelfGceSettings();
-		XINXStaticDeleter::self()->add(s_self);
-	}
-	return s_self;
 }
 
 void SelfGceSettings::save()
