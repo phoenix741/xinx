@@ -21,7 +21,8 @@
 #define CONTENTVIEW3_CACHE_H
 
 // Xinx header
-#include "file.h"
+#include <contentview3/file.h>
+#include <core/exceptions.h>
 
 // Qt header
 #include <QString>
@@ -40,6 +41,14 @@ namespace ContentView3 {
 class Parser;
 class PrivateCache;
 
+
+class LIBEXPORT CacheParserNotFoundException : public XinxException
+{
+public:
+	CacheParserNotFoundException(const QString& assertion, const QString& locationFile, int locationLine, const QString& locationMethod, const QString& message, const QString& filename);
+	virtual ~CacheParserNotFoundException() throw();
+};
+
 class LIBEXPORT Cache : public QObject
 {
 	Q_OBJECT
@@ -50,14 +59,14 @@ public:
 		IMPORT  = 5,
 		PROJECT = 10
 	};
-	
+
 	explicit Cache(XinxProject::Project * project);
 	~Cache();
 
 	QStringList cachedFiles() const;
 	void addFileToCache(const QString & filename, bool force = false, CacheVisibility visibility = Cache::IMPORT);
 	void addFileToCache(ContentView3::Parser * parser, bool force = false, CacheVisibility visibility = Cache::IMPORT);
-	
+
 	QList<FilePtr> importOf(ContentView3::FilePtr file) const;
 	FilePtr cachedFile(const QString & filename);
 signals:

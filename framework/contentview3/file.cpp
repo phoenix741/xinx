@@ -115,8 +115,15 @@ void File::addImport ( const QString& import )
 {
 	if (! d->_imports.contains(import))
 	{
-		d->_imports.append(import);
-		d->_project->cache()->addFileToCache(import);
+		try
+		{
+			d->_imports.append(import);
+			d->_project->cache()->addFileToCache(import);
+		}
+		catch(CacheParserNotFoundException e)
+		{
+			qDebug() << e.getMessage();
+		}
 	}
 }
 

@@ -32,6 +32,18 @@
 namespace ContentView3
 {
 
+/* CacheParserNotFoundException */
+
+CacheParserNotFoundException::CacheParserNotFoundException(const QString& assertion, const QString& locationFile, int locationLine, const QString& locationMethod, const QString& message, const QString & filename) : XinxException(assertion, locationFile, locationLine, locationMethod, message.arg(filename))
+{
+
+}
+
+CacheParserNotFoundException::~CacheParserNotFoundException() throw()
+{
+
+}
+
 /* PrivateCache */
 
 class PrivateCache
@@ -134,7 +146,7 @@ void Cache::addFileToCache(const QString& filename, bool force, ContentView3::Ca
 		{
 			parser = ParserFactory::getParserByFilename(absoluteFilename);
 		}
-		Q_ASSERT_X(parser, "Cache::addFileToCache", "Can't find a parser for the file");
+		EXCEPT_ELSE(parser, CacheParserNotFoundException, "Cache::addFileToCache", "Can't find a parser for the file %1", absoluteFilename);
 
 		parser->setFile(file);
 		parser->setDevice(device);

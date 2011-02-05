@@ -32,6 +32,7 @@
 #include <QTextStream>
 #include <QTimer>
 #include <QMessageBox>
+#include <QThread>
 
 // Std header for exception
 #include <iostream>
@@ -170,9 +171,12 @@ void ExceptionManager::notifyError(QString error, QtMsgType t, bool showMessage)
 
 	if (t == QtFatalMsg)
 	{
-		QMessageBox::critical (0, qApp->applicationName (),
-										tr("Oh boy ! A fatal error occur with the message :\n%1\n"
-										   "Please forgive me, i try to recover your work.").arg (error));
+		if (QThread::currentThread() == qApp->thread())
+		{
+			QMessageBox::critical (0, qApp->applicationName (),
+								   tr("Oh boy ! A fatal error occur with the message :\n%1\n"
+								   "Please forgive me, i try to recover your work.").arg (error));
+		}
 
 		// On restore les signaux pour eviter d'etre perturbe pendant la phase de sauvegarde ...
 		std::signal(SIGSEGV, SIG_DFL);
