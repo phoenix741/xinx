@@ -17,35 +17,60 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-#ifndef GCECONFIGURATION_H
-#define GCECONFIGURATION_H
+#ifndef GCEINTERFACE_H
+#define GCEINTERFACE_H
 
 // Xinx header
-#include "gceinterface.h"
+#include "configuration/configurationfile.h"
+#include <core/exceptions.h>
+#include <QObject>
 
-// Qt header
-#include <QString>
-#include <QMultiHash>
-#include <QCoreApplication>
-
-class GceConfiguration : public GceInterface
+class GceConfigurationException : public XinxException
 {
-	Q_DECLARE_TR_FUNCTIONS(GceConfiguration)
 public:
-	GceConfiguration(const QString & filename);
-	virtual ~GceConfiguration();
-
-	virtual QString rootFilename();
-	virtual QStringList filenames();
-	virtual ConfigurationVersion version();
-	virtual QStringList dictionnaries();
-	virtual QList<BusinessViewInformation> businessView(const QString & filename);
-	virtual QList<BusinessViewInformation> businessViews();
-	virtual QString resolveFileName(const QString & filename);
-private:
-	QString m_configurationFileName;
-	ConfigurationVersion m_version;
-	QMultiHash<QString,BusinessViewInformation> m_fileToInformation;
+	GceConfigurationException(const QString & exception) : XinxException(exception) {}
 };
 
-#endif // GCECONFIGURATION_H
+class GceConfiguration
+{
+public:
+	GceConfiguration();
+	virtual ~GceConfiguration();
+
+	void setFilename(const QString & filename);
+	const QString & filename() const ;
+
+	const QStringList & filenames() const;
+	void addFilename(const QString & filename);
+	void clearFilenames();
+
+	const ConfigurationVersion & version() const;
+	void setVersion(const ConfigurationVersion & version);
+
+	const QStringList & dictionnaries();
+	void addDictionnary(const QString & dictionnary);
+	void clearDictionaries();
+
+	QList<BusinessViewInformation> businessView(const QString & filename) const;
+	QList<BusinessViewInformation> businessViews() const;
+	void addBusinessView(const QMultiHash<QString,BusinessViewInformation> & businessview);
+	void addBusinessView(const QString & path, const BusinessViewInformation & information);
+	void clearBusinessView();
+
+	const QHash<QString,QStringList> & aliasPolicy() const;
+	void addAliasPolicy(const QString & alias, const QString & value);
+	void clearAliasPolicy();
+
+	QString resolveFileName(const QString & filename) const;
+private:
+	QStringList generateFileName(const QString & filename) const;
+
+	QString _filename;
+	QStringList _filenames;
+	ConfigurationVersion _version;
+	QStringList _dictionnaries;
+	QMultiHash<QString,BusinessViewInformation> _informations;
+	QHash<QString,QStringList> _alias_policies;
+};
+
+#endif // GCEINTERFACE_H

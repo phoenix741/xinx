@@ -21,42 +21,31 @@
 #define GCECONFIGURATIONDEF_H
 
 // Xinx header
-#include "gceinterface.h"
+#include "gceparser.h"
 
 // Qt header
 #include <QString>
 #include <QMultiHash>
 #include <QCoreApplication>
 
-class GceConfigurationXmlParser;
 class GceConfigurationXmlParser2;
 
-class GceConfigurationDef : public GceInterface
+class GceConfigurationDefParser : public GceParser
 {
-	Q_DECLARE_TR_FUNCTIONS(GceConfigurationDef)
+	Q_DECLARE_TR_FUNCTIONS(GceConfigurationDefParser)
 public:
-	GceConfigurationDef();
-	GceConfigurationDef(const QString & filename);
-	virtual ~GceConfigurationDef();
+	GceConfigurationDefParser();
+	GceConfigurationDefParser(const QString & filename);
+	virtual ~GceConfigurationDefParser();
 
-	virtual QString rootFilename();
-	virtual QStringList filenames();
-	virtual ConfigurationVersion version();
-	virtual QStringList dictionnaries();
-	virtual QList<BusinessViewInformation> businessView(const QString & filename);
-	virtual QList<BusinessViewInformation> businessViews();
-	virtual QString resolveFileName(const QString & filename);
+    virtual void startJob();
 protected:
 	virtual void readConfigurationDef(const QString & configurationdefFileName);
 	virtual void readConfigurationFile(int configurationIndex, const QString & configurationFileName);
 
-	QStringList m_dictionnaries, m_filenames;
-	QString m_configurationFileName, m_directoryPath;
-	ConfigurationVersion m_version;
-	QMultiHash<QString,BusinessViewInformation> m_fileToInformation;
-
-	friend class GceConfigurationXmlParser;
 	friend class GceConfigurationXmlParser2;
+protected:
+	QString _filename, _directory_path;
 };
 
 #endif // GCECONFIGURATIONDEF_H

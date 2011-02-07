@@ -24,35 +24,30 @@
 #include <QObject>
 #include <QHash>
 #include <QFileSystemWatcher>
+#include <QScopedPointer>
 
 // Xinx header
-#include "configuration/gceinterface.h"
+#include "configuration/gceconfiguration.h"
 #include <project/xinxprojectproject.h>
 
-class ConfigurationManager : public XinxSingleton<ConfigurationManager>
+class ConfigurationManager : public QObject
 {
 	Q_OBJECT
 public:
+	ConfigurationManager(XinxProject::Project * project);
 	virtual ~ConfigurationManager();
 
-	GceInterface * getInterfaceOfProject(XinxProject::Project * project);
-	GceInterface * getInterfaceOfDirectory(const QString & directory);
+	static ConfigurationManager * manager(XinxProject::Project * project);
 
-	void loadDictionary(XinxProject::Project * project);
-
-	void cleanCache();
+	GceConfiguration * getInterface();
 private slots:
-	void clearCache(const QString & filename);
+	void updateCache();
+	void addDictionary(const QString & filename);
+	void addConfiguration(const QString & filename);
 private:
-	ConfigurationManager();
-
-	QFileSystemWatcher * m_watcher;
-	QHash<QString,QString> m_fileToGceInterfaceKey;
-	QHash<QString,XinxProject::Project*> m_fileToDictionaryKey;
-
-	QHash<QString,GceInterface*> m_interface;
-
-	friend class XinxSingleton<ConfigurationManager>;
+	QFileSystemWatcher * _watcher;
+	QScopedPointer<GceConfiguration> _interface;
+	XinxProject::Project * _project;
 };
 
 #endif // CONFIGURATIONMANAGER_H

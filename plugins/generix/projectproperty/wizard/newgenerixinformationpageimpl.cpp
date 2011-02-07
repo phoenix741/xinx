@@ -19,7 +19,7 @@
 
 // Xinx header
 #include "newgenerixinformationpageimpl.h"
-#include "configuration/gceinterfacefactory.h"
+#include "configuration/gceconfigurationparserfactory.h"
 #include <project/xinxprojectproject.h>
 #include <project/externalfileresolver.h>
 #include "projectproperty/generixproject.h"
@@ -79,11 +79,15 @@ void NewGenerixInformationPageImpl::updateInformations(const QString & path)
 	setField("generix.adresse", moduleInternetAdresse);
 	setField("generix.dataStream", dataStreamLocation);
 
-	QScopedPointer<GceInterface> interface(GceInterfaceFactory::createGceInterface(webModuleLocation));
-	if (interface)
+	QScopedPointer<GceConfiguration> configurationFile(new GceConfiguration);
+	QScopedPointer<GceParser> parser(GceConfigurationParserFactory::createGceParser(webModuleLocation));
+	if (parser)
 	{
-		setField("generix.version", QVariant::fromValue(interface->version()));
-		ConfigurationVersion version = interface->version();
+		parser->setInterface(configurationFile.data());
+		parser->startJob();
+
+		setField("generix.version", QVariant::fromValue(configurationFile->version()));
+		ConfigurationVersion version = configurationFile->version();
 		ConfigurationVersion version150(6, 1, 50);
 
 		const bool presentationDirectoryExist = QDir(QDir(webModuleLocation).absoluteFilePath("presentation")).exists();

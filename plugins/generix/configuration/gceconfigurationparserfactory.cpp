@@ -17,36 +17,50 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-#ifndef GCEPROPERTIES_H
-#define GCEPROPERTIES_H
-
 // Xinx header
-#include "gceinterface.h"
-#include "gceconfigurationdef.h"
+#include "gceconfigurationparserfactory.h"
+#include "gceconfigurationparser.h"
+#include "gceconfigurationdefparser.h"
+#include "gcepropertiesparser.h"
+#include "gceconfiguration.h"
 
 // Qt header
-#include <QString>
-#include <QMultiHash>
-#include <QCoreApplication>
+#include <QFile>
+#include <QDir>
 
-class GceProperties : public GceConfigurationDef
+GceConfigurationParserFactory::GceConfigurationParserFactory()
 {
-	Q_DECLARE_TR_FUNCTIONS(GceProperties)
-public:
-	GceProperties(const QString & filename);
-	virtual ~GceProperties();
+}
 
-	QStringList generateFileName(const QString & filename);
-	virtual QString rootFilename();
-	virtual QStringList filenames();
-	virtual QString resolveFileName(const QString & filename);
-protected:
-	virtual void readGceProperties(const QString & propertiesFileName);
+GceParser* GceConfigurationParserFactory::createGceParser(const QString& path)
+{
+	/*
+	 * Recherche l'existance des fichiers
+	 * - gce.properties.xml pour la GCE150
+	 * - configurationdef.xml pour la GCE140 ou 130
+	 * - configuration.xml pour le reste.
+	 */
+	try
+	{
+		if (QFile::exists(QDir(path).absoluteFilePath("gce.properties.xml")))
+		{
+			return new GcePropertiesParser(QDir(path).absoluteFilePath("gce.properties.xml"));
+		}
+		else if (QFile::exists(QDir(path).absoluteFilePath("configurationdef.xml")))
+		{
+			return new GceConfigurationDefParser(QDir(path).absoluteFilePath("configurationdef.xml"));
+		}
+		else if (QFile::exists(QDir(path).absoluteFilePath("configuration.xml")))
+		{
+			return new GceConfigurationParser(QDir(path).absoluteFilePath("configuration.xml"));
+		}
+	}
+	catch (GceConfigurationException e)
+	{
+		return NULL;
+	}
 
-	QStringList m_dictionnaries, m_filenames;
-	QString m_propertiesFilename, m_configurationDef;
-
-	QHash<QString,QStringList> m_policy;
-};
-
-#endif // GCEPROPERTIES_H
+	// Si aucun des fichiers n'est trouvé, nous ne somme pas dans une WebModule Generix. Il n'y a donc pas
+	// de fichier de configuration. On peut laisser tomber.
+	return NULL;
+}

@@ -21,14 +21,14 @@
 #define GCEINTERFACEFACTORY_H
 
 // Xinx header
-#include "gceinterface.h"
+#include "gceparser.h"
 
-class GceInterfaceFactory
+class GceConfigurationParserFactory
 {
 public:
-	GceInterfaceFactory();
+	GceConfigurationParserFactory();
 
-	static GceInterface * createGceInterface(const QString & path);
+	static GceParser * createGceParser(const QString & path);
 };
 
 #endif // GCEINTERFACEFACTORY_H

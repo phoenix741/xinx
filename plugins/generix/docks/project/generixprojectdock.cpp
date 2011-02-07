@@ -175,7 +175,7 @@ void GenerixProjectDockImpl::editorChanged(int index)
 
 		const QString filename = QDir(m_gnxProject->webModuleLocation()).relativeFilePath(editorFilename);
 
-		GceInterface * interface = ConfigurationManager::self()->getInterfaceOfProject(m_gnxProject);
+		GceConfiguration * interface = ConfigurationManager::manager(m_gnxProject)->getInterface();
 		m_businessViewList->clear();
 		if (interface)
 		{

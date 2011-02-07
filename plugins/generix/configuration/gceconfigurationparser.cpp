@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * XINX                                                                    *
- * Copyright (C) 2010 by Ulrich Van Den Hekke                              *
+ * Copyright (C) 2009 by Ulrich Van Den Hekke                              *
  * ulrich.vdh@shadoware.org                                                *
  *                                                                         *
  * This program is free software: you can redistribute it and/or modify    *
@@ -16,57 +16,35 @@
  * You should have received a copy of the GNU General Public License       *
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
-#pragma once
-#ifndef GCECONFIGURATIONXMLPARSER_H
-#define GCECONFIGURATIONXMLPARSER_H
 
 // Xinx header
-#include "configurationfile.h"
+#include "gceconfigurationparser.h"
+#include "gceconfigurationxmlparser2.h"
+#include "config/selfgcesettings.h"
 
-// Qt header
-#include <QXmlStreamReader>
-#include <QIODevice>
-#include <QDebug>
-#include <QDomDocument>
-#include <QFileInfo>
-#include <QDir>
-#include <QFile>
+/* GceConfigurationParser */
 
-class GceConfigurationDef;
-
-class GceConfigurationXmlParser : public QXmlStreamReader
+GceConfigurationParser::GceConfigurationParser(const QString & filename) : _filename(filename)
 {
-public:
-	GceConfigurationXmlParser();
 
-	bool loadFromFile(const QString & filename);
+}
 
-	/* INPUT */
-	GceConfigurationDef * m_parent;
-	int m_configurationNumber;
+GceConfigurationParser::~GceConfigurationParser()
+{
+}
 
-	/* OUTPUT */
-	QString m_version, m_rootPath;
-	int m_edition;
-	QMultiHash<QString,BusinessViewInformation> m_fileRefToInformation;
+void GceConfigurationParser::startJob()
+{
+	if (interface())
+	{
+		GceConfigurationXmlParser2 parser;
+		parser.m_quick = ! SelfGceSettings::self()->config().readConfigurations;
+		parser.m_configurationNumber = -1;
+		parser._gce_configuration = interface();
+		parser.loadFromFile(_filename);
 
-private:
-	void readUnknownElement();
-	void readConfigElement();
-	void readVersionElement();
-	void readApplicationElement();
+		interface()->addBusinessView(parser.m_fileRefToInformation);
+		interface()->setVersion(ConfigurationVersion(parser.m_version, parser.m_edition));
+	}
+}
 
-	void readBusinessViewDef();
-	void readBusinessViewDefElement();
-	void readPresentationElement(const BusinessViewInformation & information);
-
-	void readPresentation();
-	void readPresentationElement();
-
-	QString m_configurationFileName;
-
-	QHash<QString,BusinessViewInformation> m_nameToInformation;
-	QMultiHash<QString,QString> m_fileRefToName;
-};
-
-#endif // GCECONFIGURATIONXMLPARSER_H

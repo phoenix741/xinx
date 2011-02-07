@@ -87,10 +87,10 @@ bool GenerixProjectPageFormImpl::isVisible()
 
 void GenerixProjectPageFormImpl::updateInformations()
 {
-	GceInterface * interface = ConfigurationManager::self()->getInterfaceOfDirectory(m_project->projectPath());
+	GceConfiguration * interface = ConfigurationManager::manager(m_project)->getInterface();
 	if (interface)
 	{
-		m_propertyFileLabel->setText(QDir(m_project->projectPath()).relativeFilePath(interface->rootFilename()));
+		m_propertyFileLabel->setText(QDir(m_project->projectPath()).relativeFilePath(interface->filename()));
 		m_configurationVersionLabel->setVersion(interface->version());
 		m_dictionaryCount->setText(QString("%1 dictionaries").arg(interface->dictionnaries().count()));
 		m_businessViewLabel->setText(QString("%1 businessviews").arg(interface->businessViews().count()));

@@ -31,7 +31,6 @@ const ConfigurationVersion version150(6, 1, 50, 0);
 
 GceConfigurationXmlParser2::GceConfigurationXmlParser2()
 {
-	m_parent  = 0;
 	m_version = QString();
 	m_edition = -1;
 	m_quick   = false;
@@ -82,14 +81,14 @@ bool GceConfigurationXmlParser2::loadFromFile(const QString & filename)
 
 		if (ConfigurationVersion(m_version) < version150)
 		{
-			const QDir directoryPath(m_parent ? m_parent->m_directoryPath : "");
+			const QDir directoryPath(_gce_configuration ? QFileInfo(_gce_configuration->filename()).absolutePath() : 0);
 			m_fileRefToInformation.clear();
 			foreach(const QString & bvName, m_fileRefToName.keys())
 			{
 				foreach(const QString & fileRef, m_fileRefToName.values(bvName))
 				{
 					QString ref = m_rootPath + "/" + fileRef;
-					if (m_parent)
+					if (_gce_configuration)
 					{
 						const QString absolutePath = QDir(directoryPath.absoluteFilePath(ref)).canonicalPath();
 						if (!absolutePath.isEmpty())
@@ -342,12 +341,12 @@ void GceConfigurationXmlParser2::readPresentationElement(xmlTextReader * reader,
 	QString fileRef = QString::fromUtf8((char*)xmlFileRef);
 	xmlFree(xmlFileRef);
 
-	if (m_parent)
+	if (_gce_configuration)
 	{
-		fileRef = m_parent->resolveFileName(fileRef);
+		fileRef = _gce_configuration->resolveFileName(fileRef);
 		if (QDir(fileRef).isAbsolute())
 		{
-			fileRef = QDir(m_parent->m_directoryPath).relativeFilePath(fileRef);
+			fileRef = QDir(QFileInfo(_gce_configuration->filename()).absolutePath()).relativeFilePath(fileRef);
 		}
 	}
 	m_fileRefToInformation.insert(fileRef, information);

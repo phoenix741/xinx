@@ -18,7 +18,7 @@
  * *********************************************************************** */
 
 // Xinx header
-#include "gceproperties.h"
+#include "gcepropertiesparser.h"
 
 // Qt header
 #include <QXmlStreamReader>
@@ -37,30 +37,36 @@
 #include <libxml/xpathInternals.h>
 #include <libxml/tree.h>
 
-/* GceProperties */
+/* GcePropertiesParser */
 
-GceProperties::GceProperties(const QString & filename) : GceConfigurationDef(), m_propertiesFilename(filename)
+GcePropertiesParser::GcePropertiesParser(const QString & filename) : GceConfigurationDefParser()
 {
-	m_directoryPath = QFileInfo(filename).absolutePath();
-	m_policy.insert("ROOT_WEBAPP", QStringList() << m_directoryPath);
-
-	readGceProperties(m_propertiesFilename);
+	_filename = filename;
+	_directory_path = QFileInfo(_filename).absolutePath();
 }
 
-GceProperties::~GceProperties()
+GcePropertiesParser::~GcePropertiesParser()
 {
 }
 
-void GceProperties::readGceProperties(const QString & propertiesFileName)
+void GcePropertiesParser::startJob()
 {
-	m_filenames.append(propertiesFileName);
+	interface()->setFilename(_filename);
+	readGceProperties(_filename);
+}
+
+void GcePropertiesParser::readGceProperties(const QString & propertiesFileName)
+{
+	interface()->addAliasPolicy("ROOT_WEBAPP", _directory_path);
+
+	interface()->addFilename(propertiesFileName);
 
 	// Ouverture du fichier XML
 	const int options = XML_PARSE_NOENT;
 	xmlDocPtr document = xmlReadFile(qPrintable(propertiesFileName), NULL, options);
 	if (document == NULL)
 	{
-		throw GceInterfaceException(tr("Can't open the gce properties file"));
+		throw GceConfigurationException(tr("Can't open the gce properties file"));
 		return ;
 	}
 
@@ -68,7 +74,7 @@ void GceProperties::readGceProperties(const QString & propertiesFileName)
 	xmlNodePtr root = xmlDocGetRootElement(document);
 	if (root == NULL)
 	{
-		throw GceInterfaceException(tr("Can't read the root element of the gce properties file"));
+		throw GceConfigurationException(tr("Can't read the root element of the gce properties file"));
 		xmlFreeDoc(document);
 		return;
 	}
@@ -77,7 +83,7 @@ void GceProperties::readGceProperties(const QString & propertiesFileName)
 	xmlXPathContextPtr xpathCtx = xmlXPathNewContext(document);
 	if (xpathCtx == NULL)
 	{
-		throw GceInterfaceException(tr("Unable to create new XPath context"));
+		throw GceConfigurationException(tr("Unable to create new XPath context"));
 		xmlFreeDoc(document);
 		return;
 	}
@@ -93,7 +99,7 @@ void GceProperties::readGceProperties(const QString & propertiesFileName)
 		xmlXPathRegisterNs(xpathCtx, (xmlChar*)"gce", (xmlChar*)"http://www.generix.fr/technicalframework/gceproperties");
 		xpathObj = xmlXPathEvalExpression((xmlChar*)"string(/gce:config/gce:application/gce:configurationDefinition/gce:definition/@name)", xpathCtx);
 	}
-	m_configurationDef = QDir(m_directoryPath).absoluteFilePath(QLatin1String((char*)xpathObj->stringval));
+	QString configurationDef = QDir(_directory_path).absoluteFilePath(QLatin1String((char*)xpathObj->stringval));
 	xmlXPathFreeObject(xpathObj);
 
 	/* Policies */
@@ -110,7 +116,6 @@ void GceProperties::readGceProperties(const QString & propertiesFileName)
 		for (int i = 0; i < policies->nodeNr; i++)
 		{
 			if (policies->nodeTab[i]->type != XML_ELEMENT_NODE) continue;
-			QStringList mappingList;
 
 			xmlNodePtr policy = policies->nodeTab[i];
 			QString policyName = QLatin1String((char*)xmlGetProp(policy, (xmlChar*)"name"));
@@ -120,11 +125,9 @@ void GceProperties::readGceProperties(const QString & propertiesFileName)
 				if (mapping->type == XML_ELEMENT_NODE)
 				{
 					QString mappingValue = QLatin1String((char*)xmlGetProp(mapping, (xmlChar*)"value"));
-					mappingList.append(mappingValue);
+					interface()->addAliasPolicy(policyName, mappingValue);
 				}
 			}
-
-			m_policy.insert(policyName, mappingList);
 		}
 
 		xmlXPathFreeObject(xpathObj);
@@ -137,62 +140,6 @@ void GceProperties::readGceProperties(const QString & propertiesFileName)
 
 	/* Read configuration def */
 
-	readConfigurationDef(m_configurationDef);
+	readConfigurationDef(configurationDef);
 
-}
-
-QStringList GceProperties::generateFileName(const QString & filename)
-{
-	QStack<QString> nameToResolve;
-	QStringList resolvedName;
-	QRegExp regexp("(\\{|\\(\\()(.*)(\\}|\\)\\))");
-
-	nameToResolve << filename;
-
-	while (nameToResolve.size())
-	{
-		const QString & name = nameToResolve.pop();
-
-		if (regexp.indexIn(name) != -1)
-		{
-			QString key        = regexp.cap(2);
-			QStringList values = m_policy.value(key);
-
-			QStringListIterator value(values);
-			value.toBack();
-			while (value.hasPrevious())
-			{
-				QString result = name;
-				result.replace(regexp.cap(0), value.previous());
-				nameToResolve.push(result);
-			}
-		}
-		else
-		{
-			resolvedName.append(name);
-		}
-	}
-
-	return resolvedName;
-}
-
-QString GceProperties::rootFilename()
-{
-	return m_propertiesFilename;
-}
-
-QStringList GceProperties::filenames()
-{
-	return m_filenames;
-}
-
-QString GceProperties::resolveFileName(const QString & filename)
-{
-	QStringList names = generateFileName(filename);
-	foreach(QString name, names)
-	{
-		if (QFile::exists(name))
-			return name;
-	}
-	return filename;
 }

@@ -21,117 +21,78 @@
 #include "configurationmanager.h"
 #include <core/xinxcore.h>
 #include <core/filewatcher.h>
-#include "configuration/gceinterfacefactory.h"
+#include "configuration/gceconfigurationparserfactory.h"
 #include "projectproperty/generixproject.h"
 #include "docks/dictionary/dictionary_parser.h"
+#include <jobs/xinxjobmanager.h>
 
 /* ConfigurationManager */
 
-ConfigurationManager::ConfigurationManager()
+ConfigurationManager::ConfigurationManager(XinxProject::Project* project) : _interface(new GceConfiguration), _project(project)
 {
-	m_watcher = new QFileSystemWatcher(this);
-	connect(m_watcher, SIGNAL(fileChanged(QString)), this, SLOT(clearCache(QString)));
+	_watcher = new QFileSystemWatcher(this);
+	connect(_watcher, SIGNAL(fileChanged(QString)), this, SLOT(updateCache()));
+
+	updateCache();
 }
 
 ConfigurationManager::~ConfigurationManager()
 {
-	foreach(GceInterface * interface, m_interface.values())
+
+}
+
+ConfigurationManager* ConfigurationManager::manager(XinxProject::Project* project)
+{
+	if (! project) return NULL;
+	QObject * object = project->getObject("generix");
+	return qobject_cast<ConfigurationManager*>(object);
+}
+
+void ConfigurationManager::addDictionary(const QString & filename)
+{
+	QFile * device = new QFile(filename);
+	if (device->open(QFile::ReadOnly))
 	{
-		delete interface;
+		ContentView3::FilePtr file = _project->cache ()->cachedFile (filename);
+
+		Generix::Dictionary::Parser * dictionaryParser = new Generix::Dictionary::Parser();
+		dictionaryParser->setFile(file);
+		dictionaryParser->setDevice(device);
+
+		_project->cache ()->addFileToCache (dictionaryParser, false, ContentView3::Cache::PROJECT);
 	}
 }
 
-void ConfigurationManager::cleanCache()
+void ConfigurationManager::addConfiguration(const QString & filename)
 {
-	foreach(GceInterface * interface, m_interface.values())
+	if (!_watcher->files().contains(filename))
 	{
-		delete interface;
-	}
-
-	foreach(const QString & key, m_interface.keys())
-	{
-		m_watcher->removePath(key);
-	}
-
-	m_fileToGceInterfaceKey.clear();
-	m_interface.clear();
-}
-
-void ConfigurationManager::clearCache(const QString & filename)
-{
-	QString directory = m_fileToGceInterfaceKey.value(filename);
-	if (! directory.isEmpty())
-	{
-		foreach(GceInterface * interface, m_interface.values(directory))
-		{
-			delete interface;
-		}
-		m_interface.remove(directory);
-		foreach(const QString & key, m_fileToGceInterfaceKey.keys(directory))
-		{
-			m_watcher->removePath(key);
-			m_fileToGceInterfaceKey.remove(key);
-		}
+		_watcher->addPath(filename);
 	}
 }
 
-GceInterface * ConfigurationManager::getInterfaceOfDirectory(const QString & directory)
+void ConfigurationManager::updateCache()
 {
-	if (m_interface.contains(directory))
-	{
-		return m_interface.value(directory);
-	}
+	_interface->clearAliasPolicy();
+	_interface->clearBusinessView();
+	_interface->clearDictionaries();
+	_interface->clearFilenames();
 
-	/* Create the interface */
-	GceInterface * interface = GceInterfaceFactory::createGceInterface(directory);
-	if (interface)
+	GceParser * parser = GceConfigurationParserFactory::createGceParser(_project->projectPath());
+	if (parser)
 	{
-		m_interface.insert(directory, interface);
-		foreach(const QString & file, interface->filenames())
-		{
-			m_fileToGceInterfaceKey.insert(file, directory);
-			m_watcher->addPath(file);
-		}
-	}
+		parser->setInterface(_interface.data());
 
-	return interface;
-}
+		connect(parser, SIGNAL(addConfiguration(QString)), this, SLOT(addConfiguration(QString)), Qt::QueuedConnection);
+		connect(parser, SIGNAL(addDictionary(QString)), this, SLOT(addDictionary(QString)), Qt::QueuedConnection);
 
-GceInterface * ConfigurationManager::getInterfaceOfProject(XinxProject::Project * project)
-{
-	GenerixProject * gnxProject = static_cast<GenerixProject*>(project);
-	if (gnxProject)
-	{
-		return getInterfaceOfDirectory(gnxProject->webModuleLocation());
-	}
-	else
-	{
-		return 0;
+		XinxJobManager::self()->addJob(parser);
 	}
 }
 
-void ConfigurationManager::loadDictionary(XinxProject::Project * project)
+GceConfiguration * ConfigurationManager::getInterface()
 {
-	GceInterface* gce = getInterfaceOfProject(project);
-	if (gce)
-	{
-		QStringList dictionaries = getInterfaceOfProject(project)->dictionnaries();
-		foreach(const QString & filename, dictionaries)
-		{
-			QFile * device = new QFile(filename);
-			if (device->open(QFile::ReadOnly))
-			{
-				ContentView3::FilePtr file = project->cache ()->cachedFile (filename);
-
-				Generix::Dictionary::Parser * dictionaryParser = new Generix::Dictionary::Parser();
-				dictionaryParser->setFile(file);
-				dictionaryParser->setDevice(device);
-
-				project->cache ()->addFileToCache (dictionaryParser, false, ContentView3::Cache::PROJECT);
-			}
-
-		}
-	}
+	return _interface.data();
 }
 
 

@@ -18,8 +18,7 @@
  * *********************************************************************** */
 
 // Xinx header
-#include "gceconfigurationdef.h"
-#include "gceconfigurationxmlparser.h"
+#include "gceconfigurationdefparser.h"
 #include "gceconfigurationxmlparser2.h"
 #include "config/selfgcesettings.h"
 
@@ -34,36 +33,38 @@
 
 /* GceConfigurationDef */
 
-GceConfigurationDef::GceConfigurationDef()
+GceConfigurationDefParser::GceConfigurationDefParser()
 {
 
 }
 
-GceConfigurationDef::GceConfigurationDef(const QString & filename)
-{
-	m_directoryPath = QFileInfo(filename).absolutePath();
-
-	readConfigurationDef(filename);
-}
-
-GceConfigurationDef::~GceConfigurationDef()
+GceConfigurationDefParser::GceConfigurationDefParser(const QString & filename) : _filename(filename), _directory_path(QFileInfo(filename).absolutePath())
 {
 
 }
 
-void GceConfigurationDef::readConfigurationDef(const QString & configurationdefFileName)
+GceConfigurationDefParser::~GceConfigurationDefParser()
 {
-	m_filenames.append(configurationdefFileName);
 
-	m_configurationFileName = configurationdefFileName;
+}
+
+void GceConfigurationDefParser::startJob()
+{
+	interface()->setFilename(_filename);
+	readConfigurationDef(_filename);
+}
+
+void GceConfigurationDefParser::readConfigurationDef(const QString & configurationdefFileName)
+{
+	interface()->addFilename(configurationdefFileName);
 
 	QFile configurationdef(configurationdefFileName);
 	if (! configurationdef.open(QFile::ReadOnly))
-		throw GceInterfaceException(tr("Can't open configurationdef file"));
+		throw GceConfigurationException(tr("Can't open configurationdef file"));
 
 	QDomDocument document;
 	if (! document.setContent(&configurationdef))
-		throw GceInterfaceException(tr("Can't read the content of the configurationdef file"));
+		throw GceConfigurationException(tr("Can't read the content of the configurationdef file"));
 
 	QDomElement root = document.documentElement();
 
@@ -74,7 +75,10 @@ void GceConfigurationDef::readConfigurationDef(const QString & configurationdefF
 		QDomElement conffile = configuration.firstChildElement("file");
 		while (! conffile.isNull())
 		{
-			readConfigurationFile(configurationNumber++, QDir(m_directoryPath).absoluteFilePath(conffile.attribute("name")));
+			const QString conf_filename = QDir(_directory_path).absoluteFilePath(conffile.attribute("name"));
+			readConfigurationFile(configurationNumber++, conf_filename);
+
+			emit addConfiguration(conf_filename);
 
 			conffile = conffile.nextSiblingElement("file");
 		}
@@ -85,58 +89,30 @@ void GceConfigurationDef::readConfigurationDef(const QString & configurationdefF
 		QDomElement translationFile = translation.firstChildElement("file");
 		while (! translationFile.isNull())
 		{
-			m_dictionnaries += QDir(m_directoryPath).absoluteFilePath(translationFile.attribute("name"));
+			const QString dico_filename = QDir(_directory_path).absoluteFilePath(translationFile.attribute("name"));
+			interface()->addDictionnary(dico_filename);
+
+			emit addDictionary(dico_filename);
 
 			translationFile = translationFile.nextSiblingElement("file");
 		}
 	}
 }
 
-void GceConfigurationDef::readConfigurationFile(int configurationIndex, const QString & configurationFileName)
+void GceConfigurationDefParser::readConfigurationFile(int configurationIndex, const QString & configurationFileName)
 {
 	GceConfigurationXmlParser2 parser;
 	parser.m_quick = ! SelfGceSettings::self()->config().readConfigurations;
-	parser.m_parent = this;
+	parser._gce_configuration = interface();
 	parser.m_configurationNumber = configurationIndex;
 	parser.loadFromFile(configurationFileName);
-	m_filenames.append(configurationFileName);
 
-	m_fileToInformation += parser.m_fileRefToInformation;
+	interface()->addFilename(configurationFileName);
+
+	interface()->addBusinessView(parser.m_fileRefToInformation);
 	if (!parser.m_version.isEmpty())
-		m_version            = ConfigurationVersion(parser.m_version, parser.m_edition);
+	{
+		interface()->setVersion(ConfigurationVersion(parser.m_version, parser.m_edition));
+	}
 }
 
-ConfigurationVersion GceConfigurationDef::version()
-{
-	return m_version;
-}
-
-QStringList GceConfigurationDef::dictionnaries()
-{
-	return m_dictionnaries;
-}
-
-QString GceConfigurationDef::rootFilename()
-{
-	return m_configurationFileName;
-}
-
-QStringList GceConfigurationDef::filenames()
-{
-	return m_filenames;
-}
-
-QList<BusinessViewInformation> GceConfigurationDef::businessView(const QString & filename)
-{
-	return m_fileToInformation.values(filename);
-}
-
-QList<BusinessViewInformation> GceConfigurationDef::businessViews()
-{
-	return m_fileToInformation.values();
-}
-
-QString GceConfigurationDef::resolveFileName(const QString & filename)
-{
-	return filename;
-}

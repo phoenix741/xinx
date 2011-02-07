@@ -17,67 +17,153 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-// Xinx header
 #include "gceconfiguration.h"
-#include "gceconfigurationxmlparser2.h"
-#include "config/selfgcesettings.h"
-
-// Qt header
-#include <QXmlStreamReader>
-#include <QIODevice>
+#include <QStack>
 #include <QFile>
-#include <QDebug>
-#include <QDir>
 
-/* GceConfiguration */
-
-GceConfiguration::GceConfiguration(const QString & filename) : m_configurationFileName(filename)
+GceConfiguration::GceConfiguration()
 {
-	GceConfigurationXmlParser2 parser;
-	parser.m_quick = ! SelfGceSettings::self()->config().readConfigurations;
-	parser.m_configurationNumber = -1;
-	parser.m_parent = 0;
-	parser.loadFromFile(filename);
-
-	m_fileToInformation = parser.m_fileRefToInformation;
-	m_version           = ConfigurationVersion(parser.m_version, parser.m_edition);
 }
 
 GceConfiguration::~GceConfiguration()
 {
 }
 
-ConfigurationVersion GceConfiguration::version()
+void GceConfiguration::setFilename(const QString& filename)
 {
-	return m_version;
+	_filename = filename;
 }
 
-QString GceConfiguration::rootFilename()
+const QString& GceConfiguration::filename() const
 {
-	return m_configurationFileName;
+	return _filename;
 }
 
-QStringList GceConfiguration::filenames()
+void GceConfiguration::addFilename(const QString& filename)
 {
-	return QStringList() << m_configurationFileName;
+	_filenames.append(filename);
 }
 
-QStringList GceConfiguration::dictionnaries()
+const QStringList& GceConfiguration::filenames() const
 {
-	return QStringList();
+	return _filenames;
 }
 
-QList<BusinessViewInformation> GceConfiguration::businessView(const QString & filename)
+void GceConfiguration::clearFilenames()
 {
-	return m_fileToInformation.values(filename);
+	_filenames.clear();
 }
 
-QList<BusinessViewInformation> GceConfiguration::businessViews()
+void GceConfiguration::setVersion(const ConfigurationVersion& version)
 {
-	return m_fileToInformation.values();
+	_version = version;
 }
 
-QString GceConfiguration::resolveFileName(const QString & filename)
+const ConfigurationVersion& GceConfiguration::version() const
 {
+	return _version;
+}
+
+const QStringList& GceConfiguration::dictionnaries()
+{
+	return _dictionnaries;
+}
+
+void GceConfiguration::addDictionnary(const QString& dictionnary)
+{
+	_dictionnaries.append(dictionnary);
+}
+
+void GceConfiguration::clearDictionaries()
+{
+	_dictionnaries.clear();
+}
+
+void GceConfiguration::addBusinessView(const QString& path, const BusinessViewInformation& information)
+{
+	_informations.insert(path, information);
+}
+
+QList< BusinessViewInformation > GceConfiguration::businessView(const QString& filename) const
+{
+	return _informations.values(filename);
+}
+
+QList< BusinessViewInformation > GceConfiguration::businessViews() const
+{
+	return _informations.values();
+}
+
+void GceConfiguration::clearBusinessView()
+{
+	_informations.clear();
+}
+
+void GceConfiguration::addBusinessView(const QMultiHash< QString, BusinessViewInformation >& businessview)
+{
+	_informations += businessview;
+}
+
+void GceConfiguration::addAliasPolicy(const QString& alias, const QString& value)
+{
+	_alias_policies[alias].append(value);
+}
+
+const QHash< QString, QStringList >& GceConfiguration::aliasPolicy() const
+{
+	return _alias_policies;
+}
+
+void GceConfiguration::clearAliasPolicy()
+{
+	_alias_policies.clear();
+}
+
+QStringList GceConfiguration::generateFileName(const QString& filename) const
+{
+	QStack<QString> nameToResolve;
+	QStringList resolvedName;
+	QRegExp regexp("(\\{|\\(\\()(.*)(\\}|\\)\\))");
+
+	nameToResolve << filename;
+
+	while (nameToResolve.size())
+	{
+		const QString & name = nameToResolve.pop();
+
+		if (regexp.indexIn(name) != -1)
+		{
+			QString key        = regexp.cap(2);
+			QStringList values = _alias_policies.value(key);
+
+			QStringListIterator value(values);
+			value.toBack();
+			while (value.hasPrevious())
+			{
+				QString result = name;
+				result.replace(regexp.cap(0), value.previous());
+				nameToResolve.push(result);
+			}
+		}
+		else
+		{
+			resolvedName.append(name);
+		}
+	}
+
+	return resolvedName;
+}
+
+QString GceConfiguration::resolveFileName(const QString& filename) const
+{
+	if (_alias_policies.size())
+	{
+		QStringList names = generateFileName(filename);
+		foreach(QString name, names)
+		{
+			if (QFile::exists(name))
+				return name;
+		}
+	}
 	return filename;
 }

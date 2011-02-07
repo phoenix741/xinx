@@ -17,49 +17,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
+#ifndef GCEPROPERTIES_H
+#define GCEPROPERTIES_H
+
 // Xinx header
-#include "gceinterfacefactory.h"
 #include "gceconfiguration.h"
-#include "gceconfigurationdef.h"
-#include "gceproperties.h"
+#include "gceconfigurationdefparser.h"
 
 // Qt header
-#include <QFile>
-#include <QDir>
+#include <QString>
+#include <QMultiHash>
+#include <QCoreApplication>
 
-GceInterfaceFactory::GceInterfaceFactory()
+class GcePropertiesParser : public GceConfigurationDefParser
 {
-}
+	Q_DECLARE_TR_FUNCTIONS(GcePropertiesParser)
+public:
+	GcePropertiesParser(const QString & filename);
+	virtual ~GcePropertiesParser();
 
-GceInterface * GceInterfaceFactory::createGceInterface(const QString & path)
-{
-	/*
-	 * Recherche l'existance des fichiers
-	 * - gce.properties.xml pour la GCE150
-	 * - configurationdef.xml pour la GCE140 ou 130
-	 * - configuration.xml pour le reste.
-	 */
-	try
-	{
-		if (QFile::exists(QDir(path).absoluteFilePath("gce.properties.xml")))
-		{
-			return new GceProperties(QDir(path).absoluteFilePath("gce.properties.xml"));
-		}
-		else if (QFile::exists(QDir(path).absoluteFilePath("configurationdef.xml")))
-		{
-			return new GceConfigurationDef(QDir(path).absoluteFilePath("configurationdef.xml"));
-		}
-		else if (QFile::exists(QDir(path).absoluteFilePath("configuration.xml")))
-		{
-			return new GceConfiguration(QDir(path).absoluteFilePath("configuration.xml"));
-		}
-	}
-	catch (GceInterfaceException e)
-	{
-		return NULL;
-	}
+    virtual void startJob();
+protected:
+	virtual void readGceProperties(const QString & propertiesFileName);
 
-	// Si aucun des fichiers n'est trouvé, nous ne somme pas dans une WebModule Generix. Il n'y a donc pas
-	// de fichier de configuration. On peut laisser tomber.
-	return NULL;
-}
+};
+
+#endif // GCEPROPERTIES_H

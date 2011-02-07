@@ -17,12 +17,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-#include "gceinterface.h"
+#ifndef GCECONFIGURATION_H
+#define GCECONFIGURATION_H
 
-GceInterface::GceInterface()
-{
-}
+// Xinx header
+#include "gceconfiguration.h"
+#include "gceparser.h"
 
-GceInterface::~GceInterface()
+// Qt header
+#include <QString>
+#include <QMultiHash>
+#include <QCoreApplication>
+
+class GceConfigurationParser : public GceParser
 {
-}
+	Q_DECLARE_TR_FUNCTIONS(GceConfigurationParser)
+public:
+	GceConfigurationParser(const QString & filename);
+	virtual ~GceConfigurationParser();
+
+    virtual void startJob();
+private:
+	QString _filename;
+};
+
+#endif // GCECONFIGURATION_H

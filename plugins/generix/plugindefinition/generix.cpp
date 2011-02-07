@@ -55,9 +55,9 @@
 class GenerixProjectInitialisationStep1 : public IProjectInitialisationStep
 {
 public:
-	XinxProject::Project * m_project;
+	XinxProject::Project * _project;
 
-	GenerixProjectInitialisationStep1(XinxProject::Project * project) : m_project(project)
+	GenerixProjectInitialisationStep1(XinxProject::Project * project) : _project(project)
 	{
 
 	}
@@ -73,66 +73,11 @@ public:
 
 	virtual bool process()
 	{
-		ConfigurationManager::self()->getInterfaceOfProject(m_project);
+		_project->addObject("generix", new ConfigurationManager(_project));
+
 		return true;
 	}
 };
-
-/* GenerixProjectInitialisationStep2 */
-
-class GenerixProjectInitialisationStep2 : public IProjectInitialisationStep
-{
-public:
-	XinxProject::Project * m_project;
-
-	GenerixProjectInitialisationStep2(XinxProject::Project * project) : m_project(project)
-	{
-
-	}
-
-	virtual ~GenerixProjectInitialisationStep2()
-	{
-	}
-
-	virtual QString name()
-	{
-		return GenerixPlugin::tr("Load dictionaries files ...");
-	}
-
-	virtual bool process()
-	{
-		// Create the new dictionary
-		GenerixProject * project = static_cast<GenerixProject*>(m_project);
-		if (project && project->isGenerixActivated() && SelfGceSettings::self()->config().readDictionaries)
-		{
-			ConfigurationManager::self()->loadDictionary(project);
-		}
-		return true;
-	}
-};
-
-
-/* GenerixProjectDeInitialisationStep */
-
-class GenerixProjectDeInitialisationStep : public IProjectInitialisationStep
-{
-public:
-	virtual ~GenerixProjectDeInitialisationStep()
-	{
-	}
-
-	virtual QString name()
-	{
-		return "Clean configuration cache";
-	}
-
-	virtual bool process()
-	{
-		ConfigurationManager::self()->cleanCache();
-		return true;
-	}
-};
-
 
 /* GenerixPlugin */
 
@@ -220,15 +165,13 @@ XsltParser * GenerixPlugin::createXsltParser(AbstractEditor * editor)
 
 QList<IProjectInitialisationStep*> GenerixPlugin::loadProjectStep(XinxProject::Project * project)
 {
-	return QList<IProjectInitialisationStep*>()
-	       << new GenerixProjectInitialisationStep1(project)
-	       << new GenerixProjectInitialisationStep2(project);
+	return QList<IProjectInitialisationStep*>() << new GenerixProjectInitialisationStep1(project);
 }
 
 QList<IProjectInitialisationStep*> GenerixPlugin::closeProjectStep(XinxProject::Project * project)
 {
 	Q_UNUSED(project);
-	return QList<IProjectInitialisationStep*>() << new GenerixProjectDeInitialisationStep();
+	return QList<IProjectInitialisationStep*>();
 }
 
 QList<IFileTypePlugin*> GenerixPlugin::fileTypes()

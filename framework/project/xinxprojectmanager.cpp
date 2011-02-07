@@ -357,7 +357,7 @@ void Manager::openProject(Project * project)
 	progressDlg.setMinimumWidth(300);
 	progressDlg.setMaximum(steps.size() + 1);
 	progressDlg.setValue(0);
-	progressDlg.show();
+	//progressDlg.show();
 
 	// FIXME : Must be customizable
 	if (XINXConfig::self()->config().project.singleProjectMode)

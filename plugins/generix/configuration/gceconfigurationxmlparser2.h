@@ -23,7 +23,7 @@
 
 // Xinx header
 #include "configurationfile.h"
-#include "gceconfigurationdef.h"
+#include "gceconfigurationdefparser.h"
 
 // Libxml
 #include <libxml/xmlreader.h>
@@ -37,7 +37,7 @@ public:
 	bool loadFromFile(const QString & filename);
 
 	/* INPUT */
-	GceConfigurationDef * m_parent;
+	GceConfiguration * _gce_configuration;
 	int m_configurationNumber;
 	bool m_quick;
 
