@@ -24,6 +24,11 @@ GceParser::GceParser() : _interface(0)
 
 }
 
+GceParser::GceParser(const QString & filename) : _interface(0), _filename(filename)
+{
+
+}
+
 GceParser::~GceParser()
 {
 
@@ -41,6 +46,6 @@ GceConfiguration* GceParser::interface() const
 
 QString GceParser::description() const
 {
-	return tr("Parse the configuration file");
+	return tr("Parse the configuration file %1").arg (_filename);
 }
 

@@ -36,9 +36,7 @@ public:
 	GceConfigurationParser(const QString & filename);
 	virtual ~GceConfigurationParser();
 
-    virtual void startJob();
-private:
-	QString _filename;
+	virtual void startJob();
 };
 
 #endif // GCECONFIGURATION_H

@@ -24,9 +24,9 @@
 
 /* GceConfigurationParser */
 
-GceConfigurationParser::GceConfigurationParser(const QString & filename) : _filename(filename)
+GceConfigurationParser::GceConfigurationParser(const QString & filename)
 {
-
+	_filename = filename;
 }
 
 GceConfigurationParser::~GceConfigurationParser()

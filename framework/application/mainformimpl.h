@@ -142,6 +142,7 @@ private slots:
 	void updateTitle();
 	void updateEditorInformations();
 	void createPluginsActions();
+	void updateProgressBar();
 
 	// Search
 	void findEnd();

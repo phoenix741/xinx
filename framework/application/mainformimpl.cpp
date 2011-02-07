@@ -335,6 +335,10 @@ void MainformImpl::connectSignals()
 	connect(XinxJobManager::self (), SIGNAL(progressRangeChanged(int,int)), m_indexingBar, SLOT(setRange(int,int)));
 	connect(XinxJobManager::self (), SIGNAL(progressValueChanged(int)), m_indexingBar, SLOT(setValue(int)));
 	connect(XinxJobManager::self (), SIGNAL(progressValueChanged(int)), m_indexingBar, SLOT(show()));
+
+	connect(XinxJobManager::self (), SIGNAL(progressRangeChanged(int,int)), this, SLOT(updateProgressBar()));
+	connect(XinxJobManager::self (), SIGNAL(progressValueChanged(int)), this, SLOT(updateProgressBar()));
+	connect(XinxJobManager::self (), SIGNAL(progressValueChanged(int)), this, SLOT(updateProgressBar()));
 }
 
 void MainformImpl::createPluginsActions()
@@ -557,6 +561,11 @@ void MainformImpl::updateEditorInformations()
 		m_codecLabel->setText(tr("No codec"));
 		m_lineFeedLabel->setText(tr("Unknown"));
 	}
+}
+
+void MainformImpl::updateProgressBar()
+{
+	m_indexingBar->setToolTip (XinxJobManager::self ()->descriptions().join("\n"));
 }
 
 void MainformImpl::about()

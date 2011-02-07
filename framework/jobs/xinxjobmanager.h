@@ -30,12 +30,13 @@ class LIBEXPORT XinxJobManager : public XinxLibSingleton<XinxJobManager>
 {
 	Q_OBJECT
 public:
-    virtual ~XinxJobManager();
+	virtual ~XinxJobManager();
 
 	void addJob(XinxJob * job);
 
 	int countRunningJob();
 	int countTotalJob();
+	QStringList descriptions() const;
 signals:
 	void progressRangeChanged(int minimum, int maximum);
 	void progressValueChanged(int value);
@@ -46,9 +47,9 @@ signals:
 	void allJobEnded();
 private slots:
 	void slotJobStarting();
-	void removeJob();
+	void removeJob(QObject* sender);
 private:
-    XinxJobManager();
+	XinxJobManager();
 	PrivateXinxJobManager * d;
 	friend class PrivateXinxJobManager;
 	friend class XinxLibSingleton<XinxJobManager>;

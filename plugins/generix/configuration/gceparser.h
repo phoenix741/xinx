@@ -29,6 +29,7 @@ class GceParser : public XinxJob
 	Q_OBJECT
 public:
 	GceParser();
+	GceParser(const QString & filename);
 	virtual ~GceParser();
 
 	void setInterface(GceConfiguration * interface);
@@ -42,7 +43,8 @@ signals:
 	void addConfiguration(const QString & filename);
 
 protected:
-    GceConfiguration * _interface;
+	GceConfiguration * _interface;
+	QString _filename;
 };
 
 #endif // GCEPARSER_H

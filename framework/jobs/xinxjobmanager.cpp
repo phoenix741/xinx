@@ -22,12 +22,16 @@
 
 #include <QThreadPool>
 #include <QDebug>
+#include <QStringList>
 
 class PrivateXinxJobManager
 {
 public:
 	QThreadPool * _pool;
 	QAtomicInt _count, _progress_value, _progress_max;
+
+	QScopedPointer<QMutex> _descriptions_mutex;
+	QHash<QObject*,QString> _descriptions_list;
 };
 
 /* XinxJobManager */
@@ -35,6 +39,7 @@ public:
 XinxJobManager::XinxJobManager()
 {
 	d = new PrivateXinxJobManager;
+	d->_descriptions_mutex.reset (new QMutex);
 	d->_pool = new QThreadPool;
 }
 
@@ -47,8 +52,8 @@ XinxJobManager::~XinxJobManager()
 
 void XinxJobManager::addJob(XinxJob* job)
 {
-	connect(job, SIGNAL(jobStarting()), this, SLOT(slotJobStarting()));
-	connect(job, SIGNAL(destroyed(QObject*)), this, SLOT(removeJob()));
+	connect(job, SIGNAL(jobStarting()), this, SLOT(slotJobStarting()), Qt::BlockingQueuedConnection);
+	connect(job, SIGNAL(destroyed(QObject*)), this, SLOT(removeJob(QObject*)));
 	if (d->_count == 0)
 	{
 		d->_progress_max = 1;
@@ -70,12 +75,23 @@ void XinxJobManager::addJob(XinxJob* job)
 
 void XinxJobManager::slotJobStarting()
 {
+	{
+		QMutexLocker locker(d->_descriptions_mutex.data ());
+		XinxJob * job = qobject_cast<XinxJob*> (sender());
+		d->_descriptions_list.insert(job, job->description ());
+	}
+
 	qDebug() << "Starting job (" << countRunningJob () << "/" << countTotalJob () << ")";
 	emit jobStarted (countTotalJob (), countRunningJob ());
 }
 
-void XinxJobManager::removeJob()
+void XinxJobManager::removeJob(QObject* sender)
 {
+	{
+		QMutexLocker locker(d->_descriptions_mutex.data ());
+		d->_descriptions_list.remove (sender);
+	}
+
 	d->_count.deref();
 	d->_progress_value.ref ();
 	emit progressValueChanged (d->_progress_value);
@@ -86,6 +102,12 @@ void XinxJobManager::removeJob()
 	}
 
 	qDebug() << "Remove job (" << countRunningJob () << "/" << countTotalJob () << ")";
+}
+
+QStringList XinxJobManager::descriptions() const
+{
+	QMutexLocker locker(d->_descriptions_mutex.data ());
+	return d->_descriptions_list.values ();
 }
 
 int XinxJobManager::countRunningJob()

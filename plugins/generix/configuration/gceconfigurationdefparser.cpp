@@ -38,9 +38,9 @@ GceConfigurationDefParser::GceConfigurationDefParser()
 
 }
 
-GceConfigurationDefParser::GceConfigurationDefParser(const QString & filename) : _filename(filename), _directory_path(QFileInfo(filename).absolutePath())
+GceConfigurationDefParser::GceConfigurationDefParser(const QString & filename) : _directory_path(QFileInfo(filename).absolutePath())
 {
-
+	_filename = filename;
 }
 
 GceConfigurationDefParser::~GceConfigurationDefParser()

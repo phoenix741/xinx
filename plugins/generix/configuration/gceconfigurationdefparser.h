@@ -45,7 +45,7 @@ protected:
 
 	friend class GceConfigurationXmlParser2;
 protected:
-	QString _filename, _directory_path;
+	QString _directory_path;
 };
 
 #endif // GCECONFIGURATIONDEF_H
