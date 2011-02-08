@@ -19,54 +19,60 @@
 
 // Xinx header
 #include "dictionarywidget.h"
+#include <configuration/configurationmanager.h>
+#include <editors/editormanager.h>
+#include <editors/abstracteditor.h>
+#include <contentview3/file.h>
+#include <contentview3/filenode.h>
 
 /* DictionaryWidget */
 
-DictionaryWidget::DictionaryWidget(QWidget * parent) : QTreeWidget(parent)
+DictionaryWidget::DictionaryWidget(QWidget * parent) : QTreeWidget(parent), _project(0)
 {
 	setSortingEnabled(true);
+
+	connect(EditorManager::self(), SIGNAL(currentChanged(int)), this, SLOT(textEditorChanged(int)));
+}
+
+void DictionaryWidget::textEditorChanged(int index)
+{
+	if ((index >= 0) && (index < EditorManager::self()->editorsCount()))
+	{
+		_project = EditorManager::self()->editor(index)->project();
+	}
+	else
+	{
+		_project = 0;
+	}
+	loadDictionaries(_prefix);
 }
 
 void DictionaryWidget::loadDictionaries(const QString & prefix)
 {
-	 /* FIXME: Use the new method
+	_prefix = prefix;
+
+	clear();
+	if (!_project) return;
+
+	QStringList dictionaries = ConfigurationManager::manager(_project)->getInterface()->dictionnaries();
+	foreach(const QString & dictionary, dictionaries)
+	{
+		ContentView3::NodePtr nodePtr = _project->cache()->cachedFile(dictionary)->rootNode();
+
+		foreach(ContentView3::NodePtr childNodePtr, nodePtr->childs())
+		{
+			QTreeWidgetItem * label = new QTreeWidgetItem(this);
+			label->setText(0, childNodePtr->name());
+			label->setIcon(0, QIcon(childNodePtr->icon()));
+		}
+	}
+
+	/* FIXME: Use the new method
 	try
 	{
 		ContentView2::Project project(XinxProject::Manager::self()->project());
 
 		QString whereClause =   "SELECT distinct display_name, name, icon "
-								"FROM cv_node, cv_file "
-								"WHERE cv_file.project_id=:project_id "
-								"  AND cv_node.file_id=cv_file.id "
-								"  AND cv_node.type = 'XslVariable' "
-								"  AND cv_file.type = 'GNX_DICO' %1 "
-								"ORDER BY lower(display_name) LIMIT 200";
-
-		if (!prefix.isEmpty())
-		{
-			whereClause = whereClause.arg(
-							  "  AND (cv_node.name like '%'||ifnull(:prefix1, '')||'%' "
-							  "   OR EXISTS (SELECT 1 FROM cv_node cv_node2 "
-							  " WHERE cv_node2.parent_id=cv_node.id "
-							  "   AND cv_node2.name like '%'||ifnull(:prefix2, '')||'%')) "
-						  );
-		}
-		else
-		{
-			whereClause = whereClause.arg("");
-		}
-
-		QSqlQuery query = ContentView2::Manager::self()->database()->prepare(whereClause);
-
-		query.bindValue(":project_id", project.projectId());
-
-		if (!prefix.isEmpty())
-		{
-			query.bindValue(":prefix1", prefix);
-			query.bindValue(":prefix2", prefix);
-		}
-		bool result = query.exec();
-		Q_ASSERT_X(result, "DictionaryWidget::exec", qPrintable(query.lastError().text()));
 
 		clear();
 		while (query.next())

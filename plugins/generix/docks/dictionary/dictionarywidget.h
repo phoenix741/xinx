@@ -22,6 +22,11 @@
 
 #include <QTreeWidget>
 
+namespace XinxProject
+{
+	class Project;
+}
+
 class DictionaryWidget : public QTreeWidget
 {
 	Q_OBJECT
@@ -29,6 +34,11 @@ public:
 	DictionaryWidget(QWidget * parent = 0);
 
 	void loadDictionaries(const QString & prefix);
+private slots:
+	void textEditorChanged(int index);
+private:
+	XinxProject::Project * _project;
+	QString _prefix;
 };
 
 #endif // DICTIONARYWIDGET_H

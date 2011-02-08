@@ -69,6 +69,7 @@ void ConfigurationManager::addConfiguration(const QString & filename)
 	{
 		_watcher->addPath(filename);
 	}
+	emit changed();
 }
 
 void ConfigurationManager::updateCache()
@@ -88,6 +89,7 @@ void ConfigurationManager::updateCache()
 
 		XinxJobManager::self()->addJob(parser);
 	}
+	emit changed();
 }
 
 GceConfiguration * ConfigurationManager::getInterface()

@@ -52,10 +52,12 @@ public:
 
 	void setProject(XinxProject::Project * project);
 private slots:
+	void updateList();
 	void on_m_prefixCombo_activated(QString text);
 	void editorChanged(int index);
 private:
 	GenerixProject * m_gnxProject;
+	int m_editorIndex;
 	BusinessViewListDelegate * m_delegate;
 };
 

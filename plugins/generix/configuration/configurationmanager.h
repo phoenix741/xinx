@@ -40,6 +40,9 @@ public:
 	static ConfigurationManager * manager(XinxProject::Project * project);
 
 	GceConfiguration * getInterface();
+
+signals:
+	void changed();
 private slots:
 	void updateCache();
 	void addDictionary(const QString & filename);

@@ -143,33 +143,20 @@ GenerixProjectDockImpl::GenerixProjectDockImpl(QWidget * parent) : QWidget(paren
 
 	setProject(0);
 
-	connect(dynamic_cast<QObject*>(EditorManager::self()), SIGNAL(currentChanged(int)), this, SLOT(editorChanged(int)));
+	connect(EditorManager::self(), SIGNAL(currentChanged(int)), this, SLOT(editorChanged(int)));
 }
 
 GenerixProjectDockImpl::~GenerixProjectDockImpl()
 {
 }
 
-void GenerixProjectDockImpl::setProject(XinxProject::Project * project)
+void GenerixProjectDockImpl::updateList()
 {
-	m_gnxProject = static_cast<GenerixProject*>(project);
 
-	m_prefixCombo->clear();
-	if (m_gnxProject && m_gnxProject->prefixes().size())
+	m_businessViewList->setEnabled(false);
+	if (m_gnxProject && (m_editorIndex >= 0) && (m_editorIndex < EditorManager::self()->editorsCount()))
 	{
-		m_prefixCombo->addItems(m_gnxProject->prefixes());
-
-		m_prefixCombo->setCurrentIndex(m_prefixCombo->findText(m_gnxProject->defaultPrefix()));
-	}
-	m_prefixCombo->setVisible(m_gnxProject && (m_gnxProject->prefixes().size() > 0));
-	m_prefixLabel->setVisible(m_gnxProject && (m_gnxProject->prefixes().size() > 0));
-}
-
-void GenerixProjectDockImpl::editorChanged(int index)
-{
-	if (m_gnxProject && (index >= 0) && (index < EditorManager::self()->editorsCount()))
-	{
-		const QString editorFilename = EditorManager::self()->editor(index)->lastFileName();
+		const QString editorFilename = EditorManager::self()->editor(m_editorIndex)->lastFileName();
 
 		m_filenameLabel->setText(tr("&Business view for file : \n%1").arg(QFileInfo(editorFilename).fileName()));
 
@@ -187,6 +174,7 @@ void GenerixProjectDockImpl::editorChanged(int index)
 				item->setData(Qt::UserRole + 2, information.targetName());
 				item->setData(Qt::UserRole + 3, m_gnxProject->projectPath());
 				m_businessViewList->addItem(item);
+				m_businessViewList->setEnabled(true);
 			}
 		}
 	}
@@ -194,6 +182,48 @@ void GenerixProjectDockImpl::editorChanged(int index)
 	{
 		m_filenameLabel->setText(QString());
 		m_businessViewList->clear();
+	}
+}
+
+void GenerixProjectDockImpl::setProject(XinxProject::Project * project)
+{
+	GenerixProject * gnxProject = static_cast<GenerixProject*>(project);
+	if (m_gnxProject != gnxProject)
+	{
+		if (m_gnxProject)
+		{
+			ConfigurationManager::manager(m_gnxProject)->disconnect(this, SLOT(updateList()));
+		}
+
+		m_gnxProject = gnxProject;
+
+		m_prefixCombo->clear();
+		if (m_gnxProject)
+		{
+			if (m_gnxProject->prefixes().size())
+			{
+				m_prefixCombo->addItems(m_gnxProject->prefixes());
+				m_prefixCombo->setCurrentIndex(m_prefixCombo->findText(m_gnxProject->defaultPrefix()));
+			}
+
+			connect(ConfigurationManager::manager(m_gnxProject), SIGNAL(changed()), this, SLOT(updateList()));
+		}
+		m_prefixCombo->setVisible(m_gnxProject && (m_gnxProject->prefixes().size() > 0));
+		m_prefixLabel->setVisible(m_gnxProject && (m_gnxProject->prefixes().size() > 0));
+	}
+}
+
+void GenerixProjectDockImpl::editorChanged(int index)
+{
+	if (m_editorIndex != index)
+	{
+		m_editorIndex = index;
+		if ((index >= 0) && (index < EditorManager::self()->editorsCount()))
+		{
+			setProject(EditorManager::self()->editor(index)->project());
+		}
+
+		updateList();
 	}
 }
 
