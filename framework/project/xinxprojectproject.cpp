@@ -86,7 +86,7 @@ private:
 };
 
 
-PrivateXinxProject::PrivateXinxProject(Project * parent): m_cache(0), _resolver(0), m_rcsProxy(0), m_parent(parent)
+PrivateXinxProject::PrivateXinxProject(Project * parent): m_version(XINX_PROJECT_VERSION), m_cache(0), _resolver(0), m_rcsProxy(0), m_parent(parent)
 {
 }
 

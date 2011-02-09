@@ -381,8 +381,10 @@ bool XmlTextEditor::processKeyPress(QKeyEvent * e)
 				QDocumentCursor balise = find(QRegExp("[<>]"), textCursor());
 				if (balise.isNull() || (balise.selectedText() == "<"))
 				{
+					Core::BaliseDefinition::XmlBalise balise = context_type->xpathLocation ().top ();
+
 					QDocumentCursor c(textCursor());
-					c.insertText(context_type->xpathLocation ().first ().baliseName() + ">");
+					c.insertText((balise.nameSpacePrefix ().isEmpty () ? "" : balise.nameSpacePrefix () + ":") + balise.baliseName() + ">");
 					setTextCursor(c);
 				}
 			}

@@ -62,6 +62,7 @@ void DictionaryModel::loadDictionaries(const QString & prefix)
 	emit changed();
 
 	if (! _project) return;
+	if (! ConfigurationManager::manager(_project)) return;
 	if (! ConfigurationManager::manager(_project)->getInterface()) return;
 	if (prefix.isEmpty())
 	{
