@@ -123,9 +123,10 @@ signals:
 	void fileClosing(const QString & filename);
 	void fileClosed(const QString & filename);
 
+	void codecChanged();
 	void contentChanged();
 	void currentChanged(int index);
-	// FIXME: The editor position must be change and the codec too
+	// FIXME: The editor position must be change
 	void positionChanged(const QString & text);
 	void aboutToClose();
 private:

@@ -98,6 +98,7 @@ int FileWatcherManager::indexOfWatchedFile(const QString & filename)
 
 void FileWatcherManager::addFile(const QString & filename)
 {
+	qDebug() << "Add file " << filename << " to the watcher";
 	m_watchedFilesMutex.lock();
 	int index;
 	if ((index = indexOfWatchedFile(filename)) == -1)
@@ -117,6 +118,7 @@ void FileWatcherManager::addFile(const QString & filename)
 
 void FileWatcherManager::removeFile(const QString & filename)
 {
+	qDebug() << "Remove file " << filename << " to the watcher";
 	m_watchedFilesMutex.lock();
 	int index = indexOfWatchedFile(filename);
 	if (m_watchedfiles.at(index)->deref() == 0)
@@ -153,24 +155,51 @@ FileWatched * FileWatcherManager::watchedFileAt(int index)
 	return m_watchedfiles.at(index);
 }
 
-
 /* PrivateFileWatcher */
 
-PrivateWatcher::PrivateWatcher(FileWatcher * parent) : m_isActivated(true), m_parent(parent)
+PrivateFileWatcher::PrivateFileWatcher(FileWatcher * parent) : m_isActivated(true), m_parent(parent)
 {
 }
 
-PrivateWatcher::~PrivateWatcher()
+PrivateFileWatcher::~PrivateFileWatcher()
 {
 	FileWatcherManager::instance()->removeFile(m_filename);
 	FileWatcherManager::deleteIfPossible();
 }
 
-void PrivateWatcher::fileChanged(QString filename)
+void PrivateFileWatcher::fileChanged(QString filename)
 {
 	if (m_isActivated && (m_filename == filename))
 		emit m_parent->fileChanged();
 }
+
+/* PrivateFilesWatcher */
+
+PrivateFilesWatcher::PrivateFilesWatcher(FilesWatcher * parent) : _parent(parent)
+{
+}
+
+PrivateFilesWatcher::~PrivateFilesWatcher()
+{
+	removePaths(_filenames);
+	FileWatcherManager::deleteIfPossible();
+}
+
+void PrivateFilesWatcher::fileChanged(QString filename)
+{
+	if (_filenames.contains(filename))
+		emit _parent->fileChanged(filename);
+}
+
+void PrivateFilesWatcher::removePaths(const QStringList & paths)
+{
+	foreach(QString filename, paths)
+	{
+		_filenames.removeAll(filename);
+		FileWatcherManager::instance()->removeFile(filename);
+	}
+}
+
 
 /*! \endcond */
 
@@ -198,7 +227,7 @@ void PrivateWatcher::fileChanged(QString filename)
  */
 FileWatcher::FileWatcher(const QString & filename)
 {
-	d = new PrivateWatcher(this);
+	d = new PrivateFileWatcher(this);
 	d->m_filename = filename;
 
 	connect(FileWatcherManager::instance(), SIGNAL(fileChanged(QString)), d, SLOT(fileChanged(QString)), Qt::QueuedConnection);
@@ -232,3 +261,62 @@ void FileWatcher::activate()
 }
 
 
+/*!
+* \class FilesWatcher
+* \brief Class used to watch the modification of multiple file.
+*
+* All files is periodically watched and if the date of the file is modified, the user is alerted by a signal.
+*
+* Behind the FileWatcher, a thread watch modifications of all files referenced by a
+* FileWatcher. The watcher can be desactivate and reactivate without delete the object.
+* When the object is reactivated, the file date, in memory, is updated.
+*/
+
+/*!
+* \fn void FilesWatcher::fileChanged()
+* \brief The signal is emited when the watched file is modified.
+*/
+
+/*!
+* Create a FilesWatcher with a file name
+*/
+FilesWatcher::FilesWatcher(QObject* parent) : QObject(parent)
+{
+	d = new PrivateFilesWatcher(this);
+
+	connect(FileWatcherManager::instance(), SIGNAL(fileChanged(QString)), d, SLOT(fileChanged(QString)), Qt::QueuedConnection);
+}
+
+/*! Destroy the FilesWatcher */
+FilesWatcher::~FilesWatcher()
+{
+	delete d;
+}
+
+void FilesWatcher::addPath(const QString& path)
+{
+	if (! d->_filenames.contains(path))
+	{
+		d->_filenames.append(path);
+		FileWatcherManager::instance()->addFile(path);
+	}
+}
+
+void FilesWatcher::removePath(const QString & path)
+{
+	if (d->_filenames.contains(path))
+	{
+		d->_filenames.removeAll(path);
+		FileWatcherManager::instance()->removeFile(path);
+	}
+}
+
+void FilesWatcher::removePaths(const QStringList& paths)
+{
+	d->removePaths(paths);
+}
+
+const QStringList& FilesWatcher::files() const
+{
+	return d->_filenames;
+}

@@ -27,7 +27,6 @@
 // Qt header
 #include <QString>
 #include <QAtomicInt>
-#include <QFileSystemWatcher>
 #include <QHash>
 
 namespace XinxProject

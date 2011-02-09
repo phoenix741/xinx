@@ -27,7 +27,8 @@
 // Qt header
 #include <qobject.h>
 
-class PrivateWatcher;
+class PrivateFileWatcher;
+class PrivateFilesWatcher;
 
 class LIBEXPORT FileWatcher : public QObject
 {
@@ -41,8 +42,26 @@ public:
 signals:
 	void fileChanged();
 protected:
-	PrivateWatcher * d;
-	friend class PrivateWatcher;
+	PrivateFileWatcher * d;
+	friend class PrivateFileWatcher;
+};
+
+class LIBEXPORT FilesWatcher : public QObject
+{
+	Q_OBJECT
+public:
+	explicit FilesWatcher(QObject * parent = 0);
+    virtual ~FilesWatcher();
+
+	void addPath(const QString & path);
+	void removePath(const QString & path);
+	void removePaths(const QStringList & paths);
+	const QStringList & files() const;
+signals:
+	void fileChanged(const QString & path);
+private:
+	PrivateFilesWatcher * d;
+	friend class PrivateFilesWatcher;
 };
 
 #endif // _FILEWATCHER_H_

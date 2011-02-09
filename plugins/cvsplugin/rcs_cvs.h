@@ -24,11 +24,11 @@
 // Xinx header
 #include <core/exceptions.h>
 #include <versioncontrol/rcs.h>
+#include <core/filewatcher.h>
 #include "entries.h"
 
 // Qt header
 #include <QPointer>
-#include <QFileSystemWatcher>
 #include <QProcess>
 
 class PluginSettings;
@@ -74,7 +74,7 @@ private:
 	QPointer<QProcess> m_process;
 
 	EntriesList * m_entriesList;
-	QFileSystemWatcher * m_watcher;
+	FilesWatcher * m_watcher;
 
 	QString m_cvs;
 	PluginSettings * m_settings;

@@ -113,6 +113,7 @@ void PrivateEditorManager::connectEditor(AbstractEditor * editor)
 {
 	connect(editor, SIGNAL(open(QString,int)),			_manager, SLOT(openFile(QString,int)));
 	connect(editor, SIGNAL(contentChanged()),			_manager, SIGNAL(contentChanged()));
+	connect(editor, SIGNAL(codecChanged()),				_manager, SIGNAL(codecChanged()));
 	connect(editor, SIGNAL(modificationChanged(bool)),	this,     SLOT(slotModifiedChange()));
 	connect(editor, SIGNAL(positionChanged(QString)), 	_manager, SIGNAL(positionChanged(QString)));
 
@@ -599,6 +600,7 @@ void EditorManager::openFile(const QString& filename, IFileTypePlugin* interface
 		openingEditor = EditorFactory::self()->createEditor(filename, interface, project);
 		d->addTab(openingEditor);
 		d->updateActions();
+		emit codecChanged();
 
 		ScriptManager::self()->callScriptsAfterLoad(openingEditor);
 

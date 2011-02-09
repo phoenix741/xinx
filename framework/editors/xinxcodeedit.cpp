@@ -980,7 +980,6 @@ void XinxCodeEdit::key_home(bool select)
 		setTextCursor(cursorStart);
 }
 
-// FIXME : Fix the completion : localKeyPressExecute, postKeyPressEvent, keyPressEvent, postKeyPressEvent
 bool XinxCodeEdit::keyPressEvent(QKeyEvent * e, QEditor * editor)
 {
 	Q_UNUSED(editor);

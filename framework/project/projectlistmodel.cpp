@@ -292,6 +292,7 @@ PrivateProjectListModel::PrivateProjectListModel(ProjectListModel* parent): QObj
 PrivateProjectListModel::~PrivateProjectListModel()
 {
 	delete _root_node;
+	delete _fetcher;
 }
 
 ModelFileNode * PrivateProjectListModel::node(ModelFileNode* currentNode, const QString& path)

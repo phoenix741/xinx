@@ -66,7 +66,6 @@ private:
 };
 
 /*
- * FIXME: Créer un item de type action
  * FIXME: Documentation
  */
 class LIBEXPORT Item : public QStandardItem

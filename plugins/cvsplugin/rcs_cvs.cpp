@@ -36,7 +36,7 @@
 RCS_CVS::RCS_CVS(const QString & base) : RCS(base), m_content(0)
 {
 	m_entriesList = new EntriesList();
-	m_watcher     = new QFileSystemWatcher(this);
+	m_watcher     = new FilesWatcher(this);
 	m_cvs         = XINXConfig::self()->getTools("cvs");
 	connect(m_watcher, SIGNAL(fileChanged(QString)), this, SLOT(entriesStateChanged(QString)));
 }

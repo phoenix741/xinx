@@ -23,12 +23,12 @@
 // Qt header
 #include <QObject>
 #include <QHash>
-#include <QFileSystemWatcher>
 #include <QScopedPointer>
 
 // Xinx header
 #include "configuration/gceconfiguration.h"
 #include <project/xinxprojectproject.h>
+#include <core/filewatcher.h>
 
 class ConfigurationManager : public QObject
 {
@@ -49,7 +49,7 @@ private slots:
 	void addConfiguration(const QString & filename);
 private:
 	QScopedPointer<QTimer> _updateCacheTimer;
-	QScopedPointer<QFileSystemWatcher> _watcher;
+	QScopedPointer<FilesWatcher> _watcher;
 	QScopedPointer<GceConfiguration> _interface;
 	XinxProject::Project * _project;
 };

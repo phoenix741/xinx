@@ -21,6 +21,7 @@
 #include "parser.h"
 #include "parserfactory.h"
 #include <jobs/xinxjobmanager.h>
+#include <core/filewatcher.h>
 
 // Qt header
 #include <QFile>
@@ -60,7 +61,7 @@ public:
 
 	QHash<QString,CacheInformation> _files;
 
-	QFileSystemWatcher * _watcher;
+	FilesWatcher * _watcher;
 	XinxProject::Project * _project;
 	QMutex _cache_mutex;
 
@@ -100,7 +101,7 @@ Cache::Cache(XinxProject::Project* project)
 
 	d                   = new PrivateCache;
 	d->_project         = project;
-	d->_watcher         = new QFileSystemWatcher(this);
+	d->_watcher         = new FilesWatcher(this);
 
 	connect(d->_watcher, SIGNAL(fileChanged(QString)), this, SLOT(refreshCache(QString)));
 }

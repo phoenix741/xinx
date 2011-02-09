@@ -313,7 +313,7 @@ void MainformImpl::createActions()
 	connect(m_aboutAct, SIGNAL(triggered()), this, SLOT(about()));
 
 	// Tab Editor
-	connect(EditorManager::self(), SIGNAL(contentChanged()), this, SLOT(updateEditorInformations()));
+	connect(EditorManager::self(), SIGNAL(codecChanged()), this, SLOT(updateEditorInformations()));
 	connect(EditorManager::self(), SIGNAL(currentChanged(int)), this, SLOT(updateActions()));
 
 	/* WINDOW */

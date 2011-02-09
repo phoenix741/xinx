@@ -27,6 +27,7 @@
 #include "xinxprojectproject.h"
 #include <jobs/xinxjob.h>
 #include <QMutex>
+#include <QFileSystemWatcher>
 
 namespace XinxProject
 {

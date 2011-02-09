@@ -29,7 +29,7 @@
 
 /* ConfigurationManager */
 
-ConfigurationManager::ConfigurationManager(XinxProject::Project* project) : _updateCacheTimer(new QTimer), _watcher(new QFileSystemWatcher), _interface(new GceConfiguration), _project(project)
+ConfigurationManager::ConfigurationManager(XinxProject::Project* project) : _updateCacheTimer(new QTimer), _watcher(new FilesWatcher), _interface(new GceConfiguration), _project(project)
 {
 	_updateCacheTimer->setSingleShot (true);
 	_updateCacheTimer->setInterval (5000);

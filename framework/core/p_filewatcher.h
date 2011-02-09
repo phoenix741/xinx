@@ -95,12 +95,12 @@ private:
 	QList<FileWatched*> m_watchedfiles;
 };
 
-class PrivateWatcher : public QObject
+class PrivateFileWatcher : public QObject
 {
 	Q_OBJECT
 public:
-	PrivateWatcher(FileWatcher * parent);
-	~PrivateWatcher();
+	PrivateFileWatcher(FileWatcher * parent);
+	~PrivateFileWatcher();
 
 	QString m_filename;
 	bool m_isActivated;
@@ -108,6 +108,22 @@ public slots:
 	void fileChanged(QString filename);
 private:
 	FileWatcher * m_parent;
+};
+
+class PrivateFilesWatcher : public QObject
+{
+	Q_OBJECT
+public:
+    PrivateFilesWatcher(FilesWatcher * parent);
+    ~PrivateFilesWatcher();
+
+	void removePaths(const QStringList & paths);
+
+	QStringList _filenames;
+public slots:
+	void fileChanged(QString filename);
+private:
+	FilesWatcher * _parent;
 };
 
 extern FileWatcherManager * fileWatcherManager;
