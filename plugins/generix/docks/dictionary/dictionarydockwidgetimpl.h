@@ -37,6 +37,7 @@ public:
 	virtual ~DictionaryDockWidgetImpl();
 private slots:
 	void on_m_filterLine_textChanged(QString filter);
+	void dictionariesLoaded();
 private:
 	virtual void timerEvent(QTimerEvent * event);
 

@@ -61,11 +61,9 @@
      <attribute name="headerVisible">
       <bool>false</bool>
      </attribute>
-     <column>
-      <property name="text">
-       <string notr="true">1</string>
-      </property>
-     </column>
+     <attribute name="headerVisible">
+      <bool>false</bool>
+     </attribute>
     </widget>
    </item>
    <item>
@@ -85,7 +83,7 @@
   </customwidget>
   <customwidget>
    <class>DictionaryWidget</class>
-   <extends>QTreeWidget</extends>
+   <extends>QTreeView</extends>
    <header>docks/dictionary/dictionarywidget.h</header>
   </customwidget>
  </customwidgets>

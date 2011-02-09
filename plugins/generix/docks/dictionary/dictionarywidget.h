@@ -20,25 +20,28 @@
 #ifndef DICTIONARYWIDGET_H
 #define DICTIONARYWIDGET_H
 
-#include <QTreeWidget>
+#include <QTreeView>
 
+class DictionaryModel;
 namespace XinxProject
 {
 	class Project;
 }
 
-class DictionaryWidget : public QTreeWidget
+class DictionaryWidget : public QTreeView
 {
 	Q_OBJECT
 public:
 	DictionaryWidget(QWidget * parent = 0);
+    virtual ~DictionaryWidget();
 
-	void loadDictionaries(const QString & prefix);
-private slots:
-	void textEditorChanged(int index);
+	void setPrefix(const QString & prefix);
+	const QString & prefix();
+signals:
+	void changed();
 private:
-	XinxProject::Project * _project;
 	QString _prefix;
+	QScopedPointer<DictionaryModel> _model;
 };
 
 #endif // DICTIONARYWIDGET_H
