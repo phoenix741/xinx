@@ -152,7 +152,6 @@ GenerixProjectDockImpl::~GenerixProjectDockImpl()
 
 void GenerixProjectDockImpl::updateList()
 {
-
 	m_businessViewList->setEnabled(false);
 	if (m_gnxProject && ConfigurationManager::manager(m_gnxProject) && (m_editorIndex >= 0) && (m_editorIndex < EditorManager::self()->editorsCount()))
 	{
@@ -190,12 +189,12 @@ void GenerixProjectDockImpl::setProject(XinxProject::Project * project)
 	GenerixProject * gnxProject = static_cast<GenerixProject*>(project);
 	if (m_gnxProject != gnxProject)
 	{
-		if (m_gnxProject)
+		if (m_gnxProject && ConfigurationManager::manager(m_gnxProject))
 		{
 			ConfigurationManager::manager(m_gnxProject)->disconnect(this, SLOT(updateList()));
 		}
 
-		if (ConfigurationManager::manager(m_gnxProject))
+		if (ConfigurationManager::manager(gnxProject))
 		{
 			m_gnxProject = gnxProject;
 		}
@@ -213,7 +212,7 @@ void GenerixProjectDockImpl::setProject(XinxProject::Project * project)
 				m_prefixCombo->setCurrentIndex(m_prefixCombo->findText(m_gnxProject->defaultPrefix()));
 			}
 
-			connect(m_gnxProject, SIGNAL(changed()), this, SLOT(updateList()));
+			connect(ConfigurationManager::manager(gnxProject), SIGNAL(changed()), this, SLOT(updateList()));
 		}
 		m_prefixCombo->setVisible(m_gnxProject && (m_gnxProject->prefixes().size() > 0));
 		m_prefixLabel->setVisible(m_gnxProject && (m_gnxProject->prefixes().size() > 0));

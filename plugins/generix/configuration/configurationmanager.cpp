@@ -25,13 +25,17 @@
 #include "projectproperty/generixproject.h"
 #include "docks/dictionary/dictionary_parser.h"
 #include <jobs/xinxjobmanager.h>
+#include <QTimer>
 
 /* ConfigurationManager */
 
-ConfigurationManager::ConfigurationManager(XinxProject::Project* project) : _interface(new GceConfiguration), _project(project)
+ConfigurationManager::ConfigurationManager(XinxProject::Project* project) : _updateCacheTimer(new QTimer), _watcher(new QFileSystemWatcher), _interface(new GceConfiguration), _project(project)
 {
-	_watcher = new QFileSystemWatcher(this);
-	connect(_watcher, SIGNAL(fileChanged(QString)), this, SLOT(updateCache()));
+	_updateCacheTimer->setSingleShot (true);
+	_updateCacheTimer->setInterval (5000);
+
+	connect(_watcher.data (), SIGNAL(fileChanged(QString)), _updateCacheTimer.data (), SLOT(start()));
+	connect(_updateCacheTimer.data (), SIGNAL(timeout()), this, SLOT(updateCache()));
 
 	updateCache();
 }
@@ -86,10 +90,10 @@ void ConfigurationManager::updateCache()
 
 		connect(parser, SIGNAL(addConfiguration(QString)), this, SLOT(addConfiguration(QString)), Qt::QueuedConnection);
 		connect(parser, SIGNAL(addDictionary(QString)), this, SLOT(addDictionary(QString)), Qt::QueuedConnection);
+		connect(parser, SIGNAL(jobEnding()), this, SIGNAL(changed()));
 
 		XinxJobManager::self()->addJob(parser);
 	}
-	emit changed();
 }
 
 GceConfiguration * ConfigurationManager::getInterface()

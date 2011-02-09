@@ -48,7 +48,8 @@ private slots:
 	void addDictionary(const QString & filename);
 	void addConfiguration(const QString & filename);
 private:
-	QFileSystemWatcher * _watcher;
+	QScopedPointer<QTimer> _updateCacheTimer;
+	QScopedPointer<QFileSystemWatcher> _watcher;
 	QScopedPointer<GceConfiguration> _interface;
 	XinxProject::Project * _project;
 };
