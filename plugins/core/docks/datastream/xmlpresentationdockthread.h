@@ -67,7 +67,7 @@ public slots:
 	void presentationActivated(int index);
 	void threadTerminated();
 
-	void filterTextChanged(const QString & text);
+	void filterTextChanged();
 	void filterTextChangedTimer();
 
 	void updateXinxConf(int value);

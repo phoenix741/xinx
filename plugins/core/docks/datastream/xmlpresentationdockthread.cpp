@@ -57,14 +57,14 @@ XmlPresentationDockThread::XmlPresentationDockThread(XmlPresentationDockWidget *
 	connect(m_xmlPresentationWidget->m_evaluateToolButton, SIGNAL(clicked()), this, SLOT(evaluate()));
 
 	connect(m_xmlPresentationWidget->m_presentationComboBox, SIGNAL(activated(int)), this, SLOT(presentationActivated(int)));
-	connect(m_xmlPresentationWidget->m_filtreLineEdit, SIGNAL(textChanged(QString)), this, SLOT(filterTextChanged(QString)));
+	connect(m_xmlPresentationWidget->m_filtreLineEdit, SIGNAL(textChanged(QString)), this, SLOT(filterTextChanged()));
 	connect(this, SIGNAL(finished()), this, SLOT(threadTerminated()));
 
 	connect(m_xmlPresentationWidget->m_presentationTreeView, SIGNAL(expanded(QModelIndex)), this, SLOT(adaptColumns()));
 
 	connect(m_xmlPresentationWidget->m_filterComboBox, SIGNAL(activated(int)), this, SLOT(updateXinxConf(int)));
 	connect(&m_timerTextChanged, SIGNAL(timeout()), this, SLOT(filterTextChangedTimer()));
-	connect(SelfWebPluginSettings::self(), SIGNAL(changed()), this, SLOT(filterTextChangedTimer()));
+	connect(SelfWebPluginSettings::self(), SIGNAL(changed()), this, SLOT(filterTextChanged()));
 
 	connect(dynamic_cast<QObject*>(EditorManager::self()), SIGNAL(currentChanged(int)), this, SLOT(editorChanged()));
 }
@@ -374,10 +374,9 @@ void XmlPresentationDockThread::threadTerminated()
 	emit m_parent->filenameChanged(m_openingFile);
 }
 
-void XmlPresentationDockThread::filterTextChanged(const QString & text)
+void XmlPresentationDockThread::filterTextChanged()
 {
-	Q_UNUSED(text);
-	if (m_sortFilterModel)
+	if (m_sortFilterModel && ! isRunning ())
 		m_timerTextChanged.start();
 }
 

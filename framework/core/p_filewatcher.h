@@ -34,16 +34,18 @@
 #include <QList>
 #include <QDateTime>
 #include <QTimer>
+#include <QFileInfo>
 
 class FileWatched : public QObject
 {
 	Q_OBJECT
 public:
 	FileWatched() {}
-	FileWatched(const FileWatched & o) : QObject(), m_name(o.m_name), m_date(o.m_date) {}
-	explicit FileWatched(const QString & name) : m_name(name)
+	FileWatched(const FileWatched & o) : QObject(), count(1), m_name(o.m_name), m_date(o.m_date), m_file(o.m_file) {}
+	explicit FileWatched(const QString & name) : count(1), m_name(name), m_file(name)
 	{
-		initializeDate();
+		m_file.refresh ();
+		m_date = m_file.lastModified();
 	}
 	virtual ~FileWatched() {}
 
@@ -51,8 +53,12 @@ public:
 	{
 		return m_name;
 	}
+	const QDateTime & date() const
+	{
+		return m_date;
+	}
+
 	bool isFileChanged();
-	void initializeDate();
 
 	inline int ref()
 	{
@@ -66,9 +72,10 @@ private:
 	int count;
 	QString m_name;
 	QDateTime m_date;
+	QFileInfo m_file;
 };
 
-class FileWatcherManager : public XinxThread
+class LIBEXPORT FileWatcherManager : public XinxThread
 {
 	Q_OBJECT
 public:
@@ -91,6 +98,7 @@ signals:
 	void fileChanged(QString filename);
 	void directoryChanged(QString directory);
 private:
+	static FileWatcherManager * s_self;
 	QMutex m_watchedFilesMutex;
 	QList<FileWatched*> m_watchedfiles;
 };
@@ -102,6 +110,7 @@ public:
 	PrivateFileWatcher(FileWatcher * parent);
 	~PrivateFileWatcher();
 
+	QDateTime m_activatedDate;
 	QString m_filename;
 	bool m_isActivated;
 public slots:
