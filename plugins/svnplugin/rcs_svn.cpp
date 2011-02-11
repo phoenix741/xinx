@@ -309,15 +309,7 @@ RCS::FilesOperation RCS_SVN::operations(const QStringList & paths)
 		svn::StatusEntries entries;
 		try
 		{
-			try
-			{
-				entries = m_client->status(qPrintable(path), /* descend */ true, /* get_all */ true, /* update */ true, /* no_ignore */ false, /* ignore_externals */ false);
-			}
-			catch(svn::ClientException e)
-			{
-				emit log(RCS::LogNormal, e.message());
-				entries = m_client->status(qPrintable(path), /* descend */ true, /* get_all */ true, /* update */ false, /* no_ignore */ false, /* ignore_externals */ false);
-			}
+			entries = m_client->status(qPrintable(path), /* descend */ true, /* get_all */ false, /* update */ false, /* no_ignore */ false, /* ignore_externals */ false);
 
 			for(size_t i = 0; i < entries.size(); i++)
 			{
@@ -344,7 +336,10 @@ RCS::FilesOperation RCS_SVN::operations(const QStringList & paths)
 					break;
 				}
 
-				operations << operation;
+				if ((QFileInfo(operation.filename).isFile() && paths.contains(operation.filename)) || (operation.operation != RCS::Nothing))
+				{
+					operations << operation;
+				}
 			}
 		}
 		catch(svn::ClientException e)
