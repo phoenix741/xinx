@@ -34,20 +34,20 @@ class DerivationDialogImpl : public QDialog, Ui::DerivationDialog
 {
 	Q_OBJECT
 public:
-	 DerivationDialogImpl(XinxProject::Project * project, QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint);
+	DerivationDialogImpl(XinxProject::ProjectPtr project, QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint);
 	virtual ~DerivationDialogImpl();
 
 	void load(const QString & filename, const QString & filter);
 	QString getNewPath() const;
 
-	static bool isDerivableFile(XinxProject::Project * project, const QString & filename);
+	static bool isDerivableFile(XinxProject::ProjectPtr p, const QString& filename);
 
 private slots:
 	void changePath();
 
 private:
 	QString m_filename, m_relativeFilename;
-	 XinxProject::Project * _project;
+	XinxProject::ProjectPtr _project;
 };
 
 #endif // DERIVATIONDIALOGIMPL_H

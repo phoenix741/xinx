@@ -58,12 +58,12 @@ const QString & DirectoryFetcher::directory() const
 	return _directory;
 }
 
-void DirectoryFetcher::setProject(Project * project)
+void DirectoryFetcher::setProject(ProjectPtr project)
 {
 	_project = project;
 }
 
-Project * DirectoryFetcher::project() const
+ProjectPtr DirectoryFetcher::project() const
 {
 	return _project;
 }
@@ -125,7 +125,7 @@ void DirectoryFetcher::startJob()
 
 /* ModelFileNode */
 
-ModelFileNode::ModelFileNode(PrivateProjectListModel * p) : _private_model(p), _is_project(false), _project(0), _parent(0), _is_children_populated(false)
+ModelFileNode::ModelFileNode(PrivateProjectListModel * p) : _private_model(p), _is_project(false), _parent(0), _is_children_populated(false)
 {
 	_rcs_info.state = RCS::Unknown;
 }
@@ -166,26 +166,29 @@ QIcon ModelFileNode::icon() const
 
 QString ModelFileNode::displayText() const
 {
+	XinxProject::ProjectPtr project = _project.toStrongRef();
+	if (! project) return QString();
+
 	if (_is_project)
 	{
-		return QString("%1 [%2]").arg(_project->projectName()).arg(_project->projectPath());
+		return QString("%1 [%2]").arg(project->projectName()).arg(project->projectPath());
 	}
 	else
 	{
 		if (_private_model->_long_directory_name)
 		{
-			return QDir(_project->projectPath ()).relativeFilePath (_info.absoluteFilePath ());
+			return QDir(project->projectPath ()).relativeFilePath (_info.absoluteFilePath ());
 		}
 
 		return _info.fileName();
 	}
 }
 
-void ModelFileNode::add(XinxProject::Project * project)
+void ModelFileNode::add(ProjectPtr project)
 {
 	ModelFileNode * node = new ModelFileNode (_private_model);
 	node->_is_project = true;
-	node->_project    = project;
+	node->_project    = project.toWeakRef();
 	node->_info       = QFileInfo(project->projectPath());
 	add(node);
 }
@@ -228,7 +231,7 @@ void ModelFileNode::add(ModelFileNode * node)
 	_children.insert(node->_filename, node);
 }
 
-ModelFileNode * ModelFileNode::remove(XinxProject::Project * project)
+ModelFileNode * ModelFileNode::remove(ProjectPtr project)
 {
 	return remove(project->projectPath());
 }
@@ -267,7 +270,7 @@ void ModelFileNode::removeVisibleChildren(const QString & filename)
 
 /* PrivateProjectListModel */
 
-PrivateProjectListModel::PrivateProjectListModel(ProjectListModel* parent): QObject(parent), _model(parent), _selected_item(0), _provider(0), _long_directory_name(false)
+PrivateProjectListModel::PrivateProjectListModel(ProjectListModel* parent): QObject(parent), _model(parent), _provider(0), _long_directory_name(false)
 {
 	qRegisterMetaType<QFileInfoList>( "QFileInfoList" );
 	qRegisterMetaType< QList<RCS::struct_rcs_infos> >( "QList<RCS::struct_rcs_infos>" );
@@ -281,10 +284,10 @@ PrivateProjectListModel::PrivateProjectListModel(ProjectListModel* parent): QObj
 
 	_filter_type = ProjectListModel::FILTER_NONE;
 
-	connect(XinxProject::Manager::self(), SIGNAL(selectionChanged(XinxProject::Project*)), this, SLOT(selectionChange(XinxProject::Project*)));
-	connect(XinxProject::Manager::self(), SIGNAL(projectOpened(XinxProject::Project*)), this, SLOT(addProject(XinxProject::Project*)));
-	connect(XinxProject::Manager::self(), SIGNAL(projectCustomized(XinxProject::Project*)), this, SLOT(updateProject(XinxProject::Project*)));
-	connect(XinxProject::Manager::self(), SIGNAL(projectClosing(XinxProject::Project*)), this, SLOT(removeProject(XinxProject::Project*)));
+	connect(XinxProject::Manager::self(), SIGNAL(selectionChanged(XinxProject::ProjectPtr)), this, SLOT(selectionChange(XinxProject::ProjectPtr)));
+	connect(XinxProject::Manager::self(), SIGNAL(projectOpened(XinxProject::ProjectPtr)), this, SLOT(addProject(XinxProject::ProjectPtr)));
+	connect(XinxProject::Manager::self(), SIGNAL(projectCustomized(XinxProject::ProjectPtr)), this, SLOT(updateProject(XinxProject::ProjectPtr)));
+	connect(XinxProject::Manager::self(), SIGNAL(projectClosing(XinxProject::ProjectPtr)), this, SLOT(removeProject(XinxProject::ProjectPtr)));
 
 	connect(_watcher, SIGNAL(directoryChanged(QString)), this, SLOT(fetchPath(QString)));
 }
@@ -454,23 +457,23 @@ void PrivateProjectListModel::updateVisibleChildren(ModelFileNode * node, bool r
 	}
 }
 
-void PrivateProjectListModel::addProject(Project* project)
+void PrivateProjectListModel::addProject(ProjectPtr project)
 {
 	_root_node->add(project);
 	_root_node->addVisibleChildren(project->projectPath());
 }
 
-void PrivateProjectListModel::removeProject(Project* project)
+void PrivateProjectListModel::removeProject(ProjectPtr project)
 {
 	if (project == _selected_item)
 	{
-		_selected_item = 0;
+		_selected_item.clear();
 	}
 	_root_node->removeVisibleChildren(project->projectPath());
 	delete _root_node->remove(project);
 }
 
-void PrivateProjectListModel::updateProject(Project* project)
+void PrivateProjectListModel::updateProject(ProjectPtr project)
 {
 	QModelIndex index = _model->index (project);
 	if (! index.isValid ()) return;
@@ -478,7 +481,7 @@ void PrivateProjectListModel::updateProject(Project* project)
 	emit _model->dataChanged (index, index);
 }
 
-void PrivateProjectListModel::selectionChange(XinxProject::Project * project)
+void PrivateProjectListModel::selectionChange(ProjectPtr project)
 {
 	if (_selected_item)
 	{
@@ -491,7 +494,7 @@ void PrivateProjectListModel::selectionChange(XinxProject::Project * project)
 	}
 	else
 	{
-		_selected_item = 0;
+		_selected_item.clear();
 	}
 }
 
@@ -802,11 +805,11 @@ QString ProjectListModel::filePath(const QModelIndex& index) const
 	return node->_info.canonicalFilePath();
 }
 
-Project* ProjectListModel::fileProject(const QModelIndex& index) const
+ProjectPtr ProjectListModel::fileProject(const QModelIndex& index) const
 {
-	if (! index.isValid()) return NULL;
+	if (! index.isValid()) return ProjectPtr();
 	ModelFileNode* node = static_cast<ModelFileNode*> (index.internalPointer());
-	if (!node) return NULL;
+	if (!node) return ProjectPtr();
 	return node->_project;
 }
 
@@ -851,7 +854,7 @@ QModelIndex ProjectListModel::index(const QString& path, int column) const
 	return (d->index(d->node(d->_root_node, QFileInfo(path).canonicalFilePath())));
 }
 
-QModelIndex ProjectListModel::index (XinxProject::Project * project) const
+QModelIndex ProjectListModel::index (XinxProject::ProjectPtr project) const
 {
 	if (d->_root_node->_children.contains (project->projectPath()))
 	{
@@ -928,7 +931,7 @@ QVariant ProjectListModel::data (const QModelIndex & index, int role) const
 			return node->displayText();
 			break;
 		case Qt::FontRole:
-			if (node->isProject() && node->_project == d->_selected_item)
+			if (node->isProject() && node->_project.data() == d->_selected_item.data())
 			{
 				return d->_selected_font;
 			}
@@ -949,7 +952,7 @@ QVariant ProjectListModel::data (const QModelIndex & index, int role) const
 				return tips;
 			}
 		case Qt::BackgroundRole:
-			if (node->isProject() || node->_project->projectRCS().isEmpty())
+			if (node->isProject() || node->_project.toStrongRef()->projectRCS().isEmpty())
 			{
 				return QVariant();
 			}

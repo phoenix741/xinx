@@ -37,7 +37,7 @@ inline static bool projectIsActivated(AbstractEditor * editor)
 {
 	if (!editor) return false;
 
-	XinxProject::Project * project = editor->project();
+	XinxProject::ProjectPtr project = editor->project();
 	if (! (project && project->activatedPlugin().contains("ServicesPlugin") && project->containsObject("webservices"))) return false;
 
 	Q_ASSERT_X(projectWebServicesManager(editor), "projectIsActivated", "The object webservices should be created");

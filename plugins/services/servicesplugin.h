@@ -44,8 +44,8 @@ public:
 	virtual QList<IXinxPluginProjectConfigurationPage*> createProjectSettingsPage(QWidget * parent);
 	virtual QList<IXinxPluginNewProjectConfigurationPage*> createNewProjectSettingsPages();
 
-    virtual QList< IProjectInitialisationStep* > loadProjectStep(XinxProject::Project* project);
-    virtual QList< IProjectInitialisationStep* > closeProjectStep(XinxProject::Project* project);
+    virtual QList< IProjectInitialisationStep* > loadProjectStep(XinxProject::ProjectPtr project);
+    virtual QList< IProjectInitialisationStep* > closeProjectStep(XinxProject::ProjectPtr project);
     virtual QString getFilename(AbstractEditor* editor, const QString& filename, const QString& defaultFilename, const QString& filter, bool saveAs, bool& accept, QWidget* widget = 0);
     virtual QIODevice* loadFile(AbstractEditor* editor, const QString& filename);
     virtual QIODevice* saveFile(AbstractEditor* editor, const QString& filename, const QString& oldfilename);

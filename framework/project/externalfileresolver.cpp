@@ -23,6 +23,7 @@
 #include "plugins/xinxpluginsloader.h"
 #include <plugins/xinxpluginelement.h>
 #include <plugins/interfaces/resolver.h>
+#include <project/xinxprojectproject.h>
 
 // Qt header
 #include <QDir>
@@ -30,7 +31,7 @@
 
 /* ExternalFileResolver */
 
-ExternalFileResolver::ExternalFileResolver(XinxProject::Project * project) : _project(project)
+ExternalFileResolver::ExternalFileResolver(XinxProject::ProjectPtrWeak project) : _project(project)
 {
 }
 
@@ -92,6 +93,8 @@ IFileResolverPlugin * ExternalFileResolver::externalFileResover(const QString & 
 
 QString ExternalFileResolver::resolveFileName(const QString & nameToResolve, const QString & currentPath)
 {
+	XinxProject::ProjectPtr project = _project.toStrongRef();
+
 	QString resolvedName = m_externalFileResolverCache.value(qMakePair(nameToResolve,currentPath));
 	if (! resolvedName.isEmpty() && QFile::exists(resolvedName))
 		return resolvedName;
@@ -104,7 +107,7 @@ QString ExternalFileResolver::resolveFileName(const QString & nameToResolve, con
 		foreach(IFileResolverPlugin * resolver, resolverPlugin->fileResolvers())
 		{
 			resolvedName = nameToResolve;
-			bool hasResolve = resolver->resolveFileName(nameToResolve, resolvedName, currentPath, _project);
+			bool hasResolve = resolver->resolveFileName(nameToResolve, resolvedName, currentPath, project);
 			if (hasResolve && QFile::exists(resolvedName))
 			{
 				m_externalFileResolverCache.insert(qMakePair(nameToResolve, currentPath), resolvedName);

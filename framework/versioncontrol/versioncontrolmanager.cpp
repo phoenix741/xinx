@@ -60,7 +60,7 @@ void Manager::initialisation()
 	m_abort->setEnabled(false);
 	connect(m_abort, SIGNAL(triggered()), this, SLOT(abort()));
 
-	connect(XinxProject::Manager::self(), SIGNAL(selectionChanged(XinxProject::Project *)), this, SLOT(changed(XinxProject::Project *)));
+	connect(XinxProject::Manager::self(), SIGNAL(selectionChanged(XinxProject::ProjectPtr)), this, SLOT(changed(XinxProject::ProjectPtr)));
 
 	connect(&m_rcsWatcher, SIGNAL(started()), this, SLOT(startOperations()));
 	connect(&m_rcsWatcher, SIGNAL(started()), this, SLOT(updateActions()));
@@ -174,7 +174,7 @@ void Manager::updateRevision(RCS * rcs, QString path, QString revision, QByteArr
 	m_rcsWatcher.setFuture(QtConcurrent::run(this, &Manager::callRCSUpdateRevision, rcs, path, revision, content));
 }
 
-void Manager::changed(XinxProject::Project * project)
+void Manager::changed(XinxProject::ProjectPtr project)
 {
 	bool rcs_enabled = project && project->rcsProxy() && ! project->projectRCS().isEmpty() && ! isExecuting ();
 	m_updateAll->setEnabled(rcs_enabled);
@@ -184,12 +184,12 @@ void Manager::changed(XinxProject::Project * project)
 
 void Manager::updateActions()
 {
-	changed (XinxProject::Manager::self()->selectedProject());
+	changed (XinxProject::Manager::self()->selectedProject().toStrongRef());
 }
 
 void Manager::updateWorkingCopy()
 {
-	XinxProject::Project * project = XinxProject::Manager::self()->selectedProject();
+	XinxProject::ProjectPtr project = XinxProject::Manager::self()->selectedProject().toStrongRef();
 	if (!project || project->projectRCS().isEmpty() || !project->rcsProxy()) return;
 
 	project->rcsProxy()->updateWorkingCopy();
@@ -197,7 +197,7 @@ void Manager::updateWorkingCopy()
 
 void Manager::validWorkingCopy()
 {
-	XinxProject::Project * project = XinxProject::Manager::self()->selectedProject();
+	XinxProject::ProjectPtr project = XinxProject::Manager::self()->selectedProject().toStrongRef();
 	if (!project || project->projectRCS().isEmpty() || !project->rcsProxy()) return;
 
 	project->rcsProxy()->validWorkingCopy(QStringList(), qApp->activeWindow());

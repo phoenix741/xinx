@@ -56,7 +56,7 @@ void* xsltParserInputOpenCallback(const char* filename)
 
 	QString bufferString(QString::fromLatin1(f.readAll()));
 
-	XinxProject::Project * project = XinxProject::Manager::self()->projectOfFile(filename);
+	XinxProject::ProjectPtr project = XinxProject::Manager::self()->projectOfFile(filename);
 	if (project)
 	{
 		QRegExp importRegExp("(<xsl:import[^>]+href\\s*=\\s*\")(.*)(\".*>)");

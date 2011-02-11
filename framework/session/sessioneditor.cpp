@@ -19,6 +19,7 @@
 
 #include "sessioneditor.h"
 #include "session.h"
+#include <project/xinxprojectproject.h>
 
 namespace XinxSession {
 
@@ -32,10 +33,10 @@ public:
 	SessionEditor * _session_editor;
 	QHash<QString,QVariant> _properties;
 	Session * _parent;
-	XinxProject::Project * _project;
+	XinxProject::ProjectPtrWeak _project;
 };
 
-PrivateSessionEditor::PrivateSessionEditor(Session * session, SessionEditor * session_editor) : _session_editor(session_editor), _parent(session), _project(0)
+PrivateSessionEditor::PrivateSessionEditor(Session * session, SessionEditor * session_editor) : _session_editor(session_editor), _parent(session)
 {
 
 }
@@ -76,14 +77,14 @@ SessionEditor::~SessionEditor()
 {
 }
 
-void SessionEditor::setProject(XinxProject::Project* project)
+void SessionEditor::setProject(XinxProject::ProjectPtr project)
 {
-	d->_project = project;
+	d->_project = project.toWeakRef();
 }
 
-XinxProject::Project* SessionEditor::project() const
+XinxProject::ProjectPtr SessionEditor::project() const
 {
-	return d->_project;
+	return d->_project.toStrongRef();
 }
 
 /*!

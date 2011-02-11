@@ -29,6 +29,7 @@
 // Xinx header
 #include <core/lib-config.h>
 #include <core/xinxsingleton.h>
+#include <project/xinxprojectproject.h>
 
 // Qt header
 #include <QObject>
@@ -39,10 +40,6 @@
 class IFileTypePlugin;
 class AbstractEditor;
 class PrivateEditorManager;
-namespace XinxProject
-{
-	class Project;
-}
 
 namespace XinxSession
 {
@@ -91,8 +88,8 @@ public slots:
 	void changeToPreviousEditor();
 
 	void openFile();
-	void openFile(const QString & filename, IFileTypePlugin * interface = 0, XinxProject::Project * project = 0);
-	void openFile(const QString & filename, int line, IFileTypePlugin * interface = 0, XinxProject::Project * project = 0);
+	void openFile(const QString & filename, IFileTypePlugin * interface = 0, XinxProject::ProjectPtr project = XinxProject::ProjectPtr());
+	void openFile(const QString & filename, int line, IFileTypePlugin * interface = 0, XinxProject::ProjectPtr project = XinxProject::ProjectPtr());
 	void saveFile(bool saveAs = false);
 	void saveFile(int index, bool saveAs = false);
 	void saveFile(AbstractEditor * editor, bool saveAs = false);
@@ -109,7 +106,7 @@ public slots:
 	void closeFile(int index, bool confirm = true);
 	void closeFile(AbstractEditor * editor, bool confirm = true);
 	void closeFile(bool confirm = true);
-	bool closeAllFile(XinxProject::Project * project = 0);
+	bool closeAllFile(XinxProject::ProjectPtr project = XinxProject::ProjectPtr());
 
 	void copyFileNameToClipboard();
 	void copyPathToClipboard();

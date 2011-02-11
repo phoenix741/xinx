@@ -34,7 +34,7 @@ GenerixDerivationOptionsPageImpl::~GenerixDerivationOptionsPageImpl()
 {
 }
 
-void GenerixDerivationOptionsPageImpl::setProject(XinxProject::Project * project)
+void GenerixDerivationOptionsPageImpl::setProject(XinxProject::ProjectPtr project)
 {
 	m_project = project;
 }
@@ -51,7 +51,7 @@ QString GenerixDerivationOptionsPageImpl::name()
 
 bool GenerixDerivationOptionsPageImpl::loadSettingsDialog()
 {
-	GenerixProject * project = static_cast<GenerixProject*>(m_project);
+	QSharedPointer<GenerixProject> project = m_project.staticCast<GenerixProject>();
 	if (! project) return false;
 
 	m_createMissingDirectoryChk->setChecked(project->createMissingDirectory());
@@ -65,7 +65,7 @@ bool GenerixDerivationOptionsPageImpl::loadSettingsDialog()
 
 bool GenerixDerivationOptionsPageImpl::saveSettingsDialog()
 {
-	GenerixProject * project = static_cast<GenerixProject*>(m_project);
+	QSharedPointer<GenerixProject> project = m_project.staticCast<GenerixProject>();
 	if (! project) return false;
 
 	project->setCreateMissingDirectory(m_createMissingDirectoryChk->isChecked());

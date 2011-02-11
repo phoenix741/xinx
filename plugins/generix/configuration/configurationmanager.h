@@ -34,10 +34,10 @@ class ConfigurationManager : public QObject
 {
 	Q_OBJECT
 public:
-	ConfigurationManager(XinxProject::Project * project);
+	ConfigurationManager(XinxProject::ProjectPtr project);
 	virtual ~ConfigurationManager();
 
-	static ConfigurationManager * manager(XinxProject::Project * project);
+	static ConfigurationManager * manager(XinxProject::ProjectPtr project);
 
 	GceConfiguration * getInterface();
 
@@ -51,7 +51,7 @@ private:
 	QScopedPointer<QTimer> _updateCacheTimer;
 	QScopedPointer<FilesWatcher> _watcher;
 	QScopedPointer<GceConfiguration> _interface;
-	XinxProject::Project * _project;
+	XinxProject::ProjectPtrWeak _project;
 };
 
 #endif // CONFIGURATIONMANAGER_H

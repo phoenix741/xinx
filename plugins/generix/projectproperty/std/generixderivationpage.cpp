@@ -257,9 +257,9 @@ GenerixDerivationPathPageImpl::~GenerixDerivationPathPageImpl()
 {
 }
 
-void GenerixDerivationPathPageImpl::setProject(XinxProject::Project * project)
+void GenerixDerivationPathPageImpl::setProject(XinxProject::ProjectPtr project)
 {
-	if (m_project != project)
+	if (m_project.data() != project.data())
 	{
 		m_delegate->setAbsolutePath(project->projectPath());
 		m_project = project;
@@ -278,7 +278,7 @@ QString GenerixDerivationPathPageImpl::name()
 
 bool GenerixDerivationPathPageImpl::loadSettingsDialog()
 {
-	GenerixProject * project = static_cast<GenerixProject*>(m_project);
+	QSharedPointer<GenerixProject> project = m_project.staticCast<GenerixProject>();
 	if (! project) return false;
 
 	m_model->setDerivationPath(project->derivationsPath());
@@ -288,7 +288,7 @@ bool GenerixDerivationPathPageImpl::loadSettingsDialog()
 
 bool GenerixDerivationPathPageImpl::saveSettingsDialog()
 {
-	GenerixProject * project = static_cast<GenerixProject*>(m_project);
+	QSharedPointer<GenerixProject> project = m_project.staticCast<GenerixProject>();
 	if (! project) return false;
 
 	project->setDerivationsPath(m_model->derivationPath());

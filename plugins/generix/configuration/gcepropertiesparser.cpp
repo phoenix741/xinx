@@ -57,8 +57,6 @@ void GcePropertiesParser::startJob()
 
 void GcePropertiesParser::readGceProperties(const QString & propertiesFileName)
 {
-	interface()->addAliasPolicy("ROOT_WEBAPP", _directory_path);
-
 	interface()->addFilename(propertiesFileName);
 
 	// Ouverture du fichier XML
@@ -96,6 +94,10 @@ void GcePropertiesParser::readGceProperties(const QString & propertiesFileName)
 	// If we don't find an valid string, we try to read the same xpath, with an xmlns (for version post 1.60)
 	if (! (xpathObj && xpathObj->stringval && xpathObj->stringval[0]))
 	{
+		if (xpathObj)
+		{
+			xmlXPathFreeObject(xpathObj);
+		}
 		xmlXPathRegisterNs(xpathCtx, (xmlChar*)"gce", (xmlChar*)"http://www.generix.fr/technicalframework/gceproperties");
 		xpathObj = xmlXPathEvalExpression((xmlChar*)"string(/gce:config/gce:application/gce:configurationDefinition/gce:definition/@name)", xpathCtx);
 	}
@@ -108,10 +110,17 @@ void GcePropertiesParser::readGceProperties(const QString & propertiesFileName)
 	// If we don't find an valid string, we try to read the same xpath, with an xmlns (for version post 1.60)
 	if (! (xpathObj && xpathObj->nodesetval && xpathObj->nodesetval->nodeNr))
 	{
+		if (xpathObj)
+		{
+			xmlXPathFreeObject(xpathObj);
+		}
+		xmlXPathRegisterNs(xpathCtx, (xmlChar*)"gce", (xmlChar*)"http://www.generix.fr/technicalframework/gceproperties");
 		xpathObj = xmlXPathEvalExpression((xmlChar*)"/gce:config/gce:application/gce:presentation/gce:alias/gce:policy", xpathCtx);
 	}
 	if (xpathObj && xpathObj->nodesetval)
 	{
+		interface()->addAliasPolicy("ROOT_WEBAPP", _directory_path);
+
 		xmlNodeSetPtr policies = xpathObj->nodesetval;
 		for (int i = 0; i < policies->nodeNr; i++)
 		{
@@ -130,6 +139,10 @@ void GcePropertiesParser::readGceProperties(const QString & propertiesFileName)
 			}
 		}
 
+		xmlXPathFreeObject(xpathObj);
+	}
+	else if (xpathObj)
+	{
 		xmlXPathFreeObject(xpathObj);
 	}
 

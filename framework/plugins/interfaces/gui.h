@@ -23,10 +23,13 @@
 
 #include <QWizardPage>
 #include <QtPlugin>
+#include <QSharedPointer>
 
 namespace XinxProject
 {
 	class Project;
+
+	typedef QSharedPointer<Project> ProjectPtr;
 }
 
 /*!
@@ -66,7 +69,7 @@ public:
 	virtual ~IXinxPluginProjectConfigurationPage() {}
 
 	//! Set the project to use in the dialog to load and save settings.
-	virtual void setProject(XinxProject::Project * project) = 0;
+	virtual void setProject(XinxProject::ProjectPtr project) = 0;
 };
 
 /*!
@@ -80,7 +83,7 @@ public:
 	//! Return true if this page can be the next page
 	virtual bool pageIsVisible() const = 0;
 	//! Save the wizard settings page in the project
-	virtual bool saveSettingsDialog(XinxProject::Project * project) = 0;
+	virtual bool saveSettingsDialog(XinxProject::ProjectPtr project) = 0;
 private:
 };
 

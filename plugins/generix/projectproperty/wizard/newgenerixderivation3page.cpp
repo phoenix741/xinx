@@ -45,14 +45,16 @@ bool NewGenerixDerivation3Page::pageIsVisible() const
 	return field("generix.derivation").toBool() || (version >= version150);
 }
 
-bool NewGenerixDerivation3Page::saveSettingsDialog(XinxProject::Project * project)
+bool NewGenerixDerivation3Page::saveSettingsDialog(XinxProject::ProjectPtr project)
 {
+	QSharedPointer<GenerixProject> gnxProject = project.staticCast<GenerixProject>();
+
 	QStringList prefixes;
-	static_cast<GenerixProject*>(project)->setCreateMissingDirectory(m_missingDirChk->isChecked());
+	gnxProject->setCreateMissingDirectory(m_missingDirChk->isChecked());
 	if (m_addPrefixChk->isChecked())
 		prefixes << m_prefixEdit->text();
-	static_cast<GenerixProject*>(project)->setPrefixes(prefixes);
-	static_cast<GenerixProject*>(project)->setCopySourceFileInDerivationPath(m_copyToChk->isChecked());
+	gnxProject->setPrefixes(prefixes);
+	gnxProject->setCopySourceFileInDerivationPath(m_copyToChk->isChecked());
 
 	return true;
 }

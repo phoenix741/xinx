@@ -35,7 +35,7 @@ public:
 
 	virtual QString pagePluginId() const;
 	virtual bool pageIsVisible() const;
-	virtual bool saveSettingsDialog(XinxProject::Project * project);
+	virtual bool saveSettingsDialog(XinxProject::ProjectPtr project);
 
 	virtual void initializePage();
 };

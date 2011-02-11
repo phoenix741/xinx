@@ -22,11 +22,7 @@
 #pragma once
 
 #include "ui_projectproperty.h"
-
-namespace XinxProject
-{
-	class Project;
-};
+#include <project/xinxprojectproject.h>
 
 class IXinxPluginProjectConfigurationPage;
 
@@ -37,8 +33,8 @@ public:
 	ProjectPropertyImpl(QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint);
 	virtual ~ProjectPropertyImpl();
 
-	void loadFromProject(XinxProject::Project *);
-	void saveToProject(XinxProject::Project *);
+	void loadFromProject(XinxProject::ProjectPtr project);
+	void saveToProject(XinxProject::ProjectPtr project);
 private:
 	QList< IXinxPluginProjectConfigurationPage* > m_pluginPages;
 	QHash< QString, QTreeWidgetItem* > m_pluginsCheck;

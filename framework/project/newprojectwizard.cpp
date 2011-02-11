@@ -36,7 +36,7 @@
 /* NewProjectWizard */
 #include <versioncontrol/versioncontrolmanager.h>
 
-NewProjectWizard::NewProjectWizard(QWidget * widget, Qt::WFlags f) : QWizard(widget, f), m_project(0)
+NewProjectWizard::NewProjectWizard(QWidget * widget, Qt::WFlags f) : QWizard(widget, f)
 {
 	m_templateDialog = new TemplateDialogImpl;
 	m_projectPage = new ProjectPageImpl;
@@ -84,13 +84,13 @@ NewProjectWizard::NewProjectWizard(QWidget * widget, Qt::WFlags f) : QWizard(wid
 	adjustSize();
 }
 
-XinxProject::Project * NewProjectWizard::createProject()
+XinxProject::ProjectPtr NewProjectWizard::createProject()
 {
 	if (! m_project)
 	{
 		const QString projectPath = QDir::fromNativeSeparators(field("project.path").toString());
 
-		m_project = new XinxProject::Project(projectPath, true);
+		m_project = XinxProject::Project::create(projectPath, true);
 		m_project->setActivatedPlugin(m_plugins);
 
 		NewProjectTemplate * templateProject = m_templateDialog->currentTemplate();
@@ -184,7 +184,7 @@ bool ProjectPageImpl::pageIsVisible() const
 	return true;
 }
 
-bool ProjectPageImpl::saveSettingsDialog(XinxProject::Project* project)
+bool ProjectPageImpl::saveSettingsDialog(XinxProject::ProjectPtr project)
 {
 	project->setProjectName(field("project.name").toString());
 
@@ -230,7 +230,7 @@ bool VersionsPageImpl::pageIsVisible() const
 	return true;
 }
 
-bool VersionsPageImpl::saveSettingsDialog(XinxProject::Project* project)
+bool VersionsPageImpl::saveSettingsDialog(XinxProject::ProjectPtr project)
 {
 	QString rcs = QString();
 	if (! m_noRevisionControl->isChecked())
@@ -275,7 +275,7 @@ bool LastPageImpl::pageIsVisible() const
 	return true;
 }
 
-bool LastPageImpl::saveSettingsDialog(XinxProject::Project* project)
+bool LastPageImpl::saveSettingsDialog(XinxProject::ProjectPtr project)
 {
 	Q_UNUSED(project);
 	return true;

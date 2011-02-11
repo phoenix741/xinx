@@ -96,7 +96,8 @@ void WelcomDialogImpl::addProjectFile(const QString & filename)
 	{
 		try
 		{
-			m_projectWidget->addItem(XinxProject::Project(filename).projectName(), filename);
+			XinxProject::ProjectPtr ptr =  XinxProject::Project::create(filename);
+			m_projectWidget->addItem(ptr->projectName(), filename);
 		}
 		catch (XinxProject::ProjectException e)
 		{

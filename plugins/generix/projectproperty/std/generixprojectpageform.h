@@ -32,7 +32,7 @@ public:
 	GenerixProjectPageFormImpl(QWidget * parent = 0, Qt::WFlags f = 0);
 	virtual ~GenerixProjectPageFormImpl();
 
-	virtual void setProject(XinxProject::Project * project);
+	virtual void setProject(XinxProject::ProjectPtr project);
 
 	virtual QPixmap image();
 	virtual QString name();
@@ -46,7 +46,7 @@ public:
 private slots:
 	void updateInformations();
 private:
-	XinxProject::Project * m_project;
+	XinxProject::ProjectPtr m_project;
 };
 
 #endif // _GENERIXPROJECTPAGEFORM_H_

@@ -58,7 +58,7 @@ void DockWidget::doubleClicked(QModelIndex index)
 		emit open(index.data (Qt::UserRole + 1).toString (),
 				  index.data (Qt::UserRole + 2).toInt (),
 				  0,
-				  index.data (Qt::UserRole + 3).value<XinxProject::Project*>());
+				  index.data (Qt::UserRole + 3).value<XinxProject::ProjectPtrWeak>().toStrongRef());
 	}
 }
 

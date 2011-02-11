@@ -69,7 +69,7 @@ AbstractEditor * EditorFactory::createEditor(IFileTypePlugin * interface)
 	return editor;
 }
 
-AbstractEditor * EditorFactory::createEditor(const QString& filename, IFileTypePlugin* interface, XinxProject::Project* project)
+AbstractEditor * EditorFactory::createEditor(const QString& filename, IFileTypePlugin* interface, XinxProject::ProjectPtr project)
 {
 	Q_ASSERT(! filename.isEmpty());
 
@@ -89,7 +89,7 @@ AbstractEditor * EditorFactory::createEditor(const QString& filename, IFileTypeP
 	}
 
 	/* If no project is defined we must find one */
-	if (!project)
+	if (project.isNull())
 	{
 		project = XinxProject::Manager::self ()->projectOfFile(filename);
 	}

@@ -49,7 +49,7 @@ QString ManualFileResolver::name()
 	return tr("Manual Resolver");
 }
 
-QStringList ManualFileResolver::searchPathList(XinxProject::Project * project) const
+QStringList ManualFileResolver::searchPathList(XinxProject::ProjectPtr project) const
 {
 	QStringList searchList = project->readProperty("searchPathList").toString().split(";;");
 	QMutableStringListIterator it(searchList);
@@ -61,7 +61,7 @@ QStringList ManualFileResolver::searchPathList(XinxProject::Project * project) c
 	return searchList;
 }
 
-bool ManualFileResolver::resolveFileName ( const QString& nameToResolve, QString& resolvedName, const QString& currentPath, XinxProject::Project* project )
+bool ManualFileResolver::resolveFileName ( const QString& nameToResolve, QString& resolvedName, const QString& currentPath, XinxProject::ProjectPtr project )
 {
 	QStringList searchList;
 

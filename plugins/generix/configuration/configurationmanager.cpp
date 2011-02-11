@@ -29,7 +29,7 @@
 
 /* ConfigurationManager */
 
-ConfigurationManager::ConfigurationManager(XinxProject::Project* project) : _updateCacheTimer(new QTimer), _watcher(new FilesWatcher), _interface(new GceConfiguration), _project(project)
+ConfigurationManager::ConfigurationManager(XinxProject::ProjectPtr project) : QObject(project.data()), _updateCacheTimer(new QTimer), _watcher(new FilesWatcher), _interface(new GceConfiguration), _project(project.toWeakRef())
 {
 	_updateCacheTimer->setSingleShot (true);
 	_updateCacheTimer->setInterval (5000);
@@ -45,7 +45,7 @@ ConfigurationManager::~ConfigurationManager()
 
 }
 
-ConfigurationManager* ConfigurationManager::manager(XinxProject::Project* project)
+ConfigurationManager* ConfigurationManager::manager(XinxProject::ProjectPtr project)
 {
 	if (! project) return NULL;
 	QObject * object = project->getObject("generix");
@@ -54,16 +54,19 @@ ConfigurationManager* ConfigurationManager::manager(XinxProject::Project* projec
 
 void ConfigurationManager::addDictionary(const QString & filename)
 {
+	XinxProject::ProjectPtr project = _project.toStrongRef();
+	if (! project) return;
+
 	QFile * device = new QFile(filename);
 	if (device->open(QFile::ReadOnly))
 	{
-		ContentView3::FilePtr file = _project->cache ()->cachedFile (filename);
+		ContentView3::FilePtr file = project->cache ()->cachedFile (filename);
 
 		Generix::Dictionary::Parser * dictionaryParser = new Generix::Dictionary::Parser();
 		dictionaryParser->setFile(file);
 		dictionaryParser->setDevice(device);
 
-		_project->cache ()->addFileToCache (dictionaryParser, false, ContentView3::Cache::PROJECT);
+		project->cache ()->addFileToCache (dictionaryParser, false, ContentView3::Cache::PROJECT);
 	}
 }
 
@@ -78,12 +81,15 @@ void ConfigurationManager::addConfiguration(const QString & filename)
 
 void ConfigurationManager::updateCache()
 {
+	XinxProject::ProjectPtr project = _project.toStrongRef();
+	if (! project) return;
+
 	_interface->clearAliasPolicy();
 	_interface->clearBusinessView();
 	_interface->clearDictionaries();
 	_interface->clearFilenames();
 
-	GceParser * parser = GceConfigurationParserFactory::createGceParser(_project->projectPath());
+	GceParser * parser = GceConfigurationParserFactory::createGceParser(project->projectPath());
 	if (parser)
 	{
 		parser->setInterface(_interface.data());

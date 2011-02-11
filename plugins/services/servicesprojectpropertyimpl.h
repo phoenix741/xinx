@@ -44,7 +44,7 @@ public:
 	virtual QPixmap image();
 	virtual QString name();
 
-	virtual void setProject(XinxProject::Project * project);
+	virtual void setProject(XinxProject::ProjectPtr project);
 
 	virtual bool loadSettingsDialog();
 	virtual bool saveSettingsDialog();
@@ -67,7 +67,7 @@ private:
 	QHttp * m_http;
 	QProgressDialog * m_httpProgressDialog;
 	QString m_url;
-	XinxProject::Project * m_project;
+	XinxProject::ProjectPtr m_project;
 };
 
 #endif // SERVICESPROJECTPROPERTYIMPL_H

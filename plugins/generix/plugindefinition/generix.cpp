@@ -55,9 +55,9 @@
 class GenerixProjectInitialisationStep1 : public IProjectInitialisationStep
 {
 public:
-	XinxProject::Project * _project;
+	XinxProject::ProjectPtr _project;
 
-	GenerixProjectInitialisationStep1(XinxProject::Project * project) : _project(project)
+	GenerixProjectInitialisationStep1(XinxProject::ProjectPtr project) : _project(project)
 	{
 
 	}
@@ -154,7 +154,7 @@ QList<CodeCompletion::ItemModelFactory*> GenerixPlugin::createItemModelFactory()
 
 XsltParser * GenerixPlugin::createXsltParser(AbstractEditor * editor)
 {
-	GenerixProject * project = static_cast<GenerixProject*>(editor->project());
+	QSharedPointer<GenerixProject> project = editor->project().staticCast<GenerixProject>();
 	if (project && project->isGenerixActivated())
 	{
 		return new GenerixXsltParser();
@@ -163,12 +163,12 @@ XsltParser * GenerixPlugin::createXsltParser(AbstractEditor * editor)
 		return 0;
 }
 
-QList<IProjectInitialisationStep*> GenerixPlugin::loadProjectStep(XinxProject::Project * project)
+QList<IProjectInitialisationStep*> GenerixPlugin::loadProjectStep(XinxProject::ProjectPtr project)
 {
 	return QList<IProjectInitialisationStep*>() << new GenerixProjectInitialisationStep1(project);
 }
 
-QList<IProjectInitialisationStep*> GenerixPlugin::closeProjectStep(XinxProject::Project * project)
+QList<IProjectInitialisationStep*> GenerixPlugin::closeProjectStep(XinxProject::ProjectPtr project)
 {
 	Q_UNUSED(project);
 	return QList<IProjectInitialisationStep*>();
@@ -188,7 +188,7 @@ QIODevice * GenerixPlugin::loadFile(AbstractEditor * editor, const QString & fil
 
 QIODevice * GenerixPlugin::saveFile(AbstractEditor * editor, const QString & filename, const QString & oldfilename)
 {
-	GenerixProject * gnxProject = static_cast<GenerixProject*>(editor->project());
+	QSharedPointer<GenerixProject> gnxProject = editor->project().staticCast<GenerixProject>();
 	if (!(gnxProject && gnxProject->isGenerixActivated() && gnxProject->copySourceFileInDerivationPath()) || (filename == oldfilename))
 	{
 		return 0;
@@ -207,7 +207,7 @@ QIODevice * GenerixPlugin::saveFile(AbstractEditor * editor, const QString & fil
 
 QString GenerixPlugin::getFilename(AbstractEditor* editor, const QString& filename, const QString& defaultFilename, const QString& filter, bool saveAs, bool& accept, QWidget* widget)
 {
-	 GenerixProject * gnxProject = static_cast<GenerixProject*>(editor->project());
+	QSharedPointer<GenerixProject> gnxProject = editor->project().staticCast<GenerixProject>();
 	if (!(gnxProject && gnxProject->isGenerixActivated()))
 	{
 		accept = false;

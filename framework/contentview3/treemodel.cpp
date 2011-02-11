@@ -22,7 +22,7 @@
 namespace ContentView3
 {
 
-TreeNode::TreeNode(NodePtr node) : QStandardItem(QIcon(node->icon ()), node->displayName ()), _project(0)
+TreeNode::TreeNode(NodePtr node) : QStandardItem(QIcon(node->icon ()), node->displayName ())
 {
 	_is_children_populate = node->type () != "IMPORT";
 	setEditable (false);
@@ -36,7 +36,7 @@ void TreeNode::updateFromNode(NodePtr node)
 	setToolTip (node->tips ());
 	_name = node->name ();
 	_key = node->keyString ();
-	_project = file->project ();
+	_project = file->project ().toWeakRef();
 
 	if (node->type() != "IMPORT")
 	{

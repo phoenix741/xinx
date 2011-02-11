@@ -70,7 +70,7 @@ bool TemplateDialogImpl::pageIsVisible() const
 	return true;
 }
 
-bool TemplateDialogImpl::saveSettingsDialog(XinxProject::Project * project)
+bool TemplateDialogImpl::saveSettingsDialog(XinxProject::ProjectPtr project)
 {
 	Q_UNUSED(project);
 	return true;

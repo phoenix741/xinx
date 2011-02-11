@@ -22,15 +22,11 @@
 
 #include <QWidget>
 #include <QModelIndex>
+#include <project/xinxprojectproject.h>
 
 class QAbstractItemModel;
 class QTreeView;
 class IFileTypePlugin;
-
-namespace XinxProject
-{
-	class Project;
-}
 
 namespace ContentView3 {
 
@@ -41,7 +37,7 @@ public:
 	DockWidget(QWidget* parent = 0, Qt::WindowFlags f = 0);
 	virtual ~DockWidget();
 signals:
-	void open(const QString & filename, int line, IFileTypePlugin * interface, XinxProject::Project * project);
+	void open(const QString & filename, int line, IFileTypePlugin * interface, XinxProject::ProjectPtr project);
 private slots:
 	void showModelOfEditor(int editorIndex);
 	void doubleClicked(QModelIndex index);

@@ -35,7 +35,7 @@ public:
 	ParserProjectPropertyImpl(QWidget * parent = 0, Qt::WindowFlags f = 0);
 	virtual ~ParserProjectPropertyImpl();
 
-	virtual void setProject(XinxProject::Project * project);
+	virtual void setProject(XinxProject::ProjectPtr project);
 
 	virtual QPixmap image();
 	virtual QString name();
@@ -47,7 +47,7 @@ public:
 	virtual bool isSettingsValid();
 	virtual bool isVisible();
 private:
-	XinxProject::Project * m_project;
+	XinxProject::ProjectPtr m_project;
 };
 
 class WebPluginProjectPropertyWizard : public IXinxPluginNewProjectConfigurationPage
@@ -57,7 +57,7 @@ public:
 	WebPluginProjectPropertyWizard();
 
 	virtual void initializePage();
-	virtual bool saveSettingsDialog(XinxProject::Project * project);
+	virtual bool saveSettingsDialog(XinxProject::ProjectPtr project);
 
 	virtual QString pagePluginId() const;
 	virtual bool pageIsVisible() const;

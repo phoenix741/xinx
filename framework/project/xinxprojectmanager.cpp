@@ -52,7 +52,7 @@ namespace XinxProject {
 
 /* PrivateManager */
 
-PrivateManager::PrivateManager(Manager* parent) : QObject(parent), _new_project_action(0), _recent_project_action(0), _close_project_action(0), _customize_project_action(0), _selected_project(0), m_defaultProject(0), _manager(parent), _recent_separator(0)
+PrivateManager::PrivateManager(Manager* parent) : QObject(parent), _new_project_action(0), _recent_project_action(0), _close_project_action(0), _customize_project_action(0), _manager(parent), _recent_separator(0)
 {
 
 }
@@ -71,7 +71,8 @@ void PrivateManager::updateRecentProjects()
 		filename = XINXConfig::self()->config().project.recentProjectFiles[i];
 		try
 		{
-			projectName = QString("%1 (%2)").arg(XinxProject::Project(filename).projectName()).arg(QFileInfo(filename).fileName());
+			XinxProject::ProjectPtr project = XinxProject::Project::create(filename);
+			projectName = QString("%1 (%2)").arg(project->projectName()).arg(QFileInfo(filename).fileName());
 		}
 		catch (XinxProject::ProjectException e)
 		{
@@ -124,12 +125,12 @@ void PrivateManager::openRecentProject()
 
 void PrivateManager::closeProjectTriggered()
 {
-	_manager->closeProject(_selected_project);
+	_manager->closeProject(_selected_project.toStrongRef());
 }
 
 void PrivateManager::customizeProjectTriggered()
 {
-	_manager->customizeProject(_selected_project);
+	_manager->customizeProject(_selected_project.toStrongRef());
 }
 
 void PrivateManager::createOpentRecentAction()
@@ -157,8 +158,8 @@ void PrivateManager::createOpentRecentAction()
 
 void PrivateManager::updateActions()
 {
-	_close_project_action->setEnabled(_selected_project != NULL);
-	_customize_project_action->setEnabled(_selected_project != NULL);
+	_close_project_action->setEnabled(! _selected_project.isNull());
+	_customize_project_action->setEnabled(! _selected_project.isNull());
 }
 
 /* Manager */
@@ -183,7 +184,7 @@ Manager::Manager()
 
 void Manager::initialisation()
 {
-	d->m_defaultProject = new Project();
+	d->m_defaultProject = Project::create();
 
 	// New Project
 	d->_new_project_action = new QAction(QIcon(":/images/window_new.png"), tr("&New project ..."), this);
@@ -209,7 +210,7 @@ void Manager::initialisation()
 	d->updateActions();
 	d->updateRecentProjects();
 
-	connect(this, SIGNAL(projectOpened(XinxProject::Project*)), d, SLOT(updateRecentProjects()));
+	connect(this, SIGNAL(projectOpened(XinxProject::ProjectPtr)), d, SLOT(updateRecentProjects()));
 }
 
 /*!
@@ -217,9 +218,8 @@ void Manager::initialisation()
  */
 Manager::~Manager()
 {
-	delete d->m_defaultProject;
-
-	qDeleteAll(d->m_projects);
+	d->m_defaultProject.clear();;
+	d->m_projects.clear();;
 }
 
 /*!
@@ -230,12 +230,12 @@ Manager::~Manager()
  *
  * If the project mode is in single mode, other project are closed.
  */
-const QList<Project*> & Manager::projects() const
+const QList<ProjectPtr> & Manager::projects() const
 {
 	return d->m_projects;
 }
 
-Project * Manager::defaultProject()
+ProjectPtr Manager::defaultProject()
 {
 	return d->m_defaultProject;
 }
@@ -246,10 +246,10 @@ Project * Manager::defaultProject()
  * Return the project where the file \e filename can be found. If the file isn't in a
  * project of the project list, the default project is returned.
  */
-Project * Manager::projectOfFile(const QString & filename)
+ProjectPtr Manager::projectOfFile(const QString & filename)
 {
 	const QString cleanFileName = QDir::cleanPath (filename);
-	foreach(XinxProject::Project * project, d->m_projects)
+	foreach(XinxProject::ProjectPtr project, d->m_projects)
 	{
 		const QString cleanDirName = QDir::cleanPath (project->projectPath ());
 		if (cleanFileName.contains (cleanDirName))
@@ -262,11 +262,11 @@ Project * Manager::projectOfFile(const QString & filename)
 /*!
  * \brief Search and return the project in the path, if the project is present in the path.
  */
-Project * Manager::projectOfPath(const QString & path)
+ProjectPtr Manager::projectOfPath(const QString & path)
 {
 	const QString cleanPath = QDir::cleanPath (path);
 
-	foreach(XinxProject::Project * project, d->m_projects)
+	foreach(XinxProject::ProjectPtr project, d->m_projects)
 	{
 		const QString cleanDirName = QDir::cleanPath (project->projectPath ());
 		if (cleanPath == cleanDirName)
@@ -293,23 +293,14 @@ void Manager::openProject(const QString & directory)
 {
 	XINXConfig::self()->config().project.recentProjectFiles.removeAll(directory);
 
-	Project * project = NULL;
-	try
-	{
-		project = new Project(directory);
+	ProjectPtr project = Project::create(directory);
 
-		openProject(project);
-	}
-	catch (ProjectException e)
-	{
-		delete project;
-		throw e;
-	}
+	openProject(project);
 }
 
-Project * PrivateManager::projectContains(const QString & directory)
+ProjectPtr PrivateManager::projectContains(const QString & directory)
 {
-	foreach(Project * project, m_projects)
+	foreach(ProjectPtr project, m_projects)
 	{
 		if (project->projectPath () == QFileInfo(directory).canonicalFilePath ())
 		{
@@ -317,22 +308,21 @@ Project * PrivateManager::projectContains(const QString & directory)
 		}
 	}
 
-	return NULL;
+	return ProjectPtr();
 }
 
 /*!
  * \brief Open the project \e project
  */
-void Manager::openProject(Project * project)
+void Manager::openProject(ProjectPtr project)
 {
 	XINXConfig::self()->config().project.recentProjectFiles.removeAll(project->projectPath());
 
 	// If the project is already opend, we don't repoen it, but we made it the default.
-	Project * oldProject = d->projectContains (project->projectPath ());
-	if (oldProject != NULL)
+	ProjectPtr oldProject = d->projectContains (project->projectPath ());
+	if (oldProject)
 	{
-		setSelectedProject (oldProject);
-		delete project;
+		setSelectedProject (oldProject.toWeakRef());
 
 		XINXConfig::self()->config().project.recentProjectFiles.prepend(oldProject->projectPath());
 		while (XINXConfig::self()->config().project.recentProjectFiles.size() > MAXRECENTPROJECTS)
@@ -359,14 +349,13 @@ void Manager::openProject(Project * project)
 	progressDlg.setValue(0);
 	//progressDlg.show();
 
-	// FIXME : Must be customizable
 	if (XINXConfig::self()->config().project.singleProjectMode)
 	{
 		progressDlg.setMaximum(progressDlg.maximum() + 1);
 		progressDlg.setLabelText(tr("Close previous project"));
 		qApp->processEvents();
 
-		foreach(Project* project, d->m_projects)
+		foreach(ProjectPtr project, d->m_projects)
 		{
 			closeProject(project, false);
 		}
@@ -403,18 +392,18 @@ void Manager::openProject(Project * project)
 	progressDlg.setValue(progressDlg.value() + 1);
 	qApp->processEvents();
 
-	connect(project, SIGNAL(changed()), this, SIGNAL(changed()));
+	connect(project.data(), SIGNAL(changed()), this, SIGNAL(changed()));
 
 	emit changed();
 	emit projectOpened(project);
 
 	if (selectedProject() == 0)
 	{
-		setSelectedProject(project);
+		setSelectedProject(project.toWeakRef());
 	}
 }
 
-void Manager::customizeProject(Project* project)
+void Manager::customizeProject(XinxProject::ProjectPtr project)
 {
 	ProjectPropertyImpl property(qApp->activeWindow());
 	property.loadFromProject(project);
@@ -430,7 +419,7 @@ void Manager::customizeProject(Project* project)
 /*!
  * \brief Close the project \e project
  */
-bool Manager::closeProject(Project * project, bool showWelcome)
+bool Manager::closeProject(XinxProject::ProjectPtr project, bool showWelcome)
 {
 	emit projectClosing(project);
 
@@ -444,13 +433,11 @@ bool Manager::closeProject(Project * project, bool showWelcome)
 		XinxSession::SessionManager::self ()->currentSession ()->deleteOpenedProject (project->projectPath ());
 	}
 
-	Project * projectToClose = project;
 	d->m_projects.removeAll(project);
-	if (project == selectedProject())
+	if (project.data() == selectedProject().data())
 	{
-		setSelectedProject(d->m_projects.size() ? d->m_projects.first() : 0);
+		setSelectedProject(d->m_projects.size() ? d->m_projects.first().toWeakRef() : ProjectPtrWeak());
 	}
-	delete projectToClose;
 
 	// Update the state of action
 	XinxAction::ActionManager::self()->updateMenuItemState();
@@ -466,7 +453,7 @@ bool Manager::closeProject(Project * project, bool showWelcome)
 
 bool Manager::closeAllProject()
 {
-	foreach (Project * project, d->m_projects)
+	foreach (ProjectPtr project, d->m_projects)
 	{
 		if (! closeProject(project, false))
 		{
@@ -476,20 +463,20 @@ bool Manager::closeAllProject()
 	return true;
 }
 
-void Manager::setSelectedProject(Project * project)
+void Manager::setSelectedProject(XinxProject::ProjectPtrWeak project)
 {
 	Q_ASSERT_X(! project || d->m_projects.contains (project), "Manager::setSelectedProject", "Project must be opended");
 
-	if (project != d->_selected_project)
+	if (project.data() != d->_selected_project.data())
 	{
 		d->_selected_project = project;
 		d->updateActions();
 
-		emit selectionChanged(d->_selected_project);
+		emit selectionChanged(d->_selected_project.toStrongRef());
 	}
 }
 
-Project * Manager::selectedProject() const
+ProjectPtrWeak Manager::selectedProject() const
 {
 	return d->_selected_project;
 }

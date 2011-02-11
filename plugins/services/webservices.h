@@ -105,18 +105,20 @@ typedef QList<WebServices*> WebServicesList;
 namespace XinxProject
 {
 	class Project;
+	typedef QSharedPointer<Project> ProjectPtr;
+	typedef QWeakPointer<Project> ProjectPtrWeak;
 };
 
 class WebServicesManager : public QObject
 {
 	Q_OBJECT
 public:
-	WebServicesManager(XinxProject::Project * project);
+	WebServicesManager(XinxProject::ProjectPtr project);
 	virtual ~WebServicesManager();
 
 	const WebServicesList & list() const;
 
-	static WebServicesManager * manager(XinxProject::Project * project);
+	static WebServicesManager * manager(XinxProject::ProjectPtr project);
 public slots:
 	void updateWebServicesList();
 
@@ -132,7 +134,7 @@ private:
 	QPointer<QProgressDialog> m_httpDialog;
 	QString m_httpString;
 	bool m_hasFinished, m_isUpdate;
-	XinxProject::Project * _project;
+	XinxProject::ProjectPtrWeak _project;
 };
 
 #endif // __WEBSERVICES_H__

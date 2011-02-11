@@ -57,7 +57,7 @@ bool NewGenerixDerivation1Page::isComplete() const
 	return true;
 }
 
-bool NewGenerixDerivation1Page::saveSettingsDialog(XinxProject::Project* project)
+bool NewGenerixDerivation1Page::saveSettingsDialog(XinxProject::ProjectPtr project)
 {
 	Q_UNUSED(project);
 	return true;

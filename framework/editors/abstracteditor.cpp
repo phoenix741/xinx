@@ -138,7 +138,7 @@
  * \brief Create an objects of type AbstractEditor.
  * \param parent Parent and containers of the editor.
  */
-AbstractEditor::AbstractEditor(QWidget* parent): QFrame(parent), _project(0), m_fileTypePlugin(0), m_isSaving(false), m_modified(false), m_neverModified(true)
+AbstractEditor::AbstractEditor(QWidget* parent): QFrame(parent), m_fileTypePlugin(0), m_isSaving(false), m_modified(false), m_neverModified(true)
 {
 	initObjects();
 }
@@ -152,7 +152,7 @@ AbstractEditor::AbstractEditor(QWidget* parent): QFrame(parent), _project(0), m_
  *
  * \param editor The original editor used for copy.
  */
-AbstractEditor::AbstractEditor(const AbstractEditor & editor) : QFrame(qobject_cast<QWidget*>(editor.parent())), m_isSaving(false), m_modified(false), m_neverModified(true)
+AbstractEditor::AbstractEditor(const AbstractEditor & editor) : QFrame(qobject_cast<QWidget*>(editor.parent())), m_fileTypePlugin(0), m_isSaving(false), m_modified(false), m_neverModified(true)
 {
 	initObjects();
 }
@@ -608,10 +608,11 @@ void AbstractEditor::serialize(XinxSession::SessionEditor * data, bool content)
 {
 	Q_UNUSED(content);
 
+	const QString projectPath = _project ? _project.toStrongRef()->projectPath () : QString();
 	data->writeProperty ("ClassName", m_fileTypePlugin->name());
-	data->writeProperty ("FileName", _project ? QDir(_project->projectPath ()).relativeFilePath (m_lastFileName) : m_lastFileName);
+	data->writeProperty ("FileName", projectPath.isEmpty() ? m_lastFileName : QDir(_project.toStrongRef()->projectPath ()).relativeFilePath (m_lastFileName));
 	data->writeProperty ("Modified", QVariant(m_modified));
-	data->writeProperty ("Project", _project ? _project->projectPath () : QString());
+	data->writeProperty ("Project", projectPath);
 	data->writeProperty ("Informations", m_fileTypePlugin ? m_fileTypePlugin->name () : QString());
 }
 
@@ -632,12 +633,12 @@ void AbstractEditor::deserialize(XinxSession::SessionEditor * data)
 	const bool		modified			= data->readProperty ("Modified").toBool ();
 
 	m_fileTypePlugin					= EditorFactory::self()->interfaceOfName(file_type_name);
-	XinxProject::Project * project		= XinxProject::Manager::self ()->projectOfPath(project_path);
+	XinxProject::ProjectPtr project		= XinxProject::Manager::self ()->projectOfPath(project_path);
 
 	setProject (project);
 
 	if (QFileInfo(relative_file_name).isRelative() && !relative_file_name.isEmpty())
-		m_lastFileName = QDir(_project->projectPath ()).absoluteFilePath(relative_file_name);
+		m_lastFileName = QDir(project->projectPath ()).absoluteFilePath(relative_file_name);
 	else
 		m_lastFileName = relative_file_name;
 
@@ -698,14 +699,14 @@ IFileTypePlugin * AbstractEditor::fileTypePluginInterface() const
 	return m_fileTypePlugin;
 }
 
-void AbstractEditor::setProject(XinxProject::Project * project)
+void AbstractEditor::setProject(XinxProject::ProjectPtr project)
 {
-	_project = project;
+	_project = project.toWeakRef();
 }
 
-XinxProject::Project * AbstractEditor::project() const
+XinxProject::ProjectPtr AbstractEditor::project() const
 {
-	return _project;
+	return _project.toStrongRef();
 }
 
 void AbstractEditor::fileChanged()

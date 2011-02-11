@@ -70,7 +70,7 @@ namespace VersionControl
  * \param project The project used to create the project
  *
  */
-RCSProxy::RCSProxy(XinxProject::Project* project) : m_rcs(0), m_project(project)
+RCSProxy::RCSProxy(XinxProject::ProjectPtrWeak project) : m_rcs(0), m_project(project)
 {
 
 }
@@ -219,7 +219,10 @@ void RCSProxy::rollbackFileOperations()
 //! Valide the working copy
 void RCSProxy::validWorkingCopy(QStringList files, QWidget * parent)
 {
+	XinxProject::ProjectPtr project = m_project.toStrongRef();
+
 	Q_ASSERT(m_rcs);
+	Q_ASSERT(project);
 
 	VersionControl::Manager::self ()->waitForFinished();
 
@@ -227,10 +230,10 @@ void RCSProxy::validWorkingCopy(QStringList files, QWidget * parent)
 	CommitMessageDialogImpl dlg(parent);
 	RCS::FilesOperation operations;
 
-	dlg.setXinxProject(m_project);
+	dlg.setXinxProject(project);
 	if (files.count() == 0)
 	{
-		files << m_project->projectPath();
+		files << project->projectPath();
 	}
 
 	if (files.count() > 0)
@@ -239,7 +242,7 @@ void RCSProxy::validWorkingCopy(QStringList files, QWidget * parent)
 
 		if (XINXConfig::self()->config().rcs.createChangelog)
 		{
-			changeLog = QDir(m_project->projectPath()).absoluteFilePath("changelog");
+			changeLog = QDir(project->projectPath()).absoluteFilePath("changelog");
 			if (QFile::exists(changeLog))
 				operations << RCS::FileOperation(changeLog, RCS::Commit);
 			else
@@ -284,7 +287,7 @@ void RCSProxy::updateWorkingCopy(QStringList list)
 	VersionControl::Manager::self ()->waitForFinished();
 
 	if (list.count() == 0)
-		list << m_project->projectPath();
+		list << m_project.toStrongRef()->projectPath();
 
 	VersionControl::Manager::self ()->updateWorkingCopy(m_rcs, list);
 }

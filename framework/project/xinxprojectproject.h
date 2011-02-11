@@ -33,12 +33,26 @@
 #include <QString>
 #include <QStringList>
 #include <QVariant>
+#include <QSharedPointer>
 
 class ExternalFileResolver;
+namespace VersionControl
+{
+	class RCSProxy;
+}
+
+namespace ContentView3
+{
+	class Cache;
+}
 
 namespace XinxProject {
 
 class PrivateXinxProject;
+class Project;
+
+typedef QSharedPointer<Project> ProjectPtr;
+typedef QWeakPointer<Project> ProjectPtrWeak;
 
 /* Constante */
 
@@ -55,8 +69,8 @@ class LIBEXPORT Project : public QObject
 	Q_PROPERTY(QString projectRCS READ projectRCS WRITE setProjectRCS)
 	Q_PROPERTY(QStringList activatedPlugin READ activatedPlugin WRITE setActivatedPlugin)
 public:
-	Project ();
-	explicit Project (const QString & path, bool creation = false);
+	static XinxProject::ProjectPtr create();
+	static XinxProject::ProjectPtr create(const QString & path, bool creation = false);
 	~Project();
 
 	const QString & projectPath() const;
@@ -85,12 +99,15 @@ public:
 signals:
 	void changed();
 private:
+	Project ();
+	explicit Project (const QString& path);
+
 	PrivateXinxProject * d;
 	friend class PrivateXinxProject;
 };
 
 } // namespace XinxProject
 
-Q_DECLARE_METATYPE(XinxProject::Project*);
+Q_DECLARE_METATYPE(XinxProject::ProjectPtrWeak);
 
 #endif // XINXPROJECTPROJECT_H

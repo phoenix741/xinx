@@ -52,7 +52,7 @@ bool ServicesListPageImpl::pageIsVisible() const
 	return true;
 }
 
-bool ServicesListPageImpl::saveSettingsDialog(XinxProject::Project * project)
+bool ServicesListPageImpl::saveSettingsDialog(XinxProject::ProjectPtr project)
 {
 	project->writeProperty("webServiceVersion", WEBSERVICE_VERSION_CURRENT);
 

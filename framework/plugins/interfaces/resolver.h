@@ -21,13 +21,11 @@
 #ifndef _RESOLVER_INTERFACES_H_
 #define _RESOLVER_INTERFACES_H_
 
+// Xinx header
+#include <project/xinxprojectproject.h>
+
 // Qt Plugin
 #include <QtPlugin>
-
-namespace XinxProject
-{
-	class Project;
-}
 
 /*!
  * Define a filename resolver  object used to find the import, and find file in parsing of stylesheet
@@ -43,7 +41,7 @@ public:
 	//! Resolver id
 	virtual QString id() = 0;
 	//! Resolve the file \e nameToResolve. The \e currentPath, can be used to find the file relatively of the current open editor.
-	virtual bool resolveFileName(const QString & nameToResolve, QString & resolvedName, const QString & currentPath = QString(), XinxProject::Project * project = 0) = 0;
+	virtual bool resolveFileName(const QString & nameToResolve, QString & resolvedName, const QString & currentPath = QString(), XinxProject::ProjectPtr project = XinxProject::ProjectPtr()) = 0;
 };
 
 /*!

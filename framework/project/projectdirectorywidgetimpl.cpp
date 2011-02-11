@@ -110,13 +110,13 @@ PrivateProjectDirectoryWidgetImpl::~PrivateProjectDirectoryWidgetImpl()
 void PrivateProjectDirectoryWidgetImpl::updateActions(QModelIndexList selectedRows)
 {
 	const int nb_selected = selectedRows.size ();
-	XinxProject::Project * project = _model->fileProject(selectedRows.at(0));
+	XinxProject::ProjectPtr project = _model->fileProject(selectedRows.at(0));
 
 	bool is_directory = true;
 	bool is_file = true;
 	bool is_project  = true;
 	bool is_mutli_project = false;
-	bool is_selected = project == XinxProject::Manager::self()->selectedProject();
+	bool is_selected = project.data() == XinxProject::Manager::self()->selectedProject().data();
 	bool is_rcs_actived = project && project->rcsProxy() && ! project->projectRCS().isEmpty();
 	bool is_rcs_enabled = is_rcs_actived && ! VersionControl::Manager::self ()->isExecuting ();
 	bool is_rcs_modified = true;
@@ -134,7 +134,7 @@ void PrivateProjectDirectoryWidgetImpl::updateActions(QModelIndexList selectedRo
 			is_directory = false;
 		}
 		if (!_model->isProject(index)) is_project = false;
-		if (_model->fileProject(index) != project) is_mutli_project = true;
+		if (_model->fileProject(index).data() != project.data()) is_mutli_project = true;
 
 		switch (_model->fileState(index))
 		{
@@ -246,7 +246,7 @@ void PrivateProjectDirectoryWidgetImpl::openFile(const QModelIndex & index)
 {
 	const QFileInfo file_info = _model->fileInfo(index);
 	const QString file_path = _model->filePath(index);
-	XinxProject::Project * project = _model->fileProject(index);
+	XinxProject::ProjectPtr project = _model->fileProject(index);
 
 	if (! file_info.isDir())
 	{
@@ -327,7 +327,7 @@ void PrivateProjectDirectoryWidgetImpl::compareWithVersionControlTriggered()
 	QModelIndexList rows = _parent->_directory_view->selectionModel()->selectedRows();
 	if (rows.size() != 1) return;
 
-	XinxProject::Project * project = _model->fileProject(rows.at(0));
+	XinxProject::ProjectPtr project = _model->fileProject(rows.at(0));
 
 	Q_ASSERT(! project->projectRCS().isEmpty() && project->rcsProxy());
 
@@ -361,7 +361,7 @@ void PrivateProjectDirectoryWidgetImpl::updateFromVersionControlTriggered()
 	QModelIndexList rows = _parent->_directory_view->selectionModel()->selectedRows();
 	if (rows.size() != 1) return;
 
-	XinxProject::Project * project = _model->fileProject(rows.at(0));
+	XinxProject::ProjectPtr project = _model->fileProject(rows.at(0));
 
 	Q_ASSERT(! project->projectRCS().isEmpty() && project->rcsProxy());
 
@@ -375,7 +375,7 @@ void PrivateProjectDirectoryWidgetImpl::commitToVersionControlTriggered()
 	QModelIndexList rows = _parent->_directory_view->selectionModel()->selectedRows();
 	if (rows.size() != 1) return;
 
-	XinxProject::Project * project = _model->fileProject(rows.at(0));
+	XinxProject::ProjectPtr project = _model->fileProject(rows.at(0));
 
 	Q_ASSERT(! project->projectRCS().isEmpty() && project->rcsProxy());
 
@@ -389,7 +389,7 @@ void PrivateProjectDirectoryWidgetImpl::addToVersionControlTriggered()
 	QModelIndexList rows = _parent->_directory_view->selectionModel()->selectedRows();
 	if (rows.size() != 1) return;
 
-	XinxProject::Project * project = _model->fileProject(rows.at(0));
+	XinxProject::ProjectPtr project = _model->fileProject(rows.at(0));
 
 	Q_ASSERT(! project->projectRCS().isEmpty() && project->rcsProxy());
 
@@ -406,7 +406,7 @@ void PrivateProjectDirectoryWidgetImpl::removeFromVersionControlTriggered()
 	QModelIndexList rows = _parent->_directory_view->selectionModel()->selectedRows();
 	if (rows.size() != 1) return;
 
-	XinxProject::Project * project = _model->fileProject(rows.at(0));
+	XinxProject::ProjectPtr project = _model->fileProject(rows.at(0));
 
 	Q_ASSERT(! project->projectRCS().isEmpty() && project->rcsProxy());
 

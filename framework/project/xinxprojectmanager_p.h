@@ -37,9 +37,9 @@ public:
     virtual ~PrivateManager();
 
 	QAction * _new_project_action, * _recent_project_action, * _close_project_action, * _customize_project_action;
-	Project * _selected_project;
-	QList<Project*> m_projects;
-	Project * m_defaultProject;
+	ProjectPtrWeak _selected_project;
+	QList<ProjectPtr> m_projects;
+	ProjectPtr m_defaultProject;
     XinxProject::Manager* _manager;
     QAction * _recent_separator;
 	QAction* _recent_actions[ MAXRECENTFILES ];
@@ -47,7 +47,7 @@ public:
 	void initialisation();
 	void createOpentRecentAction();
 	void updateActions();
-	Project * projectContains(const QString & directory);
+	ProjectPtr projectContains(const QString & directory);
 
 public slots:
 	void openProjectTriggered();

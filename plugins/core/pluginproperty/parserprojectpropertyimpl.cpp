@@ -38,7 +38,7 @@ ParserProjectPropertyImpl::~ParserProjectPropertyImpl()
 {
 }
 
-void ParserProjectPropertyImpl::setProject(XinxProject::Project * project)
+void ParserProjectPropertyImpl::setProject(XinxProject::ProjectPtr project)
 {
 	m_project = project;
 }
@@ -143,7 +143,7 @@ bool WebPluginProjectPropertyWizard::pageIsVisible() const
 	return true;
 }
 
-bool WebPluginProjectPropertyWizard::saveSettingsDialog(XinxProject::Project * project)
+bool WebPluginProjectPropertyWizard::saveSettingsDialog(XinxProject::ProjectPtr project)
 {
 	project->writeProperty("dataStreamLocation", m_dataStreamEdit->lineEdit()->text());
 	project->writeProperty("moduleInternetAdresse", m_urlLocationEdit->text());

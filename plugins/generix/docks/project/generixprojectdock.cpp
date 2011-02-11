@@ -133,7 +133,7 @@ QSize BusinessViewListDelegate::sizeHint(const QStyleOptionViewItem &option, con
 
 /* GenerixProjectDockImpl */
 
-GenerixProjectDockImpl::GenerixProjectDockImpl(QWidget * parent) : QWidget(parent), m_gnxProject(0)
+GenerixProjectDockImpl::GenerixProjectDockImpl(QWidget * parent) : QWidget(parent)
 {
 	setupUi(this);
 	setWindowTitle(tr("Generix Business View"));
@@ -141,7 +141,7 @@ GenerixProjectDockImpl::GenerixProjectDockImpl(QWidget * parent) : QWidget(paren
 
 	m_businessViewList->setItemDelegate(m_delegate = new BusinessViewListDelegate(m_businessViewList));
 
-	setProject(0);
+	setProject(XinxProject::ProjectPtr());
 
 	connect(EditorManager::self(), SIGNAL(currentChanged(int)), this, SLOT(editorChanged(int)));
 }
@@ -152,16 +152,18 @@ GenerixProjectDockImpl::~GenerixProjectDockImpl()
 
 void GenerixProjectDockImpl::updateList()
 {
+	QSharedPointer<GenerixProject> gnxProject = m_gnxProject.toStrongRef();
+
 	m_businessViewList->setEnabled(false);
-	if (m_gnxProject && ConfigurationManager::manager(m_gnxProject) && (m_editorIndex >= 0) && (m_editorIndex < EditorManager::self()->editorsCount()))
+	if (gnxProject && ConfigurationManager::manager(gnxProject) && (m_editorIndex >= 0) && (m_editorIndex < EditorManager::self()->editorsCount()))
 	{
 		const QString editorFilename = EditorManager::self()->editor(m_editorIndex)->lastFileName();
 
 		m_filenameLabel->setText(tr("&Business view for file : \n%1").arg(QFileInfo(editorFilename).fileName()));
 
-		const QString filename = QDir(m_gnxProject->webModuleLocation()).relativeFilePath(editorFilename);
+		const QString filename = QDir(gnxProject->webModuleLocation()).relativeFilePath(editorFilename);
 
-		GceConfiguration * interface = ConfigurationManager::manager(m_gnxProject)->getInterface();
+		GceConfiguration * interface = ConfigurationManager::manager(gnxProject)->getInterface();
 		m_businessViewList->clear();
 		if (interface)
 		{
@@ -171,7 +173,7 @@ void GenerixProjectDockImpl::updateList()
 				item->setData(Qt::UserRole + 0, information.configurationNumber());
 				item->setData(Qt::UserRole + 1, information.configurationFileName());
 				item->setData(Qt::UserRole + 2, information.targetName());
-				item->setData(Qt::UserRole + 3, m_gnxProject->projectPath());
+				item->setData(Qt::UserRole + 3, gnxProject->projectPath());
 				m_businessViewList->addItem(item);
 				m_businessViewList->setEnabled(true);
 			}
@@ -184,38 +186,36 @@ void GenerixProjectDockImpl::updateList()
 	}
 }
 
-void GenerixProjectDockImpl::setProject(XinxProject::Project * project)
+void GenerixProjectDockImpl::setProject(XinxProject::ProjectPtr project)
 {
-	GenerixProject * gnxProject = static_cast<GenerixProject*>(project);
-	if (m_gnxProject != gnxProject)
+	QSharedPointer<GenerixProject> gnxProject = project.staticCast<GenerixProject>();
+	if (m_gnxProject.data() != gnxProject.data())
 	{
 		if (m_gnxProject && ConfigurationManager::manager(m_gnxProject))
 		{
 			ConfigurationManager::manager(m_gnxProject)->disconnect(this, SLOT(updateList()));
 		}
 
+		QSharedPointer<GenerixProject> newGnxProject;
 		if (ConfigurationManager::manager(gnxProject))
 		{
-			m_gnxProject = gnxProject;
+			newGnxProject = gnxProject;
 		}
-		else
-		{
-			m_gnxProject = 0;
-		}
+		m_gnxProject = newGnxProject.toWeakRef();
 
 		m_prefixCombo->clear();
-		if (m_gnxProject)
+		if (newGnxProject)
 		{
-			if (m_gnxProject->prefixes().size())
+			if (newGnxProject->prefixes().size())
 			{
-				m_prefixCombo->addItems(m_gnxProject->prefixes());
-				m_prefixCombo->setCurrentIndex(m_prefixCombo->findText(m_gnxProject->defaultPrefix()));
+				m_prefixCombo->addItems(newGnxProject->prefixes());
+				m_prefixCombo->setCurrentIndex(m_prefixCombo->findText(newGnxProject->defaultPrefix()));
 			}
 
-			connect(ConfigurationManager::manager(gnxProject), SIGNAL(changed()), this, SLOT(updateList()));
+			connect(ConfigurationManager::manager(newGnxProject), SIGNAL(changed()), this, SLOT(updateList()));
 		}
-		m_prefixCombo->setVisible(m_gnxProject && (m_gnxProject->prefixes().size() > 0));
-		m_prefixLabel->setVisible(m_gnxProject && (m_gnxProject->prefixes().size() > 0));
+		m_prefixCombo->setVisible(newGnxProject && (newGnxProject->prefixes().size() > 0));
+		m_prefixLabel->setVisible(newGnxProject && (newGnxProject->prefixes().size() > 0));
 	}
 }
 
@@ -236,6 +236,7 @@ void GenerixProjectDockImpl::editorChanged(int index)
 
 void GenerixProjectDockImpl::on_m_prefixCombo_activated(QString text)
 {
-	if (m_gnxProject)
-		m_gnxProject->setDefaultPrefix(text);
+	QSharedPointer<GenerixProject> gnxProject = m_gnxProject.toStrongRef();
+	if (gnxProject)
+		gnxProject->setDefaultPrefix(text);
 }

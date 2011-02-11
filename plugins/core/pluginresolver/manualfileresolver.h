@@ -36,12 +36,12 @@ public:
 	ManualFileResolver();
 	virtual ~ManualFileResolver();
 
-	QStringList searchPathList(XinxProject::Project * project) const;
+	QStringList searchPathList(XinxProject::ProjectPtr project) const;
 
 	static QString staticId();
 	virtual QString id();
 	virtual QString name();
-    virtual bool resolveFileName ( const QString& nameToResolve, QString& resolvedName, const QString& currentPath = QString(), XinxProject::Project* project = 0 );
+    virtual bool resolveFileName ( const QString& nameToResolve, QString& resolvedName, const QString& currentPath, XinxProject::ProjectPtr project );
 };
 
 #endif // MANUALFILERESOLVER_H

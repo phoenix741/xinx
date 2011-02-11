@@ -196,9 +196,9 @@ void TextFileEditor::initObjects()
 	setFile(ContentView3::File::create ());
 }
 
-void TextFileEditor::setProject(XinxProject::Project* project)
+void TextFileEditor::setProject(XinxProject::ProjectPtr project)
 {
-	if (AbstractEditor::project() != project)
+	if (AbstractEditor::project().data() != project.data())
 	{
 		AbstractEditor::setProject(project);
 		_file->setProject(project);

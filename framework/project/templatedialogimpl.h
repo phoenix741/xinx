@@ -41,7 +41,7 @@ public:
 
 	virtual QString pagePluginId() const;
 	virtual bool pageIsVisible() const;
-	virtual bool saveSettingsDialog(XinxProject::Project * project);
+	virtual bool saveSettingsDialog(XinxProject::ProjectPtr project);
 
 	void loadDirectory(const QString & directory, QTreeWidgetItem * item);
 

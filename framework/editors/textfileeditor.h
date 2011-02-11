@@ -100,7 +100,7 @@ public:
 	virtual BookmarkEditorInterface * bookmarkInterface();
 	virtual BookmarkTextEditorInterface * bookmarkTextInterface();
 
-	virtual void setProject(XinxProject::Project * project);
+	virtual void setProject(XinxProject::ProjectPtr project);
 public slots :
 	virtual void initSearch(SearchOptions & options);
 	virtual bool find(const QString & text, SearchOptions options);

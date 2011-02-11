@@ -43,7 +43,6 @@ class LIBEXPORT AbstractEditor : public QFrame
 	Q_PROPERTY(QString title READ getTitle STORED false)
 	Q_PROPERTY(bool isModified READ isModified WRITE setModified)
 	Q_PROPERTY(QString filename READ lastFileName WRITE setWatcher)
-	Q_PROPERTY(XinxProject::Project* project READ project)
 public:
 	enum SearchOption
 	{
@@ -93,9 +92,9 @@ public:
 
 	virtual void setFileTypePluginInterface(IFileTypePlugin * value);
 	virtual IFileTypePlugin * fileTypePluginInterface() const;
-	
-	virtual void setProject(XinxProject::Project * project);
-	virtual XinxProject::Project * project() const;
+
+	virtual void setProject(XinxProject::ProjectPtr project);
+	virtual XinxProject::ProjectPtr project() const;
 public slots :
 	virtual void initSearch(AbstractEditor::SearchOptions & options) = 0;
 	virtual bool find(const QString & text, AbstractEditor::SearchOptions options) = 0;
@@ -135,7 +134,7 @@ private:
 	void activateWatcher();
 	void setWatcher(const QString & path);
 
-	XinxProject::Project * _project;
+	XinxProject::ProjectPtrWeak _project;
 	IFileTypePlugin * m_fileTypePlugin;
 	bool m_isSaving, m_modified, m_neverModified;
 	QPointer<FileWatcher> m_watcher;

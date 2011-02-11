@@ -35,8 +35,8 @@ public:
 	explicit CommitMessageDialogImpl(QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint);
 	~CommitMessageDialogImpl();
 
-	void setXinxProject(XinxProject::Project * project);
-	XinxProject::Project * project() const;
+	void setXinxProject(XinxProject::ProjectPtr project);
+	XinxProject::ProjectPtr project() const;
 
 	void setMessages(const QString & message);
 	QString messages();

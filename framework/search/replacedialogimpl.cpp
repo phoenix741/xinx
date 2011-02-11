@@ -56,10 +56,11 @@ void ReplaceDialogImpl::initialize(bool hasEditor)
 	m_comboFind->lineEdit()->selectAll();
 	m_comboFind->lineEdit()->setFocus(Qt::ActiveWindowFocusReason);
 
-	if (XinxProject::Manager::self()->selectedProject())
+	XinxProject::ProjectPtr selectedProject = XinxProject::Manager::self()->selectedProject().toStrongRef();
+	if (selectedProject)
 	{
-		m_directoryWidget->setDefaultValue(XinxProject::Manager::self()->selectedProject()->projectPath());
-		m_directoryWidget->lineEdit()->setText(XinxProject::Manager::self()->selectedProject()->projectPath());
+		m_directoryWidget->setDefaultValue(selectedProject->projectPath());
+		m_directoryWidget->lineEdit()->setText(selectedProject->projectPath());
 	}
 	else
 	{
@@ -85,9 +86,10 @@ void ReplaceDialogImpl::setReplace(bool value)
 
 void ReplaceDialogImpl::on_m_projectFilesRadioButton_toggled(bool checked)
 {
-	if (checked && XinxProject::Manager::self()->selectedProject())
+	XinxProject::ProjectPtr selectedProject = XinxProject::Manager::self()->selectedProject();
+	if (checked && selectedProject)
 	{
-		m_directoryWidget->lineEdit()->setText(XinxProject::Manager::self()->selectedProject()->projectPath());
+		m_directoryWidget->lineEdit()->setText(selectedProject->projectPath());
 	}
 }
 

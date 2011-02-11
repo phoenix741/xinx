@@ -44,8 +44,8 @@ public:
 	void setDirectory(const QString & directory);
 	const QString & directory() const;
 
-	void setProject(Project * project);
-	Project * project() const;
+	void setProject(ProjectPtr project);
+	ProjectPtr project() const;
 
 	virtual QString description() const;
 signals:
@@ -57,7 +57,7 @@ protected:
 private:
 	QString _directory;
 	QStringList _matchedFileList;
-	XinxProject::Project * _project;
+	XinxProject::ProjectPtr _project;
 };
 
 class ModelFileNode
@@ -73,13 +73,13 @@ public:
 	inline QIcon icon() const;
 	inline QString displayText() const;
 
-	inline void add(XinxProject::Project * project);
+	inline void add(XinxProject::ProjectPtr project);
 	inline void add(const QFileInfo & information);
 	inline void add(const RCS::struct_rcs_infos & information);
 	inline void add(const QString & filename);
 	inline void add(ModelFileNode * node);
 
-	inline ModelFileNode * remove(XinxProject::Project * project);
+	inline ModelFileNode * remove(XinxProject::ProjectPtr project);
 	inline ModelFileNode * remove(const QString & filename);
 
 	inline void addVisibleChildren(const QString & filename);
@@ -88,7 +88,7 @@ public:
 	PrivateProjectListModel * _private_model;
 
 	bool _is_project;
-	XinxProject::Project * _project;
+	XinxProject::ProjectPtrWeak _project;
 	QFileInfo _info;
 	RCS::struct_rcs_infos _rcs_info;
 	QString _filename;
@@ -118,7 +118,7 @@ public:
 
 	ProjectListModel * _model;
 	ModelFileNode * _root_node;
-	Project * _selected_item;
+	ProjectPtrWeak _selected_item;
 	IconProjectProvider * _provider;
 	bool _long_directory_name;
 
@@ -146,10 +146,10 @@ public slots:
 	void fetchNode(ModelFileNode * node);
 	void fetchPath(const QString & path);
 
-	void addProject(XinxProject::Project * project);
-	void removeProject(XinxProject::Project * project);
-	void updateProject(XinxProject::Project * project);
-	void selectionChange(XinxProject::Project * project);
+	void addProject(XinxProject::ProjectPtr project);
+	void removeProject(XinxProject::ProjectPtr project);
+	void updateProject(XinxProject::ProjectPtr project);
+	void selectionChange(XinxProject::ProjectPtr project);
 private:
 
 	friend class ModelFileNode;

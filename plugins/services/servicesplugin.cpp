@@ -36,7 +36,7 @@
 class OpenWebServicesObjectStep : public IProjectInitialisationStep
 {
 public:
-	OpenWebServicesObjectStep(XinxProject::Project * project) : _project(project)
+	OpenWebServicesObjectStep(XinxProject::ProjectPtr project) : _project(project)
 	{
 	}
 
@@ -56,7 +56,7 @@ public:
 		return true;
 	}
 
-	XinxProject::Project* _project;
+	XinxProject::ProjectPtr _project;
 };
 
 /* ServicesPlugin */
@@ -144,12 +144,12 @@ QList<IXinxPluginNewProjectConfigurationPage*> ServicesPlugin::createNewProjectS
 	return pages;
 }
 
-QList< IProjectInitialisationStep* > ServicesPlugin::loadProjectStep(XinxProject::Project* project)
+QList< IProjectInitialisationStep* > ServicesPlugin::loadProjectStep(XinxProject::ProjectPtr project)
 {
 	return QList<IProjectInitialisationStep*>() << new OpenWebServicesObjectStep(project);
 }
 
-QList< IProjectInitialisationStep* > ServicesPlugin::closeProjectStep(XinxProject::Project* project)
+QList< IProjectInitialisationStep* > ServicesPlugin::closeProjectStep(XinxProject::ProjectPtr project)
 {
 	return QList<IProjectInitialisationStep*>();
 }

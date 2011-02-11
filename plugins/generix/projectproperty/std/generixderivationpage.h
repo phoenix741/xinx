@@ -79,7 +79,7 @@ public:
 	GenerixDerivationPathPageImpl(QWidget * parent = 0, Qt::WFlags f = 0);
 	virtual ~GenerixDerivationPathPageImpl();
 
-	virtual void setProject(XinxProject::Project * project);
+	virtual void setProject(XinxProject::ProjectPtr project);
 
 	virtual QPixmap image();
 	virtual QString name();
@@ -97,7 +97,7 @@ private slots:
 	void derivationLineChanged(const QModelIndex & current);
 
 private:
-	XinxProject::Project * m_project;
+	XinxProject::ProjectPtr m_project;
 	QPointer<DerivationPathTableModel> m_model;
 	QPointer<DerivationDirectoryEditDelegate> m_delegate;
 };

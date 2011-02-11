@@ -32,7 +32,7 @@ public:
 	GenerixDerivationOptionsPageImpl(QWidget * parent = 0, Qt::WFlags f = 0);
 	virtual ~GenerixDerivationOptionsPageImpl();
 
-	virtual void setProject(XinxProject::Project * project);
+	virtual void setProject(XinxProject::ProjectPtr project);
 
 	virtual QPixmap image();
 	virtual QString name();
@@ -44,7 +44,7 @@ public:
 	virtual bool isSettingsValid();
 	virtual bool isVisible();
 private:
-	XinxProject::Project * m_project;
+	XinxProject::ProjectPtr m_project;
 };
 
 #endif // _GENERIXDERIVATIONOPTIONSPAGE_H_

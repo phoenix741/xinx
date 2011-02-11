@@ -148,9 +148,9 @@ void WebServicesEditor::initLayout()
 	splitter->addWidget(m_resultWidget);
 }
 
-void WebServicesEditor::setProject(XinxProject::Project* project)
+void WebServicesEditor::setProject(XinxProject::ProjectPtr project)
 {
-	if (project != TextFileEditor::project())
+	if (project.data() != TextFileEditor::project().data())
 	{
 		connect(WebServicesManager::manager(project), SIGNAL(changed()), this, SLOT(webServicesChanged()));
 		TextFileEditor::setProject(project);

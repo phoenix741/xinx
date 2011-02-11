@@ -97,14 +97,14 @@ void XmlPresentationDockThread::adaptColumns()
 void XmlPresentationDockThread::projectChanged()
 {
 	m_dataStreamLocation.clear();
-	foreach (XinxProject::Project * project, XinxProject::Manager::self()->projects())
+	foreach (XinxProject::ProjectPtr project, XinxProject::Manager::self()->projects())
 	{
 		const QString rel  = project->readProperty("dataStreamLocation").toString();
 		m_dataStreamLocation << QDir(project->projectPath()).absoluteFilePath(rel);
 	}
 	m_dataStreamLocation.sort();
 	m_dataStreamLocation.removeDuplicates();
-	
+
 	initXmlPresentationCombo();
 }
 
@@ -125,7 +125,7 @@ void XmlPresentationDockThread::initXmlPresentationCombo()
 		m_xmlPresentationWidget->m_presentationComboBox->addItem(dataStreamLocation);
 		QModelIndex index = model->index(m_xmlPresentationWidget->m_presentationComboBox->count() - 1, 0);
 		model->setData(index, QVariant(Qt::AlignCenter), Qt::TextAlignmentRole);
-		
+
 		QDir dataStreamDir(dataStreamLocation);
 		if (dataStreamDir.exists())
 		{
@@ -154,7 +154,7 @@ void XmlPresentationDockThread::initXmlPresentationCombo()
 	}
 	else
 		presentationActivated(0);
-	
+
 	m_xmlPresentationWidget->m_presentationComboBox->blockSignals(false);
 }
 
@@ -179,7 +179,7 @@ void XmlPresentationDockThread::presentationActivated(int index)
 		{
 			location = m_dataStreamLocation.at(0);
 		}
-		
+
 		// Open a file
 		QString name = QFileDialog::getOpenFileName(m_parent, tr("Open a presentation file"), location, tr("Presentation XML File (*.xml)"));
 		if (name.isEmpty())

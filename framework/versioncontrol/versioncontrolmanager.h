@@ -25,6 +25,7 @@
 #include <core/xinxcore.h>
 #include <core/xinxsingleton.h>
 #include <versioncontrol/rcs.h>
+#include <project/xinxprojectproject.h>
 
 // Qt header
 #include <QMap>
@@ -35,6 +36,8 @@ class QAction;
 namespace XinxProject
 {
 	class Project;
+	typedef QSharedPointer<Project> ProjectPtr;
+	typedef QWeakPointer<Project> ProjectPtrWeak;
 }
 
 namespace VersionControl
@@ -83,7 +86,7 @@ private slots:
 	void startOperations();
 	void stopOperations();
 
-	void changed(XinxProject::Project * project);
+	void changed(XinxProject::ProjectPtr project);
 
 	void updateWorkingCopy();
 	void validWorkingCopy();

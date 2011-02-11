@@ -21,14 +21,11 @@
 #define PROJECTDIRECTORYWIDGETIMPL_H
 
 #include "ui_projectdirectorywidget.h"
+#include "xinxprojectproject.h"
 
 class IFileTypePlugin;
 class QDockWidget;
 class PrivateProjectDirectoryWidgetImpl;
-namespace XinxProject
-{
-	class Project;
-}
 
 class ProjectDirectoryWidgetImpl : public QWidget, public Ui::ProjectDirectoryWidget
 {
@@ -43,7 +40,7 @@ public:
 
 	QStringList selectedFiles() const;
 signals:
-	void open(const QString & filename, IFileTypePlugin* interface, XinxProject::Project * project);
+	void open(const QString & filename, IFileTypePlugin* interface, XinxProject::ProjectPtr project);
 private:
 	PrivateProjectDirectoryWidgetImpl * d;
 	friend class PrivateProjectDirectoryWidgetImpl;

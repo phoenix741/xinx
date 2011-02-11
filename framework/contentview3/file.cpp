@@ -37,7 +37,7 @@ public:
 	PrivateFile();
 	~PrivateFile();
 
-	XinxProject::Project * _project;
+	XinxProject::ProjectPtrWeak _project;
 	QString _filename;
 	QStringList _imports;
 	QList<File::Symbole> _symbols;
@@ -57,28 +57,28 @@ PrivateFile::~PrivateFile()
 
 /* File */
 
-FilePtr File::create(XinxProject::Project * project)
+FilePtr File::create(XinxProject::ProjectPtr project)
 {
 	FilePtr ptr(new File(project));
 	ptr->d->_this = ptr.toWeakRef ();
 	return ptr;
 }
 
-File::File(XinxProject::Project* project) : d(new PrivateFile)
+File::File(XinxProject::ProjectPtr project) : d(new PrivateFile)
 {
-	d->_project = project;
+	d->_project = project.toWeakRef();
 
 	//qDebug() << "Create the file" << this << "with noname";
 }
 
-FilePtr File::create(const QString & filename, XinxProject::Project * project)
+FilePtr File::create(const QString & filename, XinxProject::ProjectPtr project)
 {
 	FilePtr ptr(new File(filename, project));
 	ptr->d->_this = ptr.toWeakRef ();
 	return ptr;
 }
 
-File::File(const QString& filename, XinxProject::Project* project) : d(new PrivateFile)
+File::File(const QString& filename, XinxProject::ProjectPtr project) : d(new PrivateFile)
 {
 	d->_filename = filename;
 	d->_project  = project;
@@ -101,14 +101,14 @@ const QString & File::filename() const
 	return d->_filename;
 }
 
-void File::setProject(XinxProject::Project* project)
+void File::setProject(XinxProject::ProjectPtr project)
 {
-	d->_project = project;
+	d->_project = project.toWeakRef();
 }
 
-XinxProject::Project* File::project() const
+XinxProject::ProjectPtr File::project() const
 {
-	return d->_project;
+	return d->_project.toStrongRef();
 }
 
 void File::addImport ( const QString& import )
@@ -118,7 +118,7 @@ void File::addImport ( const QString& import )
 		try
 		{
 			d->_imports.append(import);
-			d->_project->cache()->addFileToCache(import);
+			d->_project.toStrongRef()->cache()->addFileToCache(import);
 		}
 		catch(CacheParserNotFoundException e)
 		{

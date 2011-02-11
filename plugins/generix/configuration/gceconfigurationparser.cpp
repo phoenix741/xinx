@@ -37,6 +37,9 @@ void GceConfigurationParser::startJob()
 {
 	if (interface())
 	{
+		interface()->setFilename(_filename);
+		interface()->addFilename(_filename);
+
 		GceConfigurationXmlParser2 parser;
 		parser.m_quick = ! SelfGceSettings::self()->config().readConfigurations;
 		parser.m_configurationNumber = -1;

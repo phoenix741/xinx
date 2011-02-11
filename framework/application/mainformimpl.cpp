@@ -387,7 +387,7 @@ void MainformImpl::createDockWidget()
 	QAction * action = view->toggleViewAction();
 	action->setShortcut(QKeySequence("Alt+1"));
 	m_menus["windows"]->addAction(action);
-	connect(m_projectDock, SIGNAL(open(QString,IFileTypePlugin*,XinxProject::Project*)), EditorManager::self (), SLOT(openFile(QString,IFileTypePlugin*,XinxProject::Project*)));
+	connect(m_projectDock, SIGNAL(open(QString,IFileTypePlugin*,XinxProject::ProjectPtr)), EditorManager::self (), SLOT(openFile(QString,IFileTypePlugin*,XinxProject::ProjectPtr)));
 
 	/* Content */
 	m_contentDock = new ContentView3::DockWidget(this);
@@ -396,7 +396,7 @@ void MainformImpl::createDockWidget()
 	action = view->toggleViewAction();
 	action->setShortcut(QKeySequence("Alt+2"));
 	m_menus["windows"]->addAction(action);
-	connect(m_contentDock, SIGNAL(open(QString,int,IFileTypePlugin*,XinxProject::Project*)), EditorManager::self (), SLOT(openFile(QString,int,IFileTypePlugin*,XinxProject::Project*)));
+	connect(m_contentDock, SIGNAL(open(QString,int,IFileTypePlugin*,XinxProject::ProjectPtr)), EditorManager::self (), SLOT(openFile(QString,int,IFileTypePlugin*,XinxProject::ProjectPtr)));
 
 	/* Snipets */
 	m_snipetsDock = new SnipetDockWidget(this);
@@ -830,9 +830,12 @@ void MainformImpl::updateTitle()
 	{
 		title = "[" + EditorManager::self()->currentEditor()->lastFileName() + "] - " + title;
 	}
-	if (XinxProject::Manager::self()->selectedProject())
+
+	XinxProject::ProjectPtr selectedProject = XinxProject::Manager::self()->selectedProject().toStrongRef();
+
+	if (selectedProject)
 	{
-		title = XinxProject::Manager::self()->selectedProject()->projectName() + " - " + title;
+		title = selectedProject->projectName() + " - " + title;
 	}
 
 	setWindowTitle(title);

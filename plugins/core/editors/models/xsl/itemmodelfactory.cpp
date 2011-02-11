@@ -289,7 +289,7 @@ void ItemModelFactory::generate()
 	if (c && c->position () == Core::BaliseDefinition::XmlContextType::ATTRIBUTE_CONTENT)
 	{
 		ContentView3::FilePtr file = context().fileStrongRef ();
-		XinxProject::Project * project = file->project();
+		XinxProject::ProjectPtr project = file->project();
 
 		ContentView3::FileNodePtr rootNode = file->rootNode();
 		addNode (tr("Local"), rootNode, QString(), false);

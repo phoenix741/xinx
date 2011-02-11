@@ -588,7 +588,7 @@ void EditorManager::openFile ()
 	d->tabWidget()->setUpdatesEnabled(true);
 }
 
-void EditorManager::openFile(const QString& filename, IFileTypePlugin* interface, XinxProject::Project* project)
+void EditorManager::openFile(const QString& filename, IFileTypePlugin* interface, XinxProject::ProjectPtr project)
 {
 	Q_ASSERT(! filename.isEmpty());
 
@@ -615,7 +615,7 @@ void EditorManager::openFile(const QString& filename, IFileTypePlugin* interface
 	setCurrentEditor (openingEditor);
 }
 
-void EditorManager::openFile(const QString& filename, int line, IFileTypePlugin* interface, XinxProject::Project* project)
+void EditorManager::openFile(const QString& filename, int line, IFileTypePlugin* interface, XinxProject::ProjectPtr project)
 {
 	if (! filename.isEmpty())
 	{
@@ -843,14 +843,14 @@ void EditorManager::closeFile(bool confirm)
 	closeFile(item, confirm);
 }
 
-bool EditorManager::closeAllFile(XinxProject::Project* project)
+bool EditorManager::closeAllFile(XinxProject::ProjectPtr project)
 {
 	d->tabWidget()->setUpdatesEnabled(false);
 
 	QList<AbstractEditor*> editors;
 	for (int i = d->tabWidget()->count() - 1; i >= 0; i--)
 	{
-		if ((!project) || (editor(i)->project() == project))
+		if ((!project) || (editor(i)->project().data() == project.data()))
 		{
 			editors << editor(i);
 		}

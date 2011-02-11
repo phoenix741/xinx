@@ -27,12 +27,15 @@
 // Qt header
 #include <QObject>
 #include <QHash>
+#include <QSharedPointer>
 
 class IFileResolverPlugin;
 
 namespace XinxProject
 {
 	class Project;
+	typedef QSharedPointer<Project> ProjectPtr;
+	typedef QWeakPointer<Project> ProjectPtrWeak;
 }
 
 /* ExternalFileResolver */
@@ -41,7 +44,7 @@ class LIBEXPORT ExternalFileResolver : public QObject
 {
 	Q_OBJECT
 public:
-	explicit ExternalFileResolver(XinxProject::Project * project);
+	explicit ExternalFileResolver(XinxProject::ProjectPtrWeak project);
 	virtual ~ExternalFileResolver();
 
 	QStringList externalFileResoverIds() const;
@@ -53,8 +56,8 @@ public slots:
 	void clearCache();
 private:
 	QHash< QPair<QString,QString> ,QString> m_externalFileResolverCache;
-	
-	XinxProject::Project * _project;
+
+	XinxProject::ProjectPtrWeak _project;
 };
 
 #endif // EXTERNALFILERESOLVER_H

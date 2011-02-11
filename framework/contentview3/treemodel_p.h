@@ -38,7 +38,7 @@ public:
 	virtual QVariant data (int role = Qt::UserRole + 1) const;
 
 	bool _is_children_populate;
-	XinxProject::Project * _project;
+	XinxProject::ProjectPtrWeak _project;
 	QString _key;
 	QString _filename, _name;
 	int _line;

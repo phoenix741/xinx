@@ -105,7 +105,7 @@ bool SearchPathListFormImpl::isVisible()
 	return ManualFileResolver::staticId().compare(m_currentResolverName) == 0;
 }
 
-void SearchPathListFormImpl::setProject(XinxProject::Project * project)
+void SearchPathListFormImpl::setProject(XinxProject::ProjectPtr project)
 {
 	m_project = project;
 }

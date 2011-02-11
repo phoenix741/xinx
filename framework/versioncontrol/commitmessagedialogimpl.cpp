@@ -34,7 +34,7 @@ public:
 	PrivateCommitMessageDialogImpl(CommitMessageDialogImpl * parent);
 	~PrivateCommitMessageDialogImpl();
 
-	XinxProject::Project * m_project;
+	XinxProject::ProjectPtr m_project;
 	RCS::FilesOperation m_files;
 private:
 	CommitMessageDialogImpl * m_parent;
@@ -88,9 +88,9 @@ CommitMessageDialogImpl::~CommitMessageDialogImpl()
 }
 
 /*!
- * \brief Set the project to \e project 
+ * \brief Set the project to \e project
  */
-void CommitMessageDialogImpl::setXinxProject(XinxProject::Project* project)
+void CommitMessageDialogImpl::setXinxProject(XinxProject::ProjectPtr project)
 {
 	d->m_project = project;
 }
@@ -99,7 +99,7 @@ void CommitMessageDialogImpl::setXinxProject(XinxProject::Project* project)
  * \brief Get the project.
  * \return the current project
  */
-XinxProject::Project* CommitMessageDialogImpl::project() const
+XinxProject::ProjectPtr CommitMessageDialogImpl::project() const
 {
 	return d->m_project;
 }

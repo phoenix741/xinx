@@ -46,9 +46,9 @@ public:
 	virtual bool isSettingsValid();
 	virtual bool isVisible();
 
-	virtual void setProject(XinxProject::Project * project);
+	virtual void setProject(XinxProject::ProjectPtr project);
 public:
-	XinxProject::Project * m_project;
+	XinxProject::ProjectPtr m_project;
 	QString m_currentResolverName;
 };
 

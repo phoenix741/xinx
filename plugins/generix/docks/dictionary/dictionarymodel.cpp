@@ -26,7 +26,7 @@
 /* DictionaryModel */
 #include "dictionary_labelnode.h"
 
-DictionaryModel::DictionaryModel(QObject* parent): QStandardItemModel(parent), _project(0)
+DictionaryModel::DictionaryModel(QObject* parent): QStandardItemModel(parent)
 {
 	connect(EditorManager::self(), SIGNAL(currentChanged(int)), this, SLOT(textEditorChanged(int)));
 }
@@ -38,32 +38,30 @@ DictionaryModel::~DictionaryModel()
 
 void DictionaryModel::textEditorChanged(int index)
 {
-	XinxProject::Project * project;
+	XinxProject::ProjectPtr project;
 	if ((index >= 0) && (index < EditorManager::self()->editorsCount()))
 	{
 		project = EditorManager::self()->editor(index)->project();
 	}
-	else
-	{
-		project = 0;
-	}
 
-	if (project != _project)
+	if (project.data() != _project.data())
 	{
-		_project = project;
+		_project = project.toWeakRef();
 		loadDictionaries(_prefix);
 	}
 }
 
 void DictionaryModel::loadDictionaries(const QString & prefix)
 {
+	XinxProject::ProjectPtr project = _project.toStrongRef();
+
 	clear();
 
 	emit changed();
 
-	if (! _project) return;
-	if (! ConfigurationManager::manager(_project)) return;
-	if (! ConfigurationManager::manager(_project)->getInterface()) return;
+	if (! project) return;
+	if (! ConfigurationManager::manager(project)) return;
+	if (! ConfigurationManager::manager(project)->getInterface()) return;
 	if (prefix.isEmpty())
 	{
 		appendRow(new QStandardItem(tr("Please type a prefix to list labels.")));
@@ -75,10 +73,10 @@ void DictionaryModel::loadDictionaries(const QString & prefix)
 
 	QHash<QString,QStandardItem*> _items;
 
-	QStringList dictionaries = ConfigurationManager::manager(_project)->getInterface()->dictionnaries();
+	QStringList dictionaries = ConfigurationManager::manager(project)->getInterface()->dictionnaries();
 	foreach(const QString & dictionary, dictionaries)
 	{
-		ContentView3::NodePtr nodePtr = _project->cache()->cachedFile(dictionary)->rootNode();
+		ContentView3::NodePtr nodePtr = project->cache()->cachedFile(dictionary)->rootNode();
 
 		foreach(ContentView3::NodePtr childNodePtr, nodePtr->childs())
 		{

@@ -57,7 +57,7 @@ QString ServicesProjectPropertyImpl::name()
 	return windowTitle();
 }
 
-void ServicesProjectPropertyImpl::setProject(XinxProject::Project * project)
+void ServicesProjectPropertyImpl::setProject(XinxProject::ProjectPtr project)
 {
 	m_project = project;
 }

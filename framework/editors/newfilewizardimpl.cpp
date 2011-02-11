@@ -60,9 +60,10 @@ void NewFileWizardImpl::setFileName(const QString& value)
 	{
 		if (path().isEmpty())
 		{
-			if (XinxProject::Manager::self()->selectedProject())
+			XinxProject::ProjectPtr selectedProject = XinxProject::Manager::self()->selectedProject().toStrongRef();
+			if (selectedProject)
 			{
-				filename = QDir(XinxProject::Manager::self()->selectedProject()->projectPath()).absoluteFilePath(tr("noname.txt"));
+				filename = QDir(selectedProject->projectPath()).absoluteFilePath(tr("noname.txt"));
 			}
 			else
 			{
@@ -117,12 +118,12 @@ IFileTypePlugin * NewFileWizardImpl::selectedType() const
 	return _interface ? _interface : _file_type_selector->selectedType();
 }
 
-void NewFileWizardImpl::setProject(XinxProject::Project * project)
+void NewFileWizardImpl::setProject(XinxProject::ProjectPtr project)
 {
 	_project = project;
 }
 
-XinxProject::Project * NewFileWizardImpl::project() const
+XinxProject::ProjectPtr NewFileWizardImpl::project() const
 {
 	return _project ? _project : XinxProject::Manager::self()->projectOfFile(filename());
 }

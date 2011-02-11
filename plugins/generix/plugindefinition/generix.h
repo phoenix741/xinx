@@ -61,8 +61,8 @@ public:
 	virtual QList<CodeCompletion::ItemModelFactory*> createItemModelFactory() const;
 	virtual XsltParser * createXsltParser(AbstractEditor* editor);
 
-	virtual QList<IProjectInitialisationStep*> loadProjectStep(XinxProject::Project * project);
-	virtual QList<IProjectInitialisationStep*> closeProjectStep(XinxProject::Project * project);
+	virtual QList<IProjectInitialisationStep*> loadProjectStep(XinxProject::ProjectPtr project);
+	virtual QList<IProjectInitialisationStep*> closeProjectStep(XinxProject::ProjectPtr project);
 
 	virtual QList<IFileTypePlugin*> fileTypes();
 

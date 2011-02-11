@@ -51,7 +51,7 @@ namespace XinxProject {
 class PrivateXinxProject
 {
 public:
-	PrivateXinxProject(Project * parent);
+	PrivateXinxProject();
 	~PrivateXinxProject();
 
 	void initialisation();
@@ -68,6 +68,7 @@ public:
 
 	int m_version;
 
+	XinxProject::ProjectPtrWeak m_self;
 	QString m_fileName;
 	QString m_projectName;
 	QString m_projectRCS;
@@ -81,12 +82,10 @@ public:
 	VersionControl::RCSProxy * m_rcsProxy;
 
 	void load_rcsproxy_settings();
-private:
-	Project * m_parent;
 };
 
 
-PrivateXinxProject::PrivateXinxProject(Project * parent): m_version(XINX_PROJECT_VERSION), m_cache(0), _resolver(0), m_rcsProxy(0), m_parent(parent)
+PrivateXinxProject::PrivateXinxProject(): m_version(XINX_PROJECT_VERSION), m_cache(0), _resolver(0), m_rcsProxy(0)
 {
 }
 
@@ -99,14 +98,14 @@ PrivateXinxProject::~PrivateXinxProject()
 
 void PrivateXinxProject::initialisation ()
 {
-	m_rcsProxy		= new VersionControl::RCSProxy(m_parent);
-	m_cache			= new ContentView3::Cache(m_parent);
-	_resolver		= new ExternalFileResolver(m_parent);
+	m_rcsProxy		= new VersionControl::RCSProxy(m_self);
+	m_cache			= new ContentView3::Cache(m_self);
+	_resolver		= new ExternalFileResolver(m_self);
 }
 
 QString PrivateXinxProject::tr(const char* arg1)
 {
-	return m_parent->tr(arg1);
+	return Project::tr(arg1);
 }
 
 QString PrivateXinxProject::getValue(const QDomDocument & document, const QString & node)
@@ -292,14 +291,40 @@ void PrivateXinxProject::load_rcsproxy_settings()
  *
  */
 
+Project::Project()
+{
+	d = new PrivateXinxProject;
+
+	qDebug() << "Create a project with no name " << this;
+}
+
+Project::Project (const QString & path)
+{
+	Q_ASSERT_X(! path.isEmpty(), "XinxProject::Project::Project", "The path mustn't be empty.'");
+
+	if (! QDir(path).exists())
+	{
+		throw ProjectException(tr("The project must be created in a existing directory"), false);
+	}
+
+	d = new PrivateXinxProject;
+
+	d->m_projectPath = path;
+	d->m_fileName    = QDir(projectPath()).absoluteFilePath(XINX_PROJECT_FILENAME);
+
+	qDebug() << "Create the project " << path << " " << this;
+}
+
 /*!
  * \brief To create an empty project
  * \since 0.9.1.0
  */
-Project::Project()
+XinxProject::ProjectPtr Project::create()
 {
-	d = new PrivateXinxProject(this);
-	d->initialisation();
+	XinxProject::ProjectPtr ptr(new Project());
+	ptr->d->m_self = ptr.toWeakRef();
+	ptr->d->initialisation();
+	return ptr;
 }
 
 /*!
@@ -311,25 +336,18 @@ Project::Project()
  *
  * Warning : The project must exists
  */
-Project::Project (const QString & path, bool creation)
+XinxProject::ProjectPtr Project::create(const QString & path, bool creation)
 {
-	Q_ASSERT_X(! path.isEmpty(), "XinxProject::Project::Project", "The path mustn't be empty.'");
-
-	if (! QDir(path).exists())
-	{
-		throw ProjectException(tr("The project must be created in a existing directory"), false);
-	}
-
-	d = new PrivateXinxProject(this);
-	d->initialisation();
-
-	d->m_projectPath = path;
-	d->m_fileName    = QDir(projectPath()).absoluteFilePath(XINX_PROJECT_FILENAME);
+	XinxProject::ProjectPtr ptr(new Project(path));
+	ptr->d->m_self = ptr.toWeakRef();
+	ptr->d->initialisation();
 
 	if (! creation)
 	{
-		d->loadFromFile();
+		ptr->d->loadFromFile();
 	}
+
+	return ptr;
 }
 
 /*!
@@ -340,6 +358,8 @@ Project::Project (const QString & path, bool creation)
  */
 Project::~Project()
 {
+	qDebug() << "Destroy the project " << d->m_fileName << " " << this;
+
 	delete d;
 }
 

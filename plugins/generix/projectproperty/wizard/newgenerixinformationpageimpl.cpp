@@ -53,7 +53,7 @@ bool NewGenerixInformationPageImpl::pageIsVisible() const
 	return true;
 }
 
-bool NewGenerixInformationPageImpl::saveSettingsDialog(XinxProject::Project * project)
+bool NewGenerixInformationPageImpl::saveSettingsDialog(XinxProject::ProjectPtr project)
 {
 	project->writeProperty("dataStreamLocation", m_dataStreamEdit->lineEdit()->text());
 	project->writeProperty("moduleInternetAdresse", m_urlLocationEdit->lineEdit()->text());

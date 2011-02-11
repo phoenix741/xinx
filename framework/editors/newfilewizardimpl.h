@@ -22,11 +22,7 @@
 
 #include "ui_newfilewizard.h"
 #include <QWizard>
-
-namespace XinxProject
-{
-	class Project;
-}
+#include <project/xinxprojectproject.h>
 
 /*!
  * \internal
@@ -44,8 +40,8 @@ public:
 	void setFileName(const QString & value);
 	QString filename() const;
 
-	void setProject(XinxProject::Project * project);
-	XinxProject::Project * project() const;
+	void setProject(XinxProject::ProjectPtr project);
+	XinxProject::ProjectPtr project() const;
 
 	void setSelectedType(IFileTypePlugin * plugin);
 	IFileTypePlugin * selectedType() const;
@@ -55,7 +51,7 @@ protected:
 private slots:
 	void slotTextChanged (const QString & text);
 private:
-	XinxProject::Project * _project;
+	XinxProject::ProjectPtr _project;
 	IFileTypePlugin * _interface;
 };
 

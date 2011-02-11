@@ -50,13 +50,13 @@ public:
 	GenerixProjectDockImpl(QWidget * parent = 0);
 	virtual ~GenerixProjectDockImpl();
 
-	void setProject(XinxProject::Project * project);
+	void setProject(XinxProject::ProjectPtr project);
 private slots:
 	void updateList();
 	void on_m_prefixCombo_activated(QString text);
 	void editorChanged(int index);
 private:
-	GenerixProject * m_gnxProject;
+	QWeakPointer<GenerixProject> m_gnxProject;
 	int m_editorIndex;
 	BusinessViewListDelegate * m_delegate;
 };

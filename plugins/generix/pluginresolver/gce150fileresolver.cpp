@@ -50,11 +50,11 @@ QString Gce150FileResolver::name()
 	return tr("GCE150 File Resolver");
 }
 
-bool Gce150FileResolver::resolveFileName( const QString& nameToResolve, QString& resolvedName, const QString& currentPath, XinxProject::Project* project)
+bool Gce150FileResolver::resolveFileName( const QString& nameToResolve, QString& resolvedName, const QString& currentPath, XinxProject::ProjectPtr project)
 {
 	Q_UNUSED(currentPath);
 
-	if (project && static_cast<GenerixProject*>(project)->isGenerixActivated())
+	if (project && project.staticCast<GenerixProject>()->isGenerixActivated())
 	{
 		GceConfiguration * interface = ConfigurationManager::manager(project)->getInterface();
 		if (interface)

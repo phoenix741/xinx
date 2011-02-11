@@ -25,13 +25,16 @@
 #include <QString>
 #include <QVariant>
 #include <QScopedPointer>
+#include <QSharedPointer>
 
 namespace XinxProject
 {
 	class Project;
+
+	typedef QSharedPointer<Project> ProjectPtr;
 }
 
-namespace XinxSession 
+namespace XinxSession
 {
 
 class Session;
@@ -43,8 +46,8 @@ public:
 	explicit SessionEditor(Session * parent = 0);
 	~SessionEditor();
 
-	void setProject(XinxProject::Project * project);
-	XinxProject::Project * project() const;
+	void setProject(XinxProject::ProjectPtr project);
+	XinxProject::ProjectPtr project() const;
 
 	void writeProperty(const QString & key, QVariant value);
 	QVariant readProperty(const QString & key);

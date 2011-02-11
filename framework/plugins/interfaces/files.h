@@ -25,10 +25,13 @@
 #include <QtPlugin>
 #include <QMetaType>
 #include <QStringList>
+#include <QSharedPointer>
 
 namespace XinxProject
 {
 	class Project;
+
+	typedef QSharedPointer<Project> ProjectPtr;
 }
 namespace ContentView3
 {
@@ -139,9 +142,9 @@ public:
 	virtual ~IXinxInputOutputPlugin() {}
 
 	//! List of step of initialisation of XINX project
-	virtual QList<IProjectInitialisationStep*> loadProjectStep(XinxProject::Project * project) = 0;
+	virtual QList<IProjectInitialisationStep*> loadProjectStep(XinxProject::ProjectPtr project) = 0;
 	//! List of step of deinitialisation of XINX project
-	virtual QList<IProjectInitialisationStep*> closeProjectStep(XinxProject::Project * project) = 0;
+	virtual QList<IProjectInitialisationStep*> closeProjectStep(XinxProject::ProjectPtr project) = 0;
 
 	//! Call when a file is loaded
 	virtual QIODevice * loadFile(AbstractEditor * editor, const QString & filename) = 0;

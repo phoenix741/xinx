@@ -112,7 +112,7 @@ ProjectPropertyImpl::~ProjectPropertyImpl()
 
 }
 
-void ProjectPropertyImpl::loadFromProject(XinxProject::Project * project)
+void ProjectPropertyImpl::loadFromProject(XinxProject::ProjectPtr project)
 {
 	m_nameLineEdit->setText(project->projectName());
 	_projectLineEdit->setText(QDir::toNativeSeparators(project->projectPath()));
@@ -148,7 +148,7 @@ void ProjectPropertyImpl::loadFromProject(XinxProject::Project * project)
 	}
 }
 
-void ProjectPropertyImpl::saveToProject(XinxProject::Project * project)
+void ProjectPropertyImpl::saveToProject(XinxProject::ProjectPtr project)
 {
 	project->setProjectName(m_nameLineEdit->text());
 	project->setProjectRCS(m_projectRCSComboBox->itemData(m_projectRCSComboBox->currentIndex()).toString());

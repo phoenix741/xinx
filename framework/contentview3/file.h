@@ -24,6 +24,7 @@
 // Xinx header
 #include <core/lib-config.h>
 #include <contentview3/definitions.h>
+#include <project/xinxprojectproject.h>
 
 // Qt header
 #include <QApplication>
@@ -31,6 +32,7 @@
 
 namespace XinxProject {
 	class Project;
+	typedef QSharedPointer<Project> ProjectPtr;
 }
 
 namespace ContentView3
@@ -48,15 +50,15 @@ public:
 		QString type, name;
 	};
 
-	static FilePtr create(XinxProject::Project * project = 0);
-	static FilePtr create(const QString & filename, XinxProject::Project * project = 0);
+	static FilePtr create(XinxProject::ProjectPtr project = XinxProject::ProjectPtr());
+	static FilePtr create(const QString& filename, XinxProject::ProjectPtr project);
 	~File();
 
 	void setFilename(const QString & filename);
 	const QString & filename() const;
 
-	void setProject(XinxProject::Project * project);
-	XinxProject::Project * project() const;
+	void setProject(XinxProject::ProjectPtr project);
+	XinxProject::ProjectPtr project() const;
 
 	const QStringList & imports() const;
 	void clearImports();
@@ -69,8 +71,8 @@ public:
 	void setRootNode(FileNodePtr node);
 	FileNodePtr rootNode() const;
 private:
-	explicit File(XinxProject::Project * project = 0);
-	explicit File(const QString & filename, XinxProject::Project * project = 0);
+	explicit File(XinxProject::ProjectPtr project);
+	explicit File(const QString& filename, XinxProject::ProjectPtr project);
 
 	QScopedPointer<PrivateFile> d;
 };

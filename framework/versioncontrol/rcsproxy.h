@@ -51,7 +51,7 @@ public:
 		RCS_REMOVE
 	};
 
-	explicit RCSProxy(XinxProject::Project * project);
+	explicit RCSProxy(XinxProject::ProjectPtrWeak project);
 	~RCSProxy();
 
 	bool setCurrentRCS(const QString & rcs);
@@ -81,7 +81,7 @@ private:
 	QString m_rcsName, m_rootPath;
 	QQueue< QPair<rcsAddRemoveOperation,QStringList> > m_operations;
 
-	XinxProject::Project* m_project;
+	XinxProject::ProjectPtrWeak m_project;
 };
 
 }

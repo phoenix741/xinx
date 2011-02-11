@@ -59,7 +59,7 @@ public:
 		PROJECT = 10
 	};
 
-	explicit Cache(XinxProject::Project * project);
+	explicit Cache(XinxProject::ProjectPtrWeak project);
 	~Cache();
 
 	QStringList cachedFiles() const;

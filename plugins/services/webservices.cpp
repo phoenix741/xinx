@@ -205,7 +205,7 @@ void WebServices::loadFromContent(const QString & wsdlContent)
 
 /* WebServicesManager */
 
-WebServicesManager::WebServicesManager(XinxProject::Project* project) : QObject(project), m_isUpdate(false), _project(project)
+WebServicesManager::WebServicesManager(XinxProject::ProjectPtr project) : QObject(project.data()), m_isUpdate(false), _project(project.toWeakRef())
 {
 	m_http = new QHttp(this);
 	m_httpDialog = new QProgressDialog(qApp->activeWindow());
@@ -221,7 +221,7 @@ WebServicesManager::~WebServicesManager()
 	qDeleteAll(_list);
 }
 
-WebServicesManager* WebServicesManager::manager(XinxProject::Project* project)
+WebServicesManager* WebServicesManager::manager(XinxProject::ProjectPtr project)
 {
 	if (! project) return NULL;
 	QObject * object = project->getObject("webservices");
@@ -235,16 +235,18 @@ const WebServicesList& WebServicesManager::list() const
 
 void WebServicesManager::responseReady()
 {
-	Q_ASSERT_X(_project, "ServicesProjectPropertyImpl::saveSettingsDialog()", "Project must be defined");
+	XinxProject::ProjectPtr project = _project.toStrongRef();
+
+	Q_ASSERT_X(project, "ServicesProjectPropertyImpl::saveSettingsDialog()", "Project must be defined");
 
 	if (m_http->error() == QHttp::NoError)
 	{
 		QString content = m_http->readAll();
 		if (! content.isEmpty())
 		{
-			_project->writeProperty("webServiceVersion" , WEBSERVICE_VERSION_CURRENT);
-			_project->writeProperty(QString("webServiceLink_%1").arg(m_httpDialog->value()), m_httpString);
-			_project->writeProperty(QString("webServiceContent_%1").arg(m_httpDialog->value()), content);
+			project->writeProperty("webServiceVersion" , WEBSERVICE_VERSION_CURRENT);
+			project->writeProperty(QString("webServiceLink_%1").arg(m_httpDialog->value()), m_httpString);
+			project->writeProperty(QString("webServiceContent_%1").arg(m_httpDialog->value()), content);
 			_list.append(new WebServices(m_httpString, content, this));
 		}
 	}
@@ -259,27 +261,29 @@ void WebServicesManager::responseReady()
 
 void WebServicesManager::updateWebServicesList()
 {
-	Q_ASSERT_X(_project, "ServicesProjectPropertyImpl::saveSettingsDialog()", "Project must be defined");
+	XinxProject::ProjectPtr project = _project.toStrongRef();
 
-	bool enabled = _project && _project->activatedPlugin().contains("ServicesPlugin");
+	Q_ASSERT_X(project, "ServicesProjectPropertyImpl::saveSettingsDialog()", "Project must be defined");
+
+	bool enabled = project && project->activatedPlugin().contains("ServicesPlugin");
 	if (enabled)
 	{
-		int version = _project->readProperty("webServiceVersion").toInt();
+		int version = project->readProperty("webServiceVersion").toInt();
 		QHash<QString,QString> wsdlContent;
 
 		QStringList serveurWeb;
 		if (version < WEBSERVICE_VERSION_1)
 		{
-			serveurWeb = _project->readProperty("webServiceLink").toString().split(";;", QString::SkipEmptyParts);
+			serveurWeb = project->readProperty("webServiceLink").toString().split(";;", QString::SkipEmptyParts);
 		}
 		else
 		{
 			int index = 0;
 			QString link;
-			while (!(link = _project->readProperty(QString("webServiceLink_%1").arg(index)).toString()).isEmpty())
+			while (!(link = project->readProperty(QString("webServiceLink_%1").arg(index)).toString()).isEmpty())
 			{
 				serveurWeb.append(link);
-				wsdlContent[ link ] = _project->readProperty(QString("webServiceContent_%1").arg(index)).toString();
+				wsdlContent[ link ] = project->readProperty(QString("webServiceContent_%1").arg(index)).toString();
 
 				index++;
 			}

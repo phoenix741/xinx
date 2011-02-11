@@ -105,8 +105,10 @@ bool NewGenerixDerivation2Page::pageIsVisible() const
 	return field("generix.derivation").toBool() || (version >= version150);
 }
 
-bool NewGenerixDerivation2Page::saveSettingsDialog(XinxProject::Project* project)
+bool NewGenerixDerivation2Page::saveSettingsDialog(XinxProject::ProjectPtr project)
 {
+	QSharedPointer<GenerixProject> gnxProject = project.staticCast<GenerixProject>();
+
 	const bool isDerivation = field("generix.derivation").toBool();
 
 	QList<GenerixProject::DerivationPath> paths;
@@ -126,6 +128,6 @@ bool NewGenerixDerivation2Page::saveSettingsDialog(XinxProject::Project* project
 		}
 		paths << dp;
 	}
-	static_cast<GenerixProject*>(project)->setDerivationsPath(paths);
+	gnxProject->setDerivationsPath(paths);
 	return true;
 }

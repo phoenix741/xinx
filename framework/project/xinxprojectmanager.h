@@ -24,6 +24,7 @@
 // Xinx header
 #include <core/lib-config.h>
 #include <core/xinxsingleton.h>
+#include <project/xinxprojectproject.h>
 
 // Qt header
 #include <QPointer>
@@ -33,7 +34,6 @@ class QAction;
 namespace XinxProject {
 
 class PrivateManager;
-class Project;
 
 class LIBEXPORT Manager : public XinxLibSingleton<Manager>
 {
@@ -41,13 +41,13 @@ class LIBEXPORT Manager : public XinxLibSingleton<Manager>
 public:
 	virtual ~Manager();
 
-	const QList<Project*> & projects() const;
-	Project * defaultProject();
-	Project * projectOfFile(const QString & filename);
-	Project * projectOfPath(const QString & path);
+	const QList<ProjectPtr> & projects() const;
+	ProjectPtr defaultProject();
+	ProjectPtr projectOfFile(const QString & filename);
+	ProjectPtr projectOfPath(const QString & path);
 
-	void setSelectedProject(Project * project);
-	Project * selectedProject() const;
+	void setSelectedProject(XinxProject::ProjectPtrWeak project);
+	ProjectPtrWeak selectedProject() const;
 
 	QAction * newProjectAction() const;
 	QAction * openProjectAction() const;
@@ -56,19 +56,19 @@ public:
 public slots:
 	void newProject(const QString & directory = QString());
 	void openProject(const QString & directory);
-	void openProject(Project * project);
-	void customizeProject(Project * project);
-	bool closeProject(Project* project, bool showWelcome = true);
+	void openProject(ProjectPtr project);
+	void customizeProject(ProjectPtr project);
+	bool closeProject(ProjectPtr project, bool showWelcome = true);
 	bool closeAllProject();
 
 	void openWelcomDialog();
 signals:
-	void projectOpened(XinxProject::Project * project);
-	void projectClosing(XinxProject::Project * project);
+	void projectOpened(XinxProject::ProjectPtr project);
+	void projectClosing(XinxProject::ProjectPtr project);
 	void projectClosed();
-	void projectCustomized(XinxProject::Project * project);
+	void projectCustomized(XinxProject::ProjectPtr project);
 	void changed();
-	void selectionChanged(XinxProject::Project * project);
+	void selectionChanged(XinxProject::ProjectPtr project);
 protected:
 	virtual void initialisation();
 private:

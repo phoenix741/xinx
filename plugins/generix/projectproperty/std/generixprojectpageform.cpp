@@ -37,7 +37,7 @@ GenerixProjectPageFormImpl::~GenerixProjectPageFormImpl()
 {
 }
 
-void GenerixProjectPageFormImpl::setProject(XinxProject::Project * project)
+void GenerixProjectPageFormImpl::setProject(XinxProject::ProjectPtr project)
 {
 	m_project = project;
 }

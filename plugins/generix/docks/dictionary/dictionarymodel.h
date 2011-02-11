@@ -25,6 +25,8 @@
 namespace XinxProject
 {
 	class Project;
+	typedef QSharedPointer<Project> ProjectPtr;
+	typedef QWeakPointer<Project> ProjectPtrWeak;
 }
 
 class DictionaryModel : public QStandardItemModel
@@ -40,7 +42,7 @@ signals:
 private slots:
 	void textEditorChanged(int index);
 private:
-	XinxProject::Project * _project;
+	XinxProject::ProjectPtrWeak  _project;
 	QString _prefix;
 };
 

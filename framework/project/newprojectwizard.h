@@ -28,13 +28,10 @@
 // Xinx header
 #include "ui_newprojectwizard_project.h"
 #include <plugins/interfaces/gui.h>
+#include "xinxprojectproject.h"
 
 class NewProjectWizard;
 class TemplateDialogImpl;
-namespace XinxProject
-{
-	class Project;
-};
 
 class ProjectPageImpl : public IXinxPluginNewProjectConfigurationPage, private Ui::ProjectPage
 {
@@ -46,7 +43,7 @@ public:
 
 	virtual QString pagePluginId() const;
 	virtual bool pageIsVisible() const;
-	virtual bool saveSettingsDialog(XinxProject::Project * project);
+	virtual bool saveSettingsDialog(XinxProject::ProjectPtr project);
 private slots:
 	void on_m_projectPathBtn_clicked();
 
@@ -61,7 +58,7 @@ public:
 
 	virtual QString pagePluginId() const;
 	virtual bool pageIsVisible() const;
-	virtual bool saveSettingsDialog(XinxProject::Project * project);
+	virtual bool saveSettingsDialog(XinxProject::ProjectPtr project);
 private:
 	QRadioButton * m_noRevisionControl;
 	QList< QPair<QRadioButton*, QString> > m_revisionBtn;
@@ -77,7 +74,7 @@ public:
 
 	virtual QString pagePluginId() const;
 	virtual bool pageIsVisible() const;
-	virtual bool saveSettingsDialog(XinxProject::Project * project);
+	virtual bool saveSettingsDialog(XinxProject::ProjectPtr project);
 private:
 };
 
@@ -87,11 +84,11 @@ class NewProjectWizard : public QWizard
 public:
 	NewProjectWizard(QWidget * widget = 0, Qt::WFlags f = 0);
 
-	XinxProject::Project * createProject();
+	XinxProject::ProjectPtr createProject();
 
 	virtual int nextId() const;
 private:
-	XinxProject::Project * m_project;
+	XinxProject::ProjectPtr m_project;
 
 	mutable QHash<int,QString> m_nextId;
 	mutable QStringList m_plugins;

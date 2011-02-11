@@ -64,7 +64,7 @@ public:
 	int executionTime() const;
 	const QString & faultString() const;
 
-    virtual void setProject(XinxProject::Project* project);
+    virtual void setProject(XinxProject::ProjectPtr project);
 signals:
 	void updateActions();
 	void operationTerminated();

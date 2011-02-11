@@ -62,7 +62,7 @@ public:
 	QHash<QString,CacheInformation> _files;
 
 	FilesWatcher * _watcher;
-	XinxProject::Project * _project;
+	XinxProject::ProjectPtrWeak _project;
 	QMutex _cache_mutex;
 
 	void importOf(QList< FilePtr > & result, FilePtr file);
@@ -95,7 +95,7 @@ void PrivateCache::importOf(QList< ContentView3::FilePtr >& result, ContentView3
 
 /* Cache */
 
-Cache::Cache(XinxProject::Project* project)
+Cache::Cache(XinxProject::ProjectPtrWeak project)
 {
 	qRegisterMetaType<ContentView3::FilePtr>("ContentView3::FilePtr");
 
@@ -237,7 +237,7 @@ FilePtr Cache::cachedFile(const QString & filename)
 	}
 	else
 	{
-		file = File::create (absoluteFilename, d->_project);
+		file = File::create (absoluteFilename, d->_project.toStrongRef());
 	}
 
 	return file;

@@ -292,7 +292,7 @@ void Parser::run()
 
 	if (d->_file && d->_file->project ())
 	{
-		XinxProject::Project * project = d->_file->project ();
+		XinxProject::ProjectPtr project = d->_file->project ();
 
 		QMetaObject::invokeMethod(project->cache (), "parsed", Qt::QueuedConnection, Q_ARG(ContentView3::FilePtr, d->_file));
 	}
