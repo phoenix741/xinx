@@ -39,7 +39,7 @@ GceConfigurationXmlParser2::GceConfigurationXmlParser2()
 GceConfigurationXmlParser2::~GceConfigurationXmlParser2()
 {
 	// Cleanup function for the XML library.
-	xmlCleanupParser();
+	//xmlCleanupParser();
 }
 
 bool GceConfigurationXmlParser2::loadFromFile(const QString & filename)

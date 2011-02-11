@@ -40,6 +40,7 @@
 #include <project/xinxprojectproject.h>
 #include <docks/dictionary/dictionary_parser.h>
 #include <docks/dictionary/itemmodelfactory.h>
+#include <libxml/xmlreader.h>
 
 // Qt header
 #include <QString>
@@ -84,6 +85,8 @@ public:
 GenerixPlugin::GenerixPlugin() : m_dock(0)
 {
 	Q_INIT_RESOURCE(generix);
+
+	xmlInitParser();
 
 	m_fileTypes << new MaquetteFileType;
 }
