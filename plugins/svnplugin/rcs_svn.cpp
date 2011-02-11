@@ -303,7 +303,57 @@ QList<RCS::struct_rcs_infos> RCS_SVN::infos(const QString & path)
 
 RCS::FilesOperation RCS_SVN::operations(const QStringList & paths)
 {
+	RCS::FilesOperation operations;
+	foreach(const QString & path, paths)
+	{
+		svn::StatusEntries entries;
+		try
+		{
+			try
+			{
+				entries = m_client->status(qPrintable(path), /* descend */ true, /* get_all */ true, /* update */ true, /* no_ignore */ false, /* ignore_externals */ false);
+			}
+			catch(svn::ClientException e)
+			{
+				emit log(RCS::LogNormal, e.message());
+				entries = m_client->status(qPrintable(path), /* descend */ true, /* get_all */ true, /* update */ false, /* no_ignore */ false, /* ignore_externals */ false);
+			}
 
+			for(size_t i = 0; i < entries.size(); i++)
+			{
+				svn::Status status = entries.at(i);
+
+				RCS::FileOperation operation(QDir::fromNativeSeparators(status.path()), RCS::Nothing);
+
+				switch (status.textStatus())
+				{
+				case svn_wc_status_unversioned:
+					operation.operation = RCS::AddAndCommit;
+					break;
+				case svn_wc_status_added:
+				case svn_wc_status_deleted:
+				case svn_wc_status_replaced:
+				case svn_wc_status_modified:
+				case svn_wc_status_merged:
+					operation.operation = RCS::Commit;
+					break;
+				case svn_wc_status_missing:
+					operation.operation = RCS::RemoveAndCommit;
+					break;
+				default:
+					break;
+				}
+
+				operations << operation;
+			}
+		}
+		catch(svn::ClientException e)
+		{
+			emit log(RCS::LogError, e.message());
+		}
+	}
+
+	return operations;
 }
 
 void RCS_SVN::update(const QStringList & path)
