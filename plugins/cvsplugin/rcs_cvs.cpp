@@ -86,7 +86,7 @@ QList<RCS::struct_rcs_infos> RCS_CVS::infos(const QString & path)
 		const EntriesLine value = it.next();
 	
 		RCS::struct_rcs_infos rcsInfos;
-		rcsInfos.filename = value.filename;
+		rcsInfos.filename = QDir(path).absoluteFilePath (value.filename);
 		rcsInfos.state    = value.status(absolutePath);
 		rcsInfos.rcsDate  = value.date;
 		rcsInfos.version  = value.version;
