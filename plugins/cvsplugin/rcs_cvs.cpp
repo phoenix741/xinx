@@ -71,7 +71,32 @@ RCS::struct_rcs_infos RCS_CVS::info(const QString & path)
 
 QList<RCS::struct_rcs_infos> RCS_CVS::infos(const QString & path)
 {
-	return QList<struct_rcs_infos>();
+	if (QFileInfo(path).isFile())
+	{
+		return QList<RCS::struct_rcs_infos>() << info(path);
+	}
+
+	QList<RCS::struct_rcs_infos> result;
+	QString absolutePath = QFileInfo(path).absoluteFilePath();
+	const QList<EntriesLine> entries = m_entriesList->statusOfPath(absolutePath);
+
+	QListIterator<EntriesLine> it(entries);
+	while(it.hasNext())
+	{
+		const EntriesLine value = it.next();
+	
+		RCS::struct_rcs_infos rcsInfos;
+		rcsInfos.filename = value.filename;
+		rcsInfos.state    = value.status(absolutePath);
+		rcsInfos.rcsDate  = value.date;
+		rcsInfos.version  = value.version;
+
+		result << rcsInfos;
+	}
+
+	updateEntries();
+
+	return result;
 }
 
 RCS::rcsOperation RCS_CVS::operationOfState(RCS::rcsState state)
@@ -324,6 +349,7 @@ void RCS_CVS::updateEntries()
 {
 	if (m_watcher->files().size())
 		m_watcher->removePaths(m_watcher->files());
+	
 	foreach(const EntriesFile & e, *m_entriesList)
 	{
 		if (e.size() > 0)

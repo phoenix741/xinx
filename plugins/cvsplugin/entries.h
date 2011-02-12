@@ -59,6 +59,7 @@ struct EntriesList : public QHash<QString,EntriesFile>
 	const EntriesFile value(const QString & key);
 	const EntriesFile value(const QString & key, const EntriesFile & defaultValue);
 
+	const QList<EntriesLine> statusOfPath(const QString & path);
 	const EntriesLine status(const QString & filename);
 };
 

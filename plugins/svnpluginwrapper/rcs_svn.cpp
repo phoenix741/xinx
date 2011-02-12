@@ -51,9 +51,28 @@ RCS::struct_rcs_infos RCS_SVN::info(const QString & path)
 	if (m_infos.contains(QDir::fromNativeSeparators(path)))
 		return m_infos.value(QDir::fromNativeSeparators(path));
 
-	RCS::struct_rcs_infos rcsInfos = { QDir::fromNativeSeparators(path), RCS::Unknown, "0", QDateTime() };
+	infos(QFileInfo(path).absolutePath());
+	
+	if (m_infos.contains(QDir::fromNativeSeparators(path)))
+		return m_infos.value(QDir::fromNativeSeparators(path));
+	else
+	{
+		RCS::struct_rcs_infos rcsInfos = { QDir::fromNativeSeparators(path), RCS::Unknown, "0", QDateTime() };
+		rcsInfos.filename = QString();
+		rcsInfos.state = RCS::Unknown;
+		rcsInfos.version = "0";
+		rcsInfos.rcsDate = QDateTime();
+		return rcsInfos;
+	}
+}
 
-	QString absolutePath = QFileInfo(path).absolutePath();
+QList<RCS::struct_rcs_infos> RCS_SVN::infos(const QString & path)
+{
+	QList<RCS::struct_rcs_infos> result;
+
+	QFileInfo pathInformation(path);
+	
+	QString absolutePath = pathInformation.isDir() ? path : QFileInfo(path).absolutePath();
 	QProcess process;
 	int index = 0;
 	QStringList processResult;
@@ -67,7 +86,7 @@ RCS::struct_rcs_infos RCS_SVN::info(const QString & path)
 		process.waitForStarted();
 		if (process.error() == QProcess::FailedToStart)
 		{
-			return rcsInfos;
+			return result;
 		}
 		process.waitForFinished();
 		processResult = QString(process.readAllStandardOutput()).split("\n");
@@ -80,16 +99,18 @@ RCS::struct_rcs_infos RCS_SVN::info(const QString & path)
 	}
 	while (boucle <= 1);
 
-	if (processResult.count() == 0) return rcsInfos;
+	if (processResult.count() == 0) return result;
 
 	do
 	{
+		RCS::struct_rcs_infos rcsInfos = { QDir::fromNativeSeparators(path), RCS::Unknown, "0", QDateTime() };
+
 		rcsInfos.state = RCS::Unknown;
 		rcsInfos.version = "0";
 		rcsInfos.rcsDate = QDateTime();
 
 		QString statutFile = processResult.at(index);
-		if (statutFile.length() < 8) return rcsInfos;
+		if (statutFile.length() < 8) return result;
 
 		rcsInfos.state = RCS::Updated;
 		switch (statutFile.at(0).toAscii())
@@ -128,27 +149,14 @@ RCS::struct_rcs_infos RCS_SVN::info(const QString & path)
 
 			rcsInfos.filename = filename;
 			m_infos.insert(filename, rcsInfos);
+			result << rcsInfos;
 		}
 
 		index++;
 	}
 	while (index < (processResult.count() - 1));  // Last line is "At revision XXX."
 
-	if (m_infos.contains(QDir::fromNativeSeparators(path)))
-		return m_infos.value(QDir::fromNativeSeparators(path));
-	else
-	{
-		rcsInfos.filename = QString();
-		rcsInfos.state = RCS::Unknown;
-		rcsInfos.version = "0";
-		rcsInfos.rcsDate = QDateTime();
-		return rcsInfos;
-	}
-}
-
-QList<RCS::struct_rcs_infos> RCS_SVN::infos(const QString & path)
-{
-	return QList<RCS::struct_rcs_infos>();
+	return result;
 }
 
 RCS::FilesOperation RCS_SVN::operations(const QString & path)

@@ -143,6 +143,24 @@ const EntriesFile EntriesList::value(const QString & key, const EntriesFile & de
 	}
 }
 
+const QList< EntriesLine > EntriesList::statusOfPath(const QString& path)
+{
+	Q_ASSERT(QFileInfo(path).isAbsolute());
+
+	QString cvsEntries = QDir(path).absoluteFilePath("CVS/Entries");
+	EntriesFile file;
+	if (contains(cvsEntries))
+	{
+		file = value(cvsEntries);
+	}
+	else
+	{
+		file = EntriesFile(cvsEntries);
+		insert(cvsEntries, file);
+	}
+	return file.values();
+}
+
 const EntriesLine EntriesList::status(const QString & filename)
 {
 	Q_ASSERT(QFileInfo(filename).isAbsolute());
