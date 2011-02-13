@@ -341,7 +341,7 @@ void RCS_CVS::entriesStateChanged(const QString & path)
 	const EntriesFile & e = m_entriesList->value(path);
 	foreach(const EntriesLine & l, e)
 	{
-		emit stateChanged(QDir(e.path).absoluteFilePath(l.filename), info(QDir(e.path).absoluteFilePath(l.filename)));
+		emit stateChanged(QDir(e.path).absoluteFilePath(l.filename) /*, info(QDir(e.path).absoluteFilePath(l.filename)) */);
 	}
 }
 

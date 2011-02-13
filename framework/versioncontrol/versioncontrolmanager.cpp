@@ -24,6 +24,7 @@
 #include <versioncontrol/versioncontrolmanager.h>
 #include <project/xinxprojectmanager.h>
 #include <project/xinxprojectproject.h>
+#include <versioncontrol/rcsproxy.h>
 
 // Qt header
 #include <QAction>
@@ -261,6 +262,11 @@ void Manager::callRCSValideWorkingCopy(RCS * rcs, RCS::FilesOperation operations
 
 	foreach(RCS::FileOperation operation, operations)
 	{
+		if (operation.operation == RCS::Nothing)
+		{
+			continue;
+		}
+
 		if (operation.operation == RCS::AddAndCommit)
 		{
 			toAdd << operation.filename;

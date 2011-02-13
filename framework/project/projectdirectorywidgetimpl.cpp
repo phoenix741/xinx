@@ -264,6 +264,11 @@ void PrivateProjectDirectoryWidgetImpl::openFiles()
 
 void PrivateProjectDirectoryWidgetImpl::removeFiles()
 {
+	QModelIndexList rows = _parent->_directory_view->selectionModel()->selectedRows();
+	if (rows.size() < 1) return;
+
+	XinxProject::ProjectPtr project = _model->fileProject(rows.at(0));
+
 	QStringList list = _parent->selectedFiles();
 	QMessageBox::StandardButton result = QMessageBox::question(qApp->activeWindow(), tr("Delete file(s)"), tr("Can you confirm that you want remove %Ln file(s)", "", list.size()), QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
 	if (result == QMessageBox::Yes)
@@ -271,6 +276,11 @@ void PrivateProjectDirectoryWidgetImpl::removeFiles()
 		foreach(const QString & file, list)
 		{
 			QFile::remove(file);
+		}
+
+		if (! project->projectRCS().isEmpty() && project->rcsProxy())
+		{
+			project->rcsProxy()->currentRCSInterface()->remove(list);
 		}
 	}
 }
@@ -359,7 +369,7 @@ void PrivateProjectDirectoryWidgetImpl::compareFilesTriggered()
 void PrivateProjectDirectoryWidgetImpl::updateFromVersionControlTriggered()
 {
 	QModelIndexList rows = _parent->_directory_view->selectionModel()->selectedRows();
-	if (rows.size() != 1) return;
+	if (rows.size() < 1) return;
 
 	XinxProject::ProjectPtr project = _model->fileProject(rows.at(0));
 
@@ -373,7 +383,7 @@ void PrivateProjectDirectoryWidgetImpl::updateFromVersionControlTriggered()
 void PrivateProjectDirectoryWidgetImpl::commitToVersionControlTriggered()
 {
 	QModelIndexList rows = _parent->_directory_view->selectionModel()->selectedRows();
-	if (rows.size() != 1) return;
+	if (rows.size() < 1) return;
 
 	XinxProject::ProjectPtr project = _model->fileProject(rows.at(0));
 
@@ -387,7 +397,7 @@ void PrivateProjectDirectoryWidgetImpl::commitToVersionControlTriggered()
 void PrivateProjectDirectoryWidgetImpl::addToVersionControlTriggered()
 {
 	QModelIndexList rows = _parent->_directory_view->selectionModel()->selectedRows();
-	if (rows.size() != 1) return;
+	if (rows.size() < 1) return;
 
 	XinxProject::ProjectPtr project = _model->fileProject(rows.at(0));
 
@@ -404,7 +414,7 @@ void PrivateProjectDirectoryWidgetImpl::addToVersionControlTriggered()
 void PrivateProjectDirectoryWidgetImpl::removeFromVersionControlTriggered()
 {
 	QModelIndexList rows = _parent->_directory_view->selectionModel()->selectedRows();
-	if (rows.size() != 1) return;
+	if (rows.size() < 1) return;
 
 	XinxProject::ProjectPtr project = _model->fileProject(rows.at(0));
 

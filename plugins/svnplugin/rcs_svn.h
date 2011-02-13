@@ -34,11 +34,13 @@
 #include <svncpp/client.hpp>
 #include <svncpp/context_listener.hpp>
 
+class RCS_SVN;
+
 class SubVersionContextListener : public QObject, public svn::ContextListener
 {
 	Q_OBJECT
 public:
-	SubVersionContextListener();
+	SubVersionContextListener(RCS_SVN * parent);
 	virtual ~SubVersionContextListener();
 
 	virtual bool contextGetLogin(const std::string& realm, std::string& username, std::string& password, bool& maySave);
@@ -72,6 +74,10 @@ public:
 		QString realm;
 		bool may_be_save;
 	} _certificate_password_prompt;
+
+	bool _cancel;
+	QString _message;
+	RCS_SVN * _parent;
 signals:
 	void signal_login();
 	void signal_cert_prompt();
@@ -92,7 +98,7 @@ public:
 	virtual struct_rcs_infos info(const QString & path);
 	virtual QList<RCS::struct_rcs_infos> infos(const QString & path);
 	virtual FilesOperation operations(const QStringList & paths);
-	virtual void update(const QStringList & path);
+	virtual void update(const QStringList & paths);
 	virtual void commit(const QStringList & path, const QString & message);
 	virtual void add(const QStringList & path);
 	virtual void remove(const QStringList & path);
@@ -103,8 +109,11 @@ public slots:
 private slots:
 
 private:
+	SubVersionContextListener * _listener;
 	svn::Context * m_context;
 	svn::Client  * m_client;
+
+	friend class SubVersionContextListener;
 };
 
 #endif /*RCS_SVN_H_*/

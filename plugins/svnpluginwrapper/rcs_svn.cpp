@@ -244,7 +244,7 @@ void RCS_SVN::finished(int exitCode, QProcess::ExitStatus exitStatus)
 	foreach(const QString & file,  m_fileChanged)
 	{
 		m_infos.remove(QDir::fromNativeSeparators(file));
-		emit stateChanged(file, info(file));
+		emit stateChanged(file/*, info(file)*/);
 	}
 
 	delete m_process;

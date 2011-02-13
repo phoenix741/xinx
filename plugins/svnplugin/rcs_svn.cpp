@@ -36,10 +36,11 @@
 // Svn
 #include <svncpp/status.hpp>
 #include <apr_time.h>
+#include <targets.hpp>
 
 /* SubVersionContextListener */
 
-SubVersionContextListener::SubVersionContextListener()
+SubVersionContextListener::SubVersionContextListener(RCS_SVN * parent) : _cancel(false), _parent(parent)
 {
 	connect(this, SIGNAL(signal_login()), this, SLOT(slot_login()), Qt::BlockingQueuedConnection);
 	connect(this, SIGNAL(signal_cert_prompt()), this, SLOT(slot_cert_prompt()), Qt::BlockingQueuedConnection);
@@ -91,19 +92,184 @@ bool SubVersionContextListener::contextGetLogin(const std::string& realm, std::s
 bool SubVersionContextListener::contextCancel()
 {
 	// Variable isCancel
-	return false;
+	return _cancel;
 }
 
 void SubVersionContextListener::contextNotify(const char* path, svn_wc_notify_action_t action, svn_node_kind_t kind, const char* mime_type, svn_wc_notify_state_t content_state, svn_wc_notify_state_t prop_state, svn_revnum_t revision)
 {
+	RCS::rcsLog niveau = RCS::LogNormal;
+	QString actionStr;
+	switch(action)
+	{
+	case svn_wc_notify_add:
+		actionStr = tr("Add");
+		niveau = RCS::LogLocallyModified;
+		emit _parent->stateChanged(QString::fromAscii(path));
+		break;
+	case svn_wc_notify_copy:
+		actionStr = tr("Copy");
+		niveau = RCS::LogLocallyModified;
+		emit _parent->stateChanged(QString::fromAscii(path));
+		break;
+	case svn_wc_notify_delete:
+		actionStr = tr("Delete");
+		niveau = RCS::LogLocallyModified;
+		emit _parent->stateChanged(QString::fromAscii(path));
+		break;
+	case svn_wc_notify_restore:
+		actionStr = tr("Restore");
+		niveau = RCS::LogLocallyModified;
+		emit _parent->stateChanged(QString::fromAscii(path));
+		break;
+	case svn_wc_notify_revert:
+		actionStr = tr("Revert");
+		niveau = RCS::LogLocallyModified;
+		emit _parent->stateChanged(QString::fromAscii(path));
+		break;
+	case svn_wc_notify_failed_revert:
+		actionStr = tr("Failed revert");
+		niveau = RCS::LogError;
+		break;
+	case svn_wc_notify_resolved:
+		actionStr = tr("Resolved");
+		break;
+	case svn_wc_notify_skip:
+		actionStr = tr("Skip");
+		niveau = RCS::LogError;
+		break;
+	case svn_wc_notify_update_delete:
+		actionStr = tr("Update delete");
+		niveau = RCS::LogRemotlyModified;
+		return;
+		break;
+	case svn_wc_notify_update_add:
+		actionStr = tr("Update add");
+		niveau = RCS::LogRemotlyModified;
+		return;
+		break;
+	case svn_wc_notify_update_update:
+		actionStr = tr("Update update");
+		niveau = RCS::LogRemotlyModified;
+		return;
+		break;
+	case svn_wc_notify_update_completed:
+		actionStr = tr("Update completed");
+		niveau = RCS::LogRemotlyModified;
+		return;
+		break;
+	case svn_wc_notify_update_external:
+		actionStr = tr("Update external");
+		niveau = RCS::LogRemotlyModified;
+		return;
+		break;
+	case svn_wc_notify_status_completed:
+		actionStr = tr("Status completed");
+		return;
+		break;
+	case svn_wc_notify_status_external:
+		actionStr = tr("Status external");
+		break;
+	case svn_wc_notify_commit_modified:
+		actionStr = tr("Commit modified");
+		niveau = RCS::LogLocallyModified;
+		break;
+	case svn_wc_notify_commit_added:
+		actionStr = tr("Commit added");
+		niveau = RCS::LogLocallyModified;
+		break;
+	case svn_wc_notify_commit_deleted:
+		actionStr = tr("Commit deleted");
+		niveau = RCS::LogLocallyModified;
+		break;
+	case svn_wc_notify_commit_replaced:
+		actionStr = tr("Commit replaced");
+		niveau = RCS::LogLocallyModified;
+		break;
+	case svn_wc_notify_commit_postfix_txdelta:
+		actionStr = tr("Commit postfix txdelta");
+		niveau = RCS::LogLocallyModified;
+		return;
+		break;
+	case svn_wc_notify_blame_revision:
+		actionStr = tr("Blame revision");
+		break;
+	case svn_wc_notify_locked:
+		actionStr = tr("Locked");
+		break;
+	case svn_wc_notify_unlocked:
+		actionStr = tr("Unlocked");
+		break;
+	case svn_wc_notify_failed_lock:
+		actionStr = tr("Failed lock");
+		niveau = RCS::LogError;
+		break;
+	case svn_wc_notify_failed_unlock:
+		actionStr = tr("Failed unlock");
+		niveau = RCS::LogError;
+		break;
+	case svn_wc_notify_exists:
+		actionStr = tr("Exists");
+		break;
+	case svn_wc_notify_changelist_set:
+		actionStr = tr("Changelist set");
+		break;
+	case svn_wc_notify_changelist_clear:
+		actionStr = tr("Changelist clear");
+		break;
+	case svn_wc_notify_changelist_moved:
+		actionStr = tr("Changelist moved");
+		break;
+	case svn_wc_notify_merge_begin:
+		actionStr = tr("Merge begin");
+		break;
+	case svn_wc_notify_foreign_merge_begin:
+		actionStr = tr("Foreign merge begin");
+		break;
+	case svn_wc_notify_update_replace:
+		actionStr = tr("Update replace");
+		break;
+	case svn_wc_notify_property_added:
+		actionStr = tr("Property added");
+		break;
+	case svn_wc_notify_property_modified:
+		actionStr = tr("Property modified");
+		break;
+	case svn_wc_notify_property_deleted:
+		actionStr = tr("Property deleted");
+		break;
+	case svn_wc_notify_property_deleted_nonexistent:
+		actionStr = tr("Property deleted nonexistent");
+		break;
+	case svn_wc_notify_revprop_set:
+		actionStr = tr("Revision property set");
+		break;
+	case svn_wc_notify_revprop_deleted:
+		actionStr = tr("Revision property deleted");
+		break;
+	case svn_wc_notify_merge_completed:
+		actionStr = tr("Merge completed");
+		break;
+	case svn_wc_notify_tree_conflict:
+		actionStr = tr("Tree conflict");
+		niveau = RCS::LogConflict;
+		break;
+	case svn_wc_notify_failed_external:
+		actionStr = tr("Failed external");
+		niveau = RCS::LogError;
+		break;
+	};
+
+	const QString info = actionStr + " " + QString::fromAscii(path) + " (rev " + QString::number(revision) + ")";
+
 	// Affichage de la nofication
-	// emit
+	emit _parent->log(niveau, info);
 }
 
 bool SubVersionContextListener::contextGetLogMessage(std::string& msg)
 {
 	// Retourne le message utilisé pour le commit
-	return false;
+	qDebug() << "contextGetLogMessage(" << QString::fromStdString(msg) << ")";
+	return true;
 }
 
 void SubVersionContextListener::slot_cert_prompt()
@@ -186,7 +352,7 @@ RCS_SVN::RCS_SVN(const QString & basePath) : RCS(basePath)
 
 //	m_context = new svn::Context(QDir(homeDirectory).absoluteFilePath("SubVersion").toStdString ());
 	m_context = new svn::Context();
-	m_context->setListener(new SubVersionContextListener);
+	m_context->setListener(_listener = new SubVersionContextListener(this));
 	m_client  = new svn::Client(m_context);
 }
 
@@ -213,6 +379,8 @@ RCS::struct_rcs_infos RCS_SVN::info(const QString & path)
 
 QList<RCS::struct_rcs_infos> RCS_SVN::infos(const QString & path)
 {
+	_listener->_cancel = false;
+
 	QList<RCS::struct_rcs_infos> result;
 	svn::StatusEntries entries;
 	try
@@ -303,6 +471,8 @@ QList<RCS::struct_rcs_infos> RCS_SVN::infos(const QString & path)
 
 RCS::FilesOperation RCS_SVN::operations(const QStringList & paths)
 {
+	_listener->_cancel = false;
+
 	RCS::FilesOperation operations;
 	foreach(const QString & path, paths)
 	{
@@ -351,32 +521,112 @@ RCS::FilesOperation RCS_SVN::operations(const QStringList & paths)
 	return operations;
 }
 
-void RCS_SVN::update(const QStringList & path)
+void RCS_SVN::update(const QStringList & paths)
 {
+	_listener->_cancel = false;
 
+	/* Create the target list */
+	svn::Targets targets;
+	foreach(const QString & path, paths)
+	{
+		svn::Path svnPath(path.toStdString());
+		targets.push_back(svnPath);
+	}
+
+	/* Update */
+	try
+	{
+		std::vector<svn_revnum_t> revisions = m_client->update(targets, svn::Revision::HEAD, true, false);
+		emit log(RCS::LogApplication, tr("Files updated."));
+	}
+	catch(svn::ClientException e)
+	{
+		emit log(RCS::LogError, e.message());
+	}
 }
 
-void RCS_SVN::commit(const QStringList & path, const QString & message)
+void RCS_SVN::commit(const QStringList & paths, const QString & message)
 {
+	_listener->_cancel = false;
 
+	_listener->_message = message;
+	/* Create the target list */
+	svn::Targets targets;
+	foreach(const QString & path, paths)
+	{
+		svn::Path svnPath(path.toStdString());
+		targets.push_back(svnPath);
+	}
+
+	/* Commit */
+	try
+	{
+		svn_revnum_t revision = m_client->commit(targets, qPrintable(message), false, false);
+		emit log(RCS::LogApplication, tr("Files commited at revision %2.").arg(revision));
+	}
+	catch(svn::ClientException e)
+	{
+		emit log(RCS::LogError, e.message());
+	}
 }
 
-void RCS_SVN::add(const QStringList & path)
+void RCS_SVN::add(const QStringList & paths)
 {
+	_listener->_cancel = false;
 
+	foreach(const QString & path, paths)
+	{
+		try
+		{
+			svn::Path svnPath(path.toStdString());
+			m_client->add(svnPath, false);
+		}
+		catch(svn::ClientException e)
+		{
+			emit log(RCS::LogError, e.message());
+		}
+	}
 }
 
-void RCS_SVN::remove(const QStringList & path)
+void RCS_SVN::remove(const QStringList & paths)
 {
+	_listener->_cancel = false;
 
+	foreach(const QString & path, paths)
+	{
+		try
+		{
+			svn::Path svnPath(path.toStdString());
+			m_client->remove(svnPath, false);
+		}
+		catch(svn::ClientException e)
+		{
+			emit log(RCS::LogError, e.message());
+		}
+	}
 }
 
 void RCS_SVN::updateToRevision(const QString & path, const QString & revision, QByteArray * content)
 {
+	_listener->_cancel = false;
 
+	/* Create the target list */
+	svn::Path svnPath(path.toStdString());
+
+	/* Update */
+	try
+	{
+		content->clear();
+		content->append(QString::fromStdString(m_client->cat(svnPath, svn::Revision(revision.toLong()))));
+		emit log(RCS::LogApplication, tr("Update %1 to revision %2.").arg(path).arg(revision));
+	}
+	catch(svn::ClientException e)
+	{
+		emit log(RCS::LogError, e.message());
+	}
 }
 
 void RCS_SVN::abort()
 {
-
+	_listener->_cancel = true;
 }
