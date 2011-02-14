@@ -108,7 +108,7 @@ bool RCSProxy::setCurrentRCS(const QString & rcs)
 				{
 					return false;
 				}
-				connect(m_rcs, SIGNAL(stateChanged(QString)), this, SIGNAL(stateChange(QString)));
+				connect(m_rcs, SIGNAL(stateChanged(QString, RCS::struct_rcs_infos)), this, SIGNAL(stateChange(QString, RCS::struct_rcs_infos)));
 			}
 			catch (ToolsNotDefinedException e)
 			{

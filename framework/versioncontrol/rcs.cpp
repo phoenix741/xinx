@@ -193,6 +193,7 @@ RCS::FileOperation::FileOperation()
 RCS::RCS(const QString & workingDirectory) : m_workingDirectory(workingDirectory)
 {
 	qRegisterMetaType<RCS::rcsLog>("RCS::rcsLog");
+	qRegisterMetaType<RCS::struct_rcs_infos>("RCS::struct_rcs_infos");
 }
 
 /*! Destroy the object */

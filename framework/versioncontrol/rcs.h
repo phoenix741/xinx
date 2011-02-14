@@ -114,7 +114,7 @@ public:
 public slots:
 	virtual void abort() = 0;
 signals:
-	void stateChanged(const QString & fileName);
+	void stateChanged(const QString & fileName, RCS::struct_rcs_infos informations);
 	void log(RCS::rcsLog niveau, const QString & info);
 private:
 	QString m_workingDirectory;

@@ -74,7 +74,7 @@ public slots:
 
 	void abort();
 signals:
-	void stateChange(const QString & filename);
+	void stateChange(const QString & filename, RCS::struct_rcs_infos informations);
 private:
 	RCS * m_rcs;
 

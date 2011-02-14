@@ -221,7 +221,7 @@ void ModelFileNode::add(ModelFileNode * node)
 	if (node->_filename.isEmpty ())
 	{
 		// Case of file doesn't exist.
-		node->_filename = node->_info.fileName ();
+		node->_filename = node->_rcs_info.filename;
 	}
 	node->_parent   = this;
 	if (_project)
@@ -461,10 +461,20 @@ void PrivateProjectListModel::addProject(ProjectPtr project)
 {
 	_root_node->add(project);
 	_root_node->addVisibleChildren(project->projectPath());
+
+	if (project->rcsProxy())
+	{
+		connect(project->rcsProxy(), SIGNAL(stateChange(QString, RCS::struct_rcs_infos)), this, SLOT(_updateState(QString, RCS::struct_rcs_infos)));
+	}
 }
 
 void PrivateProjectListModel::removeProject(ProjectPtr project)
 {
+	if (project->rcsProxy())
+	{
+		disconnect(project->rcsProxy(), SIGNAL(stateChange(QString, RCS::struct_rcs_infos)), this, SLOT(_updateState(QString, RCS::struct_rcs_infos)));
+	}
+
 	if (project == _selected_item)
 	{
 		_selected_item.clear();
@@ -612,6 +622,17 @@ void PrivateProjectListModel::_allFetchedFiles(const QString & directory, QStrin
 	{
 		removeVisibleChildren(node_path, filename);
 		node_path->remove(filename);
+	}
+}
+
+void PrivateProjectListModel::_updateState(const QString & path, RCS::struct_rcs_infos info)
+{
+	ModelFileNode* filenode = node(_root_node, path);
+	if (filenode)
+	{
+		QModelIndex modelIndex = index(filenode);
+		filenode->_rcs_info = info;
+		emitUpdate(filenode);
 	}
 }
 

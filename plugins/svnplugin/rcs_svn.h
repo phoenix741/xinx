@@ -109,6 +109,9 @@ public slots:
 private slots:
 
 private:
+	RCS::rcsState svnStateToRcsState(svn_wc_status_kind state, svn_wc_status_kind reposTextStatus);
+	RCS::struct_rcs_infos svnInfoToRcsInfos(svn::Status infos);
+
 	SubVersionContextListener * _listener;
 	svn::Context * m_context;
 	svn::Client  * m_client;

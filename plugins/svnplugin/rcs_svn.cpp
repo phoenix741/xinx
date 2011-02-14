@@ -97,34 +97,41 @@ bool SubVersionContextListener::contextCancel()
 
 void SubVersionContextListener::contextNotify(const char* path, svn_wc_notify_action_t action, svn_node_kind_t kind, const char* mime_type, svn_wc_notify_state_t content_state, svn_wc_notify_state_t prop_state, svn_revnum_t revision)
 {
+	RCS::struct_rcs_infos informations;
+
 	RCS::rcsLog niveau = RCS::LogNormal;
 	QString actionStr;
 	switch(action)
 	{
 	case svn_wc_notify_add:
+		informations = _parent->info(QString::fromAscii(path));
 		actionStr = tr("Add");
 		niveau = RCS::LogLocallyModified;
-		emit _parent->stateChanged(QString::fromAscii(path));
+		emit _parent->stateChanged(QString::fromAscii(path), informations);
 		break;
 	case svn_wc_notify_copy:
+		informations = _parent->info(QString::fromAscii(path));
 		actionStr = tr("Copy");
 		niveau = RCS::LogLocallyModified;
-		emit _parent->stateChanged(QString::fromAscii(path));
+		emit _parent->stateChanged(QString::fromAscii(path), informations);
 		break;
 	case svn_wc_notify_delete:
+		informations = _parent->info(QString::fromAscii(path));
 		actionStr = tr("Delete");
 		niveau = RCS::LogLocallyModified;
-		emit _parent->stateChanged(QString::fromAscii(path));
+		emit _parent->stateChanged(QString::fromAscii(path), informations);
 		break;
 	case svn_wc_notify_restore:
+		informations = _parent->info(QString::fromAscii(path));
 		actionStr = tr("Restore");
 		niveau = RCS::LogLocallyModified;
-		emit _parent->stateChanged(QString::fromAscii(path));
+		emit _parent->stateChanged(QString::fromAscii(path), informations);
 		break;
 	case svn_wc_notify_revert:
+		informations = _parent->info(QString::fromAscii(path));
 		actionStr = tr("Revert");
 		niveau = RCS::LogLocallyModified;
-		emit _parent->stateChanged(QString::fromAscii(path));
+		emit _parent->stateChanged(QString::fromAscii(path), informations);
 		break;
 	case svn_wc_notify_failed_revert:
 		actionStr = tr("Failed revert");
@@ -138,23 +145,31 @@ void SubVersionContextListener::contextNotify(const char* path, svn_wc_notify_ac
 		niveau = RCS::LogError;
 		break;
 	case svn_wc_notify_update_delete:
+		informations = _parent->info(QString::fromAscii(path));
 		actionStr = tr("Update delete");
 		niveau = RCS::LogRemotlyModified;
+		emit _parent->stateChanged(QString::fromAscii(path), informations);
 		return;
 		break;
 	case svn_wc_notify_update_add:
+		informations = _parent->info(QString::fromAscii(path));
 		actionStr = tr("Update add");
 		niveau = RCS::LogRemotlyModified;
+		emit _parent->stateChanged(QString::fromAscii(path), informations);
 		return;
 		break;
 	case svn_wc_notify_update_update:
+		informations = _parent->info(QString::fromAscii(path));
 		actionStr = tr("Update update");
 		niveau = RCS::LogRemotlyModified;
+		emit _parent->stateChanged(QString::fromAscii(path), informations);
 		return;
 		break;
+		informations = _parent->info(QString::fromAscii(path));
 	case svn_wc_notify_update_completed:
 		actionStr = tr("Update completed");
 		niveau = RCS::LogRemotlyModified;
+		emit _parent->stateChanged(QString::fromAscii(path), informations);
 		return;
 		break;
 	case svn_wc_notify_update_external:
@@ -170,24 +185,34 @@ void SubVersionContextListener::contextNotify(const char* path, svn_wc_notify_ac
 		actionStr = tr("Status external");
 		break;
 	case svn_wc_notify_commit_modified:
+		informations = _parent->info(QString::fromAscii(path));
 		actionStr = tr("Commit modified");
 		niveau = RCS::LogLocallyModified;
+		emit _parent->stateChanged(QString::fromAscii(path), informations);
 		break;
 	case svn_wc_notify_commit_added:
+		informations = _parent->info(QString::fromAscii(path));
 		actionStr = tr("Commit added");
 		niveau = RCS::LogLocallyModified;
+		emit _parent->stateChanged(QString::fromAscii(path), informations);
 		break;
 	case svn_wc_notify_commit_deleted:
+		informations = _parent->info(QString::fromAscii(path));
 		actionStr = tr("Commit deleted");
 		niveau = RCS::LogLocallyModified;
+		emit _parent->stateChanged(QString::fromAscii(path), informations);
 		break;
 	case svn_wc_notify_commit_replaced:
+		informations = _parent->info(QString::fromAscii(path));
 		actionStr = tr("Commit replaced");
 		niveau = RCS::LogLocallyModified;
+		emit _parent->stateChanged(QString::fromAscii(path), informations);
 		break;
 	case svn_wc_notify_commit_postfix_txdelta:
+		informations = _parent->info(QString::fromAscii(path));
 		actionStr = tr("Commit postfix txdelta");
 		niveau = RCS::LogLocallyModified;
+		emit _parent->stateChanged(QString::fromAscii(path), informations);
 		return;
 		break;
 	case svn_wc_notify_blame_revision:
@@ -362,19 +387,91 @@ RCS_SVN::~RCS_SVN()
 	delete m_client;
 }
 
+RCS::rcsState RCS_SVN::svnStateToRcsState(svn_wc_status_kind textState, svn_wc_status_kind reposTextStatus)
+{
+	switch (textState)
+	{
+		case svn_wc_status_none:
+		case svn_wc_status_unversioned:
+		case svn_wc_status_obstructed:
+			return RCS::Unknown;
+		case svn_wc_status_normal:
+			if (reposTextStatus == svn_wc_status_modified)
+			{
+				return RCS::NeedsCheckout;
+			}
+			else
+			{
+				return RCS::Updated;
+			}
+		case svn_wc_status_added:
+			return RCS::LocallyAdded;
+		case svn_wc_status_missing:
+			return RCS::NeedsCheckout;
+		case svn_wc_status_deleted:
+			return RCS::LocallyRemoved;
+		case svn_wc_status_replaced:
+		case svn_wc_status_modified:
+		case svn_wc_status_merged:
+			return RCS::LocallyModified;
+		case svn_wc_status_conflicted:
+			return RCS::FileHadConflictsOnMerge;
+		case svn_wc_status_ignored:
+			return RCS::UnresolvedConflict;
+		case svn_wc_status_external:
+			return RCS::Updated;
+		case svn_wc_status_incomplete:
+			return RCS::NeedsCheckout;
+		default:
+			return RCS::Unknown;
+	}
+}
+
+RCS::struct_rcs_infos RCS_SVN::svnInfoToRcsInfos(svn::Status infos)
+{
+	RCS::struct_rcs_infos rcsInfos = { QDir::fromNativeSeparators(infos.path()), RCS::Unknown, "0", QDateTime() };
+	if (infos.isVersioned())
+	{
+		rcsInfos.version = QString("%1").arg (infos.entry().revision());
+
+		uint cmtDate  = (quint64)infos.entry().cmtDate() / 1000000;
+		rcsInfos.rcsDate = QDateTime::fromTime_t(cmtDate);
+	}
+
+	rcsInfos.state = svnStateToRcsState(infos.textStatus(), infos.reposTextStatus());
+
+	return rcsInfos;
+}
+
 RCS::struct_rcs_infos RCS_SVN::info(const QString & path)
 {
-	QList<struct_rcs_infos> list = infos(path);
-	if (list.size())
-		return list.at(0);
-	else
+	_listener->_cancel = false;
+
+	RCS::struct_rcs_infos result = { QDir::fromNativeSeparators(path), RCS::Unknown, "0", QDateTime() };
+	svn::StatusEntries entries;
+	try
 	{
-		RCS::struct_rcs_infos rcsInfos = { QDir::fromNativeSeparators(path), RCS::Unknown, "0", QDateTime() };
-		rcsInfos.state = RCS::Unknown;
-		rcsInfos.version = "0";
-		rcsInfos.rcsDate = QDateTime();
-		return rcsInfos;
+		try
+		{
+			entries = m_client->status(qPrintable(path), /* descend */ false, /* get_all */ true, /* update */ true, /* no_ignore */ false, /* ignore_externals */ false);
+		}
+		catch(svn::ClientException e)
+		{
+			emit log(RCS::LogError, e.message());
+			entries = m_client->status(qPrintable(path), /* descend */ false, /* get_all */ true, /* update */ false, /* no_ignore */ false, /* ignore_externals */ false);
+		}
+
+		if (! entries.size())
+		{
+			result = svnInfoToRcsInfos(entries.at(0));
+		}
 	}
+	catch(svn::ClientException e)
+	{
+		emit log(RCS::LogError, e.message());
+	}
+
+	return result;
 }
 
 QList<RCS::struct_rcs_infos> RCS_SVN::infos(const QString & path)
@@ -391,74 +488,13 @@ QList<RCS::struct_rcs_infos> RCS_SVN::infos(const QString & path)
 		}
 		catch(svn::ClientException e)
 		{
-			emit log(RCS::LogNormal, e.message());
+			emit log(RCS::LogError, e.message());
 			entries = m_client->status(qPrintable(path), /* descend */ false, /* get_all */ true, /* update */ false, /* no_ignore */ false, /* ignore_externals */ false);
 		}
 
 		for(size_t i = 0; i < entries.size(); i++)
 		{
-			svn::Status status = entries.at(i);
-
-			RCS::struct_rcs_infos rcsInfos = { QDir::fromNativeSeparators(status.path()), RCS::Unknown, "0", QDateTime() };
-			if (status.isVersioned())
-			{
-				rcsInfos.version = QString("%1").arg (status.entry().revision());
-
-				uint cmtDate  = (quint64)status.entry().cmtDate() / 1000000;
-				rcsInfos.rcsDate = QDateTime::fromTime_t(cmtDate);
-			}
-
-			switch (status.textStatus())
-			{
-			case svn_wc_status_none:
-				rcsInfos.state = RCS::Unknown;
-				break;
-			case svn_wc_status_unversioned:
-				rcsInfos.state = RCS::Unknown;
-				break;
-			case svn_wc_status_normal:
-				rcsInfos.state = RCS::Updated;
-				if (status.reposTextStatus() == svn_wc_status_modified)
-				{
-					rcsInfos.state = RCS::NeedsCheckout;
-				}
-				break;
-			case svn_wc_status_added:
-				rcsInfos.state = RCS::LocallyAdded;
-				break;
-			case svn_wc_status_missing:
-				rcsInfos.state = RCS::NeedsCheckout;
-				break;
-			case svn_wc_status_deleted:
-				rcsInfos.state = RCS::LocallyRemoved;
-				break;
-			case svn_wc_status_replaced:
-				rcsInfos.state = RCS::LocallyModified;
-				break;
-			case svn_wc_status_modified:
-				rcsInfos.state = RCS::LocallyModified;
-				break;
-			case svn_wc_status_merged:
-				rcsInfos.state = RCS::LocallyModified;
-				break;
-			case svn_wc_status_conflicted:
-				rcsInfos.state = RCS::FileHadConflictsOnMerge;
-				break;
-			case svn_wc_status_ignored:
-				rcsInfos.state = RCS::UnresolvedConflict;
-				break;
-			case svn_wc_status_obstructed:
-				rcsInfos.state = RCS::Unknown;
-				break;
-			case svn_wc_status_external:
-				rcsInfos.state = RCS::Updated;
-				break;
-			case svn_wc_status_incomplete:
-				rcsInfos.state = RCS::NeedsCheckout;
-				break;
-			}
-
-			result << rcsInfos;
+			result << svnInfoToRcsInfos(entries.at(i));
 		}
 	}
 	catch(svn::ClientException e)

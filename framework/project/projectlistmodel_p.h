@@ -142,6 +142,7 @@ public slots:
 	void _progressFetchedInformations(const QString & directory, QFileInfoList filenames);
 	void _allFetchedFiles(const QString & directory, QStringList files);
 	void _updateFiles(const QString & directory, QList<RCS::struct_rcs_infos> files);
+	void _updateState(const QString & path, RCS::struct_rcs_infos info);
 
 	void fetchNode(ModelFileNode * node);
 	void fetchPath(const QString & path);

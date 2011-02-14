@@ -52,7 +52,7 @@ RCS::struct_rcs_infos RCS_SVN::info(const QString & path)
 		return m_infos.value(QDir::fromNativeSeparators(path));
 
 	infos(QFileInfo(path).absolutePath());
-	
+
 	if (m_infos.contains(QDir::fromNativeSeparators(path)))
 		return m_infos.value(QDir::fromNativeSeparators(path));
 	else
@@ -71,7 +71,7 @@ QList<RCS::struct_rcs_infos> RCS_SVN::infos(const QString & path)
 	QList<RCS::struct_rcs_infos> result;
 
 	QFileInfo pathInformation(path);
-	
+
 	QString absolutePath = pathInformation.isDir() ? path : QFileInfo(path).absolutePath();
 	QProcess process;
 	int index = 0;
@@ -244,7 +244,7 @@ void RCS_SVN::finished(int exitCode, QProcess::ExitStatus exitStatus)
 	foreach(const QString & file,  m_fileChanged)
 	{
 		m_infos.remove(QDir::fromNativeSeparators(file));
-		emit stateChanged(file/*, info(file)*/);
+		emit stateChanged(file, info(file));
 	}
 
 	delete m_process;
