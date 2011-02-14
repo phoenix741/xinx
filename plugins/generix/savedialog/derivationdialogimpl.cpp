@@ -50,14 +50,14 @@ void DerivationDialogImpl::load(const QString & filename, const QString & filter
 	m_directoryEdit->lineEdit()->setFilter(filter);
 
 	if (QDir::isRelativePath(filename))
-		m_filename = QDir::cleanPath(QDir(gnxProject->webModuleLocation()).absoluteFilePath(filename));
+		m_filename = QDir::cleanPath(QDir(gnxProject->projectPath()).absoluteFilePath(filename));
 	else
 		m_filename = QDir::cleanPath(filename);
 
 	QList<GenerixProject::DerivationPath> derivationPaths = gnxProject->derivationsPath();
 	foreach(GenerixProject::DerivationPath dp, derivationPaths)
 	{
-		QString path = QDir::cleanPath(QDir(gnxProject->webModuleLocation()).absoluteFilePath(dp.path));
+		QString path = QDir::cleanPath(QDir(gnxProject->projectPath()).absoluteFilePath(dp.path));
 
 		if (dp.visible)
 		{
@@ -108,7 +108,7 @@ bool DerivationDialogImpl::isDerivableFile(XinxProject::ProjectPtr p, const QStr
 
 	QString absoluteFilename;
 	if (QDir::isRelativePath(filename))
-		absoluteFilename = QDir::cleanPath(QDir(project->webModuleLocation()).absoluteFilePath(filename));
+		absoluteFilename = QDir::cleanPath(QDir(project->projectPath()).absoluteFilePath(filename));
 	else
 		absoluteFilename = QDir::cleanPath(filename);
 
@@ -117,7 +117,7 @@ bool DerivationDialogImpl::isDerivableFile(XinxProject::ProjectPtr p, const QStr
 	{
 		if (! dp.derivation)
 		{
-			QString path = QDir::cleanPath(QDir(project->webModuleLocation()).absoluteFilePath(dp.path));
+			QString path = QDir::cleanPath(QDir(project->projectPath()).absoluteFilePath(dp.path));
 			if (absoluteFilename.contains(path))
 			{
 				return false;
@@ -137,7 +137,7 @@ void DerivationDialogImpl::changePath()
 		QListWidgetItem * derivationPathItem = m_derivationPathList->currentItem();
 		QListWidgetItem * prefixItem         = m_prefixList->currentItem();
 
-		const QString projectPath    = gnxProject->webModuleLocation();
+		const QString projectPath    = gnxProject->projectPath();
 		const QString derivationPath = derivationPathItem->data(Qt::UserRole).toString();
 		const QString prefix         = prefixItem->text();
 

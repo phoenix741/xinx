@@ -56,11 +56,6 @@ class GenerixProject : public XinxProject::Project
 public:
 	bool isGenerixActivated() const;
 
-	/* Option du Web-module */
-
-	void setWebModuleLocation(const QString & value);
-	QString webModuleLocation() const;
-
 	/* Options de drivation */
 
 	class DerivationPath

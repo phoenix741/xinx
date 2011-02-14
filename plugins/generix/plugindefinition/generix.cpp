@@ -232,7 +232,7 @@ QString GenerixPlugin::getFilename(AbstractEditor* editor, const QString& filena
 			{
 				newFilename = QFileInfo(defaultFilename).suffix() + "/" + newFilename;
 			}
-			dlg.load(QDir(gnxProject->webModuleLocation()).absoluteFilePath(newFilename), filter);
+			dlg.load(QDir(gnxProject->projectPath()).absoluteFilePath(newFilename), filter);
 		}
 		if (dlg.exec() == QDialog::Accepted)
 		{

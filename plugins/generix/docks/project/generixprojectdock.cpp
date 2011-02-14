@@ -161,7 +161,7 @@ void GenerixProjectDockImpl::updateList()
 
 		m_filenameLabel->setText(tr("&Business view for file : \n%1").arg(QFileInfo(editorFilename).fileName()));
 
-		const QString filename = QDir(gnxProject->webModuleLocation()).relativeFilePath(editorFilename);
+		const QString filename = QDir(gnxProject->projectPath ()).relativeFilePath(editorFilename);
 
 		GceConfiguration * interface = ConfigurationManager::manager(gnxProject)->getInterface();
 		m_businessViewList->clear();

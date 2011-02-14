@@ -27,16 +27,6 @@ bool GenerixProject::isGenerixActivated() const
 	return activatedPlugin().contains("GenerixPlugin");
 }
 
-void GenerixProject::setWebModuleLocation(const QString & value)
-{
-	writeProperty("generix.webModule", value);
-}
-
-QString GenerixProject::webModuleLocation() const
-{
-	return readProperty("generix.webModule").toString();
-}
-
 void GenerixProject::setDerivationsPath(const QList<GenerixProject::DerivationPath> & value)
 {
 	writeProperty("generix.derivationPath.count", value.count());
