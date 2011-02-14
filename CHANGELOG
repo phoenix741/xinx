@@ -1,0 +1,358 @@
+XINX - 0.9.0.0-rc2
+==================
+
+- 353 : Sauvegarde affichage du log
+- 352 : Ouverture d'un projet/Mauvaise définition du projet
+- 348 : Crach XINX / Pas de projet / Ouverture XSL
+- Mise à jours documentation
+- Quelques corrections mineurs
+
+XINX - 0.9.0.0-rc1
+==================
+
+- 293 : Création d'un snipet par fichier.
+- 321 : Hide path sur RecursiveSortFilterProxyModel ne fonctionne pas
+- 345 : Gestion des Codecs
+- 190 : Snippet/Template : catégorie principale
+- 316 : Règle de développement à partir de la 140
+- 334 : Nouvelle gestion de RCS
+- 337 : Plantage lors de la modification de fichier XML se trouvant dans le dock présentation XML
+- 338 : Duplicate entries
+- 344 : Nouvelle gestion des erreurs
+- 197 : Tri des sections des template/snippet
+- 198 : Snippet/Template : option de non validation lors de l'ajout
+- 291 : Rendre XINX plus modulaire
+- 298 : QSharedPointer
+- 306 : Welcom page
+- 314 : Affichage du résultat HTML
+- 318 : Completion sur les snipets
+- 326 : Dialog de migration
+- 340 : Plus de synchro
+- 241 : Dock/Onglet
+- 287 : Version 1.5
+- 311 : Mise à jours de la boite de dialogue de personnalisation
+- 319 : Synchronisation Editeur/Dock, Editeur/...
+- 325 : Lenteur à la fermeture de la boite de dialogue propriété du projet
+- 339 : Nouveau système de vue contenue
+- 341 : Problème de désinstallation
+- 346 : searchWord plus générique
+
+GENERX PLUGIN - 1.0.0.0-rc1
+===========================
+
+- 333 : Boite de dialog nouveau projet
+- 336 : Sauvegarde d'un nouveau fichier
+
+XINX - 0.8.1.4
+==============
+- 320 : Erreur lors de l'execution du XPATH
+- 324 : Indentation automatique
+- 317 : Warning lors de la manipulation de fichier XML
+
+XINX - 0.8.1.3
+==============
+- 300 : Recheche (Ctrl + f)
+- 301 : xinx/ pb lors de l'ouverture d'un .js
+
+XINX - 0.8.1.2
+==============
+- 296 : Crash régulié lors de l'utilisation de XINX
+- 297 : Complétion du XSL
+
+XINX - 0.8.1.1
+==============
+- 295 : Ouverture d'un fichier XSL
+
+XINX - 0.8.1.0
+==============
+- 284 : Documentation sur le site de XINX
+- 290 : Plantage
+- 285 : NSIS
+- 249 : Lancer le parseur XSL
+- 292 : D-BUS
+- 250 : Actions
+- 091 : Afficher un Dock avec le dictionnaire de l'application
+- 289 : Certain noeud disparaisse
+- 288 : Ne peux ouvrir les fichiers HTML
+- 272 : Drag & Drop depuis le dossier projet
+- 275 : Faute d'orthographe ;) : Paramêtre au lieu de Paramètre
+- 245 : Synchronisation de la vue Contenue
+- 274 : Message de Qt : QSortFilterProxyModel: inconsistent changes reported by source model
+- 286 : Transformation de ')' en ']' à l"enregistrement
+- 270 : Coller ne fonctionne pas
+- 251 : Completion
+- 280 : Complétion des params en doublon sur un template inclus
+- 283 : Ctrl+Enter/Shift+Ctrl+Enter
+- 271 : Caractère manquant à l'utilisation d'un modèle personnalisé
+- 277 : Pouvoir ajouter des catégories personnalisées dans la gestion des modèles
+
+
+XINX - 0.8.0.0
+==============
+- 269 : Problème lors de la complétion & de l'insertion des snipets
+- 259 : Ecrire un wrapper pour QtScript de QDocumentSearch, ...
+- 265 : Problème on inserting template of multiple line 
+- 237 : Passage de QTextEdit à QCodeEdit 
+- 075 : Repérage des parenthèses 
+- 083 : Réduction de code 
+- 219 : Fermeture de balise automatique 
+- 224 : Nom long de fichier 
+- 231 : Script à la sauvegarde 
+- 233 : Test de XPATH : phoenix 
+- 240 : Nouveau format de projets specifiques egx 
+- 260 : pb indentation automatic 
+- 261 : Copy/Paste 
+- 262 : Passage à la ligne 
+- 264 : Problème lors de l'insertion de texte 
+- 266 : Désintenter supprimer des caractères 
+- 267 : Changement sur une balise fermante 
+- 268 : Propriété projet 
+
+XINX - 0.7.2.2
+==============
+- 230 : Crash Flux de présentation
+- 228 : Variable dans un template
+- 229 : Fuite mémoire
+- 227 : Flux de présentation
+- 226 : Sauvegarde lente
+- 225 : Complétion sur le mode
+- 223 : Ajout des balises with-param
+
+XINX - 0.7.2.1
+==============
+- 220 : Faute d'orthographe
+- 221 : Migration projet
+
+XINX - 0.7.2.0
+==============
+- 204 : Problème de complétion sur la valeur des attributs
+- 186 : Indentation
+- 213 : Migration vers la nouvelle version
+- 217 : Plantage lors du redémarrage du serveur d'application
+- 070 : Améliorations sur complétion des attributs
+- 090 : Dans quel charset est la feuille
+- 106 : Rechercher sur des fichiers
+- 119 : Complétion XML - Complétion des attributs
+- 150 : Navigation dans les attributs d'une balise
+- 173 : Attribut Name optionel sur le XPath Généré
+- 178 : Ouverture de fichiers
+- 182 : Plugins SubVersion
+- 184 : Pretty Print
+- 187 : Fermeture d'onglet
+- 188 : Préfixe dans l'assistant de création de projet
+- 189 : Comparaison avec le gestionnaire de version
+- 191 : Snippet/template : variables globales
+- 192 : Langues
+- 193 : Faute d'orthographe
+- 194 : Application de scripts
+- 195 : Pouvoir rafraichir les snippets en live
+- 196 : Réouverture du dernier projet utilisé
+- 200 : WebServices forever
+- 201 : Appel D-Bus
+- 205 : Duplication de ligne
+- 206 : Ajout automatique des attribut d'un tag
+- 207 : Fichier xinx_trace.log sans lecteur C:\
+- 209 : Fichier de configuration
+- 210 : Plugins & Script
+- 211 : Plugins Style et Plugins Linux
+- 212 : Recherche projet
+- 215 : Ouverture d'un resultat de recherche
+- 216 : Recherche dans les fichiers du projets
+- 218 : Réindentation
+- 208 : paramétrer le temps d'attente pour le recherche de feuille XSL
+- 214 : Copie du nom de fichier complet
+
+XINX - 0.7.1.0
+==============
+- 176 : Erreur sur les icons lors de la completion	   
+- 117 : Subversion	   
+- 147 : Utilisation de Plugins et de librairie	   
+- 129 : Amélioration de la vue des fichiers de présentation	   
+- 170 : Assistant création de projet : orthographe !	   
+- 171 : Affichage des espaces/tabulation par bouton	   
+- 172 : Traitement	   
+- 174 : Plugin édition	   
+- 175 : Simplifier le plugin CVS	   
+- 177 : Utilisation du moteur de script pour les templates	   
+- 160 : Plantage lors du changement de projet et utilisation du flux de présentation	   
+- 163 : Plantage à la validation du projet	 
+
+
+XINX - 0.7.0.0
+==============
+- La coloration syntaxique, ainsi que la complétion sont déporté dans des plugins.
+- Le contenue du fichier, ainsi que la complétion sont rafraîchis, non plus à la sauvegarde mais après chaque arrêt de frappe.
+- Amélioration de la gestions des spécifiques.
+- Mise en commentaire dans les JavaScript et gestion des feuilles de styles CSS.
+- Une nouvelle charte graphique.
+- Un assistant pour la création de projet.
+- La gestion de plusieurs préfixes différents dans un même projet.
+- La copie du nom du fichier en faisant un clique droit sur un onglet 
+- 157 : Utilisation de CVS impossible	   
+- 159 : Complétion	   
+- 167 : Ne peux plus ouvrir un fichier WebServices...	   
+- 154 : Crash de XINX	   
+- 155 : Plantage dans le fichier JS	   
+- 140 : Ctrl+Clique	   
+- 142 : Amélioration de l'éditeur à onglet	   
+- 153 : WebServices	   
+- 158 : Boite de dialogue d'option	   
+-  97 : Fenêtre "Remplacer cette occurrence"	   
+- 108 : change Log	   
+- 118 : Afficher un BackTrace	   
+- 120 : Fusionner le content model JavaScript et XSL	   
+- 126 : Wizard de création projet	   
+- 130 : Afficher des mots en surligné.	   
+- 133 : Onglet Dossier projet > Préselection du nom de fichier	   
+- 135 : Recherche multi fichiers	   
+- 136 : Copier le nom du fichier	   
+- 137 : Utilisation d'un Cache	   
+- 138 : Simplifier la création de spécifique	   
+- 139 : Suppression de colonne	   
+- 141 : Gestion des fichers HTML/XHTML	   
+- 143 : Recherche dans les fluxs de présentation	   
+- 144 : Gérer plusieurs préfix	   
+- 145 : Ajout de fichiers Html dans le filtre "recherche de fichiers"
+- 148 : Problème sur la création des spécifiques	   
+- 149 : Suppression d'un fichier	   
+- 151 : Filtre projet	   
+- 161 : Liste des flux de présentation	   
+- 162 : Complétion/Import	   
+- 164 : Comparaison	   
+- 165 : JS Plante	   
+- 166 : Convertisseur	   
+- 146 : Fichier de conf bloqué	 
+
+XINX - 0.6.10.0
+===============
+- Changement de la taille d'une tabulation
+- Pretty print optionel à la sauvegarde
+- Affichage des tabulations et des espaces.
+- Affichage de la ligne courrante d'une autre couleur.
+- Une refonte compète de la boite de dialogue à options (la taille et le nom de la police est géré en global)
+- Le log du CVS s'affiche désormé dans un Dock et non plus dans une fenêtre.
+- 0000103: [Autres Modules] Refaire la boite de dialogue des options (phoenix)
+- 0000088: [Editeur] Ajuster la taille d'une tabulation (phoenix)
+- 0000079: [Interface graphique] Valeur par défaut à la création d'un projet (phoenix)
+- 0000104: [Autres Modules] Winmerge en mode projet (phoenix)
+- 0000107: [Editeur] Taille de police des fichiers JS (phoenix)
+- 0000109: [Editeur] Pretty Print à la sauvegarde (phoenix)
+
+XINX - 0.6.9.0
+==============
+- 0000034: [Interface graphique] Texte / Raccourci (phoenix)
+- 0000084: [Interface graphique] Ascenseur horizontal sur l'affichage du dossier projet (phoenix)
+- 0000087: [Editeur] Pretty Print (phoenix)
+- 0000099: [Autres Modules] Préfixe de projet en majuscule (phoenix)
+
+XINX - 0.6.8.0
+==============
+- 0000038: [Interface graphique] Fichier javascript d'une page XSL (phoenix)
+- 0000092: [Editeur] Ajouter la gestion de Template (snipets) (phoenix)
+- 0000040: [Completion] Completion sur le JavaScript (phoenix)
+- 0000093: [Completion] Fichier de completion (phoenix)
+- 0000096: [Editeur] Plantage lorsque les dossiers du projets n'existes pas (phoenix)
+- 0000059: [Divers] Mettre en place un système de trace (phoenix)
+- 0000017: [Autres Modules] Implémenter un module d'intérogation des WS (phoenix)
+- 0000085: [Interface graphique] Double clique sur l'onglet ferme l'onglet (phoenix)
+- 0000094: [Divers] Fermeture de XINX sans projet (phoenix)
+- 0000086: [Editeur] Pouvoir modifier la taille de la police (phoenix)
+
+XINX - 0.6.7
+============
+- Amélioration des WebServices
+- Sauvegarde de l'emplacement des docks et des toolbars
+- Modifications des icones
+- Modifications des menus
+- Filtre projet à plat
+- 0000071: [Autres Modules] EVO ne peux lire le fichieer .... (phoenix)
+- 0000072: [Interface graphique] Raccourci pour ouvrir l'affichage "Dossier projet" (phoenix)
+- 0000078: [Editeur] Insertion auto des { } (phoenix)
+- 0000077: [Editeur] Sélection d'un mot avec un numéro (phoenix)
+- 0000076: [Editeur] Erreur d'orthographe (phoenix)
+- 0000074: [Autres Modules] Ouverture d'un projet aprés nouvelle installation (phoenix)
+
+XINX - 0.6.6
+============
+- 0000043: [Interface graphique] Affichage du numéro de colonne courante (phoenix)
+- 0000042: [Editeur] Erreur de parsing (phoenix)
+- 0000060: [Interface graphique] Quitter XINX alors que projet supprimé (phoenix)
+- 0000021: [Interface graphique] Dernier fichiers ouverts (phoenix)
+- 0000066: [Interface graphique] Plantage XINX lors du rafraichissement du contenue du fichier (phoenix)
+- 0000058: [Interface graphique] Ouverture simultanée de plusieurs fichiers (phoenix)
+- Début de mise en place des WebServices
+- Sauvegarde d'une session XINX (et séparation entre le fichier projet (versionnable) et le fichier session)
+- Quelques corrections de bugs ...
+
+XINX - 0.6.5.1
+==============
+- 0000050: [Interface graphique] Remplacement de chaine : replace all (phoenix)
+- 0000057: [Divers] Sélection des mots contenant des éè.. (phoenix)
+- 0000025: [Interface graphique] Historique des mots recherchés (phoenix)
+- 0000068: [Editeur] Plantage de XINX après un replace all (phoenix)
+- 0000069: [Editeur] Doublons dans liste des mots recherchés (phoenix)
+
+XINX - 0.6.5.0
+==============
+- 0000056: [Editeur] Utilisation de SHIFT+Home (phoenix)
+- 0000047: [Editeur] Remplacement de chaine (phoenix)
+- 0000004: [Completion] Attribut par défaut (phoenix)
+- 0000063: [Completion] Respect de la casse sur la complétion (phoenix)
+- 0000054: [Completion] Complétion imcompléte (phoenix)
+- 0000064: [Editeur] Il faudrait pouvoir faire Shift + F3 pour faire une recherche arrière (phoenix)
+- 0000049: [Editeur] Recherche sur la séléction (phoenix)
+- 0000065: [Divers] Personalisation d'un fichier javascript (phoenix)
+
+XINX - 0.6-4
+============
+- 0000051: [Evolution] Répertoire par défaut pour les projets (phoenix)
+- 0000031: [Evolution] Permettre la modification de la coloration syntaxique (phoenix)
+- 0000033: [Evolution] Système d'ouverture rapide (phoenix)
+- 0000048: [Correction] Préfixage des spécifiques (phoenix)
+- 0000057: [Correction] Sélection des mots contenant des éè.. (phoenix)
+- 0000019: [Evolution] Menu contextuel sur les onglets (phoenix)
+- 0000045: [Correction] Indentation d'un bloc dans fichier js (phoenix)
+- 0000024: [Correction] Egal dans un attribut (phoenix)
+- 0000046: [Correction] Indentation dans xinx (phoenix)
+- 0000055: [Correction] Ouverture d'un fichier avec le glisser deposer : Les actions ne sont pas mise à jours. (phoenix)
+
+XINX - 0.6-3
+============
+- 0000053: [Evolution] Boite de dialogue Perso (phoenix)
+- 0000045: [Correction] Indentation d'un bloc dans fichier js (phoenix)
+- 0000034: [Evolution] Texte / Raccourci (phoenix)
+- 0000052: [Evolution] Création d'un fichier .bak avec le contenue de l'ancienne version (phoenix)
+- 0000029: [Evolution] Permettre la completion sur les valeurs (phoenix)
+- 0000039: [Correction] Clic sur les boutons de la recherche (phoenix)
+- 0000041: [Evolution] Recherche : repartir au début (phoenix)
+- 0000026: [Evolution] Faire une boite de dialogue "A propos" (phoenix)
+- 0000048: [Correction] Préfixage des spécifiques (phoenix)
+- 0000044: [Correction] Ouverture de projet (phoenix)
+- 0000036: [Evolution] Evolution pour la recherche de texte : ctrl-f (phoenix)
+
+XINX - 0.6-2
+============
+- 0000015: [Correction] Coloration syntaxique lente (phoenix)
+- 0000030: [Evolution] Ajout du préfix lors de la sauvegarde (phoenix)
+- 0000029: [Evolution] Permettre la completion sur les valeurs (phoenix)
+- 0000012: [Correction] Plantage à l'ouverture d'un fichier (phoenix)
+- 0000037: [Correction] Ouverture de fichier sur un nouveau projet (phoenix)
+- 0000035: [Correction] Plantage à l'enregistrement d'un fichier (phoenix)
+- 0000023: [Correction] Attributs sur balise xsl:attribute (phoenix)
+- 0000022: [Correction] Recherche dans un fichier (phoenix)
+
+XINX - 0.6-1
+============
+- 0000020: [Evolution] Complétion des attributs (apostrophes) (phoenix)
+- 0000007: [Evolution] Changement d'onglet (phoenix)
+- 0000005: [Evolution] Indentation (phoenix)
+
+XINX - 0.6
+==========
+- 0000001: [Correction] Contenue du fichier XSL (phoenix)
+- 0000010: [Evolution] Sélection de texte (phoenix)
+- 0000009: [Evolution] Icône (phoenix)
+- 0000006: [Correction] Ouverture de fichier en double (phoenix)
+- 0000003: [Correction] Couleur des commentaires (phoenix)
+- 0000018: [Evolution] Répertoire par défaut pour la commande "Open..." (phoenix)
+- 0000008: [Correction] Recherche (phoenix)

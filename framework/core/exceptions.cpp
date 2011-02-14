@@ -182,7 +182,7 @@ void ExceptionManager::notifyError(QString error, QtMsgType t, bool showMessage)
 #ifndef _XINX_RELEASE_MODE_
 		abort();
 #else
-		exit();
+		exit(254);
 #endif /* _XINX_RELEASE_MODE_ */
 	}
 	else
