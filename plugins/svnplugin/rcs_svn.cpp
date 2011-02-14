@@ -36,7 +36,7 @@
 // Svn
 #include <svncpp/status.hpp>
 #include <apr_time.h>
-#include <targets.hpp>
+#include <svncpp/targets.hpp>
 
 /* SubVersionContextListener */
 
