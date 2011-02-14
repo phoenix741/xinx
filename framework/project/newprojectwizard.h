@@ -37,7 +37,7 @@ class ProjectPageImpl : public IXinxPluginNewProjectConfigurationPage, private U
 {
 	Q_OBJECT
 public:
-	ProjectPageImpl();
+	ProjectPageImpl(const QString & filename);
 
 	virtual bool isComplete() const;
 
@@ -48,6 +48,8 @@ private slots:
 	void on_m_projectPathBtn_clicked();
 
 	void on_m_projectNameEdit_textChanged(const QString & value);
+private:
+	QString _path;
 };
 
 class VersionsPageImpl : public IXinxPluginNewProjectConfigurationPage
@@ -82,7 +84,7 @@ class NewProjectWizard : public QWizard
 {
 	Q_OBJECT
 public:
-	NewProjectWizard(QWidget * widget = 0, Qt::WFlags f = 0);
+	NewProjectWizard(const QString & filename, QWidget * widget = 0, Qt::WFlags f = 0);
 
 	XinxProject::ProjectPtr createProject();
 

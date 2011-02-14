@@ -278,7 +278,7 @@ ProjectPtr Manager::projectOfPath(const QString & path)
 
 void Manager::newProject(const QString & directory)
 {
-	NewProjectWizard wizard;
+	NewProjectWizard wizard(directory);
 	if (wizard.exec())
 	{
 		openProject(wizard.createProject());

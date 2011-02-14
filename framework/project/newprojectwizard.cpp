@@ -36,10 +36,10 @@
 /* NewProjectWizard */
 #include <versioncontrol/versioncontrolmanager.h>
 
-NewProjectWizard::NewProjectWizard(QWidget * widget, Qt::WFlags f) : QWizard(widget, f)
+NewProjectWizard::NewProjectWizard(const QString & filename, QWidget * widget, Qt::WFlags f) : QWizard(widget, f)
 {
 	m_templateDialog = new TemplateDialogImpl;
-	m_projectPage = new ProjectPageImpl;
+	m_projectPage = new ProjectPageImpl(filename);
 	IXinxPluginNewProjectConfigurationPage * versionPage = new VersionsPageImpl;
 	m_lastDialog = new LastPageImpl;
 
@@ -147,10 +147,13 @@ int NewProjectWizard::nextId() const
 
 /* ProjectPageImpl */
 
-ProjectPageImpl::ProjectPageImpl()
+ProjectPageImpl::ProjectPageImpl(const QString & filename)
 {
 	setupUi(this);
 	setTitle(windowTitle());
+
+	_path = QString();
+	m_projectPathEdit->setText(filename);
 
 	registerField("project.name*",     m_projectNameEdit);
 	registerField("project.path*",     m_projectPathEdit);
@@ -171,7 +174,11 @@ void ProjectPageImpl::on_m_projectPathBtn_clicked()
 void ProjectPageImpl::on_m_projectNameEdit_textChanged(const QString & text)
 {
 	QString newProjectDirectory = QDir(XINXConfig::self()->config().project.defaultPath).absoluteFilePath(text);
-	m_projectPathEdit->setText(QDir::toNativeSeparators(newProjectDirectory));
+	if (m_projectPathEdit->text() == _path)
+	{
+		_path = QDir::toNativeSeparators(newProjectDirectory);
+		m_projectPathEdit->setText(_path);
+	}
 }
 
 QString ProjectPageImpl::pagePluginId() const
