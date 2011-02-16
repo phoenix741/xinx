@@ -44,7 +44,8 @@
  *
  * An empty project must be created when no project is opened. The project will be in memory.
  */
-namespace XinxProject {
+namespace XinxProject
+{
 
 /* PrivateXinxProject */
 
@@ -64,7 +65,7 @@ public:
 
 	void loadFromFile();
 	void saveToFile();
-    QString tr(const char* arg1);
+	QString tr(const char* arg1);
 
 	int m_version;
 
@@ -96,7 +97,7 @@ PrivateXinxProject::~PrivateXinxProject()
 	delete _resolver;
 }
 
-void PrivateXinxProject::initialisation ()
+void PrivateXinxProject::initialisation()
 {
 	m_rcsProxy		= new VersionControl::RCSProxy(m_self);
 	m_cache			= new ContentView3::Cache(m_self);
@@ -216,8 +217,8 @@ void PrivateXinxProject::loadFromFile()
 	while (! node.isNull())
 	{
 		QString type  = node.attribute("type", "QString"),
-				name  = node.tagName(),
-				value = node.text();
+						name  = node.tagName(),
+								value = node.text();
 
 		if ((type == "QStringList") && (! value.isEmpty()))
 		{
@@ -298,7 +299,7 @@ Project::Project()
 	qDebug() << "Create a project with no name " << this;
 }
 
-Project::Project (const QString & path)
+Project::Project(const QString & path)
 {
 	Q_ASSERT_X(! path.isEmpty(), "XinxProject::Project::Project", "The path mustn't be empty.'");
 
@@ -422,7 +423,7 @@ void Project::setProjectRCS(const QString & value)
 		d->m_projectRCS = value;
 		d->saveToFile();
 		emit changed();
-		d->load_rcsproxy_settings ();
+		d->load_rcsproxy_settings();
 	}
 }
 

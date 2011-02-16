@@ -29,7 +29,8 @@
 #include <QObject>
 #include <QScopedPointer>
 
-namespace ContentView3 {
+namespace ContentView3
+{
 
 class PrivateNode;
 

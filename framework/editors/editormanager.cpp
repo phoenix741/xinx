@@ -31,10 +31,10 @@
 
 /* PrivateTabWidget */
 
-PrivateTabWidget::PrivateTabWidget ( EditorManager* parent ) : _manager(parent)
+PrivateTabWidget::PrivateTabWidget(EditorManager* parent) : _manager(parent)
 {
 	setAcceptDrops(true);
-	setMovable (true);
+	setMovable(true);
 	tabBar()->setAttribute(Qt::WA_Hover);
 }
 
@@ -67,7 +67,7 @@ void PrivateTabWidget::dropEvent(QDropEvent *event)
 		{
 			if ((!urls.at(i).toLocalFile().isEmpty()))
 			{
-				_manager->openFile (urls.at(i).toLocalFile());
+				_manager->openFile(urls.at(i).toLocalFile());
 			}
 		}
 
@@ -168,7 +168,7 @@ void PrivateEditorManager::closeAllExcpet()
 		}
 	}
 
-	if(editorMayBeSave(editors))
+	if (editorMayBeSave(editors))
 	{
 		foreach(AbstractEditor * e, editors)
 		{
@@ -208,15 +208,15 @@ void PrivateEditorManager::createOpenSubMenu()
 
 void PrivateEditorManager::updateRecentFiles()
 {
-	int numRecentFiles = qMin(XinxSession::SessionManager::self ()->currentSession()->lastOpenedFile().size(), MAXRECENTFILES);
+	int numRecentFiles = qMin(XinxSession::SessionManager::self()->currentSession()->lastOpenedFile().size(), MAXRECENTFILES);
 
 	for (int i = 0; i < numRecentFiles; i++)
 	{
-		QString text = tr("&%1 %2").arg(i + 1).arg(QFileInfo(XinxSession::SessionManager::self ()->currentSession()->lastOpenedFile()[i]).fileName());
+		QString text = tr("&%1 %2").arg(i + 1).arg(QFileInfo(XinxSession::SessionManager::self()->currentSession()->lastOpenedFile()[i]).fileName());
 		if (XinxPluginsLoader::self()->matchedFileType(QFileInfo(text).fileName()).size())
 			_recent_actions[i]->setIcon(QIcon(XinxPluginsLoader::self()->matchedFileType(QFileInfo(text).fileName()).at(0)->icon()));
 		_recent_actions[i]->setText(text);
-		_recent_actions[i]->setData(XinxSession::SessionManager::self ()->currentSession()->lastOpenedFile()[i]);
+		_recent_actions[i]->setData(XinxSession::SessionManager::self()->currentSession()->lastOpenedFile()[i]);
 		_recent_actions[i]->setVisible(true);
 	}
 
@@ -273,8 +273,8 @@ void PrivateEditorManager::createActions()
 	connect(_close_all_action, SIGNAL(triggered()), _manager, SLOT(closeAllFile()));
 
 	_close_all_except_action = new QAction(tr("C&lose All except current"), this);
-	_close_all_except_action->setToolTip (tr("Close all document except the current"));
-	_close_all_except_action->setStatusTip (tr("Close all document except the current"));
+	_close_all_except_action->setToolTip(tr("Close all document except the current"));
+	_close_all_except_action->setStatusTip(tr("Close all document except the current"));
 	connect(_close_all_except_action, SIGNAL(triggered()), this, SLOT(closeAllExcpet()));
 
 	_copy_filename_action = new QAction(tr("&Copy filename to Clipboard"), this);
@@ -374,12 +374,12 @@ void PrivateEditorManager::addTab(AbstractEditor * editor)
 	int index = tabWidget()->addTab(editor, QString());
 	updateTabWidget(editor);
 
-	_manager->setCurrentEditor (index);
+	_manager->setCurrentEditor(index);
 }
 
 void PrivateEditorManager::tabCloseRequested(int index)
 {
-	_manager->closeFile (index);
+	_manager->closeFile(index);
 }
 
 int PrivateEditorManager::getClickedTab()
@@ -395,20 +395,20 @@ bool PrivateEditorManager::editorMayBeSave(QList<AbstractEditor*> editors)
 
 	foreach(AbstractEditor * editor, editors)
 	{
-		if(editor && (editor->isModified() || (qobject_cast<TextFileEditor*>(editor) && (!editor->hasNeverBeenModified()) && XINXConfig::self()->config().editor.autoindentOnSaving == "closing")))
+		if (editor && (editor->isModified() || (qobject_cast<TextFileEditor*>(editor) && (!editor->hasNeverBeenModified()) && XINXConfig::self()->config().editor.autoindentOnSaving == "closing")))
 		{
 			savingDlg.addEditor(editor);
 		}
 	}
 
-	if(savingDlg.countEditor())
+	if (savingDlg.countEditor())
 	{
 		if (savingDlg.exec() == QDialog::Rejected)
 			return false;
 
 		foreach(AbstractEditor * editor, savingDlg.selectedEditor())
 		{
-			if(XINXConfig::self()->config().editor.autoindentOnSaving == "closing")
+			if (XINXConfig::self()->config().editor.autoindentOnSaving == "closing")
 			{
 				TextFileEditor * textFileEditor = qobject_cast<TextFileEditor*>(editor);
 				if (textFileEditor)
@@ -460,7 +460,7 @@ bool PrivateEditorManager::eventFilter(QObject* obj, QEvent* event)
 				menu->addSeparator();
 				menu->addAction(_close_action);
 				menu->addAction(_close_all_action);
-				menu->addAction (_close_all_except_action);
+				menu->addAction(_close_all_except_action);
 				menu->addSeparator();
 				menu->addAction(_copy_filename_action);
 				menu->addAction(_copy_path_action);
@@ -475,7 +475,7 @@ bool PrivateEditorManager::eventFilter(QObject* obj, QEvent* event)
 			return true;
 		}
 	}
-    return QObject::eventFilter(obj, event);
+	return QObject::eventFilter(obj, event);
 }
 
 /* EditorManager */
@@ -493,7 +493,7 @@ EditorManager::~EditorManager()
 
 void EditorManager::setCurrentEditor(AbstractEditor * editor)
 {
-	if (editor != d->tabWidget()->currentWidget ())
+	if (editor != d->tabWidget()->currentWidget())
 	{
 		d->tabWidget()->setCurrentWidget(editor);
 		UniqueApplication::mainWindow()->activateWindow();
@@ -505,7 +505,7 @@ void EditorManager::setCurrentEditor(AbstractEditor * editor)
 //! Show to the editor \e index
 void EditorManager::setCurrentEditor(int index)
 {
-	if (index != d->tabWidget()->currentIndex ())
+	if (index != d->tabWidget()->currentIndex())
 	{
 		d->tabWidget()->setCurrentIndex(index);
 		UniqueApplication::mainWindow()->activateWindow();
@@ -515,7 +515,7 @@ void EditorManager::setCurrentEditor(int index)
 
 int EditorManager::currentIndex() const
 {
-	return d->tabWidget()->currentIndex ();
+	return d->tabWidget()->currentIndex();
 }
 
 //! Return the current editor
@@ -575,9 +575,9 @@ void EditorManager::changeToPreviousEditor()
 	setCurrentEditor((d->tabWidget()->currentIndex() - 1 + d->tabWidget()->count()) % d->tabWidget()->count());
 }
 
-void EditorManager::openFile ()
+void EditorManager::openFile()
 {
-	QStringList selectedFiles = QFileDialog::getOpenFileNames(qApp->activeWindow (), tr("Open text file"), d->m_lastOpenedFileName, XinxPluginsLoader::self()->openDialogBoxFilters().join(";;"));
+	QStringList selectedFiles = QFileDialog::getOpenFileNames(qApp->activeWindow(), tr("Open text file"), d->m_lastOpenedFileName, XinxPluginsLoader::self()->openDialogBoxFilters().join(";;"));
 
 	d->tabWidget()->setUpdatesEnabled(false);
 	foreach(const QString & filename, selectedFiles)
@@ -605,14 +605,14 @@ void EditorManager::openFile(const QString& filename, IFileTypePlugin* interface
 		ScriptManager::self()->callScriptsAfterLoad(openingEditor);
 
 		// Add recent action
-		XinxSession::SessionManager::self ()->currentSession()->addOpenedFile(filename);
+		XinxSession::SessionManager::self()->currentSession()->addOpenedFile(filename);
 
 		serializeEditors();
 
-		emit fileOpened (filename);
+		emit fileOpened(filename);
 	}
 
-	setCurrentEditor (openingEditor);
+	setCurrentEditor(openingEditor);
 }
 
 void EditorManager::openFile(const QString& filename, int line, IFileTypePlugin* interface, XinxProject::ProjectPtr project)
@@ -635,7 +635,7 @@ void EditorManager::openFile(const QString& filename, int line, IFileTypePlugin*
 	}
 	else
 	{
-		qWarning ("EditorManager::openFile(QString, int) : try to move to a line in a graphical editor");
+		qWarning("EditorManager::openFile(QString, int) : try to move to a line in a graphical editor");
 	}
 }
 
@@ -856,7 +856,7 @@ bool EditorManager::closeAllFile(XinxProject::ProjectPtr project)
 		}
 	}
 
-	if(d->editorMayBeSave(editors))
+	if (d->editorMayBeSave(editors))
 	{
 		foreach(AbstractEditor * e, editors)
 		{
@@ -898,12 +898,12 @@ void EditorManager::serializeEditors(bool content)
 {
 	if (XinxSession::SessionManager::self()->isApplicationStopping()) return;
 
-	XinxSession::SessionManager::self ()->currentSession()->clearSerializedEditors();
-	for(int i = 0; i < editorsCount (); i++)
+	XinxSession::SessionManager::self()->currentSession()->clearSerializedEditors();
+	for (int i = 0; i < editorsCount(); i++)
 	{
-		XinxSession::SessionEditor * session_editor = new XinxSession::SessionEditor(XinxSession::SessionManager::self ()->currentSession());
-		editor(i)->serialize (session_editor, content);
-		XinxSession::SessionManager::self ()->currentSession()->addSerializedEditor(session_editor);
+		XinxSession::SessionEditor * session_editor = new XinxSession::SessionEditor(XinxSession::SessionManager::self()->currentSession());
+		editor(i)->serialize(session_editor, content);
+		XinxSession::SessionManager::self()->currentSession()->addSerializedEditor(session_editor);
 	}
 }
 

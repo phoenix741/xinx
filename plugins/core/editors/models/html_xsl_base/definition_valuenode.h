@@ -28,9 +28,11 @@
 #include <QString>
 #include <QApplication>
 
-namespace Core {
+namespace Core
+{
 
-namespace BaliseDefinition {
+namespace BaliseDefinition
+{
 
 class AttributeNode;
 

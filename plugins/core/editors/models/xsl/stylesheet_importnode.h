@@ -23,9 +23,11 @@
 
 #include <contentview3/node.h>
 
-namespace Core {
+namespace Core
+{
 
-namespace Stylesheet {
+namespace Stylesheet
+{
 
 class ImportNode : public ContentView3::Node
 {

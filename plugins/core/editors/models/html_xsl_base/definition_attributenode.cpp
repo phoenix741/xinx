@@ -64,7 +64,7 @@ QList< QSharedPointer<ValueNode> > AttributeNode::defaultValues() const
 {
 	QList< QSharedPointer<ValueNode> > result;
 
-	foreach (QSharedPointer<ValueNode> node, _values.values())
+	foreach(QSharedPointer<ValueNode> node, _values.values())
 	{
 		if (node->isDefault())
 		{
@@ -89,7 +89,7 @@ void AttributeNode::addValue(QSharedPointer<ValueNode>  value)
 void AttributeNode::clearChilds()
 {
 	_values.clear();
-    ContentView3::Node::clearChilds();
+	ContentView3::Node::clearChilds();
 }
 
 QSharedPointer<ValueNode>  AttributeNode::value(const QString & value)

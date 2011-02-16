@@ -61,7 +61,7 @@ QStringList ManualFileResolver::searchPathList(XinxProject::ProjectPtr project) 
 	return searchList;
 }
 
-bool ManualFileResolver::resolveFileName ( const QString& nameToResolve, QString& resolvedName, const QString& currentPath, XinxProject::ProjectPtr project )
+bool ManualFileResolver::resolveFileName(const QString& nameToResolve, QString& resolvedName, const QString& currentPath, XinxProject::ProjectPtr project)
 {
 	QStringList searchList;
 

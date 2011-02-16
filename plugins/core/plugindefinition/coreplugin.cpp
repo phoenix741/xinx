@@ -166,7 +166,7 @@ QList<CodeCompletion::ItemModelFactory*> CorePlugin::createItemModelFactory() co
 	return result;
 }
 
-void CorePlugin::generateActionMenu ()
+void CorePlugin::generateActionMenu()
 {
 	XinxAction::ActionManager::self()->insertNameOfMenu("edit", tr("&Edit"));
 	XinxAction::ActionManager::self()->insertNameOfMenu("bookmark", tr("&Bookmark"));

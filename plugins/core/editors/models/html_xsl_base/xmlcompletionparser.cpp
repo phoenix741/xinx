@@ -103,7 +103,7 @@ void XmlCompletionParser::readBaliseTag(const ContentView3::NodePtr & parent)
 	Q_ASSERT(isStartElement() && QXmlStreamReader::name() == "balise");
 
 	QString		name 			= attributes().value("name").toString(),
-				defaultValue 	= attributes().value("default").toString();
+					   defaultValue 	= attributes().value("default").toString();
 
 	QSharedPointer<BaliseNode> node = BaliseNode::create(name, parent);
 	node->setLine(decalage() + lineNumber());
@@ -133,7 +133,7 @@ void XmlCompletionParser::readAttributeTag(const QSharedPointer<BaliseNode> & pa
 	Q_ASSERT(isStartElement() && QXmlStreamReader::name() == "attribute");
 
 	QString		name 			= attributes().value("name").toString(),
-				defaultValue 	= attributes().value("default").toString();
+					   defaultValue 	= attributes().value("default").toString();
 
 	QSharedPointer<AttributeNode> node = AttributeNode::create(name, parent);
 	node->setLine(decalage() + lineNumber());
@@ -162,7 +162,7 @@ void XmlCompletionParser::readValueTag(const QSharedPointer<AttributeNode> & par
 
 	const QXmlStreamAttributes attrs  = attributes();
 	const QString 	name 			= readElementText(IncludeChildElements),
-					defaultValue 	= attrs.value("default").toString();
+							 defaultValue 	= attrs.value("default").toString();
 
 	QSharedPointer<ValueNode> node = ValueNode::create(name, parent);
 	node->setLine(decalage() + lineNumber());

@@ -50,7 +50,7 @@ public:
 
 Pool::Pool() : d(new PrivatePool)
 {
-	connect(XINXConfig::self (), SIGNAL(changed()), this, SLOT(updateParsers()));
+	connect(XINXConfig::self(), SIGNAL(changed()), this, SLOT(updateParsers()));
 }
 
 Pool::~Pool()
@@ -60,26 +60,26 @@ Pool::~Pool()
 
 void Pool::updateParsers()
 {
-	qDeleteAll(d->_factories.values ());
-	d->_factories.clear ();
-	qDeleteAll(d->_parsers.values ());
-	d->_parsers.clear ();
+	qDeleteAll(d->_factories.values());
+	d->_factories.clear();
+	qDeleteAll(d->_parsers.values());
+	d->_parsers.clear();
 
-	foreach(XinxPluginElement * element, XinxPluginsLoader::self ()->plugins ())
+	foreach(XinxPluginElement * element, XinxPluginsLoader::self()->plugins())
 	{
-		ICodeCompletionPlugin * interface = qobject_cast<ICodeCompletionPlugin*> (element->plugin ());
-		if (element->isActivated () && interface)
+		ICodeCompletionPlugin * interface = qobject_cast<ICodeCompletionPlugin*> (element->plugin());
+		if (element->isActivated() && interface)
 		{
-			QList<ContextParser*> parsers = interface->createContextParser ();
-			QList<ItemModelFactory*> factories = interface->createItemModelFactory ();
+			QList<ContextParser*> parsers = interface->createContextParser();
+			QList<ItemModelFactory*> factories = interface->createItemModelFactory();
 			foreach(ContextParser* p, parsers)
 			{
-				d->_parsers.insert (element->name (), p);
+				d->_parsers.insert(element->name(), p);
 			}
 
 			foreach(ItemModelFactory* p, factories)
 			{
-				d->_factories.insert (element->name (), p);
+				d->_factories.insert(element->name(), p);
 			}
 		}
 	}
@@ -88,56 +88,56 @@ void Pool::updateParsers()
 void Pool::generate(ItemInterface * interface, Context context)
 {
 	Q_ASSERT_X(interface, "Pool::generate", "ItemInterface to populate model must not be null");
-	if (d->_factories.isEmpty ())
+	if (d->_factories.isEmpty())
 	{
-		updateParsers ();
+		updateParsers();
 	}
 
 	QStringList contextsType = interface->contextsType();
 	foreach(const QString & contextType, contextsType)
 	{
-		interface->prepareRemovingOldItems (contextType);
+		interface->prepareRemovingOldItems(contextType);
 	}
 
 	QHashIterator<QString, ItemModelFactory*> i(d->_factories);
-	while (i.hasNext ())
+	while (i.hasNext())
 	{
-		i.next ();
+		i.next();
 
-		ItemModelFactory* parser = i.value ();
+		ItemModelFactory* parser = i.value();
 
-		parser->setItemInterface (interface);
-		parser->setContext (context);
+		parser->setItemInterface(interface);
+		parser->setContext(context);
 
-		parser->generate ();
+		parser->generate();
 	}
 
 	foreach(const QString & contextType, contextsType)
 	{
-		interface->removeOldItems (contextType);
+		interface->removeOldItems(contextType);
 	}
 }
 
 void Pool::updateContext(TextFileEditor * editor, Context context)
 {
-	if (d->_parsers.isEmpty ())
+	if (d->_parsers.isEmpty())
 	{
-		updateParsers ();
+		updateParsers();
 	}
 
-	context.setPrefix (editor->textEdit ()->textUnderCursor (editor->textEdit()->textCursor()));
+	context.setPrefix(editor->textEdit()->textUnderCursor(editor->textEdit()->textCursor()));
 
 	QHashIterator<QString, ContextParser*> i(d->_parsers);
-	while (i.hasNext ())
+	while (i.hasNext())
 	{
-		i.next ();
+		i.next();
 
-		ContextParser* parser = i.value ();
+		ContextParser* parser = i.value();
 
-		parser->setEditor (editor);
-		parser->setContext (context);
+		parser->setEditor(editor);
+		parser->setContext(context);
 
-		parser->updateContext ();
+		parser->updateContext();
 	}
 }
 

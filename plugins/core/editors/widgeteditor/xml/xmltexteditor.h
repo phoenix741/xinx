@@ -37,11 +37,13 @@ struct XPathBalise
 	QHash<QString,QString> attributes;
 };
 
-namespace Core {
+namespace Core
+{
 
-namespace BaliseDefinition {
+namespace BaliseDefinition
+{
 
-	class XmlContextType;
+class XmlContextType;
 
 }
 

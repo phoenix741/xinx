@@ -48,7 +48,7 @@ void SnipetItemModelFactory::generate()
 {
 	const QString context_type = tr("Snipet");
 
-	SnipetContextType * c = dynamic_cast<SnipetContextType*> (context().context(SNIPET_CONTEXT_TYPE));
+	SnipetContextType * c = dynamic_cast<SnipetContextType*>(context().context(SNIPET_CONTEXT_TYPE));
 	if (c && c->loadSnipet())
 	{
 		QSqlQuery selectQuery("SELECT id, icon, shortcut, name FROM snipets WHERE auto>=:auto", SnipetManager::self()->database());

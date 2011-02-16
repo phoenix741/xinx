@@ -25,7 +25,7 @@
 class DictionaryModel;
 namespace XinxProject
 {
-	class Project;
+class Project;
 }
 
 class DictionaryWidget : public QTreeView
@@ -33,7 +33,7 @@ class DictionaryWidget : public QTreeView
 	Q_OBJECT
 public:
 	DictionaryWidget(QWidget * parent = 0);
-    virtual ~DictionaryWidget();
+	virtual ~DictionaryWidget();
 
 	void setPrefix(const QString & prefix);
 	const QString & prefix();

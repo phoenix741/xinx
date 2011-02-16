@@ -30,7 +30,7 @@ CustomGeneralImpl::CustomGeneralImpl(QWidget * parent) : QWidget(parent)
 {
 	setupUi(this);
 
-	m_traceLogWidget->lineEdit ()->setFileMustExist (false);
+	m_traceLogWidget->lineEdit()->setFileMustExist(false);
 
 	// Style
 	m_styleComboBox->addItem(QString());

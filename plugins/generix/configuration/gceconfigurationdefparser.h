@@ -38,7 +38,7 @@ public:
 	GceConfigurationDefParser(const QString & filename);
 	virtual ~GceConfigurationDefParser();
 
-    virtual void startJob();
+	virtual void startJob();
 protected:
 	virtual void readConfigurationDef(const QString & configurationdefFileName);
 	virtual void readConfigurationFile(int configurationIndex, const QString & configurationFileName);

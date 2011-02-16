@@ -44,17 +44,17 @@ FileNode::FileNode(const QString& filename): Node(filename)
 
 QString FileNode::displayName() const
 {
-    return QFileInfo(name()).fileName();
+	return QFileInfo(name()).fileName();
 }
 
 FileNodePtr FileNode::clone() const
 {
-	FileNodePtr node = FileNode::create (name(), parent ());
-	node->setFile (file());
-	node->setIcon (icon ());
-	node->setLine (line());
-	node->setTips (tips());
-	node->setType (type());
+	FileNodePtr node = FileNode::create(name(), parent());
+	node->setFile(file());
+	node->setIcon(icon());
+	node->setLine(line());
+	node->setTips(tips());
+	node->setType(type());
 	return node;
 }
 

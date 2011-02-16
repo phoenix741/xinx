@@ -24,15 +24,17 @@
 // Xinx header
 #include <contentview3/node.h>
 
-namespace Generix {
+namespace Generix
+{
 
-namespace Dictionary {
+namespace Dictionary
+{
 
 class LabelNode : public ContentView3::Node
 {
 public:
 	static QSharedPointer<LabelNode> create(const QString & name, ContentView3::NodePtr parent = ContentView3::NodePtr());
-    virtual ~LabelNode();
+	virtual ~LabelNode();
 
 	QString code() const;
 
@@ -45,7 +47,7 @@ public:
 	void setValue(const QString & value);
 	const QString & value() const;
 
-    virtual QString displayName() const;
+	virtual QString displayName() const;
 protected:
 	LabelNode(const QString& name);
 

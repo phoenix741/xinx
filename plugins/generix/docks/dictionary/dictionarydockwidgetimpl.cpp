@@ -46,13 +46,13 @@ void DictionaryDockWidgetImpl::dictionariesLoaded()
 void DictionaryDockWidgetImpl::on_m_filterLine_textChanged(QString filter)
 {
 	Q_UNUSED(filter);
-	if(m_timerId) killTimer(m_timerId);
+	if (m_timerId) killTimer(m_timerId);
 	m_timerId = startTimer(500);
 }
 
 void DictionaryDockWidgetImpl::timerEvent(QTimerEvent * event)
 {
-	if(m_timerId == event->timerId())
+	if (m_timerId == event->timerId())
 	{
 		killTimer(m_timerId);
 		m_timerId = 0;

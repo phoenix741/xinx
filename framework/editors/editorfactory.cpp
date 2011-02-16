@@ -46,7 +46,7 @@ IFileTypePlugin * EditorFactory::interfaceOfName(const QString & name)
 	QList<IFileTypePlugin*> interfaces = XinxPluginsLoader::self()->fileTypes();
 	foreach(IFileTypePlugin* interface, interfaces)
 	{
-		if (interface->name () == name)
+		if (interface->name() == name)
 		{
 			return interface;
 		}
@@ -78,7 +78,7 @@ AbstractEditor * EditorFactory::createEditor(const QString& filename, IFileTypeP
 	{
 		EditorChoiceDlg dlg(qApp->activeWindow());
 		dlg.setFileName(filename);
-		if ((dlg.count () > 1) && (dlg.exec() != QDialog::Accepted))
+		if ((dlg.count() > 1) && (dlg.exec() != QDialog::Accepted))
 		{
 			/* The user cancel the operation */
 			return NULL;
@@ -91,12 +91,12 @@ AbstractEditor * EditorFactory::createEditor(const QString& filename, IFileTypeP
 	/* If no project is defined we must find one */
 	if (project.isNull())
 	{
-		project = XinxProject::Manager::self ()->projectOfFile(filename);
+		project = XinxProject::Manager::self()->projectOfFile(filename);
 	}
 
 	AbstractEditor * editor = createEditor(interface);
-	editor->setProject (project);
-	editor->loadFromFile (filename);
+	editor->setProject(project);
+	editor->loadFromFile(filename);
 
 	return editor;
 }

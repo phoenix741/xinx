@@ -47,9 +47,9 @@ public:
 	IFileTypePlugin * selectedType() const;
 protected:
 	virtual void initializePage(int id);
-	virtual void done ( int result );
+	virtual void done(int result);
 private slots:
-	void slotTextChanged (const QString & text);
+	void slotTextChanged(const QString & text);
 private:
 	XinxProject::ProjectPtr _project;
 	IFileTypePlugin * _interface;

@@ -25,7 +25,8 @@
 #include "ui_searchpathlistprjpageform.h"
 #include <plugins/interfaces/gui.h>
 
-namespace XinxProject {
+namespace XinxProject
+{
 class Project;
 }
 

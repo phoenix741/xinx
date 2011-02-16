@@ -23,12 +23,12 @@ namespace CodeCompletion
 {
 
 /* PrivateItemModelFactory */
-	
+
 class PrivateItemModelFactory
 {
 public:
 	PrivateItemModelFactory();
-	
+
 	bool _contextChanged;
 	Context _context;
 	ItemInterface* _interface;
@@ -36,7 +36,7 @@ public:
 
 PrivateItemModelFactory::PrivateItemModelFactory() : _contextChanged(false), _interface(0)
 {
-	
+
 }
 
 /* ItemModelFactory */

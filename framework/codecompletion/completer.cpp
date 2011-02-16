@@ -45,7 +45,7 @@ public:
 	TextFileEditor * _editor;
 	Model* _model;
 	Context _context;
-    QTreeView* _treeView;
+	QTreeView* _treeView;
 };
 
 PrivateCompleter::PrivateCompleter() : _editor(0), _model(0), _treeView(0)
@@ -86,7 +86,8 @@ QModelIndex PrivateCompleter::findNextSelectableIndex(QModelIndex index, bool up
 		{
 			break;
 		}
-	} while (! curIndex.flags().testFlag(Qt::ItemIsSelectable));
+	}
+	while (! curIndex.flags().testFlag(Qt::ItemIsSelectable));
 
 	return curIndex;
 }
@@ -102,19 +103,19 @@ Completer::Completer(TextFileEditor* parent): QCompleter(parent), d(new PrivateC
 
 	d->_treeView->setHeaderHidden(true);
 
-	d->_treeView->setAllColumnsShowFocus (true);
+	d->_treeView->setAllColumnsShowFocus(true);
 	d->_treeView->setRootIsDecorated(false);
-	d->_treeView->setSelectionMode (QAbstractItemView::SingleSelection);
-	d->_treeView->setSelectionBehavior (QAbstractItemView::SelectRows);
+	d->_treeView->setSelectionMode(QAbstractItemView::SingleSelection);
+	d->_treeView->setSelectionBehavior(QAbstractItemView::SelectRows);
 	d->_treeView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	d->_treeView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	connect(d->_treeView->header (), SIGNAL(sectionCountChanged(int,int)), this, SLOT(resizeColumns(int,int)));
+	connect(d->_treeView->header(), SIGNAL(sectionCountChanged(int,int)), this, SLOT(resizeColumns(int,int)));
 
 	setEditor(parent);
 	setCompletionMode(QCompleter::UnfilteredPopupCompletion);
 	setCaseSensitivity(Qt::CaseInsensitive);
-	setCompletionRole (Qt::UserRole + 1);
-	setCompletionColumn (1);
+	setCompletionRole(Qt::UserRole + 1);
+	setCompletionColumn(1);
 }
 
 Completer::~Completer()
@@ -139,9 +140,9 @@ void Completer::complete(bool automaticCall, const QString & prefix)
 
 	if (d->_model)
 	{
-		if (! prefix.isEmpty ())
+		if (! prefix.isEmpty())
 		{
-			d->_context.setPrefix (prefix);
+			d->_context.setPrefix(prefix);
 			setCompletionPrefix(prefix);
 		}
 		else
@@ -149,7 +150,7 @@ void Completer::complete(bool automaticCall, const QString & prefix)
 			setCompletionPrefix(d->_context.prefix());
 		}
 
-		d->_model->updateModel ();
+		d->_model->updateModel();
 
 		// Call made by the user (using shortcut or not)
 		if ((!automaticCall) && (completionModel()->rowCount() == 1))
@@ -168,9 +169,9 @@ void Completer::complete(bool automaticCall, const QString & prefix)
 
 		QCompleter::complete(cr);
 
-		QModelIndex index = d->findNextSelectableIndex(d->_model->index(0, completionColumn ()), false);
-		setCurrentRow (index.row ());
-		popup()->setCurrentIndex (index);
+		QModelIndex index = d->findNextSelectableIndex(d->_model->index(0, completionColumn()), false);
+		setCurrentRow(index.row());
+		popup()->setCurrentIndex(index);
 	}
 
 	qDebug() << "Complete in " << _complete_timer.elapsed() << " ms";
@@ -215,14 +216,14 @@ void Completer::complete(Item* item)
 
 		d->_editor->textEdit()->textUnderCursor(tc, true);
 
-		item->execute (d->_context, editor());
+		item->execute(d->_context, editor());
 	}
 }
 
 void Completer::setContext(Context context)
 {
 	d->_context = context;
-	d->_model->setContext (context);
+	d->_model->setContext(context);
 }
 
 Context Completer::context() const
@@ -251,7 +252,7 @@ TextFileEditor* Completer::editor() const
 void Completer::setModel(Model* model)
 {
 	d->_model = model;
-	QCompleter::setModel (model);
+	QCompleter::setModel(model);
 }
 
 Model* Completer::model() const
@@ -267,29 +268,30 @@ bool Completer::eventFilter(QObject *o, QEvent *e)
 
 		QModelIndex curIndex = popup()->currentIndex();
 		QModelIndexList selList = popup()->selectionModel()->selectedIndexes();
-		if (!curIndex.isValid () && !selList.isEmpty ())
+		if (!curIndex.isValid() && !selList.isEmpty())
 		{
 			// Apparently on QTreeView, currentIndex is not correctly filled.
-			curIndex = selList.at (0);
+			curIndex = selList.at(0);
 		}
 
 		const int key = ke->key();
 
-		switch (key) {
+		switch (key)
+		{
 		case Qt::Key_Up:
-			{
-				QModelIndex newIndex = d->findNextSelectableIndex(curIndex, true);
-				popup()->setCurrentIndex(newIndex);
-				return true;
-			}
-			break;
+		{
+			QModelIndex newIndex = d->findNextSelectableIndex(curIndex, true);
+			popup()->setCurrentIndex(newIndex);
+			return true;
+		}
+		break;
 		case Qt::Key_Down:
-			{
-				QModelIndex newIndex = d->findNextSelectableIndex(curIndex, false);
-				popup()->setCurrentIndex(newIndex);
-				return true;
-			}
-			break;
+		{
+			QModelIndex newIndex = d->findNextSelectableIndex(curIndex, false);
+			popup()->setCurrentIndex(newIndex);
+			return true;
+		}
+		break;
 		}
 	}
 

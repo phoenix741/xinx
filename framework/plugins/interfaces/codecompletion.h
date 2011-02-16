@@ -24,9 +24,10 @@
 // Qt header
 #include <QtPlugin>
 
-namespace CodeCompletion {
-	class ContextParser;
-	class ItemModelFactory;
+namespace CodeCompletion
+{
+class ContextParser;
+class ItemModelFactory;
 }
 
 class AbstractEditor;

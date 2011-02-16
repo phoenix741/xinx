@@ -34,10 +34,10 @@ public:
 	explicit ActionGroup(QObject *parent = 0);
 	virtual ~ActionGroup();
 
-	QAction * addAction (QAction * action);
-	QAction * addAction (const QString & text);
-	QAction * addAction (const QIcon & icon, const QString & text);
-	void removeAction (QAction * action);
+	QAction * addAction(QAction * action);
+	QAction * addAction(const QString & text);
+	QAction * addAction(const QIcon & icon, const QString & text);
+	void removeAction(QAction * action);
 
 	void setMenu(QMenu * menu);
 	QMenu * menu() const;

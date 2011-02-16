@@ -33,9 +33,9 @@ class IFileResolverPlugin;
 
 namespace XinxProject
 {
-	class Project;
-	typedef QSharedPointer<Project> ProjectPtr;
-	typedef QWeakPointer<Project> ProjectPtrWeak;
+class Project;
+typedef QSharedPointer<Project> ProjectPtr;
+typedef QWeakPointer<Project> ProjectPtrWeak;
 }
 
 /* ExternalFileResolver */

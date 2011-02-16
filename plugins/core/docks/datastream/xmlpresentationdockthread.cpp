@@ -97,7 +97,7 @@ void XmlPresentationDockThread::adaptColumns()
 void XmlPresentationDockThread::projectChanged()
 {
 	m_dataStreamLocation.clear();
-	foreach (XinxProject::ProjectPtr project, XinxProject::Manager::self()->projects())
+	foreach(XinxProject::ProjectPtr project, XinxProject::Manager::self()->projects())
 	{
 		const QString rel  = project->readProperty("dataStreamLocation").toString();
 		m_dataStreamLocation << QDir(project->projectPath()).absoluteFilePath(rel);
@@ -120,7 +120,7 @@ void XmlPresentationDockThread::initXmlPresentationCombo()
 	m_xmlPresentationWidget->m_presentationComboBox->addItem(tr("<Choose an XML file ...>"));
 
 	QAbstractItemModel * model = m_xmlPresentationWidget->m_presentationComboBox->model();
-	foreach (const QString & dataStreamLocation, m_dataStreamLocation)
+	foreach(const QString & dataStreamLocation, m_dataStreamLocation)
 	{
 		m_xmlPresentationWidget->m_presentationComboBox->addItem(dataStreamLocation);
 		QModelIndex index = model->index(m_xmlPresentationWidget->m_presentationComboBox->count() - 1, 0);
@@ -231,11 +231,11 @@ void XmlPresentationDockThread::setComboToolTip(const QString & filename)
 	}
 
 	m_xmlPresentationWidget->m_presentationComboBox->setToolTip(
-	    tr("File name : %1\n"
-	       "Size : %2 %3b\n"
-	       "File date : %4")    .arg(file.canonicalFilePath())
-	    .arg(filesize, 0, 'f', 2).arg(unite)
-	    .arg(file.lastModified().toString())
+		tr("File name : %1\n"
+		   "Size : %2 %3b\n"
+		   "File date : %4")    .arg(file.canonicalFilePath())
+		.arg(filesize, 0, 'f', 2).arg(unite)
+		.arg(file.lastModified().toString())
 	);
 }
 
@@ -376,7 +376,7 @@ void XmlPresentationDockThread::threadTerminated()
 
 void XmlPresentationDockThread::filterTextChanged()
 {
-	if (m_sortFilterModel && ! isRunning ())
+	if (m_sortFilterModel && ! isRunning())
 		m_timerTextChanged.start();
 }
 

@@ -52,8 +52,8 @@ bool CustomGenerixImpl::loadSettingsDialog()
 {
 	SelfGceSettings::self()->load();
 
-	m_readConfigurationChk->setChecked (SelfGceSettings::self()->config().readConfigurations);
-	m_readDictionariesChk->setChecked (SelfGceSettings::self()->config().readDictionaries);
+	m_readConfigurationChk->setChecked(SelfGceSettings::self()->config().readConfigurations);
+	m_readDictionariesChk->setChecked(SelfGceSettings::self()->config().readDictionaries);
 
 	return true;
 }

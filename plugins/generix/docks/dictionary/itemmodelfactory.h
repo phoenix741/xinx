@@ -28,15 +28,17 @@
 
 namespace Core
 {
-	namespace BaliseDefinition
-	{
-		class XmlContextType;
-	}
+namespace BaliseDefinition
+{
+class XmlContextType;
+}
 };
 
-namespace Generix {
+namespace Generix
+{
 
-namespace Dictionary {
+namespace Dictionary
+{
 
 class ItemModelFactory : public CodeCompletion::ItemModelFactory
 {

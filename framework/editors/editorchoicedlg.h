@@ -29,7 +29,8 @@
 #include <QDialogButtonBox>
 #include <QDialog>
 
-class LIBEXPORT EditorChoiceDlg : public QDialog {
+class LIBEXPORT EditorChoiceDlg : public QDialog
+{
 	Q_OBJECT
 public:
 	explicit EditorChoiceDlg(QWidget *parent = 0);

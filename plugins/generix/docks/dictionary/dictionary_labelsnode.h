@@ -23,9 +23,11 @@
 
 #include <contentview3/node.h>
 
-namespace Generix {
+namespace Generix
+{
 
-namespace Dictionary {
+namespace Dictionary
+{
 
 class LabelsNode : public ContentView3::Node
 {

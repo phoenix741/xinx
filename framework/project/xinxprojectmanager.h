@@ -31,7 +31,8 @@
 
 class QAction;
 
-namespace XinxProject {
+namespace XinxProject
+{
 
 class PrivateManager;
 

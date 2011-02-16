@@ -35,7 +35,7 @@
 
 namespace XinxProject
 {
-	class Project;
+class Project;
 }
 
 namespace VersionControl

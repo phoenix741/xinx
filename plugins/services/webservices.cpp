@@ -194,9 +194,9 @@ void WebServices::loadFromContent(const QString & wsdlContent)
 	if (!document.setContent(wsdlContent, true, &errorStr, &errorLine, &errorColumn))
 	{
 		QMessageBox::information(qApp->activeWindow(), QObject::tr("WSDL WebServices file"), QObject::tr("Parse error at line %1, column %2:\n%3")
-		                         .arg(errorLine)
-		                         .arg(errorColumn)
-		                         .arg(errorStr));
+								 .arg(errorLine)
+								 .arg(errorColumn)
+								 .arg(errorStr));
 		return;
 	}
 
@@ -213,7 +213,7 @@ WebServicesManager::WebServicesManager(XinxProject::ProjectPtr project) : QObjec
 	connect(m_httpDialog, SIGNAL(canceled()), m_http, SLOT(abort()));
 	connect(m_http, SIGNAL(done(bool)), this, SLOT(responseReady()));
 
-	updateWebServicesList ();
+	updateWebServicesList();
 }
 
 WebServicesManager::~WebServicesManager()

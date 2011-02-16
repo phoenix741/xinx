@@ -28,9 +28,11 @@
 #include <QString>
 #include <QApplication>
 
-namespace Core {
+namespace Core
+{
 
-namespace CascadingStyleSheet {
+namespace CascadingStyleSheet
+{
 
 class PropertyNode : public ContentView3::Node
 {

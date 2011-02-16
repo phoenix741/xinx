@@ -175,7 +175,7 @@ void TextFileEditor::initObjects()
 
 	connect(m_view->editor(), SIGNAL(contentModified(bool)), this, SLOT(setModified(bool)));
 	connect(m_view->document(), SIGNAL(contentsChanged()), this, SLOT(textChanged()));
-	connect(m_view->editor(), SIGNAL(cursorPositionChanged()), this, SLOT(cursorPositionChanged()) );
+	connect(m_view->editor(), SIGNAL(cursorPositionChanged()), this, SLOT(cursorPositionChanged()));
 
 	connect(m_view, SIGNAL(searchWord(QString)), this, SLOT(searchWord(QString)));
 
@@ -187,13 +187,13 @@ void TextFileEditor::initObjects()
 	_completer			= new CodeCompletion::Completer(this);
 	_completion_model	= new CodeCompletion::Model(_completer);
 
-	_completer->setModel (_completion_model);
-	_completer->setContext (_context);
-	_completer->setEditor (this);
+	_completer->setModel(_completion_model);
+	_completer->setContext(_context);
+	_completer->setEditor(this);
 
 	_model = new ContentView3::TreeModel(this);
 
-	setFile(ContentView3::File::create ());
+	setFile(ContentView3::File::create());
 }
 
 void TextFileEditor::setProject(XinxProject::ProjectPtr project)
@@ -483,7 +483,8 @@ void TextFileEditor::updateModel()
 	updateCodec();
 
 	ContentView3::Parser * parser = createParser();
-	if (parser) {
+	if (parser)
+	{
 		connect(parser, SIGNAL(jobEnding()), this, SLOT(fileParsed()));
 
 		QBuffer * buffer = new QBuffer;
@@ -498,15 +499,15 @@ void TextFileEditor::updateModel()
 
 		if (buffer->open(QBuffer::ReadOnly))
 		{
-			parser->setFile (_file);
-			if (project ())
+			parser->setFile(_file);
+			if (project())
 			{
-				parser->setWorkingPath (project ()->projectPath ());
+				parser->setWorkingPath(project()->projectPath());
 			}
 
-			parser->setDevice (buffer);
+			parser->setDevice(buffer);
 
-			project ()->cache ()->addFileToCache (parser, true, ContentView3::Cache::NONE);
+			project()->cache()->addFileToCache(parser, true, ContentView3::Cache::NONE);
 		}
 		else
 		{
@@ -548,9 +549,9 @@ void TextFileEditor::setFile(ContentView3::FilePtr file)
 		_file = file;
 		_file->setProject(project());
 
-		_context.setFile (_file.toWeakRef ());
+		_context.setFile(_file.toWeakRef());
 		_model->setFile(_file);
-		m_view->setFile(_file.toWeakRef ());
+		m_view->setFile(_file.toWeakRef());
 	}
 }
 
@@ -579,7 +580,7 @@ const QString & TextFileEditor::codecName() const
 QTextCodec * TextFileEditor::codec() const
 {
 	QTextCodec * codec = QTextCodec::codecForName(m_codec.toAscii());
-	if( ! codec )
+	if (! codec)
 	{
 		codec = QTextCodec::codecForLocale();
 	}
@@ -599,13 +600,13 @@ void TextFileEditor::cursorPositionChanged()
 	const QString text = QString("   %1 x %2   ").arg(line, 3, 10, QLatin1Char('0')).arg(column, 3, 10, QLatin1Char('0'));
 	emit positionChanged(text);
 
-	_move_timer->start ();
+	_move_timer->start();
 }
 
 void TextFileEditor::updateContext()
 {
-	_move_timer->stop ();
-	_context.setFilename (lastFileName ());
+	_move_timer->stop();
+	_context.setFilename(lastFileName());
 	CodeCompletion::Pool::self()->updateContext(this, _context);
 }
 
@@ -639,7 +640,7 @@ void TextFileEditor::contextMenuEvent(QContextMenuEvent * contextMenuEvent)
 {
 	QScopedPointer<QMenu> menu(new QMenu(m_view));
 
-	foreach(XinxAction::MenuItem * item, XinxAction::ActionManager::self ()->popup())
+	foreach(XinxAction::MenuItem * item, XinxAction::ActionManager::self()->popup())
 	{
 		item->updateActionState();
 		menu->addAction(item->action());
@@ -658,7 +659,7 @@ ContentView3::NodePtr TextFileEditor::localNodeOfWord(const ContentView3::NodePt
 		}
 		else
 		{
-			ContentView3::NodePtr recursiveNode = localNodeOfWord (child, word);
+			ContentView3::NodePtr recursiveNode = localNodeOfWord(child, word);
 			if (recursiveNode)
 				return recursiveNode;
 		}
@@ -669,12 +670,12 @@ ContentView3::NodePtr TextFileEditor::localNodeOfWord(const ContentView3::NodePt
 
 ContentView3::NodePtr TextFileEditor::globalNodeOfWord(const QString & word)
 {
-	ContentView3::NodePtr node = localNodeOfWord (_file->rootNode().dynamicCast<ContentView3::Node> (), word);
-	if (node.isNull () && project ())
+	ContentView3::NodePtr node = localNodeOfWord(_file->rootNode().dynamicCast<ContentView3::Node> (), word);
+	if (node.isNull() && project())
 	{
-		foreach(const ContentView3::FilePtr & import, project()->cache ()->importOf(_file))
+		foreach(const ContentView3::FilePtr & import, project()->cache()->importOf(_file))
 		{
-			node = localNodeOfWord (import->rootNode().dynamicCast<ContentView3::Node> (), word);
+			node = localNodeOfWord(import->rootNode().dynamicCast<ContentView3::Node> (), word);
 			if (node)
 			{
 				break;
@@ -686,7 +687,7 @@ ContentView3::NodePtr TextFileEditor::globalNodeOfWord(const QString & word)
 
 void TextFileEditor::searchWord(const QString & word)
 {
-	ContentView3::NodePtr n = globalNodeOfWord (word);
+	ContentView3::NodePtr n = globalNodeOfWord(word);
 	if (n)
 	{
 		const QString filename = n->filename();

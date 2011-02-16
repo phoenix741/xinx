@@ -31,9 +31,11 @@
 // Qt header
 #include <QStringList>
 
-namespace Core {
+namespace Core
+{
 
-namespace BaliseDefinition {
+namespace BaliseDefinition
+{
 
 class XmlBalise;
 

@@ -25,7 +25,8 @@
 #include <QAction>
 #include <project/xinxprojectproject.h>
 
-namespace XinxProject {
+namespace XinxProject
+{
 
 class Manager;
 
@@ -33,15 +34,15 @@ class LIBEXPORT PrivateManager : public QObject
 {
 	Q_OBJECT
 public:
-    PrivateManager(XinxProject::Manager* parent);
-    virtual ~PrivateManager();
+	PrivateManager(XinxProject::Manager* parent);
+	virtual ~PrivateManager();
 
 	QAction * _new_project_action, * _recent_project_action, * _close_project_action, * _customize_project_action;
 	ProjectPtrWeak _selected_project;
 	QList<ProjectPtr> m_projects;
 	ProjectPtr m_defaultProject;
-    XinxProject::Manager* _manager;
-    QAction * _recent_separator;
+	XinxProject::Manager* _manager;
+	QAction * _recent_separator;
 	QAction* _recent_actions[ MAXRECENTFILES ];
 
 	void initialisation();

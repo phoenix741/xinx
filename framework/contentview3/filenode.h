@@ -25,7 +25,8 @@
 #include <core/lib-config.h>
 #include <contentview3/node.h>
 
-namespace ContentView3 {
+namespace ContentView3
+{
 
 class LIBEXPORT FileNode : public Node
 {

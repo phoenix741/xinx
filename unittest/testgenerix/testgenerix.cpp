@@ -81,7 +81,7 @@ void TestGenerix::initTestCase()
 
 void TestGenerix::testDictionaryNoBase()
 {
-	if(!QFileInfo("testgenerix/dico_fra_gce140.xml").exists())
+	if (!QFileInfo("testgenerix/dico_fra_gce140.xml").exists())
 		QSKIP("No dictionary", SkipSingle);
 
 	QBENCHMARK
@@ -96,17 +96,17 @@ void TestGenerix::testDictionaryNoBase()
 		testFile.setIsLoaded(false);
 		testFile.setProjectId(0);
 		testFile.setSelection("*");
-		testFile.create (ContentView2::Manager::self()->database());
+		testFile.create(ContentView2::Manager::self()->database());
 
 		ContentView2::Node rootNode;
 		rootNode.setFile(testFile);
 		rootNode.setData("ROOT_NODE", ContentView2::Node::NODE_NAME);
 		rootNode.setData("ROOT", ContentView2::Node::NODE_DISPLAY_NAME);
 		rootNode.setData("ROOT", ContentView2::Node::NODE_TYPE);
-		rootNode.create (ContentView2::Manager::self()->database());
+		rootNode.create(ContentView2::Manager::self()->database());
 
 		testFile.setRoot(rootNode);
-		testFile.update (ContentView2::Manager::self()->database());
+		testFile.update(ContentView2::Manager::self()->database());
 
 		DictionaryParser * parser = new DictionaryParser();
 		parser->setFilename("testgenerix/dico_fra_gce140.xml");
@@ -116,7 +116,7 @@ void TestGenerix::testDictionaryNoBase()
 			parser->load();
 			ContentView2::Manager::self()->database().commit();
 		}
-		catch(const ContentView2::DatabaseException & e)
+		catch (const ContentView2::DatabaseException & e)
 		{
 			ContentView2::Manager::self()->database().rollback();
 			QFAIL(e.what());
@@ -126,7 +126,7 @@ void TestGenerix::testDictionaryNoBase()
 
 void TestGenerix::testDictionaryBase()
 {
-	if(!QFileInfo("testgenerix/dico_fra_gce140.xml").exists())
+	if (!QFileInfo("testgenerix/dico_fra_gce140.xml").exists())
 		QSKIP("No dictionary", SkipSingle);
 
 	QBENCHMARK
@@ -141,17 +141,17 @@ void TestGenerix::testDictionaryBase()
 		testFile.setIsLoaded(false);
 		testFile.setProjectId(0);
 		testFile.setSelection("*");
-		testFile.create (ContentView2::Manager::self()->database());
+		testFile.create(ContentView2::Manager::self()->database());
 
 		ContentView2::Node rootNode;
 		rootNode.setFile(testFile);
 		rootNode.setData("ROOT_NODE", ContentView2::Node::NODE_NAME);
 		rootNode.setData("ROOT", ContentView2::Node::NODE_DISPLAY_NAME);
 		rootNode.setData("ROOT", ContentView2::Node::NODE_TYPE);
-		rootNode.create (ContentView2::Manager::self()->database());
+		rootNode.create(ContentView2::Manager::self()->database());
 
 		testFile.setRoot(rootNode);
-		testFile.update (ContentView2::Manager::self()->database());
+		testFile.update(ContentView2::Manager::self()->database());
 
 		DictionaryParser * parser = new DictionaryParser();
 		parser->setRootNode(rootNode);
@@ -163,7 +163,7 @@ void TestGenerix::testDictionaryBase()
 			parser->load();
 			ContentView2::Manager::self()->database().commit();
 		}
-		catch(const ContentView2::DatabaseException & e)
+		catch (const ContentView2::DatabaseException & e)
 		{
 			ContentView2::Manager::self()->database().rollback();
 			QFAIL(e.what());
@@ -183,17 +183,17 @@ void TestGenerix::testInsert()
 		testFile.setIsLoaded(false);
 		testFile.setProjectId(0);
 		testFile.setSelection("*");
-		testFile.create (ContentView2::Manager::self()->database());
+		testFile.create(ContentView2::Manager::self()->database());
 
 		ContentView2::Node rootNode;
 		rootNode.setFile(testFile);
 		rootNode.setData("ROOT_NODE", ContentView2::Node::NODE_NAME);
 		rootNode.setData("ROOT", ContentView2::Node::NODE_DISPLAY_NAME);
 		rootNode.setData("ROOT", ContentView2::Node::NODE_TYPE);
-		rootNode.create (ContentView2::Manager::self()->database());
+		rootNode.create(ContentView2::Manager::self()->database());
 
 		testFile.setRoot(rootNode);
-		testFile.update (ContentView2::Manager::self()->database());
+		testFile.update(ContentView2::Manager::self()->database());
 
 		ContentView2::Manager::self()->database().transaction();
 
@@ -202,7 +202,7 @@ void TestGenerix::testInsert()
 		insertQuery.prepare("INSERT INTO cv_node(name, type, display_name, file_id, hash) "
 							"VALUES(:name, :type, :display_name, :file_id, :hash)");
 
-		for(int i = 0; i < 15000; i++)
+		for (int i = 0; i < 15000; i++)
 		{
 
 			insertQuery.bindValue(":name", QString("%1").arg(i));
@@ -212,7 +212,7 @@ void TestGenerix::testInsert()
 			insertQuery.bindValue(":hash", "1");
 
 			bool result = insertQuery.exec();
-			if(!result)
+			if (!result)
 				QFAIL(qPrintable(insertQuery.lastError().text()));
 		}
 
@@ -223,7 +223,7 @@ void TestGenerix::testInsert()
 
 void TestGenerix::testConfiguration140_1()
 {
-	if(!QFileInfo("testgenerix/configuration140.xml").exists())
+	if (!QFileInfo("testgenerix/configuration140.xml").exists())
 		QSKIP("No dictionary", SkipSingle);
 
 	QBENCHMARK
@@ -236,7 +236,7 @@ void TestGenerix::testConfiguration140_1()
 
 void TestGenerix::testConfiguration140_2()
 {
-	if(!QFileInfo("testgenerix/configuration140.xml").exists())
+	if (!QFileInfo("testgenerix/configuration140.xml").exists())
 		QSKIP("No dictionary", SkipSingle);
 
 	QBENCHMARK
@@ -249,7 +249,7 @@ void TestGenerix::testConfiguration140_2()
 
 void TestGenerix::testConfiguration150_1()
 {
-	if(!QFileInfo("testgenerix/configuration150.xml").exists())
+	if (!QFileInfo("testgenerix/configuration150.xml").exists())
 		QSKIP("No dictionary", SkipSingle);
 
 	QBENCHMARK
@@ -262,7 +262,7 @@ void TestGenerix::testConfiguration150_1()
 
 void TestGenerix::testConfiguration150_2()
 {
-	if(!QFileInfo("testgenerix/configuration150.xml").exists())
+	if (!QFileInfo("testgenerix/configuration150.xml").exists())
 		QSKIP("No dictionary", SkipSingle);
 
 	QBENCHMARK

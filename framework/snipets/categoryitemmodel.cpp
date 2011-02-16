@@ -83,9 +83,9 @@ void CategoryItemModel::select()
 {
 	// Set the query used all snipet
 	m_sourceModel->setQuery(
-	    "SELECT id, parent_id, name "
-	    "FROM categories "
-	    "ORDER BY name", m_db
+		"SELECT id, parent_id, name "
+		"FROM categories "
+		"ORDER BY name", m_db
 	);
 
 	// Define name for header column

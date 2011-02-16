@@ -25,8 +25,10 @@
 #include <contentview3/file.h>
 #include "editors/models/html_xsl_base/definition_rootnode.h"
 
-namespace Core {
-namespace BaliseDefinition {
+namespace Core
+{
+namespace BaliseDefinition
+{
 
 class XmlDefinitionManager : public XinxSingleton<XmlDefinitionManager>
 {

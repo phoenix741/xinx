@@ -28,7 +28,8 @@ class QAbstractItemModel;
 class QTreeView;
 class IFileTypePlugin;
 
-namespace ContentView3 {
+namespace ContentView3
+{
 
 class DockWidget : public QWidget
 {

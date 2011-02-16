@@ -97,15 +97,15 @@ JsContextParser::~JsContextParser()
 
 void JsContextParser::updateContext()
 {
-	if (!editor ()->fileTypePluginInterface ()) return;
-	if (editor()->fileTypePluginInterface ()->name () != "JSFileEditor") return;
+	if (!editor()->fileTypePluginInterface()) return;
+	if (editor()->fileTypePluginInterface()->name() != "JSFileEditor") return;
 
 	JsContextType * type = new JsContextType;
 	QString functionName;
 	JsContextType::Position position = editPosition(editor()->textEdit()->textCursor(), functionName);
 
 	type->setPosition(position);
-	type->setFunctionName (functionName);
+	type->setFunctionName(functionName);
 
 	context().addContext(type);
 }

@@ -29,9 +29,11 @@
 #include <QHash>
 #include <QApplication>
 
-namespace Core {
+namespace Core
+{
 
-namespace BaliseDefinition {
+namespace BaliseDefinition
+{
 
 class RootNode;
 class AttributeNode;

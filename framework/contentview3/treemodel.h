@@ -28,8 +28,9 @@
 #include <QStandardItemModel>
 #include <QScopedPointer>
 
-namespace ContentView3 {
-	
+namespace ContentView3
+{
+
 class PrivateTreeModel;
 
 class LIBEXPORT TreeModel : public QStandardItemModel
@@ -39,15 +40,15 @@ public:
 	explicit TreeModel(FilePtr file, QObject* parent = 0);
 	explicit TreeModel(QObject* parent = 0);
 	virtual ~TreeModel();
-	
+
 	void setFile(FilePtr file);
 	FilePtr file() const;
-	
+
 	void reload();
 
-	virtual bool hasChildren (const QModelIndex & parent = QModelIndex()) const;
-	virtual bool canFetchMore (const QModelIndex & parent) const;
-	virtual void fetchMore (const QModelIndex & parent);
+	virtual bool hasChildren(const QModelIndex & parent = QModelIndex()) const;
+	virtual bool canFetchMore(const QModelIndex & parent) const;
+	virtual void fetchMore(const QModelIndex & parent);
 
 	QString filenameOfIndex(const QModelIndex & index) const;
 	int lineOfIndex(const QModelIndex & index) const;

@@ -41,9 +41,9 @@ EditorItem::EditorItem(AbstractEditor * editor, QListWidget * parent) : QListWid
 
 SavingDialog::SavingDialog(QWidget *parent) : QDialog(parent)
 {
-    setupUi(this);
+	setupUi(this);
 
-	if(XINXConfig::self()->config().editor.autoindentOnSaving == "closing")
+	if (XINXConfig::self()->config().editor.autoindentOnSaving == "closing")
 		m_labelMessage2->setText(tr("Pretty Print on closing is activated. This option change file when you closing it."));
 
 	m_selectAll   = new QPushButton(tr("Select All"));
@@ -57,30 +57,30 @@ SavingDialog::SavingDialog(QWidget *parent) : QDialog(parent)
 
 void SavingDialog::changeEvent(QEvent *e)
 {
-    QDialog::changeEvent(e);
+	QDialog::changeEvent(e);
 
 	switch (e->type())
 	{
-    case QEvent::LanguageChange:
-        retranslateUi(this);
-        break;
-    default:
-        break;
-    }
+	case QEvent::LanguageChange:
+		retranslateUi(this);
+		break;
+	default:
+		break;
+	}
 }
 
 void SavingDialog::buttonBoxClicked(QAbstractButton* btn)
 {
-	if(btn == m_selectAll)
+	if (btn == m_selectAll)
 	{
-		for(int i = 0 ; i < m_listFile->count(); i++)
+		for (int i = 0 ; i < m_listFile->count(); i++)
 		{
 			m_listFile->item(i)->setCheckState(Qt::Checked);
 		}
 	}
-	else if(btn == m_deselectAll)
+	else if (btn == m_deselectAll)
 	{
-		for(int i = 0 ; i < m_listFile->count(); i++)
+		for (int i = 0 ; i < m_listFile->count(); i++)
 		{
 			m_listFile->item(i)->setCheckState(Qt::Unchecked);
 		}
@@ -102,10 +102,10 @@ int SavingDialog::countEditor()
 QList<AbstractEditor*> SavingDialog::selectedEditor()
 {
 	QList<AbstractEditor*> result;
-	for(int i = 0; i < countEditor(); i++)
+	for (int i = 0; i < countEditor(); i++)
 	{
 		EditorItem * item = static_cast<EditorItem*>(m_listFile->item(i));
-		if(item->checkState() == Qt::Checked)
+		if (item->checkState() == Qt::Checked)
 		{
 			result << item->m_editor;
 		}

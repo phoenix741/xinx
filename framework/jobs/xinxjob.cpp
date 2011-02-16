@@ -59,7 +59,7 @@ void XinxJob::run()
 	{
 		startJob();
 	}
-	catch(const std::exception & e)
+	catch (const std::exception & e)
 	{
 		qWarning() << e.what();
 	}

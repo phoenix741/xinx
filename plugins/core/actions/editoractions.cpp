@@ -28,19 +28,19 @@
 
 UndoAction::UndoAction(): Action(QIcon(":/images/undo.png"), tr("&Undo"), QKeySequence::Undo)
 {
-	action ()->setStatusTip(tr("Undo the last action"));
+	action()->setStatusTip(tr("Undo the last action"));
 	addEditorSignals(SIGNAL(undoAvailable(bool)));
 }
 
 bool UndoAction::isEnabled() const
 {
-	return EditorManager::self ()->currentEditor() && EditorManager::self ()->currentEditor()->canUndo();
+	return EditorManager::self()->currentEditor() && EditorManager::self()->currentEditor()->canUndo();
 }
 
 void UndoAction::actionTriggered()
 {
-	AbstractEditor * editor =  EditorManager::self ()->currentEditor();
-	if (editor && editor->canUndo ())
+	AbstractEditor * editor =  EditorManager::self()->currentEditor();
+	if (editor && editor->canUndo())
 		editor->undo();
 }
 
@@ -48,19 +48,19 @@ void UndoAction::actionTriggered()
 
 RedoAction::RedoAction(): Action(QIcon(":/images/redo.png"), tr("&Redo"), QKeySequence::Redo)
 {
-	action ()->setStatusTip(tr("Redo the next action"));
+	action()->setStatusTip(tr("Redo the next action"));
 	addEditorSignals(SIGNAL(redoAvailable(bool)));
 }
 
 bool RedoAction::isEnabled() const
 {
-	return EditorManager::self ()->currentEditor() && EditorManager::self ()->currentEditor()->canRedo();
+	return EditorManager::self()->currentEditor() && EditorManager::self()->currentEditor()->canRedo();
 }
 
 void RedoAction::actionTriggered()
 {
-	AbstractEditor * editor =  EditorManager::self ()->currentEditor();
-	if (editor && editor->canRedo ())
+	AbstractEditor * editor =  EditorManager::self()->currentEditor();
+	if (editor && editor->canRedo())
 		editor->redo();
 }
 
@@ -68,16 +68,16 @@ void RedoAction::actionTriggered()
 
 SelectAllAction::SelectAllAction(): Action(QIcon(":/images/edit-select-all.png"), tr("&Select All"), QKeySequence::SelectAll)
 {
-	action ()->setStatusTip(tr("Select all the text of the current editor"));
+	action()->setStatusTip(tr("Select all the text of the current editor"));
 }
 
 bool SelectAllAction::isEnabled() const
 {
-	return EditorManager::self ()->currentEditor() && qobject_cast<TextFileEditor*>(EditorManager::self ()->currentEditor());
+	return EditorManager::self()->currentEditor() && qobject_cast<TextFileEditor*>(EditorManager::self()->currentEditor());
 }
 
 void SelectAllAction::actionTriggered()
 {
-	TextFileEditor * editor =  qobject_cast<TextFileEditor*>(EditorManager::self ()->currentEditor());
+	TextFileEditor * editor =  qobject_cast<TextFileEditor*>(EditorManager::self()->currentEditor());
 	editor->selectAll();
 }

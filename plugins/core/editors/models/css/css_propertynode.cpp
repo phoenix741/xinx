@@ -45,7 +45,7 @@ PropertyNode::~PropertyNode()
 
 void PropertyNode::setValue(const QString& value)
 {
-    _value = value;
+	_value = value;
 	setTips(tr("Element at line : %1\nValue = %2").arg(line()).arg(_value));
 }
 
@@ -56,7 +56,7 @@ const QString& PropertyNode::value() const
 
 void PropertyNode::setLine(int line)
 {
-    ContentView3::Node::setLine(line);
+	ContentView3::Node::setLine(line);
 	setTips(tr("Element at line : %1\nValue = %2").arg(line).arg(_value));
 }
 

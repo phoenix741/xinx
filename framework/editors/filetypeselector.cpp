@@ -25,11 +25,11 @@
 FileTypeSelector::FileTypeSelector(QWidget *parent) : QWidget(parent)
 {
 	QVBoxLayout * verticalLayout = new QVBoxLayout(this);
-	verticalLayout->setMargin (0);
+	verticalLayout->setMargin(0);
 
 	QLabel * label = new QLabel(this);
 	label->setWordWrap(true);
-	label->setText (tr("<b>XINX</b> can't determine the editor to use to open the file. Wich type of file do you want open ?"));
+	label->setText(tr("<b>XINX</b> can't determine the editor to use to open the file. Wich type of file do you want open ?"));
 
 	_file_name_label = new QLabel(this);
 	_file_type_list = new QListWidget(this);
@@ -51,21 +51,21 @@ FileTypeSelector::~FileTypeSelector()
 
 void FileTypeSelector::setShowFileName(bool value)
 {
-	_file_name_label->setVisible (value);
+	_file_name_label->setVisible(value);
 }
 
 bool FileTypeSelector::isShowFileName() const
 {
-	return _file_name_label->isVisible ();
+	return _file_name_label->isVisible();
 }
 
 void FileTypeSelector::setFileName(const QString & filename)
 {
-	_file_name_label->setText (QFileInfo(filename).fileName ());
+	_file_name_label->setText(QFileInfo(filename).fileName());
 	QList<IFileTypePlugin *> interfaces = XinxPluginsLoader::self()->matchedFileType(filename);
 
-	_show_all->setVisible (interfaces.size ());
-	if(! interfaces.size() || _show_all->isChecked ())
+	_show_all->setVisible(interfaces.size());
+	if (! interfaces.size() || _show_all->isChecked())
 	{
 		setFileTypes(XinxPluginsLoader::self()->fileTypes());
 	}
@@ -83,7 +83,7 @@ const QString & FileTypeSelector::filename() const
 
 int FileTypeSelector::count() const
 {
-	return _file_type_list->count ();
+	return _file_type_list->count();
 }
 
 void FileTypeSelector::setFileTypes(const QList<IFileTypePlugin *> & types)
@@ -109,5 +109,5 @@ IFileTypePlugin * FileTypeSelector::selectedType() const
 
 void FileTypeSelector::toggledShowAll()
 {
-	setFileName (_file_name);
+	setFileName(_file_name);
 }

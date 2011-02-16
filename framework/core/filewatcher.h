@@ -51,7 +51,7 @@ class LIBEXPORT FilesWatcher : public QObject
 	Q_OBJECT
 public:
 	explicit FilesWatcher(QObject * parent = 0);
-    virtual ~FilesWatcher();
+	virtual ~FilesWatcher();
 
 	void addPath(const QString & path);
 	void removePath(const QString & path);

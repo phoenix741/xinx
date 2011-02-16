@@ -41,7 +41,7 @@ public:
 	static QString staticId();
 	virtual QString id();
 	virtual QString name();
-    virtual bool resolveFileName ( const QString& nameToResolve, QString& resolvedName, const QString& currentPath, XinxProject::ProjectPtr project );
+	virtual bool resolveFileName(const QString& nameToResolve, QString& resolvedName, const QString& currentPath, XinxProject::ProjectPtr project);
 };
 
 #endif // MANUALFILERESOLVER_H

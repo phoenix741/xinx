@@ -54,8 +54,8 @@ class TreeModel;
 
 namespace CodeCompletion
 {
-	class Completer;
-	class Model;
+class Completer;
+class Model;
 }
 
 class LIBEXPORT TextFileEditor : public AbstractEditor

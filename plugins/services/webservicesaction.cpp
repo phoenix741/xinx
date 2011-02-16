@@ -38,7 +38,7 @@ inline static bool projectIsActivated(AbstractEditor * editor)
 	if (!editor) return false;
 
 	XinxProject::ProjectPtr project = editor->project();
-	if (! (project && project->activatedPlugin().contains("ServicesPlugin") && project->containsObject("webservices"))) return false;
+	if (!(project && project->activatedPlugin().contains("ServicesPlugin") && project->containsObject("webservices"))) return false;
 
 	Q_ASSERT_X(projectWebServicesManager(editor), "projectIsActivated", "The object webservices should be created");
 
@@ -107,10 +107,10 @@ void WebServicesRunAllAction::actionTriggered()
 	ServicesBatchDialogImpl dlg(qApp->activeWindow());
 
 	int count = 0;
-	for(int i = 0; i < EditorManager::self()->editorsCount(); i++)
+	for (int i = 0; i < EditorManager::self()->editorsCount(); i++)
 	{
 		WebServicesEditor * editor = qobject_cast<WebServicesEditor*>(EditorManager::self()->editor(i));
-		if(editor)
+		if (editor)
 		{
 			dlg.editorWidget->setRowCount(++count);
 
@@ -120,7 +120,7 @@ void WebServicesRunAllAction::actionTriggered()
 			dlg.editorWidget->setVerticalHeaderItem(count - 1, filenameItem);
 		}
 	}
-	if(count == 0)
+	if (count == 0)
 	{
 		QMessageBox::information(qApp->activeWindow(), tr("No editor opened"), tr("Please open all stream you want launch in a editor."));
 	}

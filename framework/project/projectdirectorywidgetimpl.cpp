@@ -109,7 +109,7 @@ PrivateProjectDirectoryWidgetImpl::~PrivateProjectDirectoryWidgetImpl()
 
 void PrivateProjectDirectoryWidgetImpl::updateActions(QModelIndexList selectedRows)
 {
-	const int nb_selected = selectedRows.size ();
+	const int nb_selected = selectedRows.size();
 	XinxProject::ProjectPtr project = _model->fileProject(selectedRows.at(0));
 
 	bool is_directory = true;
@@ -118,14 +118,14 @@ void PrivateProjectDirectoryWidgetImpl::updateActions(QModelIndexList selectedRo
 	bool is_mutli_project = false;
 	bool is_selected = project.data() == XinxProject::Manager::self()->selectedProject().data();
 	bool is_rcs_actived = project && project->rcsProxy() && ! project->projectRCS().isEmpty();
-	bool is_rcs_enabled = is_rcs_actived && ! VersionControl::Manager::self ()->isExecuting ();
+	bool is_rcs_enabled = is_rcs_actived && ! VersionControl::Manager::self()->isExecuting();
 	bool is_rcs_modified = true;
 	bool is_rcs_unknown  = true;
 	bool is_rcs_removed  = true;
 
 	foreach(QModelIndex index, selectedRows)
 	{
-		if (_model->isDir (index))
+		if (_model->isDir(index))
 		{
 			is_file = false;
 		}
@@ -138,52 +138,52 @@ void PrivateProjectDirectoryWidgetImpl::updateActions(QModelIndexList selectedRo
 
 		switch (_model->fileState(index))
 		{
-			case RCS::Unknown:
-				is_rcs_modified = false;
-				is_rcs_removed = false;
-				break;
-			case RCS::LocallyAdded:
-			case RCS::LocallyModified:
-				is_rcs_unknown    = false;
-				is_rcs_removed    = false;
-				break;
-			case RCS::LocallyRemoved:
-				is_rcs_unknown = false;
-				is_rcs_modified = false;
-				break;
-			case RCS::NeedsCheckout:
-				is_rcs_modified = false;
-				is_rcs_unknown  = false;
-			default:
-				is_rcs_modified = false;
-				is_rcs_unknown  = false;
-				is_rcs_removed  = false;
-				break;
+		case RCS::Unknown:
+			is_rcs_modified = false;
+			is_rcs_removed = false;
+			break;
+		case RCS::LocallyAdded:
+		case RCS::LocallyModified:
+			is_rcs_unknown    = false;
+			is_rcs_removed    = false;
+			break;
+		case RCS::LocallyRemoved:
+			is_rcs_unknown = false;
+			is_rcs_modified = false;
+			break;
+		case RCS::NeedsCheckout:
+			is_rcs_modified = false;
+			is_rcs_unknown  = false;
+		default:
+			is_rcs_modified = false;
+			is_rcs_unknown  = false;
+			is_rcs_removed  = false;
+			break;
 		}
 	}
 
-	_set_project_as_default_action->setVisible ((nb_selected == 1) && is_project && !is_selected);
-	_project_property_action->setVisible ((nb_selected == 1) && is_project);
-	_create_directory_action->setVisible ((nb_selected == 1) && is_directory);
-	_new_file_action->setVisible ((nb_selected == 1) && is_directory);
-	_rename_file_action->setVisible ((nb_selected == 1) && is_file);
-	_remove_files_action->setVisible (is_file);
+	_set_project_as_default_action->setVisible((nb_selected == 1) && is_project && !is_selected);
+	_project_property_action->setVisible((nb_selected == 1) && is_project);
+	_create_directory_action->setVisible((nb_selected == 1) && is_directory);
+	_new_file_action->setVisible((nb_selected == 1) && is_directory);
+	_rename_file_action->setVisible((nb_selected == 1) && is_file);
+	_remove_files_action->setVisible(is_file);
 	_open_files_action->setVisible(is_file);
 
-	_compare_action->setVisible (nb_selected == 2 && is_file);
-	_compare_with_workingcopy_action->setVisible (is_rcs_actived && (nb_selected == 1) && is_file);
-	_update_action->setVisible (is_rcs_actived && ! is_mutli_project);
-	_commit_action->setVisible (is_rcs_actived && ! is_mutli_project);
-	_add_action->setVisible (is_rcs_actived && ! is_mutli_project && ! is_project && is_rcs_unknown);
-	_remove_action->setVisible (is_rcs_actived && ! is_mutli_project && ! is_project && is_rcs_modified);
-	_revert_action->setVisible (is_rcs_actived && ! is_mutli_project && ! is_project && is_file && (is_rcs_removed || is_rcs_modified));
+	_compare_action->setVisible(nb_selected == 2 && is_file);
+	_compare_with_workingcopy_action->setVisible(is_rcs_actived && (nb_selected == 1) && is_file);
+	_update_action->setVisible(is_rcs_actived && ! is_mutli_project);
+	_commit_action->setVisible(is_rcs_actived && ! is_mutli_project);
+	_add_action->setVisible(is_rcs_actived && ! is_mutli_project && ! is_project && is_rcs_unknown);
+	_remove_action->setVisible(is_rcs_actived && ! is_mutli_project && ! is_project && is_rcs_modified);
+	_revert_action->setVisible(is_rcs_actived && ! is_mutli_project && ! is_project && is_file && (is_rcs_removed || is_rcs_modified));
 
 	_compare_with_workingcopy_action->setEnabled(is_rcs_enabled);
-	_update_action->setEnabled (is_rcs_enabled);
-	_commit_action->setEnabled (is_rcs_enabled);
-	_add_action->setEnabled (is_rcs_enabled);
-	_remove_action->setEnabled (is_rcs_enabled);
-	_revert_action->setEnabled (is_rcs_enabled);
+	_update_action->setEnabled(is_rcs_enabled);
+	_commit_action->setEnabled(is_rcs_enabled);
+	_add_action->setEnabled(is_rcs_enabled);
+	_remove_action->setEnabled(is_rcs_enabled);
+	_revert_action->setEnabled(is_rcs_enabled);
 }
 
 void PrivateProjectDirectoryWidgetImpl::rcsLogTerminated()
@@ -228,12 +228,12 @@ void PrivateProjectDirectoryWidgetImpl::createDirectory()
 void PrivateProjectDirectoryWidgetImpl::newFile()
 {
 	const QModelIndexList & indexes = _parent->_directory_view->selectionModel()->selectedRows();
-	Q_ASSERT_X(indexes.count () == 1, "PrivateProjectDirectoryWidgetImpl::newFile", "Too much directory selected");
-	NewFileWizardImpl dlg(qApp->activeWindow ());
-	dlg.setProject(_model->fileProject(indexes.at (0)));
-	dlg.setPath (_model->filePath (indexes.at (0)));
-	dlg.setFileName (QString());
-	if (dlg.exec () == QDialog::Accepted)
+	Q_ASSERT_X(indexes.count() == 1, "PrivateProjectDirectoryWidgetImpl::newFile", "Too much directory selected");
+	NewFileWizardImpl dlg(qApp->activeWindow());
+	dlg.setProject(_model->fileProject(indexes.at(0)));
+	dlg.setPath(_model->filePath(indexes.at(0)));
+	dlg.setFileName(QString());
+	if (dlg.exec() == QDialog::Accepted)
 	{
 		Q_ASSERT_X(dlg.selectedType(), "PrivateEditorManager::newFile", "No interface editor defined");
 		Q_ASSERT_X(dlg.project(), "PrivateEditorManager::newFile", "No project defined");
@@ -293,8 +293,8 @@ void PrivateProjectDirectoryWidgetImpl::renameFiles()
 	QString new_filename = QInputDialog::getText(_parent, tr("Rename a file"), tr("Enter the name of the new file name"));
 	if (! new_filename.isEmpty())
 	{
-		QDir directory = QFileInfo(list.at (0)).absoluteDir ();
-		QFile::rename (list.at (0), directory.absoluteFilePath (new_filename));
+		QDir directory = QFileInfo(list.at(0)).absoluteDir();
+		QFile::rename(list.at(0), directory.absoluteFilePath(new_filename));
 	}
 }
 
@@ -433,7 +433,7 @@ void PrivateProjectDirectoryWidgetImpl::revertFileTriggered()
 	// FIXME: For RCS with the option add the possibility to revert a file.
 }
 
-void PrivateProjectDirectoryWidgetImpl::doubleClicked (const QModelIndex & index)
+void PrivateProjectDirectoryWidgetImpl::doubleClicked(const QModelIndex & index)
 {
 	openFile(index);
 }
@@ -453,7 +453,7 @@ void PrivateProjectDirectoryWidgetImpl::updateFilter()
 {
 	_refresh_model_timer->stop();
 
-	switch(_parent->_filter_type->currentIndex())
+	switch (_parent->_filter_type->currentIndex())
 	{
 	case 0:
 		_filter_type = XinxProject::ProjectListModel::FILTER_FILENAME;
@@ -477,7 +477,7 @@ void PrivateProjectDirectoryWidgetImpl::updateFilter()
 
 	_filter_filename = _parent->_filter_filename_edit->text();
 
-	switch(_parent->_filter_operator->currentIndex())
+	switch (_parent->_filter_operator->currentIndex())
 	{
 	case 0:
 		_filter_operator = XinxProject::ProjectListModel::FILTER_GT;
@@ -503,7 +503,7 @@ void PrivateProjectDirectoryWidgetImpl::updateFilter()
 	_filter_date = _parent->_filter_date->date();
 	_filter_contains = _parent->_filter_contains->text();
 
-	switch(_parent->_filter_state->currentIndex())
+	switch (_parent->_filter_state->currentIndex())
 	{
 	case 0:
 		_filter_state = RCS::LocallyModified;
@@ -555,7 +555,7 @@ void PrivateProjectDirectoryWidgetImpl::filterTimeout()
 	// We unapply the flat view before unapply filter, or apply flat view after apply filter
 	if (_filter_type == XinxProject::ProjectListModel::FILTER_NONE)
 	{
-		_toggled_view_action->setChecked (false);
+		_toggled_view_action->setChecked(false);
 	}
 
 	_model->setFilterType(_filter_type);
@@ -569,7 +569,7 @@ void PrivateProjectDirectoryWidgetImpl::filterTimeout()
 
 	if (_filter_type != XinxProject::ProjectListModel::FILTER_NONE)
 	{
-		_toggled_view_action->setChecked (true);
+		_toggled_view_action->setChecked(true);
 	}
 }
 
@@ -577,7 +577,7 @@ void PrivateProjectDirectoryWidgetImpl::toggledFlatView(bool flat)
 {
 	if (flat)
 	{
-		_model->setLongDirectoryName (true);
+		_model->setLongDirectoryName(true);
 		_parent->_directory_view->setIndentation(0);
 		_parent->_directory_view->setRootIsDecorated(false);
 		_parent->_directory_view->setItemsExpandable(false);
@@ -585,7 +585,7 @@ void PrivateProjectDirectoryWidgetImpl::toggledFlatView(bool flat)
 	}
 	else
 	{
-		_model->setLongDirectoryName (false);
+		_model->setLongDirectoryName(false);
 		_parent->_directory_view->collapseAll();
 		_parent->_directory_view->setIndentation(20);
 		_parent->_directory_view->setRootIsDecorated(true);
@@ -602,7 +602,7 @@ bool PrivateProjectDirectoryWidgetImpl::eventFilter(QObject *obj, QEvent *event)
 		int nbSelected = selectedRows.size();
 		if (nbSelected == 0) return QObject::eventFilter(obj, event);
 
-		updateActions (selectedRows);
+		updateActions(selectedRows);
 		_popup_menu->exec(static_cast<QContextMenuEvent*>(event)->globalPos());
 	}
 	return QObject::eventFilter(obj, event);
@@ -612,9 +612,9 @@ bool PrivateProjectDirectoryWidgetImpl::eventFilter(QObject *obj, QEvent *event)
 
 ProjectDirectoryWidgetImpl::ProjectDirectoryWidgetImpl(QWidget* parent): QWidget(parent)
 {
-	setupUi (this);
+	setupUi(this);
 
-	d = new PrivateProjectDirectoryWidgetImpl (this);
+	d = new PrivateProjectDirectoryWidgetImpl(this);
 
 	_directory_view->installEventFilter(d);
 
@@ -681,7 +681,7 @@ QStringList ProjectDirectoryWidgetImpl::selectedFiles() const
 	QStringList paths;
 	QModelIndexList list = _directory_view->selectionModel()->selectedRows();
 	foreach(const QModelIndex & index, list)
-		paths << d->_model->filePath(index);
+	paths << d->_model->filePath(index);
 
 	return paths;
 }

@@ -41,7 +41,7 @@
 
 namespace ContentView3
 {
-	class DockWidget;
+class DockWidget;
 };
 
 class ProjectDirectoryWidgetImpl;

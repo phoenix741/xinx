@@ -22,26 +22,26 @@
 namespace ContentView3
 {
 
-TreeNode::TreeNode(NodePtr node) : QStandardItem(QIcon(node->icon ()), node->displayName ())
+TreeNode::TreeNode(NodePtr node) : QStandardItem(QIcon(node->icon()), node->displayName())
 {
-	_is_children_populate = node->type () != "IMPORT";
-	setEditable (false);
-	updateFromNode (node);
+	_is_children_populate = node->type() != "IMPORT";
+	setEditable(false);
+	updateFromNode(node);
 }
 
 void TreeNode::updateFromNode(NodePtr node)
 {
-	FilePtr file = node->file ().toStrongRef ();
+	FilePtr file = node->file().toStrongRef();
 
-	setToolTip (node->tips ());
-	_name = node->name ();
-	_key = node->keyString ();
-	_project = file->project ().toWeakRef();
+	setToolTip(node->tips());
+	_name = node->name();
+	_key = node->keyString();
+	_project = file->project().toWeakRef();
 
 	if (node->type() != "IMPORT")
 	{
-		_filename = node->filename ();
-		_line = node->line ();
+		_filename = node->filename();
+		_line = node->line();
 	}
 	else
 	{
@@ -50,9 +50,9 @@ void TreeNode::updateFromNode(NodePtr node)
 	}
 }
 
-QVariant TreeNode::data (int role) const
+QVariant TreeNode::data(int role) const
 {
-	switch(role)
+	switch (role)
 	{
 	case Qt::UserRole + 1:
 		return _filename;
@@ -65,16 +65,16 @@ QVariant TreeNode::data (int role) const
 		break;
 	}
 
-	return QStandardItem::data (role);
+	return QStandardItem::data(role);
 }
 
 /* PrivateTreeModel */
 
-QStandardItem * PrivateTreeModel::appendRow (QStandardItem * item, NodePtr child_node)
+QStandardItem * PrivateTreeModel::appendRow(QStandardItem * item, NodePtr child_node)
 {
 	TreeNode* child_item = 0;
-	child_item = new TreeNode (child_node);
-	item->appendRow (child_item);
+	child_item = new TreeNode(child_node);
+	item->appendRow(child_item);
 	return child_item;
 }
 
@@ -83,36 +83,36 @@ void PrivateTreeModel::synchronize(QStandardItem * item, NodePtr node)
 	// Create the node list
 	QHash<QString,QStandardItem*> childs;
 
-	for(int i = 0; i < item->rowCount (); i++)
+	for (int i = 0; i < item->rowCount(); i++)
 	{
-		TreeNode* child = static_cast<TreeNode*>(item->child (i));
-		childs.insert (child->_key, child);
+		TreeNode* child = static_cast<TreeNode*>(item->child(i));
+		childs.insert(child->_key, child);
 	}
 
-	QSet<QString> mark_deleted = QSet<QString>::fromList (childs.keys ());
+	QSet<QString> mark_deleted = QSet<QString>::fromList(childs.keys());
 	foreach(NodePtr child_node, node->childs())
 	{
-		const QString key = child_node->keyString ();
+		const QString key = child_node->keyString();
 		QStandardItem * child_item;
-		if (childs.contains (key))
+		if (childs.contains(key))
 		{
-			child_item = childs.value (key);
-			mark_deleted.remove (key);
+			child_item = childs.value(key);
+			mark_deleted.remove(key);
 		}
 		else
 		{
-			child_item = appendRow (item, child_node);
+			child_item = appendRow(item, child_node);
 		}
 
-		synchronize (child_item, child_node);
+		synchronize(child_item, child_node);
 	}
 
 	foreach(const QString & to_delete, mark_deleted)
 	{
-		item->removeRow (childs.value (to_delete)->row ());
+		item->removeRow(childs.value(to_delete)->row());
 	}
 
-	item->sortChildren (0);
+	item->sortChildren(0);
 }
 
 void PrivateTreeModel::updateModel(FilePtr f)
@@ -154,58 +154,58 @@ void TreeModel::reload()
 {
 	if (d->_file)
 	{
-		d->synchronize (invisibleRootItem (), d->_file->rootNode());
+		d->synchronize(invisibleRootItem(), d->_file->rootNode());
 	}
 }
 
-bool TreeModel::hasChildren (const QModelIndex & parent) const
+bool TreeModel::hasChildren(const QModelIndex & parent) const
 {
-	if (parent.isValid ())
+	if (parent.isValid())
 	{
-		TreeNode* node = static_cast<TreeNode*> (itemFromIndex (parent));
-		return (node && ! node->_is_children_populate) || QStandardItemModel::hasChildren (parent);
+		TreeNode* node = static_cast<TreeNode*>(itemFromIndex(parent));
+		return (node && ! node->_is_children_populate) || QStandardItemModel::hasChildren(parent);
 	}
 
-	return QStandardItemModel::hasChildren (parent);
+	return QStandardItemModel::hasChildren(parent);
 }
 
-bool TreeModel::canFetchMore (const QModelIndex & parent) const
+bool TreeModel::canFetchMore(const QModelIndex & parent) const
 {
-	if (parent.isValid ())
+	if (parent.isValid())
 	{
-		TreeNode* node = static_cast<TreeNode*> (itemFromIndex (parent));
-		return ! node->_is_children_populate || QStandardItemModel::canFetchMore (parent);
+		TreeNode* node = static_cast<TreeNode*>(itemFromIndex(parent));
+		return ! node->_is_children_populate || QStandardItemModel::canFetchMore(parent);
 	}
 
-	return QStandardItemModel::canFetchMore (parent);
+	return QStandardItemModel::canFetchMore(parent);
 }
 
-void TreeModel::fetchMore (const QModelIndex & parent)
+void TreeModel::fetchMore(const QModelIndex & parent)
 {
-	if (parent.isValid () && d->_file)
+	if (parent.isValid() && d->_file)
 	{
-		TreeNode* node = static_cast<TreeNode*> (itemFromIndex (parent));
+		TreeNode* node = static_cast<TreeNode*>(itemFromIndex(parent));
 		if (! node->_is_children_populate)
 		{
-			FilePtr imported_file = d->_file->project ()->cache ()->cachedFile (node->_name);
+			FilePtr imported_file = d->_file->project()->cache()->cachedFile(node->_name);
 
 			if (imported_file)
 			{
-				d->synchronize (node, imported_file->rootNode ());
+				d->synchronize(node, imported_file->rootNode());
 			}
 
 			node->_is_children_populate = true;
 		}
 	}
 
-	QStandardItemModel::fetchMore (parent);
+	QStandardItemModel::fetchMore(parent);
 }
 
 QString TreeModel::filenameOfIndex(const QModelIndex & index) const
 {
-	if (index.isValid ())
+	if (index.isValid())
 	{
-		TreeNode* node = static_cast<TreeNode*> (itemFromIndex (index));
+		TreeNode* node = static_cast<TreeNode*>(itemFromIndex(index));
 		return node->_filename;
 	}
 	else
@@ -216,9 +216,9 @@ QString TreeModel::filenameOfIndex(const QModelIndex & index) const
 
 int TreeModel::lineOfIndex(const QModelIndex & index) const
 {
-	if (index.isValid ())
+	if (index.isValid())
 	{
-		TreeNode* node = static_cast<TreeNode*> (itemFromIndex (index));
+		TreeNode* node = static_cast<TreeNode*>(itemFromIndex(index));
 		return node->_line;
 	}
 	else

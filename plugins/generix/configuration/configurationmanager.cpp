@@ -31,11 +31,11 @@
 
 ConfigurationManager::ConfigurationManager(XinxProject::ProjectPtr project) : QObject(project.data()), _updateCacheTimer(new QTimer), _watcher(new FilesWatcher), _interface(new GceConfiguration), _project(project.toWeakRef())
 {
-	_updateCacheTimer->setSingleShot (true);
-	_updateCacheTimer->setInterval (5000);
+	_updateCacheTimer->setSingleShot(true);
+	_updateCacheTimer->setInterval(5000);
 
-	connect(_watcher.data (), SIGNAL(fileChanged(QString)), _updateCacheTimer.data (), SLOT(start()));
-	connect(_updateCacheTimer.data (), SIGNAL(timeout()), this, SLOT(updateCache()));
+	connect(_watcher.data(), SIGNAL(fileChanged(QString)), _updateCacheTimer.data(), SLOT(start()));
+	connect(_updateCacheTimer.data(), SIGNAL(timeout()), this, SLOT(updateCache()));
 
 	updateCache();
 }
@@ -60,13 +60,13 @@ void ConfigurationManager::addDictionary(const QString & filename)
 	QFile * device = new QFile(filename);
 	if (device->open(QFile::ReadOnly))
 	{
-		ContentView3::FilePtr file = project->cache ()->cachedFile (filename);
+		ContentView3::FilePtr file = project->cache()->cachedFile(filename);
 
 		Generix::Dictionary::Parser * dictionaryParser = new Generix::Dictionary::Parser();
 		dictionaryParser->setFile(file);
 		dictionaryParser->setDevice(device);
 
-		project->cache ()->addFileToCache (dictionaryParser, false, ContentView3::Cache::PROJECT);
+		project->cache()->addFileToCache(dictionaryParser, false, ContentView3::Cache::PROJECT);
 	}
 }
 

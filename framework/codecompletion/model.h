@@ -30,7 +30,8 @@
 class QDocumentCursor;
 class TextFileEditor;
 
-namespace CodeCompletion {
+namespace CodeCompletion
+{
 
 class Context;
 class PrivateItem;

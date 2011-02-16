@@ -23,7 +23,8 @@
 
 #include "session.h"
 
-namespace XinxSession {
+namespace XinxSession
+{
 
 class PrivateSession
 {

@@ -21,7 +21,8 @@
 #include "session.h"
 #include <project/xinxprojectproject.h>
 
-namespace XinxSession {
+namespace XinxSession
+{
 
 /* PrivateSessionEditor */
 
@@ -109,7 +110,7 @@ QVariant SessionEditor::readProperty(const QString & key)
 
 QStringList SessionEditor::propertieKeys() const
 {
-	return d->_properties.keys ();
+	return d->_properties.keys();
 }
 
 } // namespace XinxSession

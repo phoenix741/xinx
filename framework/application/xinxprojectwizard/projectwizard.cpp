@@ -76,7 +76,7 @@ FileWizardPage::FileWizardPage(QString filename, QWidget * parent) : QWizardPage
 {
 	setTitle(tr("Project file selection"));
 	setSubTitle(tr("This wizard will help you to migrate your project file to "
-	               "the current version of XINX. Please fill all fields."));
+				   "the current version of XINX. Please fill all fields."));
 
 	QLabel * directoryLabel;
 	QVBoxLayout * layout = new QVBoxLayout(this);
@@ -129,10 +129,10 @@ void VersionWizardPage::initializePage()
 	if (dynamic_cast<ProjectWizard*>(wizard())->converter())
 	{
 		m_resume->setText(
-		    tr("You want convert a %1 (version %2).\nThis wizard will convert the project to the last version of XINX. Wizard must convert %3 opened file.")
-		    .arg(dynamic_cast<ProjectWizard*>(wizard())->converter()->type())
-		    .arg(dynamic_cast<ProjectWizard*>(wizard())->converter()->version())
-		    .arg(dynamic_cast<ProjectWizard*>(wizard())->converter()->nbSession())
+			tr("You want convert a %1 (version %2).\nThis wizard will convert the project to the last version of XINX. Wizard must convert %3 opened file.")
+			.arg(dynamic_cast<ProjectWizard*>(wizard())->converter()->type())
+			.arg(dynamic_cast<ProjectWizard*>(wizard())->converter()->version())
+			.arg(dynamic_cast<ProjectWizard*>(wizard())->converter()->nbSession())
 		);
 
 	}

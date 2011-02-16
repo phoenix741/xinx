@@ -28,12 +28,14 @@
 
 namespace ContentView3
 {
-	class Node;
+class Node;
 }
 
-namespace Core {
+namespace Core
+{
 
-namespace Stylesheet {
+namespace Stylesheet
+{
 
 class Parser : public ContentView3::Parser, private QXmlStreamReader
 {
@@ -41,11 +43,11 @@ class Parser : public ContentView3::Parser, private QXmlStreamReader
 public:
 	Parser();
 	virtual ~Parser();
-	
+
 	virtual QString name() const;
 private:
 	virtual void parse();
-	
+
 	struct struct_xsl_variable
 	{
 		bool isParam;
@@ -65,12 +67,12 @@ private:
 		int line;
 		QString src;
 	};
-	
+
 	void readStyleSheet(ContentView3::NodePtr & n);
 	void readVariable(ContentView3::NodePtr & n);
 	void readTemplate(QList<struct_xsl_variable> & variables, QList<struct_internal_script> & scripts, QList<struct_import> & imports);
 	void readTemplate(ContentView3::NodePtr & n);
-	
+
 	QTextCodec * m_codec;
 	QAbstractMessageHandler * _handler;
 };

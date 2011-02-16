@@ -22,10 +22,10 @@
 
 namespace Core
 {
-	
+
 namespace CascadingStyleSheet
 {
-	
+
 /* CssContextType */
 
 CssContextType::CssContextType()

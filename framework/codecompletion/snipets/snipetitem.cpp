@@ -30,7 +30,7 @@ namespace CodeCompletion
 class PrivateSnipetItem
 {
 public:
-    QString _snipet;
+	QString _snipet;
 };
 
 /* SnipetItem */
@@ -40,7 +40,7 @@ SnipetItem::SnipetItem(const QString& snipet, const QString& name) : ActionItem(
 	d = new PrivateSnipetItem;
 	d->_snipet = snipet;
 
-	setCompletionType (tr("Snipet"));
+	setCompletionType(tr("Snipet"));
 }
 
 SnipetItem::~SnipetItem()

@@ -280,8 +280,8 @@ void ScriptManager::callScriptsBeforeSave(AbstractEditor * editor)
 	setCurrentEditeur(editor);
 
 	foreach(ScriptValue v, m_objects)
-		if (v.isCallBeforeSave())
-			v.callScriptBeforeSave();
+	if (v.isCallBeforeSave())
+		v.callScriptBeforeSave();
 
 	setCurrentEditeur(currentEditor);
 }
@@ -292,8 +292,8 @@ void ScriptManager::callScriptsAfterSave(AbstractEditor * editor)
 	setCurrentEditeur(editor);
 
 	foreach(ScriptValue v, m_objects)
-		if (v.isCallAfterSave())
-			v.callScriptAfterSave();
+	if (v.isCallAfterSave())
+		v.callScriptAfterSave();
 
 	setCurrentEditeur(currentEditor);
 }
@@ -304,8 +304,8 @@ void ScriptManager::callScriptsBeforeLoad(AbstractEditor * editor)
 	setCurrentEditeur(editor);
 
 	foreach(ScriptValue v, m_objects)
-		if (v.isCallBeforeLoad())
-			v.callScriptBeforeLoad();
+	if (v.isCallBeforeLoad())
+		v.callScriptBeforeLoad();
 
 	setCurrentEditeur(currentEditor);
 }
@@ -316,8 +316,8 @@ void ScriptManager::callScriptsAfterLoad(AbstractEditor * editor)
 	setCurrentEditeur(editor);
 
 	foreach(ScriptValue v, m_objects)
-		if (v.isCallAfterLoad())
-			v.callScriptAfterLoad();
+	if (v.isCallAfterLoad())
+		v.callScriptAfterLoad();
 
 	setCurrentEditeur(currentEditor);
 }

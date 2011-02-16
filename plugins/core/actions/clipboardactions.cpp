@@ -26,18 +26,18 @@
 
 CutAction::CutAction() : XinxAction::Action(QIcon(":/images/editcut.png"), tr("Cu&t"), QKeySequence::Cut)
 {
-	action ()->setStatusTip(tr("Cut the selection to the clipboard"));
+	action()->setStatusTip(tr("Cut the selection to the clipboard"));
 	addEditorSignals(SIGNAL(copyAvailable(bool)));
 }
 
 bool CutAction::isEnabled() const
 {
-	return EditorManager::self ()->currentEditor() && EditorManager::self ()->currentEditor()->canCopy();
+	return EditorManager::self()->currentEditor() && EditorManager::self()->currentEditor()->canCopy();
 }
 
 void CutAction::actionTriggered()
 {
-	AbstractEditor * editor =  EditorManager::self ()->currentEditor();
+	AbstractEditor * editor =  EditorManager::self()->currentEditor();
 	if (editor && editor->canCopy())
 		editor->cut();
 }
@@ -46,18 +46,18 @@ void CutAction::actionTriggered()
 
 CopyAction::CopyAction() : XinxAction::Action(QIcon(":/images/editcopy.png"), tr("&Copy"), QKeySequence::Copy)
 {
-	action ()->setStatusTip(tr("Copy the selection to the clipboard"));
+	action()->setStatusTip(tr("Copy the selection to the clipboard"));
 	addEditorSignals(SIGNAL(copyAvailable(bool)));
 }
 
 bool CopyAction::isEnabled() const
 {
-	return EditorManager::self ()->currentEditor() && EditorManager::self ()->currentEditor()->canCopy();
+	return EditorManager::self()->currentEditor() && EditorManager::self()->currentEditor()->canCopy();
 }
 
 void CopyAction::actionTriggered()
 {
-	AbstractEditor * editor =  EditorManager::self ()->currentEditor();
+	AbstractEditor * editor =  EditorManager::self()->currentEditor();
 	if (editor && editor->canCopy())
 		editor->copy();
 }
@@ -66,18 +66,18 @@ void CopyAction::actionTriggered()
 
 PasteAction::PasteAction() : XinxAction::Action(QIcon(":/images/editpaste.png"), tr("&Paste"), QKeySequence::Paste)
 {
-	action ()->setStatusTip(tr("Paste the clipboard's contents"));
+	action()->setStatusTip(tr("Paste the clipboard's contents"));
 	addEditorSignals(SIGNAL(pasteAvailable(bool)));
 }
 
 bool PasteAction::isEnabled() const
 {
-	return EditorManager::self ()->currentEditor() && EditorManager::self ()->currentEditor()->canPaste();
+	return EditorManager::self()->currentEditor() && EditorManager::self()->currentEditor()->canPaste();
 }
 
 void PasteAction::actionTriggered()
 {
-	AbstractEditor * editor =  EditorManager::self ()->currentEditor();
-	if (editor && editor->canPaste ())
+	AbstractEditor * editor =  EditorManager::self()->currentEditor();
+	if (editor && editor->canPaste())
 		editor->paste();
 }

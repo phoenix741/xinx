@@ -32,12 +32,12 @@ BookmarkAction::BookmarkAction() :
 
 bool BookmarkAction::isEnabled() const
 {
-	return EditorManager::self ()->currentEditor() != NULL;
+	return EditorManager::self()->currentEditor() != NULL;
 }
 
 void BookmarkAction::actionTriggered()
 {
-	AbstractEditor * editor = EditorManager::self ()->currentEditor();
+	AbstractEditor * editor = EditorManager::self()->currentEditor();
 	Q_ASSERT_X(editor, "PreviousBookmarkAction::actionTriggered", "Editor must be defined");
 	editor->bookmarkInterface()->toogledBookmark();
 }
@@ -52,26 +52,26 @@ NextBookmarkAction::NextBookmarkAction() :
 
 bool NextBookmarkAction::isEnabled() const
 {
-	return EditorManager::self ()->currentEditor() != NULL;
+	return EditorManager::self()->currentEditor() != NULL;
 }
 
 void NextBookmarkAction::actionTriggered()
 {
-	int index = EditorManager::self ()->currentIndex();
-	AbstractEditor * editor = EditorManager::self ()->currentEditor();
+	int index = EditorManager::self()->currentIndex();
+	AbstractEditor * editor = EditorManager::self()->currentEditor();
 	Q_ASSERT_X(editor, "PreviousBookmarkAction::actionTriggered", "Editor must be defined");
-	if ((! editor->bookmarkInterface()->nextBookmark()) && (index < EditorManager::self ()->editorsCount()))
+	if ((! editor->bookmarkInterface()->nextBookmark()) && (index < EditorManager::self()->editorsCount()))
 	{
 		do
 		{
 			index ++ ;
-			editor = EditorManager::self ()->editor(index);
+			editor = EditorManager::self()->editor(index);
 		}
-		while ((index < EditorManager::self ()->editorsCount()) && (editor->bookmarkInterface()->bookmarkCount() == 0));
+		while ((index < EditorManager::self()->editorsCount()) && (editor->bookmarkInterface()->bookmarkCount() == 0));
 
-		if (index < EditorManager::self ()->editorsCount())
+		if (index < EditorManager::self()->editorsCount())
 		{
-			EditorManager::self ()->setCurrentEditor(index);
+			EditorManager::self()->setCurrentEditor(index);
 			editor->bookmarkInterface()->firstBookmark();
 		}
 	}
@@ -87,26 +87,26 @@ PreviousBookmarkAction::PreviousBookmarkAction() :
 
 bool PreviousBookmarkAction::isEnabled() const
 {
-	return EditorManager::self ()->currentEditor() != NULL;
+	return EditorManager::self()->currentEditor() != NULL;
 }
 
 void PreviousBookmarkAction::actionTriggered()
 {
-	int index = EditorManager::self ()->currentIndex();
-	AbstractEditor * editor = EditorManager::self ()->currentEditor();
+	int index = EditorManager::self()->currentIndex();
+	AbstractEditor * editor = EditorManager::self()->currentEditor();
 	Q_ASSERT_X(editor, "PreviousBookmarkAction::actionTriggered", "Editor must be defined");
 	if ((! editor->bookmarkInterface()->previousBookmark()) && (index > 0))
 	{
 		do
 		{
 			index -- ;
-			editor = EditorManager::self ()->editor(index);
+			editor = EditorManager::self()->editor(index);
 		}
 		while ((index >= 0) && (editor->bookmarkInterface()->bookmarkCount() == 0));
 
 		if (index >= 0)
 		{
-			EditorManager::self ()->setCurrentEditor(index);
+			EditorManager::self()->setCurrentEditor(index);
 			editor->bookmarkInterface()->lastBookmark();
 		}
 	}
@@ -122,13 +122,13 @@ ClearAllBookmarkAction::ClearAllBookmarkAction() :
 
 bool ClearAllBookmarkAction::isEnabled() const
 {
-	return EditorManager::self ()->editorsCount() > 0;
+	return EditorManager::self()->editorsCount() > 0;
 }
 
 void ClearAllBookmarkAction::actionTriggered()
 {
-	for (int i = 0; i < EditorManager::self ()->editorsCount() ; i++)
+	for (int i = 0; i < EditorManager::self()->editorsCount() ; i++)
 	{
-		EditorManager::self ()->editor(i)->bookmarkInterface()->clearAllBookmark();
+		EditorManager::self()->editor(i)->bookmarkInterface()->clearAllBookmark();
 	}
 }

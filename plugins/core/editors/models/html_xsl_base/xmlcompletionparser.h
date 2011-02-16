@@ -37,7 +37,7 @@ class BaliseNode;
 class AttributeNode;
 class RootNode;
 
-	
+
 /* XmlCompletionParser */
 
 class XmlCompletionParser : public ContentView3::Parser, private QXmlStreamReader

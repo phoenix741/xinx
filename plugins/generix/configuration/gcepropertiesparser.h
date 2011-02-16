@@ -36,7 +36,7 @@ public:
 	GcePropertiesParser(const QString & filename);
 	virtual ~GcePropertiesParser();
 
-    virtual void startJob();
+	virtual void startJob();
 protected:
 	virtual void readGceProperties(const QString & propertiesFileName);
 

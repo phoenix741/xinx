@@ -59,12 +59,12 @@ QSharedPointer<Core::Stylesheet::TemplateNode> XslTextEditor::globalNodeOfTempla
 	ContentView3::FilePtr filePtr = file().toStrongRef();
 	if (filePtr.isNull()) return QSharedPointer<Core::Stylesheet::TemplateNode>();
 
-	QSharedPointer<Core::Stylesheet::TemplateNode> node = localNodeOfTemplate (filePtr->rootNode().dynamicCast<ContentView3::Node> (), templateName, isNamed);
-	if (node.isNull () && filePtr->project())
+	QSharedPointer<Core::Stylesheet::TemplateNode> node = localNodeOfTemplate(filePtr->rootNode().dynamicCast<ContentView3::Node> (), templateName, isNamed);
+	if (node.isNull() && filePtr->project())
 	{
-		foreach(const ContentView3::FilePtr & import, filePtr->project()->cache ()->importOf(filePtr))
+		foreach(const ContentView3::FilePtr & import, filePtr->project()->cache()->importOf(filePtr))
 		{
-			node = localNodeOfTemplate (import->rootNode().dynamicCast<ContentView3::Node> (), templateName, isNamed);
+			node = localNodeOfTemplate(import->rootNode().dynamicCast<ContentView3::Node> (), templateName, isNamed);
 			if (node)
 			{
 				break;

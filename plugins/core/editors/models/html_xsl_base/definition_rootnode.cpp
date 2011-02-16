@@ -69,12 +69,12 @@ void RootNode::clearChilds()
 
 ContentView3::FileNodePtr RootNode::clone() const
 {
-	QSharedPointer<RootNode> node = RootNode::create (name(), parent ());
-	node->setFile (file());
-	node->setIcon (icon ());
-	node->setLine (line());
-	node->setTips (tips());
-	node->setType (type());
+	QSharedPointer<RootNode> node = RootNode::create(name(), parent());
+	node->setFile(file());
+	node->setIcon(icon());
+	node->setLine(line());
+	node->setTips(tips());
+	node->setType(type());
 	return node;
 }
 

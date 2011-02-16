@@ -24,7 +24,7 @@
 bool Snipet::Parameter::operator==(const Snipet::Parameter & p) const
 {
 	return (name == p.name)
-	       && (defaultValue == p.defaultValue);
+		   && (defaultValue == p.defaultValue);
 }
 
 
@@ -178,13 +178,13 @@ void Snipet::setAvailableScript(const QString & value)
 bool Snipet::operator==(const Snipet & s) const
 {
 	return (m_name == s.m_name)
-	       && (m_key == s.m_key)
-	       && (m_categories == s.m_categories)
-	       && (m_text == s.m_text)
-	       && (m_description == s.m_description)
-	       && (m_icon == s.m_icon)
-	       && (m_extentions == s.m_extentions)
-	       && (m_params == s.m_params);
+		   && (m_key == s.m_key)
+		   && (m_categories == s.m_categories)
+		   && (m_text == s.m_text)
+		   && (m_description == s.m_description)
+		   && (m_icon == s.m_icon)
+		   && (m_extentions == s.m_extentions)
+		   && (m_params == s.m_params);
 }
 
 bool Snipet::operator<(const Snipet & s) const

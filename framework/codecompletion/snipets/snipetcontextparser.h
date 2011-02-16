@@ -23,7 +23,8 @@
 #include <codecompletion/contextparser.h>
 
 
-namespace CodeCompletion {
+namespace CodeCompletion
+{
 
 class LIBEXPORT SnipetContextParser : public ContextParser
 {

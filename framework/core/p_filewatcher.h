@@ -44,7 +44,7 @@ public:
 	FileWatched(const FileWatched & o) : QObject(), count(1), m_name(o.m_name), m_date(o.m_date), m_file(o.m_file) {}
 	explicit FileWatched(const QString & name) : count(1), m_name(name), m_file(name)
 	{
-		m_file.refresh ();
+		m_file.refresh();
 		m_date = m_file.lastModified();
 	}
 	virtual ~FileWatched() {}
@@ -123,8 +123,8 @@ class PrivateFilesWatcher : public QObject
 {
 	Q_OBJECT
 public:
-    PrivateFilesWatcher(FilesWatcher * parent);
-    ~PrivateFilesWatcher();
+	PrivateFilesWatcher(FilesWatcher * parent);
+	~PrivateFilesWatcher();
 
 	void removePaths(const QStringList & paths);
 

@@ -19,9 +19,11 @@
 
 #include "dictionary_labelnode.h"
 
-namespace Generix {
+namespace Generix
+{
 
-namespace Dictionary {
+namespace Dictionary
+{
 
 /* LabelNode */
 
@@ -88,7 +90,7 @@ void LabelNode::setValue(const QString& value)
 
 QString LabelNode::displayName() const
 {
-    return QString("%1 [Langue=%2] [Ctx=%3]").arg(_value).arg(_lang).arg(_context);
+	return QString("%1 [Langue=%2] [Ctx=%3]").arg(_value).arg(_lang).arg(_context);
 }
 
 }

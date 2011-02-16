@@ -131,9 +131,9 @@ Parser::~Parser()
 
 }
 
-QString Parser::description () const
+QString Parser::description() const
 {
-	return tr("Parse the file %1").arg(QFileInfo(d->_file->filename ()).fileName ());
+	return tr("Parse the file %1").arg(QFileInfo(d->_file->filename()).fileName());
 }
 
 /*!
@@ -147,12 +147,12 @@ QString Parser::description () const
 /*!
  * \brief Set the file to \p file
  */
-void Parser::setFile ( FilePtr file )
+void Parser::setFile(FilePtr file)
 {
 	d->_file = file;
 	if (d->_file)
 	{
-		d->_fileRootNode = d->_file->rootNode ()->clone();
+		d->_fileRootNode = d->_file->rootNode()->clone();
 	}
 }
 
@@ -169,7 +169,7 @@ ContentView3::FilePtr Parser::file() const
  *
  * The path can be a content of a file or the content of the memory.
  */
-void Parser::setDevice ( QIODevice* device )
+void Parser::setDevice(QIODevice* device)
 {
 	d->_device = device;
 }
@@ -181,7 +181,7 @@ void Parser::setDevice ( QIODevice* device )
  */
 NodePtr Parser::rootNode() const
 {
-	if (d->_rootNode.isNull () && d->_file)
+	if (d->_rootNode.isNull() && d->_file)
 	{
 		return d->_fileRootNode;
 	}
@@ -267,18 +267,18 @@ void Parser::startJob()
 {
 	try
 	{
-		parse ();
+		parse();
 
-		d->_file->setRootNode (d->_fileRootNode);
+		d->_file->setRootNode(d->_fileRootNode);
 
-		QMetaObject::invokeMethod(ErrorManager::self (), "clearMessages", Qt::QueuedConnection,
-								  Q_ARG(QString, d->_file ? d->_file->filename () : "XINX"));
+		QMetaObject::invokeMethod(ErrorManager::self(), "clearMessages", Qt::QueuedConnection,
+								  Q_ARG(QString, d->_file ? d->_file->filename() : "XINX"));
 	}
-	catch(const ParserException & e)
+	catch (const ParserException & e)
 	{
-		QMetaObject::invokeMethod(ErrorManager::self (), "addMessage", Qt::QueuedConnection,
-								  Q_ARG(QString, d->_file ? d->_file->filename () : "XINX"),
-								  Q_ARG(int, e.getLine ()), Q_ARG(QtMsgType, QtCriticalMsg),
+		QMetaObject::invokeMethod(ErrorManager::self(), "addMessage", Qt::QueuedConnection,
+								  Q_ARG(QString, d->_file ? d->_file->filename() : "XINX"),
+								  Q_ARG(int, e.getLine()), Q_ARG(QtMsgType, QtCriticalMsg),
 								  Q_ARG(XinxException, e));
 	}
 }
@@ -288,13 +288,13 @@ void Parser::startJob()
  */
 void Parser::run()
 {
-	XinxJob::run ();
+	XinxJob::run();
 
-	if (d->_file && d->_file->project ())
+	if (d->_file && d->_file->project())
 	{
-		XinxProject::ProjectPtr project = d->_file->project ();
+		XinxProject::ProjectPtr project = d->_file->project();
 
-		QMetaObject::invokeMethod(project->cache (), "parsed", Qt::QueuedConnection, Q_ARG(ContentView3::FilePtr, d->_file));
+		QMetaObject::invokeMethod(project->cache(), "parsed", Qt::QueuedConnection, Q_ARG(ContentView3::FilePtr, d->_file));
 	}
 }
 

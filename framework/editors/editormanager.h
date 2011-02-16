@@ -43,7 +43,7 @@ class PrivateEditorManager;
 
 namespace XinxSession
 {
-	class SessionEditor;
+class SessionEditor;
 }
 
 /*!

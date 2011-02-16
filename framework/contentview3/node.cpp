@@ -128,7 +128,7 @@ void Node::setParent(NodePtrWeak parent)
 
 const QString& Node::filename() const
 {
-	FilePtr file = d->_file.toStrongRef ();
+	FilePtr file = d->_file.toStrongRef();
 	return file->filename();
 }
 
@@ -209,8 +209,8 @@ QString Node::completionString() const
 
 QString Node::keyString() const
 {
-	const QString sep  = QString::fromUtf8 ("¤");
-	const QString line = QString::number (d->_line);
+	const QString sep  = QString::fromUtf8("¤");
+	const QString line = QString::number(d->_line);
 
 	return d->_name % sep % d->_type % sep % d->_tips % sep % d->_icon % sep % line;
 }

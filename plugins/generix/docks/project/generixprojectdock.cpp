@@ -95,22 +95,22 @@ void BusinessViewListDelegate::paint(QPainter *painter, const QStyleOptionViewIt
 
 
 	painter->drawText(
-	    SEPARATOR_SIZE,
-	    SEPARATOR_SIZE + myOption.rect.top(),
-	    titleOpt.fontMetrics.width(display),
-	    titleOpt.fontMetrics.height(),
-	    Qt::AlignLeft,
-	    display);
+		SEPARATOR_SIZE,
+		SEPARATOR_SIZE + myOption.rect.top(),
+		titleOpt.fontMetrics.width(display),
+		titleOpt.fontMetrics.height(),
+		Qt::AlignLeft,
+		display);
 
 	painter->setFont(descFont);
 	description = descOpt.fontMetrics.elidedText(description, Qt::ElideRight, maxTextLength);
 	painter->drawText(
-	    SEPARATOR_SIZE,
-	    myOption.rect.height() - SEPARATOR_SIZE - descOpt.fontMetrics.height() + myOption.rect.top(),
-	    descOpt.fontMetrics.width(description),
-	    descOpt.fontMetrics.height(),
-	    Qt::AlignLeft,
-	    description);
+		SEPARATOR_SIZE,
+		myOption.rect.height() - SEPARATOR_SIZE - descOpt.fontMetrics.height() + myOption.rect.top(),
+		descOpt.fontMetrics.width(description),
+		descOpt.fontMetrics.height(),
+		Qt::AlignLeft,
+		description);
 
 	painter->restore();
 }
@@ -161,7 +161,7 @@ void GenerixProjectDockImpl::updateList()
 
 		m_filenameLabel->setText(tr("&Business view for file : \n%1").arg(QFileInfo(editorFilename).fileName()));
 
-		const QString filename = QDir(gnxProject->projectPath ()).relativeFilePath(editorFilename);
+		const QString filename = QDir(gnxProject->projectPath()).relativeFilePath(editorFilename);
 
 		GceConfiguration * interface = ConfigurationManager::manager(gnxProject)->getInterface();
 		m_businessViewList->clear();

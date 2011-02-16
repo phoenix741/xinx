@@ -94,7 +94,7 @@ MaquetteTextEditor::cursorPosition MaquetteTextEditor::editPosition(const XinxCo
 	QDocumentCursor cursorEndOfComment   = textEdit->find("*/", cursor, XinxCodeEdit::FindBackward).selectionStart();
 
 	bool inComment =
-	    (!(cursorStartOfComment.isNull() || (!cursorEndOfComment.isNull() && (cursorStartOfComment < cursorEndOfComment))));
+		(!(cursorStartOfComment.isNull() || (!cursorEndOfComment.isNull() && (cursorStartOfComment < cursorEndOfComment))));
 
 	if (inComment)
 		return cpEditComment;

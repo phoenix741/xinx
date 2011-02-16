@@ -40,7 +40,7 @@ QSharedPointer<BaliseNode> BaliseNode::create(const QString & name, ContentView3
 
 		parent.dynamicCast<RootNode>()->addBalise(ptr);
 	}
-	else if(parent.dynamicCast<BaliseNode>())
+	else if (parent.dynamicCast<BaliseNode>())
 	{
 		parent.dynamicCast<BaliseNode>()->addBalise(ptr);
 	}
@@ -72,7 +72,7 @@ QList< QSharedPointer<BaliseNode> > BaliseNode::defaultBalises() const
 {
 	QList< QSharedPointer<BaliseNode> > result;
 
-	foreach (QSharedPointer<BaliseNode> node, _balises.values())
+	foreach(QSharedPointer<BaliseNode> node, _balises.values())
 	{
 		if (node->isDefault())
 		{
@@ -104,7 +104,7 @@ QList< QSharedPointer<AttributeNode> > BaliseNode::defaultAttributes() const
 {
 	QList< QSharedPointer<AttributeNode> > result;
 
-	foreach (QSharedPointer<AttributeNode> node, _attributes.values())
+	foreach(QSharedPointer<AttributeNode> node, _attributes.values())
 	{
 		if (node->isDefault())
 		{
@@ -135,7 +135,7 @@ void BaliseNode::clearChilds()
 {
 	_attributes.clear();
 	_balises.clear();
-    ContentView3::Node::clearChilds();
+	ContentView3::Node::clearChilds();
 }
 
 }

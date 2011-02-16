@@ -27,10 +27,12 @@
 
 #define CSS_CONTEXT_TYPE "CSS"
 
-namespace Core {
+namespace Core
+{
 
-namespace CascadingStyleSheet {
-	
+namespace CascadingStyleSheet
+{
+
 class CssContextType : public CodeCompletion::ContextType
 {
 public:
@@ -40,13 +42,13 @@ public:
 		COMMENT	= 1,
 		TAG		= 2
 	};
-	
+
 	CssContextType();
 	virtual ~CssContextType();
-	
+
 	Position position();
 	void setPosition(Position value);
-	
+
 	virtual QString type() const;
 	virtual bool operator==(const ContextType & other) const;
 private:

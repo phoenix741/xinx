@@ -63,23 +63,23 @@ void RCSLogDockWidgetImpl::logVersionControlOperation(RCS::rcsLog niveau, const 
 	QListWidgetItem * item = new QListWidgetItem(info, _widget->m_rcsLogListWidget);
 	switch (niveau)
 	{
-		case RCS::LogError :
-		case RCS::LogConflict :
-			item->setForeground(Qt::red);
-			break;
-		case RCS::LogLocallyModified :
-			item->setForeground(Qt::darkYellow);
-			break;
-		case RCS::LogRemotlyModified :
-			item->setForeground(Qt::darkGreen);
-			break;
-		case RCS::LogApplication :
-			item->setForeground(Qt::lightGray);
-			break;
-		case RCS::LogNotManaged :
-		case RCS::LogNormal :
-		default:
-			;
+	case RCS::LogError :
+	case RCS::LogConflict :
+		item->setForeground(Qt::red);
+		break;
+	case RCS::LogLocallyModified :
+		item->setForeground(Qt::darkYellow);
+		break;
+	case RCS::LogRemotlyModified :
+		item->setForeground(Qt::darkGreen);
+		break;
+	case RCS::LogApplication :
+		item->setForeground(Qt::lightGray);
+		break;
+	case RCS::LogNotManaged :
+	case RCS::LogNormal :
+	default:
+		;
 	}
 	_widget->m_rcsLogListWidget->scrollToItem(item);
 }

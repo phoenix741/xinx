@@ -49,7 +49,7 @@ private slots:
 private:
 	Ui::RCSDockWidget * _widget;
 	QDockWidget * m_dock;
-    bool _rcsVisible;
+	bool _rcsVisible;
 	QTimer * _timer;
 };
 #endif

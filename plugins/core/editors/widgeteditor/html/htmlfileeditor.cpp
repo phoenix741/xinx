@@ -133,7 +133,7 @@ void HtmlFileEditor::showHtml()
 
 	QString moduleInternetAdresse = project() ?
 									QDir(project()->projectPath()).absoluteFilePath(project()->readProperty("moduleInternetAdresse").toString()
-	                                ) : lastFileName();
+																				   ) : lastFileName();
 
 	m_htmlView->setHtml(htmlText, QUrl(moduleInternetAdresse));
 }

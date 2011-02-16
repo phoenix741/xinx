@@ -128,19 +128,19 @@ QDocumentCursor XmlTextEditor::insertCompletionBalises(Core::BaliseDefinition::X
 	QDocumentCursor result = QDocumentCursor();
 	int cnt = 0;
 
-	QString ns = context->balise ().nameSpacePrefix ();
-	if (!ns.isEmpty ())
+	QString ns = context->balise().nameSpacePrefix();
+	if (!ns.isEmpty())
 	{
 		ns += ":";
 	}
 
 	if (SelfWebPluginSettings::self()->config().xml.addDefaultSubBalise && balise)
 	{
-		foreach(QSharedPointer<Core::BaliseDefinition::BaliseNode> b, balise->defaultBalises ())
+		foreach(QSharedPointer<Core::BaliseDefinition::BaliseNode> b, balise->defaultBalises())
 		{
 
 			tc.insertText("\n" + indent + "\t");
-			tc.insertText("<" + ns + b->name ());
+			tc.insertText("<" + ns + b->name());
 			QDocumentCursor insertPosition = insertCompletionParam(context, tc, b, false);
 			if (result.isNull()) result = insertPosition;
 			tc.insertText(">");
@@ -153,7 +153,7 @@ QDocumentCursor XmlTextEditor::insertCompletionBalises(Core::BaliseDefinition::X
 	{
 		if (cnt > 0)
 			tc.insertText("\n" + indent);
-		tc.insertText(QString("</%1>").arg(ns + balise->name ()));
+		tc.insertText(QString("</%1>").arg(ns + balise->name()));
 		if (result.isValid())
 			tc.moveTo(result);
 	}
@@ -247,7 +247,7 @@ bool XmlTextEditor::processKeyPress(QKeyEvent * e)
 {
 	Q_ASSERT_X(completer(), "XmlTextEditor::processKeyPress", "No completer defined, it's an error");
 	CodeCompletion::Context context = completer()->context();
-	Core::BaliseDefinition::XmlContextType * context_type = dynamic_cast<Core::BaliseDefinition::XmlContextType*> (context.context(XML_CONTEXT_TYPE));
+	Core::BaliseDefinition::XmlContextType * context_type = dynamic_cast<Core::BaliseDefinition::XmlContextType*>(context.context(XML_CONTEXT_TYPE));
 	if (! context_type)
 	{
 		qWarning() << tr("No XML context type found. It's a problem");
@@ -286,11 +286,11 @@ bool XmlTextEditor::processKeyPress(QKeyEvent * e)
 			{
 				QDocumentCursor tc(textCursor());
 				QDocumentCursor tc2(textCursor());
-				tc2.movePosition (2, QDocumentCursor::PreviousCharacter, QDocumentCursor::KeepAnchor);
-				if (tc2.selectedText () != "/>")
+				tc2.movePosition(2, QDocumentCursor::PreviousCharacter, QDocumentCursor::KeepAnchor);
+				if (tc2.selectedText() != "/>")
 				{
 					QSharedPointer<Core::BaliseDefinition::BaliseNode> balise;
-					if (context_type->isXsl() && (context_type->xmlnsList ().value (context_type->balise ().nameSpacePrefix ()) == "http://www.w3.org/1999/XSL/Transform" ))
+					if (context_type->isXsl() && (context_type->xmlnsList().value(context_type->balise().nameSpacePrefix()) == "http://www.w3.org/1999/XSL/Transform"))
 					{
 						balise = Core::BaliseDefinition::XmlDefinitionManager::self()->getXslRootNode()->balise(context_type->balise().baliseName());
 					}
@@ -299,7 +299,7 @@ bool XmlTextEditor::processKeyPress(QKeyEvent * e)
 						balise = Core::BaliseDefinition::XmlDefinitionManager::self()->getHtmlRootNode()->balise(context_type->balise().baliseName());
 					}
 
-					if (! balise.isNull ())
+					if (! balise.isNull())
 					{
 						QDocumentCursor position = textCursor();
 						position.setAutoUpdated(false);
@@ -314,14 +314,14 @@ bool XmlTextEditor::processKeyPress(QKeyEvent * e)
 		}
 		else if (e->text().right(1) == "=" && SelfWebPluginSettings::self()->config().xml.addDefaultAttribute)
 		{
-			if (context_type->position () == Core::BaliseDefinition::XmlContextType::ATTRIBUTE_NAME)
+			if (context_type->position() == Core::BaliseDefinition::XmlContextType::ATTRIBUTE_NAME)
 			{
 				QDocumentCursor tc(textCursor());
 				QDocumentCursor tc2(textCursor());
 				tc2.movePosition(1, QDocumentCursor::PreviousCharacter);
 
 				QSharedPointer<Core::BaliseDefinition::BaliseNode> balise;
-				if (context_type->isXsl() && (context_type->xmlnsList ().value (context_type->balise ().nameSpacePrefix ()) == "http://www.w3.org/1999/XSL/Transform" ))
+				if (context_type->isXsl() && (context_type->xmlnsList().value(context_type->balise().nameSpacePrefix()) == "http://www.w3.org/1999/XSL/Transform"))
 				{
 					balise = Core::BaliseDefinition::XmlDefinitionManager::self()->getXslRootNode()->balise(context_type->balise().baliseName());
 				}
@@ -332,11 +332,11 @@ bool XmlTextEditor::processKeyPress(QKeyEvent * e)
 
 				if (balise)
 				{
-					QSharedPointer<Core::BaliseDefinition::AttributeNode> attribute = balise->attribute (context_type->attributeName ());
+					QSharedPointer<Core::BaliseDefinition::AttributeNode> attribute = balise->attribute(context_type->attributeName());
 					if (attribute)
 					{
 						tc.deletePreviousChar();
-						tc = insertCompletionValue (context_type, tc, attribute);
+						tc = insertCompletionValue(context_type, tc, attribute);
 						setTextCursor(tc);
 					}
 				}
@@ -351,7 +351,7 @@ bool XmlTextEditor::processKeyPress(QKeyEvent * e)
 			if (context_type->position() == Core::BaliseDefinition::XmlContextType::BALISE_NAME)
 			{
 				QSharedPointer<Core::BaliseDefinition::BaliseNode> balise;
-				if (context_type->isXsl() && (context_type->xmlnsList ().value (context_type->balise ().nameSpacePrefix ()) == "http://www.w3.org/1999/XSL/Transform" ))
+				if (context_type->isXsl() && (context_type->xmlnsList().value(context_type->balise().nameSpacePrefix()) == "http://www.w3.org/1999/XSL/Transform"))
 				{
 					balise = Core::BaliseDefinition::XmlDefinitionManager::self()->getXslRootNode()->balise(context_type->balise().baliseName());
 				}
@@ -381,10 +381,10 @@ bool XmlTextEditor::processKeyPress(QKeyEvent * e)
 				QDocumentCursor balise = find(QRegExp("[<>]"), textCursor());
 				if (balise.isNull() || (balise.selectedText() == "<"))
 				{
-					Core::BaliseDefinition::XmlBalise balise = context_type->xpathLocation ().top ();
+					Core::BaliseDefinition::XmlBalise balise = context_type->xpathLocation().top();
 
 					QDocumentCursor c(textCursor());
-					c.insertText((balise.nameSpacePrefix ().isEmpty () ? "" : balise.nameSpacePrefix () + ":") + balise.baliseName() + ">");
+					c.insertText((balise.nameSpacePrefix().isEmpty() ? "" : balise.nameSpacePrefix() + ":") + balise.baliseName() + ">");
 					setTextCursor(c);
 				}
 			}

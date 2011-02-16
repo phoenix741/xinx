@@ -212,18 +212,18 @@ void NewVersionWizardImpl::on_m_listSlider_valueChanged(int value)
 	}
 }
 
-void NewVersionWizardImpl::slotCurrentIdChanged ( int id )
+void NewVersionWizardImpl::slotCurrentIdChanged(int id)
 {
 	if (page(id) == d->_ui->licencePage)
 	{
 		d->_ui->_refuseRadioButton->setChecked(true);
-		button (QWizard::NextButton)->setEnabled (false);
+		button(QWizard::NextButton)->setEnabled(false);
 	}
 }
 
 void NewVersionWizardImpl::on__acceptRadioButton_toggled(bool value)
 {
-	button (QWizard::NextButton)->setEnabled (value);
+	button(QWizard::NextButton)->setEnabled(value);
 }
 
 void NewVersionWizardImpl::accept()

@@ -31,11 +31,12 @@
 
 namespace XinxProject
 {
-	class Project;
+class Project;
 }
 class QThreadPool;
 
-namespace ContentView3 {
+namespace ContentView3
+{
 
 class Parser;
 class PrivateCache;

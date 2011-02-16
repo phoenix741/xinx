@@ -43,7 +43,7 @@ QStack<XmlBalise> XmlContextParser::xpath(const QDocumentCursor & cursor, const 
 	QDocumentCursor c = cursor;
 	do
 	{
-		c = editor ()->textEdit ()->find(QRegExp("<[^<>]*>"), c, XinxCodeEdit::FindBackward);
+		c = editor()->textEdit()->find(QRegExp("<[^<>]*>"), c, XinxCodeEdit::FindBackward);
 		if (c.isNull()) break;
 
 		QString baliseText = c.selectedText(), baliseEpuree = baliseText;
@@ -90,7 +90,7 @@ QStack<XmlBalise> XmlContextParser::xpath(const QDocumentCursor & cursor, const 
 	// Stack is in the wrong sens, we invert it
 	QStack<XmlBalise> invertedXPath;
 	invertedXPath.reserve(xpath.size());
-	while(xpath.size())
+	while (xpath.size())
 	{
 		invertedXPath.push(xpath.pop());
 	}
@@ -105,7 +105,7 @@ XmlBalise XmlContextParser::createBalise(const QString & text, const QStringList
 
 	XmlBalise xpathBalise;
 	QStringList params = text.split(' ', QString::SkipEmptyParts);
-	if (params.isEmpty ())
+	if (params.isEmpty())
 	{
 		return xpathBalise;
 	}
@@ -113,13 +113,13 @@ XmlBalise XmlContextParser::createBalise(const QString & text, const QStringList
 
 	foreach(const QString & param, params)
 	{
-		int indexOfEquals = param.indexOf ('=');
+		int indexOfEquals = param.indexOf('=');
 		if (indexOfEquals < 0) continue;
 
-		const QString name  = param.left (indexOfEquals).trimmed ();
+		const QString name  = param.left(indexOfEquals).trimmed();
 		if (attributeName.isEmpty() || attributeName.contains(name))
 		{
-			QString value  = param.mid (indexOfEquals + 1).remove ('=').trimmed ();
+			QString value  = param.mid(indexOfEquals + 1).remove('=').trimmed();
 			if ((value.startsWith("\"") || value.startsWith("'")) && (value.at(0) == value.at(value.size() -1)))
 			{
 				value = value.mid(1, value.length() - 2);
@@ -128,11 +128,11 @@ XmlBalise XmlContextParser::createBalise(const QString & text, const QStringList
 		}
 	}
 
-	if (baliseName.contains (":"))
+	if (baliseName.contains(":"))
 	{
-		QStringList baliseNameSplitPrefix = baliseName.split (":");
-		xpathBalise.setNameSpacePrefix (baliseNameSplitPrefix.at (0));
-		xpathBalise.setBaliseName(baliseNameSplitPrefix.at (1));
+		QStringList baliseNameSplitPrefix = baliseName.split(":");
+		xpathBalise.setNameSpacePrefix(baliseNameSplitPrefix.at(0));
+		xpathBalise.setBaliseName(baliseNameSplitPrefix.at(1));
 	}
 	else
 	{
@@ -180,10 +180,10 @@ XmlBalise XmlContextParser::currentBalise(const QDocumentCursor& cursor)  const
 	QDocumentCursor text(editor()->textEdit()->document());
 	text.moveTo(baliseStart.selectionStart());
 	text.movePosition(1, QDocumentCursor::Right);
-	text.movePosition(baliseStop.selectionStart ().position () - baliseStart.selectionStart().position() - 3,
+	text.movePosition(baliseStop.selectionStart().position() - baliseStart.selectionStart().position() - 3,
 					  QDocumentCursor::Right, QDocumentCursor::KeepAnchor);
 
-	return createBalise (text.selectedText ());
+	return createBalise(text.selectedText());
 }
 
 XmlContextType::Position XmlContextParser::editPosition(const QDocumentCursor& cursor, QString& nodeName, QString& paramName) const
@@ -199,27 +199,27 @@ XmlContextType::Position XmlContextParser::editPosition(const QDocumentCursor& c
 	{
 		return XmlContextType::COMMENT;
 	}
-/*
-	QDocumentCursor cursorLastChar = cursor;
-	cursorLastChar.movePosition(1, QDocumentCursor::PreviousCharacter, QDocumentCursor::KeepAnchor);
-	if (cursorLastChar.selectedText() == ">")
-	{
-		QDocumentCursor cursorFirstCar = editor()->textEdit()->find(QRegExp("<(?!!--)"), cursor, XinxCodeEdit::FindBackward);
-		if (! cursorFirstCar.isNull())
+	/*
+		QDocumentCursor cursorLastChar = cursor;
+		cursorLastChar.movePosition(1, QDocumentCursor::PreviousCharacter, QDocumentCursor::KeepAnchor);
+		if (cursorLastChar.selectedText() == ">")
 		{
-			cursorFirstCar.movePosition(1, QDocumentCursor::NextCharacter, QDocumentCursor::MoveAnchor);
-			cursorFirstCar.movePosition(1, QDocumentCursor::NextCharacter, QDocumentCursor::KeepAnchor);
-			if (cursorFirstCar.selectedText() != "/")
-				return XmlContextType::CLOSING_NODE;
+			QDocumentCursor cursorFirstCar = editor()->textEdit()->find(QRegExp("<(?!!--)"), cursor, XinxCodeEdit::FindBackward);
+			if (! cursorFirstCar.isNull())
+			{
+				cursorFirstCar.movePosition(1, QDocumentCursor::NextCharacter, QDocumentCursor::MoveAnchor);
+				cursorFirstCar.movePosition(1, QDocumentCursor::NextCharacter, QDocumentCursor::KeepAnchor);
+				if (cursorFirstCar.selectedText() != "/")
+					return XmlContextType::CLOSING_NODE;
+			}
 		}
-	}
 
-	cursorLastChar.movePosition(1, QDocumentCursor::PreviousCharacter, QDocumentCursor::KeepAnchor);
-	if (cursorLastChar.selectedText() == "</")
-	{
-		return XmlContextType::CLOSING_BALISE;
-	}
-*/
+		cursorLastChar.movePosition(1, QDocumentCursor::PreviousCharacter, QDocumentCursor::KeepAnchor);
+		if (cursorLastChar.selectedText() == "</")
+		{
+			return XmlContextType::CLOSING_BALISE;
+		}
+	*/
 	QDocumentCursor cursorNodeTag = editor()->textEdit()->find(QRegExp("(<(?!!--))|>"), cursor, XinxCodeEdit::FindBackward);
 	if (cursorNodeTag.isNull() || (cursorNodeTag.selectedText() == ">"))
 	{
@@ -258,7 +258,7 @@ XmlContextType::Position XmlContextParser::editPosition(const QDocumentCursor& c
 	bool hasTextBeforeCursor = ! baliseContentStr.right(1).trimmed().isEmpty();
 	nodeName = baliseContent.first();
 
-	if (((baliseContent.size() == 1) && hasTextBeforeCursor) || nodeName.startsWith ("/"))
+	if (((baliseContent.size() == 1) && hasTextBeforeCursor) || nodeName.startsWith("/"))
 	{
 		return XmlContextType::BALISE_NAME;
 	}
@@ -294,10 +294,10 @@ XmlContextParser::~XmlContextParser()
 
 void XmlContextParser::updateContext()
 {
-	if (!editor ()->fileTypePluginInterface ()) return;
-	if (	editor()->fileTypePluginInterface ()->name () != "XmlFileEditor"
-		&&	editor()->fileTypePluginInterface ()->name () != "StyleSheetEditor"
-		&&	editor()->fileTypePluginInterface ()->name () != "HtmlFileEditor") return;
+	if (!editor()->fileTypePluginInterface()) return;
+	if (editor()->fileTypePluginInterface()->name() != "XmlFileEditor"
+			&&	editor()->fileTypePluginInterface()->name() != "StyleSheetEditor"
+			&&	editor()->fileTypePluginInterface()->name() != "HtmlFileEditor") return;
 
 	XmlContextType * type = new XmlContextType;
 	QString baliseName, attributeName;
@@ -310,9 +310,9 @@ void XmlContextParser::updateContext()
 	if (position >= XmlContextType::BALISE_NAME)
 	{
 		XmlBalise balise = currentBalise(editor()->textEdit()->textCursor());
-		if ((! balise.baliseName ().isEmpty ()) || (! balise.nameSpacePrefix().isEmpty()))
+		if ((! balise.baliseName().isEmpty()) || (! balise.nameSpacePrefix().isEmpty()))
 		{
-			path.push (balise);
+			path.push(balise);
 
 			type->setBalise(balise);
 			type->setAttributeName(attributeName);
@@ -328,35 +328,35 @@ void XmlContextParser::updateContext()
 	type->setXpathLocation(path);
 
 	QHash<QString,QString> fileNamespace;
-	while(path.size ())
+	while (path.size())
 	{
-		QHash<QString,QString> baliseAttribute = path.pop ().attributes ();
+		QHash<QString,QString> baliseAttribute = path.pop().attributes();
 		QHashIterator<QString,QString> i(baliseAttribute);
-		while (i.hasNext ())
+		while (i.hasNext())
 		{
-			i.next ();
-			if (i.key ().startsWith ("xmlns:"))
+			i.next();
+			if (i.key().startsWith("xmlns:"))
 			{
-				QString key   = i.key ();
-				QString value = i.value ();
+				QString key   = i.key();
+				QString value = i.value();
 
-				key.remove (0, 6);
+				key.remove(0, 6);
 
-				if (! fileNamespace.contains (key))
+				if (! fileNamespace.contains(key))
 				{
-					fileNamespace.insert (key, value);
+					fileNamespace.insert(key, value);
 				}
 			}
 		}
 	}
-	type->setXmlnsList (fileNamespace);
+	type->setXmlnsList(fileNamespace);
 
-	if (editor()->fileTypePluginInterface ()->name () == "HtmlFileEditor")
+	if (editor()->fileTypePluginInterface()->name() == "HtmlFileEditor")
 	{
 		type->setIsHtml(true);
 		type->setIsXsl(false);
 	}
-	else if (editor()->fileTypePluginInterface ()->name () == "StyleSheetEditor")
+	else if (editor()->fileTypePluginInterface()->name() == "StyleSheetEditor")
 	{
 		type->setIsHtml(true);
 		type->setIsXsl(true);

@@ -21,7 +21,8 @@
 #include "xinxprojectprojectexception.h"
 
 
-namespace XinxProject {
+namespace XinxProject
+{
 
 /* ProjectException */
 

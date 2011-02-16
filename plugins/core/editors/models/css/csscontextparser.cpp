@@ -35,8 +35,8 @@ namespace CascadingStyleSheet
 
 CssContextType::Position CssContextParser::editPosition(const QDocumentCursor& cursor) const
 {
-	QDocumentCursor cursorStartOfComment = editor()->textEdit ()->find("/*", cursor, XinxCodeEdit::FindBackward).selectionStart();
-	QDocumentCursor cursorEndOfComment   = editor()->textEdit ()->find("*/", cursor, XinxCodeEdit::FindBackward).selectionStart();
+	QDocumentCursor cursorStartOfComment = editor()->textEdit()->find("/*", cursor, XinxCodeEdit::FindBackward).selectionStart();
+	QDocumentCursor cursorEndOfComment   = editor()->textEdit()->find("*/", cursor, XinxCodeEdit::FindBackward).selectionStart();
 
 	bool inComment =
 		(!(cursorStartOfComment.isNull() || (!cursorEndOfComment.isNull() && (cursorStartOfComment < cursorEndOfComment))));
@@ -45,7 +45,7 @@ CssContextType::Position CssContextParser::editPosition(const QDocumentCursor& c
 		return CssContextType::COMMENT;
 
 	int bloc = 0;
-	QDocumentCursor c = editor()->textEdit ()->find("{", cursor, XinxCodeEdit::FindBackward);
+	QDocumentCursor c = editor()->textEdit()->find("{", cursor, XinxCodeEdit::FindBackward);
 	while (c < cursor)
 	{
 		QString text = c.selectedText();
@@ -54,7 +54,7 @@ CssContextType::Position CssContextParser::editPosition(const QDocumentCursor& c
 		else if (text.contains('}'))
 			bloc--;
 
-		c = editor()->textEdit ()->find(QRegExp("[\\S]+"), c);
+		c = editor()->textEdit()->find(QRegExp("[\\S]+"), c);
 	}
 
 	if (bloc > 0)
@@ -77,8 +77,8 @@ CssContextParser::~CssContextParser()
 
 void CssContextParser::updateContext()
 {
-	if (!editor ()->fileTypePluginInterface ()) return;
-	if (editor()->fileTypePluginInterface ()->name () != "CSSFileEditor") return;
+	if (!editor()->fileTypePluginInterface()) return;
+	if (editor()->fileTypePluginInterface()->name() != "CSSFileEditor") return;
 
 	CssContextType * type = new CssContextType;
 	CssContextType::Position position = editPosition(editor()->textEdit()->textCursor());

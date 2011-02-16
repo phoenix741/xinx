@@ -54,7 +54,7 @@ SubVersionContextListener::~SubVersionContextListener()
 
 void SubVersionContextListener::slot_login()
 {
-	AuthentificationFormImpl dlg(qApp->activeWindow ());
+	AuthentificationFormImpl dlg(qApp->activeWindow());
 	dlg.setRealm(_login.realm);
 	dlg.setUsername(_login.username);
 	dlg.setPassword(_login.password);
@@ -101,7 +101,7 @@ void SubVersionContextListener::contextNotify(const char* path, svn_wc_notify_ac
 
 	RCS::rcsLog niveau = RCS::LogNormal;
 	QString actionStr;
-	switch(action)
+	switch (action)
 	{
 	case svn_wc_notify_add:
 		informations = _parent->info(QString::fromAscii(path));
@@ -305,7 +305,7 @@ void SubVersionContextListener::slot_cert_prompt()
 
 bool SubVersionContextListener::contextSslClientCertPrompt(std::string& certFile)
 {
-	_certificate_prompt.file_name = QString::fromStdString (certFile);
+	_certificate_prompt.file_name = QString::fromStdString(certFile);
 
 	emit signal_cert_prompt();
 
@@ -316,10 +316,10 @@ bool SubVersionContextListener::contextSslClientCertPrompt(std::string& certFile
 void SubVersionContextListener::slot_cert_password_prompt()
 {
 	_certificate_password_prompt.password = QInputDialog::getText(
-			qApp->activeWindow(),
-			RCS_SVN::tr("Paswword for the certificate file"),
-			RCS_SVN::tr("Please give the password for the certificate of %1").arg(_certificate_password_prompt.realm),
-			QLineEdit::Password, _certificate_password_prompt.password);
+												qApp->activeWindow(),
+												RCS_SVN::tr("Paswword for the certificate file"),
+												RCS_SVN::tr("Please give the password for the certificate of %1").arg(_certificate_password_prompt.realm),
+												QLineEdit::Password, _certificate_password_prompt.password);
 	_certificate_password_prompt.result   = !_certificate_password_prompt.password.isEmpty();
 }
 
@@ -329,7 +329,7 @@ bool SubVersionContextListener::contextSslClientCertPwPrompt(std::string& passwo
 	_certificate_password_prompt.password    = QString::fromStdString(password);
 	_certificate_password_prompt.may_be_save = maySave;
 
-	emit signal_cert_password_prompt ();
+	emit signal_cert_password_prompt();
 
 	password = _certificate_password_prompt.password.toStdString();
 	maySave = _certificate_password_prompt.may_be_save;
@@ -391,39 +391,39 @@ RCS::rcsState RCS_SVN::svnStateToRcsState(svn_wc_status_kind textState, svn_wc_s
 {
 	switch (textState)
 	{
-		case svn_wc_status_none:
-		case svn_wc_status_unversioned:
-		case svn_wc_status_obstructed:
-			return RCS::Unknown;
-		case svn_wc_status_normal:
-			if (reposTextStatus == svn_wc_status_modified)
-			{
-				return RCS::NeedsCheckout;
-			}
-			else
-			{
-				return RCS::Updated;
-			}
-		case svn_wc_status_added:
-			return RCS::LocallyAdded;
-		case svn_wc_status_missing:
+	case svn_wc_status_none:
+	case svn_wc_status_unversioned:
+	case svn_wc_status_obstructed:
+		return RCS::Unknown;
+	case svn_wc_status_normal:
+		if (reposTextStatus == svn_wc_status_modified)
+		{
 			return RCS::NeedsCheckout;
-		case svn_wc_status_deleted:
-			return RCS::LocallyRemoved;
-		case svn_wc_status_replaced:
-		case svn_wc_status_modified:
-		case svn_wc_status_merged:
-			return RCS::LocallyModified;
-		case svn_wc_status_conflicted:
-			return RCS::FileHadConflictsOnMerge;
-		case svn_wc_status_ignored:
-			return RCS::UnresolvedConflict;
-		case svn_wc_status_external:
+		}
+		else
+		{
 			return RCS::Updated;
-		case svn_wc_status_incomplete:
-			return RCS::NeedsCheckout;
-		default:
-			return RCS::Unknown;
+		}
+	case svn_wc_status_added:
+		return RCS::LocallyAdded;
+	case svn_wc_status_missing:
+		return RCS::NeedsCheckout;
+	case svn_wc_status_deleted:
+		return RCS::LocallyRemoved;
+	case svn_wc_status_replaced:
+	case svn_wc_status_modified:
+	case svn_wc_status_merged:
+		return RCS::LocallyModified;
+	case svn_wc_status_conflicted:
+		return RCS::FileHadConflictsOnMerge;
+	case svn_wc_status_ignored:
+		return RCS::UnresolvedConflict;
+	case svn_wc_status_external:
+		return RCS::Updated;
+	case svn_wc_status_incomplete:
+		return RCS::NeedsCheckout;
+	default:
+		return RCS::Unknown;
 	}
 }
 
@@ -432,7 +432,7 @@ RCS::struct_rcs_infos RCS_SVN::svnInfoToRcsInfos(svn::Status infos)
 	RCS::struct_rcs_infos rcsInfos = { QDir::fromNativeSeparators(infos.path()), RCS::Unknown, "0", QDateTime() };
 	if (infos.isVersioned())
 	{
-		rcsInfos.version = QString("%1").arg (infos.entry().revision());
+		rcsInfos.version = QString("%1").arg(infos.entry().revision());
 
 		uint cmtDate  = (quint64)infos.entry().cmtDate() / 1000000;
 		rcsInfos.rcsDate = QDateTime::fromTime_t(cmtDate);
@@ -455,7 +455,7 @@ RCS::struct_rcs_infos RCS_SVN::info(const QString & path)
 		{
 			entries = m_client->status(qPrintable(path), /* descend */ false, /* get_all */ true, /* update */ true, /* no_ignore */ false, /* ignore_externals */ false);
 		}
-		catch(svn::ClientException e)
+		catch (svn::ClientException e)
 		{
 			emit log(RCS::LogError, e.message());
 			entries = m_client->status(qPrintable(path), /* descend */ false, /* get_all */ true, /* update */ false, /* no_ignore */ false, /* ignore_externals */ false);
@@ -466,7 +466,7 @@ RCS::struct_rcs_infos RCS_SVN::info(const QString & path)
 			result = svnInfoToRcsInfos(entries.at(0));
 		}
 	}
-	catch(svn::ClientException e)
+	catch (svn::ClientException e)
 	{
 		emit log(RCS::LogError, e.message());
 	}
@@ -486,18 +486,18 @@ QList<RCS::struct_rcs_infos> RCS_SVN::infos(const QString & path)
 		{
 			entries = m_client->status(qPrintable(path), /* descend */ false, /* get_all */ true, /* update */ true, /* no_ignore */ false, /* ignore_externals */ false);
 		}
-		catch(svn::ClientException e)
+		catch (svn::ClientException e)
 		{
 			emit log(RCS::LogError, e.message());
 			entries = m_client->status(qPrintable(path), /* descend */ false, /* get_all */ true, /* update */ false, /* no_ignore */ false, /* ignore_externals */ false);
 		}
 
-		for(size_t i = 0; i < entries.size(); i++)
+		for (size_t i = 0; i < entries.size(); i++)
 		{
 			result << svnInfoToRcsInfos(entries.at(i));
 		}
 	}
-	catch(svn::ClientException e)
+	catch (svn::ClientException e)
 	{
 		emit log(RCS::LogError, e.message());
 	}
@@ -517,7 +517,7 @@ RCS::FilesOperation RCS_SVN::operations(const QStringList & paths)
 		{
 			entries = m_client->status(qPrintable(path), /* descend */ true, /* get_all */ false, /* update */ false, /* no_ignore */ false, /* ignore_externals */ false);
 
-			for(size_t i = 0; i < entries.size(); i++)
+			for (size_t i = 0; i < entries.size(); i++)
 			{
 				svn::Status status = entries.at(i);
 
@@ -548,7 +548,7 @@ RCS::FilesOperation RCS_SVN::operations(const QStringList & paths)
 				}
 			}
 		}
-		catch(svn::ClientException e)
+		catch (svn::ClientException e)
 		{
 			emit log(RCS::LogError, e.message());
 		}
@@ -575,7 +575,7 @@ void RCS_SVN::update(const QStringList & paths)
 		std::vector<svn_revnum_t> revisions = m_client->update(targets, svn::Revision::HEAD, true, false);
 		emit log(RCS::LogApplication, tr("Files updated."));
 	}
-	catch(svn::ClientException e)
+	catch (svn::ClientException e)
 	{
 		emit log(RCS::LogError, e.message());
 	}
@@ -600,7 +600,7 @@ void RCS_SVN::commit(const QStringList & paths, const QString & message)
 		svn_revnum_t revision = m_client->commit(targets, message.toUtf8().data(), false, false);
 		emit log(RCS::LogApplication, tr("Files commited at revision %2.").arg(revision));
 	}
-	catch(svn::ClientException e)
+	catch (svn::ClientException e)
 	{
 		emit log(RCS::LogError, e.message());
 	}
@@ -617,7 +617,7 @@ void RCS_SVN::add(const QStringList & paths)
 			svn::Path svnPath(path.toStdString());
 			m_client->add(svnPath, false);
 		}
-		catch(svn::ClientException e)
+		catch (svn::ClientException e)
 		{
 			emit log(RCS::LogError, e.message());
 		}
@@ -635,7 +635,7 @@ void RCS_SVN::remove(const QStringList & paths)
 			svn::Path svnPath(path.toStdString());
 			m_client->remove(svnPath, false);
 		}
-		catch(svn::ClientException e)
+		catch (svn::ClientException e)
 		{
 			emit log(RCS::LogError, e.message());
 		}
@@ -656,7 +656,7 @@ void RCS_SVN::updateToRevision(const QString & path, const QString & revision, Q
 		content->append(QString::fromStdString(m_client->cat(svnPath, svn::Revision(revision.toLong()))));
 		emit log(RCS::LogApplication, tr("Update %1 to revision %2.").arg(path).arg(revision));
 	}
-	catch(svn::ClientException e)
+	catch (svn::ClientException e)
 	{
 		emit log(RCS::LogError, e.message());
 	}

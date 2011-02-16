@@ -244,22 +244,22 @@ bool DirectoryEdit::isError() const
  */
 void DirectoryEdit::setText(const QString & value)
 {
-	if (value.startsWith (m_prefix))
+	if (value.startsWith(m_prefix))
 	{
-		QLineEdit::setText (value);
+		QLineEdit::setText(value);
 	}
 	else
 	{
-		QLineEdit::setText (m_prefix + value);
+		QLineEdit::setText(m_prefix + value);
 	}
 }
 
 /*!
  * \reimp
  */
-void DirectoryEdit::selectAll ()
+void DirectoryEdit::selectAll()
 {
-	setSelection (m_prefix.size (), text ().size () - m_prefix.size ());
+	setSelection(m_prefix.size(), text().size() - m_prefix.size());
 }
 
 /*!
@@ -267,8 +267,8 @@ void DirectoryEdit::selectAll ()
  */
 void DirectoryEdit::clear()
 {
-	setText (m_prefix);
-	setCursorPosition (m_prefix.size ());
+	setText(m_prefix);
+	setCursorPosition(m_prefix.size());
 }
 
 /*!
@@ -279,22 +279,33 @@ void DirectoryEdit::keyPressEvent(QKeyEvent *event)
 	if (!event->text().isEmpty() && cursorPosition() < m_prefix.size())
 		setCursorPosition(m_prefix.size());
 
-	switch (event->key()) {
+	switch (event->key())
+	{
 	case Qt::Key_End:
 	case Qt::Key_Home:
-		if (event->modifiers() & Qt::ShiftModifier) {
+		if (event->modifiers() & Qt::ShiftModifier)
+		{
 			int currentPos = cursorPosition();
 			const QString text = displayText();
-			if (event->key() == Qt::Key_End) {
-				if (currentPos == 0 && !m_prefix.isEmpty()) {
+			if (event->key() == Qt::Key_End)
+			{
+				if (currentPos == 0 && !m_prefix.isEmpty())
+				{
 					break; // let lineedit handle this
-				} else {
+				}
+				else
+				{
 					setSelection(currentPos, text.size() - currentPos);
 				}
-			} else {
-				if (currentPos <= m_prefix.size()) {
+			}
+			else
+			{
+				if (currentPos <= m_prefix.size())
+				{
 					break; // let lineedit handle this
-				} else {
+				}
+				else
+				{
 					setSelection(currentPos, m_prefix.size() - currentPos);
 				}
 			}
@@ -311,7 +322,8 @@ void DirectoryEdit::keyPressEvent(QKeyEvent *event)
 		break;
 #ifdef Q_WS_X11 // only X11
 	case Qt::Key_U:
-		if (event->modifiers() & Qt::ControlModifier) {
+		if (event->modifiers() & Qt::ControlModifier)
+		{
 			event->accept();
 			if (!isReadOnly())
 				clear();
@@ -321,7 +333,8 @@ void DirectoryEdit::keyPressEvent(QKeyEvent *event)
 #endif
 
 	default:
-		if (event == QKeySequence::SelectAll) {
+		if (event == QKeySequence::SelectAll)
+		{
 			selectAll();
 			event->accept();
 			return;
@@ -329,7 +342,7 @@ void DirectoryEdit::keyPressEvent(QKeyEvent *event)
 		break;
 	}
 
-	QLineEdit::keyPressEvent (event);
+	QLineEdit::keyPressEvent(event);
 }
 
 /*!
@@ -337,29 +350,38 @@ void DirectoryEdit::keyPressEvent(QKeyEvent *event)
  */
 void DirectoryEdit::slotEditorCursorPositionChanged(int oldpos, int newpos)
 {
-	if (!hasSelectedText() && !m_ignoreCursorPositionChanged) {
+	if (!hasSelectedText() && !m_ignoreCursorPositionChanged)
+	{
 		m_ignoreCursorPositionChanged = true;
 
 		bool allowSelection = true;
 		int pos = -1;
-		if (newpos < m_prefix.size() && newpos != 0) {
-			if (oldpos == 0) {
+		if (newpos < m_prefix.size() && newpos != 0)
+		{
+			if (oldpos == 0)
+			{
 				allowSelection = false;
 				pos = m_prefix.size();
-			} else {
+			}
+			else
+			{
 				pos = oldpos;
 			}
 		}
 
-		if (pos != -1) {
+		if (pos != -1)
+		{
 			const int selSize = selectionStart() >= 0 && allowSelection
 								? (selectedText().size() * (newpos < pos ? -1 : 1)) - newpos + pos
-								: 0;
+					: 0;
 
 			const bool wasBlocked = blockSignals(true);
-			if (selSize != 0) {
+			if (selSize != 0)
+			{
 				setSelection(pos - selSize, selSize);
-			} else {
+			}
+			else
+			{
 				setCursorPosition(pos);
 			}
 			blockSignals(wasBlocked);
@@ -380,7 +402,7 @@ void DirectoryEdit::slotTextChanged(QString text)
 	QFile file(text);
 	QPalette palette(this->palette());
 
-	m_error = (m_directory != fileInfo.isDir ()) || (m_fileMustExist && !file.exists ());
+	m_error = (m_directory != fileInfo.isDir()) || (m_fileMustExist && !file.exists());
 
 	if (!m_error)
 	{
@@ -468,7 +490,7 @@ PrivateDirectoryEditWidget::PrivateDirectoryEditWidget(QWidget * o)
 DirectoryEditWidget::DirectoryEditWidget(bool isDirectory, QWidget * parent) : QWidget(parent)
 {
 	d = new PrivateDirectoryEditWidget(this);
-	d->m_lineEdit->setDirectory (isDirectory);
+	d->m_lineEdit->setDirectory(isDirectory);
 	connect(d->m_button, SIGNAL(clicked()), this, SLOT(changePath()));
 }
 
@@ -497,7 +519,7 @@ DirectoryEditWidget::~DirectoryEditWidget()
  */
 bool DirectoryEditWidget::isDirectory() const
 {
-	return d->m_lineEdit->isDirectory ();
+	return d->m_lineEdit->isDirectory();
 }
 
 /*!
@@ -507,7 +529,7 @@ bool DirectoryEditWidget::isDirectory() const
  */
 void DirectoryEditWidget::setDirectory(bool value)
 {
-	d->m_lineEdit->setDirectory (value);
+	d->m_lineEdit->setDirectory(value);
 }
 
 /*!

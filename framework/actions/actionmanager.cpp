@@ -68,18 +68,18 @@ void PrivateActionManager::updateSeparatorState(const QList<MenuItem*> & items)
 		if (separator && isPreviousSeparator)
 		{
 			separator->setVisible(false);
-			separator->updateActionState ();
+			separator->updateActionState();
 		}
 		else if (separator)
 		{
-			separator->setVisible (true);
-			separator->updateActionState ();
+			separator->setVisible(true);
+			separator->updateActionState();
 			isPreviousSeparator = true;
 		}
 		else
 		{
 			Action * action = dynamic_cast<Action*>(item);
-			if (action->action ()->isVisible ()) // The result is previously stored
+			if (action->action()->isVisible())   // The result is previously stored
 			{
 				isPreviousSeparator = false;
 			}
@@ -92,7 +92,7 @@ void PrivateActionManager::updateSeparatorState(const QList<MenuItem*> & items)
 ActionManager::ActionManager()
 {
 	d = new PrivateActionManager;
-	connect(EditorManager::self (), SIGNAL(currentChanged(int)), this, SLOT(currentEditorChanged(int)));
+	connect(EditorManager::self(), SIGNAL(currentChanged(int)), this, SLOT(currentEditorChanged(int)));
 }
 
 ActionManager::~ActionManager()
@@ -102,56 +102,56 @@ ActionManager::~ActionManager()
 
 const QString ActionManager::nameOfMenu(const QString & menu) const
 {
-	return d->_libelles.value (menu);
+	return d->_libelles.value(menu);
 }
 
 void ActionManager::insertNameOfMenu(const QString & menu, const QString & name)
 {
-	d->_libelles.insert (menu, name);
+	d->_libelles.insert(menu, name);
 }
 
 QStringList ActionManager::menus() const
 {
-	return d->_menus.uniqueKeys ();
+	return d->_menus.uniqueKeys();
 }
 
 void ActionManager::addMenuItem(const QString& menu, MenuItem* item)
 {
-	d->_menus.insert (menu, item);
-	d->_items.insert (item);
+	d->_menus.insert(menu, item);
+	d->_items.insert(item);
 }
 
 void ActionManager::addMenuSeparator(const QString& menu)
 {
 	Separator * separator = new Separator;
-	addMenuItem (menu, separator);
+	addMenuItem(menu, separator);
 }
 
 QList< MenuItem* > ActionManager::menu(const QString& menu) const
 {
-	return d->_menus.values (menu);
+	return d->_menus.values(menu);
 }
 
 QStringList ActionManager::toolBars() const
 {
-	return d->_toolBars.uniqueKeys ();
+	return d->_toolBars.uniqueKeys();
 }
 
 void ActionManager::addToolBarItem(const QString& toolbar, MenuItem* item)
 {
-	d->_toolBars.insert (toolbar, item);
-	d->_items.insert (item);
+	d->_toolBars.insert(toolbar, item);
+	d->_items.insert(item);
 }
 
 void ActionManager::addToolBarSeparator(const QString& toolbar)
 {
 	Separator * separator = new Separator;
-	addToolBarItem (toolbar, separator);
+	addToolBarItem(toolbar, separator);
 }
 
 QList< MenuItem* > ActionManager::toolBar(const QString& toolbar) const
 {
-	return d->_toolBars.values (toolbar);
+	return d->_toolBars.values(toolbar);
 }
 
 const QList< MenuItem* >& ActionManager::popup() const
@@ -161,14 +161,14 @@ const QList< MenuItem* >& ActionManager::popup() const
 
 void ActionManager::addPopupItem(MenuItem* item)
 {
-	d->_popups.append (item);
-	d->_items.insert (item);
+	d->_popups.append(item);
+	d->_items.insert(item);
 }
 
 void ActionManager::addPopupSeparator()
 {
 	Separator * separator = new Separator;
-	addPopupItem (separator);
+	addPopupItem(separator);
 }
 
 void ActionManager::currentEditorChanged(int index)
@@ -176,28 +176,28 @@ void ActionManager::currentEditorChanged(int index)
 	AbstractEditor * editor = index >= 0 ? EditorManager::self()->editor(index) : NULL;
 	foreach(MenuItem * item, d->_items)
 	{
-		Action * action = dynamic_cast<Action*> (item);
+		Action * action = dynamic_cast<Action*>(item);
 		if (action)
 		{
 			action->setCurrentEditor(editor);
 		}
 	}
 
-	updateMenuItemState ();
+	updateMenuItemState();
 }
 
 void ActionManager::generateMenu()
 {
 	QSet<MenuItem*> backupItem = d->_items;
-	d->_libelles.clear ();
-	d->_menus.clear ();
-	d->_popups.clear ();
-	d->_items.clear ();
+	d->_libelles.clear();
+	d->_menus.clear();
+	d->_popups.clear();
+	d->_items.clear();
 
-	foreach(XinxPluginElement * element, XinxPluginsLoader::self ()->plugins ())
+	foreach(XinxPluginElement * element, XinxPluginsLoader::self()->plugins())
 	{
-		IXinxPlugin * pluginAction = qobject_cast<IXinxPlugin*> (element->plugin ());
-		if (element->isActivated () && pluginAction)
+		IXinxPlugin * pluginAction = qobject_cast<IXinxPlugin*> (element->plugin());
+		if (element->isActivated() && pluginAction)
 		{
 			pluginAction->generateActionMenu();
 		}
@@ -207,7 +207,7 @@ void ActionManager::generateMenu()
 
 	qDeleteAll(backupItem);
 
-	updateMenuItemState ();
+	updateMenuItemState();
 }
 
 void ActionManager::updateMenuItemState()
@@ -215,7 +215,7 @@ void ActionManager::updateMenuItemState()
 	// Mise à jours des statuts des actions
 	foreach(MenuItem * item, d->_items)
 	{
-		Action * action = dynamic_cast<Action*> (item);
+		Action * action = dynamic_cast<Action*>(item);
 		if (action)
 		{
 			action->updateActionState();
@@ -223,14 +223,14 @@ void ActionManager::updateMenuItemState()
 	}
 
 	// Browse menu to update separator state.
-	foreach (const QString & key, d->_menus.uniqueKeys ())
+	foreach(const QString & key, d->_menus.uniqueKeys())
 	{
-		d->updateSeparatorState(d->_menus.values (key));
+		d->updateSeparatorState(d->_menus.values(key));
 	}
 	// Browse toolbar to update separator state
-	foreach (const QString & key, d->_toolBars.uniqueKeys ())
+	foreach(const QString & key, d->_toolBars.uniqueKeys())
 	{
-		d->updateSeparatorState(d->_menus.values (key));
+		d->updateSeparatorState(d->_menus.values(key));
 	}
 	// Browse popup menu to update separator state
 	d->updateSeparatorState(d->_popups);

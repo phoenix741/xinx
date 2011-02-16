@@ -31,15 +31,15 @@ class AbstractEditor;
 
 class SavingDialog : public QDialog, private Ui::SavingDialog
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    explicit SavingDialog(QWidget *parent = 0);
+	explicit SavingDialog(QWidget *parent = 0);
 
 	void addEditor(AbstractEditor * editor);
 	int countEditor();
 	QList<AbstractEditor*> selectedEditor();
 protected:
-    void changeEvent(QEvent *e);
+	void changeEvent(QEvent *e);
 
 private slots:
 	void buttonBoxClicked(QAbstractButton*);

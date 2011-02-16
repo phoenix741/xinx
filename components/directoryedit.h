@@ -70,7 +70,7 @@ protected:
 	void keyPressEvent(QKeyEvent *event);
 public slots:
 	void setText(const QString & value);
-	void selectAll ();
+	void selectAll();
 	void clear();
 	void changePath(QWidget * parent = NULL, const QString & defaultValue = QString());
 private slots:

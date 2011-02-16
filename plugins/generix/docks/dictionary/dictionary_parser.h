@@ -30,12 +30,14 @@
 
 namespace ContentView3
 {
-	class Node;
+class Node;
 }
 
-namespace Generix {
+namespace Generix
+{
 
-namespace Dictionary {
+namespace Dictionary
+{
 
 class Parser : public ContentView3::Parser, private QXmlStreamReader
 {

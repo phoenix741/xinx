@@ -28,9 +28,11 @@
 // QCodeEdit header
 #include <qdocumentcursor.h>
 
-namespace Core {
+namespace Core
+{
 
-namespace CascadingStyleSheet {
+namespace CascadingStyleSheet
+{
 
 class CssContextParser : public CodeCompletion::ContextParser
 {

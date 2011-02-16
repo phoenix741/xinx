@@ -274,8 +274,8 @@ void PluginDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
 	QPixmap iconPixmap = index.model()->data(index, PluginModel::PLG_ICON).value<QPixmap>();
 	iconPixmap = iconPixmap.scaled(iconSize());
 	int pixmapLeftPosition = myOption.direction == Qt::LeftToRight ?
-	                         checkRect.right() + m_separatorPixels
-	                         :   checkRect.left() - m_separatorPixels - iconPixmap.width();
+							 checkRect.right() + m_separatorPixels
+							 :   checkRect.left() - m_separatorPixels - iconPixmap.width();
 
 	painter->drawPixmap(pixmapLeftPosition, (myOption.rect.height() - iconPixmap.height()) / 2 + myOption.rect.top(), iconPixmap);
 
@@ -304,22 +304,22 @@ void PluginDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
 	painter->setFont(titleFont);
 	display = titleOpt.fontMetrics.elidedText(display, Qt::ElideRight, maxTextLength);
 	painter->drawText(
-	    LeftPosition(display, titleOpt.fontMetrics),
-	    m_separatorPixels + myOption.rect.top(),
-	    titleOpt.fontMetrics.width(display),
-	    titleOpt.fontMetrics.height(),
-	    Qt::AlignLeft,
-	    display);
+		LeftPosition(display, titleOpt.fontMetrics),
+		m_separatorPixels + myOption.rect.top(),
+		titleOpt.fontMetrics.width(display),
+		titleOpt.fontMetrics.height(),
+		Qt::AlignLeft,
+		display);
 
 	painter->setFont(descFont);
 	description = metrics.elidedText(description, Qt::ElideRight, maxTextLength);
 	painter->drawText(
-	    LeftPosition(description, metrics),
-	    myOption.rect.height() - m_separatorPixels - metrics.height() + myOption.rect.top(),
-	    metrics.width(description),
-	    metrics.height(),
-	    Qt::AlignLeft,
-	    description);
+		LeftPosition(description, metrics),
+		myOption.rect.height() - m_separatorPixels - metrics.height() + myOption.rect.top(),
+		metrics.width(description),
+		metrics.height(),
+		Qt::AlignLeft,
+		description);
 
 	painter->restore();
 }
@@ -361,12 +361,12 @@ QStyleOptionButton PluginDelegate::calculateButton(const QIcon & icon, const QSt
 	o.fontMetrics = option.fontMetrics;
 
 	buttonSize = QApplication::style()->sizeFromContents(
-	                 QStyle::CT_PushButton,
-	                 &option,
-	                 QSize(o.fontMetrics.width(caption) + o.iconSize.width() + m_separatorPixels * 3,
-	                       qMax(o.fontMetrics.height(), o.iconSize.height()) + m_separatorPixels
-	                      )
-	             );
+					 QStyle::CT_PushButton,
+					 &option,
+					 QSize(o.fontMetrics.width(caption) + o.iconSize.width() + m_separatorPixels * 3,
+						   qMax(o.fontMetrics.height(), o.iconSize.height()) + m_separatorPixels
+						  )
+				 );
 
 	o.rect.setTop((option.rect.height() - buttonSize.height()) / 2 + option.rect.top());
 	o.rect.setSize(buttonSize);
@@ -399,10 +399,10 @@ QStyleOptionViewItem PluginDelegate::calculateCheckbox(const QStyleOptionViewIte
 	rect = QApplication::style()->subElementRect(QStyle::SE_CheckBoxIndicator, &option);
 	QSize checkSize = rect.size();
 	rect.setTopLeft(QPoint(
-	                    option.direction == Qt::LeftToRight ? option.rect.left() + m_leftMargin + m_separatorPixels + decalage
-	                    : option.rect.right() - m_rightMargin -  m_separatorPixels - checkSize.width() - decalage,
-	                    (option.rect.height() - checkSize.height()) / 2 + option.rect.top()
-	                ));
+						option.direction == Qt::LeftToRight ? option.rect.left() + m_leftMargin + m_separatorPixels + decalage
+						: option.rect.right() - m_rightMargin -  m_separatorPixels - checkSize.width() - decalage,
+						(option.rect.height() - checkSize.height()) / 2 + option.rect.top()
+					));
 	rect.setSize(checkSize);
 	return checkOpt;
 }

@@ -28,7 +28,8 @@
 // Qt header
 #include <QSettings>
 
-namespace XinxSession {
+namespace XinxSession
+{
 
 /* PrivateSession */
 
@@ -39,106 +40,106 @@ PrivateSession::PrivateSession(Session * session) : _session(session), _is_sessi
 
 void PrivateSession::save(const QString & saveName)
 {
-	Q_ASSERT_X(! _current_session_name.isEmpty (), "PrivateSession::load", "The current session name is empty");
-	Q_ASSERT_X(! saveName.isEmpty (), "PrivateSession::load", "The current session name is empty");
+	Q_ASSERT_X(! _current_session_name.isEmpty(), "PrivateSession::load", "The current session name is empty");
+	Q_ASSERT_X(! saveName.isEmpty(), "PrivateSession::load", "The current session name is empty");
 
 	QSettings settings;
-	settings.beginGroup ("sessions");
-	settings.remove (saveName);
-	settings.beginGroup (saveName);
+	settings.beginGroup("sessions");
+	settings.remove(saveName);
+	settings.beginGroup(saveName);
 
-	settings.setValue ("name", _current_session_name);
+	settings.setValue("name", _current_session_name);
 
-	_project_path_opened.removeDuplicates ();
-	settings.beginWriteArray ("projects");
-	for(int i = 0; i < _project_path_opened.size (); i++)
+	_project_path_opened.removeDuplicates();
+	settings.beginWriteArray("projects");
+	for (int i = 0; i < _project_path_opened.size(); i++)
 	{
-		settings.setArrayIndex (i);
+		settings.setArrayIndex(i);
 		const QString & path = _project_path_opened.at(i);
-		settings.setValue ("path", path);
+		settings.setValue("path", path);
 	}
-	settings.endArray ();
+	settings.endArray();
 
-	settings.beginWriteArray ("files");
-	for(int i = 0; i < _last_opened_file.size (); i++)
+	settings.beginWriteArray("files");
+	for (int i = 0; i < _last_opened_file.size(); i++)
 	{
-		settings.setArrayIndex (i);
+		settings.setArrayIndex(i);
 		const QString & filename = _last_opened_file.at(i);
-		settings.setValue ("filename", filename);
+		settings.setValue("filename", filename);
 	}
-	settings.endArray ();
+	settings.endArray();
 
-	settings.beginWriteArray ("editors");
-	for(int i = 0; i < _opened_editor.size (); i++)
+	settings.beginWriteArray("editors");
+	for (int i = 0; i < _opened_editor.size(); i++)
 	{
-		settings.setArrayIndex (i);
+		settings.setArrayIndex(i);
 		SessionEditor * editor = _opened_editor.at(i);
 
-		foreach(const QString & key, editor->propertieKeys ())
+		foreach(const QString & key, editor->propertieKeys())
 		{
-			settings.setValue (key, editor->readProperty (key));
+			settings.setValue(key, editor->readProperty(key));
 		}
 	}
-	settings.endArray ();
+	settings.endArray();
 
-	settings.endGroup ();
-	settings.endGroup ();
+	settings.endGroup();
+	settings.endGroup();
 }
 
 void PrivateSession::load()
 {
-	Q_ASSERT_X(! _current_session_name.isEmpty (), "PrivateSession::load", "The current session name is empty");
+	Q_ASSERT_X(! _current_session_name.isEmpty(), "PrivateSession::load", "The current session name is empty");
 	Q_ASSERT_X(_is_session_updatable, "PrivateSession::load", "The session is not updatable");
 
 	qDeleteAll(_opened_editor);
-	_opened_editor.clear ();
-	_last_opened_file.clear ();
-	_project_path_opened.clear ();
+	_opened_editor.clear();
+	_last_opened_file.clear();
+	_project_path_opened.clear();
 
 	QSettings settings;
-	settings.beginGroup ("sessions");
-	settings.beginGroup (_current_session_name);
+	settings.beginGroup("sessions");
+	settings.beginGroup(_current_session_name);
 
-	if (!settings.value ("name").toString ().isEmpty ())
+	if (!settings.value("name").toString().isEmpty())
 	{
-		_current_session_name = settings.value ("name").toString ();
+		_current_session_name = settings.value("name").toString();
 	}
 
-	int size = settings.beginReadArray ("projects");
-	for(int i = 0; i < size; i++)
+	int size = settings.beginReadArray("projects");
+	for (int i = 0; i < size; i++)
 	{
-		settings.setArrayIndex (i);
-		const QString path = settings.value ("path").toString ();
-		_project_path_opened.append (path);
+		settings.setArrayIndex(i);
+		const QString path = settings.value("path").toString();
+		_project_path_opened.append(path);
 	}
-	settings.endArray ();
+	settings.endArray();
 
-	size = settings.beginReadArray ("files");
-	for(int i = 0; i < size; i++)
+	size = settings.beginReadArray("files");
+	for (int i = 0; i < size; i++)
 	{
-		settings.setArrayIndex (i);
-		const QString & filename = settings.value ("filename").toString ();
-		_last_opened_file.append (filename);
+		settings.setArrayIndex(i);
+		const QString & filename = settings.value("filename").toString();
+		_last_opened_file.append(filename);
 	}
-	settings.endArray ();
+	settings.endArray();
 
-	size = settings.beginReadArray ("editors");
-	for(int i = 0; i < size; i++)
+	size = settings.beginReadArray("editors");
+	for (int i = 0; i < size; i++)
 	{
-		settings.setArrayIndex (i);
+		settings.setArrayIndex(i);
 		SessionEditor * editor = new SessionEditor(_session);
 
-		foreach(const QString & key, settings.allKeys ())
+		foreach(const QString & key, settings.allKeys())
 		{
-			editor->writeProperty (key, settings.value (key));
+			editor->writeProperty(key, settings.value(key));
 		}
 
-		_opened_editor.append (editor);
+		_opened_editor.append(editor);
 	}
-	settings.endArray ();
+	settings.endArray();
 
-	settings.endGroup ();
-	settings.endGroup ();
+	settings.endGroup();
+	settings.endGroup();
 }
 
 /* Session */
@@ -184,11 +185,11 @@ void Session::addOpenedProject(const QString & projectPath)
 {
 	if (!d->_is_session_updatable) return;
 
-	if (! d->_project_path_opened.contains (QDir::cleanPath (projectPath)))
+	if (! d->_project_path_opened.contains(QDir::cleanPath(projectPath)))
 	{
-		d->_project_path_opened.append (QDir::cleanPath (projectPath));
+		d->_project_path_opened.append(QDir::cleanPath(projectPath));
 		d->save(d->_current_session_name);
-		emit changed ();
+		emit changed();
 	}
 }
 
@@ -196,9 +197,9 @@ void Session::deleteOpenedProject(const QString & projectPath)
 {
 	if (!d->_is_session_updatable) return;
 
-	d->_project_path_opened.removeAll (projectPath);
+	d->_project_path_opened.removeAll(projectPath);
 	d->save(d->_current_session_name);
-	emit changed ();
+	emit changed();
 }
 
 /*!
@@ -271,8 +272,8 @@ void Session::removeSerializedEditor(SessionEditor * editor)
 {
 	if (!d->_is_session_updatable) return;
 
-	d->_opened_editor.removeAll (editor);
-	d->save (d->_current_session_name);
+	d->_opened_editor.removeAll(editor);
+	d->save(d->_current_session_name);
 	emit changed();
 }
 
@@ -281,42 +282,42 @@ const QString & Session::sessionName() const
 	return d->_current_session_name;
 }
 
-void Session::loadSession ( const QString& sessionName )
+void Session::loadSession(const QString& sessionName)
 {
-	if (! sessionName.isEmpty ())
+	if (! sessionName.isEmpty())
 	{
 		d->_current_session_name = sessionName;
 	}
-	d->load ();
+	d->load();
 	emit changed();
 }
 
-void Session::saveSession ( const QString& sessionName )
+void Session::saveSession(const QString& sessionName)
 {
-	if (! sessionName.isEmpty () && (sessionName != RECOVER_SESSION))
+	if (! sessionName.isEmpty() && (sessionName != RECOVER_SESSION))
 	{
-		removeSession ();
+		removeSession();
 		d->_current_session_name = sessionName;
 	}
-	d->save (sessionName.isEmpty () ? d->_current_session_name : sessionName);
+	d->save(sessionName.isEmpty() ? d->_current_session_name : sessionName);
 	emit changed();
 }
 
 void Session::removeSession()
 {
 	QSettings settings;
-	settings.beginGroup ("sessions");
-	settings.remove (d->_current_session_name);
-	settings.endGroup ();
+	settings.beginGroup("sessions");
+	settings.remove(d->_current_session_name);
+	settings.endGroup();
 }
 
 QStringList Session::sessionsNames()
 {
 	QStringList keys;
 	QSettings settings;
-	settings.beginGroup ("sessions");
-	keys = settings.childGroups ();
-	settings.endGroup ();
+	settings.beginGroup("sessions");
+	keys = settings.childGroups();
+	settings.endGroup();
 
 	// On ajoute toujours la session par défaut, même s'elle n'est pas sauvegardé.
 	if (!keys.contains(DEFAULT_SESSION))

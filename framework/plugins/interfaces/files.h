@@ -29,13 +29,13 @@
 
 namespace XinxProject
 {
-	class Project;
+class Project;
 
-	typedef QSharedPointer<Project> ProjectPtr;
+typedef QSharedPointer<Project> ProjectPtr;
 }
 namespace ContentView3
 {
-	class Parser;
+class Parser;
 }
 class AbstractEditor;
 class XinxFormatScheme;

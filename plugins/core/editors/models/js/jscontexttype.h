@@ -27,10 +27,12 @@
 
 #define JS_CONTEXT_TYPE "JS"
 
-namespace Core {
+namespace Core
+{
 
-namespace JavaScript {
-	
+namespace JavaScript
+{
+
 class JsContextType : public CodeCompletion::ContextType
 {
 public:
@@ -42,20 +44,20 @@ public:
 		FUNCTION_PARAMS		= 3, //!< Edit the parameters of function
 		FUNCTION_CONTENT	= 4  //!< Edit the content of the function
 	};
-	
+
 	JsContextType();
 	virtual ~JsContextType();
-	
+
 	Position position();
 	void setPosition(Position value);
-	
+
 	const QString & functionName() const;
 	void setFunctionName(const QString & value);
 
 	virtual QString type() const;
 	virtual bool operator==(const ContextType & other) const;
 private:
-    Position _position;
+	Position _position;
 	QString _function_name;
 };
 

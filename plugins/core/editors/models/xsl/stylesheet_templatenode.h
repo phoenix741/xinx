@@ -28,9 +28,11 @@
 #include <QApplication>
 #include <QString>
 
-namespace Core {
+namespace Core
+{
 
-namespace Stylesheet {
+namespace Stylesheet
+{
 
 class TemplateNode : public ContentView3::Node
 {
@@ -39,7 +41,7 @@ public:
 	static QSharedPointer<TemplateNode> create(const QString & name, ContentView3::NodePtr parent = ContentView3::NodePtr());
 	virtual ~TemplateNode();
 
-    virtual void setLine(int value);
+	virtual void setLine(int value);
 
 	void setMode(const QString & mode);
 	const QString & mode() const;

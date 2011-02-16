@@ -50,7 +50,7 @@ void Manager::initialisation()
 	// Global Commit
 	m_commitAll = new QAction(QIcon(":/images/vcs_commit.png"), tr("Commit project"), this);
 	m_commitAll->setWhatsThis(tr("<p>Commit all files of the project directory (to repository). An optional message can be added.</p>\n"
-							  "<p><i>Only <b>XINX</b> managed files are commited to the repository.</i></p>", 0, QApplication::UnicodeUTF8));
+								 "<p><i>Only <b>XINX</b> managed files are commited to the repository.</i></p>", 0, QApplication::UnicodeUTF8));
 	m_commitAll->setShortcut(QKeySequence("F6"));
 	m_commitAll->setEnabled(false);
 	connect(m_commitAll, SIGNAL(triggered()), this, SLOT(validWorkingCopy()));
@@ -142,7 +142,7 @@ IManagerUI* Manager::userInterface() const
 
 void Manager::waitForFinished()
 {
-	m_rcsWatcher.waitForFinished ();
+	m_rcsWatcher.waitForFinished();
 }
 
 //! Return true if an operation is executed
@@ -153,31 +153,31 @@ bool Manager::isExecuting() const
 
 void Manager::addRemoveFiles(RCS * rcs, QStringList toAdd, QStringList toRemove)
 {
-	m_rcsWatcher.waitForFinished ();
+	m_rcsWatcher.waitForFinished();
 	m_rcsWatcher.setFuture(QtConcurrent::run(this, &Manager::callRCSFileOperations, rcs, toAdd, toRemove));
 }
 
 void Manager::validWorkingCopy(RCS * rcs, RCS::FilesOperation operations, QString messages)
 {
-	m_rcsWatcher.waitForFinished ();
+	m_rcsWatcher.waitForFinished();
 	m_rcsWatcher.setFuture(QtConcurrent::run(this, &Manager::callRCSValideWorkingCopy, rcs, operations, messages));
 }
 
 void Manager::updateWorkingCopy(RCS * rcs, QStringList list)
 {
-	m_rcsWatcher.waitForFinished ();
+	m_rcsWatcher.waitForFinished();
 	m_rcsWatcher.setFuture(QtConcurrent::run(this, &Manager::callRCSUpdateWorkingCopy, rcs, list));
 }
 
 void Manager::updateRevision(RCS * rcs, QString path, QString revision, QByteArray * content)
 {
-	m_rcsWatcher.waitForFinished ();
+	m_rcsWatcher.waitForFinished();
 	m_rcsWatcher.setFuture(QtConcurrent::run(this, &Manager::callRCSUpdateRevision, rcs, path, revision, content));
 }
 
 void Manager::changed(XinxProject::ProjectPtr project)
 {
-	bool rcs_enabled = project && project->rcsProxy() && ! project->projectRCS().isEmpty() && ! isExecuting ();
+	bool rcs_enabled = project && project->rcsProxy() && ! project->projectRCS().isEmpty() && ! isExecuting();
 	m_updateAll->setEnabled(rcs_enabled);
 	m_commitAll->setEnabled(rcs_enabled);
 	m_abort->setEnabled(rcs_enabled);
@@ -185,7 +185,7 @@ void Manager::changed(XinxProject::ProjectPtr project)
 
 void Manager::updateActions()
 {
-	changed (XinxProject::Manager::self()->selectedProject().toStrongRef());
+	changed(XinxProject::Manager::self()->selectedProject().toStrongRef());
 }
 
 void Manager::updateWorkingCopy()

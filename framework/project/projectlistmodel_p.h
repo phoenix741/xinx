@@ -111,7 +111,7 @@ public:
 	bool isNodeMustBeShow(ModelFileNode* node) const;
 
 	ModelFileNode * node(ModelFileNode * currentNode, const QString & path);
-	QModelIndex index (ModelFileNode * node) const;
+	QModelIndex index(ModelFileNode * node) const;
 
 	void addVisibleChildren(XinxProject::ModelFileNode* node, const QString& filename);
 	void removeVisibleChildren(ModelFileNode * node, const QString & filename);

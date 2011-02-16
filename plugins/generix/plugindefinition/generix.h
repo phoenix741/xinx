@@ -36,16 +36,16 @@ class Gce150FileResolver;
 /* GenerixPlugin */
 
 class GenerixPlugin :   public QObject,
-		public IXinxPlugin,
-		public IFilePlugin,
-		public IXinxInputOutputPlugin,
-		public IDockPlugin,
-		public IXinxPluginConfiguration,
-		public IResolverPlugin,
-		public IXinxPluginProjectConfiguration,
-		public IXinxXsltParser,
-		public IContentViewParserPlugin,
-		public ICodeCompletionPlugin
+			public IXinxPlugin,
+			public IFilePlugin,
+			public IXinxInputOutputPlugin,
+			public IDockPlugin,
+			public IXinxPluginConfiguration,
+			public IResolverPlugin,
+			public IXinxPluginProjectConfiguration,
+			public IXinxXsltParser,
+			public IContentViewParserPlugin,
+			public ICodeCompletionPlugin
 {
 	Q_OBJECT
 	Q_INTERFACES(IXinxPlugin IXinxInputOutputPlugin IDockPlugin IXinxPluginConfiguration IFilePlugin IResolverPlugin IXinxPluginProjectConfiguration IXinxXsltParser IContentViewParserPlugin ICodeCompletionPlugin)

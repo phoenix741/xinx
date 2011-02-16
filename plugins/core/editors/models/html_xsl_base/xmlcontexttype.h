@@ -26,10 +26,12 @@
 
 #define XML_CONTEXT_TYPE "XML"
 
-namespace Core {
+namespace Core
+{
 
-namespace BaliseDefinition {
-	
+namespace BaliseDefinition
+{
+
 class XmlBalise
 {
 public:
@@ -38,14 +40,14 @@ public:
 
 	const QString & baliseName() const;
 	void setBaliseName(const QString & value);
-	
+
 	const QHash<QString,QString> & attributes() const;
 	void setAttributes(const QHash<QString,QString> & value);
 
 	bool operator==(const XmlBalise & other) const;
 private:
 	QString _balise_name, _namespace_prefix;
-    QHash< QString, QString > _attributes;
+	QHash< QString, QString > _attributes;
 };
 
 class XmlContextType : public CodeCompletion::ContextType
@@ -59,27 +61,27 @@ public:
 		ATTRIBUTE_NAME		= 3,
 		ATTRIBUTE_CONTENT	= 4
 	};
-	
+
 	XmlContextType();
 	virtual ~XmlContextType();
-	
+
 	bool isHtml();
 	void setIsHtml(bool value);
 
 	bool isXsl();
 	void setIsXsl(bool value);
-	
+
 	Position position();
 	void setPosition(Position value);
-	
+
 	/* ATTRIBUTE_NAME, ATTRIBUTE_CONTENT */
 	const XmlBalise & balise() const;
 	void setBalise(const XmlBalise & balise);
-		
+
 	/* ATTRIBUTE_CONTENT */
 	const QString & attributeName() const;
 	void setAttributeName(const QString & value);
-	
+
 	const QStack<XmlBalise> & xpathLocation();
 	void setXpathLocation(const QStack<XmlBalise> & value);
 
@@ -92,12 +94,12 @@ public:
 	virtual QString type() const;
 	virtual bool operator==(const ContextType & other) const;
 private:
-    Position _position;
-    XmlBalise _balise;
-    QString _attribute_name;
-    bool _is_html;
-    bool _is_xsl;
-    QStack< XmlBalise > _xpath_location;
+	Position _position;
+	XmlBalise _balise;
+	QString _attribute_name;
+	bool _is_html;
+	bool _is_xsl;
+	QStack< XmlBalise > _xpath_location;
 	QHash<QString,QString> _xmlns_list;
 };
 

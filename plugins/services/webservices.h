@@ -104,9 +104,9 @@ typedef QList<WebServices*> WebServicesList;
 
 namespace XinxProject
 {
-	class Project;
-	typedef QSharedPointer<Project> ProjectPtr;
-	typedef QWeakPointer<Project> ProjectPtrWeak;
+class Project;
+typedef QSharedPointer<Project> ProjectPtr;
+typedef QWeakPointer<Project> ProjectPtrWeak;
 };
 
 class WebServicesManager : public QObject

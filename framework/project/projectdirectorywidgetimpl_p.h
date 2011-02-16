@@ -33,7 +33,7 @@ class PrivateProjectDirectoryWidgetImpl : public QObject
 	Q_OBJECT
 public:
 	explicit PrivateProjectDirectoryWidgetImpl(ProjectDirectoryWidgetImpl* parent);
-    virtual ~PrivateProjectDirectoryWidgetImpl();
+	virtual ~PrivateProjectDirectoryWidgetImpl();
 
 	ProjectDirectoryWidgetImpl * _parent;
 	XinxProject::ProjectListModel * _model;
@@ -80,7 +80,7 @@ public:
 	void openFile(const QModelIndex & index);
 public slots:
 	void toggledFlatView(bool flat);
-	void doubleClicked (const QModelIndex & index);
+	void doubleClicked(const QModelIndex & index);
 	void rowsInserted(const QModelIndex & index, int start, int end);
 	void updateFilter();
 	void filterTimeout();

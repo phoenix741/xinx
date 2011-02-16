@@ -115,7 +115,7 @@ bool MenuItem::isVisible() const
 Separator::Separator() : _visible(true)
 {
 	m_action = new QAction(this);
-	m_action->setSeparator (true);
+	m_action->setSeparator(true);
 }
 
 //! Destroy the separator

@@ -30,7 +30,8 @@
 #include <QExplicitlySharedDataPointer>
 #include <QObject>
 
-namespace CodeCompletion {
+namespace CodeCompletion
+{
 
 class PrivateContext;
 
@@ -39,7 +40,7 @@ class LIBEXPORT ContextType
 public:
 	ContextType();
 	virtual ~ContextType();
-	
+
 	virtual QString type() const = 0;
 	virtual bool operator==(const ContextType & other) const;
 private:
@@ -55,7 +56,7 @@ public:
 
 	const QString & filename() const;
 	void setFilename(const QString & filename);
-	
+
 	const QString & prefix() const;
 	void setPrefix(const QString & prefix);
 

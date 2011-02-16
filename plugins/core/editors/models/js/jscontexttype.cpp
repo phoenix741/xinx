@@ -22,10 +22,10 @@
 
 namespace Core
 {
-	
+
 namespace JavaScript
 {
-	
+
 /* JsContextType */
 
 JsContextType::JsContextType()
@@ -65,7 +65,7 @@ const QString& JsContextType::functionName() const
 
 bool JsContextType::operator==(const CodeCompletion::ContextType& other) const
 {
-    if (CodeCompletion::ContextType::operator==(other))
+	if (CodeCompletion::ContextType::operator==(other))
 	{
 		const JsContextType & t = dynamic_cast<const JsContextType &>(other);
 		return (t._function_name == _function_name) && (t._position == _position);

@@ -34,14 +34,14 @@ class WebPluginSettings;
 class ManualFileResolver;
 
 class CorePlugin :  public QObject,
-		public IXinxPlugin,
-		public IFilePlugin,
-		public IResolverPlugin,
-		public IXinxPluginConfiguration,
-		public IXinxPluginProjectConfiguration,
-		public IDockPlugin,
-		public IContentViewParserPlugin,
-		public ICodeCompletionPlugin
+			public IXinxPlugin,
+			public IFilePlugin,
+			public IResolverPlugin,
+			public IXinxPluginConfiguration,
+			public IXinxPluginProjectConfiguration,
+			public IDockPlugin,
+			public IContentViewParserPlugin,
+			public ICodeCompletionPlugin
 {
 	Q_OBJECT
 	Q_INTERFACES(IXinxPlugin IXinxPluginConfiguration IXinxPluginProjectConfiguration IResolverPlugin IFilePlugin IDockPlugin IContentViewParserPlugin ICodeCompletionPlugin)

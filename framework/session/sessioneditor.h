@@ -29,9 +29,9 @@
 
 namespace XinxProject
 {
-	class Project;
+class Project;
 
-	typedef QSharedPointer<Project> ProjectPtr;
+typedef QSharedPointer<Project> ProjectPtr;
 }
 
 namespace XinxSession

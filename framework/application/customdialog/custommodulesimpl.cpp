@@ -136,47 +136,47 @@ void CustomModulesImpl::aboutPlugin(PluginElement * plugin)
 	informations->setWordWrap(true);
 	informations->setOpenExternalLinks(true);
 	informations->setText(
-	    tr("<table>"
-	       "<tr>"
-	       "<td colspan=\"3\"><b>%1</b></td>"
-	       "</tr>"
-	       "<tr>"
-	       "<td colspan=\"3\">%2</td>"
-	       "</tr>"
-	       "<tr><td colspan=\"3\"><hr/></td></tr>"
-	       "<tr>"
-	       "<td><b>Author</b></td>"
-	       "<td width=\"0\">:</td>"
-	       "<td>%3</td>"
-	       "</tr>"
-	       "<tr>"
-	       "<td><b>E-Mail</b></td>"
-	       "<td width=\"0\">:</td>"
-	       "<td><a href=\"mailto:%4\">%4</a></td>"
-	       "</tr>"
-	       "<tr>"
-	       "<td><b>Web site</b></td>"
-	       "<td width=\"0\">:</td>"
-	       "<td><a href=\"%5\">%5</a></td>"
-	       "</tr>"
-	       "<tr>"
-	       "<td><b>Version</b></td>"
-	       "<td width=\"0\">:</td>"
-	       "<td>%6</td>"
-	       "</tr>"
-	       "<tr>"
-	       "<td><b>Licence</b></td>"
-	       "<td width=\"0\">:</td>"
-	       "<td>%7</td>"
-	       "</tr>"
-	       "</table>")
-	    .arg(qobject_cast<IXinxPlugin*>(xinxPlugin->plugin())->getPluginAttribute(IXinxPlugin::PLG_NAME).toString())
-	    .arg(qobject_cast<IXinxPlugin*>(xinxPlugin->plugin())->getPluginAttribute(IXinxPlugin::PLG_DESCRIPTION).toString())
-	    .arg(qobject_cast<IXinxPlugin*>(xinxPlugin->plugin())->getPluginAttribute(IXinxPlugin::PLG_AUTHOR).toString())
-	    .arg(qobject_cast<IXinxPlugin*>(xinxPlugin->plugin())->getPluginAttribute(IXinxPlugin::PLG_EMAIL).toString())
-	    .arg(qobject_cast<IXinxPlugin*>(xinxPlugin->plugin())->getPluginAttribute(IXinxPlugin::PLG_WEBSITE).toString())
-	    .arg(qobject_cast<IXinxPlugin*>(xinxPlugin->plugin())->getPluginAttribute(IXinxPlugin::PLG_VERSION).toString())
-	    .arg(qobject_cast<IXinxPlugin*>(xinxPlugin->plugin())->getPluginAttribute(IXinxPlugin::PLG_LICENCE).toString())
+		tr("<table>"
+		   "<tr>"
+		   "<td colspan=\"3\"><b>%1</b></td>"
+		   "</tr>"
+		   "<tr>"
+		   "<td colspan=\"3\">%2</td>"
+		   "</tr>"
+		   "<tr><td colspan=\"3\"><hr/></td></tr>"
+		   "<tr>"
+		   "<td><b>Author</b></td>"
+		   "<td width=\"0\">:</td>"
+		   "<td>%3</td>"
+		   "</tr>"
+		   "<tr>"
+		   "<td><b>E-Mail</b></td>"
+		   "<td width=\"0\">:</td>"
+		   "<td><a href=\"mailto:%4\">%4</a></td>"
+		   "</tr>"
+		   "<tr>"
+		   "<td><b>Web site</b></td>"
+		   "<td width=\"0\">:</td>"
+		   "<td><a href=\"%5\">%5</a></td>"
+		   "</tr>"
+		   "<tr>"
+		   "<td><b>Version</b></td>"
+		   "<td width=\"0\">:</td>"
+		   "<td>%6</td>"
+		   "</tr>"
+		   "<tr>"
+		   "<td><b>Licence</b></td>"
+		   "<td width=\"0\">:</td>"
+		   "<td>%7</td>"
+		   "</tr>"
+		   "</table>")
+		.arg(qobject_cast<IXinxPlugin*>(xinxPlugin->plugin())->getPluginAttribute(IXinxPlugin::PLG_NAME).toString())
+		.arg(qobject_cast<IXinxPlugin*>(xinxPlugin->plugin())->getPluginAttribute(IXinxPlugin::PLG_DESCRIPTION).toString())
+		.arg(qobject_cast<IXinxPlugin*>(xinxPlugin->plugin())->getPluginAttribute(IXinxPlugin::PLG_AUTHOR).toString())
+		.arg(qobject_cast<IXinxPlugin*>(xinxPlugin->plugin())->getPluginAttribute(IXinxPlugin::PLG_EMAIL).toString())
+		.arg(qobject_cast<IXinxPlugin*>(xinxPlugin->plugin())->getPluginAttribute(IXinxPlugin::PLG_WEBSITE).toString())
+		.arg(qobject_cast<IXinxPlugin*>(xinxPlugin->plugin())->getPluginAttribute(IXinxPlugin::PLG_VERSION).toString())
+		.arg(qobject_cast<IXinxPlugin*>(xinxPlugin->plugin())->getPluginAttribute(IXinxPlugin::PLG_LICENCE).toString())
 	);
 
 	QVBoxLayout * labelLayout = new QVBoxLayout;
@@ -214,31 +214,31 @@ void CustomModulesImpl::aboutScript(PluginElement * plugin)
 	informations->setWordWrap(true);
 	informations->setOpenExternalLinks(true);
 	informations->setText(
-	    tr("<table>"
-	       "<tr>"
-	       "<td colspan=\"3\"><b>%1</b></td>"
-	       "</tr>"
-	       "<tr><td colspan=\"3\"><hr/></td></tr>"
-	       "<tr>"
-	       "<td><b>Author</b></td>"
-	       "<td width=\"0\">:</td>"
-	       "<td>%2</td>"
-	       "</tr>"
-	       "<tr>"
-	       "<td><b>Version</b></td>"
-	       "<td width=\"0\">:</td>"
-	       "<td>%3</td>"
-	       "</tr>"
-	       "<tr>"
-	       "<td><b>Licence</b></td>"
-	       "<td width=\"0\">:</td>"
-	       "<td>%4</td>"
-	       "</tr>"
-	       "</table>")
-	    .arg(script->name())
-	    .arg(script->author())
-	    .arg(script->version())
-	    .arg(script->licence())
+		tr("<table>"
+		   "<tr>"
+		   "<td colspan=\"3\"><b>%1</b></td>"
+		   "</tr>"
+		   "<tr><td colspan=\"3\"><hr/></td></tr>"
+		   "<tr>"
+		   "<td><b>Author</b></td>"
+		   "<td width=\"0\">:</td>"
+		   "<td>%2</td>"
+		   "</tr>"
+		   "<tr>"
+		   "<td><b>Version</b></td>"
+		   "<td width=\"0\">:</td>"
+		   "<td>%3</td>"
+		   "</tr>"
+		   "<tr>"
+		   "<td><b>Licence</b></td>"
+		   "<td width=\"0\">:</td>"
+		   "<td>%4</td>"
+		   "</tr>"
+		   "</table>")
+		.arg(script->name())
+		.arg(script->author())
+		.arg(script->version())
+		.arg(script->licence())
 	);
 
 	QVBoxLayout * labelLayout = new QVBoxLayout;

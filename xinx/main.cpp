@@ -250,9 +250,9 @@ int main(int argc, char *argv[])
 			app.attachMainWindow(mainWin = new MainformImpl());
 
 			bool recovering = false;
-			if (XinxSession::Session::sessionsNames ().contains (RECOVER_SESSION))
+			if (XinxSession::Session::sessionsNames().contains(RECOVER_SESSION))
 			{
-				QMessageBox::StandardButton result = QMessageBox::question (&splash, QApplication::translate("SplashScreen", "Recover"), QApplication::translate("SplashScreen", "There's an existing recover session. Do you wan try to recover ?"), QMessageBox::Yes | QMessageBox::No);
+				QMessageBox::StandardButton result = QMessageBox::question(&splash, QApplication::translate("SplashScreen", "Recover"), QApplication::translate("SplashScreen", "There's an existing recover session. Do you wan try to recover ?"), QMessageBox::Yes | QMessageBox::No);
 				if (result == QMessageBox::Yes)
 				{
 					recovering = true;

@@ -337,7 +337,7 @@ void WebServicesEditor::deserialize(XinxSession::SessionEditor * data)
 	for (int i = 0 ; i < pc; i++)
 	{
 		QString name  = data->readProperty(QString("Key_%1").arg(i)).toString(),
-		                value = data->readProperty(QString("Value_%1").arg(i)).toString();
+						value = data->readProperty(QString("Value_%1").arg(i)).toString();
 
 		m_paramValues[ name ] = value;
 	}
@@ -569,7 +569,7 @@ void WebServicesEditor::run(bool batch)
 {
 	m_batch = batch;
 
-	if(!m_batch)
+	if (!m_batch)
 		m_progressBar->setVisible(true);
 
 	Operation * op = operation();

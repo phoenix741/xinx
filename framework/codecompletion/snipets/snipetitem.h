@@ -28,17 +28,18 @@
 
 class TextFileEditor;
 
-namespace CodeCompletion {
-	
+namespace CodeCompletion
+{
+
 class PrivateSnipetItem;
 
 class SnipetItem : public CodeCompletion::ActionItem
 {
 	Q_DECLARE_TR_FUNCTIONS(SnipetItem)
 public:
-    SnipetItem(const QString& snipet, const QString & name);
-    virtual ~SnipetItem();
-	
+	SnipetItem(const QString& snipet, const QString & name);
+	virtual ~SnipetItem();
+
 	virtual void execute(Context context, TextFileEditor* editor);
 private:
 	PrivateSnipetItem * d;

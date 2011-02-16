@@ -43,7 +43,7 @@ void NewGenerixDerivation1Page::initializePage()
 	ConfigurationVersion version = field("generix.version").value<ConfigurationVersion>();
 	ConfigurationVersion version150(6, 1, 50);
 
-	m_projectDirectoryAsPrefix->setEnabled (version < version150);
+	m_projectDirectoryAsPrefix->setEnabled(version < version150);
 }
 
 bool NewGenerixDerivation1Page::pageIsVisible() const

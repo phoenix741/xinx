@@ -181,7 +181,7 @@ void Parser::readTemplate(QList<struct_xsl_variable >& variables, QList<struct_i
 			}
 			else if (QXmlStreamReader::name() == "script")
 			{
-				if (attributes().value( "src" ).isEmpty())
+				if (attributes().value("src").isEmpty())
 				{
 					struct struct_internal_script s;
 					s.line = decalage() + lineNumber();
@@ -194,16 +194,16 @@ void Parser::readTemplate(QList<struct_xsl_variable >& variables, QList<struct_i
 				{
 					struct struct_import s;
 					s.line = decalage() + lineNumber();
-					s.src = attributes().value ("src").toString();
+					s.src = attributes().value("src").toString();
 					skipCurrentElement();
 					imports += s;
 				}
 			}
-			else if( QXmlStreamReader::name() == "link" )
+			else if (QXmlStreamReader::name() == "link")
 			{
 				struct struct_import s;
 				s.line = decalage() + lineNumber();
-				s.src = attributes().value( "href" ).toString();
+				s.src = attributes().value("href").toString();
 				skipCurrentElement();
 				imports += s;
 			}
@@ -226,7 +226,7 @@ void Parser::readTemplate(ContentView3::NodePtr & n)
 {
 	Q_ASSERT(isStartElement() && QXmlStreamReader::name() == "template");
 
-	bool isNamedTemplate  = ! attributes().value("name").isEmpty ();
+	bool isNamedTemplate  = ! attributes().value("name").isEmpty();
 	QStringList templates = (!isNamedTemplate ? attributes().value("match").toString() : attributes().value("name").toString()).split("|", QString::SkipEmptyParts);
 	QString mode = attributes().value("mode").toString();
 	int line = decalage() + lineNumber();
@@ -241,7 +241,7 @@ void Parser::readTemplate(ContentView3::NodePtr & n)
 		QSharedPointer<TemplateNode> t = TemplateNode::create(name, n);
 		t->setLine(line);
 		t->setMode(mode);
-		t->setIsNamedTemplate (isNamedTemplate);
+		t->setIsNamedTemplate(isNamedTemplate);
 
 		/* Chargement des imports */
 		foreach(struct_import s, imports)

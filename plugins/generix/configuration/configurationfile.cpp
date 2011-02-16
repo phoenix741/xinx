@@ -74,7 +74,7 @@ ConfigurationVersion::ConfigurationVersion(const QString & version, int build)
 	if (version.at(0) != 'V')
 		throw ConfigurationVersionIncorectException(version);
 	int posDot = version.indexOf("."),
-	             posLine = version.indexOf("-", posDot);
+				 posLine = version.indexOf("-", posDot);
 	if ((posDot < 0) || (posLine < 0))
 		throw ConfigurationVersionIncorectException(version);
 	major = version.mid(1, posDot - 1);
@@ -112,8 +112,8 @@ int ConfigurationVersion::build() const
 QString ConfigurationVersion::toString() const
 {
 	QString version = QString("V%1.%2-%3").arg(m_major, 2, 10, QLatin1Char('0'))
-	                  .arg(m_minor, 2, 10, QLatin1Char('0'))
-	                  .arg(m_release, 2, 10, QLatin1Char('0'));
+					  .arg(m_minor, 2, 10, QLatin1Char('0'))
+					  .arg(m_release, 2, 10, QLatin1Char('0'));
 	if (m_build > 0)
 		version += QString(" (%1)")     .arg(m_build, 2, 10, QLatin1Char('0'));
 

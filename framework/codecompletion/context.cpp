@@ -27,10 +27,11 @@
 // Std header
 #include <typeinfo>
 
-namespace CodeCompletion {
+namespace CodeCompletion
+{
 
 /* ContextType */
-	
+
 ContextType::ContextType()
 {
 
@@ -53,7 +54,7 @@ class PrivateContext : public QSharedData
 public:
 	PrivateContext();
 	~PrivateContext();
-	
+
 	QString _filename, _prefix;
 	QHash<QString,ContextType*> _context;
 	ContentView3::FilePtrWeak _file;
@@ -161,10 +162,10 @@ bool Context::operator==(const Context& other) const
 	if (d->_context.count() != other.d->_context.count())
 		return false;
 
-	foreach (ContextType * contextType, d->_context)
+	foreach(ContextType * contextType, d->_context)
 	{
 		bool finded = false;
-		foreach (ContextType * otherContextType, other.d->_context)
+		foreach(ContextType * otherContextType, other.d->_context)
 		{
 			if (contextType->operator==(*otherContextType))
 			{
@@ -184,6 +185,6 @@ bool Context::operator==(const Context& other) const
 
 bool Context::operator!=(const Context & other) const
 {
-	return ! (*this == other);
+	return !(*this == other);
 }
 }

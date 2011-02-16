@@ -6,25 +6,29 @@
 
 /* GceSettingsSettings */
 
-GceSettingsSettings::GceSettingsSettings( const QString & organization, const QString & application ) : QSettings( organization, application ) {
+GceSettingsSettings::GceSettingsSettings(const QString & organization, const QString & application) : QSettings(organization, application)
+{
 }
 
-void GceSettingsSettings::setValue( const QString & key, const QVariant & value, const QVariant & defaultValue ) {
-	if( value == defaultValue )
-		remove( key );
+void GceSettingsSettings::setValue(const QString & key, const QVariant & value, const QVariant & defaultValue)
+{
+	if (value == defaultValue)
+		remove(key);
 	else
-		QSettings::setValue( key, value );
+		QSettings::setValue(key, value);
 }
 
-void GceSettingsSettings::setValue( const QString & key, const QVariant & value ) {
-	QSettings::setValue( key, value );
+void GceSettingsSettings::setValue(const QString & key, const QVariant & value)
+{
+	QSettings::setValue(key, value);
 }
 
 /* PrivateGceSettings */
 
-class PrivateGceSettings {
+class PrivateGceSettings
+{
 public:
-	PrivateGceSettings( GceSettings * parent );
+	PrivateGceSettings(GceSettings * parent);
 
 	GceSettingsSettings * m_settings;
 	void createSettings();
@@ -35,61 +39,73 @@ private:
 	GceSettings * m_parent;
 };
 
-PrivateGceSettings::PrivateGceSettings( GceSettings * parent ) {
+PrivateGceSettings::PrivateGceSettings(GceSettings * parent)
+{
 	m_parent = parent;
 }
 
-void PrivateGceSettings::createSettings() {
+void PrivateGceSettings::createSettings()
+{
 	m_settings = new GceSettingsSettings("Shadoware.Org", "XINX");
 }
 
-void PrivateGceSettings::deleteSettings() {
-	if( m_settings )
+void PrivateGceSettings::deleteSettings()
+{
+	if (m_settings)
 		delete m_settings;
 	m_settings = NULL;
 }
 
 /* GceSettings */
 
-GceSettings::GceSettings( const GceSettings & origine ) {
-	d = new PrivateGceSettings( this );
+GceSettings::GceSettings(const GceSettings & origine)
+{
+	d = new PrivateGceSettings(this);
 	d->m_globals = origine.d->m_globals;
 }
 
-GceSettings::GceSettings() {
-	d = new PrivateGceSettings( this );
+GceSettings::GceSettings()
+{
+	d = new PrivateGceSettings(this);
 }
 
-GceSettings::~GceSettings() {
+GceSettings::~GceSettings()
+{
 	delete d;
 }
 
-GceSettings&GceSettings::operator=( const GceSettings& p ) {
+GceSettings&GceSettings::operator=(const GceSettings& p)
+{
 	d->m_globals = p.d->m_globals;
 	return *this;
 }
 
-GceSettings::struct_globals & GceSettings::config() {
+GceSettings::struct_globals & GceSettings::config()
+{
 	return d->m_globals;
 }
 
-void GceSettings::setDefault() {
+void GceSettings::setDefault()
+{
 	d->m_globals = getDefaultGlobals();
 }
 
-void GceSettings::save() {
+void GceSettings::save()
+{
 	d->createSettings();
-	setSettingsGlobals( d->m_settings, "PluginsSettings/generix", d->m_globals );
+	setSettingsGlobals(d->m_settings, "PluginsSettings/generix", d->m_globals);
 	d->deleteSettings();
 }
 
-void GceSettings::load() {
+void GceSettings::load()
+{
 	d->createSettings();
-	d->m_globals = getSettingsGlobals( d->m_settings, "PluginsSettings/generix", getDefaultGlobals() );
+	d->m_globals = getSettingsGlobals(d->m_settings, "PluginsSettings/generix", getDefaultGlobals());
 	d->deleteSettings();
 }
 
-GceSettings::GceSettings::struct_globals GceSettings::getDefaultGlobals() {
+GceSettings::GceSettings::struct_globals GceSettings::getDefaultGlobals()
+{
 	struct_globals value;
 
 	value.readConfigurations = true;
@@ -98,23 +114,25 @@ GceSettings::GceSettings::struct_globals GceSettings::getDefaultGlobals() {
 	return value;
 }
 
-GceSettings::GceSettings::struct_globals GceSettings::getSettingsGlobals( GceSettingsSettings * settings, const QString & path, const GceSettings::GceSettings::struct_globals & defaultValue ) {
+GceSettings::GceSettings::struct_globals GceSettings::getSettingsGlobals(GceSettingsSettings * settings, const QString & path, const GceSettings::GceSettings::struct_globals & defaultValue)
+{
 	struct_globals value;
-	settings->beginGroup( path );
+	settings->beginGroup(path);
 
-	value.readConfigurations = settings->value( "Read Configurations", defaultValue.readConfigurations ).toBool();
-	value.readDictionaries = settings->value( "Read Dictionaries", defaultValue.readDictionaries ).toBool();
+	value.readConfigurations = settings->value("Read Configurations", defaultValue.readConfigurations).toBool();
+	value.readDictionaries = settings->value("Read Dictionaries", defaultValue.readDictionaries).toBool();
 
 	settings->endGroup();
 	return value;
 }
 
-void GceSettings::setSettingsGlobals( GceSettingsSettings * settings, const QString & path, const GceSettings::GceSettings::struct_globals & value ) {
+void GceSettings::setSettingsGlobals(GceSettingsSettings * settings, const QString & path, const GceSettings::GceSettings::struct_globals & value)
+{
 	struct_globals defaultValue = getDefaultGlobals();
-	settings->beginGroup( path );
+	settings->beginGroup(path);
 
-	settings->setValue( "Read Configurations", value.readConfigurations, defaultValue.readConfigurations );
-	settings->setValue( "Read Dictionaries", value.readDictionaries, defaultValue.readDictionaries );
+	settings->setValue("Read Configurations", value.readConfigurations, defaultValue.readConfigurations);
+	settings->setValue("Read Dictionaries", value.readDictionaries, defaultValue.readDictionaries);
 
 	settings->endGroup();
 }

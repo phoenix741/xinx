@@ -77,7 +77,7 @@ void PrivateCache::importOf(QList< ContentView3::FilePtr >& result, ContentView3
 {
 	foreach(const QString & import, file->imports())
 	{
-		const QString absoluteImport = QFileInfo(import).absoluteFilePath ();
+		const QString absoluteImport = QFileInfo(import).absoluteFilePath();
 
 		if (_files.contains(absoluteImport))
 		{
@@ -128,20 +128,20 @@ QStringList Cache::cachedFiles() const
 
 void Cache::addFileToCache(const QString& filename, bool force, ContentView3::Cache::CacheVisibility visibility)
 {
-	const QString absoluteFilename = QFileInfo(filename).absoluteFilePath ();
+	const QString absoluteFilename = QFileInfo(filename).absoluteFilePath();
 
 	// If the file is already in the cache, don't reload it.
-	if (! force && d->_files.contains (absoluteFilename)) return;
+	if (! force && d->_files.contains(absoluteFilename)) return;
 
 	QFile * device = new QFile(absoluteFilename);
 	if (device->open(QFile::ReadOnly))
 	{
-		FilePtr file = cachedFile (absoluteFilename);
+		FilePtr file = cachedFile(absoluteFilename);
 
 		Parser * parser = 0;
-		if (! d->_files.value (absoluteFilename)._parser_name.isEmpty())
+		if (! d->_files.value(absoluteFilename)._parser_name.isEmpty())
 		{
-			parser = ParserFactory::getParserByType (d->_files.value (absoluteFilename)._parser_name);
+			parser = ParserFactory::getParserByType(d->_files.value(absoluteFilename)._parser_name);
 		}
 		else
 		{
@@ -166,14 +166,14 @@ void Cache::addFileToCache(ContentView3::Parser* parser, bool force, ContentView
 		if (visibility > Cache::NONE)
 		{
 			// If the file is already in the cache, don't reload it.
-			if (! force && d->_files.contains (file->filename ())) return;
+			if (! force && d->_files.contains(file->filename())) return;
 
 			QMutexLocker locker(&d->_cache_mutex);
 
 			PrivateCache::CacheInformation information;
 			information._file = file;
 			information._visibility = visibility;
-			information._parser_name = parser->name ();
+			information._parser_name = parser->name();
 			d->_files.insert(file->filename(), information);
 
 			QFileInfo fileInformation(file->filename());
@@ -182,12 +182,12 @@ void Cache::addFileToCache(ContentView3::Parser* parser, bool force, ContentView
 		}
 	}
 
-	XinxJobManager::self ()->addJob(parser);
+	XinxJobManager::self()->addJob(parser);
 }
 
 void Cache::parsed(FilePtr file)
 {
-	emit updated (file);
+	emit updated(file);
 }
 
 void Cache::refreshCache(const QString& filename)
@@ -225,7 +225,7 @@ QList< FilePtr > Cache::importOf(ContentView3::FilePtr file) const
 
 FilePtr Cache::cachedFile(const QString & filename)
 {
-	const QString absoluteFilename = QFileInfo(filename).absoluteFilePath ();
+	const QString absoluteFilename = QFileInfo(filename).absoluteFilePath();
 
 	FilePtr file;
 
@@ -237,7 +237,7 @@ FilePtr Cache::cachedFile(const QString & filename)
 	}
 	else
 	{
-		file = File::create (absoluteFilename, d->_project.toStrongRef());
+		file = File::create(absoluteFilename, d->_project.toStrongRef());
 	}
 
 	return file;

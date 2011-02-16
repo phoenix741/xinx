@@ -54,14 +54,14 @@ XslNodeItem::~XslNodeItem()
 
 void XslNodeItem::insertCompletionStart(CodeCompletion::Context context, TextFileEditor* editor, QDocumentCursor & cursor)
 {
-	Core::BaliseDefinition::XmlContextType * c = dynamic_cast<Core::BaliseDefinition::XmlContextType*> (context.context(XML_CONTEXT_TYPE));
+	Core::BaliseDefinition::XmlContextType * c = dynamic_cast<Core::BaliseDefinition::XmlContextType*>(context.context(XML_CONTEXT_TYPE));
 
-	if (c->xmlnsList ().value (c->balise().nameSpacePrefix()) != "http://www.w3.org/1999/XSL/Transform" )
+	if (c->xmlnsList().value(c->balise().nameSpacePrefix()) != "http://www.w3.org/1999/XSL/Transform")
 	{
 		QDocumentCursor tc = cursor;
-		tc.movePosition (1, QDocumentCursor::PreviousCharacter, QDocumentCursor::KeepAnchor);
+		tc.movePosition(1, QDocumentCursor::PreviousCharacter, QDocumentCursor::KeepAnchor);
 
-		if (tc.selectedText () != "{")
+		if (tc.selectedText() != "{")
 		{
 			cursor.insertText("{");
 		}
@@ -70,20 +70,20 @@ void XslNodeItem::insertCompletionStart(CodeCompletion::Context context, TextFil
 
 void XslNodeItem::insertCompletionEnd(CodeCompletion::Context context, TextFileEditor* editor, QDocumentCursor & cursor)
 {
-	Core::BaliseDefinition::XmlContextType * c = dynamic_cast<Core::BaliseDefinition::XmlContextType*> (context.context(XML_CONTEXT_TYPE));
+	Core::BaliseDefinition::XmlContextType * c = dynamic_cast<Core::BaliseDefinition::XmlContextType*>(context.context(XML_CONTEXT_TYPE));
 
-	if (c->xmlnsList ().value (c->balise().nameSpacePrefix()) != "http://www.w3.org/1999/XSL/Transform" )
+	if (c->xmlnsList().value(c->balise().nameSpacePrefix()) != "http://www.w3.org/1999/XSL/Transform")
 	{
 		QDocumentCursor tc = cursor;
-		tc.movePosition (1, QDocumentCursor::NextCharacter, QDocumentCursor::KeepAnchor);
+		tc.movePosition(1, QDocumentCursor::NextCharacter, QDocumentCursor::KeepAnchor);
 
-		if (tc.selectedText () != "}")
+		if (tc.selectedText() != "}")
 		{
 			cursor.insertText("}");
 		}
 		else
 		{
-			cursor.movePosition (1, QDocumentCursor::NextCharacter);
+			cursor.movePosition(1, QDocumentCursor::NextCharacter);
 		}
 	}
 }
@@ -102,12 +102,12 @@ XslTemplateItem::~XslTemplateItem()
 
 void XslTemplateItem::execute(CodeCompletion::Context context, TextFileEditor* editor)
 {
-    CodeCompletion::Item::execute(context, editor);
+	CodeCompletion::Item::execute(context, editor);
 
 	QSharedPointer<TemplateNode> templateNode = node().staticCast<TemplateNode>();
 	if (! templateNode->mode().isEmpty())
 	{
-		Core::BaliseDefinition::XmlContextType * c = dynamic_cast<Core::BaliseDefinition::XmlContextType*> (context.context(XML_CONTEXT_TYPE));
+		Core::BaliseDefinition::XmlContextType * c = dynamic_cast<Core::BaliseDefinition::XmlContextType*>(context.context(XML_CONTEXT_TYPE));
 		if (!c->balise().attributes().contains("mode"))
 		{
 			// Go after quote
@@ -138,35 +138,35 @@ ItemModelFactory::~ItemModelFactory()
 
 void ItemModelFactory::addApplyTemplatesMode(Core::BaliseDefinition::XmlContextType * c, const QString& contextType, ContentView3::NodePtr node)
 {
-	QString selectAttr = c->balise ().attributes ().value ("select");
-	if (selectAttr.contains ("/"))
+	QString selectAttr = c->balise().attributes().value("select");
+	if (selectAttr.contains("/"))
 	{
-		selectAttr = selectAttr.section ("/", -1);
+		selectAttr = selectAttr.section("/", -1);
 	}
 
 	QSharedPointer<TemplateNode> templateNode;
-	if (! (templateNode = node.dynamicCast<TemplateNode>()).isNull () && !templateNode->isNamedTemplate () && (templateNode->name () == selectAttr) && !templateNode->mode ().isEmpty ())
+	if (!(templateNode = node.dynamicCast<TemplateNode>()).isNull() && !templateNode->isNamedTemplate() && (templateNode->name() == selectAttr) && !templateNode->mode().isEmpty())
 	{
-		if (! templateNode->mode ().startsWith(context().prefix (), Qt::CaseInsensitive)) return;
+		if (! templateNode->mode().startsWith(context().prefix(), Qt::CaseInsensitive)) return;
 
 		CodeCompletion::Item * item = new CodeCompletion::Item;
-		item->setIcon (QIcon(":/images/html_value.png"));
-		item->setText (templateNode->mode ());
-		item->setCompletionText (templateNode->mode ());
-		item->setCompletionType (tr("Template Mode"));
-		item->setKeyString (templateNode->mode ());
-		item->setContextType (contextType);
+		item->setIcon(QIcon(":/images/html_value.png"));
+		item->setText(templateNode->mode());
+		item->setCompletionText(templateNode->mode());
+		item->setCompletionType(tr("Template Mode"));
+		item->setKeyString(templateNode->mode());
+		item->setContextType(contextType);
 
-		itemInterface ()->addItem (item);
+		itemInterface()->addItem(item);
 	}
 }
 
 void ItemModelFactory::addApplyTemplatesSelect(Core::BaliseDefinition::XmlContextType * c, const QString& contextType, ContentView3::NodePtr node)
 {
-	if (! node->name().startsWith(context().prefix (), Qt::CaseInsensitive)) return;
+	if (! node->name().startsWith(context().prefix(), Qt::CaseInsensitive)) return;
 
 	QSharedPointer<TemplateNode> templateNode;
-	if (! (templateNode = node.dynamicCast<TemplateNode>()).isNull () && !templateNode->isNamedTemplate ())
+	if (!(templateNode = node.dynamicCast<TemplateNode>()).isNull() && !templateNode->isNamedTemplate())
 	{
 		XslTemplateItem * item = new XslTemplateItem(node);
 		item->setContextType(contextType);
@@ -176,10 +176,10 @@ void ItemModelFactory::addApplyTemplatesSelect(Core::BaliseDefinition::XmlContex
 
 void ItemModelFactory::addCallTemplate(Core::BaliseDefinition::XmlContextType * c, const QString& contextType, ContentView3::NodePtr node)
 {
-	if (! node->name().startsWith(context().prefix (), Qt::CaseInsensitive)) return;
+	if (! node->name().startsWith(context().prefix(), Qt::CaseInsensitive)) return;
 
 	QSharedPointer<TemplateNode> templateNode;
-	if (! (templateNode = node.dynamicCast<TemplateNode>()).isNull () && templateNode->isNamedTemplate ())
+	if (!(templateNode = node.dynamicCast<TemplateNode>()).isNull() && templateNode->isNamedTemplate())
 	{
 		XslNodeItem * item = new XslNodeItem(node);
 		item->setContextType(contextType);
@@ -191,7 +191,7 @@ void ItemModelFactory::addOther(Core::BaliseDefinition::XmlContextType * c, cons
 {
 	if (node.dynamicCast<ParamNode>() || node.dynamicCast<VariableNode>())
 	{
-		if (! node->name().startsWith(context().prefix (), Qt::CaseInsensitive)) return;
+		if (! node->name().startsWith(context().prefix(), Qt::CaseInsensitive)) return;
 
 		XslNodeItem * item = new XslNodeItem(node);
 		item->setContextType(contextType);
@@ -228,7 +228,7 @@ void ItemModelFactory::addWithParamName(Core::BaliseDefinition::XmlContextType* 
 
 	foreach(ContentView3::NodePtr child, node->childs())
 	{
-		if (! child->name().startsWith(context ().prefix (), Qt::CaseInsensitive)) continue;
+		if (! child->name().startsWith(context().prefix(), Qt::CaseInsensitive)) continue;
 
 		if (child.dynamicCast<ParamNode>())
 		{
@@ -242,7 +242,7 @@ void ItemModelFactory::addWithParamName(Core::BaliseDefinition::XmlContextType* 
 
 void ItemModelFactory::addNode(const QString & contextType, ContentView3::NodePtr node, QString path, bool import)
 {
-	Core::BaliseDefinition::XmlContextType * c = dynamic_cast<Core::BaliseDefinition::XmlContextType*> (context().context(XML_CONTEXT_TYPE));
+	Core::BaliseDefinition::XmlContextType * c = dynamic_cast<Core::BaliseDefinition::XmlContextType*>(context().context(XML_CONTEXT_TYPE));
 
 	Core::BaliseDefinition::XmlBalise balise;
 	if (!import)
@@ -260,19 +260,19 @@ void ItemModelFactory::addNode(const QString & contextType, ContentView3::NodePt
 
 	foreach(ContentView3::NodePtr child, node->childs())
 	{
-		if ((c->balise ().baliseName () == "call-template") && (c->attributeName () == "name")) // FIXME: test namespace
+		if ((c->balise().baliseName() == "call-template") && (c->attributeName() == "name"))    // FIXME: test namespace
 		{
 			addCallTemplate(c, contextType, child);
 		}
-		else if ((c->balise ().baliseName () == "apply-templates") && (c->attributeName () == "select"))
+		else if ((c->balise().baliseName() == "apply-templates") && (c->attributeName() == "select"))
 		{
 			addApplyTemplatesSelect(c, contextType, child);
 		}
-		else if ((c->balise ().baliseName () == "apply-templates") && (c->attributeName () == "mode"))
+		else if ((c->balise().baliseName() == "apply-templates") && (c->attributeName() == "mode"))
 		{
 			addApplyTemplatesMode(c, contextType, child);
 		}
-		else if ((c->balise ().baliseName () == "with-param") && (c->attributeName () == "name"))
+		else if ((c->balise().baliseName() == "with-param") && (c->attributeName() == "name"))
 		{
 			addWithParamName(c, contextType, child);
 		}
@@ -285,21 +285,21 @@ void ItemModelFactory::addNode(const QString & contextType, ContentView3::NodePt
 
 void ItemModelFactory::generate()
 {
-	Core::BaliseDefinition::XmlContextType * c = dynamic_cast<Core::BaliseDefinition::XmlContextType*> (context().context(XML_CONTEXT_TYPE));
-	if (c && c->position () == Core::BaliseDefinition::XmlContextType::ATTRIBUTE_CONTENT)
+	Core::BaliseDefinition::XmlContextType * c = dynamic_cast<Core::BaliseDefinition::XmlContextType*>(context().context(XML_CONTEXT_TYPE));
+	if (c && c->position() == Core::BaliseDefinition::XmlContextType::ATTRIBUTE_CONTENT)
 	{
-		ContentView3::FilePtr file = context().fileStrongRef ();
+		ContentView3::FilePtr file = context().fileStrongRef();
 		XinxProject::ProjectPtr project = file->project();
 
 		ContentView3::FileNodePtr rootNode = file->rootNode();
-		addNode (tr("Local"), rootNode, QString(), false);
+		addNode(tr("Local"), rootNode, QString(), false);
 
 		if (project)
 		{
-			foreach(const ContentView3::FilePtr & import, project->cache ()->importOf(file))
+			foreach(const ContentView3::FilePtr & import, project->cache()->importOf(file))
 			{
 				ContentView3::FileNodePtr rootNode = import->rootNode();
-				addNode (QDir(project->projectPath ()).relativeFilePath (import->filename()), rootNode, QString(), true);
+				addNode(QDir(project->projectPath()).relativeFilePath(import->filename()), rootNode, QString(), true);
 			}
 		}
 	}

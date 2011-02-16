@@ -88,6 +88,6 @@ void UniqueApplication::slotErrorTriggered()
 		// Hide the main widget to prevent user interaction
 		m_mainform->hide();
 
-		XinxSession::SessionManager::self ()->createRecoverSession();
+		XinxSession::SessionManager::self()->createRecoverSession();
 	}
 }

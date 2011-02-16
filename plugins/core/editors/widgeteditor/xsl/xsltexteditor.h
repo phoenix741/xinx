@@ -41,7 +41,7 @@ namespace Core
 {
 namespace Stylesheet
 {
-	class TemplateNode;
+class TemplateNode;
 }
 }
 
@@ -52,7 +52,7 @@ public:
 	XslTextEditor(QWidget * parent = 0);
 	virtual ~XslTextEditor();
 
-    virtual QDocumentCursor insertCompletionBalises(Core::BaliseDefinition::XmlContextType* context, QDocumentCursor& tc, QSharedPointer< Core::BaliseDefinition::BaliseNode > balise);
+	virtual QDocumentCursor insertCompletionBalises(Core::BaliseDefinition::XmlContextType* context, QDocumentCursor& tc, QSharedPointer< Core::BaliseDefinition::BaliseNode > balise);
 
 	QSharedPointer<Core::Stylesheet::TemplateNode> localNodeOfTemplate(const ContentView3::NodePtr & node, const QString & templateName, bool isNamed);
 	QSharedPointer<Core::Stylesheet::TemplateNode> globalNodeOfTemplate(const QString & templateName, bool isNamed);

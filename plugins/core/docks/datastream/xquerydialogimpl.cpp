@@ -55,14 +55,14 @@ protected:
 			if (hasLine)
 			{
 				m_messages += tr("Warning in %1, at line %2, column %3: %4").arg(QString::fromLatin1(sourceLocation.uri().toEncoded()),
-				              QString::number(sourceLocation.line()),
-				              QString::number(sourceLocation.column()),
-				              description);
+							  QString::number(sourceLocation.line()),
+							  QString::number(sourceLocation.column()),
+							  description);
 			}
 			else
 			{
 				m_messages += tr("Warning in %1: %2").arg(QString::fromLatin1(sourceLocation.uri().toEncoded()),
-				              description);
+							  description);
 			}
 
 			break;
@@ -83,16 +83,16 @@ protected:
 			if (hasLine)
 			{
 				m_messages += tr("Error %1 in %2, at line %3, column %4: %5").arg(errorId,
-				              QString::fromLatin1(sourceLocation.uri().toEncoded()),
-				              QString::number(sourceLocation.line()),
-				              QString::number(sourceLocation.column()),
-				              description);
+							  QString::fromLatin1(sourceLocation.uri().toEncoded()),
+							  QString::number(sourceLocation.line()),
+							  QString::number(sourceLocation.column()),
+							  description);
 			}
 			else
 			{
 				m_messages += tr("Error %1 in %2: %3").arg(errorId,
-				              QString::fromLatin1(sourceLocation.uri().toEncoded()),
-				              description);
+							  QString::fromLatin1(sourceLocation.uri().toEncoded()),
+							  description);
 			}
 			break;
 		}
@@ -203,8 +203,8 @@ void XQueryDialogImpl::addFunction()
 		if (m_queryTextEdit->textCursor().hasSelection())
 		{
 			QDocumentCursor c = m_queryTextEdit->textCursor(),
-			                    s = c.selectionStart(),
-			                        e = c.selectionEnd();
+								s = c.selectionStart(),
+									e = c.selectionEnd();
 			e.movePosition(functionName.length(), QDocumentCursor::Right);
 
 			s.insertText(functionName);

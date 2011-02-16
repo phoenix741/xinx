@@ -60,7 +60,7 @@ PrivateFile::~PrivateFile()
 FilePtr File::create(XinxProject::ProjectPtr project)
 {
 	FilePtr ptr(new File(project));
-	ptr->d->_this = ptr.toWeakRef ();
+	ptr->d->_this = ptr.toWeakRef();
 	return ptr;
 }
 
@@ -74,7 +74,7 @@ File::File(XinxProject::ProjectPtr project) : d(new PrivateFile)
 FilePtr File::create(const QString & filename, XinxProject::ProjectPtr project)
 {
 	FilePtr ptr(new File(filename, project));
-	ptr->d->_this = ptr.toWeakRef ();
+	ptr->d->_this = ptr.toWeakRef();
 	return ptr;
 }
 
@@ -93,7 +93,7 @@ File::~File()
 
 void File::setFilename(const QString & filename)
 {
-	d->_filename = QFileInfo(filename).absoluteFilePath ();
+	d->_filename = QFileInfo(filename).absoluteFilePath();
 }
 
 const QString & File::filename() const
@@ -111,7 +111,7 @@ XinxProject::ProjectPtr File::project() const
 	return d->_project.toStrongRef();
 }
 
-void File::addImport ( const QString& import )
+void File::addImport(const QString& import)
 {
 	if (! d->_imports.contains(import))
 	{
@@ -120,7 +120,7 @@ void File::addImport ( const QString& import )
 			d->_imports.append(import);
 			d->_project.toStrongRef()->cache()->addFileToCache(import);
 		}
-		catch(CacheParserNotFoundException e)
+		catch (CacheParserNotFoundException e)
 		{
 			qDebug() << e.getMessage();
 		}
@@ -137,7 +137,7 @@ const QStringList& File::imports() const
 	return d->_imports;
 }
 
-void File::addSymbole ( const ContentView3::File::Symbole& symbole )
+void File::addSymbole(const ContentView3::File::Symbole& symbole)
 {
 	d->_symbols.append(symbole);
 }
@@ -163,7 +163,7 @@ void File::setRootNode(FileNodePtr node)
 	if (d->_rootNode.data() != node.data())
 	{
 		d->_rootNode = node;
-		d->_rootNode->setFile (d->_this);
+		d->_rootNode->setFile(d->_this);
 	}
 }
 
@@ -172,7 +172,7 @@ FileNodePtr File::rootNode() const
 	if (d->_rootNode.isNull())
 	{
 		d->_rootNode = FileNode::create(d->_filename);
-		d->_rootNode->setFile (d->_this);
+		d->_rootNode->setFile(d->_this);
 	}
 	return d->_rootNode;
 }

@@ -9,22 +9,25 @@
 
 class PrivateGceSettings;
 
-class GceSettingsSettings : public QSettings {
+class GceSettingsSettings : public QSettings
+{
 public:
-	GceSettingsSettings( const QString & organization, const QString & application );
-	void setValue( const QString & key, const QVariant & value, const QVariant & defaultValue );
-	void setValue( const QString & key, const QVariant & value );
+	GceSettingsSettings(const QString & organization, const QString & application);
+	void setValue(const QString & key, const QVariant & value, const QVariant & defaultValue);
+	void setValue(const QString & key, const QVariant & value);
 };
 
-class GceSettings {
+class GceSettings
+{
 public:
-	struct struct_globals {
+	struct struct_globals
+	{
 		bool readConfigurations;
 		bool readDictionaries;
 	};
 
 
-	GceSettings( const GceSettings & origine );
+	GceSettings(const GceSettings & origine);
 	GceSettings();
 	virtual ~GceSettings();
 
@@ -37,8 +40,8 @@ public:
 	GceSettings& operator=(const GceSettings& p);
 protected:
 	virtual struct_globals getDefaultGlobals();
-	virtual GceSettings::struct_globals getSettingsGlobals( GceSettingsSettings * settings, const QString & path, const GceSettings::struct_globals & defaultValue );
-	virtual void setSettingsGlobals( GceSettingsSettings * settings, const QString & path, const GceSettings::struct_globals & value );
+	virtual GceSettings::struct_globals getSettingsGlobals(GceSettingsSettings * settings, const QString & path, const GceSettings::struct_globals & defaultValue);
+	virtual void setSettingsGlobals(GceSettingsSettings * settings, const QString & path, const GceSettings::struct_globals & value);
 
 private:
 	PrivateGceSettings * d;

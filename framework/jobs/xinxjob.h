@@ -43,10 +43,10 @@ signals:
 	void jobEnding();
 protected:
 	virtual void startJob() = 0;
-    virtual void run();
+	virtual void run();
 
 	static QAtomicInt _count_job;
-    bool _is_running;
+	bool _is_running;
 };
 
 #endif // XINXJOBS_H

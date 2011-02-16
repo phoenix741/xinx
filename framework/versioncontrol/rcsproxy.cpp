@@ -91,7 +91,7 @@ bool RCSProxy::setCurrentRCS(const QString & rcs)
 	{
 		if (m_rcs)
 		{
-			VersionControl::Manager::self ()->waitForFinished();
+			VersionControl::Manager::self()->waitForFinished();
 
 			delete m_rcs;
 			m_rcs     = 0;
@@ -114,7 +114,7 @@ bool RCSProxy::setCurrentRCS(const QString & rcs)
 			{
 				m_rcs     = 0;
 				m_rcsName = QString();
-				VersionControl::Manager::self ()->logOperation(RCS::LogApplication, tr("No tools defined"));
+				VersionControl::Manager::self()->logOperation(RCS::LogApplication, tr("No tools defined"));
 				return false;
 			}
 		}
@@ -181,7 +181,7 @@ void RCSProxy::addFileOperation(rcsAddRemoveOperation op, const QStringList & fi
 //! Validate all operation to the RCS (made in a separate thread).
 void RCSProxy::validFileOperations()
 {
-	VersionControl::Manager::self ()->waitForFinished();
+	VersionControl::Manager::self()->waitForFinished();
 
 	if (m_rcs)
 	{
@@ -201,7 +201,7 @@ void RCSProxy::validFileOperations()
 			}
 		}
 
-		VersionControl::Manager::self()->addRemoveFiles (m_rcs, fileToAdd, fileToRemove);
+		VersionControl::Manager::self()->addRemoveFiles(m_rcs, fileToAdd, fileToRemove);
 
 	}
 	else
@@ -224,7 +224,7 @@ void RCSProxy::validWorkingCopy(QStringList files, QWidget * parent)
 	Q_ASSERT(m_rcs);
 	Q_ASSERT(project);
 
-	VersionControl::Manager::self ()->waitForFinished();
+	VersionControl::Manager::self()->waitForFinished();
 
 	QString changeLog;
 	CommitMessageDialogImpl dlg(parent);
@@ -271,11 +271,11 @@ void RCSProxy::validWorkingCopy(QStringList files, QWidget * parent)
 			}
 		}
 
-		VersionControl::Manager::self ()->validWorkingCopy(m_rcs, dlg.filesOperation(), message);
+		VersionControl::Manager::self()->validWorkingCopy(m_rcs, dlg.filesOperation(), message);
 	}
 	else
 	{
-		VersionControl::Manager::self ()->logOperation(RCS::LogApplication, tr("Operation cancelled"));
+		VersionControl::Manager::self()->logOperation(RCS::LogApplication, tr("Operation cancelled"));
 	}
 }
 
@@ -284,12 +284,12 @@ void RCSProxy::updateWorkingCopy(QStringList list)
 {
 	Q_ASSERT(m_rcs);
 
-	VersionControl::Manager::self ()->waitForFinished();
+	VersionControl::Manager::self()->waitForFinished();
 
 	if (list.count() == 0)
 		list << m_project.toStrongRef()->projectPath();
 
-	VersionControl::Manager::self ()->updateWorkingCopy(m_rcs, list);
+	VersionControl::Manager::self()->updateWorkingCopy(m_rcs, list);
 }
 
 //! Update one file to the given revision
@@ -297,14 +297,14 @@ void RCSProxy::updateToRevision(const QString & path, const QString & revision, 
 {
 	Q_ASSERT(m_rcs);
 
-	VersionControl::Manager::self ()->waitForFinished();
-	VersionControl::Manager::self ()->updateRevision(m_rcs, path, revision, content);
+	VersionControl::Manager::self()->waitForFinished();
+	VersionControl::Manager::self()->updateRevision(m_rcs, path, revision, content);
 }
 
 //! Abort all the opreration
 void RCSProxy::abort()
 {
-	VersionControl::Manager::self()->abort ();
+	VersionControl::Manager::self()->abort();
 }
 
 }

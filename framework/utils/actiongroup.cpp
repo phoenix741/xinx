@@ -47,17 +47,17 @@ PrivateActionGroup::PrivateActionGroup() : _group(0), _menu(0), _separator(0)
 
 void PrivateActionGroup::cleanMenu()
 {
-	foreach(QAction * action, _group->actions ())
+	foreach(QAction * action, _group->actions())
 	{
-		removeActionOfMenu (action);
+		removeActionOfMenu(action);
 	}
 }
 
-void PrivateActionGroup::createMenu ()
+void PrivateActionGroup::createMenu()
 {
-	foreach(QAction * action, _group->actions ())
+	foreach(QAction * action, _group->actions())
 	{
-		addActionToMenu (action);
+		addActionToMenu(action);
 	}
 }
 
@@ -65,8 +65,8 @@ void PrivateActionGroup::addActionToMenu(QAction * action)
 {
 	if (_menu && _separator)
 	{
-		_menu->insertAction (_separator, action);
-		_separator->setVisible (true);
+		_menu->insertAction(_separator, action);
+		_separator->setVisible(true);
 	}
 }
 
@@ -74,10 +74,10 @@ void PrivateActionGroup::removeActionOfMenu(QAction * action)
 {
 	if (_menu && _separator)
 	{
-		_menu->removeAction (action);
-		if (_group->actions ().size () == 0)
+		_menu->removeAction(action);
+		if (_group->actions().size() == 0)
 		{
-			_separator->setVisible (false);
+			_separator->setVisible(false);
 		}
 	}
 }
@@ -94,43 +94,43 @@ ActionGroup::~ActionGroup()
 
 }
 
-QAction * ActionGroup::addAction (QAction * action)
+QAction * ActionGroup::addAction(QAction * action)
 {
-	QAction * a = QActionGroup::addAction (action);
-	d->addActionToMenu (a);
-	emit actionAdded (a);
+	QAction * a = QActionGroup::addAction(action);
+	d->addActionToMenu(a);
+	emit actionAdded(a);
 	return a;
 }
 
-QAction * ActionGroup::addAction (const QString & text)
+QAction * ActionGroup::addAction(const QString & text)
 {
-	QAction * a = QActionGroup::addAction (text);
-	d->addActionToMenu (a);
-	emit actionAdded (a);
+	QAction * a = QActionGroup::addAction(text);
+	d->addActionToMenu(a);
+	emit actionAdded(a);
 	return a;
 }
 
-QAction * ActionGroup::addAction (const QIcon & icon, const QString & text)
+QAction * ActionGroup::addAction(const QIcon & icon, const QString & text)
 {
-	QAction * a = QActionGroup::addAction (icon, text);
-	d->addActionToMenu (a);
-	emit actionAdded (a);
+	QAction * a = QActionGroup::addAction(icon, text);
+	d->addActionToMenu(a);
+	emit actionAdded(a);
 	return a;
 }
 
-void ActionGroup::removeAction (QAction * action)
+void ActionGroup::removeAction(QAction * action)
 {
-	emit actionRemoved (action);
+	emit actionRemoved(action);
 
-	d->removeActionOfMenu (action);
-	QActionGroup::removeAction (action);
+	d->removeActionOfMenu(action);
+	QActionGroup::removeAction(action);
 }
 
 void ActionGroup::setMenu(QMenu * menu)
 {
-	d->cleanMenu ();
+	d->cleanMenu();
 	d->_menu = menu;
-	d->createMenu ();
+	d->createMenu();
 }
 
 QMenu * ActionGroup::menu() const
@@ -140,9 +140,9 @@ QMenu * ActionGroup::menu() const
 
 void ActionGroup::setMenuSeparator(QAction * action)
 {
-	d->cleanMenu ();
+	d->cleanMenu();
 	d->_separator = action;
-	d->createMenu ();
+	d->createMenu();
 }
 
 QAction * ActionGroup::menuSeparator() const

@@ -28,16 +28,18 @@
 
 namespace Core
 {
-	namespace BaliseDefinition
-	{
-		class XmlContextType;
-		class XmlBalise;
-	}
+namespace BaliseDefinition
+{
+class XmlContextType;
+class XmlBalise;
+}
 };
 
-namespace Core {
+namespace Core
+{
 
-namespace Stylesheet {
+namespace Stylesheet
+{
 
 class XslNodeItem : public CodeCompletion::ContentViewNodeItem
 {
@@ -52,10 +54,10 @@ public:
 class XslTemplateItem : public XslNodeItem
 {
 public:
-    XslTemplateItem(const ContentView3::NodePtr& node);
-    virtual ~XslTemplateItem();
+	XslTemplateItem(const ContentView3::NodePtr& node);
+	virtual ~XslTemplateItem();
 
-    virtual void execute(CodeCompletion::Context context, TextFileEditor* editor);
+	virtual void execute(CodeCompletion::Context context, TextFileEditor* editor);
 };
 
 class ItemModelFactory : public CodeCompletion::ItemModelFactory

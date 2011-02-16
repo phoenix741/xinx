@@ -167,9 +167,9 @@ void ExceptionManager::notifyError(QString error, QtMsgType t, bool showMessage)
 	{
 		if (QThread::currentThread() == qApp->thread())
 		{
-			QMessageBox::critical (0, qApp->applicationName (),
-								   tr("Oh boy ! A fatal error occur with the message :\n%1\n"
-								   "Please forgive me, i try to recover your work.").arg (error));
+			QMessageBox::critical(0, qApp->applicationName(),
+								  tr("Oh boy ! A fatal error occur with the message :\n%1\n"
+									 "Please forgive me, i try to recover your work.").arg(error));
 		}
 
 		// On restore les signaux pour eviter d'etre perturbe pendant la phase de sauvegarde ...
@@ -189,7 +189,7 @@ void ExceptionManager::notifyError(QString error, QtMsgType t, bool showMessage)
 	{
 		if (showMessage)
 		{
-			ErrorManager::self ()->addMessage (qApp->applicationName (), -1, t, error);
+			ErrorManager::self()->addMessage(qApp->applicationName(), -1, t, error);
 		}
 	}
 }

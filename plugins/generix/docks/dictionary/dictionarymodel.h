@@ -24,17 +24,17 @@
 
 namespace XinxProject
 {
-	class Project;
-	typedef QSharedPointer<Project> ProjectPtr;
-	typedef QWeakPointer<Project> ProjectPtrWeak;
+class Project;
+typedef QSharedPointer<Project> ProjectPtr;
+typedef QWeakPointer<Project> ProjectPtrWeak;
 }
 
 class DictionaryModel : public QStandardItemModel
 {
 	Q_OBJECT
 public:
-    DictionaryModel(QObject* parent = 0);
-    virtual ~DictionaryModel();
+	DictionaryModel(QObject* parent = 0);
+	virtual ~DictionaryModel();
 
 	void loadDictionaries(const QString & prefix);
 signals:

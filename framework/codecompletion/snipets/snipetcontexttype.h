@@ -24,21 +24,22 @@
 
 #define SNIPET_CONTEXT_TYPE "SNIPET"
 
-namespace CodeCompletion {
+namespace CodeCompletion
+{
 
 class PrivateSnipetContextType;
-	
+
 class SnipetContextType : public CodeCompletion::ContextType
 {
 public:
 	SnipetContextType();
 	virtual ~SnipetContextType();
-	
+
 	void setLoadSnipet(bool value);
 	bool loadSnipet() const;
-	
-    virtual QString type() const;
-    virtual bool operator==(const CodeCompletion::ContextType& other) const;
+
+	virtual QString type() const;
+	virtual bool operator==(const CodeCompletion::ContextType& other) const;
 private:
 	Q_DISABLE_COPY(SnipetContextType)
 

@@ -29,7 +29,7 @@ ServicesListPageImpl::ServicesListPageImpl()
 	setupUi(this);
 	setTitle(windowTitle());
 	setSubTitle(tr("Define the list of WSDL. WSDL is used to describe the web services. This"
-	               "list contains link to WSDL."));
+				   "list contains link to WSDL."));
 
 	registerField("services.list", m_webServicesWidget);
 

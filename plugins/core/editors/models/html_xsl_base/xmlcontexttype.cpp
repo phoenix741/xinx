@@ -22,10 +22,10 @@
 
 namespace Core
 {
-	
+
 namespace BaliseDefinition
 {
-	
+
 /* XmlBalise */
 
 void XmlBalise::setBaliseName(const QString& value)
@@ -152,12 +152,12 @@ void XmlContextType::setXmlnsList(const QHash<QString,QString> & value)
 
 QString XmlContextType::xslNamespace() const
 {
-	return _xmlns_list.key ("http://www.w3.org/1999/XSL/Transform");
+	return _xmlns_list.key("http://www.w3.org/1999/XSL/Transform");
 }
 
 bool XmlContextType::operator==(const CodeCompletion::ContextType& other) const
 {
-    if (CodeCompletion::ContextType::operator==(other))
+	if (CodeCompletion::ContextType::operator==(other))
 	{
 		const XmlContextType & t = dynamic_cast<const XmlContextType &>(other);
 		return (t._is_html == _is_html) && (t._is_xsl == _is_xsl) && (t._attribute_name == _attribute_name) && (t._balise == _balise) && (t._position == _position) && (t._xpath_location == _xpath_location) && (t._xmlns_list == _xmlns_list);

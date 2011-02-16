@@ -60,7 +60,7 @@ void GotoLineAction::actionTriggered()
 
 DuplicateLinesAction::DuplicateLinesAction(): Action(tr("&Duplicate current line"), QKeySequence("Ctrl+D"))
 {
-	action ()->setStatusTip(tr("Duplicate the current line"));
+	action()->setStatusTip(tr("Duplicate the current line"));
 }
 
 bool DuplicateLinesAction::isVisible() const
@@ -81,7 +81,7 @@ void DuplicateLinesAction::actionTriggered()
 
 MoveLineUpAction::MoveLineUpAction(): Action(QIcon(":/images/1uparrow.png"), tr("&Move line up"), QKeySequence("Ctrl+Shift+Up"))
 {
-	action ()->setStatusTip(tr("Move the current line up"));
+	action()->setStatusTip(tr("Move the current line up"));
 }
 
 bool MoveLineUpAction::isVisible() const
@@ -102,7 +102,7 @@ void MoveLineUpAction::actionTriggered()
 
 MoveLineDownAction::MoveLineDownAction(): Action(QIcon(":/images/1downarrow.png"), tr("&Move line down"), QKeySequence("Ctrl+Shift+Down"))
 {
-	action ()->setStatusTip(tr("Move the current line down"));
+	action()->setStatusTip(tr("Move the current line down"));
 }
 
 bool MoveLineDownAction::isVisible() const
@@ -123,7 +123,7 @@ void MoveLineDownAction::actionTriggered()
 
 UpperSelectedTextAction::UpperSelectedTextAction(): Action(QIcon(":/images/fontsizeup.png"), tr("&Upper Case"), QKeySequence::mnemonic("Ctrl+U"))
 {
-	action ()->setStatusTip(tr("Make the selected character upper case"));
+	action()->setStatusTip(tr("Make the selected character upper case"));
 	addEditorSignals(SIGNAL(copyAvailable(bool)));
 }
 
@@ -154,7 +154,7 @@ void UpperSelectedTextAction::actionTriggered()
 
 LowerSelectedTextAction::LowerSelectedTextAction(): Action(QIcon(":/images/fontsizedown.png"), tr("&Lower Case"), QKeySequence::mnemonic("Ctrl+L"))
 {
-	action ()->setStatusTip(tr("Make the selected character lower case"));
+	action()->setStatusTip(tr("Make the selected character lower case"));
 	addEditorSignals(SIGNAL(copyAvailable(bool)));
 }
 
@@ -185,8 +185,8 @@ void LowerSelectedTextAction::actionTriggered()
 
 ShowSpecialCharsAction::ShowSpecialCharsAction(): Action(QIcon(":/images/draw-text.png"), tr("Show space and &Tabulation"), QKeySequence())
 {
-	action ()->setCheckable(true);
-	action ()->setChecked(XINXConfig::self()->config().editor.showTabulationAndSpace);
+	action()->setCheckable(true);
+	action()->setChecked(XINXConfig::self()->config().editor.showTabulationAndSpace);
 }
 
 bool ShowSpecialCharsAction::isVisible() const
@@ -199,9 +199,9 @@ bool ShowSpecialCharsAction::isVisible() const
 
 void ShowSpecialCharsAction::actionTriggered()
 {
-	if (XINXConfig::self()->config().editor.showTabulationAndSpace != action ()->isChecked())
+	if (XINXConfig::self()->config().editor.showTabulationAndSpace != action()->isChecked())
 	{
-		XINXConfig::self()->config().editor.showTabulationAndSpace = action ()->isChecked();
+		XINXConfig::self()->config().editor.showTabulationAndSpace = action()->isChecked();
 		XINXConfig::self()->save();
 	}
 }

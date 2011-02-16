@@ -27,9 +27,11 @@
 // Qt header
 #include <QString>
 
-namespace Core {
+namespace Core
+{
 
-namespace CascadingStyleSheet {
+namespace CascadingStyleSheet
+{
 
 class TagNode : public ContentView3::Node
 {

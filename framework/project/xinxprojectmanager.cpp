@@ -48,7 +48,8 @@
  *
  * This namespace group all classes used in project in XINX
  */
-namespace XinxProject {
+namespace XinxProject
+{
 
 /* PrivateManager */
 
@@ -100,7 +101,7 @@ void PrivateManager::openProjectTriggered()
 		{
 			_manager->openProject(directory);
 		}
-		catch(XinxProject::ProjectException e)
+		catch (XinxProject::ProjectException e)
 		{
 			_manager->newProject(directory);
 		}
@@ -117,7 +118,7 @@ void PrivateManager::openRecentProject()
 			_manager->openProject(action->data().toString());
 		}
 	}
-	catch(ProjectException e)
+	catch (ProjectException e)
 	{
 		QMessageBox::critical(qApp->activeWindow(), tr("Open project"), tr("Can't open project : %1").arg(e.getMessage()));
 	}
@@ -248,15 +249,15 @@ ProjectPtr Manager::defaultProject()
  */
 ProjectPtr Manager::projectOfFile(const QString & filename)
 {
-	const QString cleanFileName = QDir::cleanPath (filename);
+	const QString cleanFileName = QDir::cleanPath(filename);
 	foreach(XinxProject::ProjectPtr project, d->m_projects)
 	{
-		const QString cleanDirName = QDir::cleanPath (project->projectPath ());
-		if (cleanFileName.contains (cleanDirName))
+		const QString cleanDirName = QDir::cleanPath(project->projectPath());
+		if (cleanFileName.contains(cleanDirName))
 			return project;
 	}
 
-	return defaultProject ();
+	return defaultProject();
 }
 
 /*!
@@ -264,16 +265,16 @@ ProjectPtr Manager::projectOfFile(const QString & filename)
  */
 ProjectPtr Manager::projectOfPath(const QString & path)
 {
-	const QString cleanPath = QDir::cleanPath (path);
+	const QString cleanPath = QDir::cleanPath(path);
 
 	foreach(XinxProject::ProjectPtr project, d->m_projects)
 	{
-		const QString cleanDirName = QDir::cleanPath (project->projectPath ());
+		const QString cleanDirName = QDir::cleanPath(project->projectPath());
 		if (cleanPath == cleanDirName)
 			return project;
 	}
 
-	return defaultProject ();
+	return defaultProject();
 }
 
 void Manager::newProject(const QString & directory)
@@ -302,7 +303,7 @@ ProjectPtr PrivateManager::projectContains(const QString & directory)
 {
 	foreach(ProjectPtr project, m_projects)
 	{
-		if (project->projectPath () == QFileInfo(directory).canonicalFilePath ())
+		if (project->projectPath() == QFileInfo(directory).canonicalFilePath())
 		{
 			return project;
 		}
@@ -319,10 +320,10 @@ void Manager::openProject(ProjectPtr project)
 	XINXConfig::self()->config().project.recentProjectFiles.removeAll(project->projectPath());
 
 	// If the project is already opend, we don't repoen it, but we made it the default.
-	ProjectPtr oldProject = d->projectContains (project->projectPath ());
+	ProjectPtr oldProject = d->projectContains(project->projectPath());
 	if (oldProject)
 	{
-		setSelectedProject (oldProject.toWeakRef());
+		setSelectedProject(oldProject.toWeakRef());
 
 		XINXConfig::self()->config().project.recentProjectFiles.prepend(oldProject->projectPath());
 		while (XINXConfig::self()->config().project.recentProjectFiles.size() > MAXRECENTPROJECTS)
@@ -385,7 +386,7 @@ void Manager::openProject(ProjectPtr project)
 	while (XINXConfig::self()->config().project.recentProjectFiles.size() > MAXRECENTPROJECTS)
 		XINXConfig::self()->config().project.recentProjectFiles.removeLast();
 
-	XinxSession::SessionManager::self ()->currentSession ()->addOpenedProject (project->projectPath ());
+	XinxSession::SessionManager::self()->currentSession()->addOpenedProject(project->projectPath());
 
 	progressDlg.setLabelText(tr("Initialisation of the parser job"));
 	qApp->processEvents();
@@ -428,9 +429,9 @@ bool Manager::closeProject(XinxProject::ProjectPtr project, bool showWelcome)
 		return false;
 	}
 
-	if (XinxSession::SessionManager::self ()->isApplicationStopping())
+	if (XinxSession::SessionManager::self()->isApplicationStopping())
 	{
-		XinxSession::SessionManager::self ()->currentSession ()->deleteOpenedProject (project->projectPath ());
+		XinxSession::SessionManager::self()->currentSession()->deleteOpenedProject(project->projectPath());
 	}
 
 	d->m_projects.removeAll(project);
@@ -453,7 +454,7 @@ bool Manager::closeProject(XinxProject::ProjectPtr project, bool showWelcome)
 
 bool Manager::closeAllProject()
 {
-	foreach (ProjectPtr project, d->m_projects)
+	foreach(ProjectPtr project, d->m_projects)
 	{
 		if (! closeProject(project, false))
 		{
@@ -465,7 +466,7 @@ bool Manager::closeAllProject()
 
 void Manager::setSelectedProject(XinxProject::ProjectPtrWeak project)
 {
-	Q_ASSERT_X(! project || d->m_projects.contains (project), "Manager::setSelectedProject", "Project must be opended");
+	Q_ASSERT_X(! project || d->m_projects.contains(project), "Manager::setSelectedProject", "Project must be opended");
 
 	if (project.data() != d->_selected_project.data())
 	{
@@ -511,7 +512,7 @@ void Manager::openWelcomDialog()
 		dlg.addProjectFile(XINXConfig::self()->config().project.recentProjectFiles[i]);
 	}
 
-	foreach (const QString & session, XinxSession::Session::sessionsNames())
+	foreach(const QString & session, XinxSession::Session::sessionsNames())
 	{
 		dlg.addSession(session);
 	}

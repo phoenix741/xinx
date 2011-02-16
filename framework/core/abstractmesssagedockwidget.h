@@ -48,9 +48,9 @@ signals:
 
 private:
 	DToolView * _dock;
-    bool _automatically_show;
-    bool _automatically_close;
-    int _notification;
+	bool _automatically_show;
+	bool _automatically_close;
+	int _notification;
 };
 
 #endif // ABSTRACTMESSSAGEDOCKWIDGET_H

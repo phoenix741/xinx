@@ -27,9 +27,11 @@
 // Qt header
 #include <QString>
 
-namespace Core {
+namespace Core
+{
 
-namespace JavaScript {
+namespace JavaScript
+{
 
 class FunctionNode : public ContentView3::Node
 {

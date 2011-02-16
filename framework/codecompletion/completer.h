@@ -26,7 +26,8 @@
 
 class TextFileEditor;
 
-namespace CodeCompletion {
+namespace CodeCompletion
+{
 
 class Item;
 class ItemModelFactory;
@@ -39,10 +40,10 @@ class LIBEXPORT Completer : public QCompleter
 public:
 	explicit Completer(TextFileEditor* parent = 0);
 	virtual ~Completer();
-	
+
 	void setModel(Model * model);
 	Model * model() const;
-	
+
 	void setContext(Context context);
 	Context context() const;
 

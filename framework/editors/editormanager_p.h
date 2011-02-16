@@ -51,8 +51,8 @@ class PrivateTabWidget : public QTabWidget
 {
 	Q_OBJECT
 public:
-    PrivateTabWidget ( EditorManager* parent );
-    virtual ~PrivateTabWidget();
+	PrivateTabWidget(EditorManager* parent);
+	virtual ~PrivateTabWidget();
 
 	inline QTabBar * tabBar() const;
 protected:

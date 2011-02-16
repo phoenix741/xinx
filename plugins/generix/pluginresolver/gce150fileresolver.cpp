@@ -50,7 +50,7 @@ QString Gce150FileResolver::name()
 	return tr("GCE150 File Resolver");
 }
 
-bool Gce150FileResolver::resolveFileName( const QString& nameToResolve, QString& resolvedName, const QString& currentPath, XinxProject::ProjectPtr project)
+bool Gce150FileResolver::resolveFileName(const QString& nameToResolve, QString& resolvedName, const QString& currentPath, XinxProject::ProjectPtr project)
 {
 	Q_UNUSED(currentPath);
 

@@ -99,7 +99,7 @@ void CustomDialogImpl::loadConfig()
 void CustomDialogImpl::saveConfig()
 {
 	foreach(IXinxPluginConfigurationPage * page, m_pages)
-		page->saveSettingsDialog();
+	page->saveSettingsDialog();
 }
 
 void CustomDialogImpl::updateOkButton()

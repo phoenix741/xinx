@@ -34,11 +34,11 @@
 class MessageHandler : public QAbstractMessageHandler
 {
 public:
-	virtual void handleMessage (QtMsgType type, const QString & description, const QUrl & identifier, const QSourceLocation & sourceLocation);
+	virtual void handleMessage(QtMsgType type, const QString & description, const QUrl & identifier, const QSourceLocation & sourceLocation);
 
 };
 
-void MessageHandler::handleMessage (QtMsgType type, const QString & description, const QUrl & identifier, const QSourceLocation & sourceLocation)
+void MessageHandler::handleMessage(QtMsgType type, const QString & description, const QUrl & identifier, const QSourceLocation & sourceLocation)
 {
 	Q_UNUSED(identifier);
 
@@ -67,7 +67,7 @@ bool ValidationAction::isVisible() const
 {
 	if (! EditorManager::self()) return false;
 	TextFileEditor * tfe = qobject_cast<TextFileEditor*>(EditorManager::self()->currentEditor());
-	if(! tfe) return false;
+	if (! tfe) return false;
 	XmlTextEditor * xte  = qobject_cast<XmlTextEditor*>(tfe->textEdit());
 	if (! xte) return false;
 	return true;
@@ -76,7 +76,7 @@ bool ValidationAction::isVisible() const
 void ValidationAction::actionTriggered()
 {
 	QString filename = QFileDialog::getOpenFileName(qApp->activeWindow(), tr("XML Validation"), QString(), tr("Schemas (*.xsd)"));
-	if(! filename.isEmpty())
+	if (! filename.isEmpty())
 	{
 		MessageHandler handler;
 		QXmlSchema schema;

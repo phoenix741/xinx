@@ -31,7 +31,8 @@
 #include <QStringList>
 #include <QVariant>
 
-namespace XinxProject {
+namespace XinxProject
+{
 
 /* Classes */
 

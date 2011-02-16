@@ -43,17 +43,17 @@ EditorChoiceDlg::EditorChoiceDlg(QWidget *parent) : QDialog(parent, Qt::WindowTi
 
 void EditorChoiceDlg::setFileName(const QString & value)
 {
-	_selector->setFileName (value);
+	_selector->setFileName(value);
 }
 
 IFileTypePlugin * EditorChoiceDlg::selectedType() const
 {
-	return _selector->selectedType ();
+	return _selector->selectedType();
 }
 
 int EditorChoiceDlg::count() const
 {
-	return _selector->count ();
+	return _selector->count();
 }
 
 

@@ -92,7 +92,7 @@ void GcePropertiesParser::readGceProperties(const QString & propertiesFileName)
 	xmlXPathObjectPtr xpathObj = xmlXPathEvalExpression((xmlChar*)"string(/config/application/configurationDefinition/definition/@name)", xpathCtx);
 
 	// If we don't find an valid string, we try to read the same xpath, with an xmlns (for version post 1.60)
-	if (! (xpathObj && xpathObj->stringval && xpathObj->stringval[0]))
+	if (!(xpathObj && xpathObj->stringval && xpathObj->stringval[0]))
 	{
 		if (xpathObj)
 		{
@@ -108,7 +108,7 @@ void GcePropertiesParser::readGceProperties(const QString & propertiesFileName)
 
 	xpathObj = xmlXPathEvalExpression((xmlChar*)"/config/application/presentation/alias/policy", xpathCtx);
 	// If we don't find an valid string, we try to read the same xpath, with an xmlns (for version post 1.60)
-	if (! (xpathObj && xpathObj->nodesetval && xpathObj->nodesetval->nodeNr))
+	if (!(xpathObj && xpathObj->nodesetval && xpathObj->nodesetval->nodeNr))
 	{
 		if (xpathObj)
 		{

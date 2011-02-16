@@ -29,16 +29,18 @@
 
 namespace Core
 {
-	namespace BaliseDefinition
-	{
-		class RootNode;
-		class XmlContextType;
-	}
+namespace BaliseDefinition
+{
+class RootNode;
+class XmlContextType;
+}
 };
 
-namespace Core {
+namespace Core
+{
 
-namespace BaliseDefinition {
+namespace BaliseDefinition
+{
 
 class BaliseNodeItem : public CodeCompletion::ContentViewNodeItem
 {

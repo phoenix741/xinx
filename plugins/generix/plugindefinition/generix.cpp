@@ -184,9 +184,9 @@ QList<IFileTypePlugin*> GenerixPlugin::fileTypes()
 
 QIODevice * GenerixPlugin::loadFile(AbstractEditor * editor, const QString & filename)
 {
-	 Q_UNUSED(editor);
-	 Q_UNUSED(filename);
-	 return 0;
+	Q_UNUSED(editor);
+	Q_UNUSED(filename);
+	return 0;
 }
 
 QIODevice * GenerixPlugin::saveFile(AbstractEditor * editor, const QString & filename, const QString & oldfilename)

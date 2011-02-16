@@ -57,7 +57,7 @@ void ServicesBatchDialogImpl::resultReadyAt(int index)
 	editorWidget->setItem(index, 2, faultStringItem);
 
 	progressBar->setValue(m_progression);
-	if(m_progression == editorWidget->rowCount())
+	if (m_progression == editorWidget->rowCount())
 	{
 		progressBar->hide();
 		buttonBox->setDisabled(false);
@@ -67,7 +67,7 @@ void ServicesBatchDialogImpl::resultReadyAt(int index)
 
 void webServicesCall(WebServicesEditorPtr &editor)
 {
-  editor->runBatch();
+	editor->runBatch();
 }
 
 
@@ -82,7 +82,7 @@ void ServicesBatchDialogImpl::launchWebServices()
 	progressBar->setValue(0);
 
 	m_editors.clear();
-	for(int i = 0; i < editorWidget->rowCount(); i++)
+	for (int i = 0; i < editorWidget->rowCount(); i++)
 	{
 		WebServicesEditorPtr editor = static_cast<ServicesBatchRow*>(editorWidget->verticalHeaderItem(i))->editor;
 		connect(editor, SIGNAL(operationTerminated()), m_signalMapper, SLOT(map()));

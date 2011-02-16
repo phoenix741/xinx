@@ -31,7 +31,7 @@
 
 namespace XinxProject
 {
-	class Project;
+class Project;
 }
 
 class PrivateXsltParser;

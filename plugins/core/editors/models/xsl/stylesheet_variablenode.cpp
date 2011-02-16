@@ -50,7 +50,7 @@ VariableNode::~VariableNode()
 
 void VariableNode::setLine(int value)
 {
-    ContentView3::Node::setLine(value);
+	ContentView3::Node::setLine(value);
 	setTips(tr("Element at line : %1\nValue = %2").arg(line()).arg(_value));
 }
 
@@ -67,7 +67,7 @@ const QString& VariableNode::value() const
 
 QString VariableNode::displayName() const
 {
-    return name() + (! value().isEmpty() ? " = " + value() : "");
+	return name() + (! value().isEmpty() ? " = " + value() : "");
 }
 
 QString VariableNode::completionString() const

@@ -38,15 +38,16 @@
 class ExternalFileResolver;
 namespace VersionControl
 {
-	class RCSProxy;
+class RCSProxy;
 }
 
 namespace ContentView3
 {
-	class Cache;
+class Cache;
 }
 
-namespace XinxProject {
+namespace XinxProject
+{
 
 class PrivateXinxProject;
 class Project;
@@ -99,8 +100,8 @@ public:
 signals:
 	void changed();
 private:
-	Project ();
-	explicit Project (const QString& path);
+	Project();
+	explicit Project(const QString& path);
 
 	PrivateXinxProject * d;
 	friend class PrivateXinxProject;

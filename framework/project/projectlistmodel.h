@@ -28,7 +28,8 @@
 
 class IconProjectProvider;
 
-namespace XinxProject {
+namespace XinxProject
+{
 
 class PrivateProjectListModel;
 class ModelFileNode;
@@ -99,15 +100,15 @@ public:
 	bool isProject(const QModelIndex & index) const;
 
 	QModelIndex index(const QString& path, int column = 0) const;
-	QModelIndex index (XinxProject::ProjectPtr project) const;
-	virtual QModelIndex index (int row, int column, const QModelIndex & parent = QModelIndex()) const;
+	QModelIndex index(XinxProject::ProjectPtr project) const;
+	virtual QModelIndex index(int row, int column, const QModelIndex & parent = QModelIndex()) const;
 
-	virtual int columnCount (const QModelIndex & parent = QModelIndex()) const;
-	virtual QVariant data (const QModelIndex & index, int role = Qt::DisplayRole) const;
-	virtual QModelIndex parent (const QModelIndex & index) const;
-	virtual int rowCount (const QModelIndex & parent = QModelIndex()) const;
+	virtual int columnCount(const QModelIndex & parent = QModelIndex()) const;
+	virtual QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
+	virtual QModelIndex parent(const QModelIndex & index) const;
+	virtual int rowCount(const QModelIndex & parent = QModelIndex()) const;
 
-    virtual bool hasChildren(const QModelIndex& parent = QModelIndex()) const;
+	virtual bool hasChildren(const QModelIndex& parent = QModelIndex()) const;
 	virtual bool canFetchMore(const QModelIndex& parent) const;
 	virtual void fetchMore(const QModelIndex& parent);
 private:

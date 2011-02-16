@@ -478,7 +478,7 @@ void AbstractEditor::saveToFile(const QString & fileName)
 {
 	/* Make a backup of the file */
 	if ((fileName.isEmpty() || (fileName == m_lastFileName))
-	        && XINXConfig::self()->config().editor.createBackupFile)
+			&& XINXConfig::self()->config().editor.createBackupFile)
 	{
 
 		if (QFile::exists(fileName + ".bak"))
@@ -608,12 +608,12 @@ void AbstractEditor::serialize(XinxSession::SessionEditor * data, bool content)
 {
 	Q_UNUSED(content);
 
-	const QString projectPath = _project ? _project.toStrongRef()->projectPath () : QString();
-	data->writeProperty ("ClassName", m_fileTypePlugin->name());
-	data->writeProperty ("FileName", projectPath.isEmpty() ? m_lastFileName : QDir(_project.toStrongRef()->projectPath ()).relativeFilePath (m_lastFileName));
-	data->writeProperty ("Modified", QVariant(m_modified));
-	data->writeProperty ("Project", projectPath);
-	data->writeProperty ("Informations", m_fileTypePlugin ? m_fileTypePlugin->name () : QString());
+	const QString projectPath = _project ? _project.toStrongRef()->projectPath() : QString();
+	data->writeProperty("ClassName", m_fileTypePlugin->name());
+	data->writeProperty("FileName", projectPath.isEmpty() ? m_lastFileName : QDir(_project.toStrongRef()->projectPath()).relativeFilePath(m_lastFileName));
+	data->writeProperty("Modified", QVariant(m_modified));
+	data->writeProperty("Project", projectPath);
+	data->writeProperty("Informations", m_fileTypePlugin ? m_fileTypePlugin->name() : QString());
 }
 
 /*!
@@ -627,18 +627,18 @@ void AbstractEditor::serialize(XinxSession::SessionEditor * data, bool content)
 void AbstractEditor::deserialize(XinxSession::SessionEditor * data)
 {
 	// Dont't read the class name, already read.
-	const QString	file_type_name		= data->readProperty ("Informations").toString ();
-	const QString	project_path		= data->readProperty ("Project").toString ();
-	const QString	relative_file_name	= data->readProperty ("FileName").toString ();
-	const bool		modified			= data->readProperty ("Modified").toBool ();
+	const QString	file_type_name		= data->readProperty("Informations").toString();
+	const QString	project_path		= data->readProperty("Project").toString();
+	const QString	relative_file_name	= data->readProperty("FileName").toString();
+	const bool		modified			= data->readProperty("Modified").toBool();
 
 	m_fileTypePlugin					= EditorFactory::self()->interfaceOfName(file_type_name);
-	XinxProject::ProjectPtr project		= XinxProject::Manager::self ()->projectOfPath(project_path);
+	XinxProject::ProjectPtr project		= XinxProject::Manager::self()->projectOfPath(project_path);
 
-	setProject (project);
+	setProject(project);
 
 	if (QFileInfo(relative_file_name).isRelative() && !relative_file_name.isEmpty())
-		m_lastFileName = QDir(project->projectPath ()).absoluteFilePath(relative_file_name);
+		m_lastFileName = QDir(project->projectPath()).absoluteFilePath(relative_file_name);
 	else
 		m_lastFileName = relative_file_name;
 
@@ -667,7 +667,7 @@ AbstractEditor * AbstractEditor::deserializeEditor(XinxSession::SessionEditor * 
 	if (plugin)
 	{
 		AbstractEditor * editor = plugin->createEditor();
-		editor->setFileTypePluginInterface (plugin);
+		editor->setFileTypePluginInterface(plugin);
 		editor->deserialize(data);
 		return editor;
 	}

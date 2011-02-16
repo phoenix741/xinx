@@ -19,18 +19,19 @@
 
 #include "snipetcontexttype.h"
 
-namespace CodeCompletion {
+namespace CodeCompletion
+{
 
 /* PrivateSnipetContextType */
 
 class PrivateSnipetContextType : public QSharedData
 {
 public:
-    bool _load_snipet;
+	bool _load_snipet;
 };
 
 /* SnipetContextType */
-	
+
 SnipetContextType::SnipetContextType() : d(new PrivateSnipetContextType)
 {
 
@@ -57,8 +58,8 @@ QString SnipetContextType::type() const
 }
 
 bool SnipetContextType::operator==(const CodeCompletion::ContextType& other) const
-{	
-    if (CodeCompletion::ContextType::operator==(other))
+{
+	if (CodeCompletion::ContextType::operator==(other))
 	{
 		const SnipetContextType & t = dynamic_cast<const SnipetContextType &>(other);
 		return t.d->_load_snipet == d->_load_snipet;

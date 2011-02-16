@@ -37,7 +37,7 @@ FileWatcherManager * FileWatcherManager::s_self = NULL;
 
 bool FileWatched::isFileChanged()
 {
-	m_file.refresh ();
+	m_file.refresh();
 	QDateTime date = m_file.lastModified();
 	if (date == m_date)
 		return false;
@@ -68,7 +68,7 @@ void FileWatcherManager::watch()
 	{
 		if (m_watchedfiles.at(i)->isFileChanged())
 		{
-			emit fileChanged(m_watchedfiles.at(i)->name ());
+			emit fileChanged(m_watchedfiles.at(i)->name());
 		}
 	}
 	m_watchedFilesMutex.unlock();
@@ -153,7 +153,7 @@ FileWatched * FileWatcherManager::watchedFileAt(int index)
 
 /* PrivateFileWatcher */
 
-PrivateFileWatcher::PrivateFileWatcher(FileWatcher * parent) : m_activatedDate(QDateTime::currentDateTime ()), m_isActivated(true), m_parent(parent)
+PrivateFileWatcher::PrivateFileWatcher(FileWatcher * parent) : m_activatedDate(QDateTime::currentDateTime()), m_isActivated(true), m_parent(parent)
 {
 }
 
@@ -164,9 +164,9 @@ PrivateFileWatcher::~PrivateFileWatcher()
 
 void PrivateFileWatcher::fileChanged(QString filename)
 {
-	int index = FileWatcherManager::instance ()->indexOfWatchedFile (filename);
+	int index = FileWatcherManager::instance()->indexOfWatchedFile(filename);
 
-	if (m_isActivated && (m_activatedDate < FileWatcherManager::instance ()->watchedFileAt (index)->date()) && (m_filename == filename))
+	if (m_isActivated && (m_activatedDate < FileWatcherManager::instance()->watchedFileAt(index)->date()) && (m_filename == filename))
 		emit m_parent->fileChanged();
 }
 
@@ -251,7 +251,7 @@ void FileWatcher::desactivate()
  */
 void FileWatcher::activate()
 {
-	d->m_activatedDate = QDateTime::currentDateTime ();
+	d->m_activatedDate = QDateTime::currentDateTime();
 	d->m_isActivated = true;
 }
 

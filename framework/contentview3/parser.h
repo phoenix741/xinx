@@ -33,7 +33,8 @@
 #include <QApplication>
 #include <QScopedPointer>
 
-namespace ContentView3 {
+namespace ContentView3
+{
 
 class Node;
 class PrivateParser;
@@ -57,7 +58,7 @@ public:
 	virtual ~Parser();
 
 	virtual QString name() const = 0;
-	virtual QString description () const;
+	virtual QString description() const;
 
 	void setFile(FilePtr file);
 	FilePtr file() const;

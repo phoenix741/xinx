@@ -214,7 +214,7 @@ AppSettings::struct_editor AppSettings::getSettingsEditor(AppSettingsSettings * 
 	settings->beginGroup(path);
 
 	value.defaultTextCodec = settings->value("Default Text Codec", defaultValue.defaultTextCodec).toString();
-	value.autoindentOnSaving = settings->value( "Autoindent On Saving", defaultValue.autoindentOnSaving ).toString();
+	value.autoindentOnSaving = settings->value("Autoindent On Saving", defaultValue.autoindentOnSaving).toString();
 	value.popupWhenFileModified = settings->value("Popup When File Modified", defaultValue.popupWhenFileModified).toBool();
 	value.createBackupFile = settings->value("Create Backup File", defaultValue.createBackupFile).toBool();
 	value.tabulationSize = settings->value("Tabulation Size", defaultValue.tabulationSize).toInt();
@@ -226,8 +226,8 @@ AppSettings::struct_editor AppSettings::getSettingsEditor(AppSettingsSettings * 
 	value.hideCloseTab = settings->value("Hide Close Tab", defaultValue.hideCloseTab).toBool();
 	value.closeButtonOnEachTab = settings->value("Close Button on each Tab", defaultValue.closeButtonOnEachTab).toBool();
 	value.automaticModelRefreshTimeout = settings->value("Automatic Model Refresh Timeout", defaultValue.automaticModelRefreshTimeout).toInt();
-	value.wrapLine = settings->value ("Wrap Line", defaultValue.wrapLine).toBool();
-	value.closeErrorDockAutomatically = settings->value( "Close Error Dock Automatically", defaultValue.closeErrorDockAutomatically ).toBool();
+	value.wrapLine = settings->value("Wrap Line", defaultValue.wrapLine).toBool();
+	value.closeErrorDockAutomatically = settings->value("Close Error Dock Automatically", defaultValue.closeErrorDockAutomatically).toBool();
 
 	settings->endGroup();
 	return value;
@@ -239,7 +239,7 @@ void AppSettings::setSettingsEditor(AppSettingsSettings * settings, const QStrin
 	settings->beginGroup(path);
 
 	settings->setValue("Default Text Codec", value.defaultTextCodec, defaultValue.defaultTextCodec);
-	settings->setValue("Autoindent On Saving", value.autoindentOnSaving, defaultValue.autoindentOnSaving );
+	settings->setValue("Autoindent On Saving", value.autoindentOnSaving, defaultValue.autoindentOnSaving);
 	settings->setValue("Popup When File Modified", value.popupWhenFileModified, defaultValue.popupWhenFileModified);
 	settings->setValue("Create Backup File", value.createBackupFile, defaultValue.createBackupFile);
 	settings->setValue("Tabulation Size", value.tabulationSize, defaultValue.tabulationSize);
@@ -250,9 +250,9 @@ void AppSettings::setSettingsEditor(AppSettingsSettings * settings, const QStrin
 	settings->setValue("Auto Highlight", value.autoHighlight, defaultValue.autoHighlight);
 	settings->setValue("Hide Close Tab", value.hideCloseTab, defaultValue.hideCloseTab);
 	settings->setValue("Close Button on each Tab", value.closeButtonOnEachTab, defaultValue.closeButtonOnEachTab);
-	settings->setValue("Automatic Model Refresh Timeout", value.automaticModelRefreshTimeout, defaultValue.automaticModelRefreshTimeout );
+	settings->setValue("Automatic Model Refresh Timeout", value.automaticModelRefreshTimeout, defaultValue.automaticModelRefreshTimeout);
 	settings->setValue("Wrap Line", value.wrapLine, defaultValue.wrapLine);
-	settings->setValue("Close Error Dock Automatically", value.closeErrorDockAutomatically, defaultValue.closeErrorDockAutomatically );
+	settings->setValue("Close Error Dock Automatically", value.closeErrorDockAutomatically, defaultValue.closeErrorDockAutomatically);
 
 	settings->endGroup();
 }
@@ -308,9 +308,9 @@ AppSettings::struct_project AppSettings::getSettingsProject(AppSettingsSettings 
 	struct_project value;
 	settings->beginGroup(path);
 
-	value.lastOpenedSession = settings->value( "Last opened session", defaultValue.lastOpenedSession ).toString();
-	value.openTheLastSessionAtStart = settings->value( "Open the last session at start", defaultValue.openTheLastSessionAtStart ).toBool();
-	value.singleProjectMode = settings->value( "Single Project Mode", defaultValue.singleProjectMode ).toBool();
+	value.lastOpenedSession = settings->value("Last opened session", defaultValue.lastOpenedSession).toString();
+	value.openTheLastSessionAtStart = settings->value("Open the last session at start", defaultValue.openTheLastSessionAtStart).toBool();
+	value.singleProjectMode = settings->value("Single Project Mode", defaultValue.singleProjectMode).toBool();
 	value.defaultPath = settings->value("Default Path", defaultValue.defaultPath).toString();
 	value.recentProjectFiles = settings->value("Recent Project Files", defaultValue.recentProjectFiles).toStringList();
 	value.closeVersionManagementLog = settings->value("Close Version Management Log", defaultValue.closeVersionManagementLog).toBool();
@@ -325,9 +325,9 @@ void AppSettings::setSettingsProject(AppSettingsSettings * settings, const QStri
 	struct_project defaultValue = getDefaultProject();
 	settings->beginGroup(path);
 
-	settings->setValue( "Last opened session", value.lastOpenedSession, defaultValue.lastOpenedSession );
-	settings->setValue( "Open the last session at start", value.openTheLastSessionAtStart, defaultValue.openTheLastSessionAtStart );
-	settings->setValue( "Single Project Mode", value.singleProjectMode, defaultValue.singleProjectMode );
+	settings->setValue("Last opened session", value.lastOpenedSession, defaultValue.lastOpenedSession);
+	settings->setValue("Open the last session at start", value.openTheLastSessionAtStart, defaultValue.openTheLastSessionAtStart);
+	settings->setValue("Single Project Mode", value.singleProjectMode, defaultValue.singleProjectMode);
 	settings->setValue("Default Path", value.defaultPath, defaultValue.defaultPath);
 	settings->setValue("Recent Project Files", value.recentProjectFiles, defaultValue.recentProjectFiles);
 	settings->setValue("Close Version Management Log", value.closeVersionManagementLog, defaultValue.closeVersionManagementLog);

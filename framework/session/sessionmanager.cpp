@@ -26,7 +26,8 @@
 #include <QMessageBox>
 #include <core/xinxconfig.h>
 
-namespace XinxSession {
+namespace XinxSession
+{
 
 /* PrivateSessionManager */
 
@@ -41,7 +42,7 @@ PrivateSessionManager::PrivateSessionManager(SessionManager * session_manager) :
 
 void PrivateSessionManager::updateSessions()
 {
-	QStringList keys = Session::sessionsNames ();
+	QStringList keys = Session::sessionsNames();
 
 	foreach(QAction * action, _session_actions->actions())
 	{
@@ -52,10 +53,10 @@ void PrivateSessionManager::updateSessions()
 	foreach(const QString & key, keys)
 	{
 		QAction * action = _session_actions->addAction(key);
-		action->setCheckable (true);
-		if (key == _current_session->sessionName ())
+		action->setCheckable(true);
+		if (key == _current_session->sessionName())
 		{
-			action->setChecked (true);
+			action->setChecked(true);
 		}
 
 		connect(action, SIGNAL(triggered()), _signal_mapper, SLOT(map()));
@@ -212,13 +213,13 @@ void SessionManager::restoreSession(const QString & sessionName)
 	delete current_session;
 	d->_current_session->loadSession();
 	d->_current_session->saveSession();
-	XINXConfig::self ()->config ().project.lastOpenedSession = d->_current_session->sessionName ();
+	XINXConfig::self()->config().project.lastOpenedSession = d->_current_session->sessionName();
 	d->updateSessions();
 
 	/* Restore */
 	foreach(const QString & projectPath, d->_current_session->openedProject())
 	{
-		XinxProject::Manager::self()->openProject (projectPath);
+		XinxProject::Manager::self()->openProject(projectPath);
 	}
 
 	EditorManager::self()->deserializeEditors(d->_current_session->serializedEditors());
@@ -227,27 +228,27 @@ void SessionManager::restoreSession(const QString & sessionName)
 void SessionManager::renameSession(const QString & sessionName)
 {
 	d->_current_session->saveSession(sessionName);
-	XINXConfig::self ()->config ().project.lastOpenedSession = d->_current_session->sessionName ();
+	XINXConfig::self()->config().project.lastOpenedSession = d->_current_session->sessionName();
 	d->updateSessions();
 }
 
 void SessionManager::deleteSession()
 {
-	d->_current_session->removeSession ();
-	restoreSession (DEFAULT_SESSION);
-	d->updateSessions ();
+	d->_current_session->removeSession();
+	restoreSession(DEFAULT_SESSION);
+	d->updateSessions();
 }
 
 void SessionManager::createRecoverSession()
 {
-	EditorManager::self ()->serializeEditors(true);
-	d->_current_session->saveSession (RECOVER_SESSION);
+	EditorManager::self()->serializeEditors(true);
+	d->_current_session->saveSession(RECOVER_SESSION);
 }
 
 void SessionManager::deleteRecoverSession()
 {
 	Session * session = new Session(this, RECOVER_SESSION);
-	session->removeSession ();
+	session->removeSession();
 	delete session;
 }
 

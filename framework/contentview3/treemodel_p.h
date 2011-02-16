@@ -35,7 +35,7 @@ public:
 	TreeNode(NodePtr node);
 
 	void updateFromNode(NodePtr node);
-	virtual QVariant data (int role = Qt::UserRole + 1) const;
+	virtual QVariant data(int role = Qt::UserRole + 1) const;
 
 	bool _is_children_populate;
 	XinxProject::ProjectPtrWeak _project;
@@ -51,7 +51,7 @@ class PrivateTreeModel : public QObject
 public:
 	PrivateTreeModel(TreeModel * parent) : _parent(parent) {}
 
-	QStandardItem * appendRow (QStandardItem * item, NodePtr child_node);
+	QStandardItem * appendRow(QStandardItem * item, NodePtr child_node);
 	void synchronize(QStandardItem * item, NodePtr node);
 	QStandardItem * createItemFromNode(NodePtr node);
 

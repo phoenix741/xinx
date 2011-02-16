@@ -110,15 +110,15 @@ bool CustomEditorImpl::saveSettingsDialog()
 	XINXConfig::self()->config().editor.popupWhenFileModified = m_popupWhenFileModifiedCheckBox->isChecked();
 
 	// Pretty print on saving
-	if(m_prettyPrintNeverRadioButton->isChecked())
+	if (m_prettyPrintNeverRadioButton->isChecked())
 	{
 		XINXConfig::self()->config().editor.autoindentOnSaving = "false";
 	}
-	else if(m_prettyPrintOnSavingRadioButton->isChecked())
+	else if (m_prettyPrintOnSavingRadioButton->isChecked())
 	{
 		XINXConfig::self()->config().editor.autoindentOnSaving = "true";
 	}
-	else if(m_prettyPrintOnClosingRadioButton->isChecked())
+	else if (m_prettyPrintOnClosingRadioButton->isChecked())
 	{
 		XINXConfig::self()->config().editor.autoindentOnSaving = "closing";
 	}

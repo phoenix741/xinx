@@ -40,14 +40,14 @@ private:
 XuiTabTextItem::XuiTabTextItem(const QString & text, XuiTabTextItem * left) : QGraphicsTextItem(), m_left(0), m_right(0)
 {
 	setHtml("<table style=\"	padding: 0px 0px 0px 0px;	margin-bottom: 0px;	margin-left: 0px;	margin-right: 0px;	margin-top: 0px;\">"
-	        "<tr>"
-	        "<td style=\"color : #000000; font-style: normal; text-align: center; font-family: verdana,arial,sans-serif; font-size: 7pt; background-color : #fcfad5; margin: 2px; padding: 2px; border-width:1px; border-color:#54545d; border-style: none solid none none; white-space: nowrap;\">"
-	        "<a href=\"#\" style=\"  color: #000000;  text-decoration: none;  font-weight: bold;  font-size: 7pt;\">" +
-	        text +
-	        "</a>"
-	        "</td>"
-	        "</tr>"
-	        "</table>");
+			"<tr>"
+			"<td style=\"color : #000000; font-style: normal; text-align: center; font-family: verdana,arial,sans-serif; font-size: 7pt; background-color : #fcfad5; margin: 2px; padding: 2px; border-width:1px; border-color:#54545d; border-style: none solid none none; white-space: nowrap;\">"
+			"<a href=\"#\" style=\"  color: #000000;  text-decoration: none;  font-weight: bold;  font-size: 7pt;\">" +
+			text +
+			"</a>"
+			"</td>"
+			"</tr>"
+			"</table>");
 	setLeft(left);
 	setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
 }

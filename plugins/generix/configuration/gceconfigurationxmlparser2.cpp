@@ -100,7 +100,7 @@ bool GceConfigurationXmlParser2::loadFromFile(const QString & filename)
 			}
 		}
 	}
-	catch(...)
+	catch (...)
 	{
 		// Sortie rapide
 	}
@@ -117,14 +117,14 @@ void GceConfigurationXmlParser2::readUnknownElement(xmlTextReader * reader)
 	if (!xmlTextReaderIsEmptyElement(reader))
 	{
 		int startLevel, level;
-		startLevel = level = xmlTextReaderDepth (reader);
+		startLevel = level = xmlTextReaderDepth(reader);
 
 		int ret = xmlTextReaderRead(reader);
 		while (ret == 1)
 		{
 			if (xmlTextReaderNodeType(reader) == XML_READER_TYPE_END_ELEMENT)
 			{
-				if(startLevel == level)
+				if (startLevel == level)
 				{
 					break;
 				}
@@ -359,7 +359,7 @@ void GceConfigurationXmlParser2::readPresentation(xmlTextReader * reader)
 	Q_ASSERT((xmlTextReaderNodeType(reader) == XML_READER_TYPE_ELEMENT) && (QString::fromUtf8((char*)xmlTextReaderConstName(reader)) == "presentation"));
 
 	xmlChar * rootPath = xmlTextReaderGetAttribute(reader, (xmlChar*)"rootPath");
-	if(rootPath)
+	if (rootPath)
 		m_rootPath = QString::fromUtf8((char*)rootPath);
 	xmlFree(rootPath);
 

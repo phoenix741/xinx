@@ -25,17 +25,17 @@ NewFileWizardImpl::NewFileWizardImpl(QWidget* parent, Qt::WindowFlags flags): QW
 {
 	setupUi(this);
 
-	_new_file_name->lineEdit()->setFileMustExist (false);
-	_new_file_name->setDirectory (false);
-	_directory_base->setVisible (false);
-	_directory_base_label->setVisible (false);
-	_file_type_selector->setVisible (false);
-	_file_type_selector->setShowFileName (false);
+	_new_file_name->lineEdit()->setFileMustExist(false);
+	_new_file_name->setDirectory(false);
+	_directory_base->setVisible(false);
+	_directory_base_label->setVisible(false);
+	_file_type_selector->setVisible(false);
+	_file_type_selector->setShowFileName(false);
 
 	connect(_new_file_name->lineEdit(), SIGNAL(textChanged(QString)), this, SLOT(slotTextChanged(QString)));
 
 	setPath(QString());
-	setFileName (QString());
+	setFileName(QString());
 }
 
 NewFileWizardImpl::~NewFileWizardImpl()
@@ -45,14 +45,14 @@ NewFileWizardImpl::~NewFileWizardImpl()
 
 void NewFileWizardImpl::slotTextChanged(const QString & text)
 {
-	_file_type_selector->setFileName (text);
-	_file_type_selector->setVisible ((!_interface) && (_file_type_selector->count () > 1));
+	_file_type_selector->setFileName(text);
+	_file_type_selector->setVisible((!_interface) && (_file_type_selector->count() > 1));
 }
 
 void NewFileWizardImpl::setFileName(const QString& value)
 {
 	QString filename;
-	if (!value.isEmpty ())
+	if (!value.isEmpty())
 	{
 		filename = value;
 	}
@@ -76,9 +76,9 @@ void NewFileWizardImpl::setFileName(const QString& value)
 		}
 	}
 
-	_new_file_name->lineEdit()->setText(QDir::toNativeSeparators (filename));
-	int position = filename.lastIndexOf ("/");
-	int length   = filename.size () - position;
+	_new_file_name->lineEdit()->setText(QDir::toNativeSeparators(filename));
+	int position = filename.lastIndexOf("/");
+	int length   = filename.size() - position;
 	if (position != -1)
 	{
 		_new_file_name->lineEdit()->setSelection(position + 1, length - 1);
@@ -91,7 +91,7 @@ void NewFileWizardImpl::setFileName(const QString& value)
 
 QString NewFileWizardImpl::filename() const
 {
-	return QDir::fromNativeSeparators (_new_file_name->lineEdit ()->text ());
+	return QDir::fromNativeSeparators(_new_file_name->lineEdit()->text());
 }
 
 void NewFileWizardImpl::setPath(const QString& value)
@@ -105,7 +105,7 @@ void NewFileWizardImpl::setPath(const QString& value)
 
 QString NewFileWizardImpl::path() const
 {
-	return QDir::fromNativeSeparators (_directory_base->text ());
+	return QDir::fromNativeSeparators(_directory_base->text());
 }
 
 void NewFileWizardImpl::setSelectedType(IFileTypePlugin * plugin)
@@ -128,7 +128,7 @@ XinxProject::ProjectPtr NewFileWizardImpl::project() const
 	return _project ? _project : XinxProject::Manager::self()->projectOfFile(filename());
 }
 
-void NewFileWizardImpl::done ( int result )
+void NewFileWizardImpl::done(int result)
 {
 	if (result == QDialog::Accepted)
 	{

@@ -118,7 +118,7 @@ QString ExternalFileResolver::resolveFileName(const QString & nameToResolve, con
 
 	/* Failed to find the rigth file with resolver */
 	resolvedName = QDir(currentPath).absoluteFilePath(nameToResolve);
-	if (QFile::exists (resolvedName))
+	if (QFile::exists(resolvedName))
 	{
 		return QFileInfo(resolvedName).canonicalFilePath();
 	}

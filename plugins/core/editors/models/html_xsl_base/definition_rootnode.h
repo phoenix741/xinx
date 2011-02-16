@@ -29,9 +29,11 @@
 #include <QString>
 #include <QHash>
 
-namespace Core {
+namespace Core
+{
 
-namespace BaliseDefinition {
+namespace BaliseDefinition
+{
 
 class BaliseNode;
 class AttributeNode;

@@ -34,7 +34,7 @@ class IFileTypePlugin;
 
 namespace XinxSession
 {
-	class SessionEditor;
+class SessionEditor;
 }
 
 class LIBEXPORT EditorFactory : public XinxLibSingleton<EditorFactory>

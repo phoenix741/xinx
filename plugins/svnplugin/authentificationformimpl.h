@@ -28,8 +28,8 @@ class AuthentificationFormImpl : public QDialog, public Ui::AuthentificationForm
 {
 	Q_OBJECT
 public:
-    AuthentificationFormImpl(QWidget* parent = 0, Qt::WindowFlags f = 0);
-    virtual ~AuthentificationFormImpl();
+	AuthentificationFormImpl(QWidget* parent = 0, Qt::WindowFlags f = 0);
+	virtual ~AuthentificationFormImpl();
 
 	void setRealm(const QString & realm);
 	QString realm() const;

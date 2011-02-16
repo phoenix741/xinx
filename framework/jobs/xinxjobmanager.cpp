@@ -39,7 +39,7 @@ public:
 XinxJobManager::XinxJobManager()
 {
 	d = new PrivateXinxJobManager;
-	d->_descriptions_mutex.reset (new QMutex);
+	d->_descriptions_mutex.reset(new QMutex);
 	d->_pool = new QThreadPool;
 }
 
@@ -61,53 +61,53 @@ void XinxJobManager::addJob(XinxJob* job)
 	}
 	else
 	{
-		d->_progress_max.ref ();
+		d->_progress_max.ref();
 	}
 	d->_count.ref();
 
-	qDebug() << "Add job " << job->description () << " (" << d->_progress_max << ")";
+	qDebug() << "Add job " << job->description() << " (" << d->_progress_max << ")";
 
 	d->_pool->start(job);
 	//emit jobStarted(countTotalJob (), countRunningJob ());
-	emit progressRangeChanged (0, d->_progress_max);
-	emit progressValueChanged (d->_progress_value);
+	emit progressRangeChanged(0, d->_progress_max);
+	emit progressValueChanged(d->_progress_value);
 }
 
 void XinxJobManager::slotJobStarting()
 {
 	{
-		QMutexLocker locker(d->_descriptions_mutex.data ());
+		QMutexLocker locker(d->_descriptions_mutex.data());
 		XinxJob * job = qobject_cast<XinxJob*> (sender());
-		d->_descriptions_list.insert(job, job->description ());
+		d->_descriptions_list.insert(job, job->description());
 	}
 
-	qDebug() << "Starting job (" << countRunningJob () << "/" << countTotalJob () << ")";
-	emit jobStarted (countTotalJob (), countRunningJob ());
+	qDebug() << "Starting job (" << countRunningJob() << "/" << countTotalJob() << ")";
+	emit jobStarted(countTotalJob(), countRunningJob());
 }
 
 void XinxJobManager::removeJob(QObject* sender)
 {
 	{
-		QMutexLocker locker(d->_descriptions_mutex.data ());
-		d->_descriptions_list.remove (sender);
+		QMutexLocker locker(d->_descriptions_mutex.data());
+		d->_descriptions_list.remove(sender);
 	}
 
 	d->_count.deref();
-	d->_progress_value.ref ();
-	emit progressValueChanged (d->_progress_value);
-	emit jobEnded (countTotalJob (), countRunningJob ());
+	d->_progress_value.ref();
+	emit progressValueChanged(d->_progress_value);
+	emit jobEnded(countTotalJob(), countRunningJob());
 	if (d->_count == 0)
 	{
 		emit allJobEnded();
 	}
 
-	qDebug() << "Remove job (" << countRunningJob () << "/" << countTotalJob () << ")";
+	qDebug() << "Remove job (" << countRunningJob() << "/" << countTotalJob() << ")";
 }
 
 QStringList XinxJobManager::descriptions() const
 {
-	QMutexLocker locker(d->_descriptions_mutex.data ());
-	return d->_descriptions_list.values ();
+	QMutexLocker locker(d->_descriptions_mutex.data());
+	return d->_descriptions_list.values();
 }
 
 int XinxJobManager::countRunningJob()

@@ -23,9 +23,11 @@
 
 #include "stylesheet_variablenode.h"
 
-namespace Core {
+namespace Core
+{
 
-namespace Stylesheet {
+namespace Stylesheet
+{
 
 class ParamNode : public VariableNode
 {

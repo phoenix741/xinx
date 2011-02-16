@@ -373,7 +373,7 @@ QModelIndex TreeProxyItemModel::mapFromSource(const QModelIndex & sourceIndex) c
 	Q_ASSERT(parentMapping);
 
 	int     proxyRow = parentMapping->childs.indexOf(id),
-	                   proxyColumn = sourceIndex.column();
+					   proxyColumn = sourceIndex.column();
 
 	return createIndex(proxyRow, proxyColumn, parentMapping);
 }

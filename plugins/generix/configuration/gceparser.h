@@ -35,7 +35,7 @@ public:
 	void setInterface(GceConfiguration * interface);
 	GceConfiguration * interface() const;
 
-    virtual void startJob() = 0;
+	virtual void startJob() = 0;
 
 	virtual QString description() const;
 signals:

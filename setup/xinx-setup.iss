@@ -1,7 +1,8 @@
 #define AppName "XINX"
-#define AppVersion GetFileVersion("..\xinx\xinx.exe")
+#define AppVersion GetFileVersion(SourcePath + "install\bin\xinx.exe")
 #define QTDIR GetEnv("QTDIR")
 #define LIBXML2 GetEnv("LIBXML2")
+#define LIBSVN  GetEnv("SUBVERSION")
 #define QtVersion GetFileVersion( GetEnv("QTDIR") + "\bin\QtCore4.dll" );
 
 [Setup]
@@ -34,7 +35,7 @@ AppPublisherURL=http://xinx.shadoware.org/
 AppSupportURL=http://xinx.shadoware.org/newticket
 AppUpdatesURL=http://xinx.shadoware.org/downloads
 AppContact=xinx@shadoware.org
-VersionInfoCopyright=2010 (c) Ulrich VANDENHEKKE
+VersionInfoCopyright=2011 (c) Ulrich VANDENHEKKE
 InfoBeforeFile=..\README
 
 [Languages]
@@ -50,9 +51,9 @@ Name: assofws; Description: Associate WebServices stream with {#AppName}; Flags:
 [Files]
 Source: ..\COPYING; DestDir: {app}; Components: application
 
-Source: ..\xinx\xinx.exe; DestDir: {app}\bin; Components: application; Flags: replacesameversion
-Source: ..\components\xinxcmp.dll; DestDir: {app}\bin; Components: application; Flags: replacesameversion
-Source: ..\framework\xinxframework.dll; DestDir: {app}\bin; Components: application; Flags: replacesameversion
+Source: install\bin\xinx.exe; DestDir: {app}\bin; Components: application; Flags: replacesameversion
+Source: install\bin\libxinxcmp.dll; DestDir: {app}\bin; Components: application; Flags: replacesameversion
+Source: install\bin\libframework.dll; DestDir: {app}\bin; Components: application; Flags: replacesameversion
 Source: ..\ext\qcodeedit\qcodeedit.dll; DestDir: {app}\bin; Components: application; Flags: replacesameversion
 Source: ..\ext\ideality\lib\ideality.dll; DestDir: {app}\bin; Components: application; Flags: replacesameversion
 
@@ -76,18 +77,20 @@ Source: {#QTDIR}\bin\QtXml4.dll; DestDir: {app}\bin; Components: application; Fl
 Source: {#QTDIR}\bin\QtXmlPatterns4.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile
 Source: {#QTDIR}\bin\QtSql4.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile
 
+Source: {#LIBSVN}\bin\*.*; DestDir: {app}\bin; Components: svnplugin
+
 DestDir: {app}\scripts; Source: ..\scripts\*.xq; Components: application
 DestDir: {app}\datas; Source: ..\datas\*.xml; Components: application
 DestDir: {app}\templates; Source: ..\templates\*.xml; Components: application
-DestDir: {app}\templates\Generix; Source: ..\templates\Generix\*.xml; Components: application
 
 Source: ..\src.7z; DestDir: {app}; Components: source; Flags: replacesameversion
-Source: ..\doc\html\*.*; DestDir: {app}\doc\api; Components: documentation; Flags: replacesameversion
+;Source: ..\doc\html\*.*; DestDir: {app}\doc\api; Components: documentation; Flags: replacesameversion
 
-DestDir: {app}\plugins; Source: ..\plugins\services1.dll; Components: services
-DestDir: {app}\plugins; Source: ..\plugins\cvsplugin0.dll; Components: cvsplugin
-DestDir: {app}\plugins; Source: ..\plugins\svnplugin0.dll; Components: svnplugin
-DestDir: {app}\plugins; Source: ..\plugins\generix1.dll; Components: generixplugin
+DestDir: {app}\plugins; Source: install\plugins\libservices.dll; Components: services
+DestDir: {app}\plugins; Source: install\plugins\libcvsplugin.dll; Components: cvsplugin
+DestDir: {app}\plugins; Source: install\plugins\libsvnplugin.dll; Components: svnplugin
+DestDir: {app}\plugins; Source: install\plugins\libsvnpluginwrapper.dll; Components: svnpluginwrapper
+DestDir: {app}\plugins; Source: install\plugins\libgenerix.dll; Components: generixplugin
 
 DestDir: {app}\scripts; Source: ..\scripts\*.js; Components: scripts
 
@@ -137,7 +140,8 @@ Name: source; Description: Source de l'Application; Types: full; Languages:
 Name: documentation; Description: APIs de XINX; Types: full
 Name: generixplugin; Description: Mode de fonctionnement Generix; Types: custom full
 Name: cvsplugin; Description: Encapsulation de CVS; Types: custom full
-Name: svnplugin; Description: Encapsulation de SubVersion; Types: custom full
+Name: svnpluginwrapper; Description: Encapsulation de SubVersion; Types: custom full
+Name: svnplugin; Description: Plugins SubVersion pour XINX; Types: custom full
 Name: services; Description: Appel de WebServices type RPC; Types: custom full
 Name: scripts; Description: Quelques scripts; Types: custom compact full
 Name: styles; Description: Styles Supplémentaires (Vista only); Types: full; MinVersion: 0,6.0.6000

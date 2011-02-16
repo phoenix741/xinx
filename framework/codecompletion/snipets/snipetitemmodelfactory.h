@@ -26,16 +26,17 @@
 // Qt header
 #include <QApplication>
 
-namespace CodeCompletion {
+namespace CodeCompletion
+{
 
 class LIBEXPORT SnipetItemModelFactory : public CodeCompletion::ItemModelFactory
 {
 	Q_DECLARE_TR_FUNCTIONS(SnipetItemModelFactory)
 public:
-    SnipetItemModelFactory();
-    virtual ~SnipetItemModelFactory();
-	
-    virtual void generate();
+	SnipetItemModelFactory();
+	virtual ~SnipetItemModelFactory();
+
+	virtual void generate();
 };
 
 }

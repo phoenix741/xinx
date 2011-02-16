@@ -145,12 +145,12 @@ void BaseSnipetItemModel::select()
 
 	// Set the query used all snipet
 	query.prepare(
-	    "SELECT id, parent_id, ':/images/folder.png' as icon, name, ifnull(description,''), '' as shortcut, 'CATEGORY' as type, ifnull(available_script,'') "
-	    "FROM categories "
-	    "UNION ALL "
-	    "SELECT id, category_id as parent_id, icon, name, ifnull(description,''), shortcut, 'SNIPET' as type, ifnull(available_script,'') "
-	    "FROM snipets "
-	    "ORDER BY type, name"
+		"SELECT id, parent_id, ':/images/folder.png' as icon, name, ifnull(description,''), '' as shortcut, 'CATEGORY' as type, ifnull(available_script,'') "
+		"FROM categories "
+		"UNION ALL "
+		"SELECT id, category_id as parent_id, icon, name, ifnull(description,''), shortcut, 'SNIPET' as type, ifnull(available_script,'') "
+		"FROM snipets "
+		"ORDER BY type, name"
 	);
 
 	bool result = query.exec();

@@ -30,9 +30,10 @@
 #include <QApplication>
 #include <QScopedPointer>
 
-namespace XinxProject {
-	class Project;
-	typedef QSharedPointer<Project> ProjectPtr;
+namespace XinxProject
+{
+class Project;
+typedef QSharedPointer<Project> ProjectPtr;
 }
 
 namespace ContentView3

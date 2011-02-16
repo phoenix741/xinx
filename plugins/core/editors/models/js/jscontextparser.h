@@ -31,9 +31,11 @@
 // Qt header
 #include <QStringList>
 
-namespace Core {
+namespace Core
+{
 
-namespace JavaScript {
+namespace JavaScript
+{
 
 class JsContextParser : public CodeCompletion::ContextParser
 {

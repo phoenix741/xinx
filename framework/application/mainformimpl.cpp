@@ -154,48 +154,48 @@ void MainformImpl::createMenus()
 
 	m_menuBar->addAction(sessionMenu->menuAction());
 	m_menuBar->addAction(projectMenu->menuAction());
-	m_menuBar->addSeparator ();
+	m_menuBar->addSeparator();
 	m_menuBar->addAction(fileMenu->menuAction());
 	m_menuBar->addAction(editMenu->menuAction());
 	m_menuBar->addAction(searchMenu->menuAction());
 	m_menuBar->addAction(bookmarkMenu->menuAction());
-	m_menuBar->addSeparator ();
+	m_menuBar->addSeparator();
 	m_menuBar->addAction(toolsMenu->menuAction());
 	m_menuBar->addAction(windowsMenu->menuAction());
 	m_menuBar->addAction(helpMenu->menuAction());
 
 
-	sessionMenu->addAction (XinxSession::SessionManager::self ()->newSessionAction());
+	sessionMenu->addAction(XinxSession::SessionManager::self()->newSessionAction());
 	sessionMenu->addSeparator();
-	XinxSession::SessionManager::self ()->sessionActions()->setMenu(sessionMenu);
-	XinxSession::SessionManager::self ()->sessionActions()->setMenuSeparator(sessionMenu->addSeparator());
-	sessionMenu->addAction (XinxSession::SessionManager::self ()->removeSessionAction());
-	sessionMenu->addAction (XinxSession::SessionManager::self ()->renameSessionAction());
+	XinxSession::SessionManager::self()->sessionActions()->setMenu(sessionMenu);
+	XinxSession::SessionManager::self()->sessionActions()->setMenuSeparator(sessionMenu->addSeparator());
+	sessionMenu->addAction(XinxSession::SessionManager::self()->removeSessionAction());
+	sessionMenu->addAction(XinxSession::SessionManager::self()->renameSessionAction());
 	sessionMenu->addSeparator();
 	sessionMenu->addAction(m_exitAct);
 
-	fileMenu->addAction(EditorManager::self ()->newAction());
-	fileMenu->addAction(EditorManager::self ()->openAction());
-	fileMenu->addAction(EditorManager::self ()->saveAction());
-	fileMenu->addAction(EditorManager::self ()->saveAsAction());
-	fileMenu->addAction(EditorManager::self ()->saveAllAction());
+	fileMenu->addAction(EditorManager::self()->newAction());
+	fileMenu->addAction(EditorManager::self()->openAction());
+	fileMenu->addAction(EditorManager::self()->saveAction());
+	fileMenu->addAction(EditorManager::self()->saveAsAction());
+	fileMenu->addAction(EditorManager::self()->saveAllAction());
 	fileMenu->addSeparator();
-	fileMenu->addAction(EditorManager::self ()->closeAction());
-	fileMenu->addAction(EditorManager::self ()->closeAllAction());
+	fileMenu->addAction(EditorManager::self()->closeAction());
+	fileMenu->addAction(EditorManager::self()->closeAllAction());
 	fileMenu->addSeparator();
-	fileMenu->addAction(EditorManager::self ()->printAction());
+	fileMenu->addAction(EditorManager::self()->printAction());
 
-	projectMenu->addAction(XinxProject::Manager::self ()->newProjectAction());
-	projectMenu->addAction(XinxProject::Manager::self ()->openProjectAction());
-	projectMenu->addAction(XinxProject::Manager::self ()->closeProjectAction());
-	projectMenu->addAction(XinxProject::Manager::self ()->customizeProjectAction());
+	projectMenu->addAction(XinxProject::Manager::self()->newProjectAction());
+	projectMenu->addAction(XinxProject::Manager::self()->openProjectAction());
+	projectMenu->addAction(XinxProject::Manager::self()->closeProjectAction());
+	projectMenu->addAction(XinxProject::Manager::self()->customizeProjectAction());
 	projectMenu->addSeparator();
 	projectMenu->addAction(VersionControl::Manager::self()->updateAllAction());
 	projectMenu->addAction(VersionControl::Manager::self()->commitAllAction());
 	projectMenu->addAction(VersionControl::Manager::self()->abortAction());
 
-	windowsMenu->addAction(EditorManager::self ()->nextEditorAction());
-	windowsMenu->addAction(EditorManager::self ()->previousEditorAction());
+	windowsMenu->addAction(EditorManager::self()->nextEditorAction());
+	windowsMenu->addAction(EditorManager::self()->previousEditorAction());
 	windowsMenu->addSeparator();
 	windowsMenu->addAction(m_alwaysShowRunDialog);
 	windowsMenu->addSeparator();
@@ -218,8 +218,8 @@ void MainformImpl::createMenus()
 	searchMenu->addSeparator();
 	searchMenu->addAction(m_replaceAct);
 
-	fileToolBar->addAction(EditorManager::self ()->newAction());
-	fileToolBar->addAction(EditorManager::self ()->openAction());
+	fileToolBar->addAction(EditorManager::self()->newAction());
+	fileToolBar->addAction(EditorManager::self()->openAction());
 	fileToolBar->addAction(EditorManager::self()->saveAction());
 	fileToolBar->addAction(EditorManager::self()->saveAllAction());
 	fileToolBar->addSeparator();
@@ -231,7 +231,7 @@ void MainformImpl::createMenus()
 	editToolBar->setObjectName("editToolBar");
 	addToolBar(Qt::TopToolBarArea, editToolBar);
 
-	QToolButton * btn = qobject_cast<QToolButton*>(fileToolBar->widgetForAction(EditorManager::self ()->openAction()));
+	QToolButton * btn = qobject_cast<QToolButton*>(fileToolBar->widgetForAction(EditorManager::self()->openAction()));
 	if (btn) btn->setPopupMode(QToolButton::MenuButtonPopup);
 
 	searchToolBar->addAction(m_searchAct);
@@ -240,8 +240,8 @@ void MainformImpl::createMenus()
 	addToolBar(Qt::TopToolBarArea, searchToolBar);
 
 
-	connect(XinxAction::ActionManager::self (), SIGNAL(changed()), this, SLOT(createPluginsActions()));
-	XinxAction::ActionManager::self ()->generateMenu();
+	connect(XinxAction::ActionManager::self(), SIGNAL(changed()), this, SLOT(createPluginsActions()));
+	XinxAction::ActionManager::self()->generateMenu();
 }
 
 void MainformImpl::createActions()
@@ -325,45 +325,45 @@ void MainformImpl::createActions()
 
 void MainformImpl::connectSignals()
 {
-	connect(EditorManager::self (), SIGNAL(fileOpened(QString)), this, SLOT(sOpenedFile(QString)));
-	connect(EditorManager::self (), SIGNAL(filePrinted(QString)), this, SLOT(sPrintedFile(QString)));
-	connect(EditorManager::self (), SIGNAL(fileSaved(QString)), this, SLOT(sSavedFile(QString)));
-	connect(EditorManager::self (), SIGNAL(fileClosed(QString)), this, SLOT(sClosedFile(QString)));
-	connect(EditorManager::self (), SIGNAL(positionChanged(QString)), this, SLOT(setEditorPosition(QString)));
+	connect(EditorManager::self(), SIGNAL(fileOpened(QString)), this, SLOT(sOpenedFile(QString)));
+	connect(EditorManager::self(), SIGNAL(filePrinted(QString)), this, SLOT(sPrintedFile(QString)));
+	connect(EditorManager::self(), SIGNAL(fileSaved(QString)), this, SLOT(sSavedFile(QString)));
+	connect(EditorManager::self(), SIGNAL(fileClosed(QString)), this, SLOT(sClosedFile(QString)));
+	connect(EditorManager::self(), SIGNAL(positionChanged(QString)), this, SLOT(setEditorPosition(QString)));
 
-	connect(XinxJobManager::self (), SIGNAL(allJobEnded()), m_indexingBar, SLOT(hide()));
-	connect(XinxJobManager::self (), SIGNAL(progressRangeChanged(int,int)), m_indexingBar, SLOT(setRange(int,int)));
-	connect(XinxJobManager::self (), SIGNAL(progressValueChanged(int)), m_indexingBar, SLOT(setValue(int)));
-	connect(XinxJobManager::self (), SIGNAL(progressValueChanged(int)), m_indexingBar, SLOT(show()));
+	connect(XinxJobManager::self(), SIGNAL(allJobEnded()), m_indexingBar, SLOT(hide()));
+	connect(XinxJobManager::self(), SIGNAL(progressRangeChanged(int,int)), m_indexingBar, SLOT(setRange(int,int)));
+	connect(XinxJobManager::self(), SIGNAL(progressValueChanged(int)), m_indexingBar, SLOT(setValue(int)));
+	connect(XinxJobManager::self(), SIGNAL(progressValueChanged(int)), m_indexingBar, SLOT(show()));
 
-	connect(XinxJobManager::self (), SIGNAL(progressRangeChanged(int,int)), this, SLOT(updateProgressBar()));
-	connect(XinxJobManager::self (), SIGNAL(progressValueChanged(int)), this, SLOT(updateProgressBar()));
-	connect(XinxJobManager::self (), SIGNAL(progressValueChanged(int)), this, SLOT(updateProgressBar()));
+	connect(XinxJobManager::self(), SIGNAL(progressRangeChanged(int,int)), this, SLOT(updateProgressBar()));
+	connect(XinxJobManager::self(), SIGNAL(progressValueChanged(int)), this, SLOT(updateProgressBar()));
+	connect(XinxJobManager::self(), SIGNAL(progressValueChanged(int)), this, SLOT(updateProgressBar()));
 }
 
 void MainformImpl::createPluginsActions()
 {
-	foreach(const QString & menuId, XinxAction::ActionManager::self ()->menus())
+	foreach(const QString & menuId, XinxAction::ActionManager::self()->menus())
 	{
 		if (! m_menus.value(menuId))
 		{
-			QMenu * newMenu = new QMenu(XinxAction::ActionManager::self ()->nameOfMenu(menuId), m_menuBar);
+			QMenu * newMenu = new QMenu(XinxAction::ActionManager::self()->nameOfMenu(menuId), m_menuBar);
 			m_menuBar->insertMenu(m_menus[ "tools" ]->menuAction(), newMenu);
 			m_menus[ menuId ] = newMenu;
 		}
 
 		foreach(XinxAction::MenuItem * item, XinxAction::ActionManager::self()->menu(menuId))
 		{
-			m_menus[ menuId ]->addAction(item->action ());
+			m_menus[ menuId ]->addAction(item->action());
 		}
 	}
 
-	foreach(const QString & menuId, XinxAction::ActionManager::self ()->toolBars())
+	foreach(const QString & menuId, XinxAction::ActionManager::self()->toolBars())
 	{
 		if (! m_toolBars.value(menuId))
 		{
 			QToolBar * newToolBar = new QToolBar(this);
-			newToolBar->setWindowTitle(XinxAction::ActionManager::self ()->nameOfMenu(menuId));
+			newToolBar->setWindowTitle(XinxAction::ActionManager::self()->nameOfMenu(menuId));
 			newToolBar->setObjectName(menuId);
 			addToolBar(Qt::TopToolBarArea, newToolBar);
 			m_toolBars[ menuId ] = newToolBar;
@@ -371,7 +371,7 @@ void MainformImpl::createPluginsActions()
 
 		foreach(XinxAction::MenuItem * item, XinxAction::ActionManager::self()->toolBar(menuId))
 		{
-			m_toolBars[ menuId ]->addAction(item->action ());
+			m_toolBars[ menuId ]->addAction(item->action());
 		}
 	}
 }
@@ -387,7 +387,7 @@ void MainformImpl::createDockWidget()
 	QAction * action = view->toggleViewAction();
 	action->setShortcut(QKeySequence("Alt+1"));
 	m_menus["windows"]->addAction(action);
-	connect(m_projectDock, SIGNAL(open(QString,IFileTypePlugin*,XinxProject::ProjectPtr)), EditorManager::self (), SLOT(openFile(QString,IFileTypePlugin*,XinxProject::ProjectPtr)));
+	connect(m_projectDock, SIGNAL(open(QString,IFileTypePlugin*,XinxProject::ProjectPtr)), EditorManager::self(), SLOT(openFile(QString,IFileTypePlugin*,XinxProject::ProjectPtr)));
 
 	/* Content */
 	m_contentDock = new ContentView3::DockWidget(this);
@@ -396,7 +396,7 @@ void MainformImpl::createDockWidget()
 	action = view->toggleViewAction();
 	action->setShortcut(QKeySequence("Alt+2"));
 	m_menus["windows"]->addAction(action);
-	connect(m_contentDock, SIGNAL(open(QString,int,IFileTypePlugin*,XinxProject::ProjectPtr)), EditorManager::self (), SLOT(openFile(QString,int,IFileTypePlugin*,XinxProject::ProjectPtr)));
+	connect(m_contentDock, SIGNAL(open(QString,int,IFileTypePlugin*,XinxProject::ProjectPtr)), EditorManager::self(), SLOT(openFile(QString,int,IFileTypePlugin*,XinxProject::ProjectPtr)));
 
 	/* Snipets */
 	m_snipetsDock = new SnipetDockWidget(this);
@@ -460,7 +460,7 @@ void MainformImpl::createStatusBar()
 
 	m_indexingBar = new QProgressBar(this);
 	m_indexingBar->setMaximumWidth(150);
-	m_indexingBar->hide ();
+	m_indexingBar->hide();
 
 	m_codecLabel = new QLabel(tr("Unknown"));
 	m_lineFeedLabel = new QLabel(tr("Unknown"));
@@ -565,7 +565,7 @@ void MainformImpl::updateEditorInformations()
 
 void MainformImpl::updateProgressBar()
 {
-	m_indexingBar->setToolTip (XinxJobManager::self ()->descriptions().join("\n"));
+	m_indexingBar->setToolTip(XinxJobManager::self()->descriptions().join("\n"));
 }
 
 void MainformImpl::about()
@@ -750,16 +750,16 @@ void MainformImpl::findNext()
 			if (m_yesToAllReplace && ! m_replaceExpression.isNull())
 			{
 				QMessageBox::information(this,
-				                         tr("Search/Replace"),
-				                         tr("%1 occurences of '%2' replaced.").arg(m_nbFindedText).arg(m_findExpression),
-				                         QMessageBox::Ok);
+										 tr("Search/Replace"),
+										 tr("%1 occurences of '%2' replaced.").arg(m_nbFindedText).arg(m_findExpression),
+										 QMessageBox::Ok);
 			}
 			else
 			{
 				QMessageBox::StandardButton ret = QMessageBox::warning(this,
-				                                  tr("Search/Replace"),
-				                                  tr("%1 occurences of '%2' %3. Return to the beginning of the document ?").arg(m_nbFindedText).arg(m_findExpression).arg(! m_replaceExpression.isNull() ? tr("replaced") : tr("finded")),
-				                                  QMessageBox::Yes | QMessageBox::No);
+												  tr("Search/Replace"),
+												  tr("%1 occurences of '%2' %3. Return to the beginning of the document ?").arg(m_nbFindedText).arg(m_findExpression).arg(! m_replaceExpression.isNull() ? tr("replaced") : tr("finded")),
+												  QMessageBox::Yes | QMessageBox::No);
 
 				if (ret == QMessageBox::Yes)
 				{
@@ -816,10 +816,10 @@ void MainformImpl::replace()
 
 void MainformImpl::updateActions()
 {
-	m_searchAct->setEnabled(EditorManager::self ()->editorsCount());
-	m_searchNextAct->setEnabled(EditorManager::self ()->editorsCount());
-	m_replaceAct->setEnabled(EditorManager::self ()->editorsCount());
-	m_searchPreviousAct->setEnabled(EditorManager::self ()->editorsCount());
+	m_searchAct->setEnabled(EditorManager::self()->editorsCount());
+	m_searchNextAct->setEnabled(EditorManager::self()->editorsCount());
+	m_replaceAct->setEnabled(EditorManager::self()->editorsCount());
+	m_searchPreviousAct->setEnabled(EditorManager::self()->editorsCount());
 }
 
 void MainformImpl::updateTitle()
@@ -851,8 +851,8 @@ void MainformImpl::closeEvent(QCloseEvent *event)
 	emit aboutToClose();
 	storeWindowSettings(); // Store before the project is closed
 
-	XinxSession::SessionManager::self ()->currentSession()->saveSession();
-	XinxSession::SessionManager::self ()->setApplicationStopping(true);
+	XinxSession::SessionManager::self()->currentSession()->saveSession();
+	XinxSession::SessionManager::self()->setApplicationStopping(true);
 
 	if (! EditorManager::self()->closeAllFile())
 	{

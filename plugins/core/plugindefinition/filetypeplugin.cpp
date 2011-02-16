@@ -138,22 +138,22 @@ QString XMLFileType::createLanguageDescription() const
 QString XMLFileType::fileExample() const
 {
 	return
-	    "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n"
-	    "<!-- This is a comment -->\n"
-	    "<xsl:stylesheet version=\"1.0\">\n"
-	    "\t<xsl:import href=\"myimport.xsl\"/>\n"
-	    "\t<xsl:variable name=\"MYVARIABLE\"/>\n"
-	    "\t<xsl:template match=\"/\">\n"
-	    "\t\t<xsl:comment> This is a text </xsl:comment>\n"
-	    "\n"
-	    "\t\t<xsl:choose>\n"
-	    "\t\t\t<xsl:when test=\"test\">\n"
-	    "\t\t\t\t<input type=\"hidden\" value=\"{$MYVARIABLE}\"/>\n"
-	    "\t\t\t</xsl:when>\n"
-	    "\t\t\t<xsl:otherwise>Otherwise not</xsl:otherwise>\n"
-	    "\t\t</xsl:choose>\n"
-	    "\t</xsl:template>\n"
-	    "</xsl:stylesheet>\n";
+		"<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n"
+		"<!-- This is a comment -->\n"
+		"<xsl:stylesheet version=\"1.0\">\n"
+		"\t<xsl:import href=\"myimport.xsl\"/>\n"
+		"\t<xsl:variable name=\"MYVARIABLE\"/>\n"
+		"\t<xsl:template match=\"/\">\n"
+		"\t\t<xsl:comment> This is a text </xsl:comment>\n"
+		"\n"
+		"\t\t<xsl:choose>\n"
+		"\t\t\t<xsl:when test=\"test\">\n"
+		"\t\t\t\t<input type=\"hidden\" value=\"{$MYVARIABLE}\"/>\n"
+		"\t\t\t</xsl:when>\n"
+		"\t\t\t<xsl:otherwise>Otherwise not</xsl:otherwise>\n"
+		"\t\t</xsl:choose>\n"
+		"\t</xsl:template>\n"
+		"</xsl:stylesheet>\n";
 }
 
 QString XMLFileType::parserType()
@@ -288,15 +288,15 @@ XinxFormatScheme * JSFileType::createFormatScheme(XINXConfig * config) const
 QString JSFileType::fileExample() const
 {
 	return
-	    "/**\n"
-	    " * This is a comment\n"
-	    "**/\n"
-	    "\n"
-	    "function myfunction( param1, param2, param3 ) {\n"
-	    "	var variable = window.open('number' + 56 + \"othertext\",'frame','options');\n"
-	    "	alert( param& );\n"
-	    "	variable.close();\n"
-	    "}\n";
+		"/**\n"
+		" * This is a comment\n"
+		"**/\n"
+		"\n"
+		"function myfunction( param1, param2, param3 ) {\n"
+		"	var variable = window.open('number' + 56 + \"othertext\",'frame','options');\n"
+		"	alert( param& );\n"
+		"	variable.close();\n"
+		"}\n";
 }
 
 QString JSFileType::parserType()
@@ -362,10 +362,10 @@ XinxFormatScheme * CSSFileType::createFormatScheme(XINXConfig * config) const
 QString CSSFileType::fileExample() const
 {
 	return
-	    ".test, #td, test2 {\n"
-	    "\tbackground-color: red; /* Commentaire */\n"
-	    "\tmargin: 8pt;\n"
-	    "}\n";
+		".test, #td, test2 {\n"
+		"\tbackground-color: red; /* Commentaire */\n"
+		"\tmargin: 8pt;\n"
+		"}\n";
 }
 
 QString CSSFileType::parserType()
@@ -469,8 +469,8 @@ XinxFormatScheme * XQFileType::createFormatScheme(XINXConfig * config) const
 QString XQFileType::fileExample() const
 {
 	return
-	    "count(DynamicRow)\n"
-	    "max(Qtecde)";
+		"count(DynamicRow)\n"
+		"max(Qtecde)";
 }
 
 QString XQFileType::parserType()

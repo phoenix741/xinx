@@ -24,9 +24,11 @@
 #include <QApplication>
 #include <contentview3/node.h>
 
-namespace Core {
+namespace Core
+{
 
-namespace Stylesheet {
+namespace Stylesheet
+{
 
 class VariableNode : public ContentView3::Node
 {
@@ -35,13 +37,13 @@ public:
 	static QSharedPointer<VariableNode> create(const QString & name, ContentView3::NodePtr parent = ContentView3::NodePtr());
 	virtual ~VariableNode();
 
-    virtual void setLine(int value);
+	virtual void setLine(int value);
 
 	void setValue(const QString & value);
 	const QString & value() const;
 
-    virtual QString displayName() const;
-    virtual QString completionString() const;
+	virtual QString displayName() const;
+	virtual QString completionString() const;
 protected:
 	VariableNode(const QString& name);
 private:

@@ -48,7 +48,7 @@ void ItemModelFactory::addNode(const QString & contextType, ContentView3::NodePt
 {
 	foreach(ContentView3::NodePtr child, node->childs())
 	{
-		if (child->name().startsWith(context().prefix (), Qt::CaseInsensitive))
+		if (child->name().startsWith(context().prefix(), Qt::CaseInsensitive))
 		{
 			Core::Stylesheet::XslNodeItem * item = new Core::Stylesheet::XslNodeItem(child);
 			item->setContextType(contextType);
@@ -60,12 +60,12 @@ void ItemModelFactory::addNode(const QString & contextType, ContentView3::NodePt
 void ItemModelFactory::generate()
 {
 	// Do nothing if the prefix is not LBL. + 1 car.
-	if (context ().prefix ().length () < 5) return;
+	if (context().prefix().length() < 5) return;
 
-	Core::BaliseDefinition::XmlContextType * c = dynamic_cast<Core::BaliseDefinition::XmlContextType*> (context().context(XML_CONTEXT_TYPE));
-	if (c && c->position () == Core::BaliseDefinition::XmlContextType::ATTRIBUTE_CONTENT)
+	Core::BaliseDefinition::XmlContextType * c = dynamic_cast<Core::BaliseDefinition::XmlContextType*>(context().context(XML_CONTEXT_TYPE));
+	if (c && c->position() == Core::BaliseDefinition::XmlContextType::ATTRIBUTE_CONTENT)
 	{
-		ContentView3::FilePtr file = context().fileStrongRef ();
+		ContentView3::FilePtr file = context().fileStrongRef();
 		XinxProject::ProjectPtr project = file->project();
 
 		if (project)
@@ -77,10 +77,10 @@ void ItemModelFactory::generate()
 
 				foreach(const QString & dictionarie, dictionaries)
 				{
-					ContentView3::FilePtr dicoFilePtr = project->cache ()->cachedFile (dictionarie);
+					ContentView3::FilePtr dicoFilePtr = project->cache()->cachedFile(dictionarie);
 					ContentView3::FileNodePtr rootNode = dicoFilePtr->rootNode();
 
-					addNode (QDir(project->projectPath ()).relativeFilePath (dicoFilePtr->filename()), rootNode);
+					addNode(QDir(project->projectPath()).relativeFilePath(dicoFilePtr->filename()), rootNode);
 				}
 			}
 		}

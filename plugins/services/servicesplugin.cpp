@@ -40,17 +40,17 @@ public:
 	{
 	}
 
-    virtual ~OpenWebServicesObjectStep()
-    {
+	virtual ~OpenWebServicesObjectStep()
+	{
 	}
 
-    virtual QString name()
-    {
+	virtual QString name()
+	{
 		return ServicesPlugin::tr("Open WebServices project");
 	}
 
-    virtual bool process()
-    {
+	virtual bool process()
+	{
 		_project->addObject("webservice", new WebServicesManager(_project));
 
 		return true;
@@ -111,13 +111,13 @@ QList<IFileTypePlugin*> ServicesPlugin::fileTypes()
 	return m_fileTypes;
 }
 
-void ServicesPlugin::generateActionMenu ()
+void ServicesPlugin::generateActionMenu()
 {
 	XinxAction::Action * refreshAction = new WebServicesRefreshAction;
 	XinxAction::Action * runAction = new WebServicesRunAction;
 	XinxAction::Action * runAllAction = new WebServicesRunAllAction;
 
-	XinxAction::ActionManager::self ()->insertNameOfMenu("execute", tr("&Execute"));
+	XinxAction::ActionManager::self()->insertNameOfMenu("execute", tr("&Execute"));
 
 
 	XinxAction::ActionManager::self()->addToolBarSeparator("execute");

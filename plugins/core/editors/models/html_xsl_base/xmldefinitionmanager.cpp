@@ -23,41 +23,43 @@
 #include "xmlcompletionparser.h"
 #include <project/xinxprojectmanager.h>
 
-namespace Core {
-namespace BaliseDefinition {
+namespace Core
+{
+namespace BaliseDefinition
+{
 
 XmlDefinitionManager::XmlDefinitionManager()
 {
-	if (_html_file.isNull ())
+	if (_html_file.isNull())
 	{
-		_html_file = ContentView3::File::create ("datas:core_html_definition.xml", XinxProject::Manager::self ()->defaultProject ());
+		_html_file = ContentView3::File::create("datas:core_html_definition.xml", XinxProject::Manager::self()->defaultProject());
 
 		QSharedPointer<RootNode> rootNode = RootNode::create("HTML");
 		_html_file->setRootNode(rootNode);
 
-		QFile * file = new QFile(_html_file->filename ());
-		if (file->open (QFile::ReadOnly))
+		QFile * file = new QFile(_html_file->filename());
+		if (file->open(QFile::ReadOnly))
 		{
 			XmlCompletionParser * parser = new XmlCompletionParser;
 			parser->setFile(_html_file);
-			static_cast<ContentView3::Parser*>(parser)->setDevice (file);
-			XinxProject::Manager::self ()->defaultProject ()->cache ()->addFileToCache (parser, false, ContentView3::Cache::PROJECT);
+			static_cast<ContentView3::Parser*>(parser)->setDevice(file);
+			XinxProject::Manager::self()->defaultProject()->cache()->addFileToCache(parser, false, ContentView3::Cache::PROJECT);
 		}
 	}
-	if (_xsl_file.isNull ())
+	if (_xsl_file.isNull())
 	{
-		_xsl_file = ContentView3::File::create ("datas:core_xslt_definition.xml", XinxProject::Manager::self ()->defaultProject ());
+		_xsl_file = ContentView3::File::create("datas:core_xslt_definition.xml", XinxProject::Manager::self()->defaultProject());
 
 		QSharedPointer<RootNode> rootNode = RootNode::create("XSLT");
 		_xsl_file->setRootNode(rootNode);
 
-		QFile * file = new QFile(_xsl_file->filename ());
-		if (file->open (QFile::ReadOnly))
+		QFile * file = new QFile(_xsl_file->filename());
+		if (file->open(QFile::ReadOnly))
 		{
 			XmlCompletionParser * parser = new XmlCompletionParser;
 			parser->setFile(_xsl_file);
-			static_cast<ContentView3::Parser*>(parser)->setDevice (file);
-			XinxProject::Manager::self ()->defaultProject ()->cache ()->addFileToCache (parser, false, ContentView3::Cache::PROJECT);
+			static_cast<ContentView3::Parser*>(parser)->setDevice(file);
+			XinxProject::Manager::self()->defaultProject()->cache()->addFileToCache(parser, false, ContentView3::Cache::PROJECT);
 		}
 	}
 }
@@ -74,12 +76,12 @@ ContentView3::FilePtr XmlDefinitionManager::getXslFile() const
 
 QSharedPointer<Core::BaliseDefinition::RootNode> XmlDefinitionManager::getHtmlRootNode() const
 {
-	return _html_file->rootNode ().staticCast<Core::BaliseDefinition::RootNode>();
+	return _html_file->rootNode().staticCast<Core::BaliseDefinition::RootNode>();
 }
 
 QSharedPointer<Core::BaliseDefinition::RootNode> XmlDefinitionManager::getXslRootNode() const
 {
-	return _xsl_file->rootNode ().staticCast<Core::BaliseDefinition::RootNode>();
+	return _xsl_file->rootNode().staticCast<Core::BaliseDefinition::RootNode>();
 }
 
 } // namespace BaliseDefinition

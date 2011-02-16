@@ -43,7 +43,7 @@ QSharedPointer<ImportNode> ImportNode::create(const QString & name, ContentView3
 ImportNode::ImportNode(const QString& name) : ContentView3::Node()
 {
 	setName(name);
-	setType ("IMPORT");
+	setType("IMPORT");
 }
 
 ImportNode::~ImportNode()
@@ -69,11 +69,11 @@ void ImportNode::setName(const QString& name)
 
 QString ImportNode::displayName() const
 {
-	ContentView3::FilePtr filePtr = file().toStrongRef ();
+	ContentView3::FilePtr filePtr = file().toStrongRef();
 
-	if (filePtr && filePtr->project () && name().contains (filePtr->project ()->projectPath ()))
+	if (filePtr && filePtr->project() && name().contains(filePtr->project()->projectPath()))
 	{
-		return QDir(filePtr->project ()->projectPath ()).relativeFilePath (name());
+		return QDir(filePtr->project()->projectPath()).relativeFilePath(name());
 	}
 	else
 	{

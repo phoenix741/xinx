@@ -248,16 +248,16 @@ void SnipetManager::duplicateSnipet(int id, QWidget * parent)
 bool SnipetManager::removeSnipet(int id, QWidget * parent)
 {
 	QSqlQuery removeSnipetQuery(
-	    "DELETE FROM snipets "
-	    "WHERE id=:id", database());
+		"DELETE FROM snipets "
+		"WHERE id=:id", database());
 	removeSnipetQuery.bindValue(":id", id);
 	QSqlQuery removeSnipetParamsQuery(
-	    "DELETE FROM snipets_params "
-	    "WHERE snipet_id=:id", database());
+		"DELETE FROM snipets_params "
+		"WHERE snipet_id=:id", database());
 	removeSnipetParamsQuery.bindValue(":id", id);
 	QSqlQuery removeSnipetExtQuery(
-	    "DELETE FROM snipets_extentions "
-	    "WHERE snipet_id=:id", database());
+		"DELETE FROM snipets_extentions "
+		"WHERE snipet_id=:id", database());
 	removeSnipetExtQuery.bindValue(":id", id);
 
 	if (! removeSnipetQuery.exec())
@@ -378,7 +378,7 @@ bool SnipetManager::exportSnipetList(const QList<int> & list, SnipetList * snipe
 bool SnipetManager::importSnipetList(const SnipetList & list, bool imported, QWidget * parent)
 {
 	QSqlQuery insertSnipetQuery("INSERT INTO snipets(name, description, shortcut, icon, auto, show_dialog, text, available_script, category_id) "
-	                            "VALUES(:name, :description, :shortcut, :icon, :auto, :dialog, :text, :available_script, :category_id)", database());
+								"VALUES(:name, :description, :shortcut, :icon, :auto, :dialog, :text, :available_script, :category_id)", database());
 	QSqlQuery insertSnipetExtentionsQuery("INSERT INTO snipets_extentions(snipet_id, extention) VALUES (:snipet_id, :extention)", database());
 	QSqlQuery insertSnipetParamsQuery("INSERT INTO snipets_params(snipet_id, name, default_value) VALUES (:snipet_id, :name, :default_value)", database());
 
@@ -660,132 +660,132 @@ bool SnipetManager::createDatabase(QSqlDatabase db)
 	QSqlQuery createQuery(db);
 	/* Create tables */
 	if (!
-	        createQuery.exec("CREATE TABLE snipet_config ("
-	                         "    name TEXT PRIMARY KEY,"
-	                         "    value TEXT)"))
+			createQuery.exec("CREATE TABLE snipet_config ("
+							 "    name TEXT PRIMARY KEY,"
+							 "    value TEXT)"))
 	{
 		qWarning(qPrintable(createQuery.lastError().text()));
 		return false;
 	}
 	if (!
-	        createQuery.exec("CREATE TABLE categories ("
-	                         "    id INTEGER PRIMARY KEY,"
-	                         "    parent_id INTEGER NOT NULL DEFAULT(0),"
-	                         "    name TEXT NOT NULL,"
-	                         "    description TEXT,"
-	                         "    available_script TEXT)"))
+			createQuery.exec("CREATE TABLE categories ("
+							 "    id INTEGER PRIMARY KEY,"
+							 "    parent_id INTEGER NOT NULL DEFAULT(0),"
+							 "    name TEXT NOT NULL,"
+							 "    description TEXT,"
+							 "    available_script TEXT)"))
 	{
 		qWarning(qPrintable(createQuery.lastError().text()));
 		return false;
 	}
 	if (!
-	        createQuery.exec("CREATE TABLE snipets ("
-	                         "    id INTEGER PRIMARY KEY,"
-	                         "    name TEXT,"
-	                         "    description TEXT,"
-	                         "    shortcut TEXT,"
-	                         "    icon TEXT,"
-	                         "    auto INTEGER,"
-	                         "    show_dialog INTEGER,"
-	                         "    text TEXT,"
-	                         "    available_script TEXT,"
-	                         "    category_id INTEGER  NOT NULL DEFAULT (0),"
-	                         "    FOREIGN KEY(category_id) REFERENCES category)"))
+			createQuery.exec("CREATE TABLE snipets ("
+							 "    id INTEGER PRIMARY KEY,"
+							 "    name TEXT,"
+							 "    description TEXT,"
+							 "    shortcut TEXT,"
+							 "    icon TEXT,"
+							 "    auto INTEGER,"
+							 "    show_dialog INTEGER,"
+							 "    text TEXT,"
+							 "    available_script TEXT,"
+							 "    category_id INTEGER  NOT NULL DEFAULT (0),"
+							 "    FOREIGN KEY(category_id) REFERENCES category)"))
 	{
 		qWarning(qPrintable(createQuery.lastError().text()));
 		return false;
 	}
 	if (!
-	        createQuery.exec("CREATE TABLE snipets_extentions ("
-	                         "    id INTEGER PRIMARY KEY,"
-	                         "    snipet_id INTEGER NOT NULL,"
-	                         "    extention TEXT,"
-	                         "    FOREIGN KEY(snipet_id) REFERENCES snipet)"))
+			createQuery.exec("CREATE TABLE snipets_extentions ("
+							 "    id INTEGER PRIMARY KEY,"
+							 "    snipet_id INTEGER NOT NULL,"
+							 "    extention TEXT,"
+							 "    FOREIGN KEY(snipet_id) REFERENCES snipet)"))
 	{
 		qWarning(qPrintable(createQuery.lastError().text()));
 		return false;
 	}
 	if (!
-	        createQuery.exec("CREATE TABLE snipets_params ("
-	                         "    id INTEGER PRIMARY KEY,"
-	                         "    snipet_id INTEGER NOT NULL,"
-	                         "    name TEXT,"
-	                         "    default_value TEXT,"
-	                         "    FOREIGN KEY(snipet_id) REFERENCES snipet)"))
+			createQuery.exec("CREATE TABLE snipets_params ("
+							 "    id INTEGER PRIMARY KEY,"
+							 "    snipet_id INTEGER NOT NULL,"
+							 "    name TEXT,"
+							 "    default_value TEXT,"
+							 "    FOREIGN KEY(snipet_id) REFERENCES snipet)"))
 	{
 		qWarning(qPrintable(createQuery.lastError().text()));
 		return false;
 	}
 	/* Create Index */
 	if (!
-	        createQuery.exec("CREATE INDEX categories_idx1 on categories (id ASC)"))
+			createQuery.exec("CREATE INDEX categories_idx1 on categories (id ASC)"))
 	{
 		qWarning(qPrintable(createQuery.lastError().text()));
 		return false;
 	}
 	if (!
-	        createQuery.exec("CREATE INDEX categories_idx2 on categories (parent_id ASC, name ASC)"))
+			createQuery.exec("CREATE INDEX categories_idx2 on categories (parent_id ASC, name ASC)"))
 	{
 		qWarning(qPrintable(createQuery.lastError().text()));
 		return false;
 	}
 	if (!
-	        createQuery.exec("CREATE INDEX snipets_idx1 on snipets (id ASC)"))
+			createQuery.exec("CREATE INDEX snipets_idx1 on snipets (id ASC)"))
 	{
 		qWarning(qPrintable(createQuery.lastError().text()));
 		return false;
 	}
 	if (!
-	        createQuery.exec("CREATE INDEX snipets_idx2 on snipets (name ASC, description ASC, shortcut ASC)"))
+			createQuery.exec("CREATE INDEX snipets_idx2 on snipets (name ASC, description ASC, shortcut ASC)"))
 	{
 		qWarning(qPrintable(createQuery.lastError().text()));
 		return false;
 	}
 	if (!
-	        createQuery.exec("CREATE INDEX snipets_idx3 on snipets (name ASC, category_id ASC)"))
+			createQuery.exec("CREATE INDEX snipets_idx3 on snipets (name ASC, category_id ASC)"))
 	{
 		qWarning(qPrintable(createQuery.lastError().text()));
 		return false;
 	}
 	if (!
-	        createQuery.exec("CREATE INDEX snipets_idx5 on snipets (shortcut ASC)"))
+			createQuery.exec("CREATE INDEX snipets_idx5 on snipets (shortcut ASC)"))
 	{
 		qWarning(qPrintable(createQuery.lastError().text()));
 		return false;
 	}
 	if (!
-	        createQuery.exec("CREATE INDEX snipets_idx6 on snipets (shortcut ASC, auto ASC)"))
+			createQuery.exec("CREATE INDEX snipets_idx6 on snipets (shortcut ASC, auto ASC)"))
 	{
 		qWarning(qPrintable(createQuery.lastError().text()));
 		return false;
 	}
 	if (!
-	        createQuery.exec("CREATE INDEX snipets_extentions_idx1 on snipets_extentions (snipet_id ASC)"))
+			createQuery.exec("CREATE INDEX snipets_extentions_idx1 on snipets_extentions (snipet_id ASC)"))
 	{
 		qWarning(qPrintable(createQuery.lastError().text()));
 		return false;
 	}
 	if (!
-	        createQuery.exec("CREATE INDEX snipets_params_idx1 on snipets_params (snipet_id ASC)"))
+			createQuery.exec("CREATE INDEX snipets_params_idx1 on snipets_params (snipet_id ASC)"))
 	{
 		qWarning(qPrintable(createQuery.lastError().text()));
 		return false;
 	}
 	/* DATAS */
 	if (!
-	        createQuery.exec("INSERT INTO snipet_config(name, value) VALUES( 'version', '1.0' )"))
+			createQuery.exec("INSERT INTO snipet_config(name, value) VALUES( 'version', '1.0' )"))
 	{
 		qWarning(qPrintable(createQuery.lastError().text()));
 		return false;
 	}
 	if (!
-	        createQuery.exec(QString("INSERT INTO categories(parent_id, name, description) VALUES( 0, '%1', '%2' )").arg(tr("Categories")).arg(tr("List of all categories"))))
+			createQuery.exec(QString("INSERT INTO categories(parent_id, name, description) VALUES( 0, '%1', '%2' )").arg(tr("Categories")).arg(tr("List of all categories"))))
 	{
 		qWarning(qPrintable(createQuery.lastError().text()));
 		return false;
 	}
 
-	if(QFileInfo("datas:template.xml").exists())
+	if (QFileInfo("datas:template.xml").exists())
 	{
 		SnipetList list;
 		list.loadFromFile("datas:template.xml");

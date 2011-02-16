@@ -40,12 +40,12 @@ void GceParser::setInterface(GceConfiguration* interface)
 }
 
 GceConfiguration* GceParser::interface() const
-{
-	return _interface;
-}
+	{
+		return _interface;
+	}
 
 QString GceParser::description() const
 {
-	return tr("Parse the configuration file %1").arg (_filename);
+	return tr("Parse the configuration file %1").arg(_filename);
 }
 

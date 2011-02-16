@@ -22,7 +22,8 @@
 
 #include <codecompletion/context.h>
 
-namespace CodeCompletion {
+namespace CodeCompletion
+{
 
 class PrivateItemModelFactory;
 class ItemInterface;

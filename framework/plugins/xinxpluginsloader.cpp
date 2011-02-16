@@ -132,7 +132,7 @@ void XinxPluginsLoader::addPlugin(QObject * plugin, bool staticLoaded)
 void XinxPluginsLoader::loadPlugins()
 {
 	foreach(QObject * plugin, QPluginLoader::staticInstances())
-		addPlugin(plugin, true);
+	addPlugin(plugin, true);
 
 	foreach(const QString & directory, QDir::searchPaths("plugins"))
 	{
@@ -171,7 +171,7 @@ IFileTypePlugin* XinxPluginsLoader::fileType(const QString & name) const
 	QList<IFileTypePlugin*> list = fileTypes();
 	foreach(IFileTypePlugin * type, list)
 	{
-		if(type->name() == name)
+		if (type->name() == name)
 		{
 			return type;
 		}

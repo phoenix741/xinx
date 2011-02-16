@@ -46,7 +46,7 @@ TemplateNode::~TemplateNode()
 
 void TemplateNode::setLine(int value)
 {
-    ContentView3::Node::setLine(value);
+	ContentView3::Node::setLine(value);
 	setTips(tr("Element at line : %1\nMode = %2").arg(line()).arg(_mode));
 }
 

@@ -42,7 +42,7 @@ Parser::~Parser()
 
 }
 
-QString Parser::name () const
+QString Parser::name() const
 {
 	return "GNX_DICO";
 }

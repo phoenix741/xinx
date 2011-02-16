@@ -40,7 +40,7 @@ class ServicesBatchDialogImpl : public QDialog, public Ui::ServicesBatchDialog
 {
 	Q_OBJECT
 public:
-    explicit ServicesBatchDialogImpl(QWidget *parent = 0);
+	explicit ServicesBatchDialogImpl(QWidget *parent = 0);
 
 signals:
 

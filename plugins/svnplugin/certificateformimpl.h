@@ -29,8 +29,8 @@ class CertificateFormImpl : public QDialog, Ui::CertificateForm
 {
 	Q_OBJECT
 public:
-    CertificateFormImpl(QWidget* parent = 0, Qt::WindowFlags f = 0);
-    virtual ~CertificateFormImpl();
+	CertificateFormImpl(QWidget* parent = 0, Qt::WindowFlags f = 0);
+	virtual ~CertificateFormImpl();
 
 
 	void setData(const svn::ContextListener::SslServerTrustData & data);
