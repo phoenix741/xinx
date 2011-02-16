@@ -23,27 +23,23 @@
 
 // Xinx header
 #include "ui_errordock.h"
+#include "abstractmesssagedockwidget.h"
 
 // Qt header
 #include <QDockWidget>
 
-class ErrorDockWidgetImpl: public QWidget
+class ErrorDockWidgetImpl: public AbstractMesssageDockWidget
 {
 	Q_OBJECT
 public:
 	ErrorDockWidgetImpl(QWidget * parent = 0);
 	virtual ~ErrorDockWidgetImpl();
-
-	void setDock(QDockWidget * dock);
 public slots:
 	void updateErrors();
-signals:
-	void open(const QString & filename, int line);
 protected slots:
 	void doubleClicked(const QModelIndex & index);;
 private:
 	Ui::ErrorDockWidget * _widget;
-	QDockWidget * m_dock;
 };
 #endif /* ERRORDOCKWIDGETIMPL_H */
 

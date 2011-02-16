@@ -23,6 +23,7 @@
 #include <plugins/xinxpluginsloader.h>
 #include <core/xinxconfig.h>
 #include <plugins/interfaces/files.h>
+#include <dtoolview.h>
 
 // Qt header
 #include <QFileInfo>
@@ -30,7 +31,7 @@
 
 /* ErrorDockWidgetImpl */
 
-ErrorDockWidgetImpl::ErrorDockWidgetImpl(QWidget * parent) : QWidget(parent), m_dock(0)
+ErrorDockWidgetImpl::ErrorDockWidgetImpl(QWidget * parent) : AbstractMesssageDockWidget(parent)
 {
 	setWindowTitle(tr("Warnings/Errors"));
 	setWindowIcon(QIcon(":/images/warning.png"));
@@ -94,16 +95,18 @@ void ErrorDockWidgetImpl::updateErrors()
 		_widget->m_messagesWidget->expandItem(fileItem);
 	}
 
-	if (m_dock)
+	if (dock())
 	{
-		if (_widget->m_messagesWidget->invisibleRootItem()->childCount())
+		setNotifyCount(errors.values().count());
+
+		if (_widget->m_messagesWidget->invisibleRootItem()->childCount() && automatcallyShow())
 		{
-			m_dock->setVisible(true);
+			dock()->setVisible(true);
 		}
 		else
 		{
-			if (XINXConfig::self()->config().editor.closeErrorDockAutomatically)
-				m_dock->setVisible(false);
+			if (automaticallyClose())
+				dock()->setVisible(false);
 		}
 	}
 }
@@ -117,9 +120,4 @@ void ErrorDockWidgetImpl::doubleClicked(const QModelIndex & index)
 	{
 		emit open(filename, line);
 	}
-}
-
-void ErrorDockWidgetImpl::setDock(QDockWidget * dock)
-{
-	m_dock = dock;
 }

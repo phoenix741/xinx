@@ -597,7 +597,7 @@ void RCS_SVN::commit(const QStringList & paths, const QString & message)
 	/* Commit */
 	try
 	{
-		svn_revnum_t revision = m_client->commit(targets, qPrintable(message), false, false);
+		svn_revnum_t revision = m_client->commit(targets, message.toUtf8().data(), false, false);
 		emit log(RCS::LogApplication, tr("Files commited at revision %2.").arg(revision));
 	}
 	catch(svn::ClientException e)
