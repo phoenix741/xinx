@@ -92,7 +92,7 @@ void ConfigurationManager::updateCache()
 	GceParser * parser = GceConfigurationParserFactory::createGceParser(project->projectPath());
 	if (parser)
 	{
-		parser->setInterface(_interface.data());
+		parser->setInterface(_interface);
 
 		connect(parser, SIGNAL(addConfiguration(QString)), this, SLOT(addConfiguration(QString)), Qt::QueuedConnection);
 		connect(parser, SIGNAL(addDictionary(QString)), this, SLOT(addDictionary(QString)), Qt::QueuedConnection);
@@ -102,9 +102,9 @@ void ConfigurationManager::updateCache()
 	}
 }
 
-GceConfiguration * ConfigurationManager::getInterface()
+QSharedPointer<GceConfiguration> ConfigurationManager::getInterface()
 {
-	return _interface.data();
+	return _interface;
 }
 
 

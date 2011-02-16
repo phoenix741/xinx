@@ -39,7 +39,7 @@ public:
 
 	static ConfigurationManager * manager(XinxProject::ProjectPtr project);
 
-	GceConfiguration * getInterface();
+	QSharedPointer<GceConfiguration> getInterface();
 
 signals:
 	void changed();
@@ -50,7 +50,7 @@ private slots:
 private:
 	QScopedPointer<QTimer> _updateCacheTimer;
 	QScopedPointer<FilesWatcher> _watcher;
-	QScopedPointer<GceConfiguration> _interface;
+	QSharedPointer<GceConfiguration> _interface;
 	XinxProject::ProjectPtrWeak _project;
 };
 

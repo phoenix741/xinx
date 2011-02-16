@@ -163,7 +163,7 @@ void GenerixProjectDockImpl::updateList()
 
 		const QString filename = QDir(gnxProject->projectPath()).relativeFilePath(editorFilename);
 
-		GceConfiguration * interface = ConfigurationManager::manager(gnxProject)->getInterface();
+		QSharedPointer<GceConfiguration> interface = ConfigurationManager::manager(gnxProject)->getInterface();
 		m_businessViewList->clear();
 		if (interface)
 		{

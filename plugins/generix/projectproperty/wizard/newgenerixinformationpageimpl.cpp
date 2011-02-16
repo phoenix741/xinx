@@ -79,11 +79,11 @@ void NewGenerixInformationPageImpl::updateInformations(const QString & path)
 	setField("generix.adresse", moduleInternetAdresse);
 	setField("generix.dataStream", dataStreamLocation);
 
-	QScopedPointer<GceConfiguration> configurationFile(new GceConfiguration);
+	QSharedPointer<GceConfiguration> configurationFile(new GceConfiguration);
 	QScopedPointer<GceParser> parser(GceConfigurationParserFactory::createGceParser(webModuleLocation));
 	if (parser)
 	{
-		parser->setInterface(configurationFile.data());
+		parser->setInterface(configurationFile);
 		parser->startJob();
 
 		setField("generix.version", QVariant::fromValue(configurationFile->version()));

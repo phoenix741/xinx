@@ -87,7 +87,7 @@ bool GenerixProjectPageFormImpl::isVisible()
 
 void GenerixProjectPageFormImpl::updateInformations()
 {
-	GceConfiguration * interface = ConfigurationManager::manager(m_project)->getInterface();
+	QSharedPointer<GceConfiguration> interface = ConfigurationManager::manager(m_project)->getInterface();
 	if (interface)
 	{
 		m_propertyFileLabel->setText(QDir(m_project->projectPath()).relativeFilePath(interface->filename()));

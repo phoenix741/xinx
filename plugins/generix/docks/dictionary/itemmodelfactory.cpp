@@ -70,7 +70,7 @@ void ItemModelFactory::generate()
 
 		if (project)
 		{
-			GceConfiguration* configurationFile = ConfigurationManager::manager(project)->getInterface();
+			QSharedPointer<GceConfiguration> configurationFile = ConfigurationManager::manager(project)->getInterface();
 			if (configurationFile)
 			{
 				QStringList dictionaries =  configurationFile->dictionnaries();

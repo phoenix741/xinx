@@ -34,12 +34,12 @@ GceParser::~GceParser()
 
 }
 
-void GceParser::setInterface(GceConfiguration* interface)
+void GceParser::setInterface(QSharedPointer<GceConfiguration> interface)
 {
 	_interface = interface;
 }
 
-GceConfiguration* GceParser::interface() const
+QSharedPointer<GceConfiguration> GceParser::interface() const
 	{
 		return _interface;
 	}

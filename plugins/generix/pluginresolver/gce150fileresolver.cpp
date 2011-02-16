@@ -56,7 +56,7 @@ bool Gce150FileResolver::resolveFileName(const QString& nameToResolve, QString& 
 
 	if (project && project.staticCast<GenerixProject>()->isGenerixActivated())
 	{
-		GceConfiguration * interface = ConfigurationManager::manager(project)->getInterface();
+		QSharedPointer<GceConfiguration> interface = ConfigurationManager::manager(project)->getInterface();
 		if (interface)
 		{
 			resolvedName = interface->resolveFileName(nameToResolve);

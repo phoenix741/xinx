@@ -22,7 +22,7 @@
 
 #include <jobs/xinxjob.h>
 #include "gceconfiguration.h"
-
+#include <QSharedPointer>
 
 class GceParser : public XinxJob
 {
@@ -32,8 +32,8 @@ public:
 	GceParser(const QString & filename);
 	virtual ~GceParser();
 
-	void setInterface(GceConfiguration * interface);
-	GceConfiguration * interface() const;
+	void setInterface(QSharedPointer<GceConfiguration> interface);
+	QSharedPointer<GceConfiguration> interface() const;
 
 	virtual void startJob() = 0;
 
@@ -43,7 +43,7 @@ signals:
 	void addConfiguration(const QString & filename);
 
 protected:
-	GceConfiguration * _interface;
+	QSharedPointer<GceConfiguration> _interface;
 	QString _filename;
 };
 

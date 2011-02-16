@@ -81,9 +81,11 @@ void DictionaryModel::loadDictionaries(const QString & prefix)
 		foreach(ContentView3::NodePtr childNodePtr, nodePtr->childs())
 		{
 			QStandardItem * label;
+			bool forceChild = false;
 			if (_items.contains(childNodePtr->name()))
 			{
 				label = _items.value(childNodePtr->name());
+				forceChild = true;
 			}
 			else
 			{
@@ -120,7 +122,7 @@ void DictionaryModel::loadDictionaries(const QString & prefix)
 			{
 				QSharedPointer<Generix::Dictionary::LabelNode> labelPtr = childChildPtr.dynamicCast<Generix::Dictionary::LabelNode>();
 
-				if (!labelPtr->value().contains(regExpPrefix))
+				if (!labelPtr->value().contains(regExpPrefix) && !forceChild)
 				{
 					continue;
 				}

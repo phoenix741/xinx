@@ -37,7 +37,7 @@ public:
 	bool loadFromFile(const QString & filename);
 
 	/* INPUT */
-	GceConfiguration * _gce_configuration;
+	QSharedPointer<GceConfiguration> _gce_configuration;
 	int m_configurationNumber;
 	bool m_quick;
 
