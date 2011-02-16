@@ -72,10 +72,11 @@ QStack<XmlBalise> XmlContextParser::xpath(const QDocumentCursor & cursor, const 
 		else
 		{
 			const XmlBalise xpathBalise = createBalise(baliseText, attributeName);
+			const QString xpathBaliseName = xpathBalise.nameSpacePrefix() + (! xpathBalise.nameSpacePrefix().isEmpty() ? ":"  : "" ) + xpathBalise.baliseName();
 
 			if (!(includeOnly.isEmpty() || includeOnly.contains(xpathBalise.baliseName()))) continue; // do nothing
 
-			if (!baliseClose.isEmpty() && ((xpathBalise.nameSpacePrefix() + ":" + xpathBalise.baliseName()) == baliseClose.top()))
+			if (!baliseClose.isEmpty() && (xpathBaliseName == baliseClose.top()))
 			{
 				baliseClose.pop();
 			}
