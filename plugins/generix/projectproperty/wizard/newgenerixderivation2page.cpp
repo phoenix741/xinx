@@ -60,7 +60,7 @@ void NewGenerixDerivation2Page::initializePage()
 	}
 	if (version >= version150)
 	{
-		const QString webModuleLocation = field("generix.webmodule").toString();
+		const QString webModuleLocation = field("project.path").toString();
 		bool projectPathAdded = false;
 		foreach(const QString & p, QDir(QDir(webModuleLocation).absoluteFilePath("presentation")).entryList(QDir::Dirs | QDir::NoDotAndDotDot))
 		{
