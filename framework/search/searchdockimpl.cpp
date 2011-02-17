@@ -80,7 +80,7 @@ void SearchLogWidgetDelegate::paint(QPainter * painter, const QStyleOptionViewIt
 
 /* SearchDockWidgetImpl */
 
-SearchDockWidgetImpl::SearchDockWidgetImpl(QWidget * parent) : QWidget(parent), m_dock(0)
+SearchDockWidgetImpl::SearchDockWidgetImpl(QWidget * parent) : AbstractMessageDockWidget(parent)
 {
 	setWindowTitle(tr("Search Result"));
 	setWindowIcon(QIcon(":/images/find.png"));
@@ -99,8 +99,14 @@ SearchDockWidgetImpl::~SearchDockWidgetImpl()
 
 }
 
+bool SearchDockWidgetImpl::automatcallyShow() const
+{
+    return true;
+}
+
 void SearchDockWidgetImpl::init()
 {
+	setNotifyCount(0);
 	_widget->m_searchTreeWidget->clear();
 	_widget->m_searchTreeWidget->setSortingEnabled(false);
 	_widget->m_progressBar->show();
@@ -125,6 +131,7 @@ void SearchDockWidgetImpl::find(const QString & filename, const QString & text, 
 	item->setData(2, Qt::UserRole + 1, line);
 	_widget->m_searchTreeWidget->addTopLevelItem(item);
 	_widget->m_searchTreeWidget->scrollToItem(item);
+	setNotifyCount(_widget->m_searchTreeWidget->invisibleRootItem()->childCount());
 }
 
 void SearchDockWidgetImpl::doubleClicked(const QModelIndex & index)
@@ -136,14 +143,4 @@ void SearchDockWidgetImpl::doubleClicked(const QModelIndex & index)
 	{
 		emit open(filename, line);
 	}
-}
-
-void SearchDockWidgetImpl::setDock(QDockWidget * dock)
-{
-	m_dock = dock;
-}
-
-QDockWidget * SearchDockWidgetImpl::dock() const
-{
-	return m_dock;
 }

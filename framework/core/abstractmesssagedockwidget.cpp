@@ -23,18 +23,16 @@
 #include <dtoolview.h>
 #include <dviewbutton.h>
 
-AbstractMesssageDockWidget::AbstractMesssageDockWidget(QWidget* parent): QWidget(parent), _dock(0), _automatically_show(false), _automatically_close(false), _notification(0)
+AbstractMessageDockWidget::AbstractMessageDockWidget(QWidget* parent): QWidget(parent), _dock(0), _notification(0)
 {
-	// Read automatically Show and Close from config
-	_automatically_close = XINXConfig::self()->config().editor.closeErrorDockAutomatically;
 }
 
-AbstractMesssageDockWidget::~AbstractMesssageDockWidget()
+AbstractMessageDockWidget::~AbstractMessageDockWidget()
 {
 
 }
 
-void AbstractMesssageDockWidget::setDock(DToolView* dock)
+void AbstractMessageDockWidget::setDock(DToolView* dock)
 {
 	if (_dock != dock)
 	{
@@ -45,32 +43,22 @@ void AbstractMesssageDockWidget::setDock(DToolView* dock)
 	}
 }
 
-DToolView* AbstractMesssageDockWidget::dock()
+DToolView* AbstractMessageDockWidget::dock()
 {
 	return _dock;
 }
 
-void AbstractMesssageDockWidget::setAutomaticallyShow(bool value)
+bool AbstractMessageDockWidget::automatcallyShow() const
 {
-	_automatically_show = value;
+	return false;
 }
 
-bool AbstractMesssageDockWidget::automatcallyShow() const
+bool AbstractMessageDockWidget::automaticallyClose() const
 {
-	return _automatically_show;
+	return XINXConfig::self()->config().editor.closeErrorDockAutomatically;
 }
 
-void AbstractMesssageDockWidget::setAutomaticallyClose(bool value)
-{
-	_automatically_close = value;
-}
-
-bool AbstractMesssageDockWidget::automaticallyClose() const
-{
-	return _automatically_close;
-}
-
-void AbstractMesssageDockWidget::setNotifyCount(int notification)
+void AbstractMessageDockWidget::setNotifyCount(int notification)
 {
 	if (_notification != notification)
 	{
@@ -86,7 +74,7 @@ void AbstractMesssageDockWidget::setNotifyCount(int notification)
 	}
 }
 
-int AbstractMesssageDockWidget::notifyCount() const
+int AbstractMessageDockWidget::notifyCount() const
 {
 	return _notification;
 }

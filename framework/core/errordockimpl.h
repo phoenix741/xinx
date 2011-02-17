@@ -28,7 +28,7 @@
 // Qt header
 #include <QDockWidget>
 
-class ErrorDockWidgetImpl: public AbstractMesssageDockWidget
+class ErrorDockWidgetImpl: public AbstractMessageDockWidget
 {
 	Q_OBJECT
 public:

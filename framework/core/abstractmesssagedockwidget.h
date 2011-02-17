@@ -21,22 +21,20 @@
 #ifndef ABSTRACTMESSSAGEDOCKWIDGET_H
 #define ABSTRACTMESSSAGEDOCKWIDGET_H
 
+#include <core/lib-config.h>
 #include <QWidget>
 
 class DToolView;
 
-class AbstractMesssageDockWidget : public QWidget
+class LIBEXPORT AbstractMessageDockWidget : public QWidget
 {
 	Q_OBJECT
 public:
-	AbstractMesssageDockWidget(QWidget * parent = 0);
-	virtual ~AbstractMesssageDockWidget();
+	AbstractMessageDockWidget(QWidget * parent = 0);
+	virtual ~AbstractMessageDockWidget();
 
-	void setAutomaticallyShow(bool value);
-	bool automatcallyShow() const;
-
-	void setAutomaticallyClose(bool value);
-	bool automaticallyClose() const;
+	virtual bool automatcallyShow() const;
+	virtual bool automaticallyClose() const;
 
 	void setNotifyCount(int notification);
 	int notifyCount() const;
@@ -48,8 +46,6 @@ signals:
 
 private:
 	DToolView * _dock;
-	bool _automatically_show;
-	bool _automatically_close;
 	int _notification;
 };
 

@@ -25,11 +25,12 @@
 #include <versioncontrol/rcs.h>
 #include "ui_rcsdock.h"
 #include <versioncontrol/versioncontrolmanager.h>
+#include <core/abstractmesssagedockwidget.h>
 
 // Qt header
 #include <QDockWidget>
 
-class RCSLogDockWidgetImpl : public QWidget, public VersionControl::IManagerUI
+class RCSLogDockWidgetImpl : public AbstractMessageDockWidget, public VersionControl::IManagerUI
 {
 	Q_OBJECT
 public:
@@ -39,7 +40,7 @@ public:
 	void init();
 	void end();
 
-	void setDock(QDockWidget * dock);
+    virtual bool automaticallyClose() const;
 
 	void startVersionControlOperations();
 	void logVersionControlOperation(RCS::rcsLog niveau, const QString & info);
@@ -48,7 +49,6 @@ private slots:
 	void timeout();
 private:
 	Ui::RCSDockWidget * _widget;
-	QDockWidget * m_dock;
 	bool _rcsVisible;
 	QTimer * _timer;
 };

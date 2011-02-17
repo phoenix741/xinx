@@ -22,6 +22,7 @@
 #include <core/exceptions.h>
 #include <plugins/xinxpluginsloader.h>
 #include <core/xinxconfig.h>
+#include <dtoolview.h>
 
 // Qt header
 #include <QFileInfo>
@@ -29,7 +30,7 @@
 
 /* RCSLogDockWidgetImpl */
 
-RCSLogDockWidgetImpl::RCSLogDockWidgetImpl(QWidget * parent) : QWidget(parent), m_dock(0)
+RCSLogDockWidgetImpl::RCSLogDockWidgetImpl(QWidget * parent) : AbstractMessageDockWidget(parent)
 {
 	setWindowTitle(tr("Version Control Logs"));
 	setWindowIcon(QIcon(":/images/ecmascript.png"));
@@ -50,12 +51,21 @@ RCSLogDockWidgetImpl::~RCSLogDockWidgetImpl()
 
 }
 
+bool RCSLogDockWidgetImpl::automaticallyClose() const
+{
+	return XINXConfig::self()->config().project.closeVersionManagementLog;
+}
+
 void RCSLogDockWidgetImpl::startVersionControlOperations()
 {
-	if (!m_dock) return;
+	if (!dock()) return;
 	init();
-	_rcsVisible = m_dock->isVisible();
-	m_dock->show();
+	_rcsVisible = dock()->isVisible();
+
+	if (automatcallyShow())
+	{
+		dock()->show();
+	}
 }
 
 void RCSLogDockWidgetImpl::logVersionControlOperation(RCS::rcsLog niveau, const QString & info)
@@ -82,36 +92,33 @@ void RCSLogDockWidgetImpl::logVersionControlOperation(RCS::rcsLog niveau, const 
 		;
 	}
 	_widget->m_rcsLogListWidget->scrollToItem(item);
+	setNotifyCount(_widget->m_rcsLogListWidget->count());
 }
 
 void RCSLogDockWidgetImpl::stopVersionControlOperations()
 {
 	end();
-	if ((!_rcsVisible) && m_dock && m_dock->isVisible() && XINXConfig::self()->config().project.closeVersionManagementLog)
+	if ((!_rcsVisible) && dock() && dock()->isVisible() && automaticallyClose())
 		_timer->start(5000);
 }
 
 void RCSLogDockWidgetImpl::timeout()
 {
 	_timer->stop();
-	if (m_dock)
+	if (dock())
 	{
-		m_dock->setVisible(false);
+		dock()->setVisible(false);
 	}
 }
 
 void RCSLogDockWidgetImpl::init()
 {
 	_widget->m_rcsLogListWidget->clear();
+	setNotifyCount(0);
 	_widget->m_progressBar->show();
 }
 
 void RCSLogDockWidgetImpl::end()
 {
 	_widget->m_progressBar->hide();
-}
-
-void RCSLogDockWidgetImpl::setDock(QDockWidget * dock)
-{
-	m_dock = dock;
 }

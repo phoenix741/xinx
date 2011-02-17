@@ -31,7 +31,7 @@
 
 /* ErrorDockWidgetImpl */
 
-ErrorDockWidgetImpl::ErrorDockWidgetImpl(QWidget * parent) : AbstractMesssageDockWidget(parent)
+ErrorDockWidgetImpl::ErrorDockWidgetImpl(QWidget * parent) : AbstractMessageDockWidget(parent)
 {
 	setWindowTitle(tr("Warnings/Errors"));
 	setWindowIcon(QIcon(":/images/warning.png"));

@@ -23,22 +23,22 @@
 
 // Xinx header
 #include "ui_searchdock.h"
+#include <core/abstractmesssagedockwidget.h>
 
 // Qt header
 #include <QDockWidget>
 
-class SearchDockWidgetImpl : public QWidget
+class SearchDockWidgetImpl : public AbstractMessageDockWidget
 {
 	Q_OBJECT
 public:
 	SearchDockWidgetImpl(QWidget * parent = 0);
 	virtual ~SearchDockWidgetImpl();
 
+    virtual bool automatcallyShow() const;
+
 	void init();
 	void end();
-
-	void setDock(QDockWidget * dock);
-	QDockWidget * dock() const;
 public slots:
 	void find(const QString & filename, const QString & text, int line);
 signals:
@@ -47,7 +47,6 @@ protected slots:
 	void doubleClicked(const QModelIndex & index);;
 private:
 	Ui::SearchDockWidget * _widget;
-	QDockWidget * m_dock;
 };
 
 #endif /* SEARCHDOCKIMPL_H */

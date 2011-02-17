@@ -91,7 +91,7 @@ private:
 	RCSLogDockWidgetImpl * m_rcsLogDock;
 	SearchDockWidgetImpl * m_searchDock;
 	SnipetDockWidget * m_snipetsDock;
-	QDockWidget * m_logDockView;
+	DToolView * m_logDockView;
 
 	// Status bar
 	QLabel * m_editorPosition;
