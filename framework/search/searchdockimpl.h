@@ -41,8 +41,6 @@ public:
 	void end();
 public slots:
 	void find(const QString & filename, const QString & text, int line);
-signals:
-	void open(const QString & filename, int line);
 protected slots:
 	void doubleClicked(const QModelIndex & index);;
 private:
