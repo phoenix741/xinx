@@ -181,7 +181,7 @@ XmlBalise XmlContextParser::currentBalise(const QDocumentCursor& cursor)  const
 	QDocumentCursor text(editor()->textEdit()->document());
 	text.moveTo(baliseStart.selectionStart());
 	text.movePosition(1, QDocumentCursor::Right);
-	text.movePosition(baliseStop.selectionStart().position() - baliseStart.selectionStart().position() - 3,
+	text.movePosition(baliseStop.selectionStart().position() - baliseStart.selectionStart().position() - 2,
 					  QDocumentCursor::Right, QDocumentCursor::KeepAnchor);
 
 	return createBalise(text.selectedText());
