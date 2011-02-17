@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>619</width>
-    <height>254</height>
+    <height>306</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -220,7 +220,7 @@
       <item>
        <widget class="QCheckBox" name="m_autoCloseError">
         <property name="text">
-         <string>Automatically close error dock</string>
+         <string>Automatically open/close error dock</string>
         </property>
        </widget>
       </item>

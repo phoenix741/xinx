@@ -28,6 +28,15 @@ namespace BaliseDefinition
 
 /* XmlBalise */
 
+	XmlBalise::XmlBalise() : _is_closing(false)
+{
+
+}
+
+XmlBalise::~XmlBalise()
+{
+}
+
 void XmlBalise::setBaliseName(const QString& value)
 {
 	_balise_name = value;
@@ -56,6 +65,16 @@ void XmlBalise::setAttributes(const QHash< QString, QString >& value)
 const QHash< QString, QString >& XmlBalise::attributes() const
 {
 	return _attributes;
+}
+
+bool XmlBalise::isClosing() const
+{
+	return _is_closing;
+}
+
+void XmlBalise::setIsClosing(bool value)
+{
+	_is_closing = value;
 }
 
 bool XmlBalise::operator==(const XmlBalise & other) const

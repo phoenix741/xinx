@@ -41,6 +41,7 @@ public:
 	void end();
 
     virtual bool automaticallyClose() const;
+    virtual bool automatcallyShow() const;
 
 	void startVersionControlOperations();
 	void logVersionControlOperation(RCS::rcsLog niveau, const QString & info);

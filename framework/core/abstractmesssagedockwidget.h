@@ -33,8 +33,8 @@ public:
 	AbstractMessageDockWidget(QWidget * parent = 0);
 	virtual ~AbstractMessageDockWidget();
 
-	virtual bool automatcallyShow() const;
-	virtual bool automaticallyClose() const;
+	virtual bool automatcallyShow() const = 0;
+	virtual bool automaticallyClose() const = 0;
 
 	void setNotifyCount(int notification);
 	int notifyCount() const;

@@ -115,7 +115,7 @@
 &lt;p&gt;If checked, the log windows is automaticallyclosed when action (like update, commit ...) finished.&lt;/p&gt;</string>
         </property>
         <property name="text">
-         <string>&amp;Close the Version management Log automatically.</string>
+         <string>Open/&amp;Close the Version management Log automatically.</string>
         </property>
        </widget>
       </item>

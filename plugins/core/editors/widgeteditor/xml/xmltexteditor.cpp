@@ -287,7 +287,7 @@ bool XmlTextEditor::processKeyPress(QKeyEvent * e)
 				QDocumentCursor tc(textCursor());
 				QDocumentCursor tc2(textCursor());
 				tc2.movePosition(2, QDocumentCursor::PreviousCharacter, QDocumentCursor::KeepAnchor);
-				if (tc2.selectedText() != "/>")
+				if (tc2.selectedText() != "/>" && ! context_type->balise().isClosing())
 				{
 					QSharedPointer<Core::BaliseDefinition::BaliseNode> balise;
 					if (context_type->isXsl() && (context_type->xmlnsList().value(context_type->balise().nameSpacePrefix()) == "http://www.w3.org/1999/XSL/Transform"))
@@ -348,7 +348,7 @@ bool XmlTextEditor::processKeyPress(QKeyEvent * e)
 			QDocumentCursor tc(textCursor());
 			QDocumentCursor tc2(textCursor());
 			tc2.movePosition(1, QDocumentCursor::PreviousCharacter);
-			if (context_type->position() == Core::BaliseDefinition::XmlContextType::BALISE_NAME)
+			if (context_type->position() == Core::BaliseDefinition::XmlContextType::BALISE_NAME && ! context_type->balise().isClosing())
 			{
 				QSharedPointer<Core::BaliseDefinition::BaliseNode> balise;
 				if (context_type->isXsl() && (context_type->xmlnsList().value(context_type->balise().nameSpacePrefix()) == "http://www.w3.org/1999/XSL/Transform"))

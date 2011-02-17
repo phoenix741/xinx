@@ -36,6 +36,7 @@ public:
 	virtual ~SearchDockWidgetImpl();
 
     virtual bool automatcallyShow() const;
+    virtual bool automaticallyClose() const;
 
 	void init();
 	void end();

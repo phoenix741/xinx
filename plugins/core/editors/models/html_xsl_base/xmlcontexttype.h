@@ -35,6 +35,9 @@ namespace BaliseDefinition
 class XmlBalise
 {
 public:
+	XmlBalise();
+	~XmlBalise();
+
 	const QString & nameSpacePrefix() const;
 	void setNameSpacePrefix(const QString & value);
 
@@ -44,10 +47,14 @@ public:
 	const QHash<QString,QString> & attributes() const;
 	void setAttributes(const QHash<QString,QString> & value);
 
+	bool isClosing() const;
+	void setIsClosing(bool value);
+
 	bool operator==(const XmlBalise & other) const;
 private:
 	QString _balise_name, _namespace_prefix;
 	QHash< QString, QString > _attributes;
+	bool _is_closing;
 };
 
 class XmlContextType : public CodeCompletion::ContextType

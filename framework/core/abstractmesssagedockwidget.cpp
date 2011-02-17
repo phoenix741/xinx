@@ -48,16 +48,6 @@ DToolView* AbstractMessageDockWidget::dock()
 	return _dock;
 }
 
-bool AbstractMessageDockWidget::automatcallyShow() const
-{
-	return false;
-}
-
-bool AbstractMessageDockWidget::automaticallyClose() const
-{
-	return XINXConfig::self()->config().editor.closeErrorDockAutomatically;
-}
-
 void AbstractMessageDockWidget::setNotifyCount(int notification)
 {
 	if (_notification != notification)

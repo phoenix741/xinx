@@ -129,6 +129,12 @@ XmlBalise XmlContextParser::createBalise(const QString & text, const QStringList
 		}
 	}
 
+	if (baliseName.startsWith("/"))
+	{
+		xpathBalise.setIsClosing(true);
+		baliseName.remove(0, 1);
+	}
+
 	if (baliseName.contains(":"))
 	{
 		QStringList baliseNameSplitPrefix = baliseName.split(":");

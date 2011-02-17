@@ -56,6 +56,11 @@ bool RCSLogDockWidgetImpl::automaticallyClose() const
 	return XINXConfig::self()->config().project.closeVersionManagementLog;
 }
 
+bool RCSLogDockWidgetImpl::automatcallyShow() const
+{
+	return XINXConfig::self()->config().project.closeVersionManagementLog;
+}
+
 void RCSLogDockWidgetImpl::startVersionControlOperations()
 {
 	if (!dock()) return;

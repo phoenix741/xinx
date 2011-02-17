@@ -104,6 +104,11 @@ bool SearchDockWidgetImpl::automatcallyShow() const
     return true;
 }
 
+bool SearchDockWidgetImpl::automaticallyClose() const
+{
+	return false;
+}
+
 void SearchDockWidgetImpl::init()
 {
 	setNotifyCount(0);

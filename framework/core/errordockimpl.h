@@ -34,7 +34,11 @@ class ErrorDockWidgetImpl: public AbstractMessageDockWidget
 public:
 	ErrorDockWidgetImpl(QWidget * parent = 0);
 	virtual ~ErrorDockWidgetImpl();
+
+	virtual bool automatcallyShow() const;
+	virtual bool automaticallyClose() const;
 public slots:
+	void clearAction();
 	void updateErrors();
 protected slots:
 	void doubleClicked(const QModelIndex & index);;

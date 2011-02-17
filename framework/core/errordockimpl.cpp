@@ -28,6 +28,7 @@
 // Qt header
 #include <QFileInfo>
 #include <QPainter>
+#include <QMenu>
 
 /* ErrorDockWidgetImpl */
 
@@ -39,12 +40,39 @@ ErrorDockWidgetImpl::ErrorDockWidgetImpl(QWidget * parent) : AbstractMessageDock
 	_widget = new Ui::ErrorDockWidget();
 	_widget->setupUi(this);
 
+	QAction * clearAction = new QAction(tr("Clear the errors"), this);
+
+	_widget->m_messagesWidget->setContextMenuPolicy(Qt::ActionsContextMenu);
+	_widget->m_messagesWidget->addAction(clearAction);
+
+	connect(clearAction, SIGNAL(triggered()), this, SLOT(clearAction()));
 	connect(_widget->m_messagesWidget,   SIGNAL(doubleClicked(QModelIndex)), this, SLOT(doubleClicked(QModelIndex)));
 }
 
 ErrorDockWidgetImpl::~ErrorDockWidgetImpl()
 {
 
+}
+
+bool ErrorDockWidgetImpl::automatcallyShow() const
+{
+	return XINXConfig::self()->config().editor.closeErrorDockAutomatically;
+}
+
+bool ErrorDockWidgetImpl::automaticallyClose() const
+{
+	return XINXConfig::self()->config().editor.closeErrorDockAutomatically;
+}
+
+void ErrorDockWidgetImpl::clearAction()
+{
+	QList<QTreeWidgetItem*> items = _widget->m_messagesWidget->selectedItems();
+	foreach(QTreeWidgetItem* item, items)
+	{
+		const QString context = item->data(0, Qt::UserRole).isValid() ? item->data(0, Qt::UserRole).toString() : item->text(0);
+
+		ErrorManager::self()->clearMessages(context);
+	}
 }
 
 void ErrorDockWidgetImpl::updateErrors()
