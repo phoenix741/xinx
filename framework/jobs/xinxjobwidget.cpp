@@ -55,28 +55,28 @@ PrivateXinxJobWidget::PrivateXinxJobWidget() : _cancel_button(0)
 void PrivateXinxJobWidget::init()
 {
 	_widget_layout = new QVBoxLayout(_widget);
-	_widget_layout->setSpacing( 2 );
-	_widget_layout->setMargin( 2 );
-	_widget->setSizePolicy( QSizePolicy( QSizePolicy::Preferred, QSizePolicy::Fixed ) );
-	_widget->setLayout (_widget_layout);
+	_widget_layout->setSpacing(2);
+	_widget_layout->setMargin(2);
+	_widget->setSizePolicy(QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed));
+	_widget->setLayout(_widget_layout);
 
-	_frame = new QFrame( _widget );
-	_frame->setFrameShape( QFrame::HLine );
-	_frame->setFrameShadow( QFrame::Raised );
+	_frame = new QFrame(_widget);
+	_frame->setFrameShape(QFrame::HLine);
+	_frame->setFrameShadow(QFrame::Raised);
 	_frame->show();
 
-	_widget_layout->setStretchFactor( _frame, 3 );
-	_widget_layout->addWidget( _frame );
+	_widget_layout->setStretchFactor(_frame, 3);
+	_widget_layout->addWidget(_frame);
 
-	QHBoxLayout * h = new QHBoxLayout( _widget );
-	h->setSpacing( 5 );
-	_widget_layout->addLayout( h );
+	QHBoxLayout * h = new QHBoxLayout(_widget);
+	h->setSpacing(5);
+	_widget_layout->addLayout(h);
 
-	_item_label = new QLabel( _widget->fontMetrics().elidedText( _job->description (), Qt::ElideRight, MAX_LABEL_WIDTH ), _widget );
-	h->addWidget( _item_label );
+	_item_label = new QLabel(_widget->fontMetrics().elidedText(_job->description(), Qt::ElideRight, MAX_LABEL_WIDTH), _widget);
+	h->addWidget(_item_label);
 
-	_progressBar = new QProgressBar( _widget );
-	if( _job->isRunning () )
+	_progressBar = new QProgressBar(_widget);
+	if (_job->isRunning())
 	{
 		_progressBar->setMaximum(0);
 	}
@@ -85,22 +85,22 @@ void PrivateXinxJobWidget::init()
 		_progressBar->setMaximum(_job->maximum());
 		_progressBar->setValue(_job->progress());
 	}
-	h->addWidget( _progressBar );
+	h->addWidget(_progressBar);
 
 	if (_job->canBeCanceled())
 	{
-		_cancel_button = new QPushButton( QIcon( ":/images/stop_search.png" ), QString(), _widget );
-		_cancel_button ->setToolTip( XinxJobWidget::tr("Cancel this operation.") );
-		QObject::connect (_cancel_button , SIGNAL(clicked()), _widget, SLOT(slotItemCanceled()));
+		_cancel_button = new QPushButton(QIcon(":/images/stop_search.png"), QString(), _widget);
+		_cancel_button ->setToolTip(XinxJobWidget::tr("Cancel this operation."));
+		QObject::connect(_cancel_button , SIGNAL(clicked()), _widget, SLOT(slotItemCanceled()));
 		h->addWidget(_cancel_button);
 	}
 
-	h = new QHBoxLayout( _widget );
-	h->setSpacing( 5 );
-	_widget_layout->addLayout (h);
+	h = new QHBoxLayout(_widget);
+	h->setSpacing(5);
+	_widget_layout->addLayout(h);
 
-	_item_status = new QLabel( _widget->fontMetrics().elidedText( _job->status(), Qt::ElideRight, MAX_LABEL_WIDTH ), _widget );
-	h->layout()->addWidget( _item_status );
+	_item_status = new QLabel(_widget->fontMetrics().elidedText(_job->status(), Qt::ElideRight, MAX_LABEL_WIDTH), _widget);
+	h->layout()->addWidget(_item_status);
 }
 
 /* XinxJobWidget */
@@ -131,7 +131,7 @@ void XinxJobWidget::setLabel(const QString& label)
 	d->_item_label->setText(fontMetrics().elidedText(label, Qt::ElideRight, MAX_LABEL_WIDTH));
 }
 
-void XinxJobWidget::setStatus( const QString& status)
+void XinxJobWidget::setStatus(const QString& status)
 {
 	d->_item_status->setText(fontMetrics().elidedText(status, Qt::ElideRight, MAX_LABEL_WIDTH));
 }
@@ -143,6 +143,6 @@ XinxJob* XinxJobWidget::job() const
 
 void XinxJobWidget::slotItemCanceled()
 {
-	if ( d->_job )
+	if (d->_job)
 		d->_job->abort();
 }

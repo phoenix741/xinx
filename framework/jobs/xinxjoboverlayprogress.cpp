@@ -47,35 +47,35 @@ PrivateXinxJobOverlayProgress::PrivateXinxJobOverlayProgress() : _align_widget(0
 
 void PrivateXinxJobOverlayProgress::reposition()
 {
-	if ( !_align_widget )
+	if (!_align_widget)
 	{
 		return;
 	}
 
 	QPoint p;
-	p.setX( _align_widget->width() - _widget->width() );
-	p.setY( -_widget->height() );
+	p.setX(_align_widget->width() - _widget->width());
+	p.setY(-_widget->height());
 
-	QPoint pTopLevel = _align_widget->mapTo( _widget->topLevelWidget(), p );
-	QPoint pParent = _widget->parentWidget()->mapFrom( _widget->topLevelWidget(), pTopLevel );
+	QPoint pTopLevel = _align_widget->mapTo(_widget->topLevelWidget(), p);
+	QPoint pParent = _widget->parentWidget()->mapFrom(_widget->topLevelWidget(), pTopLevel);
 
-	_widget->move( pParent );
+	_widget->move(pParent);
 }
 
 /* XinxJobOverlayProgress */
 
 XinxJobOverlayProgress::XinxJobOverlayProgress(QWidget* alignWidget, QWidget* parent) : QFrame(parent), d(new PrivateXinxJobOverlayProgress)
 {
-	setFrameStyle( QFrame::Panel | QFrame::Sunken ); // QFrame
-	setAutoFillBackground( true );
+	setFrameStyle(QFrame::Panel | QFrame::Sunken);   // QFrame
+	setAutoFillBackground(true);
 
-	setLayout (new QHBoxLayout);
+	setLayout(new QHBoxLayout);
 
 	d->_widget = this;
 	d->_scroll_view = new XinxJobWidgetList(this);
-	layout ()->addWidget (d->_scroll_view);
+	layout()->addWidget(d->_scroll_view);
 
-	setAlignWidget( alignWidget );
+	setAlignWidget(alignWidget);
 }
 
 XinxJobOverlayProgress::~XinxJobOverlayProgress()
@@ -83,7 +83,7 @@ XinxJobOverlayProgress::~XinxJobOverlayProgress()
 
 }
 
-void XinxJobOverlayProgress::closeEvent( QCloseEvent* e )
+void XinxJobOverlayProgress::closeEvent(QCloseEvent* e)
 {
 	e->accept();
 	hide();
@@ -94,32 +94,32 @@ QWidget * XinxJobOverlayProgress::alignWidget() const
 	return d->_align_widget;
 }
 
-void XinxJobOverlayProgress::setAlignWidget( QWidget * alignWidget )
+void XinxJobOverlayProgress::setAlignWidget(QWidget * alignWidget)
 {
 	if (alignWidget == d->_align_widget)
-	  return;
+		return;
 
 	if (d->_align_widget)
-	  d->_align_widget->removeEventFilter(this);
+		d->_align_widget->removeEventFilter(this);
 
 	d->_align_widget = alignWidget;
 
 	if (d->_align_widget)
-	  d->_align_widget->installEventFilter(this);
+		d->_align_widget->installEventFilter(this);
 
 	d->reposition();
 }
 
-void XinxJobOverlayProgress::resizeEvent( QResizeEvent* ev )
+void XinxJobOverlayProgress::resizeEvent(QResizeEvent* ev)
 {
 	d->reposition();
 
-	QFrame::resizeEvent( ev );
+	QFrame::resizeEvent(ev);
 }
 
 bool XinxJobOverlayProgress::eventFilter(QObject* o, QEvent* e)
 {
-	if ( o == d->_align_widget && ( e->type() == QEvent::Move || e->type() == QEvent::Resize ) )
+	if (o == d->_align_widget && (e->type() == QEvent::Move || e->type() == QEvent::Resize))
 	{
 		d->reposition();
 	}

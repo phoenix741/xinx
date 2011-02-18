@@ -31,7 +31,7 @@ QAtomicInt XinxJob::_count_job;
 
 XinxJob::XinxJob() : _state(JOB_WAIT)
 {
-	setAutoDelete (false);
+	setAutoDelete(false);
 }
 
 XinxJob::~XinxJob()
@@ -41,7 +41,7 @@ XinxJob::~XinxJob()
 
 QString XinxJob::status() const
 {
-	switch(_state)
+	switch (_state)
 	{
 	case JOB_WAIT:
 		return tr("Waiting ...");
@@ -82,7 +82,7 @@ bool XinxJob::isRunning()
 void XinxJob::setState(int state)
 {
 	_state = state;
-	emit setStatus (status ());
+	emit setStatus(status());
 }
 
 void XinxJob::run()
@@ -108,5 +108,5 @@ void XinxJob::run()
 
 void XinxJob::abort()
 {
-	setState (JOB_ABORTING);
+	setState(JOB_ABORTING);
 }

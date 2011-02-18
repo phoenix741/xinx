@@ -29,7 +29,7 @@ class XinxJob;
 
 class LIBEXPORT XinxJobWidget : public QFrame
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
 	explicit XinxJobWidget(XinxJob * job, QWidget *parent = 0);
 	virtual ~XinxJobWidget();

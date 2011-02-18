@@ -29,15 +29,15 @@ class XinxJobOverlayProgress : public QFrame
 {
 	Q_OBJECT
 public:
-	XinxJobOverlayProgress( QWidget* alignWidget, QWidget* parent );
+	XinxJobOverlayProgress(QWidget* alignWidget, QWidget* parent);
 	virtual ~XinxJobOverlayProgress();
 
 	QWidget * alignWidget() const;
-	void setAlignWidget( QWidget * alignWidget );
+	void setAlignWidget(QWidget * alignWidget);
 protected:
-	void closeEvent( QCloseEvent* e );
-	void resizeEvent( QResizeEvent* ev );
-	bool eventFilter( QObject* o, QEvent* e);
+	void closeEvent(QCloseEvent* e);
+	void resizeEvent(QResizeEvent* ev);
+	bool eventFilter(QObject* o, QEvent* e);
 private:
 	QScopedPointer<PrivateXinxJobOverlayProgress> d;
 	friend class PrivateXinxJobOverlayProgress;

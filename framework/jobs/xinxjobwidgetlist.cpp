@@ -34,14 +34,14 @@ public:
 
 XinxJobWidgetList::XinxJobWidgetList(QWidget *parent) : QScrollArea(parent), d(new PrivateXinxJobWidgetList)
 {
-	setFrameStyle( NoFrame );
+	setFrameStyle(NoFrame);
 
 	d->_big_box = new QWidget(this);
-	d->_big_box->setLayout (new QVBoxLayout);
+	d->_big_box->setLayout(new QVBoxLayout);
 
-	setWidget( d->_big_box );
-	setWidgetResizable( true );
-	setSizePolicy( QSizePolicy::Preferred, QSizePolicy::Fixed );
+	setWidget(d->_big_box);
+	setWidgetResizable(true);
+	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 }
 
 XinxJobWidgetList::~XinxJobWidgetList()
@@ -50,17 +50,17 @@ XinxJobWidgetList::~XinxJobWidgetList()
 }
 
 
-XinxJobWidget* XinxJobWidgetList::addTransactionItem( XinxJob * job )
+XinxJobWidget* XinxJobWidgetList::addTransactionItem(XinxJob * job)
 {
-	XinxJobWidget *ti = new XinxJobWidget( job, d->_big_box );
-	d->_big_box->layout()->addWidget( ti );
+	XinxJobWidget *ti = new XinxJobWidget(job, d->_big_box);
+	d->_big_box->layout()->addWidget(ti);
 
-	resize( d->_big_box->width(), d->_big_box->height() );
+	resize(d->_big_box->width(), d->_big_box->height());
 
 	return ti;
 }
 
-void XinxJobWidgetList::resizeEvent ( QResizeEvent *event )
+void XinxJobWidgetList::resizeEvent(QResizeEvent *event)
 {
 	// Tell the layout in the parent (progressdialog) that our size changed
 	updateGeometry();
@@ -69,14 +69,14 @@ void XinxJobWidgetList::resizeEvent ( QResizeEvent *event )
 	int currentWidth = parentWidget()->width();
 
 	// Don't resize to sz.width() every time when it only reduces a little bit
-	if ( currentWidth < sz.width() || currentWidth > sz.width() + 100 )
+	if (currentWidth < sz.width() || currentWidth > sz.width() + 100)
 	{
 		currentWidth = sz.width();
 	}
 
-	parentWidget()->resize( currentWidth, sz.height() );
+	parentWidget()->resize(currentWidth, sz.height());
 
-	QScrollArea::resizeEvent( event );
+	QScrollArea::resizeEvent(event);
 }
 
 QSize XinxJobWidgetList::sizeHint() const
@@ -91,9 +91,9 @@ QSize XinxJobWidgetList::minimumSizeHint() const
 	int vsbExt = verticalScrollBar()->sizeHint().width();
 	int minw = topLevelWidget()->width() / 3;
 	int maxh = topLevelWidget()->height() / 2;
-	QSize sz( d->_big_box->minimumSizeHint() );
-	sz.setWidth( qMax( sz.width(), minw ) + f + vsbExt );
-	sz.setHeight( qMin( sz.height(), maxh ) + f );
+	QSize sz(d->_big_box->minimumSizeHint());
+	sz.setWidth(qMax(sz.width(), minw) + f + vsbExt);
+	sz.setHeight(qMin(sz.height(), maxh) + f);
 	return sz;
 }
 

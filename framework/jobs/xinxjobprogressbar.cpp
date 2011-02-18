@@ -38,26 +38,26 @@ public:
 
 XinxJobProgressBar::XinxJobProgressBar(QWidget *parent) : QWidget(parent), d(new PrivateXinxJobProgressBar)
 {
-	setSizePolicy( QSizePolicy( QSizePolicy::Preferred, QSizePolicy::Fixed ) );
+	setSizePolicy(QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed));
 
 	d->_progress_bar = new QProgressBar(this);
 
 	d->_tool_button  = new QToolButton(this);
-	d->_tool_button->setIcon (QIcon(":/images/configure.png")); // FIXME : better icon
-	d->_tool_button->setSizePolicy( QSizePolicy( QSizePolicy::Minimum, QSizePolicy::Minimum ) );
-	d->_tool_button->setToolTip( tr("Open detailed progress dialog") );
+	d->_tool_button->setIcon(QIcon(":/images/configure.png"));  // FIXME : better icon
+	d->_tool_button->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
+	d->_tool_button->setToolTip(tr("Open detailed progress dialog"));
 
 	QHBoxLayout * hbox = new QHBoxLayout;
-	hbox->addWidget (d->_progress_bar);
-	hbox->addWidget (d->_tool_button);
-	hbox->setSpacing (0);
-	hbox->setMargin (0);
-	setLayout (hbox);
+	hbox->addWidget(d->_progress_bar);
+	hbox->addWidget(d->_tool_button);
+	hbox->setSpacing(0);
+	hbox->setMargin(0);
+	setLayout(hbox);
 
 	d->_job_progress = new XinxJobOverlayProgress(this, parent);
 	d->_job_progress->hide();
 
-	connect( d->_tool_button, SIGNAL( clicked() ), this, SLOT( slotToggleVisibility() ) );
+	connect(d->_tool_button, SIGNAL(clicked()), this, SLOT(slotToggleVisibility()));
 
 	connect(XinxJobManager::self(), SIGNAL(allJobEnded()), this, SLOT(hide()));
 	connect(XinxJobManager::self(), SIGNAL(progressValueChanged(int)), this, SLOT(show()));
@@ -82,5 +82,5 @@ void XinxJobProgressBar::updateProgressBar()
 
 void XinxJobProgressBar::slotToggleVisibility()
 {
-	d->_job_progress->setVisible (d->_job_progress->isVisible ());
+	d->_job_progress->setVisible(d->_job_progress->isVisible());
 }

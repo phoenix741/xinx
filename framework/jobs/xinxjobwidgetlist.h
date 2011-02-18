@@ -40,7 +40,7 @@ public:
 	QSize sizeHint() const;
 	QSize minimumSizeHint() const;
 protected:
-	virtual void resizeEvent ( QResizeEvent *event );
+	virtual void resizeEvent(QResizeEvent *event);
 private:
 	QScopedPointer<PrivateXinxJobWidgetList> d;
 };

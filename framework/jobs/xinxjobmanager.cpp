@@ -105,7 +105,7 @@ void XinxJobManager::slotJobEnding()
 
 	qDebug() << "Remove job (" << countRunningJob() << "/" << countTotalJob() << ")";
 
-	s->deleteLater ();
+	s->deleteLater();
 }
 
 QStringList XinxJobManager::descriptions() const
