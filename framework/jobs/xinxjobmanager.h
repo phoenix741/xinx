@@ -47,7 +47,7 @@ signals:
 	void allJobEnded();
 private slots:
 	void slotJobStarting();
-	void removeJob(QObject* sender);
+	void slotJobEnding();
 private:
 	XinxJobManager();
 	PrivateXinxJobManager * d;

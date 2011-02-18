@@ -29,14 +29,44 @@ QAtomicInt XinxJob::_count_job;
 
 /* XinxJob */
 
-XinxJob::XinxJob() : _is_running(false)
+XinxJob::XinxJob() : _state(JOB_WAIT)
 {
-
+	setAutoDelete (false);
 }
 
 XinxJob::~XinxJob()
 {
 
+}
+
+QString XinxJob::status() const
+{
+	switch(_state)
+	{
+	case JOB_WAIT:
+		return tr("Waiting ...");
+	case JOB_RUNNING:
+		return tr("Running ...");
+	case JOB_ENDING:
+		return tr("Cleaning ...");
+	default:
+		return tr("Unknown");
+	}
+}
+
+int XinxJob::maximum() const
+{
+	return 0;
+}
+
+int XinxJob::progress() const
+{
+	return 0;
+}
+
+bool XinxJob::canBeCanceled() const
+{
+	return false;
 }
 
 int XinxJob::countRunningJob()
@@ -46,7 +76,13 @@ int XinxJob::countRunningJob()
 
 bool XinxJob::isRunning()
 {
-	return _is_running;
+	return (_state == JOB_RUNNING) || (_state == JOB_ABORTING);
+}
+
+void XinxJob::setState(int state)
+{
+	_state = state;
+	emit setStatus (status ());
 }
 
 void XinxJob::run()
@@ -54,7 +90,8 @@ void XinxJob::run()
 	emit jobStarting();
 
 	_count_job.ref();
-	_is_running = true;
+	setState(JOB_RUNNING);
+
 	try
 	{
 		startJob();
@@ -64,8 +101,12 @@ void XinxJob::run()
 		qWarning() << e.what();
 	}
 	_count_job.deref();
-	_is_running = false;
+	setState(JOB_ENDING);
 
 	emit jobEnding();
 }
 
+void XinxJob::abort()
+{
+	setState (JOB_ABORTING);
+}

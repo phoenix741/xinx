@@ -34,6 +34,8 @@ public:
 
 	virtual QString description() const;
 
+	virtual bool canBeCanceled() const;
+
 	void setPath(const QString & path);
 	void setSearchString(const QString & from, const QString & to, const AbstractEditor::SearchOptions & options);
 

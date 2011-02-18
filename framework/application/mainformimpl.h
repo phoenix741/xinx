@@ -37,7 +37,6 @@
 #include <QMenuBar>
 #include <QStatusBar>
 #include <QToolBar>
-#include <QProgressBar>
 
 namespace ContentView3
 {
@@ -51,6 +50,7 @@ class RCSLogDockWidgetImpl;
 class XmlPresentationDockWidget;
 class SnipetDockWidget;
 class ReplaceDialogImpl;
+class XinxJobProgressBar;
 
 class QLabel;
 class QMessageBox;
@@ -98,7 +98,7 @@ private:
 	QLabel * m_codecLabel;
 	QLabel * m_lineFeedLabel;
 
-	QProgressBar * m_indexingBar;
+	XinxJobProgressBar * m_jobProgressBar;
 
 	// Status bar
 	QStatusBar * m_statusBar;
@@ -142,7 +142,6 @@ private slots:
 	void updateTitle();
 	void updateEditorInformations();
 	void createPluginsActions();
-	void updateProgressBar();
 
 	// Search
 	void findEnd(bool abort);

@@ -33,20 +33,33 @@ public:
 	XinxJob();
 	virtual ~XinxJob();
 
-	virtual QString description() const = 0;
+	virtual bool isRunning();
 
-	bool isRunning();
+	virtual QString description() const = 0;
+	virtual QString status() const;
+
+	virtual int maximum() const;
+	virtual int progress() const;
+	virtual bool canBeCanceled() const;
+
 	static int countRunningJob();
+public slots:
+	virtual void abort();
+
 signals:
+	void setStatus(const QString & value);
 	void setProgress(int value, int max);
 	void jobStarting();
 	void jobEnding();
 protected:
+	enum JOB_STATE { JOB_WAIT = 0, JOB_RUNNING = 1, JOB_ABORTING = 2, JOB_ENDING = 127 };
+	void setState(int state);
+
 	virtual void startJob() = 0;
 	virtual void run();
 
 	static QAtomicInt _count_job;
-	bool _is_running;
+	QAtomicInt _state;
 };
 
 #endif // XINXJOBS_H

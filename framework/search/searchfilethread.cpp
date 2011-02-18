@@ -43,8 +43,14 @@ QString SearchFileThread::description() const
 	return tr("Search %1 in %2").arg(m_from).arg (m_path);
 }
 
+bool SearchFileThread::canBeCanceled() const
+{
+	return true;
+}
+
 void SearchFileThread::abort()
 {
+	XinxJob::abort ();
 	_abort = true;
 }
 

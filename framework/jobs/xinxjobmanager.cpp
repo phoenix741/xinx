@@ -53,7 +53,7 @@ XinxJobManager::~XinxJobManager()
 void XinxJobManager::addJob(XinxJob* job)
 {
 	connect(job, SIGNAL(jobStarting()), this, SLOT(slotJobStarting()), Qt::BlockingQueuedConnection);
-	connect(job, SIGNAL(destroyed(QObject*)), this, SLOT(removeJob(QObject*)));
+	connect(job, SIGNAL(jobEnding()), this, SLOT(slotJobEnding()));
 	if (d->_count == 0)
 	{
 		d->_progress_max = 1;
@@ -85,11 +85,13 @@ void XinxJobManager::slotJobStarting()
 	emit jobStarted(countTotalJob(), countRunningJob());
 }
 
-void XinxJobManager::removeJob(QObject* sender)
+void XinxJobManager::slotJobEnding()
 {
+	QObject * s = sender();
+
 	{
 		QMutexLocker locker(d->_descriptions_mutex.data());
-		d->_descriptions_list.remove(sender);
+		d->_descriptions_list.remove(s);
 	}
 
 	d->_count.deref();
@@ -102,6 +104,8 @@ void XinxJobManager::removeJob(QObject* sender)
 	}
 
 	qDebug() << "Remove job (" << countRunningJob() << "/" << countTotalJob() << ")";
+
+	s->deleteLater ();
 }
 
 QStringList XinxJobManager::descriptions() const

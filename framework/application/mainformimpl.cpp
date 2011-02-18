@@ -47,6 +47,7 @@
 #include <actions/actionmanager.h>
 #include <actions/actioninterface.h>
 #include <jobs/xinxjobmanager.h>
+#include <jobs/xinxjobprogressbar.h>
 #include <session/sessionmanager.h>
 
 // Qt header
@@ -330,15 +331,6 @@ void MainformImpl::connectSignals()
 	connect(EditorManager::self(), SIGNAL(fileSaved(QString)), this, SLOT(sSavedFile(QString)));
 	connect(EditorManager::self(), SIGNAL(fileClosed(QString)), this, SLOT(sClosedFile(QString)));
 	connect(EditorManager::self(), SIGNAL(positionChanged(QString)), this, SLOT(setEditorPosition(QString)));
-
-	connect(XinxJobManager::self(), SIGNAL(allJobEnded()), m_indexingBar, SLOT(hide()));
-	connect(XinxJobManager::self(), SIGNAL(progressRangeChanged(int,int)), m_indexingBar, SLOT(setRange(int,int)));
-	connect(XinxJobManager::self(), SIGNAL(progressValueChanged(int)), m_indexingBar, SLOT(setValue(int)));
-	connect(XinxJobManager::self(), SIGNAL(progressValueChanged(int)), m_indexingBar, SLOT(show()));
-
-	connect(XinxJobManager::self(), SIGNAL(progressRangeChanged(int,int)), this, SLOT(updateProgressBar()));
-	connect(XinxJobManager::self(), SIGNAL(progressValueChanged(int)), this, SLOT(updateProgressBar()));
-	connect(XinxJobManager::self(), SIGNAL(progressValueChanged(int)), this, SLOT(updateProgressBar()));
 }
 
 void MainformImpl::createPluginsActions()
@@ -458,14 +450,14 @@ void MainformImpl::createStatusBar()
 	m_statusBar = new QStatusBar(this);
 	setStatusBar(m_statusBar);
 
-	m_indexingBar = new QProgressBar(this);
-	m_indexingBar->setMaximumWidth(150);
-	m_indexingBar->hide();
+	m_jobProgressBar = new XinxJobProgressBar(this);
+	m_jobProgressBar->setMaximumWidth(150);
+	m_jobProgressBar->hide();
 
 	m_codecLabel = new QLabel(tr("Unknown"));
 	m_lineFeedLabel = new QLabel(tr("Unknown"));
 	m_editorPosition = new QLabel("000x000");
-	statusBar()->addPermanentWidget(m_indexingBar);
+	statusBar()->addPermanentWidget(m_jobProgressBar);
 	statusBar()->addPermanentWidget(m_codecLabel);
 	statusBar()->addPermanentWidget(m_lineFeedLabel);
 	statusBar()->addPermanentWidget(m_editorPosition);
@@ -561,11 +553,6 @@ void MainformImpl::updateEditorInformations()
 		m_codecLabel->setText(tr("No codec"));
 		m_lineFeedLabel->setText(tr("Unknown"));
 	}
-}
-
-void MainformImpl::updateProgressBar()
-{
-	m_indexingBar->setToolTip(XinxJobManager::self()->descriptions().join("\n"));
 }
 
 void MainformImpl::about()
