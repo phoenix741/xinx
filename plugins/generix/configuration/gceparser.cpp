@@ -18,6 +18,7 @@
 */
 
 #include "gceparser.h"
+#include <QFileInfo>
 
 GceParser::GceParser() : _interface(0)
 {
@@ -46,6 +47,6 @@ QSharedPointer<GceConfiguration> GceParser::interface() const
 
 QString GceParser::description() const
 {
-	return tr("Parse the configuration file %1").arg(_filename);
+	return tr("Parse the configuration file %1").arg(QFileInfo(_filename).fileName());
 }
 

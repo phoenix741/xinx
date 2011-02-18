@@ -70,7 +70,7 @@ ProjectPtr DirectoryFetcher::project() const
 
 QString DirectoryFetcher::description() const
 {
-	return tr("Fetch files of %1").arg(_directory);
+	return tr("Fetch files of %1").arg(QFileInfo(_directory).fileName());
 }
 
 void DirectoryFetcher::startJob()
