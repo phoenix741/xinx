@@ -22,15 +22,17 @@
 #pragma once
 
 // Xinx header
-#include <core/xinxthread.h>
+#include <jobs/xinxjob.h>
 #include <editors/abstracteditor.h>
 
-class SearchFileThread : public XinxThread
+class SearchFileThread : public XinxJob
 {
 	Q_OBJECT
 public:
-	SearchFileThread(QObject * parent = 0);
+	SearchFileThread();
 	virtual ~SearchFileThread();
+
+	virtual QString description() const;
 
 	void setPath(const QString & path);
 	void setSearchString(const QString & from, const QString & to, const AbstractEditor::SearchOptions & options);
@@ -43,7 +45,7 @@ signals:
 public slots:
 	void abort();
 protected:
-	virtual void threadrun();
+	virtual void startJob();
 private:
 	void searchRecursive(const QString & path);
 	void testFile(const QString & path);

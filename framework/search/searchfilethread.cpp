@@ -20,6 +20,7 @@
 // Xinx header
 #include "searchfilethread.h"
 #include <plugins/xinxpluginsloader.h>
+#include <jobs/xinxjobmanager.h>
 
 // Qt header
 #include <QDir>
@@ -29,12 +30,17 @@
 
 /* SearchFileThread */
 
-SearchFileThread::SearchFileThread(QObject * parent) : XinxThread(parent)
+SearchFileThread::SearchFileThread()
 {
 }
 
 SearchFileThread::~SearchFileThread()
 {
+}
+
+QString SearchFileThread::description() const
+{
+	return tr("Search %1 in %2").arg(m_from).arg (m_path);
 }
 
 void SearchFileThread::abort()
@@ -47,7 +53,7 @@ void SearchFileThread::search()
 	if (! m_to.isNull())
 		QMessageBox::information(qApp->activeWindow(), tr("Not supported"), tr("Replacement on multiple file is not yet supported"));
 
-	start(QThread::IdlePriority);
+	XinxJobManager::self ()->addJob(this);
 }
 
 void SearchFileThread::testFile(const QString & path)
@@ -107,12 +113,11 @@ void SearchFileThread::searchRecursive(const QString & path)
 	}
 }
 
-void SearchFileThread::threadrun()
+void SearchFileThread::startJob()
 {
 	_abort = false;
 	searchRecursive(m_path);
 	emit end(_abort);
-	this->deleteLater();
 }
 
 void SearchFileThread::setPath(const QString & path)
