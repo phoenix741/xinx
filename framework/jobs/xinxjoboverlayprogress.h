@@ -23,6 +23,7 @@
 
 #include <QFrame>
 
+class XinxJob;
 class PrivateXinxJobOverlayProgress;
 
 class XinxJobOverlayProgress : public QFrame
@@ -38,6 +39,9 @@ protected:
 	void closeEvent(QCloseEvent* e);
 	void resizeEvent(QResizeEvent* ev);
 	bool eventFilter(QObject* o, QEvent* e);
+private slots:
+	void slotJobAdded(XinxJob * job);
+	void slotJobEnded(XinxJob * job);
 private:
 	QScopedPointer<PrivateXinxJobOverlayProgress> d;
 	friend class PrivateXinxJobOverlayProgress;

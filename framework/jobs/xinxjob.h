@@ -50,6 +50,7 @@ public slots:
 	virtual void abort();
 
 signals:
+	void setDescription(const QString & value);
 	void setStatus(const QString & value);
 	void setProgress(int value, int max);
 	void jobStarting();

@@ -41,6 +41,7 @@ public:
 	QSize minimumSizeHint() const;
 protected:
 	virtual void resizeEvent(QResizeEvent *event);
+
 private:
 	QScopedPointer<PrivateXinxJobWidgetList> d;
 };

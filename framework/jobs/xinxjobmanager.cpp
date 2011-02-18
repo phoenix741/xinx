@@ -67,6 +67,7 @@ void XinxJobManager::addJob(XinxJob* job)
 
 	qDebug() << "Add job " << job->description() << " (" << d->_progress_max << ")";
 
+	emit jobAdded(job);
 	d->_pool->start(job);
 	//emit jobStarted(countTotalJob (), countRunningJob ());
 	emit progressRangeChanged(0, d->_progress_max);
@@ -75,14 +76,15 @@ void XinxJobManager::addJob(XinxJob* job)
 
 void XinxJobManager::slotJobStarting()
 {
+	XinxJob * job = qobject_cast<XinxJob*> (sender());
+
 	{
 		QMutexLocker locker(d->_descriptions_mutex.data());
-		XinxJob * job = qobject_cast<XinxJob*> (sender());
 		d->_descriptions_list.insert(job, job->description());
 	}
 
 	qDebug() << "Starting job (" << countRunningJob() << "/" << countTotalJob() << ")";
-	emit jobStarted(countTotalJob(), countRunningJob());
+	emit jobStarted(job);
 }
 
 void XinxJobManager::slotJobEnding()
@@ -97,7 +99,7 @@ void XinxJobManager::slotJobEnding()
 	d->_count.deref();
 	d->_progress_value.ref();
 	emit progressValueChanged(d->_progress_value);
-	emit jobEnded(countTotalJob(), countRunningJob());
+	emit jobEnded(job);
 	if (d->_count == 0)
 	{
 		emit allJobEnded();

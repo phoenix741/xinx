@@ -68,7 +68,7 @@ void PrivateXinxJobWidget::init()
 	_widget_layout->setStretchFactor(_frame, 3);
 	_widget_layout->addWidget(_frame);
 
-	QHBoxLayout * h = new QHBoxLayout(_widget);
+	QHBoxLayout * h = new QHBoxLayout;
 	h->setSpacing(5);
 	_widget_layout->addLayout(h);
 
@@ -76,15 +76,8 @@ void PrivateXinxJobWidget::init()
 	h->addWidget(_item_label);
 
 	_progressBar = new QProgressBar(_widget);
-	if (_job->isRunning())
-	{
-		_progressBar->setMaximum(0);
-	}
-	else
-	{
-		_progressBar->setMaximum(_job->maximum());
-		_progressBar->setValue(_job->progress());
-	}
+	_progressBar->setMaximum(_job->maximum());
+	_progressBar->setValue(_job->progress());
 	h->addWidget(_progressBar);
 
 	if (_job->canBeCanceled())
@@ -95,7 +88,7 @@ void PrivateXinxJobWidget::init()
 		h->addWidget(_cancel_button);
 	}
 
-	h = new QHBoxLayout(_widget);
+	h = new QHBoxLayout;
 	h->setSpacing(5);
 	_widget_layout->addLayout(h);
 
@@ -107,7 +100,14 @@ void PrivateXinxJobWidget::init()
 
 XinxJobWidget::XinxJobWidget(XinxJob * job, QWidget *parent) : QFrame(parent), d(new PrivateXinxJobWidget)
 {
+	d->_widget = this;
 	d->_job = job;
+
+	d->init();
+
+	connect(job, SIGNAL(setDescription(QString)), this, SLOT(setLabel(QString)));
+	connect(job, SIGNAL(setStatus(QString)), this, SLOT(setStatus(QString)));
+	connect(job, SIGNAL(setProgress(int,int)), this, SLOT(setProgress(int, int)));
 }
 
 XinxJobWidget::~XinxJobWidget()

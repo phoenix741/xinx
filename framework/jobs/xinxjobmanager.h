@@ -41,9 +41,9 @@ signals:
 	void progressRangeChanged(int minimum, int maximum);
 	void progressValueChanged(int value);
 
-	void jobAdded(int countJob, int runningJob);
-	void jobStarted(int countJob, int runningJob);
-	void jobEnded(int countJob, int runningJob);
+	void jobAdded(XinxJob * job);
+	void jobStarted(XinxJob * job);
+	void jobEnded(XinxJob * job);
 	void allJobEnded();
 private slots:
 	void slotJobStarting();

@@ -24,6 +24,8 @@
 #include <QLayout>
 #include <QMap>
 #include <QCloseEvent>
+#include <QTimer>
+#include "xinxjobmanager.h"
 
 /* PrivateXinxJobOverlayProgress */
 
@@ -77,12 +79,43 @@ XinxJobOverlayProgress::XinxJobOverlayProgress(QWidget* alignWidget, QWidget* pa
 
 	setAlignWidget(alignWidget);
 
-
+	connect(XinxJobManager::self(), SIGNAL(jobAdded(XinxJob*)), this, SLOT(slotJobAdded(XinxJob*)));
+	connect(XinxJobManager::self(), SIGNAL(jobEnded(XinxJob*)), this, SLOT(slotJobEnded(XinxJob*)));
 }
 
 XinxJobOverlayProgress::~XinxJobOverlayProgress()
 {
 
+}
+
+void XinxJobOverlayProgress::slotJobAdded(XinxJob* job)
+{
+	XinxJobWidget * ji = d->_scroll_view->addJobItem(job);
+	if ( ji )
+	{
+		d->_list_items.insert(job, ji);
+	}
+
+	if ( ! d->_list_items.empty() )
+	{
+		show();
+	}
+}
+
+void XinxJobOverlayProgress::slotJobEnded(XinxJob* job)
+{
+	if (d->_list_items.contains(job))
+	{
+		XinxJobWidget *ji = d->_list_items[job];
+		d->_list_items.remove(job);
+		
+		QTimer::singleShot(3000, ji, SLOT(deleteLater()));
+	}
+
+	if ( d->_list_items.empty() )
+	{
+		hide();
+	}
 }
 
 void XinxJobOverlayProgress::closeEvent(QCloseEvent* e)

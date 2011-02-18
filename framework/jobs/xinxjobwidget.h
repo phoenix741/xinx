@@ -35,12 +35,11 @@ public:
 	virtual ~XinxJobWidget();
 
 	void hideHLine();
+	XinxJob* job() const;
+public slots:
 	void setProgress(int progress, int maximum);
 	void setLabel(const QString& value);
 	void setStatus(const QString& value);
-	XinxJob* job() const;
-
-signals:
 
 private slots:
 	void slotItemCanceled();

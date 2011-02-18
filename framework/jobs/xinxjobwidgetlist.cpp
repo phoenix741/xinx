@@ -49,7 +49,6 @@ XinxJobWidgetList::~XinxJobWidgetList()
 
 }
 
-
 XinxJobWidget* XinxJobWidgetList::addJobItem(XinxJob * job)
 {
 	XinxJobWidget *ti = new XinxJobWidget(job, d->_big_box);
