@@ -281,14 +281,6 @@ void Parser::startJob()
 								  Q_ARG(int, e.getLine()), Q_ARG(QtMsgType, QtCriticalMsg),
 								  Q_ARG(XinxException, e));
 	}
-}
-
-/*!
- * \brief Re-implemented to add the capability to know if the parser is running.
- */
-void Parser::run()
-{
-	XinxJob::run();
 
 	if (d->_file && d->_file->project())
 	{

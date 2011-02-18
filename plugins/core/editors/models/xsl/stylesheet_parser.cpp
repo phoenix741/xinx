@@ -277,7 +277,7 @@ void Parser::readTemplate(ContentView3::NodePtr & n)
 				parser->setDevice(&buffer);
 				parser->setDecalage(s.line);
 
-				parser->run();
+				parser->startJob();
 			}
 		}
 

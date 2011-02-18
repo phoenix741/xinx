@@ -76,6 +76,8 @@ XinxJobOverlayProgress::XinxJobOverlayProgress(QWidget* alignWidget, QWidget* pa
 	layout()->addWidget(d->_scroll_view);
 
 	setAlignWidget(alignWidget);
+
+
 }
 
 XinxJobOverlayProgress::~XinxJobOverlayProgress()

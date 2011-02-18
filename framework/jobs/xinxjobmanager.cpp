@@ -87,11 +87,11 @@ void XinxJobManager::slotJobStarting()
 
 void XinxJobManager::slotJobEnding()
 {
-	QObject * s = sender();
+	XinxJob * job = qobject_cast<XinxJob*>(sender());
 
 	{
 		QMutexLocker locker(d->_descriptions_mutex.data());
-		d->_descriptions_list.remove(s);
+		d->_descriptions_list.remove(job);
 	}
 
 	d->_count.deref();
@@ -105,7 +105,10 @@ void XinxJobManager::slotJobEnding()
 
 	qDebug() << "Remove job (" << countRunningJob() << "/" << countTotalJob() << ")";
 
-	s->deleteLater();
+	if (job->managerDelete())
+	{
+		job->deleteLater();
+	}
 }
 
 QStringList XinxJobManager::descriptions() const

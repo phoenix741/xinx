@@ -43,6 +43,9 @@ public:
 	virtual bool canBeCanceled() const;
 
 	static int countRunningJob();
+
+	void setManagerDelete(bool value);
+	bool managerDelete() const;
 public slots:
 	virtual void abort();
 
@@ -60,6 +63,7 @@ protected:
 
 	static QAtomicInt _count_job;
 	QAtomicInt _state;
+	bool _manager_delete;
 };
 
 #endif // XINXJOBS_H

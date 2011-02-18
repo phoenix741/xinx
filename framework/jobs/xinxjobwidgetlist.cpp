@@ -50,7 +50,7 @@ XinxJobWidgetList::~XinxJobWidgetList()
 }
 
 
-XinxJobWidget* XinxJobWidgetList::addTransactionItem(XinxJob * job)
+XinxJobWidget* XinxJobWidgetList::addJobItem(XinxJob * job)
 {
 	XinxJobWidget *ti = new XinxJobWidget(job, d->_big_box);
 	d->_big_box->layout()->addWidget(ti);

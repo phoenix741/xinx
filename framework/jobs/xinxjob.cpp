@@ -29,7 +29,7 @@ QAtomicInt XinxJob::_count_job;
 
 /* XinxJob */
 
-XinxJob::XinxJob() : _state(JOB_WAIT)
+XinxJob::XinxJob() : _state(JOB_WAIT), _manager_delete(true)
 {
 	setAutoDelete(false);
 }
@@ -37,6 +37,16 @@ XinxJob::XinxJob() : _state(JOB_WAIT)
 XinxJob::~XinxJob()
 {
 
+}
+
+void XinxJob::setManagerDelete(bool value)
+{
+	_manager_delete = value;
+}
+
+bool XinxJob::managerDelete() const
+{
+	return _manager_delete;
 }
 
 QString XinxJob::status() const

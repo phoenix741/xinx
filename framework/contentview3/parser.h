@@ -75,14 +75,12 @@ public:
 	void setWorkingPath(const QString & path);
 	const QString & workingPath() const;
 
-	virtual void run();
+	virtual void startJob();
 protected:
 	virtual void parse() = 0;
 	void loadExternalContent(Node * parent, const QString & content, const QString & parserType);
 	QString addImport(const QString & import);
 private:
-	virtual void startJob();
-
 	QScopedPointer<PrivateParser> d;
 };
 

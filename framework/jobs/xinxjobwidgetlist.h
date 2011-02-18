@@ -35,7 +35,7 @@ public:
 	explicit XinxJobWidgetList(QWidget *parent = 0);
 	virtual ~XinxJobWidgetList();
 
-	XinxJobWidget* addTransactionItem(XinxJob * job);
+	XinxJobWidget* addJobItem(XinxJob * job);
 
 	QSize sizeHint() const;
 	QSize minimumSizeHint() const;
