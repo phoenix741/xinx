@@ -671,15 +671,16 @@ void MainformImpl::findInFiles(const QString & directory, const QString & from, 
 	m_searchDock->dock()->setVisible(true);
 
 	SearchFileThread * threadSearch = new SearchFileThread();
+	connect(m_searchDock, SIGNAL(abort()), threadSearch, SLOT(abort()), Qt::DirectConnection);
 	connect(threadSearch, SIGNAL(find(QString,QString,int)), m_searchDock, SLOT(find(QString,QString,int)), Qt::BlockingQueuedConnection);
-	connect(threadSearch, SIGNAL(end()), this, SLOT(findEnd()));
+	connect(threadSearch, SIGNAL(end(bool)), this, SLOT(findEnd(bool)));
 
 	threadSearch->setPath(directory);
 	threadSearch->setSearchString(from, to, options);
 	threadSearch->search();
 }
 
-void MainformImpl::findEnd()
+void MainformImpl::findEnd(bool abort)
 {
 	m_searchAct->setEnabled(true);
 	m_searchNextAct->setEnabled(true);
@@ -688,7 +689,14 @@ void MainformImpl::findEnd()
 
 	m_searchDock->end();
 
-	QMessageBox::information(this, tr("Search End"), tr("All string are finded"));
+	if (abort)
+	{
+		QMessageBox::information(this, tr("Search End"), tr("Search have been aborted"));
+	}
+	else
+	{
+		QMessageBox::information(this, tr("Search End"), tr("All string are finded"));
+	}
 }
 
 void MainformImpl::findNext()

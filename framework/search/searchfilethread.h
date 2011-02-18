@@ -39,13 +39,16 @@ public:
 signals:
 	void find(const QString & filename, const QString & lineText, int lineNumber);
 	void test(const QString & filename);
-	void end();
+	void end(bool abort);
+public slots:
+	void abort();
 protected:
 	virtual void threadrun();
 private:
 	void searchRecursive(const QString & path);
 	void testFile(const QString & path);
 
+	bool _abort;
 	QString m_from, m_to, m_path;
 	AbstractEditor::SearchOptions m_options;
 };

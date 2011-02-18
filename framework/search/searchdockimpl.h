@@ -40,6 +40,8 @@ public:
 
 	void init();
 	void end();
+signals:
+	void abort();
 public slots:
 	void find(const QString & filename, const QString & text, int line);
 protected slots:

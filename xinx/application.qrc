@@ -1,12 +1,12 @@
 <RCC>
-	<qresource prefix="/document" >
-		<file alias="licence.html">../licence.html</file>
-	</qresource>
-    <qresource prefix="/" >
-        <file alias="translations/xinxcomponents_fr.qm" >../components/translations/xinxcomponents_fr.qm</file>
-        <file alias="translations/libxinx_fr.qm" >../framework/translations/libxinx_fr.qm</file>
-        <file alias="qcodeedit/marks.qxm" >../framework/editors/marks.qxm</file>
-        <file alias="qcodeedit/lan/none.qnfa" >../framework/editors/none.qnfa</file>
+    <qresource prefix="/document">
+        <file alias="licence.html">../licence.html</file>
+    </qresource>
+    <qresource prefix="/">
+        <file alias="translations/xinxcomponents_fr.qm">../components/translations/xinxcomponents_fr.qm</file>
+        <file alias="translations/libxinx_fr.qm">../framework/translations/libxinx_fr.qm</file>
+        <file alias="qcodeedit/marks.qxm">../framework/editors/marks.qxm</file>
+        <file alias="qcodeedit/lan/none.qnfa">../framework/editors/none.qnfa</file>
         <file>translations/qt_fr.qm</file>
         <file>translations/xinx_fr.qm</file>
         <file>images/france.png</file>
@@ -110,5 +110,6 @@
         <file>images/banner.png</file>
         <file>rc/tipoftheday_en.txt</file>
         <file>images/newprojectwatermark.png</file>
+        <file>images/stop_search.png</file>
     </qresource>
 </RCC>

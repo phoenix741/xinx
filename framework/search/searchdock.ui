@@ -11,15 +11,27 @@
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <property name="margin">
-    <number>0</number>
-   </property>
    <item>
-    <widget class="QProgressBar" name="m_progressBar">
-     <property name="maximum">
-      <number>0</number>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QProgressBar" name="m_progressBar">
+       <property name="maximum">
+        <number>0</number>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="_search_button">
+       <property name="text">
+        <string>...</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../../xinx/application.qrc">
+         <normaloff>:/images/stop_search.png</normaloff>:/images/stop_search.png</iconset>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="QTreeWidget" name="m_searchTreeWidget">
@@ -48,6 +60,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../xinx/application.qrc"/>
+ </resources>
  <connections/>
 </ui>

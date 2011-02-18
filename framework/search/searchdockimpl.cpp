@@ -91,6 +91,8 @@ SearchDockWidgetImpl::SearchDockWidgetImpl(QWidget * parent) : AbstractMessageDo
 	_widget->m_searchTreeWidget->setItemDelegate(new SearchLogWidgetDelegate);
 	connect(_widget->m_searchTreeWidget, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(doubleClicked(QModelIndex)));
 
+	connect(_widget->_search_button, SIGNAL(clicked()), this, SIGNAL(abort()));
+	_widget->_search_button->hide();
 	_widget->m_progressBar->hide();
 }
 
@@ -114,11 +116,13 @@ void SearchDockWidgetImpl::init()
 	setNotifyCount(0);
 	_widget->m_searchTreeWidget->clear();
 	_widget->m_searchTreeWidget->setSortingEnabled(false);
+	_widget->_search_button->show();
 	_widget->m_progressBar->show();
 }
 
 void SearchDockWidgetImpl::end()
 {
+	_widget->_search_button->hide();
 	_widget->m_progressBar->hide();
 	_widget->m_searchTreeWidget->setSortingEnabled(true);
 }

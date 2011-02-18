@@ -37,6 +37,11 @@ SearchFileThread::~SearchFileThread()
 {
 }
 
+void SearchFileThread::abort()
+{
+	_abort = true;
+}
+
 void SearchFileThread::search()
 {
 	if (! m_to.isNull())
@@ -74,11 +79,15 @@ void SearchFileThread::testFile(const QString & path)
 
 		if (contains)
 			emit find(path, text.trimmed(), line);
+
+		if (_abort) return;
 	}
 }
 
 void SearchFileThread::searchRecursive(const QString & path)
 {
+	if (_abort) return;
+
 	QDir pathObject(path);
 	QStringList directory = pathObject.entryList(QDir::Dirs);
 
@@ -92,14 +101,17 @@ void SearchFileThread::searchRecursive(const QString & path)
 
 	foreach(const QString & fileName, files)
 	{
+		if (_abort) return;
+
 		testFile(pathObject.absoluteFilePath(fileName));
 	}
 }
 
 void SearchFileThread::threadrun()
 {
+	_abort = false;
 	searchRecursive(m_path);
-	emit end();
+	emit end(_abort);
 	this->deleteLater();
 }
 
