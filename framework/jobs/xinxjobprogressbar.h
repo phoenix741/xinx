@@ -34,6 +34,7 @@ public:
 
 private slots:
 	void updateProgressBar();
+	void slotToggleVisibility();
 private:
 	QScopedPointer<PrivateXinxJobProgressBar> d;
 	friend class PrivateXinxJobProgressBar;

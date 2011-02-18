@@ -69,6 +69,8 @@ XinxJobOverlayProgress::XinxJobOverlayProgress(QWidget* alignWidget, QWidget* pa
 	setFrameStyle( QFrame::Panel | QFrame::Sunken ); // QFrame
 	setAutoFillBackground( true );
 
+	setLayout (new QHBoxLayout);
+
 	d->_widget = this;
 	d->_scroll_view = new XinxJobWidgetList(this);
 	layout ()->addWidget (d->_scroll_view);
