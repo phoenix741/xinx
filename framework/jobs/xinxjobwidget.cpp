@@ -57,7 +57,7 @@ void PrivateXinxJobWidget::init()
 	_widget_layout = new QVBoxLayout(_widget);
 	_widget_layout->setSpacing(2);
 	_widget_layout->setMargin(2);
-	//_widget->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
+	_widget->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
 	_widget->setLayout(_widget_layout);
 
 	_frame = new QFrame(_widget);

@@ -41,7 +41,6 @@ XinxJobWidgetList::XinxJobWidgetList(QWidget *parent) : QScrollArea(parent), d(n
 
 	setWidget(d->_big_box);
 	setWidgetResizable(true);
-	//setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
 
 XinxJobWidgetList::~XinxJobWidgetList()
@@ -59,6 +58,7 @@ XinxJobWidget* XinxJobWidgetList::addJobItem(XinxJob * job)
 	return ti;
 }
 
+
 void XinxJobWidgetList::resizeEvent(QResizeEvent *event)
 {
 	// Tell the layout in the parent (progressdialog) that our size changed
@@ -66,13 +66,6 @@ void XinxJobWidgetList::resizeEvent(QResizeEvent *event)
 
 	QSize sz = parentWidget()->sizeHint();
 	int currentWidth = parentWidget()->width();
-
-	// Don't resize to sz.width() every time when it only reduces a little bit
-	if (currentWidth < sz.width() || currentWidth > sz.width() + 100)
-	{
-		currentWidth = sz.width();
-	}
-
 	parentWidget()->resize(currentWidth, sz.height());
 
 	QScrollArea::resizeEvent(event);
