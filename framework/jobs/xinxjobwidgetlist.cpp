@@ -41,7 +41,7 @@ XinxJobWidgetList::XinxJobWidgetList(QWidget *parent) : QScrollArea(parent), d(n
 
 	setWidget(d->_big_box);
 	setWidgetResizable(true);
-	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+	//setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
 
 XinxJobWidgetList::~XinxJobWidgetList()

@@ -66,12 +66,27 @@ QString XinxJob::status() const
 
 int XinxJob::maximum() const
 {
-	return 0;
+	switch (_state)
+	{
+	case JOB_WAIT:
+	case JOB_ENDING:
+		return 100;
+	default:
+		return 0;
+	}
 }
 
 int XinxJob::progress() const
 {
-	return 0;
+	switch (_state)
+	{
+		case JOB_WAIT:
+			return 0;
+		case JOB_ENDING:
+			return 100;
+		default:
+			return 0;
+	}
 }
 
 bool XinxJob::canBeCanceled() const
@@ -93,6 +108,7 @@ void XinxJob::setState(int state)
 {
 	_state = state;
 	emit setStatus(status());
+	emit setProgress(progress(), maximum());
 }
 
 void XinxJob::run()

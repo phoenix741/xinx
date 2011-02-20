@@ -18,7 +18,6 @@
 */
 
 #include "xinxjobprogressbar.h"
-#include "xinxjoboverlayprogress.h"
 #include "xinxjobmanager.h"
 #include <QProgressBar>
 #include <QToolButton>
@@ -29,10 +28,7 @@
 class PrivateXinxJobProgressBar
 {
 public:
-	//Pas de manager pour l'instant
-	//XinxJobOverlayProgress * _job_progress;
 	QProgressBar * _progress_bar;
-	//QToolButton * _tool_button;
 };
 
 /* XinxJobProgressBar */
@@ -43,26 +39,11 @@ XinxJobProgressBar::XinxJobProgressBar(QWidget *parent) : QWidget(parent), d(new
 
 	d->_progress_bar = new QProgressBar(this);
 
-	/*
-	d->_tool_button  = new QToolButton(this);
-	d->_tool_button->setIcon(QIcon(":/images/configure.png"));  // FIXME : better icon
-	d->_tool_button->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
-	d->_tool_button->setToolTip(tr("Open detailed progress dialog"));
-	*/
-
 	QHBoxLayout * hbox = new QHBoxLayout;
 	hbox->addWidget(d->_progress_bar);
-	//hbox->addWidget(d->_tool_button);
 	hbox->setSpacing(0);
 	hbox->setMargin(0);
 	setLayout(hbox);
-
-	/*
-	d->_job_progress = new XinxJobOverlayProgress(this, parent);
-	d->_job_progress->hide();
-
-	connect(d->_tool_button, SIGNAL(clicked()), this, SLOT(slotToggleVisibility()));
-	*/
 
 	connect(XinxJobManager::self(), SIGNAL(allJobEnded()), this, SLOT(hide()));
 	connect(XinxJobManager::self(), SIGNAL(progressValueChanged(int)), this, SLOT(show()));
@@ -83,9 +64,4 @@ XinxJobProgressBar::~XinxJobProgressBar()
 void XinxJobProgressBar::updateProgressBar()
 {
 	d->_progress_bar->setToolTip(XinxJobManager::self()->descriptions().join("\n"));
-}
-
-void XinxJobProgressBar::slotToggleVisibility()
-{
-	//d->_job_progress->setVisible(d->_job_progress->isVisible());
 }

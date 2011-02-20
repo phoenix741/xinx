@@ -38,6 +38,7 @@
 #include <QStatusBar>
 #include <QToolBar>
 
+class XinxJobProgressDock;
 namespace ContentView3
 {
 class DockWidget;
@@ -92,6 +93,7 @@ private:
 	SearchDockWidgetImpl * m_searchDock;
 	SnipetDockWidget * m_snipetsDock;
 	DToolView * m_logDockView;
+	XinxJobProgressDock * m_progressDock;
 
 	// Status bar
 	QLabel * m_editorPosition;

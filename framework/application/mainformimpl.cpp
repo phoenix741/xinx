@@ -49,6 +49,7 @@
 #include <jobs/xinxjobmanager.h>
 #include <jobs/xinxjobprogressbar.h>
 #include <session/sessionmanager.h>
+#include <jobs/xinxjobprogressdock.h>
 
 // Qt header
 #include <QObject>
@@ -425,6 +426,13 @@ void MainformImpl::createDockWidget()
 	action = view->toggleViewAction();
 	m_menus["windows"]->addAction(action);
 	m_searchDock->setDock(view);
+
+	/* Progress */
+	m_progressDock = new XinxJobProgressDock(this);
+	view = addToolView(m_progressDock, Qt::BottomDockWidgetArea);
+	view->setObjectName(QString::fromUtf8("m_progressDock"));
+	action = view->toggleViewAction();
+	m_menus["windows"]->addAction(action);
 
 	// Load dock from plugins and assign automatic shortcut
 	int dockShortcut = 4;
