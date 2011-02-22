@@ -18,27 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "dtabbedmainwindow.h"
-
-#include <QTabWidget>
-#include <QToolButton>
-#include <QPainter>
-#include <QWheelEvent>
-
-#include <QtDebug>
-
-#ifndef DLIB_GUI
-class TabWidgetPrivate : public QTabWidget
-{
-	Q_OBJECT;
-	public:
-		TabWidgetPrivate(QWidget *parent = 0);
-		~TabWidgetPrivate();
-		
-	protected:
-		virtual void wheelEvent( QWheelEvent *e );
-		virtual void wheelMove( int delta );
-};
+#include "dtabbedmainwindow_p.h"
 
 TabWidgetPrivate::TabWidgetPrivate(QWidget *parent) : QTabWidget(parent)
 {
@@ -71,15 +51,6 @@ void TabWidgetPrivate::wheelMove( int delta )
 		setCurrentIndex( current );
 	}
 }
-
-#include "dtabbedmainwindow.moc"
-
-#else
-
-#include <dtabwidget.h>
-#define TabWidgetPrivate DTabWidget
-
-#endif
 
 
 // DTabbedMainWindow

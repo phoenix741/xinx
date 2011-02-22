@@ -54,8 +54,8 @@ Source: ..\COPYING; DestDir: {app}; Components: application
 Source: install\bin\xinx.exe; DestDir: {app}\bin; Components: application; Flags: replacesameversion
 Source: install\bin\libxinxcmp.dll; DestDir: {app}\bin; Components: application; Flags: replacesameversion
 Source: install\bin\libframework.dll; DestDir: {app}\bin; Components: application; Flags: replacesameversion
-Source: ..\ext\qcodeedit\qcodeedit.dll; DestDir: {app}\bin; Components: application; Flags: replacesameversion
-Source: ..\ext\ideality\lib\ideality.dll; DestDir: {app}\bin; Components: application; Flags: replacesameversion
+Source: install\bin\libqcodeedit.dll; DestDir: {app}\bin; Components: application; Flags: replacesameversion
+Source: install\bin\libideality.dll; DestDir: {app}\bin; Components: application; Flags: replacesameversion
 
 Source: {#QTDIR}\..\mingw\bin\mingwm10.dll; DestDir: {app}\bin; Components: application
 Source: {#QTDIR}\..\mingw\bin\libgcc_s_dw2-1.dll; DestDir: {app}\bin; Components: application

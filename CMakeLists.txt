@@ -2,6 +2,8 @@ project(xinx-project)
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules/")
 cmake_minimum_required(VERSION 2.8.0)
 
+add_subdirectory(ext/ideality/lib)
+add_subdirectory(ext/qcodeedit/lib)
 add_subdirectory(components)
 add_subdirectory(framework)
 add_subdirectory(plugins/core)
