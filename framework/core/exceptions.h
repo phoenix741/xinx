@@ -73,10 +73,11 @@ public:
 	QStringList stackTrace() const;
 
 	static void installExceptionHandler();
+	static void installSignalHandler();
 public slots:
 	void notifyError(QString error, QtMsgType t = QtWarningMsg, bool showMessage = true);
 signals:
-	void errorTriggered();
+	void errorTriggered(const QString & message);
 private:
 	ExceptionManager();
 

@@ -113,6 +113,8 @@ void XinxJob::setState(int state)
 
 void XinxJob::run()
 {
+	ExceptionManager::installSignalHandler ();
+
 	emit jobStarting();
 
 	_count_job.ref();
@@ -124,7 +126,11 @@ void XinxJob::run()
 	}
 	catch (const std::exception & e)
 	{
-		qWarning() << e.what();
+		qCritical () << e.what();
+	}
+	catch (...)
+	{
+		qCritical () << tr("Unknown exception");
 	}
 	_count_job.deref();
 	setState(JOB_ENDING);

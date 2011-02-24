@@ -62,13 +62,25 @@ XinxThread::~XinxThread()
 
 void XinxThread::run()
 {
+	ExceptionManager::installSignalHandler ();
 	{
 		QMutexLocker locker(&(XinxThreadManager::self()->m_mutex));
 		XinxThreadManager::self()->m_threadCount++;
 		emit XinxThreadManager::self()->threadCountChange();
 	}
 
-	threadrun();
+	try
+	{
+		threadrun();
+	}
+	catch (const std::exception & e)
+	{
+		qCritical (e.what());
+	}
+	catch (...)
+	{
+		qCritical ("Generic Exception");
+	}
 
 	{
 		QMutexLocker locker(&(XinxThreadManager::self()->m_mutex));

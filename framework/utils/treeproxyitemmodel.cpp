@@ -78,7 +78,7 @@
 TreeProxyItemModel::TreeProxyItemModel(QObject * parent) : QAbstractProxyModel(parent), m_sourceColumnCount(0), m_resetModel(false)
 {
 #ifndef _XINX_RELEASE_MODE_
-//  connect( ExceptionManager::self(), SIGNAL(errorTriggered()), this, SLOT(printMapping()) );
+	//connect( ExceptionManager::self(), SIGNAL(errorTriggered(QString)), this, SLOT(printMapping()), Qt::BlockingQueuedConnection );
 #endif
 }
 

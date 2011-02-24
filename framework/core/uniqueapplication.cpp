@@ -77,17 +77,21 @@ void UniqueApplication::attachMainWindow(MainformImpl * mainform)
 	m_mainform = mainform;
 
 	setActivationWindow(m_mainform);
-	connect(ExceptionManager::self(), SIGNAL(errorTriggered()), this, SLOT(slotErrorTriggered()));
+	connect(ExceptionManager::self(), SIGNAL(errorTriggered(QString)), this, SLOT(slotErrorTriggered(QString)), Qt::BlockingQueuedConnection);
 	connect(this, SIGNAL(messageReceived(QString)), EditorManager::self(), SLOT(openFile(QString)));
 }
 
-void UniqueApplication::slotErrorTriggered()
+void UniqueApplication::slotErrorTriggered(const QString & message)
 {
 	if (m_mainform)
 	{
 		// Hide the main widget to prevent user interaction
 		m_mainform->hide();
-
-		XinxSession::SessionManager::self()->createRecoverSession();
 	}
+
+	QMessageBox::critical(0, qApp->applicationName(),
+						  tr("Oh boy ! A fatal error occur with the message :\n%1\n"
+							 "Please forgive me, i try to recover your work.").arg(message));
+
+	XinxSession::SessionManager::self()->createRecoverSession();
 }

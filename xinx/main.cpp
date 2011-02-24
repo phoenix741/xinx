@@ -50,7 +50,6 @@
 #include <QtPlugin>
 
 // C++ header
-#include <csignal>
 #include <iostream>
 #include <time.h>
 
@@ -58,24 +57,6 @@
 Q_IMPORT_PLUGIN(coreplugin);
 
 MainformImpl * mainWin = NULL;
-
-class SignalSegFaultException : public XinxException
-{
-public:
-	SignalSegFaultException(int signal) : XinxException(QString("Signal emited : %1").arg(signal))
-	{
-
-	}
-};
-
-static void backup_appli_signal(int signal)
-{
-	std::signal(SIGSEGV, SIG_DFL);
-	std::signal(SIGABRT, SIG_DFL);
-	std::signal(SIGINT, SIG_DFL);
-	std::signal(SIGTERM, SIG_DFL);
-	throw SignalSegFaultException(signal);
-}
 
 static void initSearchPath(QApplication * app)
 {
@@ -160,10 +141,7 @@ int main(int argc, char *argv[])
 	Q_INIT_RESOURCE(application);
 	qsrand(time(NULL));
 
-	std::signal(SIGSEGV, backup_appli_signal);
-	std::signal(SIGABRT, backup_appli_signal);
-	std::signal(SIGINT, backup_appli_signal);
-	std::signal(SIGTERM, backup_appli_signal);
+	ExceptionManager::installSignalHandler ();
 
 #if defined(Q_WS_WIN)
 	if (QSysInfo::WindowsVersion >= QSysInfo::WV_VISTA && QSysInfo::WindowsVersion < QSysInfo::WV_NT_based)

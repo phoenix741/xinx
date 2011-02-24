@@ -43,7 +43,7 @@ public:
 
 	void attachMainWindow(MainformImpl * mainform);
 public slots:
-	void slotErrorTriggered();
+	void slotErrorTriggered(const QString & message);
 private:
 	QPointer<MainformImpl> m_mainform;
 };
