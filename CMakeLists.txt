@@ -14,6 +14,7 @@ add_subdirectory(plugins/svnpluginwrapper)
 add_subdirectory(plugins/services)
 add_subdirectory(plugins/generix)
 add_subdirectory(xinx)
+add_subdirectory(xinxcrash)
 
 file(COPY templates DESTINATION ./)
 file(COPY datas DESTINATION ./)
