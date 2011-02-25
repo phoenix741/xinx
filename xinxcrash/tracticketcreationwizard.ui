@@ -56,7 +56,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QRadioButton" name="radioButton">
+     <widget class="QRadioButton" name="loginRadio">
       <property name="text">
        <string>I already have an account</string>
       </property>
@@ -91,7 +91,7 @@
            <string>&amp;Login :</string>
           </property>
           <property name="buddy">
-           <cstring>lineEdit_3</cstring>
+           <cstring>loginEdit</cstring>
           </property>
          </widget>
         </item>
@@ -101,26 +101,26 @@
            <string>&amp;Password :</string>
           </property>
           <property name="buddy">
-           <cstring>lineEdit_2</cstring>
+           <cstring>passwordEdit</cstring>
           </property>
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QLineEdit" name="lineEdit_2">
+         <widget class="QLineEdit" name="passwordEdit">
           <property name="echoMode">
            <enum>QLineEdit::PasswordEchoOnEdit</enum>
           </property>
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="QLineEdit" name="lineEdit_3"/>
+         <widget class="QLineEdit" name="loginEdit"/>
         </item>
        </layout>
       </item>
      </layout>
     </item>
     <item>
-     <widget class="QRadioButton" name="radioButton_2">
+     <widget class="QRadioButton" name="createAccountRadio">
       <property name="text">
        <string>I want to create an account</string>
       </property>
@@ -137,7 +137,7 @@
    </property>
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
-     <widget class="QWebView" name="webView">
+     <widget class="QWebView" name="registerView">
       <property name="url">
        <url>
         <string>about:blank</string>
@@ -157,57 +157,57 @@
    <layout class="QHBoxLayout" name="horizontalLayout_2">
     <item>
      <layout class="QFormLayout" name="formLayout_2">
-      <item row="0" column="0">
+      <item row="2" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
          <string>&amp;Title of ticket :</string>
         </property>
         <property name="buddy">
-         <cstring>lineEdit</cstring>
+         <cstring>ticketEdit</cstring>
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QLineEdit" name="lineEdit"/>
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="ticketEdit"/>
       </item>
-      <item row="1" column="0">
+      <item row="3" column="0">
        <widget class="QLabel" name="label_5">
         <property name="text">
          <string>&amp;Description of ticket :</string>
         </property>
         <property name="buddy">
-         <cstring>plainTextEdit</cstring>
+         <cstring>descriptionEdit</cstring>
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="QPlainTextEdit" name="plainTextEdit"/>
+      <item row="3" column="1">
+       <widget class="QPlainTextEdit" name="descriptionEdit"/>
       </item>
-      <item row="2" column="0">
+      <item row="4" column="0">
        <widget class="QLabel" name="label_6">
         <property name="text">
          <string>&amp;Components :</string>
         </property>
         <property name="buddy">
-         <cstring>comboBox</cstring>
+         <cstring>componentsCombo</cstring>
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
-       <widget class="QComboBox" name="comboBox"/>
+      <item row="4" column="1">
+       <widget class="QComboBox" name="componentsCombo"/>
       </item>
-      <item row="3" column="0">
+      <item row="1" column="0">
        <widget class="QLabel" name="label_7">
         <property name="text">
          <string>&amp;Type :</string>
         </property>
         <property name="buddy">
-         <cstring>comboBox_2</cstring>
+         <cstring>typeCombo</cstring>
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
-       <widget class="QComboBox" name="comboBox_2"/>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="typeCombo"/>
       </item>
      </layout>
     </item>
@@ -241,13 +241,13 @@
    </property>
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="0" colspan="2">
-     <widget class="QListWidget" name="listWidget"/>
+     <widget class="QListWidget" name="attachementList"/>
     </item>
     <item row="1" column="0">
-     <widget class="DirectoryEditWidget" name="widget" native="true"/>
+     <widget class="DirectoryEditWidget" name="attachFile" native="true"/>
     </item>
     <item row="1" column="1">
-     <widget class="QPushButton" name="pushButton">
+     <widget class="QPushButton" name="addButton">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
         <horstretch>0</horstretch>
@@ -285,7 +285,7 @@
     <item>
      <widget class="QProgressBar" name="progressBar">
       <property name="value">
-       <number>24</number>
+       <number>0</number>
       </property>
      </widget>
     </item>
@@ -315,7 +315,7 @@
     <item row="0" column="0">
      <widget class="QLabel" name="completeLabel">
       <property name="text">
-       <string>TextLabel</string>
+       <string/>
       </property>
       <property name="wordWrap">
        <bool>true</bool>

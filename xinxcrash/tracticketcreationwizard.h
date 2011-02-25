@@ -37,10 +37,13 @@ public:
 	~TracTicketCreationWizard();
 
 	void setErrorMessage(const QString & message);
-	const QString & errorMessage();
+	QString errorMessage() const;
 
+	void setVersion(const QString & version);
+	const QString & version() const;
 private:
-	QScopedPointer<Ui::TracTicketCreationWizard> ui;
+	QScopedPointer<Ui::TracTicketCreationWizard> _ui;
+    QString _version;
 };
 
 #endif // TRACTICKETCREATIONWIZARD_H

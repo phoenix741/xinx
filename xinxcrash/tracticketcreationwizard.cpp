@@ -20,13 +20,33 @@
 #include "tracticketcreationwizard.h"
 #include "ui_tracticketcreationwizard.h"
 
-TracTicketCreationWizard::TracTicketCreationWizard(QWidget *parent) : QWizard(parent), ui(new Ui::TracTicketCreationWizard)
+TracTicketCreationWizard::TracTicketCreationWizard(QWidget *parent) : QWizard(parent), _ui(new Ui::TracTicketCreationWizard)
 {
-	ui->setupUi(this);
-	ui->webView->load (trac_serveur + "register");
+	_ui->setupUi(this);
+	_ui->registerView->load (trac_serveur + "register");
 }
 
 TracTicketCreationWizard::~TracTicketCreationWizard()
 {
 
+}
+
+void TracTicketCreationWizard::setErrorMessage(const QString& message)
+{
+	_ui->crashMessage->setText(message);
+}
+
+QString TracTicketCreationWizard::errorMessage() const
+{
+	return _ui->crashMessage->text();
+}
+
+void TracTicketCreationWizard::setVersion(const QString& version)
+{
+	_version = version;
+}
+
+const QString& TracTicketCreationWizard::version() const
+{
+	return _version;
 }

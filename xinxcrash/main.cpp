@@ -37,12 +37,19 @@ int main(int argc, char *argv[])
 	app.setApplicationName("XINX");
 
 
+	QStringList arguments = app.arguments();
 	TracTicketCreationWizard wizard;
-	/* 
-	Parameters are:
-	- Message
-	- Version
-	*/
+
+	int indexOfMessage = arguments.indexOf("--message");
+	if ((indexOfMessage >= 0) && (indexOfMessage + 1 < arguments.count()))
+	{
+		wizard.setErrorMessage(arguments.at(indexOfMessage + 1));
+	}
+	int indexOfVersion = arguments.indexOf("--version");
+	if ((indexOfVersion >= 0) && (indexOfVersion + 1 < arguments.count()))
+	{
+		wizard.setVersion(arguments.at(indexOfVersion + 1));
+	}
 	wizard.show();
 
 	return app.exec();
