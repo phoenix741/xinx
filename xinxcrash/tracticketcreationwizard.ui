@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>528</width>
-    <height>376</height>
+    <width>597</width>
+    <height>399</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,6 +20,9 @@
    <property name="subTitle">
     <string>Oh boy ! XINX is crashing, but i would like that you keep that for you ;)</string>
    </property>
+   <attribute name="pageId">
+    <string notr="true">1</string>
+   </attribute>
    <layout class="QVBoxLayout" name="verticalLayout_3">
     <item>
      <widget class="QLabel" name="crashMessage">
@@ -40,6 +43,9 @@
    <property name="subTitle">
     <string>This assistant will help you to create a ticket. Please enter your login and password to connect to trac or create a new one.</string>
    </property>
+   <attribute name="pageId">
+    <string notr="true">2</string>
+   </attribute>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QLabel" name="label">
@@ -48,7 +54,8 @@
 &lt;ul&gt;
 &lt;li&gt;Spam : to decrease spam, only identified user can create a ticket.&lt;/li&gt;
 &lt;li&gt;To keep you informed : If you give your email, you can be informed when your ticket is resolved or when there is a question on your ticket.&lt;/li&gt;
-&lt;/ul&gt;</string>
+&lt;/ul&gt;
+</string>
       </property>
       <property name="wordWrap">
        <bool>true</bool>
@@ -108,7 +115,7 @@
         <item row="1" column="1">
          <widget class="QLineEdit" name="passwordEdit">
           <property name="echoMode">
-           <enum>QLineEdit::PasswordEchoOnEdit</enum>
+           <enum>QLineEdit::Password</enum>
           </property>
          </widget>
         </item>
@@ -126,6 +133,26 @@
       </property>
      </widget>
     </item>
+    <item>
+     <spacer name="verticalSpacer_3">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>40</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
+     <widget class="QProgressBar" name="connectionProgressBar">
+      <property name="value">
+       <number>24</number>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QWizardPage" name="createLoginPage">
@@ -133,15 +160,130 @@
     <string>Creation of your account</string>
    </property>
    <property name="subTitle">
-    <string>In this page you will create your account and fill all information needed to keep informed.</string>
+    <string>Please enter informations that must be used to create the ticket. Please enter your e-mail if you want to be warn on correction, question, or any other change on the ticket.</string>
    </property>
-   <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <widget class="QWebView" name="registerView">
-      <property name="url">
-       <url>
-        <string>about:blank</string>
-       </url>
+   <attribute name="pageId">
+    <string notr="true">3</string>
+   </attribute>
+   <layout class="QVBoxLayout" name="verticalLayout_4">
+    <item>
+     <widget class="QGroupBox" name="groupBox">
+      <property name="title">
+       <string>Connection Information</string>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+      <layout class="QFormLayout" name="formLayout_3">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_8">
+         <property name="text">
+          <string>&amp;Username :</string>
+         </property>
+         <property name="buddy">
+          <cstring>newLoginEdit</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="newLoginEdit">
+         <property name="inputMask">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_9">
+         <property name="text">
+          <string>&amp;Pasword :</string>
+         </property>
+         <property name="buddy">
+          <cstring>newPasswordEdit</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="newPasswordEdit">
+         <property name="echoMode">
+          <enum>QLineEdit::Password</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_10">
+         <property name="text">
+          <string>&amp;Confirm Password :</string>
+         </property>
+         <property name="buddy">
+          <cstring>newPassword2Ediit</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="newPassword2Ediit">
+         <property name="echoMode">
+          <enum>QLineEdit::Password</enum>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="groupBox_2">
+      <property name="title">
+       <string>Administrative Information</string>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+      <layout class="QFormLayout" name="formLayout_4">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_11">
+         <property name="text">
+          <string>&amp;Name (optional) :</string>
+         </property>
+         <property name="buddy">
+          <cstring>newNameEdit</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="newNameEdit"/>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_12">
+         <property name="text">
+          <string>&amp;Email (optional) :</string>
+         </property>
+         <property name="buddy">
+          <cstring>newEmailEdit</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="newEmailEdit"/>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <spacer name="verticalSpacer_4">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>45</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
+     <widget class="QProgressBar" name="createUserProgressBar">
+      <property name="value">
+       <number>24</number>
       </property>
      </widget>
     </item>
@@ -154,6 +296,9 @@
    <property name="subTitle">
     <string>The ticket is used by developpers to reproduce and correct the bug. In this page, you must filled all informations that can be used for this.</string>
    </property>
+   <attribute name="pageId">
+    <string notr="true">4</string>
+   </attribute>
    <layout class="QHBoxLayout" name="horizontalLayout_2">
     <item>
      <layout class="QFormLayout" name="formLayout_2">
@@ -239,6 +384,9 @@
    <property name="subTitle">
     <string>You can attach some file to your ticket. This files can be patch to the version, screenshoot, files that can be used to reproduce, ...</string>
    </property>
+   <attribute name="pageId">
+    <string notr="true">5</string>
+   </attribute>
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="0" colspan="2">
      <widget class="QListWidget" name="attachementList"/>
@@ -268,6 +416,9 @@
    <property name="subTitle">
     <string>XINX create the ticket.</string>
    </property>
+   <attribute name="pageId">
+    <string notr="true">6</string>
+   </attribute>
    <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
      <spacer name="verticalSpacer">
@@ -311,6 +462,9 @@
    <property name="subTitle">
     <string>Your ticket is created.</string>
    </property>
+   <attribute name="pageId">
+    <string notr="true">7</string>
+   </attribute>
    <layout class="QGridLayout" name="gridLayout_3">
     <item row="0" column="0">
      <widget class="QLabel" name="completeLabel">
@@ -327,11 +481,6 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QWebView</class>
-   <extends>QWidget</extends>
-   <header>QtWebKit/QWebView</header>
-  </customwidget>
-  <customwidget>
    <class>DirectoryEditWidget</class>
    <extends>QWidget</extends>
    <header location="global">directoryedit.h</header>
@@ -339,5 +488,70 @@
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>loginRadio</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>label_4</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>122</x>
+     <y>153</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>85</x>
+     <y>173</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>loginRadio</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>loginEdit</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>188</x>
+     <y>157</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>196</x>
+     <y>180</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>loginRadio</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>label_3</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>99</x>
+     <y>144</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>110</x>
+     <y>201</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>loginRadio</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>passwordEdit</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>178</x>
+     <y>158</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>178</x>
+     <y>213</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

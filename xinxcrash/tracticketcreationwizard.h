@@ -22,8 +22,9 @@
 #define TRACTICKETCREATIONWIZARD_H
 
 #include <QWizard>
+#include <QSettings>
 
-const QString trac_serveur = "https://xinx.shadoware.org/";
+class TracXmlRpcProxy;
 
 namespace Ui {
 	class TracTicketCreationWizard;
@@ -33,17 +34,38 @@ class TracTicketCreationWizard : public QWizard
 {
 	Q_OBJECT
 public:
+	enum TracPageEnum {
+		CRASH_PAGE			= 1,
+		CONNECTION_PAGE		= 2,
+		CREATE_LOGIN_PAGE	= 3,
+		CREATE_TICKET_PAGE	= 4,
+		ATTACHEMENT_PAGE	= 5,
+		PROGRESS_PAGE		= 6,
+		FINISH_PAGE			= 7
+	};
+
 	explicit TracTicketCreationWizard(QWidget *parent = 0);
 	~TracTicketCreationWizard();
 
-	void setErrorMessage(const QString & message);
-	QString errorMessage() const;
+    virtual int nextId() const;
 
-	void setVersion(const QString & version);
+	QString errorMessage() const;
 	const QString & version() const;
+	const QString & login() const;
+	const QString & password() const;
+public slots:
+	void setVersion(const QString & version);
+	void setErrorMessage(const QString & message);
+	void setLogin(const QString & login);
+	void setPassword(const QString & password);
+protected:
+    virtual void initializePage(int id);
+    virtual void done(int result);
 private:
 	QScopedPointer<Ui::TracTicketCreationWizard> _ui;
-    QString _version;
+    QString _version, _login, _password;
+	QSettings _settings;
+    TracXmlRpcProxy* _xmlrpc;
 };
 
 #endif // TRACTICKETCREATIONWIZARD_H
