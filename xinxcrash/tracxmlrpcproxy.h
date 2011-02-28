@@ -24,6 +24,7 @@
 #include <QStringList>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
+#include <QWebPage>
 
 const QString trac_serveur = "xinx.shadoware.org";
 
@@ -34,26 +35,48 @@ public:
     explicit TracXmlRpcProxy(QObject* parent = 0);
     virtual ~TracXmlRpcProxy();
 
+public slots:
 	void connection(const QString & username, const QString & password);
+	void createTicket(const QString& summary, const QString& description, const QString& type, const QString& priority, const QString& component);
+	void attachFile(int ticketId, const QString & filename, const QString & description, const QByteArray & datas);
+	void registerUser(const QString& username, const QString& password, const QString& name, const QString& email);
 
-	QStringList components() const;
-	QStringList priorities() const;
-	QStringList types() const;
+	void getComponents();
+	void getPriorities();
+	void getTypes();
 
-	QString getVersion(const QString & version);
+	void help(const QString & methodeName);
 signals:
+	void components(const QStringList & list);
+	void priorities(const QStringList & list);
+	void types(const QStringList & list);
+
+	void ticketCreated(int id);
+	void ticketCreationError(const QString & error);
+	void fileAttached(const QString & filename);
+	void fileAttachError(const QString & error);
+
 	void connected();
 	void connectionError(const QString & error);
 private slots:
 	void connectFinished();
+	void componentsFinished();
+	void prioritiesFinished();
+	void typesFinished();
+	void helpFinished();
+	void createTicketFinished();
+	void attachFileFinished();
 
 	void sslErrors(QNetworkReply * reply, const QList<QSslError> & errors);
+
+	void tryConnect(bool ok);
+	void submitForm(bool ok);
 private:
 	QNetworkRequest getRpcRequest();
 
+	QWebPage registerPage;
 	QNetworkAccessManager* _network_manager;
-	QString _username;
-	QString _password;
+	QString _username, _password, _email, _name;
 };
 
 #endif // TRACXMLRPCPROXY_H

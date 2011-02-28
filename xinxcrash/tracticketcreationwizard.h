@@ -23,6 +23,7 @@
 
 #include <QWizard>
 #include <QSettings>
+#include <QQueue>
 
 class TracXmlRpcProxy;
 
@@ -61,8 +62,29 @@ public slots:
 protected:
     virtual void initializePage(int id);
     virtual void done(int result);
+    virtual bool validateCurrentPage();
+private slots:
+	void connected();
+	void connectionError(const QString & text);
+	void components(const QStringList & list);
+	void types(const QStringList & list);
+	void priorities(const QStringList & list);
+
+	void slotCurrentIdChanged(int);
+	void slotAddAttachement();
+
+	void ticketCreated(int id);
+	void ticketCreationError(const QString & error);
+	void fileAttached(const QString & filename);
+	void fileAttachError(const QString & error);
 private:
 	QScopedPointer<Ui::TracTicketCreationWizard> _ui;
+
+	int _ticket_id;
+	bool _is_ticket_created;
+	QQueue<QString> _attachements;
+
+	bool _connected;
     QString _version, _login, _password;
 	QSettings _settings;
     TracXmlRpcProxy* _xmlrpc;

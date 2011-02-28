@@ -26,6 +26,8 @@
 
 int main(int argc, char *argv[])
 {
+	Q_INIT_RESOURCE(application);
+
 #if defined(Q_WS_WIN)
 	if (QSysInfo::WindowsVersion >= QSysInfo::WV_VISTA && QSysInfo::WindowsVersion < QSysInfo::WV_NT_based)
 		QApplication::setStyle(QStyleFactory::create("Explorer"));
