@@ -20,6 +20,9 @@
 // Xinx header
 #include "core/exceptions.h"
 #include "core/xinxconfig.h"
+#include <core/version.h>
+#include <editors/editormanager.h>
+#include <session/sessionmanager.h>
 
 // Qt header
 #include <QTextDocument>
@@ -33,6 +36,8 @@
 #include <QTimer>
 #include <QMessageBox>
 #include <QThread>
+#include <QFileInfo>
+#include <QProcess>
 
 // Std header for exception
 #include <iostream>
@@ -159,6 +164,11 @@ QStringList ExceptionManager::stackTrace() const
 	return stack;
 }
 
+void ExceptionManager::openTicketDialog(const QString& message, const QStringList& stack) const
+{
+	QProcess::startDetached("xinxcrash", QStringList() << "--version" << VERSION << "--message" << message << "--stack" << stack.join(";;"));
+}
+
 /*!
  * \brief Show a dialog and save the error in a trace file.
  * \param error Message to store in the file
@@ -172,8 +182,6 @@ void ExceptionManager::notifyError(QString error, QtMsgType t, bool showMessage)
 		if (QRegExp(filter).exactMatch(error))
 			return;
 	}
-
-	//QStringList stack = stackTrace();
 
 	// Create a file where write error
 	QFile file(XINXConfig::self()->config().xinxTrace);
@@ -198,6 +206,11 @@ void ExceptionManager::notifyError(QString error, QtMsgType t, bool showMessage)
 		std::signal(SIGTERM, SIG_DFL);
 
 		emit errorTriggered(error);
+
+
+		ExceptionManager::self()->openTicketDialog(error, stackTrace());
+		XinxSession::SessionManager::self()->createRecoverSession();
+
 
 #ifndef _XINX_RELEASE_MODE_
 		abort();

@@ -75,6 +75,7 @@ public:
 	static void installExceptionHandler();
 	static void installSignalHandler();
 public slots:
+	void openTicketDialog(const QString& message = QString(), const QStringList & stack = QStringList()) const;
 	void notifyError(QString error, QtMsgType t = QtWarningMsg, bool showMessage = true);
 signals:
 	void errorTriggered(const QString & message);

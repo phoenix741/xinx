@@ -305,7 +305,7 @@ void TracTicketCreationWizard::slotCurrentIdChanged(int ticketId)
 		_ui->progressBar->setMaximum(_attachements.count() + 1);
 		_ui->progressBar->setValue(0);
 
-		_xmlrpc->createTicket(_ui->titleEdit->text(), _ui->descriptionEdit->toPlainText(), _ui->typeCombo->currentText(), _ui->prioritiesCombo->currentText(), _ui->componentsCombo->currentText());
+		_xmlrpc->createTicket(_ui->titleEdit->text(), _ui->descriptionEdit->toPlainText(), _ui->typeCombo->currentText(), _ui->prioritiesCombo->currentText(), _ui->componentsCombo->currentText(), _version);
 	}
 }
 

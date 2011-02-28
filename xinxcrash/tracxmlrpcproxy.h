@@ -37,7 +37,7 @@ public:
 
 public slots:
 	void connection(const QString & username, const QString & password);
-	void createTicket(const QString& summary, const QString& description, const QString& type, const QString& priority, const QString& component);
+	void createTicket(const QString& summary, const QString& description, const QString& type, const QString& priority, const QString& component, const QString & version);
 	void attachFile(int ticketId, const QString & filename, const QString & description, const QByteArray & datas);
 	void registerUser(const QString& username, const QString& password, const QString& name, const QString& email);
 

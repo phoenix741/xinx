@@ -210,6 +210,8 @@ void MainformImpl::createMenus()
 	m_scriptMenu->addAction(m_refreshScripts);
 	m_scriptMenu->addSeparator();
 
+	helpMenu->addAction(m_createTicketAct);
+	helpMenu->addSeparator();
 	helpMenu->addAction(m_aboutAct);
 	helpMenu->addAction(m_aboutQtAct);
 	helpMenu->addAction(QWhatsThis::createAction());
@@ -303,6 +305,11 @@ void MainformImpl::createActions()
 	connect(m_refreshScripts, SIGNAL(triggered()), ScriptManager::self(), SLOT(loadScripts()));
 
 	/* ABOUT */
+
+	// Create Ticket
+	m_createTicketAct = new QAction(tr("&Create a ticket ..."), this);
+	m_createTicketAct->setStatusTip(tr("Create a new ticket (bug or evolution) on the site."));
+	connect(m_createTicketAct, SIGNAL(triggered()), ExceptionManager::self(), SLOT(openTicketDialog()));
 
 	// About Qt
 	m_aboutQtAct = new QAction(QIcon(":/images/help-hint.png"), tr("About &Qt"), this);

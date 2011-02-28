@@ -302,7 +302,7 @@ void TracXmlRpcProxy::createTicketFinished()
 	}
 }
 
-void TracXmlRpcProxy::createTicket(const QString& summary, const QString& description, const QString& type, const QString& priority, const QString& component)
+void TracXmlRpcProxy::createTicket(const QString& summary, const QString& description, const QString& type, const QString& priority, const QString& component, const QString & version)
 {
 	QNetworkRequest rpcRequest = getRpcRequest();
 	XmlRpcRequest request("ticket.create");
@@ -312,6 +312,7 @@ void TracXmlRpcProxy::createTicket(const QString& summary, const QString& descri
 	structure.insert("type", type);
 	structure.insert("component", component);
 	structure.insert("priority", priority);
+	structure.insert("version", version);
 	request.addParameters(structure);
 	request.addParameters(true);
 

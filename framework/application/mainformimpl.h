@@ -126,7 +126,7 @@ private:
 	// Actions
 	QAction *m_exitAct;
 	QAction *m_searchAct, *m_searchNextAct, *m_replaceAct, *m_searchPreviousAct;
-	QAction *m_aboutAct, *m_aboutQtAct;
+	QAction *m_aboutAct, *m_aboutQtAct, *m_createTicketAct;
 	QAction *m_customApplicationAct, *m_refreshScripts, *m_alwaysShowRunDialog;
 signals:
 	void aboutToClose();
