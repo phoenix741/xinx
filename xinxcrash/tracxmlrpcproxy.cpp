@@ -239,6 +239,40 @@ void TracXmlRpcProxy::getTypes()
 	connect(reply, SIGNAL(finished()), this, SLOT(typesFinished()));
 }
 
+void TracXmlRpcProxy::versionsFinished()
+{
+	QNetworkReply * reply = qobject_cast<QNetworkReply*>(sender());
+	Q_ASSERT_X(reply, "TracXmlRpcProxy::typesFinished", "Reply must exist");
+
+	if (reply->error() == QNetworkReply::NoError)
+	{
+		QByteArray replyContent = reply->readAll();
+
+		qDebug() << "Reply " << replyContent;
+
+		XmlRpcResponse response(replyContent);
+		if (response.faultCode() == -1)
+		{
+			QVariant parameter1 = response.parameters().at(0);
+			QStringList list = parameter1.toStringList();
+			emit versions(list);
+		}
+	}
+}
+
+void TracXmlRpcProxy::getVersions()
+{
+	QNetworkRequest rpcRequest = getRpcRequest();
+	QByteArray rpcBody = XmlRpcRequest("ticket.version.getAll").getRequest();
+
+	qDebug() << "Request is ";
+	qDebug() << rpcRequest.url();
+	qDebug() << rpcBody;
+
+	QNetworkReply * reply = _network_manager->post(rpcRequest, rpcBody);
+	connect(reply, SIGNAL(finished()), this, SLOT(versionsFinished()));
+}
+
 void TracXmlRpcProxy::createTicketFinished()
 {
 	QNetworkReply * reply = qobject_cast<QNetworkReply*>(sender());

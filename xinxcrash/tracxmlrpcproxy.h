@@ -32,8 +32,8 @@ class TracXmlRpcProxy : public QObject
 {
 	Q_OBJECT
 public:
-    explicit TracXmlRpcProxy(QObject* parent = 0);
-    virtual ~TracXmlRpcProxy();
+	explicit TracXmlRpcProxy(QObject* parent = 0);
+	virtual ~TracXmlRpcProxy();
 
 public slots:
 	void connection(const QString & username, const QString & password);
@@ -44,9 +44,11 @@ public slots:
 	void getComponents();
 	void getPriorities();
 	void getTypes();
+	void getVersions();
 
 	void help(const QString & methodeName);
 signals:
+	void versions(const QStringList & list);
 	void components(const QStringList & list);
 	void priorities(const QStringList & list);
 	void types(const QStringList & list);
@@ -63,6 +65,7 @@ private slots:
 	void componentsFinished();
 	void prioritiesFinished();
 	void typesFinished();
+	void versionsFinished();
 	void helpFinished();
 	void createTicketFinished();
 	void attachFileFinished();

@@ -69,6 +69,7 @@ private slots:
 	void components(const QStringList & list);
 	void types(const QStringList & list);
 	void priorities(const QStringList & list);
+	void versions(const QStringList & list);
 
 	void slotCurrentIdChanged(int);
 	void slotAddAttachement();

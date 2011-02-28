@@ -49,6 +49,7 @@ TracTicketCreationWizard::TracTicketCreationWizard(QWidget *parent) : QWizard(pa
 	connect(_xmlrpc, SIGNAL(components(QStringList)), this, SLOT(components(QStringList)));
 	connect(_xmlrpc, SIGNAL(types(QStringList)), this, SLOT(types(QStringList)));
 	connect(_xmlrpc, SIGNAL(priorities(QStringList)), this, SLOT(priorities(QStringList)));
+	connect(_xmlrpc, SIGNAL(versions(QStringList)), this, SLOT(versions(QStringList)));
 
 	connect(_xmlrpc, SIGNAL(ticketCreated(int)), this, SLOT(ticketCreated(int)));
 	connect(_xmlrpc, SIGNAL(ticketCreationError(QString)), this, SLOT(ticketCreationError(QString)));
@@ -64,8 +65,10 @@ TracTicketCreationWizard::~TracTicketCreationWizard()
 
 void TracTicketCreationWizard::setErrorMessage(const QString& message)
 {
-	_ui->crashMessage->setText(message);
-	_ui->descriptionEdit->setPlainText(message.isEmpty() ? "" : QString("\n\n--\n%1").arg(message));
+	_ui->crashMessage->setText(tr("The application crash with the following message. This assistant will help you "
+								  "to create a new ticket to help us to have a stable application. Please add the "
+								  "maximum information you have.\n\n%1").arg(message));
+	_ui->descriptionEdit->setPlainText(message.isEmpty() ? "" : QString("\n\n---------\n%1 : %2").arg(tr("Detailled message")).arg(message));
 	if (! message.isEmpty())
 	{
 		setStartId(CRASH_PAGE);
@@ -167,6 +170,58 @@ void TracTicketCreationWizard::types(const QStringList& list)
 	_ui->typeCombo->setCurrentIndex(_ui->typeCombo->findText("defect"));
 }
 
+static bool versionCompare(const QString &s1, const QString &s2)
+{
+	// Cas spécifique
+	if (s1 == "trunk-svn" && s2 == "trunk-svn")
+	{
+		return false;
+	}
+	else if (s1 == "trunk-svn")
+	{
+		return false;
+	}
+	else if (s2 == "trunk-svn")
+	{
+		return true;
+	}
+
+	// Numéro de version standard
+	QStringList sl1 = s1.split (".");
+	QStringList sl2 = s2.split (".");
+
+	int i = 0;
+	while (true)
+	{
+		int v1 = i < sl1.size () ? sl1.at (i).toInt() : 0;
+		int v2 = i < sl2.size () ? sl2.at (i).toInt() : 0;
+
+		if (v1 < v2)
+		{
+			return true;
+		}
+		else if (v1 > v2)
+		{
+			return false;
+		}
+
+		if ((i >= sl1.size ()) || (i >= sl2.size ()))
+			break;
+
+		i++;
+	}
+	return false;
+}
+
+void TracTicketCreationWizard::versions(const QStringList& list)
+{
+	QStringList versions = list;
+	qSort(versions.begin (), versions.end (), versionCompare);
+	QStringList::const_iterator it = qLowerBound(versions.constBegin (), versions.constEnd (), _version, versionCompare);
+	_ui->versionLabel->setText(*it);
+	_version = *it;
+}
+
 void TracTicketCreationWizard::connected()
 {
 	qDebug() << "TracTicketCreationWizard::connected";
@@ -179,6 +234,15 @@ void TracTicketCreationWizard::connected()
 	_xmlrpc->getComponents();
 	_xmlrpc->getPriorities();
 	_xmlrpc->getTypes();
+	if (! _version.isEmpty ())
+	{
+		_xmlrpc->getVersions ();
+	}
+	else
+	{
+		_ui->versionLabel->setText("trunk-svn");
+		_version = "trunk-svn";
+	}
 
 	next();
 }
