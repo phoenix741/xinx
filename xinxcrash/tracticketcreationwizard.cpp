@@ -37,8 +37,6 @@ TracTicketCreationWizard::TracTicketCreationWizard(QWidget *parent) : QWizard(pa
 	_password	= _settings.value("Password").toString();
 	_settings.endGroup();
 
-	setErrorMessage(QString());
-
 	connect(_ui->loginEdit, SIGNAL(textChanged(QString)), this, SLOT(setLogin(QString)));
 	connect(_ui->passwordEdit, SIGNAL(textChanged(QString)), this, SLOT(setPassword(QString)));
 
@@ -56,11 +54,24 @@ TracTicketCreationWizard::TracTicketCreationWizard(QWidget *parent) : QWizard(pa
 
 	connect(_xmlrpc, SIGNAL(fileAttached(QString)), this, SLOT(fileAttached(QString)));
 	connect(_xmlrpc, SIGNAL(fileAttachError(QString)), this, SLOT(fileAttachError(QString)));
+
+	setErrorMessage(QString());
 }
 
 TracTicketCreationWizard::~TracTicketCreationWizard()
 {
 
+}
+
+void TracTicketCreationWizard::setVisible(bool visible)
+{
+    QWizard::setVisible(visible);
+
+	if (visible && !_connected && !_login.isEmpty() && !_password.isEmpty())
+	{
+		_next_page = false;
+		_xmlrpc->connection(_login, _password);
+	}
 }
 
 void TracTicketCreationWizard::setErrorMessage(const QString& message)
@@ -244,7 +255,8 @@ void TracTicketCreationWizard::connected()
 		_version = "trunk-svn";
 	}
 
-	next();
+	if (_next_page)
+		next();
 }
 
 void TracTicketCreationWizard::connectionError(const QString& text)
@@ -324,6 +336,7 @@ bool TracTicketCreationWizard::validateCurrentPage()
 		_ui->connectionProgressBar->setMinimum(0);
 		_ui->connectionProgressBar->setMaximum(0);
 
+		_next_page = true;
 		_xmlrpc->connection(_login, _password);
 
 		return false;

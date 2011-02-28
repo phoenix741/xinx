@@ -54,6 +54,8 @@ public:
 	const QString & version() const;
 	const QString & login() const;
 	const QString & password() const;
+
+    virtual void setVisible(bool visible);
 public slots:
 	void setVersion(const QString & version);
 	void setErrorMessage(const QString & message);
@@ -85,7 +87,7 @@ private:
 	bool _is_ticket_created;
 	QQueue<QString> _attachements;
 
-	bool _connected;
+	bool _connected, _next_page;
     QString _version, _login, _password;
 	QSettings _settings;
     TracXmlRpcProxy* _xmlrpc;
