@@ -76,10 +76,8 @@ void TracTicketCreationWizard::setVisible(bool visible)
 
 void TracTicketCreationWizard::setErrorMessage(const QString& message)
 {
-	_ui->crashMessage->setText(tr("The application crash with the following message. This assistant will help you "
-								  "to create a new ticket to help us to have a stable application. Please add the "
-								  "maximum information you have.\n\n%1").arg(message));
-	_ui->descriptionEdit->setPlainText(message.isEmpty() ? "" : QString("\n\n---------\n%1 : %2").arg(tr("Detailled message")).arg(message));
+	_message = message;
+	_ui->crashMessage->setText(message);
 	if (! message.isEmpty())
 	{
 		setStartId(CRASH_PAGE);
@@ -97,9 +95,9 @@ void TracTicketCreationWizard::setErrorMessage(const QString& message)
 	}
 }
 
-QString TracTicketCreationWizard::errorMessage() const
+const QString & TracTicketCreationWizard::errorMessage() const
 {
-	return _ui->crashMessage->text();
+	return _message;
 }
 
 void TracTicketCreationWizard::setVersion(const QString& version)
@@ -110,6 +108,16 @@ void TracTicketCreationWizard::setVersion(const QString& version)
 const QString& TracTicketCreationWizard::version() const
 {
 	return _version;
+}
+
+void TracTicketCreationWizard::setStacktrace(const QStringList& stack)
+{
+	_stack_trace = stack;
+}
+
+const QStringList& TracTicketCreationWizard::stacktrace() const
+{
+	return _stack_trace;
 }
 
 void TracTicketCreationWizard::setLogin(const QString& login)
@@ -150,6 +158,28 @@ void TracTicketCreationWizard::initializePage(int id)
 		break;
 	case CREATE_LOGIN_PAGE:
 		_ui->createUserProgressBar->setVisible(false);
+		break;
+	case CREATE_TICKET_PAGE:
+		{
+			QString detailledMessage = _message.isEmpty() ? QString() : (tr("Detailled message :") + "\n" + _message);
+			QString stacktrace = _stack_trace.size() ? (tr("Stack :") + "\n" + _stack_trace.join("\n")) : QString();
+
+			QString description;
+			if ((!detailledMessage.isEmpty()) || (!stacktrace.isEmpty()))
+			{
+				description = "\n\n---------\n";
+			}
+			if (! detailledMessage.isEmpty())
+			{
+				description += detailledMessage + "\n\n";
+			}
+			if (!stacktrace.isEmpty())
+			{
+				description += stacktrace + "\n\n";
+			}
+
+			_ui->descriptionEdit->setPlainText(description);
+		}
 		break;
 	case PROGRESS_PAGE:
 		_is_ticket_created = false;

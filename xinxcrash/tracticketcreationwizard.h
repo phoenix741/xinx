@@ -50,8 +50,9 @@ public:
 
     virtual int nextId() const;
 
-	QString errorMessage() const;
+	const QString & errorMessage() const;
 	const QString & version() const;
+	const QStringList & stacktrace() const;
 	const QString & login() const;
 	const QString & password() const;
 
@@ -59,6 +60,7 @@ public:
 public slots:
 	void setVersion(const QString & version);
 	void setErrorMessage(const QString & message);
+	void setStacktrace(const QStringList & stack);
 	void setLogin(const QString & login);
 	void setPassword(const QString & password);
 protected:
@@ -87,6 +89,8 @@ private:
 	bool _is_ticket_created;
 	QQueue<QString> _attachements;
 
+	QString _message;
+	QStringList _stack_trace;
 	bool _connected, _next_page;
     QString _version, _login, _password;
 	QSettings _settings;

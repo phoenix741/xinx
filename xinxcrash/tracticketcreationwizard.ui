@@ -25,6 +25,29 @@
    </attribute>
    <layout class="QVBoxLayout" name="verticalLayout_3">
     <item>
+     <widget class="QLabel" name="label_15">
+      <property name="text">
+       <string>The application crash with the following message. This assistant will help you to create a new ticket to help us to have a stable application. Please add the maximum information you have.</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <spacer name="verticalSpacer_5">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>40</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
      <widget class="QLabel" name="crashMessage">
       <property name="text">
        <string/>

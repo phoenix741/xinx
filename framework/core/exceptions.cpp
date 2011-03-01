@@ -166,7 +166,10 @@ QStringList ExceptionManager::stackTrace() const
 
 void ExceptionManager::openTicketDialog(const QString& message, const QStringList& stack) const
 {
-	QProcess::startDetached("xinxcrash", QStringList() << "--version" << VERSION << "--message" << message << "--stack" << stack.join(";;"));
+	if (!QProcess::startDetached("xinxcrash", QStringList() << "--version" << VERSION << "--message" << message << "--stack" << stack.join(";;")))
+	{
+		QMessageBox::critical(qApp->activeWindow(), tr("XINX Crash"), tr("XINX Crash with the following messsage : %1. XINX can't open the assistant to help you to create a ticket, you must create ticket on XINX site manually. Thanks'").arg(message));
+	}
 }
 
 /*!

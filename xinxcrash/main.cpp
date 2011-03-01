@@ -52,6 +52,11 @@ int main(int argc, char *argv[])
 	{
 		wizard.setVersion(arguments.at(indexOfVersion + 1));
 	}
+	int indexOfStack = arguments.indexOf("--stack");
+	if ((indexOfStack >= 0) && (indexOfStack + 1 < arguments.count()))
+	{
+		wizard.setStacktrace(arguments.at(indexOfStack + 1).split(";;"));
+	}
 	wizard.show();
 
 	return app.exec();
