@@ -40,6 +40,7 @@
 #include <project/xinxprojectproject.h>
 #include <docks/dictionary/dictionary_parser.h>
 #include <docks/dictionary/itemmodelfactory.h>
+#include <configuration/itemmodelfactory.h>
 #include <libxml/xmlreader.h>
 
 // Qt header
@@ -152,6 +153,7 @@ QList<CodeCompletion::ItemModelFactory*> GenerixPlugin::createItemModelFactory()
 {
 	QList<CodeCompletion::ItemModelFactory*> factories;
 	factories << new Generix::Dictionary::ItemModelFactory;
+	factories << new Generix::Configuration::ItemModelFactory;
 	return factories;
 }
 

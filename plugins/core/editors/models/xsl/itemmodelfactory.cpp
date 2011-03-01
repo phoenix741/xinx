@@ -40,7 +40,7 @@ namespace Core
 namespace Stylesheet
 {
 
-/* AttributeNodeItem */
+/* XslNodeItem */
 
 XslNodeItem::XslNodeItem(const ContentView3::NodePtr & node) : CodeCompletion::ContentViewNodeItem(node)
 {
