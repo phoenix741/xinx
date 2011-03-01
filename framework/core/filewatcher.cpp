@@ -49,14 +49,27 @@ bool FileWatched::isFileChanged()
 
 FileWatcherManager::FileWatcherManager()
 {
+	XINXStaticDeleter::self()->addObject(this);
 }
 
 FileWatcherManager::~FileWatcherManager()
 {
+	if (s_self == this)
+	{
+		s_self = 0;
+	}
+
+	if (isRunning())
+	{
+		quit();
+		wait();
+	}
+
 	for (int i = 0 ; i < m_watchedfiles.count() ; i++)
 	{
 		delete m_watchedfiles.at(i);
 	}
+
 	m_watchedfiles.clear();
 }
 
@@ -129,21 +142,6 @@ FileWatcherManager * FileWatcherManager::instance()
 	if (! s_self)
 		s_self = new FileWatcherManager();
 	return s_self;
-}
-
-void FileWatcherManager::deleteIfPossible()
-{
-	if (s_self && (s_self->m_watchedfiles.count() == 0))
-	{
-		FileWatcherManager * manager = s_self;
-		s_self = NULL;
-		if (manager->isRunning())
-		{
-			manager->quit();
-			manager->wait();
-		}
-		delete manager;
-	}
 }
 
 FileWatched * FileWatcherManager::watchedFileAt(int index)

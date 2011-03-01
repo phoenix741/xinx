@@ -52,6 +52,7 @@ Name: assofws; Description: Associate WebServices stream with {#AppName}; Flags:
 Source: ..\COPYING; DestDir: {app}; Components: application
 
 Source: install\bin\xinx.exe; DestDir: {app}\bin; Components: application; Flags: replacesameversion
+Source: install\bin\xinxcrash.exe; DestDir: {app}\bin; Components: application; Flags: replacesameversion
 Source: install\bin\libxinxcmp.dll; DestDir: {app}\bin; Components: application; Flags: replacesameversion
 Source: install\bin\libframework.dll; DestDir: {app}\bin; Components: application; Flags: replacesameversion
 Source: install\bin\libqcodeedit.dll; DestDir: {app}\bin; Components: application; Flags: replacesameversion
@@ -86,11 +87,11 @@ DestDir: {app}\templates; Source: ..\templates\*.xml; Components: application
 Source: ..\src.7z; DestDir: {app}; Components: source; Flags: replacesameversion
 ;Source: ..\doc\html\*.*; DestDir: {app}\doc\api; Components: documentation; Flags: replacesameversion
 
-DestDir: {app}\plugins; Source: install\plugins\libservices.dll; Components: services
-DestDir: {app}\plugins; Source: install\plugins\libcvsplugin.dll; Components: cvsplugin
-DestDir: {app}\plugins; Source: install\plugins\libsvnplugin.dll; Components: svnplugin
-DestDir: {app}\plugins; Source: install\plugins\libsvnpluginwrapper.dll; Components: svnpluginwrapper
-DestDir: {app}\plugins; Source: install\plugins\libgenerix.dll; Components: generixplugin
+DestDir: {app}\plugins; Source: install\plugins\libservices.dll; Components: services; Flags: replacesameversion
+DestDir: {app}\plugins; Source: install\plugins\libcvsplugin.dll; Components: cvsplugin; Flags: replacesameversion
+DestDir: {app}\plugins; Source: install\plugins\libsvnplugin.dll; Components: svnplugin; Flags: replacesameversion
+DestDir: {app}\plugins; Source: install\plugins\libsvnpluginwrapper.dll; Components: svnpluginwrapper; Flags: replacesameversion
+DestDir: {app}\plugins; Source: install\plugins\libgenerix.dll; Components: generixplugin; Flags: replacesameversion
 
 DestDir: {app}\scripts; Source: ..\scripts\*.js; Components: scripts
 

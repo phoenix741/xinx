@@ -91,13 +91,13 @@ public:
 	FileWatched * watchedFileAt(int index);
 
 	static FileWatcherManager * instance();
-	static void deleteIfPossible();
 public slots:
 	void watch();
 signals:
 	void fileChanged(QString filename);
 	void directoryChanged(QString directory);
 private:
+	static QAtomicInt _ref;
 	static FileWatcherManager * s_self;
 	QMutex m_watchedFilesMutex;
 	QList<FileWatched*> m_watchedfiles;
