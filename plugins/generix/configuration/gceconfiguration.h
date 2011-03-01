@@ -62,6 +62,7 @@ public:
 	void clearAliasPolicy();
 
 	QString resolveFileName(const QString & filename) const;
+	QStringList resolvePath(const QString & filename) const;
 private:
 	QStringList generateFileName(const QString & filename) const;
 

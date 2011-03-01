@@ -26,6 +26,7 @@
 #include <contentview3/definitions.h>
 #include <codecompletion/model.h>
 
+class IconProjectProvider;
 namespace Core
 {
 namespace BaliseDefinition
@@ -50,7 +51,9 @@ public:
 
 	virtual void generate();
 private:
-	void addNode(const QString & path);
+	void addNode(const QString& path);
+
+	QScopedPointer<IconProjectProvider> _provider;
 };
 
 }

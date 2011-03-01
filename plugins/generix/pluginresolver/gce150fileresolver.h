@@ -39,6 +39,7 @@ public:
 	static QString staticId();
 	virtual QString id();
 	virtual QString name();
+	virtual QStringList resolvePath(const QString& path, const QString& currentPath, XinxProject::ProjectPtr project);
 	virtual bool resolveFileName(const QString& nameToResolve, QString& resolvedName, const QString& currentPath, XinxProject::ProjectPtr project);
 };
 

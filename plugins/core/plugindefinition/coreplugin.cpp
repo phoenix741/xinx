@@ -47,6 +47,7 @@
 #include <editors/models/html_xsl_base/xmlcontextparser.h>
 #include <editors/models/html_xsl_base/itemmodelfactory.h>
 #include <editors/models/xsl/itemmodelfactory.h>
+#include <editors/models/xsl/importitemmodelfactory.h>
 #include <editors/models/css/csscontextparser.h>
 #include <editors/models/js/jscontextparser.h>
 #include <codecompletion/snipets/snipetcontextparser.h>
@@ -162,6 +163,7 @@ QList<CodeCompletion::ItemModelFactory*> CorePlugin::createItemModelFactory() co
 	result << new CodeCompletion::SnipetItemModelFactory;
 	result << new Core::BaliseDefinition::ItemModelFactory;
 	result << new Core::Stylesheet::ItemModelFactory;
+	result << new Core::Stylesheet::ImportItemModelFactory;
 
 	return result;
 }

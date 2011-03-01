@@ -61,6 +61,28 @@ QStringList ManualFileResolver::searchPathList(XinxProject::ProjectPtr project) 
 	return searchList;
 }
 
+QStringList ManualFileResolver::resolvePath(const QString& path, const QString& currentPath, XinxProject::ProjectPtr project)
+{
+	QStringList searchList;
+
+	if (! currentPath.isEmpty())
+		searchList << currentPath;
+
+	if (project)
+	{
+		searchList += searchPathList(project);
+	}
+
+	QStringList absPaths;
+
+	foreach(const QString & p, searchList)
+	{
+		absPaths << QDir(p).absoluteFilePath(path);
+	}
+
+	return absPaths;
+}
+
 bool ManualFileResolver::resolveFileName(const QString& nameToResolve, QString& resolvedName, const QString& currentPath, XinxProject::ProjectPtr project)
 {
 	QStringList searchList;

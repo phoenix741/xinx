@@ -52,6 +52,7 @@ public:
 	IFileResolverPlugin * externalFileResover(const QString & id) const;
 
 	QString resolveFileName(const QString & nameToResolve, const QString & currentPath = QString());
+	QStringList resolvePath(const QString & nameToResolve, const QString & currentPath = QString());
 public slots:
 	void clearCache();
 private:

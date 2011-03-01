@@ -121,10 +121,16 @@ XmlBalise XmlContextParser::createBalise(const QString & text, const QStringList
 		if (attributeName.isEmpty() || attributeName.contains(name))
 		{
 			QString value  = param.mid(indexOfEquals + 1).remove('=').trimmed();
+			if (value.endsWith('/'))
+			{
+				value.chop(1);
+			}
+
 			if ((value.startsWith("\"") || value.startsWith("'")) && (value.at(0) == value.at(value.size() -1)))
 			{
 				value = value.mid(1, value.length() - 2);
 			}
+
 			attributes[ name ] = value;
 		}
 	}

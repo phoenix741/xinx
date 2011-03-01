@@ -129,6 +129,31 @@ QString ExternalFileResolver::resolveFileName(const QString & nameToResolve, con
 	}
 }
 
+QStringList ExternalFileResolver::resolvePath(const QString& nameToResolve, const QString& currentPath)
+{
+	XinxProject::ProjectPtr project = _project.toStrongRef();
+	QStringList result;
+
+	foreach(XinxPluginElement * plugin, XinxPluginsLoader::self()->plugins())
+	{
+		IResolverPlugin * resolverPlugin = qobject_cast<IResolverPlugin*>(plugin->plugin());
+		if (! resolverPlugin)  continue;
+
+		foreach(IFileResolverPlugin * resolver, resolverPlugin->fileResolvers())
+		{
+			result << resolver->resolvePath(nameToResolve, currentPath, project);
+		}
+	}
+
+	QString resolvedName = QDir(currentPath).absoluteFilePath(nameToResolve);
+	if (QFile::exists(resolvedName))
+	{
+		result << resolvedName;
+	}
+
+	return result;
+}
+
 void ExternalFileResolver::clearCache()
 {
 	m_externalFileResolverCache.clear();

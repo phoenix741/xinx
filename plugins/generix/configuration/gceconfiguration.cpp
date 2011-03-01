@@ -167,3 +167,13 @@ QString GceConfiguration::resolveFileName(const QString& filename) const
 	}
 	return filename;
 }
+
+QStringList GceConfiguration::resolvePath(const QString& filename) const
+{
+	if (_alias_policies.size())
+	{
+		return generateFileName(filename);
+	}
+	return QStringList();
+}
+
