@@ -21,9 +21,18 @@
  **
  ** <http://libqxt.org>  <foundation@libqxt.org>
  **
- ** 02/03/2011 : Mise en forme pour XINX
- **
  ****************************************************************************/
+
+/****************************************************************************
+  **                            02/03/2011
+  **
+  ** Adaptation from Ulrich Van Den Hekke for using in XINX and add some
+  ** fonctionality.
+  **
+  ** Suppression of defaultText and add the possibility of edit the text for
+  ** change the checked content of the box.
+  **************************************************************************/
+
 #include "checkcombobox.h"
 #include "checkcombobox_p.h"
 #include <QLineEdit>
@@ -47,9 +56,7 @@ bool PrivateCheckComboBox::eventFilter(QObject* receiver, QEvent* event)
 			_parent->showPopup();
 			return true;
 		}
-		else if (keyEvent->key() == Qt::Key_Enter ||
-				 keyEvent->key() == Qt::Key_Return ||
-				 keyEvent->key() == Qt::Key_Escape)
+		else if (keyEvent->key() == Qt::Key_Enter || keyEvent->key() == Qt::Key_Return ||  keyEvent->key() == Qt::Key_Escape)
 		{
 			// it is important to call QComboBox implementation
 			_parent->QComboBox::hidePopup();
@@ -71,13 +78,25 @@ bool PrivateCheckComboBox::eventFilter(QObject* receiver, QEvent* event)
 
 void PrivateCheckComboBox::updateCheckedItems()
 {
+	const QStringList items = _parent->lineEdit ()->text ().split (_separator, QString::SkipEmptyParts);
+	foreach(const QString & item, items)
+	{
+		int index = _parent->findText (item);
+		if (index == -1)
+		{
+			_parent->addItem (item);
+		}
+	}
+	_parent->setCheckedItems (items);
+}
+
+void PrivateCheckComboBox::updateText()
+{
 	QStringList items = _parent->checkedItems();
 	if (items.isEmpty())
-		_parent->setEditText(_defaultText);
+		_parent->setEditText(QString());
 	else
 		_parent->setEditText(items.join(_separator));
-
-	// TODO: find a way to recalculate a meaningful size hint
 
 	emit _parent->checkedItemsChanged(items);
 }
@@ -92,8 +111,7 @@ void PrivateCheckComboBox::toggleCheckState(int index)
 	}
 }
 
-CheckComboModel::CheckComboModel(QObject* parent)
-		: QStandardItemModel(0, 1, parent) // rows,cols
+CheckComboModel::CheckComboModel(QObject* parent) : QStandardItemModel(0, 1, parent)
 {
 }
 
@@ -154,16 +172,16 @@ CheckComboBox::CheckComboBox(QWidget* parent) : QComboBox(parent), d(new Private
 {
 	setModel(new CheckComboModel(this));
 	connect(this, SIGNAL(activated(int)), d.data(), SLOT(toggleCheckState(int)));
-	connect(model(), SIGNAL(checkStateChanged()), d.data(), SLOT(updateCheckedItems()));
-	connect(model(), SIGNAL(rowsInserted(const QModelIndex &, int, int)), d.data(), SLOT(updateCheckedItems()));
-	connect(model(), SIGNAL(rowsRemoved(const QModelIndex &, int, int)), d.data(), SLOT(updateCheckedItems()));
+	connect(model(), SIGNAL(checkStateChanged()), d.data(), SLOT(updateText()));
+	connect(model(), SIGNAL(rowsInserted(const QModelIndex &, int, int)), d.data(), SLOT(updateText()));
+	connect(model(), SIGNAL(rowsRemoved(const QModelIndex &, int, int)), d.data(), SLOT(updateText()));
 
-	// read-only contents
 	QLineEdit* lineEdit = new QLineEdit(this);
-	lineEdit->setReadOnly(true);
 	setLineEdit(lineEdit);
 	lineEdit->disconnect(this);
 	setInsertPolicy(QComboBox::NoInsert);
+
+	connect(lineEdit, SIGNAL(editingFinished ()), d.data (), SLOT(updateCheckedItems()));
 
 	view()->installEventFilter(d.data());
 	view()->window()->installEventFilter(d.data());
@@ -215,42 +233,19 @@ QStringList CheckComboBox::checkedItems() const
 		QModelIndex index = model()->index(0, modelColumn(), rootModelIndex());
 		QModelIndexList indexes = model()->match(index, Qt::CheckStateRole, Qt::Checked, -1, Qt::MatchExactly);
 		foreach(const QModelIndex& index, indexes)
-		items += index.data().toString();
+			items += index.data().toString();
 	}
 	return items;
 }
 
 void CheckComboBox::setCheckedItems(const QStringList& items)
 {
-	// not the most efficient solution but most likely nobody
-	// will put too many items into a combo box anyway so...
-	foreach(const QString& text, items)
+	for(int i = 0; i < model ()->rowCount (); i++)
 	{
-		const int index = findText(text);
-		setItemCheckState(index, index != -1 ? Qt::Checked : Qt::Unchecked);
+		setItemCheckState (i, items.contains (itemText (i)) ? Qt::Checked : Qt::Unchecked);
 	}
 }
 
-/*!
-	\property CheckComboBox::defaultText
-    \brief the default text.
-
-    The default text is shown when there are no checked items.
-    The default value is an empty string.
- */
-QString CheckComboBox::defaultText() const
-{
-	return d->_defaultText;
-}
-
-void CheckComboBox::setDefaultText(const QString& text)
-{
-	if (d->_defaultText != text)
-	{
-		d->_defaultText = text;
-		d->updateCheckedItems();
-	}
-}
 
 /*!
 	\property CheckComboBox::separator
@@ -269,6 +264,6 @@ void CheckComboBox::setSeparator(const QString& separator)
 	if (d->_separator != separator)
 	{
 		d->_separator = separator;
-		d->updateCheckedItems();
+		d->updateText();
 	}
 }

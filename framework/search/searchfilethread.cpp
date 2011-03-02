@@ -112,7 +112,7 @@ void SearchFileThread::searchRecursive(const QString & path)
 			searchRecursive(pathObject.absoluteFilePath(pathName));
 	}
 
-	QStringList files = pathObject.entryList(XinxPluginsLoader::self()->managedFilters(), QDir::Files);
+	QStringList files = pathObject.entryList(_filter, QDir::Files);
 
 	foreach(const QString & fileName, files)
 	{
@@ -140,6 +140,11 @@ void SearchFileThread::setPath(const QStringList& pathList)
 	{
 		_path.enqueue(p);
 	}
+}
+
+void SearchFileThread::setFilter(const QStringList & filter)
+{
+	_filter = filter;
 }
 
 void SearchFileThread::setSearchString(const QString & from, const QString & to, const AbstractEditor::SearchOptions & options)

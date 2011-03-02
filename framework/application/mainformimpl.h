@@ -147,7 +147,7 @@ private slots:
 
 	// Search
 	void findEnd(bool abort);
-	void findInFiles(const QStringList & directories, const QString & from, const QString & to, const AbstractEditor::SearchOptions & options);
+	void findInFiles(const QStringList & directories, const QStringList & filter, const QString & from, const QString & to, const AbstractEditor::SearchOptions & options);
 	void findFirst(const QString & chaine, const QString & dest, const AbstractEditor::SearchOptions & options);
 	void findNext();
 	void findPrevious();

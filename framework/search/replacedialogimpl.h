@@ -40,7 +40,7 @@ public:
 
 signals:
 	void find(const QString & from, const QString & to, const AbstractEditor::SearchOptions & options);
-	void findInFiles(const QStringList & directories, const QString & from, const QString & to, const AbstractEditor::SearchOptions & options);
+	void findInFiles(const QStringList & directories, const QStringList & filter, const QString & from, const QString & to, const AbstractEditor::SearchOptions & options);
 
 private slots:
 	void m_findButton_clicked();

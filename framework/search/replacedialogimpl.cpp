@@ -70,8 +70,11 @@ void ReplaceDialogImpl::initialize(bool hasEditor)
 		m_directoryWidget->lineEdit()->setText(QString());
 	}
 
-	m_comboExt->addItems(XinxPluginsLoader::self()->managedFilters());
-	m_comboExt->setCheckedItems(XinxPluginsLoader::self()->managedFilters());
+	QStringList filters = XinxPluginsLoader::self()->managedFilters();
+	filters.removeDuplicates ();
+	m_comboExt->clear ();
+	m_comboExt->addItems(filters);
+	m_comboExt->setCheckedItems(filters);
 
 	m_findButton->setDefault(true);
 }
@@ -165,9 +168,9 @@ void ReplaceDialogImpl::m_findButton_clicked()
 		}
 
 		if (m_replaceCheckBox->checkState() == Qt::Checked)
-			emit findInFiles(directories, m_comboFind->lineEdit()->text(), m_comboReplace->lineEdit()->text(), options);
+			emit findInFiles(directories, m_comboExt->checkedItems (), m_comboFind->lineEdit()->text(), m_comboReplace->lineEdit()->text(), options);
 		else
-			emit findInFiles(directories, m_comboFind->lineEdit()->text(), QString(), options);
+			emit findInFiles(directories, m_comboExt->checkedItems (), m_comboFind->lineEdit()->text(), QString(), options);
 	}
 }
 

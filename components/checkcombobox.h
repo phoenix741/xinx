@@ -21,9 +21,18 @@
  **
  ** <http://libqxt.org>  <foundation@libqxt.org>
  **
- ** 02/03/2011 : Mise en forme pour XINX
- **
  ****************************************************************************/
+
+/****************************************************************************
+  **                            02/03/2011
+  **
+  ** Adaptation from Ulrich Van Den Hekke for using in XINX and add some
+  ** fonctionality.
+  **
+  ** Suppression of defaultText and add the possibility of edit the text for
+  ** change the checked content of the box.
+  **************************************************************************/
+
 #ifndef CHECKCOMBOBOX_H
 #define CHECKCOMBOBOX_H
 
@@ -36,16 +45,12 @@ class COMPONENTSEXPORT CheckComboBox : public QComboBox
 {
 	Q_OBJECT
 	Q_PROPERTY(QString separator READ separator WRITE setSeparator)
-	Q_PROPERTY(QString defaultText READ defaultText WRITE setDefaultText)
 	Q_PROPERTY(QStringList checkedItems READ checkedItems WRITE setCheckedItems)
 public:
 	explicit CheckComboBox(QWidget* parent = 0);
 	virtual ~CheckComboBox();
 
 	virtual void hidePopup();
-
-	QString defaultText() const;
-	void setDefaultText(const QString& text);
 
 	Qt::CheckState itemCheckState(int index) const;
 	void setItemCheckState(int index, Qt::CheckState state);

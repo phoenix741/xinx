@@ -38,6 +38,7 @@ public:
 	virtual bool canBeCanceled() const;
 
 	void setPath(const QStringList & pathList);
+	void setFilter(const QStringList & filter);
 	void setSearchString(const QString & from, const QString & to, const AbstractEditor::SearchOptions & options);
 
 	void search();
@@ -53,6 +54,7 @@ private:
 	void searchRecursive(const QString & path);
 	void testFile(const QString & path);
 
+	QStringList _filter;
 	QQueue<QString> _path;
 	bool _abort;
 	QString m_from, m_to, m_path;

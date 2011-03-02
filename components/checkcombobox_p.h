@@ -54,11 +54,11 @@ public:
 	bool eventFilter(QObject* receiver, QEvent* event);
 
 	bool _containerMousePress;
-	QString _defaultText;
 	QString _separator;
 
 	CheckComboBox * _parent;
 public slots:
+	void updateText();
 	void updateCheckedItems();
 	void toggleCheckState(int index);
 };
