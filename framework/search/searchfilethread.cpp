@@ -98,6 +98,9 @@ void SearchFileThread::testFile(const QString & path)
 
 void SearchFileThread::searchRecursive(const QString & path)
 {
+	m_path = path;
+	emit setDescription(description());
+
 	if (_abort) return;
 
 	QDir pathObject(path);
@@ -122,13 +125,21 @@ void SearchFileThread::searchRecursive(const QString & path)
 void SearchFileThread::startJob()
 {
 	_abort = false;
-	searchRecursive(m_path);
+	while(_path.size())
+	{
+		if (_abort) break;
+
+		searchRecursive(_path.dequeue());
+	}
 	emit end(_abort);
 }
 
-void SearchFileThread::setPath(const QString & path)
+void SearchFileThread::setPath(const QStringList& pathList)
 {
-	m_path = path;
+	foreach(const QString & p, pathList)
+	{
+		_path.enqueue(p);
+	}
 }
 
 void SearchFileThread::setSearchString(const QString & from, const QString & to, const AbstractEditor::SearchOptions & options)

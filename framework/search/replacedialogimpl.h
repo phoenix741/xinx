@@ -40,14 +40,15 @@ public:
 
 signals:
 	void find(const QString & from, const QString & to, const AbstractEditor::SearchOptions & options);
-	void findInFiles(const QString & directory, const QString & from, const QString & to, const AbstractEditor::SearchOptions & options);
+	void findInFiles(const QStringList & directories, const QString & from, const QString & to, const AbstractEditor::SearchOptions & options);
 
 private slots:
 	void m_findButton_clicked();
 	void on_m_replaceCheckBox_toggled(bool checked);
-	void on_m_projectFilesRadioButton_toggled(bool checked);
 
+	void on_m_extedButtonGroup_buttonClicked(QAbstractButton * button);
 private:
+
 	QPushButton * m_findButton;
 };
 #endif

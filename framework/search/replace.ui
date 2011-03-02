@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>542</width>
-    <height>330</height>
+    <width>517</width>
+    <height>333</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,21 +15,23 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QGridLayout">
-     <property name="margin">
-      <number>0</number>
+    <layout class="QFormLayout" name="formLayout">
+     <property name="fieldGrowthPolicy">
+      <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
      </property>
-     <property name="spacing">
-      <number>6</number>
-     </property>
-     <item row="1" column="0">
-      <widget class="QCheckBox" name="m_replaceCheckBox">
-       <property name="whatsThis">
-        <string>p&gt;If checked, &lt;b&gt;XINX&lt;/b&gt; replace the searched string by this  sting.&lt;/p&gt;
-&lt;p&gt;If the search string is a &lt;i&gt;regular expression&lt;/i&gt;, you can use \1 or \2 for captured string. Captured string in the find string is in bracket.&lt;/p&gt;</string>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
        </property>
        <property name="text">
-        <string>&amp;Replace by :</string>
+        <string>Find &amp;what :</string>
+       </property>
+       <property name="buddy">
+        <cstring>m_comboFind</cstring>
        </property>
       </widget>
      </item>
@@ -50,19 +52,14 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
+     <item row="1" column="0">
+      <widget class="QCheckBox" name="m_replaceCheckBox">
+       <property name="whatsThis">
+        <string>p&gt;If checked, &lt;b&gt;XINX&lt;/b&gt; replace the searched string by this  sting.&lt;/p&gt;
+&lt;p&gt;If the search string is a &lt;i&gt;regular expression&lt;/i&gt;, you can use \1 or \2 for captured string. Captured string in the find string is in bracket.&lt;/p&gt;</string>
        </property>
        <property name="text">
-        <string>Find &amp;what :</string>
-       </property>
-       <property name="buddy">
-        <cstring>m_comboFind</cstring>
+        <string>&amp;Replace by :</string>
        </property>
       </widget>
      </item>
@@ -80,9 +77,9 @@
       </widget>
      </item>
      <item row="2" column="0">
-      <widget class="QLabel" name="label_2">
+      <widget class="QLabel" name="m_whereLabel">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="text">
         <string>&amp;Where</string>
@@ -95,12 +92,35 @@
      <item row="2" column="1">
       <widget class="DirectoryEditWidget" name="m_directoryWidget" native="true">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="focusPolicy">
         <enum>Qt::TabFocus</enum>
        </property>
        <property name="directory" stdset="0">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="m_extLabel">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string>&amp;Extention :</string>
+       </property>
+       <property name="buddy">
+        <cstring>m_comboExt</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QComboBox" name="m_comboExt">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="editable">
         <bool>true</bool>
        </property>
       </widget>
@@ -115,19 +135,6 @@
      <property name="spacing">
       <number>6</number>
      </property>
-     <item row="1" column="1">
-      <spacer>
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>40</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
      <item row="0" column="1">
       <widget class="QGroupBox" name="m_directionGroupBox">
        <property name="whatsThis">
@@ -199,6 +206,9 @@
           <property name="checked">
            <bool>false</bool>
           </property>
+          <attribute name="buttonGroup">
+           <string>m_extedButtonGroup</string>
+          </attribute>
          </widget>
         </item>
         <item>
@@ -206,6 +216,9 @@
           <property name="text">
            <string>Selection</string>
           </property>
+          <attribute name="buttonGroup">
+           <string>m_extedButtonGroup</string>
+          </attribute>
          </widget>
         </item>
         <item>
@@ -216,6 +229,9 @@
           <property name="checked">
            <bool>false</bool>
           </property>
+          <attribute name="buttonGroup">
+           <string>m_extedButtonGroup</string>
+          </attribute>
          </widget>
         </item>
         <item>
@@ -226,6 +242,9 @@
           <property name="checked">
            <bool>true</bool>
           </property>
+          <attribute name="buttonGroup">
+           <string>m_extedButtonGroup</string>
+          </attribute>
          </widget>
         </item>
        </layout>
@@ -286,6 +305,19 @@
        </layout>
       </widget>
      </item>
+     <item row="1" column="1">
+      <spacer>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
     </layout>
    </item>
    <item>
@@ -310,6 +342,7 @@
   <tabstop>m_replaceCheckBox</tabstop>
   <tabstop>m_comboReplace</tabstop>
   <tabstop>m_directoryWidget</tabstop>
+  <tabstop>m_comboExt</tabstop>
   <tabstop>m_caseCheckBox</tabstop>
   <tabstop>m_fromStartCheckBox</tabstop>
   <tabstop>m_wholeWordsCheckBox</tabstop>
@@ -320,6 +353,7 @@
   <tabstop>m_searchSelectionRadioButton</tabstop>
   <tabstop>m_projectFilesRadioButton</tabstop>
   <tabstop>m_customFilesRadioButton</tabstop>
+  <tabstop>m_buttonBox</tabstop>
  </tabstops>
  <resources/>
  <connections>
@@ -330,12 +364,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>137</x>
-     <y>48</y>
+     <x>98</x>
+     <y>55</y>
     </hint>
     <hint type="destinationlabel">
-     <x>398</x>
-     <y>48</y>
+     <x>172</x>
+     <y>56</y>
     </hint>
    </hints>
   </connection>
@@ -346,12 +380,12 @@
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>163</x>
-     <y>190</y>
+     <x>171</x>
+     <y>206</y>
     </hint>
     <hint type="destinationlabel">
-     <x>343</x>
-     <y>200</y>
+     <x>334</x>
+     <y>226</y>
     </hint>
    </hints>
   </connection>
@@ -362,12 +396,12 @@
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>163</x>
-     <y>190</y>
+     <x>171</x>
+     <y>206</y>
     </hint>
     <hint type="destinationlabel">
-     <x>522</x>
-     <y>137</y>
+     <x>497</x>
+     <y>163</y>
     </hint>
    </hints>
   </connection>
@@ -378,12 +412,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>163</x>
-     <y>190</y>
+     <x>171</x>
+     <y>206</y>
     </hint>
     <hint type="destinationlabel">
-     <x>343</x>
-     <y>155</y>
+     <x>334</x>
+     <y>181</y>
     </hint>
    </hints>
   </connection>
@@ -394,12 +428,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>163</x>
-     <y>190</y>
+     <x>171</x>
+     <y>206</y>
     </hint>
     <hint type="destinationlabel">
-     <x>522</x>
-     <y>164</y>
+     <x>497</x>
+     <y>190</y>
     </hint>
    </hints>
   </connection>
@@ -410,12 +444,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>108</x>
-     <y>261</y>
+     <x>127</x>
+     <y>276</y>
     </hint>
     <hint type="destinationlabel">
-     <x>109</x>
-     <y>224</y>
+     <x>128</x>
+     <y>241</y>
     </hint>
    </hints>
   </connection>
@@ -426,124 +460,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>85</x>
-     <y>261</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>93</x>
-     <y>142</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>m_customFilesRadioButton</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>m_directoryWidget</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>522</x>
-     <y>218</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>536</x>
-     <y>76</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>m_customFilesRadioButton</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>label_2</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>522</x>
-     <y>218</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>87</x>
-     <y>76</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>m_projectFilesRadioButton</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>m_directionGroupBox</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>522</x>
-     <y>191</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>301</x>
-     <y>140</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>m_projectFilesRadioButton</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>m_fromStartCheckBox</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>522</x>
-     <y>191</y>
+     <x>104</x>
+     <y>276</y>
     </hint>
     <hint type="destinationlabel">
      <x>112</x>
      <y>171</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>m_customFilesRadioButton</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>m_directionGroupBox</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>522</x>
-     <y>218</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>239</x>
-     <y>130</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>m_customFilesRadioButton</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>m_fromStartCheckBox</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>522</x>
-     <y>218</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>130</x>
-     <y>171</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>m_customFilesRadioButton</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>label_2</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>450</x>
-     <y>208</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>99</x>
-     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -554,12 +476,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>163</x>
-     <y>190</y>
+     <x>171</x>
+     <y>206</y>
     </hint>
     <hint type="destinationlabel">
-     <x>522</x>
-     <y>191</y>
+     <x>497</x>
+     <y>217</y>
     </hint>
    </hints>
   </connection>
@@ -570,12 +492,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>77</x>
-     <y>171</y>
+     <x>96</x>
+     <y>206</y>
     </hint>
     <hint type="destinationlabel">
-     <x>522</x>
-     <y>218</y>
+     <x>497</x>
+     <y>244</y>
     </hint>
    </hints>
   </connection>
@@ -586,11 +508,11 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>406</x>
-     <y>311</y>
+     <x>169</x>
+     <y>328</y>
     </hint>
     <hint type="destinationlabel">
-     <x>537</x>
+     <x>516</x>
      <y>158</y>
     </hint>
    </hints>
@@ -602,30 +524,17 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>337</x>
-     <y>312</y>
+     <x>169</x>
+     <y>328</y>
     </hint>
     <hint type="destinationlabel">
-     <x>540</x>
+     <x>516</x>
      <y>267</y>
     </hint>
    </hints>
   </connection>
-  <connection>
-   <sender>m_customFilesRadioButton</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>m_directoryWidget</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>446</x>
-     <y>187</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>402</x>
-     <y>68</y>
-    </hint>
-   </hints>
-  </connection>
  </connections>
+ <buttongroups>
+  <buttongroup name="m_extedButtonGroup"/>
+ </buttongroups>
 </ui>

@@ -641,7 +641,7 @@ void MainformImpl::createFindReplace()
 {
 	m_findDialog       = new ReplaceDialogImpl(this);
 	connect(m_findDialog, SIGNAL(find(QString, QString, AbstractEditor::SearchOptions)), this, SLOT(findFirst(QString, QString, AbstractEditor::SearchOptions)));
-	connect(m_findDialog, SIGNAL(findInFiles(QString, QString, QString, AbstractEditor::SearchOptions)), this, SLOT(findInFiles(QString, QString, QString, AbstractEditor::SearchOptions)));
+	connect(m_findDialog, SIGNAL(findInFiles(QStringList, QString, QString, AbstractEditor::SearchOptions)), this, SLOT(findInFiles(QStringList, QString, QString, AbstractEditor::SearchOptions)));
 
 	m_replaceNextDlg   = new QMessageBox(QMessageBox::Question, tr("Replace text"), tr("Replace this occurence"), QMessageBox::Yes | QMessageBox::YesToAll | QMessageBox::No | QMessageBox::Cancel, this, Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
 	m_replaceNextDlg->setWindowModality(Qt::NonModal);
@@ -664,7 +664,7 @@ void MainformImpl::findFirst(const QString & chaine, const QString & dest, const
 	findNext();
 }
 
-void MainformImpl::findInFiles(const QString & directory, const QString & from, const QString & to, const AbstractEditor::SearchOptions & options)
+void MainformImpl::findInFiles(const QStringList& directories, const QString& from, const QString& to, const AbstractEditor::SearchOptions& options)
 {
 	m_searchAct->setEnabled(false);
 	m_searchNextAct->setEnabled(false);
@@ -678,7 +678,7 @@ void MainformImpl::findInFiles(const QString & directory, const QString & from, 
 	connect(threadSearch, SIGNAL(find(QString,QString,int)), m_searchDock, SLOT(find(QString,QString,int)), Qt::BlockingQueuedConnection);
 	connect(threadSearch, SIGNAL(end(bool)), this, SLOT(findEnd(bool)));
 
-	threadSearch->setPath(directory);
+	threadSearch->setPath(directories);
 	threadSearch->setSearchString(from, to, options);
 	threadSearch->search();
 }

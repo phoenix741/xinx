@@ -24,6 +24,7 @@
 // Xinx header
 #include "replacedialogimpl.h"
 #include <project/xinxprojectmanager.h>
+#include <plugins/xinxpluginsloader.h>
 
 ReplaceDialogImpl::ReplaceDialogImpl(QWidget * parent, Qt::WFlags f) : QDialog(parent, f)
 {
@@ -52,6 +53,7 @@ void ReplaceDialogImpl::initialize(bool hasEditor)
 	m_searchAllRadioButton->setChecked(hasEditor);
 	m_projectFilesRadioButton->setChecked((! hasEditor) && (XinxProject::Manager::self()->projects().count() > 0));
 	m_customFilesRadioButton->setChecked((! hasEditor) && (XinxProject::Manager::self()->projects().count() == 0));
+	on_m_extedButtonGroup_buttonClicked(m_extedButtonGroup->checkedButton());
 
 	m_comboFind->lineEdit()->selectAll();
 	m_comboFind->lineEdit()->setFocus(Qt::ActiveWindowFocusReason);
@@ -68,7 +70,7 @@ void ReplaceDialogImpl::initialize(bool hasEditor)
 		m_directoryWidget->lineEdit()->setText(QString());
 	}
 
-	m_projectFilesRadioButton->setEnabled(XinxProject::Manager::self()->projects().count() != 0);
+	m_comboExt->addItems(XinxPluginsLoader::self()->managedFilters());
 
 	m_findButton->setDefault(true);
 }
@@ -84,12 +86,43 @@ void ReplaceDialogImpl::setReplace(bool value)
 	m_replaceCheckBox->setChecked(value) ;
 }
 
-void ReplaceDialogImpl::on_m_projectFilesRadioButton_toggled(bool checked)
+void ReplaceDialogImpl::on_m_extedButtonGroup_buttonClicked(QAbstractButton* button)
 {
-	XinxProject::ProjectPtr selectedProject = XinxProject::Manager::self()->selectedProject();
-	if (checked && selectedProject)
+	if (button == m_searchAllRadioButton)
 	{
-		m_directoryWidget->lineEdit()->setText(selectedProject->projectPath());
+		m_whereLabel->setVisible(false);
+		m_directoryWidget->setVisible(false);
+		m_extLabel->setVisible(false);
+		m_comboExt->setVisible(false);
+		m_directionGroupBox->setEnabled(true);
+		m_fromStartCheckBox->setEnabled(true);
+	}
+	else if (button == m_searchSelectionRadioButton)
+	{
+		m_whereLabel->setVisible(false);
+		m_directoryWidget->setVisible(false);
+		m_extLabel->setVisible(false);
+		m_comboExt->setVisible(false);
+		m_directionGroupBox->setEnabled(true);
+		m_fromStartCheckBox->setEnabled(true);
+	}
+	else if (button == m_projectFilesRadioButton)
+	{
+		m_whereLabel->setVisible(false);
+		m_directoryWidget->setVisible(false);
+		m_extLabel->setVisible(true);
+		m_comboExt->setVisible(true);
+		m_directionGroupBox->setEnabled(false);
+		m_fromStartCheckBox->setEnabled(false);
+	}
+	else if (button == m_customFilesRadioButton)
+	{
+		m_whereLabel->setVisible(true);
+		m_directoryWidget->setVisible(true);
+		m_extLabel->setVisible(true);
+		m_comboExt->setVisible(true);
+		m_directionGroupBox->setEnabled(false);
+		m_fromStartCheckBox->setEnabled(false);
 	}
 }
 
@@ -117,10 +150,23 @@ void ReplaceDialogImpl::m_findButton_clicked()
 	}
 	else
 	{
-		if (m_replaceCheckBox->checkState() == Qt::Checked)
-			emit findInFiles(m_directoryWidget->lineEdit()->text(), m_comboFind->lineEdit()->text(), m_comboReplace->lineEdit()->text(), options);
+		QStringList directories;
+		if (m_customFilesRadioButton->isChecked())
+		{
+			directories << QDir::fromNativeSeparators(m_directoryWidget->lineEdit()->text());
+		}
 		else
-			emit findInFiles(m_directoryWidget->lineEdit()->text(), m_comboFind->lineEdit()->text(), QString(), options);
+		{
+			foreach(XinxProject::ProjectPtr project, XinxProject::Manager::self()->projects())
+			{
+				directories << project->projectPath();
+			}
+		}
+
+		if (m_replaceCheckBox->checkState() == Qt::Checked)
+			emit findInFiles(directories, m_comboFind->lineEdit()->text(), m_comboReplace->lineEdit()->text(), options);
+		else
+			emit findInFiles(directories, m_comboFind->lineEdit()->text(), QString(), options);
 	}
 }
 

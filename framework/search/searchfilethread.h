@@ -24,6 +24,7 @@
 // Xinx header
 #include <jobs/xinxjob.h>
 #include <editors/abstracteditor.h>
+#include <QQueue>
 
 class SearchFileThread : public XinxJob
 {
@@ -36,7 +37,7 @@ public:
 
 	virtual bool canBeCanceled() const;
 
-	void setPath(const QString & path);
+	void setPath(const QStringList & pathList);
 	void setSearchString(const QString & from, const QString & to, const AbstractEditor::SearchOptions & options);
 
 	void search();
@@ -52,6 +53,7 @@ private:
 	void searchRecursive(const QString & path);
 	void testFile(const QString & path);
 
+	QQueue<QString> _path;
 	bool _abort;
 	QString m_from, m_to, m_path;
 	AbstractEditor::SearchOptions m_options;
