@@ -71,6 +71,7 @@ void ReplaceDialogImpl::initialize(bool hasEditor)
 	}
 
 	m_comboExt->addItems(XinxPluginsLoader::self()->managedFilters());
+	m_comboExt->setCheckedItems(XinxPluginsLoader::self()->managedFilters());
 
 	m_findButton->setDefault(true);
 }

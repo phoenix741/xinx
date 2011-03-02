@@ -66,21 +66,24 @@ void ItemModelFactory::generate()
 	Core::BaliseDefinition::XmlContextType * c = dynamic_cast<Core::BaliseDefinition::XmlContextType*>(context().context(XML_CONTEXT_TYPE));
 	if (c && c->position() == Core::BaliseDefinition::XmlContextType::ATTRIBUTE_CONTENT)
 	{
-		ContentView3::FilePtr file = context().fileStrongRef();
-		XinxProject::ProjectPtr project = file->project();
-
-		if (project)
+		if (c->balise().baliseName() == "import" && c->attributeName() == "href")
 		{
-			QSharedPointer<GceConfiguration> configurationFile = ConfigurationManager::manager(project)->getInterface();
-			if (configurationFile)
-			{
-				QStringList aliases =  configurationFile->aliasPolicy().keys();
+			ContentView3::FilePtr file = context().fileStrongRef();
+			XinxProject::ProjectPtr project = file->project();
 
-				foreach(const QString & alias, aliases)
+			if (project)
+			{
+				QSharedPointer<GceConfiguration> configurationFile = ConfigurationManager::manager(project)->getInterface();
+				if (configurationFile)
 				{
-					AliasItem * item = new AliasItem(alias);
-					item->setContextType(tr("Aliases"));
-					itemInterface()->addItem(item);
+					QStringList aliases =  configurationFile->aliasPolicy().keys();
+
+					foreach(const QString & alias, aliases)
+					{
+						AliasItem * item = new AliasItem(alias);
+						item->setContextType(tr("Aliases"));
+						itemInterface()->addItem(item);
+					}
 				}
 			}
 		}

@@ -116,12 +116,15 @@
       </widget>
      </item>
      <item row="3" column="1">
-      <widget class="QComboBox" name="m_comboExt">
+      <widget class="CheckComboBox" name="m_comboExt">
        <property name="enabled">
         <bool>true</bool>
        </property>
        <property name="editable">
         <bool>true</bool>
+       </property>
+       <property name="separator" stdset="0">
+        <string notr="true">;</string>
        </property>
       </widget>
      </item>
@@ -335,6 +338,11 @@
    <extends>QWidget</extends>
    <header location="global">directoryedit.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CheckComboBox</class>
+   <extends>QComboBox</extends>
+   <header location="global">checkcombobox.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
