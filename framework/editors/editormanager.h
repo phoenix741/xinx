@@ -40,6 +40,7 @@
 class IFileTypePlugin;
 class AbstractEditor;
 class PrivateEditorManager;
+class PrivateTabWidget;
 
 namespace XinxSession
 {
@@ -131,6 +132,7 @@ private:
 
 	PrivateEditorManager * d;
 	friend class PrivateEditorManager;
+	friend class PrivateTabWidget;
 	friend class XinxLibSingleton<EditorManager>;
 };
 

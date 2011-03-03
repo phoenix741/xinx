@@ -40,6 +40,7 @@ PrivateTabWidget::PrivateTabWidget(EditorManager* parent) : _manager(parent)
 
 PrivateTabWidget::~PrivateTabWidget()
 {
+	tabBar()->removeEventFilter(_manager->d);
 }
 
 QTabBar * PrivateTabWidget::tabBar() const
@@ -80,6 +81,9 @@ void PrivateTabWidget::dropEvent(QDropEvent *event)
 
 PrivateEditorManager::PrivateEditorManager(EditorManager * manager) : _manager(manager), _clicked_item(-1)
 {
+	// Création de l'objet tabWidget
+	tabWidget();
+
 	createActions();
 	createCloseButton();
 
@@ -92,11 +96,11 @@ PrivateEditorManager::PrivateEditorManager(EditorManager * manager) : _manager(m
 	connect(XINXConfig::self(), SIGNAL(changed()), this, SLOT(updateConfigElement()));
 
 	updateRecentFiles();
+	updateActions();
 }
 
 PrivateEditorManager::~PrivateEditorManager()
 {
-	delete _tab_widget;
 }
 
 PrivateTabWidget * PrivateEditorManager::tabWidget()
@@ -295,14 +299,14 @@ void PrivateEditorManager::createActions()
 
 void PrivateEditorManager::updateActions()
 {
-	_save_action->setEnabled(_manager->editorsCount());
-	_save_as_action->setEnabled(_manager->editorsCount());
-	_save_all_action->setEnabled(_manager->editorsCount());
-	_close_action->setEnabled(_manager->editorsCount());
-	_close_all_action->setEnabled(_manager->editorsCount());
-	_print_action->setEnabled(_manager->editorsCount());
-	_previous_tab_action->setEnabled(_manager->editorsCount());
-	_next_tab_action->setEnabled(_manager->editorsCount());
+	_save_action->setEnabled(tabWidget()->count());
+	_save_as_action->setEnabled(tabWidget()->count());
+	_save_all_action->setEnabled(tabWidget()->count());
+	_close_action->setEnabled(tabWidget()->count());
+	_close_all_action->setEnabled(tabWidget()->count());
+	_print_action->setEnabled(tabWidget()->count());
+	_previous_tab_action->setEnabled(tabWidget()->count());
+	_next_tab_action->setEnabled(tabWidget()->count());
 }
 
 
