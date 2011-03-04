@@ -14,7 +14,7 @@
    <string>Customize</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
-   <item row="0" column="0" rowspan="6">
+   <item row="0" column="0" rowspan="7">
     <widget class="QListWidget" name="m_listWidget">
      <property name="minimumSize">
       <size>
@@ -61,7 +61,7 @@
      </property>
     </widget>
    </item>
-   <item row="5" column="1">
+   <item row="6" column="1">
     <widget class="QDialogButtonBox" name="m_buttonBox">
      <property name="standardButtons">
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
@@ -89,6 +89,19 @@
     <widget class="Line" name="line_2">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1">
+    <widget class="QLabel" name="m_errorLabel">
+     <property name="styleSheet">
+      <string notr="true">border: 3px solid rgb(180, 0, 0);
+border-raduis : 4px;
+padding : 7px;
+background-color: rgb(222, 130, 130);</string>
+     </property>
+     <property name="text">
+      <string/>
      </property>
     </widget>
    </item>

@@ -72,7 +72,7 @@ bool CustomGenerixImpl::cancelSettingsDialog()
 	return true;
 }
 
-bool CustomGenerixImpl::isSettingsValid()
+bool CustomGenerixImpl::isSettingsValid(QString& message)
 {
 	return true;
 }

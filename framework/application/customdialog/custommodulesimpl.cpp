@@ -112,7 +112,7 @@ bool CustomModulesImpl::cancelSettingsDialog()
 	return true;
 }
 
-bool CustomModulesImpl::isSettingsValid()
+bool CustomModulesImpl::isSettingsValid(QString& message)
 {
 	return true;
 }

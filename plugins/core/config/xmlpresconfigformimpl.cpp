@@ -81,7 +81,7 @@ bool XmlPresConfigFormImpl::cancelSettingsDialog()
 	return true;
 }
 
-bool XmlPresConfigFormImpl::isSettingsValid()
+bool XmlPresConfigFormImpl::isSettingsValid(QString& message)
 {
 	return true;
 }

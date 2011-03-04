@@ -42,7 +42,7 @@ public:
 	virtual bool loadSettingsDialog();
 	virtual bool saveSettingsDialog();
 	virtual bool cancelSettingsDialog();
-	virtual bool isSettingsValid();
+	virtual bool isSettingsValid(QString & message);
 	virtual bool isVisible();
 private:
 	QHash<QString,QString> m_tools;

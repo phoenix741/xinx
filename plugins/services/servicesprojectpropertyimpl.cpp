@@ -115,7 +115,7 @@ QWidget * ServicesProjectPropertyImpl::settingsDialog()
 	return this;
 }
 
-bool ServicesProjectPropertyImpl::isSettingsValid()
+bool ServicesProjectPropertyImpl::isSettingsValid(QString & message)
 {
 	return true;
 }

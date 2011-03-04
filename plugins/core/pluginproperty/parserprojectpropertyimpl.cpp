@@ -83,7 +83,7 @@ QWidget * ParserProjectPropertyImpl::settingsDialog()
 	return this;
 }
 
-bool ParserProjectPropertyImpl::isSettingsValid()
+bool ParserProjectPropertyImpl::isSettingsValid(QString& message)
 {
 	return true;
 }

@@ -104,10 +104,14 @@ bool CustomProjectImpl::cancelSettingsDialog()
 	return true;
 }
 
-bool CustomProjectImpl::isSettingsValid()
+bool CustomProjectImpl::isSettingsValid(QString& message)
 {
 	QString directory = QDir::fromNativeSeparators(m_projectPathLineEdit->lineEdit()->text());
-	if (! QDir(directory).exists()) return false;
+	if (! QDir(directory).exists())
+	{
+		message = tr("Directory %1 doesn't exist.").arg(QDir::toNativeSeparators(directory));
+		return false;
+	}
 	return true;
 }
 

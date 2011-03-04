@@ -94,9 +94,17 @@ QWidget * GenerixDerivationOptionsPageImpl::settingsDialog()
 	return this;
 }
 
-bool GenerixDerivationOptionsPageImpl::isSettingsValid()
+bool GenerixDerivationOptionsPageImpl::isSettingsValid(QString& message)
 {
-	return !(m_prefixDerivatedFileChk->isChecked() && m_prefixList->defaultValue().isEmpty());
+	if(!(m_prefixDerivatedFileChk->isChecked() && m_prefixList->defaultValue().isEmpty()))
+	{
+		return true;
+	}
+	else
+	{
+		message = tr("A prefix must be filled if you want add a prefix to each derivated files");
+		return false;
+	}
 }
 
 bool GenerixDerivationOptionsPageImpl::isVisible()

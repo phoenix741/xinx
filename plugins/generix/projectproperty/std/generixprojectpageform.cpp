@@ -74,7 +74,7 @@ QWidget * GenerixProjectPageFormImpl::settingsDialog()
 	return this;
 }
 
-bool GenerixProjectPageFormImpl::isSettingsValid()
+bool GenerixProjectPageFormImpl::isSettingsValid(QString& message)
 {
 	return true;
 }

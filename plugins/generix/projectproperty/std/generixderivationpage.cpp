@@ -319,7 +319,7 @@ QWidget * GenerixDerivationPathPageImpl::settingsDialog()
 	return this;
 }
 
-bool GenerixDerivationPathPageImpl::isSettingsValid()
+bool GenerixDerivationPathPageImpl::isSettingsValid(QString& message)
 {
 	return true;
 }

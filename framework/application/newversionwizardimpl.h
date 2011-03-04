@@ -38,6 +38,8 @@ public:
 
 	void loadFromConfig();
 	void saveToConfig();
+
+    virtual bool validateCurrentPage();
 public slots:
 	virtual void accept();
 private slots:

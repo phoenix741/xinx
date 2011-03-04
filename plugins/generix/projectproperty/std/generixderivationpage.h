@@ -88,7 +88,7 @@ public:
 	virtual bool saveSettingsDialog();
 	virtual bool cancelSettingsDialog();
 	virtual QWidget * settingsDialog();
-	virtual bool isSettingsValid();
+	virtual bool isSettingsValid(QString & message);
 	virtual bool isVisible();
 
 private slots:

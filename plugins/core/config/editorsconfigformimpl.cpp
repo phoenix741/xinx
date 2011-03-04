@@ -76,7 +76,7 @@ bool EditorsConfigFormImpl::saveSettingsDialog()
 	return true;
 }
 
-bool EditorsConfigFormImpl::isSettingsValid()
+bool EditorsConfigFormImpl::isSettingsValid(QString& message)
 {
 	return true;
 }

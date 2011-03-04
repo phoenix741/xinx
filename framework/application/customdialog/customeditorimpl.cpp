@@ -160,7 +160,7 @@ bool CustomEditorImpl::cancelSettingsDialog()
 	return true;
 }
 
-bool CustomEditorImpl::isSettingsValid()
+bool CustomEditorImpl::isSettingsValid(QString& message)
 {
 	return true;
 }

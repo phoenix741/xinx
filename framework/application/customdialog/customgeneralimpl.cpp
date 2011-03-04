@@ -103,7 +103,7 @@ bool CustomGeneralImpl::cancelSettingsDialog()
 	return true;
 }
 
-bool CustomGeneralImpl::isSettingsValid()
+bool CustomGeneralImpl::isSettingsValid(QString& message)
 {
 	return true;
 }

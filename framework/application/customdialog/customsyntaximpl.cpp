@@ -106,7 +106,7 @@ bool CustomSyntaxImpl::cancelSettingsDialog()
 	return true;
 }
 
-bool CustomSyntaxImpl::isSettingsValid()
+bool CustomSyntaxImpl::isSettingsValid(QString& message)
 {
 	return true;
 }

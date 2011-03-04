@@ -173,7 +173,8 @@ void ProjectPropertyImpl::updateOkButton()
 {
 	foreach(IXinxPluginProjectConfigurationPage * page, m_pluginPages)
 	{
-		if (! page->isSettingsValid())
+		QString message;
+		if (! page->isSettingsValid(message))
 		{
 			m_buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 			return;

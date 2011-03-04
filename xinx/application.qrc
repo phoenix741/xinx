@@ -9,6 +9,7 @@
         <file alias="qcodeedit/lan/none.qnfa">../framework/editors/none.qnfa</file>
         <file>translations/qt_fr.qm</file>
         <file>translations/xinx_fr.qm</file>
+        <file>images/error16.png</file>
         <file>images/france.png</file>
         <file>images/usa.png</file>
         <file>images/1downarrow.png</file>

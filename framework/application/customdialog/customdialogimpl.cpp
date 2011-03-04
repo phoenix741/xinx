@@ -34,12 +34,14 @@
 
 // Qt header
 #include <QTimer>
+#include <QDebug>
 
 /* CustomDialogImpl */
 
 CustomDialogImpl::CustomDialogImpl(QWidget * parent, Qt::WFlags f)  : QDialog(parent, f)
 {
 	setupUi(this);
+	m_errorLabel->setVisible(false);
 
 	delete pageToDelete;
 
@@ -104,11 +106,18 @@ void CustomDialogImpl::saveConfig()
 
 void CustomDialogImpl::updateOkButton()
 {
+	m_errorLabel->setVisible(false);
 	foreach(IXinxPluginConfigurationPage * page, m_pages)
 	{
-		if (! page->isSettingsValid())
+		QString message;
+		if (! page->isSettingsValid(message))
 		{
 			m_buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+			if (!message.isEmpty())
+			{
+				m_errorLabel->setVisible(true);
+				m_errorLabel->setText(QString("<img src=\":/images/error16.png\"/> ") + tr("%1 on page \"%2\"").arg(message).arg(page->name()));
+			}
 			return;
 		}
 	}

@@ -104,7 +104,7 @@ bool CustomFontImpl::cancelSettingsDialog()
 	return true;
 }
 
-bool CustomFontImpl::isSettingsValid()
+bool CustomFontImpl::isSettingsValid(QString& message)
 {
 	return true;
 }

@@ -80,7 +80,7 @@ bool CustomToolsImpl::cancelSettingsDialog()
 	return true;
 }
 
-bool CustomToolsImpl::isSettingsValid()
+bool CustomToolsImpl::isSettingsValid(QString& message)
 {
 	return true;
 }

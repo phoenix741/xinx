@@ -101,7 +101,7 @@ bool CustomizePlugin::cancelSettingsDialog()
 	return true;
 }
 
-bool CustomizePlugin::isSettingsValid()
+bool CustomizePlugin::isSettingsValid(QString& message)
 {
 	return true;
 }

@@ -113,7 +113,7 @@ bool CustomSnipetImpl::cancelSettingsDialog()
 	return true;
 }
 
-bool CustomSnipetImpl::isSettingsValid()
+bool CustomSnipetImpl::isSettingsValid(QString& message)
 {
 	return true;
 }

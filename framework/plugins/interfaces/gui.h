@@ -54,8 +54,8 @@ public:
 	virtual bool saveSettingsDialog() = 0;
 	//! This method is called in the inverse case of \e saveSettingsDialog(). If the dialog must made process on cancel.
 	virtual bool cancelSettingsDialog() = 0;
-	//! Validate dialog
-	virtual bool isSettingsValid() = 0;
+	//! Validate the dialog, if error, message must be filled
+	virtual bool isSettingsValid(QString & message) = 0;
 	//! Is visible
 	virtual bool isVisible() = 0;
 };

@@ -95,7 +95,7 @@ bool SearchPathListFormImpl::cancelSettingsDialog()
 	return true;
 }
 
-bool SearchPathListFormImpl::isSettingsValid()
+bool SearchPathListFormImpl::isSettingsValid(QString& message)
 {
 	return true;
 }

@@ -29,6 +29,7 @@
 #include <QTextCodec>
 #include <QFile>
 #include <QTextStream>
+#include <QMessageBox>
 
 /* PrivateNewVersionWizardImpl */
 
@@ -96,6 +97,19 @@ NewVersionWizardImpl::NewVersionWizardImpl(QWidget * parent) : QWizard(parent)
 NewVersionWizardImpl::~NewVersionWizardImpl()
 {
 	delete d;
+}
+
+bool NewVersionWizardImpl::validateCurrentPage()
+{
+	if (currentPage() == d->_ui->applicationPage)
+	{
+		if (! QDir(QDir::fromNativeSeparators(d->_ui->m_projectPathLineEdit->lineEdit()->text())).exists())
+		{
+			QMessageBox::critical(this, tr("Application page"), tr("The default open location for project must be a valid path."));
+			return false;
+		}
+	}
+    return QWizard::validateCurrentPage();
 }
 
 void NewVersionWizardImpl::loadFromConfig()
