@@ -48,6 +48,7 @@ public:
 	class Symbole
 	{
 	public:
+		int declarationLine;
 		QString type, name;
 	};
 
