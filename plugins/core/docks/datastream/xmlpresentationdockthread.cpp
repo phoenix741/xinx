@@ -198,8 +198,15 @@ void XmlPresentationDockThread::presentationActivated(int index)
 		const QString location = m_xmlPresentationWidget->m_presentationComboBox->itemData(index).toString();
 		const QString file     = m_xmlPresentationWidget->m_presentationComboBox->itemText(index);
 		const QString name = QDir(location).absoluteFilePath(file);
-		setComboToolTip(name);
-		open(name);
+		if (QFileInfo(name).isFile())
+		{
+			setComboToolTip(name);
+			open(name);
+		}
+		else
+		{
+			m_xmlPresentationWidget->m_presentationComboBox->setCurrentIndex(0);
+		}
 	}
 }
 

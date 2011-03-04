@@ -248,7 +248,7 @@ ModelFileNode * ModelFileNode::remove(const QString & filename)
 
 void ModelFileNode::addVisibleChildren(const QString & filename)
 {
-	ModelFileNode * node = _children.value(filename);
+	ModelFileNode * node = _children.value(QFileInfo(filename).canonicalFilePath());
 	Q_ASSERT_X(node, "ModelFileNode::addVisibleChildren", "Node not in the children");
 
 	QList<QString>::iterator it = qLowerBound(_visible_children.begin(), _visible_children.end(), filename);

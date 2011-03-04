@@ -379,7 +379,7 @@ En &lt;b&gt;GCE 150&lt;/b&gt; ou plus, le choix à peu d&apos;impact</translatio
     <message>
         <location filename="../../projectproperty/wizard/newgenerixderivation1page.ui" line="47"/>
         <source>Derivation in a &amp;project directory (integration)</source>
-        <translation>&amp;Dérivation dans un dossier &amp;projet (intégration)</translation>
+        <translation type="unfinished">Dérivation dans un dossier &amp;projet (intégration)</translation>
     </message>
     <message>
         <location filename="../../projectproperty/wizard/newgenerixderivation1page.ui" line="77"/>

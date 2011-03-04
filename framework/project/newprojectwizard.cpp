@@ -156,12 +156,15 @@ ProjectPageImpl::ProjectPageImpl(const QString & filename)
 	m_projectPathEdit->setText(filename);
 
 	registerField("project.name*",     m_projectNameEdit);
-	registerField("project.path*",     m_projectPathEdit);
+	registerField("project.path",     m_projectPathEdit);
+
+	connect(m_projectPathEdit, SIGNAL(textChanged(QString)), this, SIGNAL(completeChanged()));
 }
 
 bool ProjectPageImpl::isComplete() const
 {
 	if (! QWizardPage::isComplete()) return false;
+	if (m_projectPathEdit->text().isEmpty()) return false;
 	if (! QDir(QDir::fromNativeSeparators(m_projectPathEdit->text())).exists()) return false;
 	return true;
 }
