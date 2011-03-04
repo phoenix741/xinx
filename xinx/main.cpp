@@ -213,6 +213,26 @@ int main(int argc, char *argv[])
 			tranlator_components.load(QString(":/translations/xinxcomponents_%1").arg(XINXConfig::self()->config().language));
 			app.installTranslator(&tranlator_components);
 
+			bool recovering = false;
+			if (XinxSession::Session::sessionsNames().contains(RECOVER_SESSION))
+			{
+				QMessageBox::StandardButton result = QMessageBox::question(&splash, QApplication::translate("SplashScreen", "Recover"), QApplication::translate("SplashScreen", "There's an existing recover session. Do you wan try to recover ?"), QMessageBox::Yes | QMessageBox::Discard | QMessageBox::Reset);
+				switch (result)
+				{
+					case QMessageBox::Yes:
+						recovering = true;
+						break;
+					case QMessageBox::Discard:
+						XinxSession::SessionManager::self()->deleteRecoverSession();
+						break;
+					case QMessageBox::Reset:
+						XINXConfig::self()->setDefault();
+						break;
+					default:
+						qDebug() << "Not managed";
+				}
+			}
+
 			// Load available marks (for QCodeEdit use)
 			splash.showMessage(QApplication::translate("SplashScreen", "Load available marks ..."));
 			app.processEvents();
@@ -226,16 +246,6 @@ int main(int argc, char *argv[])
 			splash.showMessage(QApplication::translate("SplashScreen", "Load main window ..."));
 			app.processEvents();
 			app.attachMainWindow(mainWin = new MainformImpl());
-
-			bool recovering = false;
-			if (XinxSession::Session::sessionsNames().contains(RECOVER_SESSION))
-			{
-				QMessageBox::StandardButton result = QMessageBox::question(&splash, QApplication::translate("SplashScreen", "Recover"), QApplication::translate("SplashScreen", "There's an existing recover session. Do you wan try to recover ?"), QMessageBox::Yes | QMessageBox::No);
-				if (result == QMessageBox::Yes)
-				{
-					recovering = true;
-				}
-			}
 
 			if (recovering)
 			{
