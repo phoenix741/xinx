@@ -133,7 +133,17 @@ static void trad(xmlXPathParserContextPtr ctxt, int nargs)
 
 static void tradJS(xmlXPathParserContextPtr ctxt, int nargs)
 {
-	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
+	if (nargs != 3)
+	{
+		xsltGenericError(xsltGenericErrorContext, "tradJS: number of argument incorrect\n");
+		return;
+	}
+
+	QString lang = qtValuePopString(ctxt);
+	QString label = qtValuePopString(ctxt);
+	QString context = qtValuePopString(ctxt);
+
+	qtValuePush(ctxt, label);
 }
 
 static void message(xmlXPathParserContextPtr ctxt, int nargs)
@@ -536,13 +546,13 @@ static void formatNumericToGCE(xmlXPathParserContextPtr ctxt, int nargs)
 
 static void formatDate(xmlXPathParserContextPtr ctxt, int nargs)
 {
-	if (nargs != 3)
+	if ((nargs < 2) || (nargs > 3))
 	{
 		xsltGenericError(xsltGenericErrorContext, "formatDate: number of argument incorrect\n");
 		return;
 	}
 
-	const QString internalFormat = qtValuePopString(ctxt);
+	const QString internalFormat = (nargs == 2) ? "YYYYMMDD" : qtValuePopString(ctxt);
 	const QString format         = qtValuePopString(ctxt).trimmed();
 	const QString date           = qtValuePopString(ctxt).trimmed();
 	QString result;

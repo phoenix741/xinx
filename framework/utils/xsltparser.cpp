@@ -130,8 +130,6 @@ void xsltParserErrorFunc(void * parser, xmlErrorPtr error)
 
 void xsltParserGenericErrorFunc(void * ctx, const char * msg, ...)
 {
-	Q_UNUSED(ctx);
-
 	va_list ap;
 	va_start(ap, msg);
 
@@ -139,6 +137,17 @@ void xsltParserGenericErrorFunc(void * ctx, const char * msg, ...)
 	proceedMsg.vsprintf(msg, ap);
 
 	qDebug() << proceedMsg.simplified();
+
+	PrivateXsltParser * d = static_cast<PrivateXsltParser*>(ctx);
+	if (d)
+	{
+		XsltParser::ErrorMessage m;
+		m.isWarning = true;
+		m.message   = proceedMsg.simplified();
+		m.line      = -1;
+
+		d->m_errors.append(m);
+	}
 
 	va_end(ap);
 }
