@@ -45,6 +45,7 @@ public:
 
 	virtual bool autoIndent();
 
+	void showHtml();
 	void launchStylesheetParsing(const QString & xmlfile);
 	static XmlPresentationDockWidget * xmlPresentationDockWidget();
 protected:

@@ -118,30 +118,30 @@ static void qtValuePush(xmlXPathParserContextPtr ctxt, bool value)
 
 static void trad(xmlXPathParserContextPtr ctxt, int nargs)
 {
-	if (nargs != 3)
+	if ((nargs < 2) || (nargs > 3))
 	{
 		xsltGenericError(xsltGenericErrorContext, "trad: number of argument incorrect\n");
 		return;
 	}
 
-	QString lang = qtValuePopString(ctxt);
+	QString context = nargs == 3 ? qtValuePopString(ctxt) : QString();
 	QString label = qtValuePopString(ctxt);
-	QString context = qtValuePopString(ctxt);
+	QString lang = qtValuePopString(ctxt);
 
 	qtValuePush(ctxt, label);
 }
 
 static void tradJS(xmlXPathParserContextPtr ctxt, int nargs)
 {
-	if (nargs != 3)
+	if ((nargs < 2) || (nargs > 3))
 	{
 		xsltGenericError(xsltGenericErrorContext, "tradJS: number of argument incorrect\n");
 		return;
 	}
 
-	QString lang = qtValuePopString(ctxt);
+	QString context = nargs == 3 ? qtValuePopString(ctxt) : QString();
 	QString label = qtValuePopString(ctxt);
-	QString context = qtValuePopString(ctxt);
+	QString lang = qtValuePopString(ctxt);
 
 	qtValuePush(ctxt, label);
 }
@@ -544,6 +544,31 @@ static void formatNumericToGCE(xmlXPathParserContextPtr ctxt, int nargs)
 	qtValuePush(ctxt, result);
 }
 
+static void dayOfWeek(xmlXPathParserContextPtr ctxt, int nargs)
+{
+	if (nargs != 2)
+	{
+		xsltGenericError(xsltGenericErrorContext, "dayOfWeek: number of argument incorrect\n");
+		return;
+	}
+
+	const QString format         = qtValuePopString(ctxt).trimmed();
+	const QString date           = qtValuePopString(ctxt).trimmed();
+	int result = -1;
+
+	if (!date.isEmpty() && !format.isEmpty())
+	{
+		QDateTime dt = QDateTime::fromString(date, format);
+		result = dt.date().dayOfWeek();
+		if (result == Qt::Sunday)
+			result = 1;
+		else
+			result++;
+	}
+
+	qtValuePush(ctxt, (double)result);
+}
+
 static void formatDate(xmlXPathParserContextPtr ctxt, int nargs)
 {
 	if ((nargs < 2) || (nargs > 3))
@@ -772,6 +797,7 @@ void* xsltExtInitFunc(xsltTransformContextPtr ctxt, const xmlChar *URI)
 	xsltRegisterExtFunction(ctxt, (xmlChar*)"formatDateToGce", URI, Gnx::XsltExtention::formatDateToGce);
 	xsltRegisterExtFunction(ctxt, (xmlChar*)"formatTime", URI, Gnx::XsltExtention::formatTime);
 	xsltRegisterExtFunction(ctxt, (xmlChar*)"formatNumericToGce", URI, Gnx::XsltExtention::formatNumericToGCE);
+	xsltRegisterExtFunction(ctxt, (xmlChar*)"dayOfWeek", URI, Gnx::XsltExtention::dayOfWeek);
 
 	xsltRegisterExtFunction(ctxt, (xmlChar*)"getScreenValue", URI, Gnx::XsltExtention::getScreenValue);
 

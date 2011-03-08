@@ -49,26 +49,24 @@ void StyleSheetAction::setXmlPresentationDockWidget(XmlPresentationDockWidget * 
 
 bool StyleSheetAction::isVisible() const
 {
-	return (SelfWebPluginSettings::self()->config().stylesheetParsing.viewer.type != "none");
+	return true;
 }
 
 bool StyleSheetAction::isEnabled() const
 {
-	if ((SelfWebPluginSettings::self()->config().stylesheetParsing.viewer.type != "none") && EditorManager::self())
+	if (qobject_cast<StyleSheetEditor*>(EditorManager::self()->currentEditor()))
 	{
-		if (qobject_cast<StyleSheetEditor*>(EditorManager::self()->currentEditor()) && (SelfWebPluginSettings::self()->config().stylesheetParsing.parser.type != "none"))
+		if (! m_dock)
 		{
-			if (! m_dock)
-			{
-				setXmlPresentationDockWidget(StyleSheetEditor::xmlPresentationDockWidget());
-			}
-			return m_dock && !m_dock->filename().isEmpty();
+			setXmlPresentationDockWidget(StyleSheetEditor::xmlPresentationDockWidget());
 		}
-		else if (qobject_cast<HtmlFileEditor*>(EditorManager::self()->currentEditor()))
-		{
-			return true;
-		}
+		return m_dock && !m_dock->filename().isEmpty();
 	}
+	else if (qobject_cast<HtmlFileEditor*>(EditorManager::self()->currentEditor()))
+	{
+		return true;
+	}
+
 	return false;
 }
 
@@ -80,7 +78,11 @@ void StyleSheetAction::actionTriggered()
 	{
 		Q_ASSERT(m_dock);
 		qobject_cast<StyleSheetEditor*>(EditorManager::self()->currentEditor())->launchStylesheetParsing(m_dock->filename());
+		qobject_cast<StyleSheetEditor*>(EditorManager::self()->currentEditor())->showHtml();
 	}
+
 	if (qobject_cast<HtmlFileEditor*>(EditorManager::self()->currentEditor()))
+	{
 		qobject_cast<HtmlFileEditor*>(EditorManager::self()->currentEditor())->showHtml();
+	}
 }

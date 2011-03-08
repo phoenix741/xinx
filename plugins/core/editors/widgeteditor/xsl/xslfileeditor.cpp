@@ -211,22 +211,35 @@ void StyleSheetEditor::launchStylesheetParsing(const QString & xmlfile)
 	QString result;
 
 	ErrorManager::self()->clearMessages(textEdit()->filename());
+	QList<XsltParser::ErrorMessage> errors;
 
-	if (! xsltParser->loadStylesheet(textEdit()->filename())) goto error;
-	if (! xsltParser->loadXmlFile(xmlfile)) goto error;
-	if (! xsltParser->process())              goto error;
+	if (! xsltParser->loadStylesheet(textEdit()->filename()))	goto error;
+	errors += xsltParser->errors();
+
+	if (! xsltParser->loadXmlFile(xmlfile))						goto error;
+	errors += xsltParser->errors();
+
+	if (! xsltParser->process())								goto error;
+	errors += xsltParser->errors();
 
 	result = xsltParser->getOutput();
 	m_sourceView->setPlainText(result);
 	m_htmlView->setHtml(result, QUrl::fromLocalFile(moduleInternetAdresse));
 
 error:
-	foreach(const XsltParser::ErrorMessage & e, xsltParser->errors())
+	errors += xsltParser->errors();
+
+	foreach(const XsltParser::ErrorMessage & e, errors)
 	{
 		ErrorManager::self()->addMessage(textEdit()->filename(), e.line, e.isWarning ? QtWarningMsg : QtCriticalMsg, e.message, QStringList());
 	}
 
 	delete xsltParser;
+}
+
+void StyleSheetEditor::showHtml()
+{
+	m_tabWidget->setCurrentIndex(2);
 }
 
 XmlPresentationDockWidget * StyleSheetEditor::xmlPresentationDockWidget()

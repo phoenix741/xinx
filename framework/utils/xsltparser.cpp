@@ -210,7 +210,7 @@ bool XsltParser::loadStylesheet(const QString & filename)
 	xmlSetGenericErrorFunc(0, 0);
 	xmlSetStructuredErrorFunc(0, 0);
 
-	return d->m_stylesheet && ! d->m_errors.count();
+	return d->m_stylesheet;
 }
 
 bool XsltParser::loadXmlFile(const QByteArray & data)
@@ -224,7 +224,7 @@ bool XsltParser::loadXmlFile(const QByteArray & data)
 	xmlSetGenericErrorFunc(0, 0);
 	xmlSetStructuredErrorFunc(0, 0);
 
-	return d->m_xmlDoc && ! d->m_errors.count();
+	return d->m_xmlDoc;
 }
 
 bool XsltParser::loadXmlFile(const QString & filename)
@@ -233,16 +233,17 @@ bool XsltParser::loadXmlFile(const QString & filename)
 	xmlSetStructuredErrorFunc(d, xsltParserErrorFunc);
 	xmlSetGenericErrorFunc(d, xsltParserGenericErrorFunc);
 	//xsltSetGenericDebugFunc(d, xsltParserGenericErrorFunc);
-	d->m_xmlDoc = xmlParseFile(qPrintable(filename));
+	d->m_xmlDoc = xmlReadFile(qPrintable(filename), NULL, XML_PARSE_NOBLANKS);
 	//xsltSetGenericDebugFunc(0, 0);
 	xmlSetGenericErrorFunc(0, 0);
 	xmlSetStructuredErrorFunc(0, 0);
 
-	return d->m_xmlDoc && ! d->m_errors.count();
+	return d->m_xmlDoc;
 }
 
 QString XsltParser::getOutput() const
 {
+	d->m_errors.clear();
 	Q_ASSERT(d->m_res);
 
 	xmlChar* buffer;
@@ -292,5 +293,5 @@ bool XsltParser::process()
 	xmlSetGenericErrorFunc(0, 0);
 	xmlSetStructuredErrorFunc(0, 0);
 
-	return d->m_res && ! d->m_errors.count();;
+	return d->m_res;
 }
