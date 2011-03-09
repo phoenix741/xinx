@@ -20,6 +20,7 @@
 #include "newfilewizardimpl.h"
 #include <project/xinxprojectmanager.h>
 #include <project/xinxprojectproject.h>
+#include <directoryedit.h>
 
 NewFileWizardImpl::NewFileWizardImpl(QWidget* parent, Qt::WindowFlags flags): QWizard(parent, flags), _project(0), _interface(0)
 {

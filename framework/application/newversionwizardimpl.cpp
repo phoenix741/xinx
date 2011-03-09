@@ -24,12 +24,14 @@
 #include "customdialog/directoryeditdelegate.h"
 #include "customdialog/customdialogimpl.h"
 #include "ui_newversion.h"
+#include <directoryedit.h>
 
 // Qt header
 #include <QTextCodec>
 #include <QFile>
 #include <QTextStream>
 #include <QMessageBox>
+#include <QDir>
 
 /* PrivateNewVersionWizardImpl */
 

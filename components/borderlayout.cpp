@@ -45,7 +45,7 @@
 #include <QWidgetItem>
 
 // Components header
-#include "borderlayout.h"
+#include "borderlayout_p.h"
 
 /*!
  * \defgroup Components Visual Components used by XINX
@@ -101,8 +101,7 @@
  * \param margin The marge arround the layout
  * \param spacing The space between widgets
  */
-BorderLayout::BorderLayout(QWidget *parent, int margin, int spacing) :
-		QLayout(parent)
+BorderLayout::BorderLayout(QWidget *parent, int margin, int spacing) : QLayout(parent), d(new BorderLayoutPrivate)
 {
 	setMargin(margin);
 	setSpacing(spacing);
@@ -149,7 +148,7 @@ void BorderLayout::addWidget(QWidget *widget, Position position)
  */
 void BorderLayout::add(QLayoutItem *item, Position position)
 {
-	list.append(new ItemWrapper(item, position));
+	d->list.append(new BorderLayoutPrivate::ItemWrapper(item, position));
 }
 
 /*!
@@ -172,13 +171,13 @@ bool BorderLayout::hasHeightForWidth() const
 //! Number of layout added in the BorderLayout
 int BorderLayout::count() const
 {
-	return list.size();
+	return d->list.size();
 }
 
 //! Return the \p index item of the list.
 QLayoutItem *BorderLayout::itemAt(int index) const
 {
-	ItemWrapper *wrapper = list.value(index);
+	BorderLayoutPrivate::ItemWrapper *wrapper = d->list.value(index);
 	if (wrapper)
 		return wrapper->item;
 	else
@@ -193,13 +192,13 @@ QLayoutItem *BorderLayout::itemAt(int index) const
  */
 QSize BorderLayout::minimumSize() const
 {
-	return calculateSize(MinimumSize);
+	return d->calculateSize(BorderLayoutPrivate::MinimumSize);
 }
 
 //! Set this item's geometry to r.
 void BorderLayout::setGeometry(const QRect &rect)
 {
-	ItemWrapper *center = 0;
+	BorderLayoutPrivate::ItemWrapper *center = 0;
 	int eastWidth = 0;
 	int westWidth = 0;
 	int northHeight = 0;
@@ -209,9 +208,9 @@ void BorderLayout::setGeometry(const QRect &rect)
 
 	QLayout::setGeometry(rect);
 
-	for (i = 0; i < list.size(); ++i)
+	for (i = 0; i < d->list.size(); ++i)
 	{
-		ItemWrapper *wrapper = list.at(i);
+		BorderLayoutPrivate::ItemWrapper *wrapper = d->list.at(i);
 		QLayoutItem *item = wrapper->item;
 		Position position = wrapper->position;
 
@@ -239,9 +238,9 @@ void BorderLayout::setGeometry(const QRect &rect)
 
 	centerHeight = rect.height() - northHeight - southHeight;
 
-	for (i = 0; i < list.size(); ++i)
+	for (i = 0; i < d->list.size(); ++i)
 	{
-		ItemWrapper *wrapper = list.at(i);
+		BorderLayoutPrivate::ItemWrapper *wrapper = d->list.at(i);
 		QLayoutItem *item = wrapper->item;
 		Position position = wrapper->position;
 
@@ -275,28 +274,28 @@ void BorderLayout::setGeometry(const QRect &rect)
  */
 QSize BorderLayout::sizeHint() const
 {
-	return calculateSize(SizeHint);
+	return d->calculateSize(BorderLayoutPrivate::SizeHint);
 }
 
 //! Returns the item at the index \p index in the list and removes it.
 QLayoutItem *BorderLayout::takeAt(int index)
 {
-	if (index >= 0 && index < list.size())
+	if (index >= 0 && index < d->list.size())
 	{
-		ItemWrapper *layoutStruct = list.takeAt(index);
+		BorderLayoutPrivate::ItemWrapper *layoutStruct = d->list.takeAt(index);
 		return layoutStruct->item;
 	}
 	return 0;
 }
 
-QSize BorderLayout::calculateSize(SizeType sizeType) const
+QSize BorderLayoutPrivate::calculateSize(SizeType sizeType) const
 {
 	QSize totalSize;
 
 	for (int i = 0; i < list.size(); ++i)
 	{
 		ItemWrapper *wrapper = list.at(i);
-		Position position = wrapper->position;
+		BorderLayout::Position position = wrapper->position;
 		QSize itemSize;
 
 		if (wrapper->item->isEmpty()) continue;
@@ -307,10 +306,10 @@ QSize BorderLayout::calculateSize(SizeType sizeType) const
 			// (sizeType == SizeHint)
 			itemSize = wrapper->item->sizeHint();
 
-		if (position == North || position == South || position == Center)
+		if (position == BorderLayout::North || position == BorderLayout::South || position == BorderLayout::Center)
 			totalSize.rheight() += itemSize.height();
 
-		if (position == West || position == East || position == Center)
+		if (position == BorderLayout::West || position == BorderLayout::East || position == BorderLayout::Center)
 			totalSize.rwidth() += itemSize.width();
 	}
 	return totalSize;

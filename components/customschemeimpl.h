@@ -22,15 +22,18 @@
 #define _CUSTOMSCHEMEIMPL_H_
 
 // Xinx header
-#include "ui_customscheme.h"
 #include <components-config.h>
 
+// Qt header
+#include <QWidget>
+
+class CustomSchemeImplPrivate;
 class QCodeEdit;
 class QFormatScheme;
 class QFormat;
 class QLanguageFactory;
 
-class COMPONENTSEXPORT CustomSchemeImpl : public QWidget, public Ui::CustomScheme
+class COMPONENTSEXPORT CustomSchemeImpl : public QWidget
 {
 	Q_OBJECT
 	Q_CLASSINFO("Author", "Ulrich Van Den Hekke")
@@ -58,26 +61,8 @@ public:
 
 	void setHiddenFormat(const QStringList & value);
 	const QStringList & hiddenFormat() const;
-private slots:
-	void on_m_formatsListView_currentItemChanged(QListWidgetItem * current, QListWidgetItem * previous);
-	void on_m_boldCheckBox_stateChanged(int state);
-	void on_m_overLineCheckBox_stateChanged(int state);
-	void on_m_strikeOutCheckBox_stateChanged(int state);
-	void on_m_italicCheckBox_stateChanged(int state);
-	void on_m_underLineCheckBox_stateChanged(int state);
-	void on_m_waveUnderLineCheckBox_stateChanged(int state);
-	void on_m_foreGroundComboBox_activated(const QColor &col);
-	void on_m_backGroundComboBox_activated(const QColor &col);
 private:
-	void updateFormatList();
-
-	QLanguageFactory * m_languageFactory;
-	QCodeEdit * m_exampleEditor;
-	QFormatScheme * m_formats;
-	QFormat * m_currentFormat;
-	QListWidgetItem * m_currentItem;
-	QString m_example;
-	QStringList m_hiddenFormat;
+    QScopedPointer<CustomSchemeImplPrivate> d;
 };
 
 #endif /* _CUSTOMSCHEMEIMPL_H_ */

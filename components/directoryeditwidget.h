@@ -18,54 +18,43 @@
 */
 
 #pragma once
-#ifndef __DIRECTORYEDIT_H__
-#define __DIRECTORYEDIT_H__
+#ifndef __DIRECTORYEDITWIDGET_H__
+#define __DIRECTORYEDITWIDGET_H__
 
-// Qt header
-#include <QLineEdit>
+#include <QWidget>
 
 #include <components-config.h>
 
-class DirectoryEditPrivate;
+class PrivateDirectoryEditWidget;
+class DirectoryEdit;
 
-class COMPONENTSEXPORT DirectoryEdit : public QLineEdit
+class COMPONENTSEXPORT DirectoryEditWidget : public QWidget
 {
 	Q_OBJECT
 	Q_CLASSINFO("Author", "Ulrich Van Den Hekke")
 	Q_CLASSINFO("URL", "http://xinx.shadoware.org")
 	Q_CLASSINFO("Licence", "GPL v2 or later")
-	Q_PROPERTY(bool fileMustExist READ fileMustExist WRITE setFileMustExist)
 	Q_PROPERTY(bool directory READ isDirectory WRITE setDirectory)
-	Q_PROPERTY(QString filter READ filter WRITE setFilter)
-	Q_PROPERTY(QString prefix READ prefix WRITE setPrefix)
-	Q_PROPERTY(bool error READ isError)
+	Q_PROPERTY(QString defaultValue READ defaultValue WRITE setDefaultValue)
 public:
-	DirectoryEdit(QWidget * parent = 0);
-	DirectoryEdit(const QString & contents, QWidget * parent = 0);
-    virtual ~DirectoryEdit();
+	DirectoryEditWidget(QWidget * parent = 0);
+	DirectoryEditWidget(bool isDirectory, QWidget * parent = 0);
+	virtual ~DirectoryEditWidget();
 
-	bool fileMustExist() const;
-	void setFileMustExist(bool value);
+	DirectoryEdit * lineEdit() const;
 
 	bool isDirectory() const;
 	void setDirectory(bool value);
 
-	const QString & filter() const;
-	void setFilter(const QString & filter);
-
-	const QString & prefix() const;
-	void setPrefix(const QString & value);
-
-	bool isError() const;
-protected:
-	void keyPressEvent(QKeyEvent *event);
+	QString defaultValue() const;
+	void setDefaultValue(const QString & value);
 public slots:
-	void setText(const QString & value);
-	void selectAll();
-	void clear();
-	void changePath(QWidget * parent = NULL, const QString & defaultValue = QString());
+	void changePath();
+protected:
+	virtual void focusInEvent(QFocusEvent * event);
 private:
-    QScopedPointer<DirectoryEditPrivate> d;
+	PrivateDirectoryEditWidget * d;
+	friend class PrivateDirectoryEditWidget;
 };
 
-#endif // __DIRECTORYEDIT_H__
+#endif // __DIRECTORYEDITWIDGET_H__

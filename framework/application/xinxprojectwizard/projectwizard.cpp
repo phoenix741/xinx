@@ -19,7 +19,8 @@
 
 // Xinx header
 #include "projectwizard.h"
-#include "directoryedit.h"
+#include <directoryeditwidget.h>
+#include <directoryedit.h>
 #include "projectconverter.h"
 
 // Qt header
@@ -30,6 +31,7 @@
 #include <QLabel>
 #include <QCheckBox>
 #include <QMessageBox>
+#include <QVariant>
 
 /* ProjectWizard */
 

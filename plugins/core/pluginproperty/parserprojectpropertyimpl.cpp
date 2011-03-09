@@ -21,6 +21,7 @@
 #include "parserprojectpropertyimpl.h"
 #include <project/xinxprojectproject.h>
 #include <core/xinxconfig.h>
+#include <directoryedit.h>
 
 // Qt header
 #include <QGridLayout>

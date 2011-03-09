@@ -21,6 +21,7 @@
 #include "generixderivationpage.h"
 #include <core/xinxconfig.h>
 #include <directoryedit.h>
+#include <directoryeditwidget.h>
 
 /* DerivationDirectoryEditDelegate */
 

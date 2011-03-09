@@ -50,6 +50,8 @@
 
 #include <components-config.h>
 
+class BorderLayoutPrivate;
+
 class COMPONENTSEXPORT BorderLayout : public QLayout
 {
 	Q_OBJECT
@@ -72,22 +74,7 @@ public:
 	virtual QSize sizeHint() const;
 	virtual QLayoutItem *takeAt(int index);
 private:
-	struct ItemWrapper
-	{
-		ItemWrapper(QLayoutItem *i, Position p)
-		{
-			item = i;
-			position = p;
-		}
-
-		QLayoutItem *item;
-		Position position;
-	};
-
-	enum SizeType { MinimumSize, SizeHint };
-	QSize calculateSize(SizeType sizeType) const;
-
-	QList<ItemWrapper *> list;
+	QScopedPointer<BorderLayoutPrivate> d;
 };
 
 #endif

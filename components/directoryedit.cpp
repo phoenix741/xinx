@@ -18,7 +18,8 @@
 */
 
 // Xinx header
-#include "directoryedit.h"
+#include "directoryedit_p.h"
+#include "completerdirmodel.h"
 
 // Qt header
 #include <QFile>
@@ -30,60 +31,80 @@
 #include <QToolButton>
 #include <QKeyEvent>
 
-/* CompleterDirModel */
+/* DirectoryEditPrivate */
 
-/*!
- * \ingroup Components
- * \class CompleterDirModel
- * \since 0.7.0.0
- *
- * \brief Class used by DirectoryEdit to complete on path.
- *
- * Completer model class based on a QDirModel which permit to propose a completion on
- * the path.
- * The CompleterDirModel convert path on native separtor. If the path end with a separator,
- * the separator is deleted.
- *
- * To use this modele, we can use a QCompleter on a QLineEdit.
- *
- * \code
- *   QLineEdit * lineEdit = new QLineEdit;
- *
- *   QCompleter * completer = new QCompleter(lineEdit);
- *   lineEdit->setCompleter(completer);
- *
- *   CompleterDirModel * model = new CompleterDirModel(completer);
- *   completer->setModel(model);
- * \endcode
- */
-
-/*!
- * \brief Construct a CompleterDirModel.
- * \param parent The parent of the object.
- */
-CompleterDirModel::CompleterDirModel(QObject *parent) : QDirModel(parent)
+DirectoryEditPrivate::DirectoryEditPrivate(DirectoryEdit* parent) : _parent(parent), m_error(false), m_directory(true), m_fileMustExist(true), m_ignoreCursorPositionChanged(false)
 {
 }
 
 /*!
- * \brief Return the data to change in the completion dir model.
- *
- * This model show the good separator (with the \p QDir::toNativeSepartors() function).
- * \param index The model index, represents a path in the tree.
- * \param role Only the role Qt::DisplayRole is modified in this object.
- */
-QVariant CompleterDirModel::data(const QModelIndex &index, int role) const
+* \internal
+*/
+void DirectoryEditPrivate::slotEditorCursorPositionChanged(int oldpos, int newpos)
 {
-	if (role == Qt::DisplayRole && index.column() == 0)
+	if (!_parent->hasSelectedText() && !m_ignoreCursorPositionChanged)
 	{
-		QString path = QDir::toNativeSeparators(filePath(index));
-		if (path.endsWith(QDir::separator()))
-			path.chop(1);
-		return path;
-	}
+		m_ignoreCursorPositionChanged = true;
 
-	return QDirModel::data(index, role);
+		bool allowSelection = true;
+		int pos = -1;
+		if (newpos < m_prefix.size() && newpos != 0)
+		{
+			if (oldpos == 0)
+			{
+				allowSelection = false;
+				pos = m_prefix.size();
+			}
+			else
+			{
+				pos = oldpos;
+			}
+		}
+
+		if (pos != -1)
+		{
+			const int selSize = _parent->selectionStart() >= 0 && allowSelection ? (_parent->selectedText().size() * (newpos < pos ? -1 : 1)) - newpos + pos : 0;
+
+			const bool wasBlocked = blockSignals(true);
+			if (selSize != 0)
+			{
+				_parent->setSelection(pos - selSize, selSize);
+			}
+			else
+			{
+				_parent->setCursorPosition(pos);
+			}
+			blockSignals(wasBlocked);
+		}
+		m_ignoreCursorPositionChanged = false;
+	}
 }
+
+
+/*!
+* \brief Slot called when the text changed.
+*
+* This method change the color of the text if the directory \p text not exist.
+*/
+void DirectoryEditPrivate::slotTextChanged(QString text)
+{
+	QFileInfo fileInfo(text);
+	QFile file(text);
+	QPalette palette(_parent->palette());
+
+	m_error = (m_directory != fileInfo.isDir()) || (m_fileMustExist && !file.exists());
+
+	if (!m_error)
+	{
+		palette.setColor(QPalette::Text, QColor());
+	}
+	else
+	{
+		palette.setColor(QPalette::Text, Qt::red);
+	}
+	_parent->setPalette(palette);
+}
+
 
 /* DirectoryEdit */
 
@@ -114,10 +135,10 @@ QVariant CompleterDirModel::data(const QModelIndex &index, int role) const
  * \brief Construct a DirectoryEdit object.
  * \param parent The parent widget of the object.
  */
-DirectoryEdit::DirectoryEdit(QWidget * parent) : QLineEdit(parent), m_error(false), m_directory(true), m_fileMustExist(true), m_ignoreCursorPositionChanged(false)
+DirectoryEdit::DirectoryEdit(QWidget * parent) : QLineEdit(parent), d(new DirectoryEditPrivate)
 {
-	connect(this, SIGNAL(textChanged(QString)), this, SLOT(slotTextChanged(QString)));
-	connect(this, SIGNAL(cursorPositionChanged(int,int)), this, SLOT(slotEditorCursorPositionChanged(int,int)));
+	connect(this, SIGNAL(textChanged(QString)), d.data(), SLOT(slotTextChanged(QString)));
+	connect(this, SIGNAL(cursorPositionChanged(int,int)), d.data(), SLOT(slotEditorCursorPositionChanged(int,int)));
 	QCompleter * completer = new QCompleter(this);
 	this->setCompleter(completer);
 	completer->setModel(new CompleterDirModel(completer));
@@ -128,10 +149,18 @@ DirectoryEdit::DirectoryEdit(QWidget * parent) : QLineEdit(parent), m_error(fals
  * \param contents Content of the Line edit.
  * \param parent The parent widget of the object.
  */
-DirectoryEdit::DirectoryEdit(const QString & contents, QWidget * parent) : QLineEdit(contents, parent), m_error(false), m_directory(true), m_fileMustExist(true), m_ignoreCursorPositionChanged(false)
+DirectoryEdit::DirectoryEdit(const QString & contents, QWidget * parent) : QLineEdit(contents, parent), d(new DirectoryEditPrivate)
 {
-	connect(this, SIGNAL(textChanged(QString)), this, SLOT(slotTextChanged(QString)));
-	connect(this, SIGNAL(cursorPositionChanged(int,int)), this, SLOT(slotEditorCursorPositionChanged(int,int)));
+	connect(this, SIGNAL(textChanged(QString)), d.data(), SLOT(slotTextChanged(QString)));
+	connect(this, SIGNAL(cursorPositionChanged(int,int)), d.data(), SLOT(slotEditorCursorPositionChanged(int,int)));
+}
+
+/*!
+ * \brief Destroy the DirectoryEdit
+ */
+DirectoryEdit::~DirectoryEdit()
+{
+
 }
 
 /*!
@@ -141,10 +170,10 @@ DirectoryEdit::DirectoryEdit(const QString & contents, QWidget * parent) : QLine
  */
 void DirectoryEdit::setFileMustExist(bool value)
 {
-	if (value != m_fileMustExist)
+	if (value != d->m_fileMustExist)
 	{
-		m_fileMustExist = value;
-		slotTextChanged(this->text());
+		d->m_fileMustExist = value;
+		d->slotTextChanged(this->text());
 	}
 }
 
@@ -154,7 +183,7 @@ void DirectoryEdit::setFileMustExist(bool value)
  */
 bool DirectoryEdit::fileMustExist() const
 {
-	return m_fileMustExist;
+	return d->m_fileMustExist;
 }
 
 /*!
@@ -164,7 +193,7 @@ bool DirectoryEdit::fileMustExist() const
  */
 void DirectoryEdit::setFilter(const QString & filter)
 {
-	m_filter = filter;
+	d->m_filter = filter;
 }
 
 /*!
@@ -173,7 +202,7 @@ void DirectoryEdit::setFilter(const QString & filter)
  */
 const QString & DirectoryEdit::filter() const
 {
-	return m_filter;
+	return d->m_filter;
 }
 
 /*!
@@ -186,9 +215,9 @@ const QString & DirectoryEdit::filter() const
  */
 void DirectoryEdit::setPrefix(const QString & value)
 {
-	if (m_prefix != value)
+	if (d->m_prefix != value)
 	{
-		m_prefix = value;
+		d->m_prefix = value;
 		setText(text());
 	}
 }
@@ -199,7 +228,7 @@ void DirectoryEdit::setPrefix(const QString & value)
  */
 const QString & DirectoryEdit::prefix() const
 {
-	return m_prefix;
+	return d->m_prefix;
 }
 
 /*!
@@ -208,7 +237,7 @@ const QString & DirectoryEdit::prefix() const
  */
 bool DirectoryEdit::isDirectory() const
 {
-	return m_directory;
+	return d->m_directory;
 }
 
 /*!
@@ -221,10 +250,10 @@ bool DirectoryEdit::isDirectory() const
  */
 void DirectoryEdit::setDirectory(bool value)
 {
-	if (m_directory != value)
+	if (d->m_directory != value)
 	{
-		m_directory = value;
-		slotTextChanged(text());
+		d->m_directory = value;
+		d->slotTextChanged(text());
 	}
 }
 
@@ -236,7 +265,7 @@ void DirectoryEdit::setDirectory(bool value)
  */
 bool DirectoryEdit::isError() const
 {
-	return m_error;
+	return d->m_error;
 }
 
 /*!
@@ -244,13 +273,13 @@ bool DirectoryEdit::isError() const
  */
 void DirectoryEdit::setText(const QString & value)
 {
-	if (value.startsWith(m_prefix))
+	if (value.startsWith(d->m_prefix))
 	{
 		QLineEdit::setText(value);
 	}
 	else
 	{
-		QLineEdit::setText(m_prefix + value);
+		QLineEdit::setText(d->m_prefix + value);
 	}
 }
 
@@ -259,7 +288,7 @@ void DirectoryEdit::setText(const QString & value)
  */
 void DirectoryEdit::selectAll()
 {
-	setSelection(m_prefix.size(), text().size() - m_prefix.size());
+	setSelection(d->m_prefix.size(), text().size() - d->m_prefix.size());
 }
 
 /*!
@@ -267,8 +296,8 @@ void DirectoryEdit::selectAll()
  */
 void DirectoryEdit::clear()
 {
-	setText(m_prefix);
-	setCursorPosition(m_prefix.size());
+	setText(d->m_prefix);
+	setCursorPosition(d->m_prefix.size());
 }
 
 /*!
@@ -276,8 +305,8 @@ void DirectoryEdit::clear()
  */
 void DirectoryEdit::keyPressEvent(QKeyEvent *event)
 {
-	if (!event->text().isEmpty() && cursorPosition() < m_prefix.size())
-		setCursorPosition(m_prefix.size());
+	if (!event->text().isEmpty() && cursorPosition() < d->m_prefix.size())
+		setCursorPosition(d->m_prefix.size());
 
 	switch (event->key())
 	{
@@ -289,7 +318,7 @@ void DirectoryEdit::keyPressEvent(QKeyEvent *event)
 			const QString text = displayText();
 			if (event->key() == Qt::Key_End)
 			{
-				if (currentPos == 0 && !m_prefix.isEmpty())
+				if (currentPos == 0 && !d->m_prefix.isEmpty())
 				{
 					break; // let lineedit handle this
 				}
@@ -300,13 +329,13 @@ void DirectoryEdit::keyPressEvent(QKeyEvent *event)
 			}
 			else
 			{
-				if (currentPos <= m_prefix.size())
+				if (currentPos <= d->m_prefix.size())
 				{
 					break; // let lineedit handle this
 				}
 				else
 				{
-					setSelection(currentPos, m_prefix.size() - currentPos);
+					setSelection(currentPos, d->m_prefix.size() - currentPos);
 				}
 			}
 			event->accept();
@@ -314,7 +343,7 @@ void DirectoryEdit::keyPressEvent(QKeyEvent *event)
 		}
 		break;
 	case Qt::Key_Backspace:
-		if (cursorPosition() == m_prefix.size())
+		if (cursorPosition() == d->m_prefix.size())
 		{
 			event->ignore();
 			return;
@@ -346,76 +375,6 @@ void DirectoryEdit::keyPressEvent(QKeyEvent *event)
 }
 
 /*!
- * \internal
- */
-void DirectoryEdit::slotEditorCursorPositionChanged(int oldpos, int newpos)
-{
-	if (!hasSelectedText() && !m_ignoreCursorPositionChanged)
-	{
-		m_ignoreCursorPositionChanged = true;
-
-		bool allowSelection = true;
-		int pos = -1;
-		if (newpos < m_prefix.size() && newpos != 0)
-		{
-			if (oldpos == 0)
-			{
-				allowSelection = false;
-				pos = m_prefix.size();
-			}
-			else
-			{
-				pos = oldpos;
-			}
-		}
-
-		if (pos != -1)
-		{
-			const int selSize = selectionStart() >= 0 && allowSelection
-								? (selectedText().size() * (newpos < pos ? -1 : 1)) - newpos + pos
-					: 0;
-
-			const bool wasBlocked = blockSignals(true);
-			if (selSize != 0)
-			{
-				setSelection(pos - selSize, selSize);
-			}
-			else
-			{
-				setCursorPosition(pos);
-			}
-			blockSignals(wasBlocked);
-		}
-		m_ignoreCursorPositionChanged = false;
-	}
-}
-
-
-/*!
- * \brief Slot called when the text changed.
- *
- * This method change the color of the text if the directory \p text not exist.
- */
-void DirectoryEdit::slotTextChanged(QString text)
-{
-	QFileInfo fileInfo(text);
-	QFile file(text);
-	QPalette palette(this->palette());
-
-	m_error = (m_directory != fileInfo.isDir()) || (m_fileMustExist && !file.exists());
-
-	if (!m_error)
-	{
-		palette.setColor(QPalette::Text, QColor());
-	}
-	else
-	{
-		palette.setColor(QPalette::Text, Qt::red);
-	}
-	setPalette(palette);
-}
-
-/*!
  * \brief Open a dialog to change the path in the line editor.
  * \param parent The parent windows of the dialog to open
  * \param defaultValue The value to propose, if there is no value in the editor.
@@ -425,151 +384,15 @@ void DirectoryEdit::changePath(QWidget * parent, const QString & defaultValue)
 	QString value = this->text();
 	if (value.isEmpty()) value = defaultValue;
 
-	if (m_directory)
+	if (d->m_directory)
 		value = QFileDialog::getExistingDirectory(parent, tr("Change the path"), value);
-	else if (m_fileMustExist)
-		value = QFileDialog::getOpenFileName(parent, tr("Change the file"), value, m_filter, &m_filter);
+	else if (d->m_fileMustExist)
+		value = QFileDialog::getOpenFileName(parent, tr("Change the file"), value, d->m_filter, &d->m_filter);
 	else
-		value = QFileDialog::getSaveFileName(parent, tr("Change the file"), value, m_filter, &m_filter);
+		value = QFileDialog::getSaveFileName(parent, tr("Change the file"), value, d->m_filter, &d->m_filter);
 
 	if (! value.isEmpty())
 	{
 		this->setText(QDir::toNativeSeparators(value));
 	}
-}
-
-/* PrivateDirectoryEditWidget */
-
-class PrivateDirectoryEditWidget
-{
-public:
-	PrivateDirectoryEditWidget(QWidget * o);
-
-	DirectoryEdit * m_lineEdit;
-	QToolButton * m_button;
-	QString m_default;
-private:
-};
-
-PrivateDirectoryEditWidget::PrivateDirectoryEditWidget(QWidget * o)
-{
-	QHBoxLayout * layout = new QHBoxLayout(o);
-
-	m_lineEdit = new DirectoryEdit(o);
-	m_button   = new QToolButton(o);
-	m_button->setIcon(QIcon(":/images/folder.png"));
-
-	layout->addWidget(m_lineEdit);
-	layout->addWidget(m_button);
-
-	layout->setMargin(0);
-}
-
-/* DirectoryEditWidget */
-
-/*!
- * \ingroup Components
- * \class DirectoryEditWidget
- * \since 0.7.0.0
- *
- * \brief A widget to edit a path. This widget has a button attached to open a dialog.
- *
- * This class is an association of a Directory Line editor and a button.
- * The button call the \p changePath slot from the \p DirectoryEdit class.
- *
- * \image html directoryeditwidget1.png
- * \image latex directoryeditwidget1.png
- */
-
-/*!
- * \brief Constructs the directory edit widget and tells if the widget is used
- * to edit directory or file.
- * \param isDirectory If \p true, the widget edit directory, otherwise file.
- * \param parent The parent of the widget.
- */
-DirectoryEditWidget::DirectoryEditWidget(bool isDirectory, QWidget * parent) : QWidget(parent)
-{
-	d = new PrivateDirectoryEditWidget(this);
-	d->m_lineEdit->setDirectory(isDirectory);
-	connect(d->m_button, SIGNAL(clicked()), this, SLOT(changePath()));
-}
-
-/*!
- * \brief Construct the directory edit widget.
- * \param parent The parent of the object.
- */
-DirectoryEditWidget::DirectoryEditWidget(QWidget * parent) : QWidget(parent)
-{
-	d = new PrivateDirectoryEditWidget(this);
-	connect(d->m_button, SIGNAL(clicked()), this, SLOT(changePath()));
-}
-
-//! Destroy the widget
-DirectoryEditWidget::~DirectoryEditWidget()
-{
-	delete d;
-}
-
-/*!
- * \brief This property holds whether the input is a directory or a file
- *
- * Return true if the widget is used to edit directory, or false if the widget is used
- * to edit file.
- * \sa setDirectory()
- */
-bool DirectoryEditWidget::isDirectory() const
-{
-	return d->m_lineEdit->isDirectory();
-}
-
-/*!
- * \brief Change the directory/files goal of the widget.
- * \param value If \p true, the widget is used for edit directory, otherwise files.
- * \sa isDirectory()
- */
-void DirectoryEditWidget::setDirectory(bool value)
-{
-	d->m_lineEdit->setDirectory(value);
-}
-
-/*!
- * \brief Return the default value used by the widget when the user click on the open button
- * \sa setDefaultValue()
- */
-QString DirectoryEditWidget::defaultValue() const
-{
-	return d->m_default;
-}
-
-/*!
- * \brief Used to change the default value to use, when no text is in the editor.
- * \param value The new default value to use when the user click on the button.
- * \sa defaultValue()
- */
-void DirectoryEditWidget::setDefaultValue(const QString & value)
-{
-	d->m_default = value;
-}
-
-/*!
- * \brief This slot is called to open a dialog to edit the new path.
- */
-void DirectoryEditWidget::changePath()
-{
-	d->m_lineEdit->changePath(parentWidget(), d->m_default);
-}
-
-void DirectoryEditWidget::focusInEvent(QFocusEvent * event)
-{
-	Q_UNUSED(event);
-
-	d->m_lineEdit->setFocus();
-}
-
-/*!
- * \brief Return the DirectoryEdit created by this widget.
- */
-DirectoryEdit * DirectoryEditWidget::lineEdit() const
-{
-	return d->m_lineEdit;
 }

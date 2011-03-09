@@ -24,6 +24,7 @@
 #include <project/externalfileresolver.h>
 #include "projectproperty/generixproject.h"
 #include "pluginresolver/gce150fileresolver.h"
+#include <directoryedit.h>
 
 // Qt header
 #include <QLineEdit>

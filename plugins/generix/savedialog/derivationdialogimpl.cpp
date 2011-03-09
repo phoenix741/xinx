@@ -20,6 +20,7 @@
 // Xinx header
 #include "derivationdialogimpl.h"
 #include "projectproperty/generixproject.h"
+#include <directoryedit.h>
 
 // Qt header
 #include <QDir>

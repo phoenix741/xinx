@@ -19,11 +19,13 @@
 
 // Xinx header
 #include "directoryeditdelegate.h"
+#include <directoryeditwidget.h>
 #include <directoryedit.h>
 
 // Qt header
 #include <QLayout>
 #include <QPainter>
+#include <QDir>
 
 /* DirectoryEditDelegate */
 

@@ -25,6 +25,7 @@
 #include "replacedialogimpl.h"
 #include <project/xinxprojectmanager.h>
 #include <plugins/xinxpluginsloader.h>
+#include <directoryedit.h>
 
 ReplaceDialogImpl::ReplaceDialogImpl(QWidget * parent, Qt::WFlags f) : QDialog(parent, f)
 {

@@ -20,6 +20,8 @@
 // Xinx header
 #include "customprojectimpl.h"
 #include <core/xinxconfig.h>
+#include <directoryedit.h>
+#include <QDir>
 
 /* CustomProjectImpl */
 

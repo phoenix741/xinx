@@ -20,8 +20,11 @@
 #include "tracticketcreationwizard.h"
 #include "ui_tracticketcreationwizard.h"
 #include "tracxmlrpcproxy.h"
+#include <directoryedit.h>
 #include <QDebug>
 #include <QMessageBox>
+#include <QFile>
+#include <QFileInfo>
 
 TracTicketCreationWizard::TracTicketCreationWizard(QWidget *parent) : QWizard(parent), _ui(new Ui::TracTicketCreationWizard)
 {

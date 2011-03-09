@@ -18,7 +18,7 @@
 */
 
 // Xinx header
-#include "customschemeimpl.h"
+#include "customschemeimpl_p.h"
 
 // QCodeEdit header
 #include <qcodeedit.h>
@@ -31,6 +31,128 @@
 
 // Qt header
 #include <QHBoxLayout>
+
+/* CustomSchemeImplPrivate */
+
+CustomSchemeImplPrivate::CustomSchemeImplPrivate() : _ui(new Ui::CustomScheme), m_languageFactory(0), m_formats(0), m_currentFormat(0), m_currentItem(0)
+{
+
+}
+
+CustomSchemeImplPrivate::~CustomSchemeImplPrivate()
+{
+}
+
+void CustomSchemeImplPrivate::on_m_formatsListView_currentItemChanged(QListWidgetItem * current, QListWidgetItem * previous)
+{
+	if (current != m_currentItem)
+	{
+		m_currentItem = current;
+
+		if (m_currentItem && m_formats)
+		{
+			m_currentFormat = &(m_formats->formatRef(m_currentItem->text()));
+
+			_ui->m_boldCheckBox->setChecked(m_currentFormat->weight != QFont::Normal);
+			_ui->m_overLineCheckBox->setChecked(m_currentFormat->overline);
+			_ui->m_strikeOutCheckBox->setChecked(m_currentFormat->strikeout);
+			_ui->m_italicCheckBox->setChecked(m_currentFormat->italic);
+			_ui->m_underLineCheckBox->setChecked(m_currentFormat->underline || m_currentFormat->waveUnderline);
+			_ui->m_waveUnderLineCheckBox->setChecked(m_currentFormat->waveUnderline);
+			_ui->m_foreGroundComboBox->setColor(m_currentFormat->foreground);
+			_ui->m_backGroundComboBox->setColor(m_currentFormat->background);
+		}
+		_ui->m_formatGroupBox->setEnabled(m_currentItem);
+		_ui->m_colorGroupBox->setEnabled(m_currentItem);
+		_ui->m_exampleGroupBox->setEnabled(m_currentItem);
+
+	}
+}
+
+void CustomSchemeImplPrivate::on_m_boldCheckBox_stateChanged(int state)
+{
+	if (state == Qt::Checked)
+		m_currentFormat->weight = QFont::Bold;
+	else
+		m_currentFormat->weight = QFont::Normal;
+	m_currentItem->setFont(m_currentFormat->toTextCharFormat().font());
+	m_exampleEditor->editor()->document()->setFormatScheme(m_formats);
+}
+
+void CustomSchemeImplPrivate::on_m_overLineCheckBox_stateChanged(int state)
+{
+	m_currentFormat->overline = state == Qt::Checked;
+	m_currentItem->setFont(m_currentFormat->toTextCharFormat().font());
+	m_exampleEditor->editor()->document()->setFormatScheme(m_formats);
+}
+
+void CustomSchemeImplPrivate::on_m_strikeOutCheckBox_stateChanged(int state)
+{
+	m_currentFormat->strikeout = state == Qt::Checked;
+	m_currentItem->setFont(m_currentFormat->toTextCharFormat().font());
+	m_exampleEditor->editor()->document()->setFormatScheme(m_formats);
+}
+
+void CustomSchemeImplPrivate::on_m_italicCheckBox_stateChanged(int state)
+{
+	m_currentFormat->italic = state == Qt::Checked;
+	m_currentItem->setFont(m_currentFormat->toTextCharFormat().font());
+	m_exampleEditor->editor()->document()->setFormatScheme(m_formats);
+}
+
+void CustomSchemeImplPrivate::on_m_underLineCheckBox_stateChanged(int state)
+{
+	m_currentFormat->underline = (state == Qt::Checked) && (_ui->m_waveUnderLineCheckBox->isChecked() == Qt::Unchecked);
+	m_currentFormat->waveUnderline = (state == Qt::Checked) && (_ui->m_waveUnderLineCheckBox->isChecked() == Qt::Checked);
+	m_currentItem->setFont(m_currentFormat->toTextCharFormat().font());
+	m_exampleEditor->editor()->document()->setFormatScheme(m_formats);
+}
+
+void CustomSchemeImplPrivate::on_m_waveUnderLineCheckBox_stateChanged(int state)
+{
+	m_currentFormat->underline = _ui->m_underLineCheckBox->isChecked() && (state == Qt::Unchecked);
+	m_currentFormat->waveUnderline = _ui->m_underLineCheckBox->isChecked() && (state == Qt::Checked);
+	m_currentItem->setFont(m_currentFormat->toTextCharFormat().font());
+	m_exampleEditor->editor()->document()->setFormatScheme(m_formats);
+}
+
+void CustomSchemeImplPrivate::on_m_foreGroundComboBox_activated(const QColor &col)
+{
+	m_currentFormat->foreground = col;
+	if (m_currentFormat->background.isValid()) m_currentItem->setBackground(m_currentFormat->background);
+	m_exampleEditor->editor()->document()->setFormatScheme(m_formats);
+}
+
+void CustomSchemeImplPrivate::on_m_backGroundComboBox_activated(const QColor &col)
+{
+	m_currentFormat->background = col;
+	if (m_currentFormat->foreground.isValid()) m_currentItem->setForeground(m_currentFormat->foreground);
+	m_exampleEditor->editor()->document()->setFormatScheme(m_formats);
+}
+
+void CustomSchemeImplPrivate::updateFormatList()
+{
+	_ui->m_formatsListView->clear();
+
+	if (m_formats)
+	{
+		foreach(const QString & f, m_formats->formats())
+		{
+			QFormat format = m_formats->format(f);
+			QListWidgetItem * item = new QListWidgetItem(f, _ui->m_formatsListView);
+			if (format.background.isValid()) item->setBackground(format.background);
+			if (format.foreground.isValid()) item->setForeground(format.foreground);
+			item->setFont(format.toTextCharFormat().font());
+			item->setHidden(m_hiddenFormat.contains(f));
+		}
+	}
+
+	if (_ui->m_formatsListView->count())
+		_ui->m_formatsListView->setCurrentRow(0);
+}
+
+
+/* CustomSchemeImpl */
 
 /*!
  * \ingroup Components
@@ -60,15 +182,15 @@
  * \param parent The parent widget
  * \param f Flags for the widget
  */
-CustomSchemeImpl::CustomSchemeImpl(QWidget * parent, Qt::WindowFlags f) : QWidget(parent, f), m_languageFactory(0), m_formats(0), m_currentFormat(0), m_currentItem(0)
+CustomSchemeImpl::CustomSchemeImpl(QWidget * parent, Qt::WindowFlags f) : QWidget(parent, f), d(new CustomSchemeImplPrivate)
 {
-	setupUi(this);
+	d->_ui->setupUi(this);
 
-	m_exampleEditor = new QCodeEdit(false, this);
+	d->m_exampleEditor = new QCodeEdit(false, this);
 	QHBoxLayout * hb = new QHBoxLayout;
-	hb->addWidget(m_exampleEditor->editor());
-	m_exampleGroupBox->setLayout(hb);
-	m_exampleGroupBox->setVisible(false);
+	hb->addWidget(d->m_exampleEditor->editor());
+	d->_ui->m_exampleGroupBox->setLayout(hb);
+	d->_ui->m_exampleGroupBox->setVisible(false);
 }
 
 //! Destroy the widget
@@ -82,11 +204,11 @@ CustomSchemeImpl::~CustomSchemeImpl()
  */
 void CustomSchemeImpl::setFormatScheme(QFormatScheme * formats)
 {
-	if (formats != m_formats)
+	if (formats != d->m_formats)
 	{
-		m_formats = formats;
-		m_exampleEditor->editor()->document()->setFormatScheme(m_formats);
-		updateFormatList();
+		d->m_formats = formats;
+		d->m_exampleEditor->editor()->document()->setFormatScheme(d->m_formats);
+		d->updateFormatList();
 	}
 }
 
@@ -96,7 +218,7 @@ void CustomSchemeImpl::setFormatScheme(QFormatScheme * formats)
  */
 QFormatScheme * CustomSchemeImpl::formatScheme() const
 {
-	return m_formats;
+	return d->m_formats;
 }
 
 /*!
@@ -105,11 +227,11 @@ QFormatScheme * CustomSchemeImpl::formatScheme() const
  */
 void CustomSchemeImpl::setExample(const QString & value)
 {
-	if (m_example != value)
+	if (d->m_example != value)
 	{
-		m_example = value;
-		m_exampleEditor->editor()->setText(m_example);
-		m_exampleGroupBox->setVisible(! m_example.isEmpty());
+		d->m_example = value;
+		d->m_exampleEditor->editor()->setText(d->m_example);
+		d->_ui->m_exampleGroupBox->setVisible(! d->m_example.isEmpty());
 	}
 }
 
@@ -120,7 +242,7 @@ void CustomSchemeImpl::setExample(const QString & value)
  */
 const QString & CustomSchemeImpl::example() const
 {
-	return m_example;
+	return d->m_example;
 }
 
 /*!
@@ -129,9 +251,9 @@ const QString & CustomSchemeImpl::example() const
  */
 void CustomSchemeImpl::setLanguageFactory(QLanguageFactory * value)
 {
-	if (value != m_languageFactory)
+	if (value != d->m_languageFactory)
 	{
-		m_languageFactory = value;
+		d->m_languageFactory = value;
 	}
 }
 
@@ -141,7 +263,7 @@ void CustomSchemeImpl::setLanguageFactory(QLanguageFactory * value)
  */
 QLanguageFactory * CustomSchemeImpl::languageFactory() const
 {
-	return m_languageFactory;
+	return d->m_languageFactory;
 }
 
 /*!
@@ -150,9 +272,9 @@ QLanguageFactory * CustomSchemeImpl::languageFactory() const
  */
 void CustomSchemeImpl::setLanguageDefinition(const QString & value)
 {
-	if (m_languageFactory)
+	if (d->m_languageFactory)
 	{
-		m_languageFactory->setLanguage(m_exampleEditor->editor(), value);
+		d->m_languageFactory->setLanguage(d->m_exampleEditor->editor(), value);
 	}
 }
 
@@ -163,8 +285,8 @@ void CustomSchemeImpl::setLanguageDefinition(const QString & value)
  */
 QString CustomSchemeImpl::languageDefinition() const
 {
-	if (m_exampleEditor->editor()->languageDefinition())
-		return m_exampleEditor->editor()->languageDefinition()->language();
+	if (d->m_exampleEditor->editor()->languageDefinition())
+		return d->m_exampleEditor->editor()->languageDefinition()->language();
 	else
 		return QString();
 }
@@ -175,10 +297,10 @@ QString CustomSchemeImpl::languageDefinition() const
  */
 void CustomSchemeImpl::setHiddenFormat(const QStringList & value)
 {
-	if (m_hiddenFormat != value)
+	if (d->m_hiddenFormat != value)
 	{
-		m_hiddenFormat = value;
-		updateFormatList();
+		d->m_hiddenFormat = value;
+		d->updateFormatList();
 	}
 }
 
@@ -189,115 +311,7 @@ void CustomSchemeImpl::setHiddenFormat(const QStringList & value)
  */
 const QStringList & CustomSchemeImpl::hiddenFormat() const
 {
-	return m_hiddenFormat;
-}
-
-void CustomSchemeImpl::on_m_formatsListView_currentItemChanged(QListWidgetItem * current, QListWidgetItem * previous)
-{
-	if (current != m_currentItem)
-	{
-		m_currentItem = current;
-
-		if (m_currentItem && m_formats)
-		{
-			m_currentFormat = &(m_formats->formatRef(m_currentItem->text()));
-
-			m_boldCheckBox->setChecked(m_currentFormat->weight != QFont::Normal);
-			m_overLineCheckBox->setChecked(m_currentFormat->overline);
-			m_strikeOutCheckBox->setChecked(m_currentFormat->strikeout);
-			m_italicCheckBox->setChecked(m_currentFormat->italic);
-			m_underLineCheckBox->setChecked(m_currentFormat->underline || m_currentFormat->waveUnderline);
-			m_waveUnderLineCheckBox->setChecked(m_currentFormat->waveUnderline);
-			m_foreGroundComboBox->setColor(m_currentFormat->foreground);
-			m_backGroundComboBox->setColor(m_currentFormat->background);
-		}
-		m_formatGroupBox->setEnabled(m_currentItem);
-		m_colorGroupBox->setEnabled(m_currentItem);
-		m_exampleGroupBox->setEnabled(m_currentItem);
-
-	}
-}
-
-void CustomSchemeImpl::on_m_boldCheckBox_stateChanged(int state)
-{
-	if (state == Qt::Checked)
-		m_currentFormat->weight = QFont::Bold;
-	else
-		m_currentFormat->weight = QFont::Normal;
-	m_currentItem->setFont(m_currentFormat->toTextCharFormat().font());
-	m_exampleEditor->editor()->document()->setFormatScheme(m_formats);
-}
-
-void CustomSchemeImpl::on_m_overLineCheckBox_stateChanged(int state)
-{
-	m_currentFormat->overline = state == Qt::Checked;
-	m_currentItem->setFont(m_currentFormat->toTextCharFormat().font());
-	m_exampleEditor->editor()->document()->setFormatScheme(m_formats);
-}
-
-void CustomSchemeImpl::on_m_strikeOutCheckBox_stateChanged(int state)
-{
-	m_currentFormat->strikeout = state == Qt::Checked;
-	m_currentItem->setFont(m_currentFormat->toTextCharFormat().font());
-	m_exampleEditor->editor()->document()->setFormatScheme(m_formats);
-}
-
-void CustomSchemeImpl::on_m_italicCheckBox_stateChanged(int state)
-{
-	m_currentFormat->italic = state == Qt::Checked;
-	m_currentItem->setFont(m_currentFormat->toTextCharFormat().font());
-	m_exampleEditor->editor()->document()->setFormatScheme(m_formats);
-}
-
-void CustomSchemeImpl::on_m_underLineCheckBox_stateChanged(int state)
-{
-	m_currentFormat->underline = (state == Qt::Checked) && (m_waveUnderLineCheckBox->isChecked() == Qt::Unchecked);
-	m_currentFormat->waveUnderline = (state == Qt::Checked) && (m_waveUnderLineCheckBox->isChecked() == Qt::Checked);
-	m_currentItem->setFont(m_currentFormat->toTextCharFormat().font());
-	m_exampleEditor->editor()->document()->setFormatScheme(m_formats);
-}
-
-void CustomSchemeImpl::on_m_waveUnderLineCheckBox_stateChanged(int state)
-{
-	m_currentFormat->underline = m_underLineCheckBox->isChecked() && (state == Qt::Unchecked);
-	m_currentFormat->waveUnderline = m_underLineCheckBox->isChecked() && (state == Qt::Checked);
-	m_currentItem->setFont(m_currentFormat->toTextCharFormat().font());
-	m_exampleEditor->editor()->document()->setFormatScheme(m_formats);
-}
-
-void CustomSchemeImpl::on_m_foreGroundComboBox_activated(const QColor &col)
-{
-	m_currentFormat->foreground = col;
-	if (m_currentFormat->background.isValid()) m_currentItem->setBackground(m_currentFormat->background);
-	m_exampleEditor->editor()->document()->setFormatScheme(m_formats);
-}
-
-void CustomSchemeImpl::on_m_backGroundComboBox_activated(const QColor &col)
-{
-	m_currentFormat->background = col;
-	if (m_currentFormat->foreground.isValid()) m_currentItem->setForeground(m_currentFormat->foreground);
-	m_exampleEditor->editor()->document()->setFormatScheme(m_formats);
-}
-
-void CustomSchemeImpl::updateFormatList()
-{
-	m_formatsListView->clear();
-
-	if (m_formats)
-	{
-		foreach(const QString & f, m_formats->formats())
-		{
-			QFormat format = m_formats->format(f);
-			QListWidgetItem * item = new QListWidgetItem(f, m_formatsListView);
-			if (format.background.isValid()) item->setBackground(format.background);
-			if (format.foreground.isValid()) item->setForeground(format.foreground);
-			item->setFont(format.toTextCharFormat().font());
-			item->setHidden(m_hiddenFormat.contains(f));
-		}
-	}
-
-	if (m_formatsListView->count())
-		m_formatsListView->setCurrentRow(0);
+	return d->m_hiddenFormat;
 }
 
 

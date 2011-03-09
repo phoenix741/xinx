@@ -20,9 +20,11 @@
 // Xinx header
 #include "customgeneralimpl.h"
 #include <core/xinxconfig.h>
+#include <directoryedit.h>
 
 // Qt header
 #include <QStyleFactory>
+#include <QDir>
 
 /* CustomGeneralImpl */
 
