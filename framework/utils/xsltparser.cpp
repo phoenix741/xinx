@@ -142,7 +142,7 @@ void xsltParserGenericErrorFunc(void * ctx, const char * msg, ...)
 	if (d)
 	{
 		XsltParser::ErrorMessage m;
-		m.isWarning = true;
+		m.isWarning = false;
 		m.message   = proceedMsg.simplified();
 		m.line      = -1;
 
@@ -279,6 +279,8 @@ bool XsltParser::process()
 	xmlSetGenericErrorFunc(d, xsltParserGenericErrorFunc);
 	//xsltSetGenericDebugFunc(d, xsltParserGenericErrorFunc);
 	xsltTransformContextPtr ctxt = xsltNewTransformContext(d->m_stylesheet, d->m_xmlDoc);
+	xsltSetTransformErrorFunc(ctxt, d, xsltParserGenericErrorFunc);
+
 	if (ctxt == NULL)
 	{
 		xmlSetGenericErrorFunc(0, 0);
@@ -290,6 +292,7 @@ bool XsltParser::process()
 
 	d->m_res = xsltApplyStylesheetUser(d->m_stylesheet, d->m_xmlDoc, 0, 0, 0, ctxt);
 	//xsltSetGenericDebugFunc(0, 0);
+	xsltSetTransformErrorFunc(ctxt, d, 0);
 	xmlSetGenericErrorFunc(0, 0);
 	xmlSetStructuredErrorFunc(0, 0);
 

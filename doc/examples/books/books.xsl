@@ -16,9 +16,8 @@
 					<tr>
 						<th colspan="2">Description</th>
 					</tr>
-					
 					<xsl:apply-templates select="/livres/livre">
-						<xsl:sort select="annee" order="asc"/>
+						<xsl:sort select="annee" order="ascending"/>
 					</xsl:apply-templates>		
 				</table>
 			</body>
