@@ -429,7 +429,7 @@ bool Manager::closeProject(XinxProject::ProjectPtr project, bool showWelcome)
 		return false;
 	}
 
-	if (XinxSession::SessionManager::self()->isApplicationStopping())
+	if (! XinxSession::SessionManager::self()->isApplicationStopping())
 	{
 		XinxSession::SessionManager::self()->currentSession()->deleteOpenedProject(project->projectPath());
 	}

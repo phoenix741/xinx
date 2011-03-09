@@ -72,6 +72,9 @@ XmlPresentationDockThread::XmlPresentationDockThread(XmlPresentationDockWidget *
 
 XmlPresentationDockThread::~XmlPresentationDockThread()
 {
+	terminate();
+	wait();
+
 	presentationActivated(0);
 	delete m_xmlPresentationWidget;
 }
@@ -321,6 +324,8 @@ void XmlPresentationDockThread::threadrun()
 
 void XmlPresentationDockThread::threadTerminated()
 {
+	Q_ASSERT_X(m_sortFilterModel, "XmlPresentationDockThread::threadTerminated", "Sort filter model is empty. Is the objet destroyed ?");
+
 	if (m_threadAct == THREAD_OPENING)
 	{
 		m_xmlPresentationWidget->m_evaluateToolButton->setEnabled(true);
