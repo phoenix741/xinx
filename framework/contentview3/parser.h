@@ -78,8 +78,11 @@ public:
 	virtual void startJob();
 protected:
 	virtual void parse() = 0;
-	void loadExternalContent(Node * parent, const QString & content, const QString & parserType);
+//	void loadExternalContent(Node * parent, const QString & content, const QString & parserType);
 	QString addImport(const QString & import);
+
+	void addWarning(int line, const QString & message);
+	void addError(int line, const QString & message);
 private:
 	QScopedPointer<PrivateParser> d;
 };

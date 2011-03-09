@@ -40,7 +40,6 @@ public:
 	XinxProject::ProjectPtrWeak _project;
 	QString _filename;
 	QStringList _imports;
-	QList<File::Symbole> _symbols;
 	FileNodePtr _rootNode;
 	FilePtrWeak _this;
 };
@@ -135,21 +134,6 @@ void File::clearImports()
 const QStringList& File::imports() const
 {
 	return d->_imports;
-}
-
-void File::addSymbole(const ContentView3::File::Symbole& symbole)
-{
-	d->_symbols.append(symbole);
-}
-
-void File::clearSymboles()
-{
-	d->_symbols.clear();
-}
-
-const QList< File::Symbole >& File::symboles() const
-{
-	return d->_symbols;
 }
 
 /*!

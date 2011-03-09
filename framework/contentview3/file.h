@@ -45,13 +45,6 @@ class LIBEXPORT File
 {
 	Q_DECLARE_TR_FUNCTIONS(File)
 public:
-	class Symbole
-	{
-	public:
-		int declarationLine;
-		QString type, name;
-	};
-
 	static FilePtr create(XinxProject::ProjectPtr project = XinxProject::ProjectPtr());
 	static FilePtr create(const QString& filename, XinxProject::ProjectPtr project);
 	~File();
@@ -65,10 +58,6 @@ public:
 	const QStringList & imports() const;
 	void clearImports();
 	void addImport(const QString & import);
-
-	const QList<Symbole> & symboles() const;
-	void clearSymboles();
-	void addSymbole(const Symbole & symbole);
 
 	void setRootNode(FileNodePtr node);
 	FileNodePtr rootNode() const;

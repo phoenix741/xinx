@@ -263,16 +263,34 @@ QString Parser::addImport(const QString& import)
 	return calculateImport;
 }
 
+void Parser::addWarning(int line, const QString& message)
+{
+	QMetaObject::invokeMethod(	ErrorManager::self(), "addMessage", Qt::QueuedConnection,
+								Q_ARG(QString, d->_file ? d->_file->filename() : "XINX"),
+								Q_ARG(int, line),
+								Q_ARG(QtMsgType, QtWarningMsg),
+								Q_ARG(QString, message));
+}
+
+void Parser::addError(int line, const QString& message)
+{
+	QMetaObject::invokeMethod(	ErrorManager::self(), "addMessage", Qt::QueuedConnection,
+								Q_ARG(QString, d->_file ? d->_file->filename() : "XINX"),
+								Q_ARG(int, line),
+								Q_ARG(QtMsgType, QtCriticalMsg),
+								Q_ARG(QString, message));
+}
+
 void Parser::startJob()
 {
 	try
 	{
+		QMetaObject::invokeMethod(ErrorManager::self(), "clearMessages", Qt::QueuedConnection,
+								  Q_ARG(QString, d->_file ? d->_file->filename() : "XINX"));
+
 		parse();
 
 		d->_file->setRootNode(d->_fileRootNode);
-
-		QMetaObject::invokeMethod(ErrorManager::self(), "clearMessages", Qt::QueuedConnection,
-								  Q_ARG(QString, d->_file ? d->_file->filename() : "XINX"));
 	}
 	catch (const ParserException & e)
 	{
