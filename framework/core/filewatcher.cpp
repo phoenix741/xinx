@@ -255,24 +255,25 @@ void FileWatcher::activate()
 
 
 /*!
-* \class FilesWatcher
-* \brief Class used to watch the modification of multiple file.
-*
-* All files is periodically watched and if the date of the file is modified, the user is alerted by a signal.
-*
-* Behind the FileWatcher, a thread watch modifications of all files referenced by a
-* FileWatcher. The watcher can be desactivate and reactivate without delete the object.
-* When the object is reactivated, the file date, in memory, is updated.
-*/
+ * \class FilesWatcher
+ * \brief Class used to watch the modification of multiple file.
+ *
+ * All files is periodically watched and if the date of the file is modified, the user is alerted by a signal.
+ *
+ * Behind the FileWatcher, a thread watch modifications of all files referenced by a
+ * FileWatcher. The watcher can be desactivate and reactivate without delete the object.
+ * When the object is reactivated, the file date, in memory, is updated.
+ */
 
 /*!
-* \fn void FilesWatcher::fileChanged()
-* \brief The signal is emited when the watched file is modified.
-*/
+ * \fn void FilesWatcher::fileChanged(const QString & path)
+ * \brief The signal is emited when the watched file is modified.
+ * \param path The file that have been changed.
+ */
 
 /*!
-* Create a FilesWatcher with a file name
-*/
+ * Create a FilesWatcher with a file name
+ */
 FilesWatcher::FilesWatcher(QObject* parent) : QObject(parent)
 {
 	d = new PrivateFilesWatcher(this);

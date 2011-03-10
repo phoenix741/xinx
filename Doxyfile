@@ -31,7 +31,7 @@ PROJECT_NAME           = "XINX Library"
 # This could be handy for archiving the generated documentation or 
 # if some version control system is used.
 
-PROJECT_NUMBER         = 0.9.1
+PROJECT_NUMBER         = 0.10.0
 
 # The OUTPUT_DIRECTORY tag is used to specify the (relative or absolute) 
 # base path where the generated documentation will be put. 
@@ -189,7 +189,12 @@ TAB_SIZE               = 8
 # will result in a user-defined paragraph with heading "Side Effects:". 
 # You can put \n's in the value part of an alias to insert newlines.
 
-ALIASES                = 
+ALIASES                = \
+	"intern=\par<b>Internal use only.</b>" \
+        "reimp=\par<b>Reimplemented from superclass.</b>" \
+        "unmaintained=\xrefitem unmaintained \"Unmaintained\" \"Unmaintained\"" \
+        "requirement=\xrefitem requirements \"Requirement(s)\" \"Requirements\"" \
+        "bc=\xrefitem bc \"Binary Compatible\" \"Binary Compatible\"" 
 
 # Set the OPTIMIZE_OUTPUT_FOR_C tag to YES if your project consists of C 
 # sources only. Doxygen will then generate output that is more tailored for C. 

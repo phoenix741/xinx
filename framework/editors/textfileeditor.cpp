@@ -132,12 +132,6 @@ TextFileEditor::~TextFileEditor()
  */
 
 /*!
- * \fn void TextFileEditor::positionInEditorChanged(const QModelIndex & index);
- * \brief Signal emited when the position in the editor is changed. The \e index give
- * the position of the cursor in the ContentViewModel.
- */
-
-/*!
  * \fn void TextFileEditor::codecChanged();
  * \brief This signal is emited when the codec is modified.
  */

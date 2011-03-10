@@ -132,7 +132,7 @@ XinxLineEdit::~XinxLineEdit()
 
 /**
  * \fn void XinxLineEdit::clearButtonClicked();
- * Emitted when the user clicked on the clear button
+ * \brief Emitted when the user clicked on the clear button
  */
 
 void XinxLineEdit::init()

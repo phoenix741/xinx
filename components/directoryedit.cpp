@@ -211,7 +211,7 @@ const QString & DirectoryEdit::filter() const
  *
  * If the value is different of 0, the user can't edit first \e value characters.
  *
- * \sa editLimit();
+ * \sa prefix();
  */
 void DirectoryEdit::setPrefix(const QString & value)
 {
@@ -224,7 +224,7 @@ void DirectoryEdit::setPrefix(const QString & value)
 
 /*!
  * \brief Get the value of the edit limit
- * \sa setEditLimit()
+ * \sa setPrefix()
  */
 const QString & DirectoryEdit::prefix() const
 {

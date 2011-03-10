@@ -36,6 +36,29 @@
 #include <QInputDialog>
 #include <QTextEdit>
 
+/*!
+ * \defgroup XinxScript Interface for scripting XINX
+ * \brief Define class used to make script with XINX using ECMAScript
+ *
+ * ECMAScript is based on the implementation provided by Qt. The interface to develop script on XINX
+ * is very ligth but can be improved if some feature are requested.
+ *
+ * Note : to access to the current project, we must use the project editor.
+ *
+ * FIXME: Provide a way to access to the manager (defaultProject, and project or the project of a file)
+ *
+ * ScriptManager provide some comvinience methode to help the user, in it's script, to interact with the user :
+ *  - void alert(string)
+ *  - bool confirm(string)
+ *  - int/string input(string, int/string)
+ *
+ * To work on the editor you can use
+ *  - DocumentSearch : It can be used to search and replace on the textEdit.
+ *  - editor : It can be used to access to method and property of the editor
+ *  - textEdit : Is the text version of the editor
+ *  - textEdit.document : Is the document of the editor (can be used for search, replace, ...)
+ */
+
 /* Constante */
 
 #if QT_VERSION <= 0x040500
@@ -111,93 +134,6 @@ static QScriptValue documentSearchOptionToScriptValue(QScriptEngine *engine, Doc
 static void documentSearchOptionFromScriptValue(const QScriptValue &object, DocumentSearchOption* &out)
 {
 	out = qobject_cast<DocumentSearchOption*>(object.toQObject());
-}
-
-/* ScriptValue */
-
-ScriptValue::ScriptValue()
-{
-}
-
-
-ScriptValue::ScriptValue(QScriptValue value) : m_value(value)
-{
-
-}
-
-const QScriptValue & ScriptValue::value() const
-{
-	return m_value;
-}
-
-QString ScriptValue::text() const
-{
-	return m_value.property("text").toString();
-}
-
-bool ScriptValue::isCallBeforeSave() const
-{
-	return m_value.property("beforeSave").isFunction();
-}
-
-void ScriptValue::callScriptBeforeSave()
-{
-	QScriptValue result = m_value.property("beforeSave").call(m_value);
-	if (result.isError())
-	{
-		qWarning(qPrintable(qApp->translate("ScriptValue", "An error occure while run the script : %1").arg(result.toString())));
-	}
-}
-
-bool ScriptValue::isCallBeforeLoad() const
-{
-	return m_value.property("beforeLoad").isFunction();
-}
-
-void ScriptValue::callScriptBeforeLoad()
-{
-	QScriptValue result = m_value.property("beforeLoad").call(m_value);
-	if (result.isError())
-	{
-		qWarning(qPrintable(qApp->translate("ScriptValue", "An error occure while run the script : %1").arg(result.toString())));
-	}
-}
-
-bool ScriptValue::isCallAfterSave() const
-{
-	return m_value.property("afterSave").isFunction();
-}
-
-void ScriptValue::callScriptAfterSave()
-{
-	QScriptValue result = m_value.property("afterSave").call(m_value);
-	if (result.isError())
-	{
-		qWarning(qPrintable(qApp->translate("ScriptValue", "An error occure while run the script : %1").arg(result.toString())));
-	}
-}
-
-bool ScriptValue::isCallAfterLoad() const
-{
-	return m_value.property("afterLoad").isFunction();
-}
-
-void ScriptValue::callScriptAfterLoad()
-{
-	QScriptValue result = m_value.property("afterLoad").call(m_value);
-	if (result.isError())
-	{
-		qWarning(qPrintable(qApp->translate("ScriptValue", "An error occure while run the script : %1").arg(result.toString())));
-	}
-}
-
-void ScriptValue::callScript()
-{
-	QScriptValue result = m_value.property("run").call(m_value);
-	if (result.isError())
-	{
-		qWarning(qPrintable(qApp->translate("ScriptValue", "An error occure while run the script : %1").arg(result.toString())));
-	}
 }
 
 /* ScriptManager */

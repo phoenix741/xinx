@@ -137,7 +137,7 @@ QString Parser::description() const
 }
 
 /*!
- * \fn virtual void parse() = 0
+ * \fn virtual void Parser::parse() = 0
  * \brief Load the content of the given device.
  *
  * This method must be derivated in sub-class.

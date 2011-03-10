@@ -101,8 +101,12 @@ static void xinxMessageHandler(QtMsgType t, const char * m)
  */
 
 /*!
- * \fn void ExceptionManager::errorTriggered();
- * \brief Signal emited when \e notifyError is called and the exception manager is set to be fatal.
+ * \fn void ExceptionManager::errorTriggered(const QString & message);
+ * \brief Signal emited when a FATAL error occured.
+ *
+ * Signal emited when \e notifyError is called and the exception manager is set to be fatal.
+ * \param message The message that terminate XINX. Slot called by this signal must be quick and
+ * small.
  */
 
 ExceptionManager::ExceptionManager()

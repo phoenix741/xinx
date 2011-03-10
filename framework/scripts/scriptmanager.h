@@ -24,6 +24,7 @@
 // Xinx header
 #include <core/lib-config.h>
 #include <core/xinxsingleton.h>
+#include <scripts/scriptvalue.h>
 
 // Qt header
 #include <QObject>
@@ -31,51 +32,12 @@
 #include <QScriptEngine>
 #include <QPointer>
 
-/*!
- * \defgroup XinxScript
- * \brief Define class used to make script with XINX
- *
- * FIXME: Fix the documentation
- *
- * Note : to access to the current project, we must use the project editor.
- *
- * FIXME: Provide a way to access to the manager (defaultProject, and project or the project of a file)
- */
-
 class AbstractEditor;
 
 namespace XinxProject
 {
 class Parameters;
 };
-
-class LIBEXPORT ScriptValue
-{
-public:
-	ScriptValue();
-	ScriptValue(QScriptValue value);
-
-	const QScriptValue & value() const;
-
-	QString text() const;
-
-	bool isCallBeforeSave() const;
-	void callScriptBeforeSave();
-
-	bool isCallBeforeLoad() const;
-	void callScriptBeforeLoad();
-
-	bool isCallAfterSave() const;
-	void callScriptAfterSave();
-
-	bool isCallAfterLoad() const;
-	void callScriptAfterLoad();
-
-	void callScript();
-private:
-	QScriptValue m_value;
-};
-
 
 class LIBEXPORT ScriptManager : public XinxLibSingleton<ScriptManager>
 {
@@ -107,8 +69,5 @@ private:
 	AbstractEditor * m_editor;
 	friend class XinxLibSingleton<ScriptManager>;
 };
-
-Q_DECLARE_METATYPE(QScriptValue)
-Q_DECLARE_METATYPE(ScriptValue)
 
 #endif /*__SCRIPTMANAGER_H__*/

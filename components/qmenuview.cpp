@@ -220,7 +220,7 @@ void QMenuView::createMenu(const QModelIndex &parent, QMenu *parentMenu, QMenu *
 		menu->menuAction()->setData(v);
 		menu->setEnabled(parent.flags().testFlag(Qt::ItemIsEnabled));
 
-		connect(menu, SIGNAL(aboutToShow()), this, SLOT(aboutToShow()));
+		connect(menu, SIGNAL(aboutToShow()), d.data(), SLOT(aboutToShow()));
 
 		return;
 	}

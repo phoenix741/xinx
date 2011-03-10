@@ -256,12 +256,12 @@ XinxColorCombo::~XinxColorCombo()
 
 /*!
  * \fn void XinxColorCombo::activated(const QColor &col);
- * Signal emited when a color is activated by the user.
+ * \brief Signal emited when a color is activated by the user.
  */
 
 /*!
  * \fn void XinxColorCombo::highlighted(const QColor &col);
- * Signal emited when a color is highlighted by the user.
+ * \brief Signal emited when a color is highlighted by the user.
  */
 
 /*!

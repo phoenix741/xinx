@@ -48,7 +48,9 @@
 #include "borderlayout_p.h"
 
 /*!
- * \defgroup Components Visual Components used by XINX
+ * \defgroup Components Graphical User Interface's components for XINX
+ * \brief This group contains GUI components that can be used in XINX.
+ * This components can be used in other application too.
  */
 
 /*!

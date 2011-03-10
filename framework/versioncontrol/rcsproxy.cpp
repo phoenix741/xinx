@@ -55,12 +55,12 @@ namespace VersionControl
  */
 
 /*!
- * \var RCSProxy::rcsAddRemoveOperation RCSManager::RCS_ADD
+ * \var RCSProxy::rcsAddRemoveOperation RCSProxy::RCS_ADD
  * \brief Add a file to RCS
  */
 
 /*!
- * \var RCSProxy::rcsAddRemoveOperation RCSManager::RCS_REMOVE
+ * \var RCSProxy::rcsAddRemoveOperation RCSProxy::RCS_REMOVE
  * \brief Remove a file to the RCS
  */
 

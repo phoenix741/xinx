@@ -38,6 +38,7 @@
 #include <QLineEdit>
 #include <QKeyEvent>
 
+
 PrivateCheckComboBox::PrivateCheckComboBox(CheckComboBox * parent) : _containerMousePress(false), _separator(QLatin1String(",")), _parent(parent)
 {
 
@@ -140,33 +141,35 @@ bool CheckComboModel::setData(const QModelIndex& index, const QVariant& value, i
 }
 
 /*!
-	\class CheckComboBox
-	\inmodule Gui
-	\brief The CheckComboBox widget is an extended QComboBox with checkable items.
-
-	ComboBox is a specialized combo box with checkable items.
-    Checked items are collected together in the line edit.
-
-    \code
-	CheckComboBox* comboBox = new CheckComboBox(this);
-    comboBox->addItems(...);
-    comboBox->setItemCheckState(2, Qt::Checked);
-    comboBox->setItemCheckState(4, Qt::Checked);
-    // OR
-    comboBox->setCheckedItems(QStringList() << "dolor" << "amet");
-    \endcode
-
-	\image checkcombobox.png "CheckComboBox in Plastique style."
+ * \class CheckComboBox
+ * \ingroup Components
+ * \brief The CheckComboBox widget is an extended QComboBox with checkable items.
+ *
+ * ComboBox is a specialized combo box with checkable items.
+ * Checked items are collected together in the line edit.
+ *
+ * \code
+ * CheckComboBox* comboBox = new CheckComboBox(this);
+ * comboBox->addItems(...);
+ * comboBox->setItemCheckState(2, Qt::Checked);
+ * comboBox->setItemCheckState(4, Qt::Checked);
+ * // OR
+ * comboBox->setCheckedItems(QStringList() << "dolor" << "amet");
+ * \endcode
+ *
+ * Exemple of use of the checkbox :
+ * 
+ * \image html checkcombobox.png "CheckComboBox in Plastique style."
+ * \image latex checkcombobox.eps "CheckComboBox in Plastique style."
  */
 
 /*!
-	\fn CheckComboBox::checkedItemsChanged(const QStringList& items)
-
-    This signal is emitted whenever the checked \a items have been changed.
+ * \fn CheckComboBox::checkedItemsChanged(const QStringList& items)
+ * \brief This signal is emitted whenever the checked \a items have been changed.
  */
 
 /*!
-	Constructs a new CheckComboBox with \a parent.
+ * \brief Constructs a new CheckComboBox with \a parent.
  */
 CheckComboBox::CheckComboBox(QWidget* parent) : QComboBox(parent), d(new PrivateCheckComboBox(this))
 {
@@ -190,14 +193,14 @@ CheckComboBox::CheckComboBox(QWidget* parent) : QComboBox(parent), d(new Private
 }
 
 /*!
-    Destructs the combo box.
+ * \brief Destructs the combo box.
  */
 CheckComboBox::~CheckComboBox()
 {
 }
 
 /*!
-    \reimp
+ * \reimp for internal use
  */
 void CheckComboBox::hidePopup()
 {
@@ -206,7 +209,8 @@ void CheckComboBox::hidePopup()
 }
 
 /*!
-    Returns the check state of the item at \a index.
+ * \brief Returns the check state of the item at \a index.
+ * \sa setItemCheckState()
  */
 Qt::CheckState CheckComboBox::itemCheckState(int index) const
 {
@@ -214,7 +218,8 @@ Qt::CheckState CheckComboBox::itemCheckState(int index) const
 }
 
 /*!
-    Sets the check \a state of the item at \a index.
+ * \brief Sets the check \a state of the item at \a index.
+ * \sa itemCheckState()
  */
 void CheckComboBox::setItemCheckState(int index, Qt::CheckState state)
 {
@@ -222,8 +227,9 @@ void CheckComboBox::setItemCheckState(int index, Qt::CheckState state)
 }
 
 /*!
-	\property CheckComboBox::checkedItems
-    \brief the checked items.
+ * \property CheckComboBox::checkedItems
+ * \brief The checked items.
+ * \sa setCheckedItems()
  */
 QStringList CheckComboBox::checkedItems() const
 {
@@ -238,6 +244,10 @@ QStringList CheckComboBox::checkedItems() const
 	return items;
 }
 
+/*!
+ * \brief Set the checked items list.
+ * \sa checkedItems()
+ */
 void CheckComboBox::setCheckedItems(const QStringList& items)
 {
 	for(int i = 0; i < model ()->rowCount (); i++)
@@ -246,19 +256,24 @@ void CheckComboBox::setCheckedItems(const QStringList& items)
 	}
 }
 
-
 /*!
-	\property CheckComboBox::separator
-    \brief the default separator.
-
-    The checked items are joined together with the separator string.
-    The default value is a comma (",").
+ * \property CheckComboBox::separator
+ * \brief the default separator.
+ *
+ * The checked items are joined together with the separator string.
+ * The default value is a comma (",").
+ *
+ * \sa setSeparator()
  */
 QString CheckComboBox::separator() const
 {
 	return d->_separator;
 }
 
+/*!
+ * \brief Set the separator on the lineEdit.
+ * \sa separator()
+ */
 void CheckComboBox::setSeparator(const QString& separator)
 {
 	if (d->_separator != separator)
