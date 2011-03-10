@@ -22,9 +22,80 @@
  */
 
 // Xinx header
-#include "qmenuview.h"
+#include "qmenuview_p.h"
 
 Q_DECLARE_METATYPE(QModelIndex);
+
+/* QMenuViewPrivate */
+
+QMenuViewPrivate::QMenuViewPrivate(QMenuView* menu) : _menu(menu)
+{
+}
+
+QMenuViewPrivate::~QMenuViewPrivate()
+{
+}
+
+
+QAction * QMenuViewPrivate::makeAction(const QModelIndex &index)
+{
+	QIcon icon = qvariant_cast<QIcon>(index.data(Qt::DecorationRole));
+	QAction * action = new QAction(icon, index.data().toString(), this);
+	action->setEnabled(index.flags().testFlag(Qt::ItemIsEnabled));
+	QVariant v;
+	v.setValue(index);
+	action->setData(v);
+
+	return action;
+}
+
+
+void QMenuViewPrivate::triggered(QAction *action)
+{
+	QVariant v = action->data();
+	if (v.canConvert<QModelIndex>())
+	{
+		QModelIndex idx = qvariant_cast<QModelIndex>(v);
+		emit _menu->triggered(idx);
+	}
+}
+
+void QMenuViewPrivate::hovered(QAction *action)
+{
+	QVariant v = action->data();
+	if (v.canConvert<QModelIndex>())
+	{
+		QModelIndex idx = qvariant_cast<QModelIndex>(v);
+		QString hoveredString = idx.data(Qt::StatusTipRole).toString();
+		if (!hoveredString.isEmpty())
+			emit _menu->hovered(hoveredString);
+	}
+}
+
+void QMenuViewPrivate::aboutToShow()
+{
+	QMenu * menu = qobject_cast<QMenu*>(sender());
+	if (menu)
+	{
+		QVariant v = menu->menuAction()->data();
+		if (v.canConvert<QModelIndex>())
+		{
+			QModelIndex idx = qvariant_cast<QModelIndex>(v);
+			_menu->createMenu(idx, menu, menu);
+			disconnect(menu, SIGNAL(aboutToShow()), this, SLOT(aboutToShow()));
+			return;
+		}
+	}
+
+	_menu->clear();
+
+	if (_menu->prePopulated())
+		_menu->addSeparator();
+
+	_menu->createMenu(m_root, _menu, _menu);
+
+	_menu->postPopulated();
+}
 
 /* QMenuView */
 
@@ -51,7 +122,7 @@ Q_DECLARE_METATYPE(QModelIndex);
  * \brief Creates the new menu view based on a QMenu object.
  * \param parent The parent object of the menu.
  */
-QMenuView::QMenuView(QWidget * parent) : QMenu(parent)
+QMenuView::QMenuView(QWidget * parent) : QMenu(parent), d(new QMenuViewPrivate(this))
 {
 	connect(this, SIGNAL(triggered(QAction*)), this, SLOT(triggered(QAction*)));
 	connect(this, SIGNAL(hovered(QAction*)), this, SLOT(hovered(QAction*)));
@@ -101,7 +172,7 @@ void QMenuView::postPopulated()
  */
 void QMenuView::setModel(QAbstractItemModel * model)
 {
-	m_model = model;
+	d->m_model = model;
 }
 
 /*!
@@ -109,7 +180,7 @@ void QMenuView::setModel(QAbstractItemModel * model)
  */
 QAbstractItemModel * QMenuView::model() const
 {
-	return m_model;
+	return d->m_model;
 }
 
 /*!
@@ -120,7 +191,7 @@ QAbstractItemModel * QMenuView::model() const
  */
 void QMenuView::setRootIndex(const QModelIndex & index)
 {
-	m_root = index;
+	d->m_root = index;
 }
 
 /*!
@@ -130,54 +201,7 @@ void QMenuView::setRootIndex(const QModelIndex & index)
  */
 QModelIndex QMenuView::rootIndex() const
 {
-	return m_root;
-}
-
-void QMenuView::triggered(QAction *action)
-{
-	QVariant v = action->data();
-	if (v.canConvert<QModelIndex>())
-	{
-		QModelIndex idx = qvariant_cast<QModelIndex>(v);
-		emit triggered(idx);
-	}
-}
-
-void QMenuView::hovered(QAction *action)
-{
-	QVariant v = action->data();
-	if (v.canConvert<QModelIndex>())
-	{
-		QModelIndex idx = qvariant_cast<QModelIndex>(v);
-		QString hoveredString = idx.data(Qt::StatusTipRole).toString();
-		if (!hoveredString.isEmpty())
-			emit hovered(hoveredString);
-	}
-}
-
-void QMenuView::aboutToShow()
-{
-	QMenu * menu = qobject_cast<QMenu*>(sender());
-	if (menu)
-	{
-		QVariant v = menu->menuAction()->data();
-		if (v.canConvert<QModelIndex>())
-		{
-			QModelIndex idx = qvariant_cast<QModelIndex>(v);
-			createMenu(idx, menu, menu);
-			disconnect(menu, SIGNAL(aboutToShow()), this, SLOT(aboutToShow()));
-			return;
-		}
-	}
-
-	clear();
-
-	if (prePopulated())
-		addSeparator();
-
-	createMenu(m_root, this, this);
-
-	postPopulated();
+	return d->m_root;
 }
 
 //! Puts all of the children of parent into menu
@@ -201,29 +225,17 @@ void QMenuView::createMenu(const QModelIndex &parent, QMenu *parentMenu, QMenu *
 		return;
 	}
 
-	int end = m_model->rowCount(parent);
+	int end = d->m_model->rowCount(parent);
 	for (int i = 0; i < end; ++i)
 	{
-		QModelIndex idx = m_model->index(i, 0, parent);
-		if (m_model->hasChildren(idx))
+		QModelIndex idx = d->m_model->index(i, 0, parent);
+		if (d->m_model->hasChildren(idx))
 		{
 			createMenu(idx, menu);
 		}
 		else
 		{
-			menu->addAction(makeAction(idx));
+			menu->addAction(d->makeAction(idx));
 		}
 	}
-}
-
-QAction * QMenuView::makeAction(const QModelIndex &index)
-{
-	QIcon icon = qvariant_cast<QIcon>(index.data(Qt::DecorationRole));
-	QAction * action = new QAction(icon, index.data().toString(), this);
-	action->setEnabled(index.flags().testFlag(Qt::ItemIsEnabled));
-	QVariant v;
-	v.setValue(index);
-	action->setData(v);
-
-	return action;
 }

@@ -36,7 +36,7 @@
 #include <QColorDialog>
 #include <QHash>
 
-#include "xinxcolorcombo.h"
+#include "xinxcolorcombo_p.h"
 
 #define STANDARD_PAL_SIZE 18
 
@@ -94,16 +94,118 @@ static void createStandardPalette()
 	standardPalette[i++] = Qt::black;
 }
 
-/* XinxColorCombo::XinxColorComboPrivate */
+/* XinxColorComboPrivate */
 
-class XinxColorCombo::XinxColorComboPrivate
+XinxColorComboPrivate::XinxColorComboPrivate(XinxColorCombo *parent) : _parent(parent)
 {
-public:
-	XinxColorComboPrivate() {}
-	~XinxColorComboPrivate() {}
+}
 
-	bool showEmptyList;
-};
+XinxColorComboPrivate::~XinxColorComboPrivate()
+{
+}
+
+void XinxColorComboPrivate::slotActivated(int index)
+{
+	if (index == 0)
+	{
+		QColor res = QColorDialog::getColor(customColor, _parent);
+
+		if (res.isValid())
+		{
+			customColor = res;
+
+			QPainter painter;
+			QPen pen;
+			QRect rect(0, 0, 32, 32);
+			QPixmap pixmap(rect.width(), rect.height());
+
+			if (qGray(customColor.rgb()) < 128)
+				pen.setColor(Qt::white);
+			else
+				pen.setColor(Qt::black);
+
+			painter.begin(&pixmap);
+			QBrush brush(customColor);
+			painter.fillRect(rect, brush);
+			painter.setPen(pen);
+			painter.end();
+
+			_parent->setItemIcon(0, QIcon(pixmap));
+			pixmap.detach();
+		}
+
+		internalcolor = customColor;
+	}
+	else
+		internalcolor = standardPalette[ index - 1 ];
+
+	emit _parent->activated(internalcolor);
+}
+
+void XinxColorComboPrivate::slotHighlighted(int index)
+{
+	if (index == 0)
+		internalcolor = customColor;
+	else
+		internalcolor = standardPalette[ index - 1 ];
+
+	emit _parent->highlighted(internalcolor);
+}
+
+void XinxColorComboPrivate::addColors()
+{
+	_parent->clear();
+	if (showEmptyList) return;
+
+	createStandardPalette();
+
+	int i;
+	for (i = 0; i < STANDARD_PAL_SIZE; i++)
+		if (standardPalette[i] == internalcolor) break;
+
+		if (i == STANDARD_PAL_SIZE)
+			customColor = internalcolor;
+
+		QPen pen;
+	if (qGray(customColor.rgb()) < 128)
+		pen.setColor(Qt::white);
+	else
+		pen.setColor(Qt::black);
+
+	QRect rect(0, 0, 32, 32);
+
+	QPixmap pixmap(rect.width(), rect.height());
+
+	QPainter painter;
+	painter.begin(&pixmap);
+	painter.fillRect(rect, QBrush(customColor));
+	painter.end();
+
+	_parent->addItem(QIcon(pixmap), tr("Custom..."));
+	pixmap.detach();
+
+	for (i = 0; i < STANDARD_PAL_SIZE; i++)
+	{
+		if (standardPalette[i].isValid())
+		{
+			painter.begin(&pixmap);
+			QBrush brush(standardPalette[i]);
+			painter.fillRect(rect, brush);
+			painter.end();
+
+			_parent->addItem(QIcon(pixmap), standardPaletteName[ standardPalette[i] ]);
+		}
+		else
+		{
+			_parent->addItem(standardPaletteName[ standardPalette[i] ]);
+		}
+
+		pixmap.detach();
+
+		if (standardPalette[i] == internalcolor)
+			_parent->setCurrentIndex(i + 1);
+	}
+}
 
 /* XinxColorCombo */
 
@@ -130,19 +232,17 @@ public:
  * \brief Creates a color combo box
  * \param parent The parent widget of the color combo box.
  */
-XinxColorCombo::XinxColorCombo(QWidget *parent)
-		: QComboBox(parent)
+XinxColorCombo::XinxColorCombo(QWidget *parent) : QComboBox(parent), d(new XinxColorComboPrivate(this))
 {
 
-	d = new XinxColorComboPrivate();
 	d->showEmptyList = false;
 
-	customColor.setRgb(255, 255, 255);
-	internalcolor.setRgb(255, 255, 255);
+	d->customColor.setRgb(255, 255, 255);
+	d->internalcolor.setRgb(255, 255, 255);
 
 	createStandardPalette();
 
-	addColors();
+	d->addColors();
 
 	connect(this, SIGNAL(activated(int)), SLOT(slotActivated(int)));
 	connect(this, SIGNAL(highlighted(int)), SLOT(slotHighlighted(int)));
@@ -151,7 +251,7 @@ XinxColorCombo::XinxColorCombo(QWidget *parent)
 //! Destroy the ColorComboBox
 XinxColorCombo::~XinxColorCombo()
 {
-	delete d;
+
 }
 
 /*!
@@ -171,9 +271,9 @@ XinxColorCombo::~XinxColorCombo()
  */
 void XinxColorCombo::setColor(const QColor &col)
 {
-	internalcolor = col;
+	d->internalcolor = col;
 	d->showEmptyList=false;
-	addColors();
+	d->addColors();
 }
 
 /*!
@@ -183,7 +283,7 @@ void XinxColorCombo::setColor(const QColor &col)
  */
 QColor XinxColorCombo::color() const
 {
-	return internalcolor;
+	return d->internalcolor;
 }
 
 /*!
@@ -193,116 +293,14 @@ QColor XinxColorCombo::color() const
 void XinxColorCombo::resizeEvent(QResizeEvent *re)
 {
 	QComboBox::resizeEvent(re);
-	addColors();
+	d->addColors();
 }
 
 //! Shows an empty color combo box.
 void XinxColorCombo::showEmptyList()
 {
 	d->showEmptyList=true;
-	addColors();
+	d->addColors();
 }
 
-void XinxColorCombo::slotActivated(int index)
-{
-	if (index == 0)
-	{
-		QColor res = QColorDialog::getColor(customColor, this);
-
-		if (res.isValid())
-		{
-			customColor = res;
-
-			QPainter painter;
-			QPen pen;
-			QRect rect(0, 0, 32, 32);
-			QPixmap pixmap(rect.width(), rect.height());
-
-			if (qGray(customColor.rgb()) < 128)
-				pen.setColor(Qt::white);
-			else
-				pen.setColor(Qt::black);
-
-			painter.begin(&pixmap);
-			QBrush brush(customColor);
-			painter.fillRect(rect, brush);
-			painter.setPen(pen);
-			painter.end();
-
-			setItemIcon(0, QIcon(pixmap));
-			pixmap.detach();
-		}
-
-		internalcolor = customColor;
-	}
-	else
-		internalcolor = standardPalette[ index - 1 ];
-
-	emit activated(internalcolor);
-}
-
-void XinxColorCombo::slotHighlighted(int index)
-{
-	if (index == 0)
-		internalcolor = customColor;
-	else
-		internalcolor = standardPalette[ index - 1 ];
-
-	emit highlighted(internalcolor);
-}
-
-void XinxColorCombo::addColors()
-{
-	clear();
-	if (d->showEmptyList) return;
-
-	createStandardPalette();
-
-	int i;
-	for (i = 0; i < STANDARD_PAL_SIZE; i++)
-		if (standardPalette[i] == internalcolor) break;
-
-	if (i == STANDARD_PAL_SIZE)
-		customColor = internalcolor;
-
-	QPen pen;
-	if (qGray(customColor.rgb()) < 128)
-		pen.setColor(Qt::white);
-	else
-		pen.setColor(Qt::black);
-
-	QRect rect(0, 0, 32, 32);
-
-	QPixmap pixmap(rect.width(), rect.height());
-
-	QPainter painter;
-	painter.begin(&pixmap);
-	painter.fillRect(rect, QBrush(customColor));
-	painter.end();
-
-	addItem(QIcon(pixmap), tr("Custom..."));
-	pixmap.detach();
-
-	for (i = 0; i < STANDARD_PAL_SIZE; i++)
-	{
-		if (standardPalette[i].isValid())
-		{
-			painter.begin(&pixmap);
-			QBrush brush(standardPalette[i]);
-			painter.fillRect(rect, brush);
-			painter.end();
-
-			addItem(QIcon(pixmap), standardPaletteName[ standardPalette[i] ]);
-		}
-		else
-		{
-			addItem(standardPaletteName[ standardPalette[i] ]);
-		}
-
-		pixmap.detach();
-
-		if (standardPalette[i] == internalcolor)
-			setCurrentIndex(i + 1);
-	}
-}
 

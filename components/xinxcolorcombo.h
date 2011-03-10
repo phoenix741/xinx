@@ -35,7 +35,7 @@
 
 #include <components-config.h>
 
-class XinxColorComboInternal;
+class XinxColorComboPrivate;
 
 class COMPONENTSEXPORT XinxColorCombo : public QComboBox
 {
@@ -61,18 +61,9 @@ signals:
 protected:
 	virtual void resizeEvent(QResizeEvent *re);
 
-private slots:
-	void slotActivated(int index);
-	void slotHighlighted(int index);
-
 private:
-	void addColors();
-	QColor customColor;
-	QColor internalcolor;
-
-private:
-	class XinxColorComboPrivate;
-	XinxColorComboPrivate *d;
+	friend class XinxColorComboPrivate;
+	QScopedPointer<XinxColorComboPrivate> d;
 };
 
 #endif  // __XINXCOLORCOMBO_H__

@@ -27,6 +27,8 @@
 
 #include <components-config.h>
 
+class QMenuViewPrivate;
+
 class COMPONENTSEXPORT QMenuView : public QMenu
 {
 	Q_OBJECT
@@ -46,15 +48,9 @@ protected:
 signals:
 	void hovered(const QString &text) const;
 	void triggered(const QModelIndex & index) const;
-private slots:
-	void aboutToShow();
-	void triggered(QAction *action);
-	void hovered(QAction *action);
 private:
-	QAction *makeAction(const QModelIndex &index);
-
-	QAbstractItemModel * m_model;
-	QPersistentModelIndex m_root;
+	QScopedPointer<QMenuViewPrivate> d;
+	friend class QMenuViewPrivate;
 };
 
 
