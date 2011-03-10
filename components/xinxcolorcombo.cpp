@@ -244,8 +244,8 @@ XinxColorCombo::XinxColorCombo(QWidget *parent) : QComboBox(parent), d(new XinxC
 
 	d->addColors();
 
-	connect(this, SIGNAL(activated(int)), SLOT(slotActivated(int)));
-	connect(this, SIGNAL(highlighted(int)), SLOT(slotHighlighted(int)));
+	connect(this, SIGNAL(activated(int)), d.data(), SLOT(slotActivated(int)));
+	connect(this, SIGNAL(highlighted(int)), d.data(), SLOT(slotHighlighted(int)));
 }
 
 //! Destroy the ColorComboBox

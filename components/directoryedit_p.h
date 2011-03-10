@@ -27,8 +27,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 class DirectoryEditPrivate : public QObject
 {
+	Q_OBJECT
 public:
-	DirectoryEditPrivate(DirectoryEdit* parent = 0);
+	DirectoryEditPrivate(DirectoryEdit* parent);
 
 	DirectoryEdit * _parent;
 	bool m_error, m_directory, m_fileMustExist, m_ignoreCursorPositionChanged;

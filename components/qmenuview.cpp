@@ -124,9 +124,9 @@ void QMenuViewPrivate::aboutToShow()
  */
 QMenuView::QMenuView(QWidget * parent) : QMenu(parent), d(new QMenuViewPrivate(this))
 {
-	connect(this, SIGNAL(triggered(QAction*)), this, SLOT(triggered(QAction*)));
-	connect(this, SIGNAL(hovered(QAction*)), this, SLOT(hovered(QAction*)));
-	connect(this, SIGNAL(aboutToShow()), this, SLOT(aboutToShow()));
+	connect(this, SIGNAL(triggered(QAction*)), d.data(), SLOT(triggered(QAction*)));
+	connect(this, SIGNAL(hovered(QAction*)), d.data(), SLOT(hovered(QAction*)));
+	connect(this, SIGNAL(aboutToShow()), d.data(), SLOT(aboutToShow()));
 }
 
 //! Destroy the menu.

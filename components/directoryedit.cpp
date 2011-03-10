@@ -135,7 +135,7 @@ void DirectoryEditPrivate::slotTextChanged(QString text)
  * \brief Construct a DirectoryEdit object.
  * \param parent The parent widget of the object.
  */
-DirectoryEdit::DirectoryEdit(QWidget * parent) : QLineEdit(parent), d(new DirectoryEditPrivate)
+DirectoryEdit::DirectoryEdit(QWidget * parent) : QLineEdit(parent), d(new DirectoryEditPrivate(this))
 {
 	connect(this, SIGNAL(textChanged(QString)), d.data(), SLOT(slotTextChanged(QString)));
 	connect(this, SIGNAL(cursorPositionChanged(int,int)), d.data(), SLOT(slotEditorCursorPositionChanged(int,int)));
@@ -149,7 +149,7 @@ DirectoryEdit::DirectoryEdit(QWidget * parent) : QLineEdit(parent), d(new Direct
  * \param contents Content of the Line edit.
  * \param parent The parent widget of the object.
  */
-DirectoryEdit::DirectoryEdit(const QString & contents, QWidget * parent) : QLineEdit(contents, parent), d(new DirectoryEditPrivate)
+DirectoryEdit::DirectoryEdit(const QString & contents, QWidget * parent) : QLineEdit(contents, parent), d(new DirectoryEditPrivate(this))
 {
 	connect(this, SIGNAL(textChanged(QString)), d.data(), SLOT(slotTextChanged(QString)));
 	connect(this, SIGNAL(cursorPositionChanged(int,int)), d.data(), SLOT(slotEditorCursorPositionChanged(int,int)));
