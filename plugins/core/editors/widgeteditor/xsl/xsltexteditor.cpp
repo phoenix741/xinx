@@ -74,6 +74,11 @@ QSharedPointer<Core::Stylesheet::TemplateNode> XslTextEditor::globalNodeOfTempla
 	return node;
 }
 
+void XslTextEditor::insertDragAndDropText(const QString& text)
+{
+	// If we are in a HTML input
+    XinxCodeEdit::insertDragAndDropText(text);
+}
 
 QDocumentCursor XslTextEditor::insertCompletionBalises(Core::BaliseDefinition::XmlContextType* context, QDocumentCursor& tc, QSharedPointer< Core::BaliseDefinition::BaliseNode > balise)
 {

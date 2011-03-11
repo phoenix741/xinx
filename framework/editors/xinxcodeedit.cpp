@@ -36,6 +36,7 @@
 #include <QCompleter>
 #include <QMouseEvent>
 #include <QAbstractItemView>
+#include <QDebug>
 
 // QCodeEdit header
 #include <qpanellayout.h>
@@ -1059,6 +1060,12 @@ void XinxCodeEdit::postMousePressEvent(QMouseEvent *event, QEditor * editor)
 		editor->setCursor(cur);
 		QMetaObject::invokeMethod(this, "searchWord", Qt::QueuedConnection, Q_ARG(QString, textUnderCursor(textCursor(), false)));
 	}
+
+}
+
+void XinxCodeEdit::insertDragAndDropText(const QString& text)
+{
+	insertText(text);
 }
 
 bool XinxCodeEdit::dropEvent(QDropEvent *e, QEditor *editor)
@@ -1095,6 +1102,12 @@ bool XinxCodeEdit::dropEvent(QDropEvent *e, QEditor *editor)
 		editor->cursor().endEditBlock();
 		editor->selectionChange();
 
+		return true;
+	}
+	else if (e && e->mimeData() && e->mimeData()->hasText())
+	{
+		QString itemData = e->mimeData()->text();
+		insertDragAndDropText(itemData);
 		return true;
 	}
 	return false;

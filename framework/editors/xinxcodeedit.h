@@ -113,6 +113,7 @@ public slots:
 	void setHighlighter(const QString & highlighter, XINXConfig * config);
 
 	void insertText(const QString & text);
+	virtual void insertDragAndDropText(const QString & text);
 
 	void setMatchingText(QString text);
 	void setPlainText(const QString & text);

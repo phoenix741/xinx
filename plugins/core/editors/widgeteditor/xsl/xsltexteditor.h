@@ -52,6 +52,7 @@ public:
 	XslTextEditor(QWidget * parent = 0);
 	virtual ~XslTextEditor();
 
+    virtual void insertDragAndDropText(const QString& text);
 	virtual QDocumentCursor insertCompletionBalises(Core::BaliseDefinition::XmlContextType* context, QDocumentCursor& tc, QSharedPointer< Core::BaliseDefinition::BaliseNode > balise);
 
 	QSharedPointer<Core::Stylesheet::TemplateNode> localNodeOfTemplate(const ContentView3::NodePtr & node, const QString & templateName, bool isNamed);
