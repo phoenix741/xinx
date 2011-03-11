@@ -924,6 +924,7 @@ void EditorManager::deserializeEditors(QList<XinxSession::SessionEditor*> sessio
 	d->_tab_widget->setUpdatesEnabled(true);
 
 	d->updateRecentFiles();
+	d->updateActions();
 }
 
 QWidget * EditorManager::editorsWidget() const
