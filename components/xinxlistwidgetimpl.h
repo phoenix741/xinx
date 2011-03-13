@@ -22,10 +22,15 @@
 #define XINXLISTWIDGET_H_
 
 // Xinx header
-#include "ui_xinxlistwidget.h"
 #include <components-config.h>
 
-class COMPONENTSEXPORT XinxListWidgetImpl : public QWidget, public Ui::XinxListWidget
+// Qt header
+#include <QStringList>
+#include <QWidget>
+
+class XinxListWidgetImplPrivate;
+
+class COMPONENTSEXPORT XinxListWidgetImpl : public QWidget
 {
 	Q_OBJECT
 	Q_CLASSINFO("Author", "Ulrich Van Den Hekke")
@@ -51,22 +56,17 @@ public:
 	QString defaultProposedValue() const;
 	void setDefaultProposedValue(const QString & value);
 	void add(const QString & value);
+
+	QString currentItem() const;
+protected:
+	virtual QString addNewValue();
 signals:
 	void defaultValueChanged(QString value);
 	void currentRowChanged(int value);
 	void itemChanged(const QString & text);
-private slots:
-	void on_m_btnDef_clicked();
-	void on_m_btnAdd_clicked();
-	void on_m_btnDel_clicked();
-	void on_m_btnUp_clicked();
-	void on_m_btnDown_clicked();
-	void on_m_list_currentRowChanged(int row);
-	void on_m_list_itemChanged(QListWidgetItem * item);
 private:
-	void updateDefault(const QString & def);
-	int m_defaultValue;
-	QString m_defaultProposedValue;
+	QScopedPointer<XinxListWidgetImplPrivate> d;
+	friend class XinxListWidgetImplPrivate;
 };
 
 #endif /*XINXLISTXIDGET_H_*/

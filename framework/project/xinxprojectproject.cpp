@@ -74,6 +74,8 @@ public:
 	QString m_projectName;
 	QString m_projectRCS;
 	QStringList m_activatedPlugin;
+	QStringList m_excludedPath;
+	QStringList m_linkedPath;
 	QHash<QString,QVariant> m_properties;
 	QHash<QString,QObject*> m_objects;
 
@@ -209,6 +211,8 @@ void PrivateXinxProject::loadFromFile()
 	m_projectName         = getValue(document, "name");
 	m_projectRCS          = getValue(document, "rcs");
 	m_activatedPlugin     = loadList(document, "activatedPlugin", "name");
+	m_linkedPath          = loadList(document, "linkedPathList", "path");
+	m_excludedPath        = loadList(document, "excludedPathList", "path");
 
 	QDomElement propertiesElement = root.firstChildElement("properties");
 
@@ -249,6 +253,8 @@ void PrivateXinxProject::saveToFile()
 	setValue(document, "name", m_projectName);
 	setValue(document, "rcs", m_projectRCS);
 	saveList(document, "activatedPlugin", "name", m_activatedPlugin);
+	saveList(document, "linkedPathList", "path", m_linkedPath);
+	saveList(document, "excludedPathList", "path", m_excludedPath);
 
 	QDomElement propertiesElement = document.createElement("properties");
 	root.appendChild(propertiesElement);
@@ -469,6 +475,56 @@ void Project::setActivatedPlugin(const QStringList & value)
 	if (d->m_activatedPlugin != value)
 	{
 		d->m_activatedPlugin = value;
+		d->saveToFile();
+		emit changed();
+	}
+}
+
+/*!
+ * \brief Get the list of regular expression path to exclude
+ * \return the list of excluded path
+ * \sa setExcludePath()
+ */
+QStringList Project::excludedPath() const
+{
+	return d->m_excludedPath;
+}
+
+/*!
+* \brief Set the list of regular expression of path to exclude
+* \param value The new list of excluded path.
+* \sa excludedPath()
+*/
+void Project::setExcludedPath(const QStringList& value)
+{
+	if (d->m_excludedPath != value)
+	{
+		d->m_excludedPath = value;
+		d->saveToFile();
+		emit changed();
+	}
+}
+
+/*!
+* \brief Get the list of linked path
+* \param value the list of linked path
+* \sa setLinkedPath()
+*/
+QStringList Project::linkedPath() const
+{
+	return d->m_linkedPath;
+}
+
+/*!
+* \brief Set the list of linked path
+* \param value The new list of linked path.
+* \sa linkedPath()
+*/
+void Project::setLinkedPath(const QStringList& value)
+{
+	if (d->m_linkedPath != value)
+	{
+		d->m_linkedPath = value;
 		d->saveToFile();
 		emit changed();
 	}

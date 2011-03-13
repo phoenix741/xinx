@@ -85,6 +85,12 @@ public:
 	QStringList activatedPlugin() const;
 	void setActivatedPlugin(const QStringList & value);
 
+	QStringList excludedPath() const;
+	void setExcludedPath(const QStringList & value);
+
+	QStringList linkedPath() const;
+	void setLinkedPath(const QStringList & value);
+
 	Q_INVOKABLE void writeProperty(const QString & key, QVariant value);
 	Q_INVOKABLE QVariant readProperty(const QString & key) const;
 

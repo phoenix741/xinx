@@ -67,6 +67,11 @@ ProjectPropertyImpl::ProjectPropertyImpl(QWidget * parent, Qt::WFlags f) : QDial
 	QTreeWidgetItem * preloadedFiles = new QTreeWidgetItem(generalElement, QStringList() << tr("Preloaded files"));
 	preloadedFiles->setData(0, Qt::UserRole, QVariant::fromValue(m_preloadedFilesPage));
 
+	/* Directories path */
+
+	QTreeWidgetItem * directoryPath = new QTreeWidgetItem(generalElement, QStringList() << tr("Directories path"));
+	directoryPath->setData(0, Qt::UserRole, QVariant::fromValue(m_directoryPage));
+
 	/* Plugin */
 
 	foreach(XinxPluginElement * element, XinxPluginsLoader::self()->plugins())
@@ -116,6 +121,7 @@ void ProjectPropertyImpl::loadFromProject(XinxProject::ProjectPtr project)
 {
 	m_nameLineEdit->setText(project->projectName());
 	_projectLineEdit->setText(QDir::toNativeSeparators(project->projectPath()));
+	linkedDirectoryList->setDefaultProposedValue(project->projectPath());
 
 	int index = m_projectRCSComboBox->findData(project->projectRCS());
 	if (index < 0) index = 0;
@@ -130,6 +136,14 @@ void ProjectPropertyImpl::loadFromProject(XinxProject::ProjectPtr project)
 		else
 			new QListWidgetItem(fn, m_preloadedFiles);
 	}
+
+	QStringList directories;
+	foreach(QString directory, project->linkedPath())
+	{
+		directories.append(QDir::toNativeSeparators(directory));
+	}
+	linkedDirectoryList->setValues(directories);
+	excludeRegexpPath->setValues(project->excludedPath());
 
 	QStringList activatedPlugin = project->activatedPlugin();
 	foreach(const QString & plugin, m_pluginsCheck.keys())
@@ -159,6 +173,14 @@ void ProjectPropertyImpl::saveToProject(XinxProject::ProjectPtr project)
 		if (! page->saveSettingsDialog())
 			qWarning(qPrintable(tr("Can't save \"%1\" page").arg(page->name())));
 	}
+
+	QStringList directories;
+	foreach(QString directory, linkedDirectoryList->values())
+	{
+		directories.append(QDir::fromNativeSeparators(directory));
+	}
+	project->setLinkedPath(directories);
+	project->setExcludedPath(excludeRegexpPath->values());
 
 	QStringList activatedPlugin;
 	foreach(const QString & plugin, m_pluginsCheck.keys())

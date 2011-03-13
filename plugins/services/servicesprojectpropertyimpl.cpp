@@ -127,10 +127,10 @@ bool ServicesProjectPropertyImpl::isVisible()
 
 void ServicesProjectPropertyImpl::wsdlSelectionChanged()
 {
-	m_refreshWSDL->setEnabled(m_servicesList->m_list->currentItem());
-	if (m_servicesList->m_list->currentItem())
+	m_refreshWSDL->setEnabled(! m_servicesList->currentItem().isEmpty());
+	if (! m_servicesList->currentItem().isEmpty())
 	{
-		const QString & wsdl    = m_servicesList->m_list->currentItem()->text();
+		const QString & wsdl    = m_servicesList->currentItem();
 		const QString & content = m_wsdlContent[ wsdl ];
 		m_wsdlEdit->setPlainText(content);
 		m_wsdlEdit->setEnabled(true);
@@ -162,9 +162,9 @@ void ServicesProjectPropertyImpl::wsdlSelectionChanged()
 
 void ServicesProjectPropertyImpl::on_m_refreshWSDL_clicked()
 {
-	if (m_servicesList->m_list->currentItem())
+	if (! m_servicesList->currentItem().isEmpty())
 	{
-		m_url = m_servicesList->m_list->currentItem()->text();
+		m_url = m_servicesList->currentItem();
 		QUrl link(m_url);
 		m_http->setHost(link.host(), link.port());
 
@@ -177,9 +177,9 @@ void ServicesProjectPropertyImpl::on_m_refreshWSDL_clicked()
 
 void ServicesProjectPropertyImpl::on_m_adressLineEdit_editingFinished()
 {
-	if (m_servicesList->m_list->currentItem())
+	if (! m_servicesList->currentItem().isEmpty())
 	{
-		const QString & wsdl    = m_servicesList->m_list->currentItem()->text();
+		const QString & wsdl    = m_servicesList->currentItem();
 		QString content = m_wsdlContent[ wsdl ];
 
 		QDomDocument document;
@@ -199,9 +199,9 @@ void ServicesProjectPropertyImpl::on_m_adressLineEdit_editingFinished()
 
 void ServicesProjectPropertyImpl::on_m_wsdlEdit_textChanged()
 {
-	if (m_servicesList->m_list->currentItem())
+	if (! m_servicesList->currentItem().isEmpty())
 	{
-		const QString & wsdl = m_servicesList->m_list->currentItem()->text();
+		const QString & wsdl = m_servicesList->currentItem();
 		m_wsdlContent[ wsdl ] = m_wsdlEdit->toPlainText();
 
 		QDomDocument document;
