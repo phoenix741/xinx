@@ -50,7 +50,7 @@
 #include <jobs/xinxjobprogressbar.h>
 #include <session/sessionmanager.h>
 #include <jobs/xinxjobprogressdock.h>
-#include <application/versionlabel.h>
+#include <application/versionavailabledialog.h>
 
 // Qt header
 #include <QObject>
@@ -101,6 +101,9 @@ MainformImpl::MainformImpl(QWidget * parent) : DMainWindow(parent)
 
 	// Restore windows property
 	readWindowSettings();
+
+	// Create the object that test if a version exists
+	new VersionAvailableDialog(this);
 }
 
 MainformImpl::~MainformImpl()
@@ -129,7 +132,7 @@ void MainformImpl::createMainForm()
 void MainformImpl::createMenus()
 {
 	QMenu * sessionMenu, *projectMenu, * fileMenu, * editMenu, *searchMenu, *bookmarkMenu, *windowsMenu, *toolsMenu, *helpMenu;
-	QToolBar * fileToolBar, * editToolBar, * searchToolBar, * versionToolBar;
+	QToolBar * fileToolBar, * editToolBar, * searchToolBar;
 	m_menuBar = new QMenuBar(this);
 	setMenuBar(m_menuBar);
 	m_menus.insert("session", sessionMenu = new QMenu(tr("Sess&ion"), m_menuBar));
@@ -148,12 +151,10 @@ void MainformImpl::createMenus()
 	m_toolBars.insert("file", fileToolBar = new QToolBar(this));
 	m_toolBars.insert("edit", editToolBar = new QToolBar(this));
 	m_toolBars.insert("search", searchToolBar = new QToolBar(this));
-	m_toolBars.insert("version", versionToolBar = new QToolBar(this));
 
 	fileToolBar->setWindowTitle(tr("&File"));
 	editToolBar->setWindowTitle(tr("&Edit"));
 	searchToolBar->setWindowTitle(tr("&Search"));
-	versionToolBar->setWindowTitle(tr("&Version"));
 
 	createActions();
 
@@ -245,12 +246,6 @@ void MainformImpl::createMenus()
 	searchToolBar->setOrientation(Qt::Horizontal);
 	searchToolBar->setObjectName("searchToolBar");
 	addToolBar(Qt::TopToolBarArea, searchToolBar);
-
-	versionToolBar->addWidget(new VersionLabel(this));
-	versionToolBar->setOrientation(Qt::Horizontal);
-	versionToolBar->setObjectName("versionToolBar");
-	addToolBar(Qt::TopToolBarArea, versionToolBar);
-
 
 	connect(XinxAction::ActionManager::self(), SIGNAL(changed()), this, SLOT(createPluginsActions()));
 	XinxAction::ActionManager::self()->generateMenu();

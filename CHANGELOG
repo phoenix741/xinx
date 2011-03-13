@@ -1,6 +1,31 @@
-xinx (0.9.1.0) unstable; urgency=low
+xinx (0.10.0.0) unstable; urgency=low
 
   [ Ulrich Van Den Hekke ]
+  * 410 : Crash lors création du projet
+  * 358 : Répercuté modification sur matchedFileType qui peux retourner plusieurs lignes
+  * 399 : Dock de log et d'erreur
+  * 095 : Affichage des erreurs dans la feuilles XSL
+  * 183 : Plugins SubVersion - Perf
+  * 238 : Utiliser la librairie SVN au lieu de faire un WRAPPER
+  * 315 : Ecran de recherche
+  * 323 : Recherche
+  * 329 : Pb avec enregistrer tout
+  * 357 : "Bouton ""Arrêter"" dans la recherche par fichiers projet"
+  * 377 : Création de ticket à partir de XINX
+  * 379 : Accès aux Javascripts inclus
+  * 397 : Nettoyage en cas de plantage
+  * 406 : "Impossible de valider l'écran ""Personnaliser"""
+  * 407 : FATAL ASSERT when closing a tab
+  * 082 : Valider le fichier XML
+  * 330 : Définir ce qui appartient au projet
+  * 343 : Pouvoir réordonner l'ordre des fichiers ouverts par glisser/déposer
+  * 385 : Ajouter la complétion sur les ALIAS et les noms de fichiers
+  * 387 : Remplacer tous les Singleton par un XinxSingleton<>
+  * 388 : Ajouter Fermer Tout en popup sur les onglets
+  * 389 : Ajouter la GPL lors de l'assistant nouvelle version
+  * Rewriting ContentView framework
+  * Rewriting CodeCompletion framework
+  * Rewriting Project and Session framework
   * Add the possibility to wrap line
   * 363 : Lenteur lors du déplacement danx XINX
   * 356 : Bug dans le rafraichissement des snipets
@@ -17,7 +42,7 @@ xinx (0.9.1.0) unstable; urgency=low
   * Some bug fix on the project property page and on the wizard
   * Some buf fix on the new version wizard
 
- -- Ulrich VANDENHEKKE <phoenix@server.eden.lan>  Fri, 01 Oct 2010 14:10:13 +0200
+ -- Ulrich Van Den Hekke <xinx@shadoware.org>  Sat, 12 Mar 2011 17:01:37 +0100
 
 xinx (0.9.0.0) unstable; urgency=low
 

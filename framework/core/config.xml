@@ -65,4 +65,5 @@
 	<value name="Formats" type="hash:QFormat"/>
 
 	<value name="Version" type="string"/>
+	<value name="LastUpdate" type="string"/>
 </config>

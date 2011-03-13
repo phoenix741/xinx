@@ -373,6 +373,7 @@ AppSettings::struct_globals AppSettings::getSettingsGlobals(AppSettingsSettings 
 	value.tools = getSettingsHash_QString(settings, "Tools", defaultValue.tools);
 	value.formats = getSettingsHash_struct_qformat(settings, "Formats", defaultValue.formats);
 	value.version = settings->value("Version", defaultValue.version).toString();
+	value.lastUpdate = settings->value("LastUpdate", defaultValue.lastUpdate).toString();
 
 	settings->endGroup();
 	return value;
@@ -398,6 +399,7 @@ void AppSettings::setSettingsGlobals(AppSettingsSettings * settings, const QStri
 	setSettingsHash_QString(settings, "Tools", value.tools);
 	setSettingsHash_struct_qformat(settings, "Formats", value.formats);
 	settings->setValue("Version", value.version, defaultValue.version);
+	settings->setValue("LastUpdate", value.lastUpdate, defaultValue.lastUpdate);
 
 	settings->endGroup();
 }

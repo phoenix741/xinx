@@ -17,27 +17,31 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef VERSIONLABEL_H
-#define VERSIONLABEL_H
+#ifndef VERSIONAVAILABLEDIALOG_H
+#define VERSIONAVAILABLEDIALOG_H
 
-#include <QLabel>
+#include <QMessageBox>
+#include <core/lib-config.h>
 #include <application/version.h>
 
-class VersionLabelPrivate;
+class VersionAvailableDialogPrivate;
 
-class VersionLabel : public QLabel
+class VersionAvailableDialog : public QMessageBox
 {
 	Q_OBJECT
 public:
-    VersionLabel(QWidget* parent = 0, Qt::WindowFlags f = 0);
-    virtual ~VersionLabel();
+	VersionAvailableDialog(QWidget* parent = 0);
+	virtual ~VersionAvailableDialog();
 
 	const Version & currentVersion() const;
 	const Version & stableVersion() const;
 	const Version & unstableVersion() const;
-	
+protected:
+	virtual void showEvent(QShowEvent *event);
+    virtual void done(int r);
+
 private:
-	QScopedPointer<VersionLabelPrivate> d;
+	QScopedPointer<VersionAvailableDialogPrivate> d;
 };
 
-#endif // VERSIONLABEL_H
+#endif // VERSIONAVAILABLEDIALOG_H

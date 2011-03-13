@@ -104,6 +104,7 @@ public:
 		QHash<QString,QString> tools;
 		QHash<QString,struct_qformat> formats;
 		QString version;
+		QString lastUpdate;
 	};
 
 

@@ -37,7 +37,7 @@ public:
 		ALL_NUMBER   = 0xF
 	};
 	Q_DECLARE_FLAGS(VersionNumberFlags, VersionNumber)
-	
+
 	Version();
 	Version(int major, int minor, int micro, int build);
 	Version(const Version & version);
@@ -50,10 +50,11 @@ public:
 	QString toString(const VersionNumberFlags & flags = Version::ALL_NUMBER, const QLatin1Char & separator = QLatin1Char('.'));
 
 	Version & operator=(const QString & version);
-	
+	Version & operator=(const Version & version);
+
 	bool operator==(const Version & version) const;
 	bool operator!=(const Version & version) const;
-	
+
 	bool operator<(const Version & version) const;
 	bool operator<=(const Version & version) const;
 	bool operator>(const Version & version) const;

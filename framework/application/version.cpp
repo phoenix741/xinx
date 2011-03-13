@@ -25,10 +25,12 @@
 void VersionData::updateFromString(const QString & version, const QLatin1Char & separator)
 {
 	int indice = 1;
+	bool ok;
 	QStringList versionNumberStr = version.split(separator);
 	foreach(const QString & numberStr, versionNumberStr)
 	{
-		int number = numberStr.toInt();
+		int number = numberStr.toInt(&ok);
+		if (!ok) return;
 		switch(indice)
 		{
 		case 1:
@@ -108,7 +110,7 @@ QString Version::toString(const Version::VersionNumberFlags& flags, const QLatin
 	{
 		versionStr << QString::number(d->_build);
 	}
-	
+
 	return versionStr.join(QString(separator));
 }
 
@@ -118,9 +120,15 @@ Version& Version::operator=(const QString& version)
 	return *this;
 }
 
+Version & Version::operator=(const Version & version)
+{
+	d = version.d;
+	return *this;
+}
+
 bool Version::operator!=(const Version& version) const
 {
-	return (d->_major != version.d->_major) && (d->_minor != version.d->_minor) && (d->_micro != version.d->_micro) && (d->_build != version.d->_build);
+	return (d->_major != version.d->_major) || (d->_minor != version.d->_minor) || (d->_micro != version.d->_micro) || (d->_build != version.d->_build);
 }
 
 bool Version::operator==(const Version& version) const

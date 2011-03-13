@@ -20,21 +20,25 @@
 #ifndef VERSIONLABEL_P_H
 #define VERSIONLABEL_P_H
 
-#include "versionlabel.h"
+#include "versionavailabledialog.h"
 #include <QNetworkReply>
 
-class VersionLabelPrivate : public QObject
+class VersionAvailableDialogPrivate : public QObject
 {
 	Q_OBJECT
 public:
-	VersionLabel * _label;
-	QString _homepage;
-	Version _current, _stable, _unstable;
+	VersionAvailableDialog * _dialog;
+	QString _homepage, _stable_changelog, _unstable_changelog;
+	Version _current, _stable, _unstable, _update_version;
+	QStringList _changelog;
+
 	QNetworkAccessManager * _manager;
+    int _width;
 
 	void updateText();
 public slots:
-	void finished(QNetworkReply * reply);
+	void releaseFinished();
+	void changelogFinished();
 };
 
 #endif // VERSIONLABEL_P_H
