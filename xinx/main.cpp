@@ -136,6 +136,21 @@ static void processSnipetArguments(const QStringList & args)
 	}
 }
 
+void processFilesArguments(const QStringList & args)
+{
+	if (args.count() > 1)
+	{
+		QStringList::const_iterator it = args.constBegin();
+		it++;
+		while (it != args.constEnd())
+		{
+			if (QFile(*it).exists())
+				EditorManager::self()->openFile(*it);
+			it++;
+		}
+	}
+}
+
 int main(int argc, char *argv[])
 {
 	Q_INIT_RESOURCE(application);
@@ -253,27 +268,17 @@ int main(int argc, char *argv[])
 				app.processEvents();
 				XinxSession::SessionManager::self()->restoreSession(RECOVER_SESSION);
 				XinxSession::SessionManager::self()->deleteRecoverSession();
+
+				processFilesArguments(args);
 			}
-			else if ((args.count() == 1) && (XINXConfig::self()->config().project.openTheLastSessionAtStart) && (! XINXConfig::self()->config().project.lastOpenedSession.isEmpty()))
+			// No matter how many parameters are passed we open the last session.
+			else if ((XINXConfig::self()->config().project.openTheLastSessionAtStart) && (! XINXConfig::self()->config().project.lastOpenedSession.isEmpty()))
 			{
 				splash.showMessage(QApplication::translate("SplashScreen", "Load last session ..."));
 				app.processEvents();
 				XinxSession::SessionManager::self()->restoreSession(XINXConfig::self()->config().project.lastOpenedSession);
-			}
 
-			if (args.count() > 1)
-			{
-				splash.showMessage(QApplication::translate("SplashScreen", "Load arguments ..."));
-				app.processEvents();
-
-				QStringList::iterator it = args.begin();
-				it++;
-				while (it != args.end())
-				{
-					if (QFile(*it).exists())
-						EditorManager::self()->openFile(*it);
-					it++;
-				}
+				processFilesArguments(args);
 			}
 
 			mainWin->show();
@@ -289,9 +294,10 @@ int main(int argc, char *argv[])
 				XINXConfig::self()->config().version = VERSION_STRING;
 			}
 
-			if ((!recovering) && (args.count() == 1) && !((XINXConfig::self()->config().project.openTheLastSessionAtStart) && (! XINXConfig::self()->config().project.lastOpenedSession.isEmpty())))
+			if ((!recovering) && !((XINXConfig::self()->config().project.openTheLastSessionAtStart) && (! XINXConfig::self()->config().project.lastOpenedSession.isEmpty())))
 			{
 				XinxProject::Manager::self()->openWelcomDialog();
+				processFilesArguments(args);
 			}
 
 			int result = app.exec();

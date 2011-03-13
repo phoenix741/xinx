@@ -105,7 +105,11 @@ const QString & TracTicketCreationWizard::errorMessage() const
 
 void TracTicketCreationWizard::setVersion(const QString& version)
 {
-	_version = version;
+	if(_string_version != version)
+	{
+		_version = version;
+		_string_version = version;
+	}
 }
 
 const QString& TracTicketCreationWizard::version() const
@@ -179,6 +183,10 @@ void TracTicketCreationWizard::initializePage(int id)
 			if (!stacktrace.isEmpty())
 			{
 				description += stacktrace + "\n\n";
+			}
+			if (!_string_version.isEmpty())
+			{
+				description += tr("Version : %1").arg(_string_version) + "\n\n";
 			}
 
 			_ui->descriptionEdit->setPlainText(description);
