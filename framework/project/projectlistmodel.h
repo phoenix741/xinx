@@ -64,29 +64,14 @@ public:
 	void setFileIconProvider(IconProjectProvider * provider);
 	IconProjectProvider * fileIconProvider() const;
 
-	void setLongDirectoryName(bool value);
 	bool longDirectoryName() const;
-
-	void setFilterType(enum FilterType type = ProjectListModel::FILTER_NONE);
 	enum FilterType filterType() const;
-
-	void setFilterFileName(const QString & value);
 	QString filterFileName() const;
-
-	void setFilterSize(enum FilterOperator op, qint64 size);
 	enum FilterOperator filterOperator() const;
 	qint64 filterSize() const;
-
-	void setFilterDate(const QDate & value);
 	const QDate & filterDate() const;
-
-	void setFilterContains(const QString & text);
 	QString filterContains() const;
-
-	void setFilterState(enum RCS::rcsState state);
 	enum RCS::rcsState filterState() const;
-
-	void applyFilter();
 
 	ProjectPtr fileProject(const QModelIndex & index) const;
 	QIcon fileIcon(const QModelIndex & index) const;
@@ -111,6 +96,17 @@ public:
 	virtual bool hasChildren(const QModelIndex& parent = QModelIndex()) const;
 	virtual bool canFetchMore(const QModelIndex& parent) const;
 	virtual void fetchMore(const QModelIndex& parent);
+public slots:
+	void setLongDirectoryName(bool value);
+	void setFilterType(enum FilterType type = ProjectListModel::FILTER_NONE);
+	void setFilterFileName(const QString & value);
+	void setFilterSize(enum FilterOperator op, qint64 size);
+	void setFilterDate(const QDate & value);
+	void setFilterContains(const QString & text);
+	void setFilterState(enum RCS::rcsState state);
+
+	void applyFilter();
+
 private:
 	PrivateProjectListModel * d;
 	friend class PrivateProjectListModel;

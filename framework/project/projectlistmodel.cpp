@@ -290,6 +290,8 @@ PrivateProjectListModel::PrivateProjectListModel(ProjectListModel* parent): QObj
 	connect(XinxProject::Manager::self(), SIGNAL(projectCustomized(XinxProject::ProjectPtr)), this, SLOT(updateProject(XinxProject::ProjectPtr)));
 	connect(XinxProject::Manager::self(), SIGNAL(projectClosing(XinxProject::ProjectPtr)), this, SLOT(removeProject(XinxProject::ProjectPtr)));
 
+	connect(XinxProject::Manager::self(), SIGNAL(changed()), parent, SLOT(applyFilter()));
+
 	connect(_watcher, SIGNAL(directoryChanged(QString)), this, SLOT(fetchPath(QString)));
 }
 
@@ -340,6 +342,19 @@ bool PrivateProjectListModel::isNodeMustBeShow(ModelFileNode* node) const
 	if (node->isProject()) return true;
 	if (node->isDirectory())
 	{
+		// If excluded regular expression path match one of patch, we don't show it.
+		XinxProject::ProjectPtr project = node->_project.toStrongRef();
+		if (project)
+		{
+			foreach(const QString & regexp, project->excludedPath())
+			{
+				if (QRegExp(regexp).exactMatch(QDir(project->projectPath()).relativeFilePath(node->_filename)))
+				{
+					return false;
+				}
+			}
+		}
+
 		// If an element is a directory we do not show it only if we are sure to not have file
 		return !(node->_is_children_populated && node->_visible_children.isEmpty());
 		//return true;
