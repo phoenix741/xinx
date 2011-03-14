@@ -24,7 +24,7 @@
 
 class XinxDirectoryListWidgetPrivate;
 
-class XinxDirectoryListWidget : public XinxListWidgetImpl
+class COMPONENTSEXPORT XinxDirectoryListWidget : public XinxListWidgetImpl
 {
 	Q_OBJECT
 public:
