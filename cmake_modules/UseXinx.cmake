@@ -1,8 +1,8 @@
-set(CMAKE_C_FLAGS "-Wall")
-set(CMAKE_CXX_FLAGS "-Wall") # -Wold-style-cast") # -Woverloaded-virtual")
+set(CMAKE_C_FLAGS "-frtti -fexceptions -mthreads -Wall")
+set(CMAKE_CXX_FLAGS "-frtti -fexceptions -mthreads -Wall") # -Wold-style-cast") # -Woverloaded-virtual")
+set(CMAKE_SHARED_LINKER_FLAGS "-mthreads")
 
 add_definitions(-DUNICODE)
-#add_definitions(-DQT_LARGEFILE_SUPPORT)
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
 	add_definitions(-DQT_NO_DEBUG)
 	add_definitions(-D_XINX_RELEASE_MODE_)
@@ -10,6 +10,10 @@ else()
 	add_definitions(-DQT_SHAREDPOINTER_TRACK_POINTERS)
 endif()
 
+#if(WIN32)
+	add_definitions(-DQT_LARGEFILE_SUPPORT)
+	add_definitions(-DQT_THREAD_SUPPORT)
+#endif(WIN32)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${CMAKE_CURRENT_BINARY_DIR})

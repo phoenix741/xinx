@@ -55,8 +55,8 @@ static void backup_appli_signal(int signal)
 {
 	std::signal(SIGSEGV, SIG_DFL);
 	std::signal(SIGABRT, SIG_DFL);
-	std::signal(SIGINT, SIG_DFL);
-	std::signal(SIGTERM, SIG_DFL);
+	//std::signal(SIGINT, SIG_DFL);
+	//std::signal(SIGTERM, SIG_DFL);
 
 	const QString thread  = QThread::currentThread () == qApp->thread () ? ExceptionManager::tr("GUI") : QString::number ((qulonglong)QThread::currentThreadId (), 16);
 	const QString message = ExceptionManager::tr("Signal %1 emited in thread %2").arg (signal).arg (thread);
@@ -140,8 +140,8 @@ void ExceptionManager::installSignalHandler()
 {
 	std::signal(SIGSEGV, backup_appli_signal);
 	std::signal(SIGABRT, backup_appli_signal);
-	std::signal(SIGINT, backup_appli_signal);
-	std::signal(SIGTERM, backup_appli_signal);
+	//std::signal(SIGINT, backup_appli_signal);
+	//std::signal(SIGTERM, backup_appli_signal);
 }
 
 /*!

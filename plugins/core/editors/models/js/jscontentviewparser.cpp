@@ -57,6 +57,7 @@ void Parser::parse()
 	QString name;
 
 	ContentView3::NodePtr function = rootNode();
+	EXCEPT_ELSE(! function.isNull(), ContentView3::ParserException, "Parser::parse", "rootNode can't be null", 0);
 	int bloc = 0;
 
 	function->clearChilds();
@@ -81,6 +82,7 @@ void Parser::parse()
 			else if (name == "function")
 			{
 				function = loadFunction(rootNode(), device());
+				EXCEPT_ELSE(! function.isNull(), ContentView3::ParserException, "Parser::parse", "function can't be null", 0);
 			}
 			else
 				do
@@ -120,6 +122,8 @@ void Parser::parse()
 
 void Parser::nextIdentifier(QIODevice * device, enum JAVASCRIPT_TOKEN & symbType, QString & symbName)
 {
+	EXCEPT_ELSE(device, ContentView3::ParserException, "Parser::nextIdentifier", "device can't be null", 0);
+
 	char ch, c;
 	QString st;
 	enum { STATE_START, STATE_IDENTIFIER, STATE_STRING1, STATE_STRING2, STATE_NUMBER, STATE_STARTCOMMENT, STATE_COMMENT1, STATE_COMMENT2, STATE_EOCOMMENT1, STATE_END } state;
@@ -287,6 +291,8 @@ void Parser::nextIdentifier(QIODevice * device, enum JAVASCRIPT_TOKEN & symbType
 
 void Parser::loadInstruction(QIODevice * buffer, QString & name, JAVASCRIPT_TOKEN & type)
 {
+	EXCEPT_ELSE(buffer, ContentView3::ParserException, "Parser::loadInstruction", "buffer can't be null", 0);
+
 	// Compter les parantheses. Aller jusqu'au point virgule. Si on trouve un identifier suivis de paranthese
 	// alors appel (1er = identifier).sinon constante, operation, ...
 
@@ -311,6 +317,9 @@ void Parser::loadInstruction(QIODevice * buffer, QString & name, JAVASCRIPT_TOKE
 
 void Parser::loadVariables(const ContentView3::NodePtr & parent, QIODevice * buffer)
 {
+	EXCEPT_ELSE(! parent.isNull(), ContentView3::ParserException, "Parser::loadVariables", "parent can't be null", 0);
+	EXCEPT_ELSE(buffer, ContentView3::ParserException, "Parser::loadVariables", "buffer can't be null", 0);
+
 	enum JAVASCRIPT_TOKEN type;
 	QString name;
 
@@ -353,6 +362,9 @@ void Parser::loadVariables(const ContentView3::NodePtr & parent, QIODevice * buf
 
 ContentView3::NodePtr Parser::loadFunction(const ContentView3::NodePtr & parent, QIODevice * buffer)
 {
+	EXCEPT_ELSE(! parent.isNull(), ContentView3::ParserException, "Parser::loadFunction", "parent can't be null", 0);
+	EXCEPT_ELSE(buffer, ContentView3::ParserException, "Parser::loadFunction", "buffer can't be null", 0);
+
 	enum JAVASCRIPT_TOKEN type;
 	QString name;
 
@@ -390,18 +402,24 @@ ContentView3::NodePtr Parser::loadFunction(const ContentView3::NodePtr & parent,
 
 void Parser::attacheNewParamNode(const ContentView3::NodePtr & parent, const QString & name, int line)
 {
+	EXCEPT_ELSE(! parent.isNull(), ContentView3::ParserException, "Parser::attacheNewParamNode", "parent can't be null", 0);
+
 	QSharedPointer<ParamNode> node = ParamNode::create(name, parent);
 	node->setLine(line);
 }
 
 void Parser::attacheNewVariableNode(const ContentView3::NodePtr & parent, const QString & name, int line)
 {
+	EXCEPT_ELSE(! parent.isNull(), ContentView3::ParserException, "Parser::attacheNewVariableNode", "parent can't be null", 0);
+
 	QSharedPointer<VariableNode> node = VariableNode::create(name, parent);
 	node->setLine(line);
 }
 
 ContentView3::NodePtr Parser::attacheNewFunctionNode(const ContentView3::NodePtr & parent, const QString & name, int line)
 {
+	EXCEPT_ELSE(! parent.isNull(), ContentView3::ParserException, "Parser::attacheNewFunctionNode", "parent can't be null", 0);
+
 	QSharedPointer<FunctionNode> node = FunctionNode::create(name, parent);
 	node->setLine(line);
 	return node;

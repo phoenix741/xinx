@@ -48,6 +48,11 @@ ParserException::ParserException(QString message, int line, int column) : XinxEx
 
 }
 
+ParserException::ParserException(const QString & assertion, const QString & locationFile, int locationLine, const QString & locationMethod, QString message, int line, int column) : XinxException(assertion, locationFile, locationLine, locationMethod, message), m_line(line), m_column(column)
+{
+
+}
+
 /*!
  * \brief Return the line where the error is.
  * \return The line of the error.

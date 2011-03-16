@@ -43,6 +43,7 @@ class LIBEXPORT ParserException : public XinxException
 {
 public:
 	ParserException(QString message, int line, int column = 0);
+	ParserException(const QString & assertion, const QString & locationFile, int locationLine, const QString & locationMethod, QString message, int line, int column = 0);
 
 	int getLine() const;
 	int getColumn() const;

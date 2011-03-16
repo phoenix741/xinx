@@ -151,10 +151,21 @@ void processFilesArguments(const QStringList & args)
 	}
 }
 
+class WorkaroundClassToFixBugInMinGW {};
+
 int main(int argc, char *argv[])
 {
 	Q_INIT_RESOURCE(application);
 	qsrand(time(NULL));
+
+	// Workaround to fix bug with MinGW
+	try
+	{
+	  throw WorkaroundClassToFixBugInMinGW();
+	}
+	catch(WorkaroundClassToFixBugInMinGW)
+	{
+	}
 
 	ExceptionManager::installSignalHandler ();
 
