@@ -59,7 +59,19 @@ static void backup_appli_signal(int signal)
 	//std::signal(SIGTERM, SIG_DFL);
 
 	const QString thread  = QThread::currentThread () == qApp->thread () ? ExceptionManager::tr("GUI") : QString::number ((qulonglong)QThread::currentThreadId (), 16);
-	const QString message = ExceptionManager::tr("Signal %1 emited in thread %2").arg (signal).arg (thread);
+	QString signalStr;
+	switch(signal)
+	{
+	case SIGINT		: signalStr = ExceptionManager::tr("Interactive attention");		break;
+	case SIGILL		: signalStr = ExceptionManager::tr("Illegal instruction");			break;
+	case SIGFPE		: signalStr = ExceptionManager::tr("Floating point error");			break;
+	case SIGSEGV	: signalStr = ExceptionManager::tr("Segmentation violation");		break;
+	case SIGTERM	: signalStr = ExceptionManager::tr("Termination request");			break;
+	case SIGBREAK	: signalStr = ExceptionManager::tr("Control-break");				break;
+	case SIGABRT	: signalStr = ExceptionManager::tr("Abnormal termination (abort)");	break;
+	}
+
+	const QString message = ExceptionManager::tr("Signal %1 emited in thread %2").arg (signalStr).arg (thread);
 	ExceptionManager::self ()->notifyError(message, QtFatalMsg, true);
 }
 
