@@ -41,8 +41,11 @@ public:
 	DirectoryFetcher();
 	~DirectoryFetcher();
 
-	void setDirectory(const QString & directory);
-	const QString & directory() const;
+	void setModelDirectory(const QString & directory);
+	const QString & modelDirectory() const;
+
+	void setListingDirectory(const QString & directory);
+	const QString & listingDirectory() const;
 
 	void setProject(ProjectPtr project);
 	ProjectPtr project() const;
@@ -55,7 +58,7 @@ signals:
 protected:
 	virtual void startJob();
 private:
-	QString _directory;
+	QString _listingDirectory, _modelDirectory;
 	QStringList _matchedFileList;
 	XinxProject::ProjectPtr _project;
 };
@@ -73,25 +76,27 @@ public:
 	inline QIcon icon() const;
 	inline QString displayText() const;
 
-	inline void add(XinxProject::ProjectPtr project);
-	inline void add(const QFileInfo & information);
-	inline void add(const RCS::struct_rcs_infos & information);
-	inline void add(const QString & filename);
+	inline ModelFileNode * add(XinxProject::ProjectPtr project);
+	inline ModelFileNode * add(const QFileInfo & information);
+	inline ModelFileNode * add(const RCS::struct_rcs_infos & information);
+	inline ModelFileNode * add(const QString & filename);
 	inline void add(ModelFileNode * node);
 
 	inline ModelFileNode * remove(XinxProject::ProjectPtr project);
-	inline ModelFileNode * remove(const QString & filename);
+	inline ModelFileNode * remove(const QString & key);
 
-	inline void addVisibleChildren(const QString & filename);
-	inline void removeVisibleChildren(const QString & filename);
+	inline void addVisibleChildren(const QString & key);
+	inline void removeVisibleChildren(const QString & key);
+
+	QString modelDirectory() const;
 
 	PrivateProjectListModel * _private_model;
 
-	bool _is_project;
+	bool _is_project, _is_linked_path;
 	XinxProject::ProjectPtrWeak _project;
 	QFileInfo _info;
 	RCS::struct_rcs_infos _rcs_info;
-	QString _filename;
+	QString _filename, _key;
 
 	ModelFileNode * _parent;
 	QHash<QString,ModelFileNode*> _children;
@@ -113,8 +118,8 @@ public:
 	ModelFileNode * node(ModelFileNode * currentNode, const QString & path);
 	QModelIndex index(ModelFileNode * node) const;
 
-	void addVisibleChildren(XinxProject::ModelFileNode* node, const QString& filename);
-	void removeVisibleChildren(ModelFileNode * node, const QString & filename);
+	void addVisibleChildren(XinxProject::ModelFileNode* node, const QString& key);
+	void removeVisibleChildren(ModelFileNode * node, const QString & key);
 
 	ProjectListModel * _model;
 	ModelFileNode * _root_node;
@@ -151,6 +156,8 @@ public slots:
 	void removeProject(XinxProject::ProjectPtr project);
 	void updateProject(XinxProject::ProjectPtr project);
 	void selectionChange(XinxProject::ProjectPtr project);
+
+	void updateLinkedDirectories(XinxProject::ProjectPtr project);
 private:
 
 	friend class ModelFileNode;

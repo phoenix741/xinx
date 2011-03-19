@@ -48,14 +48,24 @@ DirectoryFetcher::~DirectoryFetcher()
 
 }
 
-void DirectoryFetcher::setDirectory(const QString & directory)
+void DirectoryFetcher::setModelDirectory(const QString & directory)
 {
-	_directory = directory;
+	_modelDirectory = directory;
 }
 
-const QString & DirectoryFetcher::directory() const
+const QString & DirectoryFetcher::modelDirectory() const
 {
-	return _directory;
+	return _modelDirectory;
+}
+
+void DirectoryFetcher::setListingDirectory(const QString & directory)
+{
+	_listingDirectory = directory;
+}
+
+const QString & DirectoryFetcher::listingDirectory() const
+{
+	return _listingDirectory;
 }
 
 void DirectoryFetcher::setProject(ProjectPtr project)
@@ -70,7 +80,7 @@ ProjectPtr DirectoryFetcher::project() const
 
 QString DirectoryFetcher::description() const
 {
-	return tr("Fetch files of %1").arg(QFileInfo(_directory).fileName());
+	return tr("Fetch files of %1").arg(QFileInfo(_modelDirectory).fileName());
 }
 
 void DirectoryFetcher::startJob()
@@ -81,7 +91,7 @@ void DirectoryFetcher::startJob()
 	benchmark_time.start();
 
 	// Step 1 : Re-loading the directory.
-	QDirIterator directory_information(QFileInfo(_directory).canonicalFilePath(), _matchedFileList, QDir::AllDirs | QDir::Files | QDir::NoDotAndDotDot);
+	QDirIterator directory_information(QFileInfo(_listingDirectory).canonicalFilePath(), _matchedFileList, QDir::AllDirs | QDir::Files | QDir::NoDotAndDotDot);
 
 	QFileInfoList infos;
 	QStringList filenames;
@@ -103,7 +113,7 @@ void DirectoryFetcher::startJob()
 		if (((i > 100) && first_time) || (_timer.elapsed() > 200))
 		{
 			first_time = false;
-			emit progressFetchedInformations(_directory, infos);
+			emit progressFetchedInformations(_modelDirectory, infos);
 			infos.clear();
 			_timer.start();
 		}
@@ -111,22 +121,22 @@ void DirectoryFetcher::startJob()
 
 	if (!infos.isEmpty())
 	{
-		emit progressFetchedInformations(_directory, infos);
+		emit progressFetchedInformations(_modelDirectory, infos);
 	}
 
-	emit allFetchedFiles(_directory, filenames);
+	emit allFetchedFiles(_modelDirectory, filenames);
 
 	// Step 2 : Loading the RCS files
 	if (_project && _project->rcsProxy() && _project->rcsProxy()->currentRCSInterface())
 	{
-		QList<RCS::struct_rcs_infos> infos = _project->rcsProxy()->currentRCSInterface()->infos(_directory);
-		emit updateFiles(_directory, infos);
+		QList<RCS::struct_rcs_infos> infos = _project->rcsProxy()->currentRCSInterface()->infos(_listingDirectory);
+		emit updateFiles(_modelDirectory, infos);
 	}
 }
 
 /* ModelFileNode */
 
-ModelFileNode::ModelFileNode(PrivateProjectListModel * p) : _private_model(p), _is_project(false), _parent(0), _is_children_populated(false)
+ModelFileNode::ModelFileNode(PrivateProjectListModel * p) : _private_model(p), _is_project(false), _is_linked_path(false), _parent(0), _is_children_populated(false)
 {
 	_rcs_info.state = RCS::Unknown;
 }
@@ -157,6 +167,10 @@ QIcon ModelFileNode::icon() const
 	{
 		return QIcon(":/images/project_open.png");
 	}
+	else if (_is_linked_path)
+	{
+		return QIcon(":/images/folder-bookmark.png");
+	}
 	else if (_private_model->_provider)
 	{
 		return _private_model->_provider->icon(_info);
@@ -185,39 +199,52 @@ QString ModelFileNode::displayText() const
 	}
 }
 
-void ModelFileNode::add(ProjectPtr project)
+ModelFileNode * ModelFileNode::add(ProjectPtr project)
 {
 	ModelFileNode * node = new ModelFileNode(_private_model);
 	node->_is_project = true;
 	node->_project    = project.toWeakRef();
 	node->_info       = QFileInfo(project->projectPath());
+	node->_key        = node->_info.canonicalFilePath();
 	add(node);
+
+	return node;
 }
 
-void ModelFileNode::add(const QFileInfo & information)
+ModelFileNode * ModelFileNode::add(const QFileInfo & information)
 {
 	ModelFileNode * node = new ModelFileNode(_private_model);
 	node->_info			 = information;
 	add(node);
+
+	return node;
 }
 
-void ModelFileNode::add(const RCS::struct_rcs_infos & information)
+ModelFileNode * ModelFileNode::add(const RCS::struct_rcs_infos & information)
 {
 	ModelFileNode * node = new ModelFileNode(_private_model);
 	node->_info     = QFileInfo(information.filename);
 	node->_rcs_info = information;
 	add(node);
+
+	return node;
 }
 
-void ModelFileNode::add(const QString & filename)
+ModelFileNode * ModelFileNode::add(const QString & filename)
 {
 	ModelFileNode * node = new ModelFileNode(_private_model);
 	node->_info			 = QFileInfo(filename);
 	add(node);
+
+	return node;
 }
 
 void ModelFileNode::add(ModelFileNode * node)
 {
+	if (node->_key.isEmpty())
+	{
+		node->_key      = node->_info.fileName();
+	}
 	node->_filename = node->_info.canonicalFilePath();
 	if (node->_filename.isEmpty())
 	{
@@ -229,7 +256,7 @@ void ModelFileNode::add(ModelFileNode * node)
 	{
 		node->_project  = _project;
 	}
-	_children.insert(node->_filename, node);
+	_children.insert(node->_key, node);
 }
 
 ModelFileNode * ModelFileNode::remove(ProjectPtr project)
@@ -237,36 +264,45 @@ ModelFileNode * ModelFileNode::remove(ProjectPtr project)
 	return remove(project->projectPath());
 }
 
-ModelFileNode * ModelFileNode::remove(const QString & filename)
+ModelFileNode * ModelFileNode::remove(const QString & key)
 {
-	ModelFileNode * node = _children.value(filename);
+	ModelFileNode * node = _children.value(key);
 	node->_parent = 0;
 
-	_children.remove(filename);
+	_children.remove(key);
 	return node;
 }
 
-void ModelFileNode::addVisibleChildren(const QString & filename)
+void ModelFileNode::addVisibleChildren(const QString & key)
 {
-	ModelFileNode * node = _children.value(QFileInfo(filename).canonicalFilePath());
+	ModelFileNode * node = _children.value(key);
 	Q_ASSERT_X(node, "ModelFileNode::addVisibleChildren", "Node not in the children");
 
-	QList<QString>::iterator it = qLowerBound(_visible_children.begin(), _visible_children.end(), filename);
+	QList<QString>::iterator it = qLowerBound(_visible_children.begin(), _visible_children.end(), key);
 	const int insert_row = it - _visible_children.begin();
 
 	_private_model->_model->beginInsertRows(_private_model->index(this), insert_row, insert_row);
-	_visible_children.insert(it, node->_filename);
+	_visible_children.insert(it, key);
 	_private_model->_model->endInsertRows();
 }
 
-void ModelFileNode::removeVisibleChildren(const QString & filename)
+void ModelFileNode::removeVisibleChildren(const QString & key)
 {
-	int row = _visible_children.indexOf(filename);
+	int row = _visible_children.indexOf(key);
 	if (row == -1) return;
 
 	_private_model->_model->beginRemoveRows(_private_model->index(this), row, row);
 	_visible_children.removeAt(row);
 	_private_model->_model->endRemoveRows();
+}
+
+QString ModelFileNode::modelDirectory() const
+{
+	if (_parent)
+	{
+		return QDir(_parent->modelDirectory()).absoluteFilePath(_key);
+	}
+	return _key;
 }
 
 /* PrivateProjectListModel */
@@ -290,8 +326,6 @@ PrivateProjectListModel::PrivateProjectListModel(ProjectListModel* parent): QObj
 	connect(XinxProject::Manager::self(), SIGNAL(projectCustomized(XinxProject::ProjectPtr)), this, SLOT(updateProject(XinxProject::ProjectPtr)));
 	connect(XinxProject::Manager::self(), SIGNAL(projectClosing(XinxProject::ProjectPtr)), this, SLOT(removeProject(XinxProject::ProjectPtr)));
 
-	connect(XinxProject::Manager::self(), SIGNAL(changed()), parent, SLOT(applyFilter()));
-
 	connect(_watcher, SIGNAL(directoryChanged(QString)), this, SLOT(fetchPath(QString)));
 }
 
@@ -309,7 +343,7 @@ ModelFileNode * PrivateProjectListModel::node(ModelFileNode* currentNode, const 
 	{
 		const QString children_path_test = children_path + "/";
 
-		if (asked_path.contains(children_path_test))
+		if (asked_path.startsWith(children_path_test))
 		{
 			ModelFileNode * child_node = currentNode->_children.value(children_path);
 			if (asked_path == children_path_test)
@@ -318,7 +352,8 @@ ModelFileNode * PrivateProjectListModel::node(ModelFileNode* currentNode, const 
 			}
 			else
 			{
-				return node(child_node, path);
+				const QString localPath = path.mid(children_path_test.length());
+				return node(child_node, localPath);
 			}
 		}
 	}
@@ -331,8 +366,8 @@ QModelIndex PrivateProjectListModel::index(ModelFileNode * node) const
 	ModelFileNode * parent_node = node->_parent;
 	if (! parent_node) return QModelIndex();
 
-	const QString filename = node->_filename;
-	int row = parent_node->_visible_children.indexOf(filename);
+	const QString key = node->_key;
+	int row = parent_node->_visible_children.indexOf(key);
 
 	return _model->createIndex(row, 0, node);
 }
@@ -411,26 +446,26 @@ bool PrivateProjectListModel::isNodeMustBeShow(ModelFileNode* node) const
 	return show_node;
 }
 
-void PrivateProjectListModel::addVisibleChildren(ModelFileNode * node, const QString & filename)
+void PrivateProjectListModel::addVisibleChildren(ModelFileNode * node, const QString & key)
 {
 	if (node->_parent)
 	{
-		QStringList::const_iterator it = qBinaryFind(node->_parent->_visible_children.constBegin(), node->_parent->_visible_children.constEnd(), node->_filename);
+		QStringList::const_iterator it = qBinaryFind(node->_parent->_visible_children.constBegin(), node->_parent->_visible_children.constEnd(), node->_key);
 		if (it == node->_parent->_visible_children.constEnd())
 		{
-			addVisibleChildren(node->_parent, node->_filename);
+			addVisibleChildren(node->_parent, node->_key);
 		}
 	}
 
-	node->addVisibleChildren(filename);
+	node->addVisibleChildren(key);
 }
 
-void PrivateProjectListModel::removeVisibleChildren(ModelFileNode * node, const QString & filename)
+void PrivateProjectListModel::removeVisibleChildren(ModelFileNode * node, const QString & key)
 {
-	node->removeVisibleChildren(filename);
+	node->removeVisibleChildren(key);
 	if (node->_parent && ! isNodeMustBeShow(node))
 	{
-		removeVisibleChildren(node->_parent, node->_filename);
+		removeVisibleChildren(node->_parent, node->_key);
 	}
 }
 
@@ -475,13 +510,15 @@ void PrivateProjectListModel::updateVisibleChildren(ModelFileNode * node, bool r
 
 void PrivateProjectListModel::addProject(ProjectPtr project)
 {
-	_root_node->add(project);
-	_root_node->addVisibleChildren(project->projectPath());
+	ModelFileNode* projectNode = _root_node->add(project);
+	_root_node->addVisibleChildren(projectNode->_key);
 
 	if (project->rcsProxy())
 	{
 		connect(project->rcsProxy(), SIGNAL(stateChange(QString, RCS::struct_rcs_infos)), this, SLOT(_updateState(QString, RCS::struct_rcs_infos)));
 	}
+
+	updateLinkedDirectories(project);
 }
 
 void PrivateProjectListModel::removeProject(ProjectPtr project)
@@ -499,12 +536,45 @@ void PrivateProjectListModel::removeProject(ProjectPtr project)
 	delete _root_node->remove(project);
 }
 
+void PrivateProjectListModel::updateLinkedDirectories(XinxProject::ProjectPtr project)
+{
+	ModelFileNode * projectNode = node(_root_node, project->projectPath());
+	QStringList linkedPath = project->linkedPath();
+
+	foreach(ModelFileNode * node, projectNode->_children)
+	{
+		if (node->_is_linked_path)
+		{
+			const QString path = QFileInfo(node->_filename).canonicalFilePath();
+
+			if (linkedPath.contains(path))
+			{
+				linkedPath.removeAll(path);
+			}
+			else
+			{
+				removeVisibleChildren(projectNode, node->_key);
+				projectNode->remove(node->_key);
+			}
+		}
+	}
+
+	foreach(const QString & path, linkedPath)
+	{
+		ModelFileNode* linkedPath = projectNode->add(path);
+		linkedPath->_is_linked_path = true;
+	}
+}
+
 void PrivateProjectListModel::updateProject(ProjectPtr project)
 {
 	QModelIndex index = _model->index(project);
 	if (! index.isValid()) return;
 
 	emit _model->dataChanged(index, index);
+
+	updateLinkedDirectories(project);
+	_model->applyFilter();
 }
 
 void PrivateProjectListModel::selectionChange(ProjectPtr project)
@@ -530,9 +600,10 @@ void PrivateProjectListModel::_updateFiles(const QString & directory, QList<RCS:
 
 	foreach(const RCS::struct_rcs_infos & info, files)
 	{
-		if (node_path->_children.contains(info.filename))
+		const QString key = QFileInfo(info.filename).fileName();
+		if (node_path->_children.contains(key))
 		{
-			node_path->_children.value(info.filename)->_rcs_info = info;
+			node_path->_children.value(key)->_rcs_info = info;
 		}
 		else
 		{
@@ -543,7 +614,7 @@ void PrivateProjectListModel::_updateFiles(const QString & directory, QList<RCS:
 			foreach(const QString & filetype, managed_files)
 			{
 				QRegExp expr(filetype, Qt::CaseSensitive, QRegExp::WildcardUnix);
-				if (expr.exactMatch(info.filename))
+				if (expr.exactMatch(key))
 				{
 					node_path->add(info);
 					break;
@@ -600,9 +671,9 @@ void PrivateProjectListModel::_progressFetchedInformations(const QString & direc
 
 	foreach(const QFileInfo & info, filenames)
 	{
-		if (node_path->_children.contains(info.canonicalFilePath()))
+		if (node_path->_children.contains(info.fileName()))
 		{
-			node_path->_children.value(info.canonicalFilePath())->_info = info;
+			node_path->_children.value(info.fileName())->_info = info;
 		}
 		else
 		{
@@ -621,23 +692,28 @@ void PrivateProjectListModel::_allFetchedFiles(const QString & directory, QStrin
 	// If after all adds, there is no more files, we remove the directory
 	if (node_path->_parent && !isNodeMustBeShow(node_path))
 	{
-		removeVisibleChildren(node_path->_parent, node_path->_filename);
+		removeVisibleChildren(node_path->_parent, node_path->_key);
 	}
 
 	QSet<QString> to_delete_files = QSet<QString>::fromList(node_path->_children.keys());
 
 	foreach(const QString & filename, files)
 	{
-		if (to_delete_files.contains(filename))
+		const QString key = QFileInfo(filename).fileName();
+
+		if (to_delete_files.contains(key))
 		{
-			to_delete_files.remove(filename);
+			to_delete_files.remove(key);
 		}
 	}
 
-	foreach(const QString & filename, to_delete_files.values())
+	foreach(const QString & key, to_delete_files.values())
 	{
-		removeVisibleChildren(node_path, filename);
-		node_path->remove(filename);
+		if (! node_path->_children.value(key)->_is_linked_path)
+		{
+			removeVisibleChildren(node_path, key);
+			node_path->remove(key);
+		}
 	}
 }
 
@@ -663,7 +739,8 @@ void PrivateProjectListModel::fetchNode(ModelFileNode * node)
 	}
 
 	DirectoryFetcher * fetcher = new DirectoryFetcher;
-	fetcher->setDirectory(info.canonicalFilePath());
+	fetcher->setListingDirectory(info.canonicalFilePath());
+	fetcher->setModelDirectory(node->modelDirectory());
 	fetcher->setProject(node->_project);
 
 	connect(fetcher, SIGNAL(allFetchedFiles(QString,QStringList)), this, SLOT(_allFetchedFiles(QString,QStringList)));
@@ -893,10 +970,12 @@ QModelIndex ProjectListModel::index(const QString& path, int column) const
 
 QModelIndex ProjectListModel::index(XinxProject::ProjectPtr project) const
 {
-	if (d->_root_node->_children.contains(project->projectPath()))
+	const QString key = project->projectPath();
+
+	if (d->_root_node->_children.contains(key))
 	{
-		ModelFileNode * node = d->_root_node->_children.value(project->projectPath());
-		return createIndex(d->_root_node->_visible_children.indexOf(project->projectPath()), 0, node);
+		ModelFileNode * node = d->_root_node->_children.value(key);
+		return createIndex(d->_root_node->_visible_children.indexOf(key), 0, node);
 	}
 	else
 	{
@@ -935,8 +1014,7 @@ QModelIndex ProjectListModel::parent(const QModelIndex & index) const
 		{
 			return QModelIndex();
 		}
-		const QString filename = parentNode->_filename;
-		int index = parentNode->_parent->_visible_children.indexOf(filename);
+		int index = parentNode->_parent->_visible_children.indexOf(parentNode->_key);
 
 		return createIndex(index, 0, parentNode);
 	}

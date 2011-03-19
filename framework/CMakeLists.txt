@@ -23,4 +23,4 @@ include(UseXinx)
 
 add_definitions(-D_LIB_BUILD_)
 
-add_xinx_librairie(framework "" 0.9.1.0)
+add_xinx_librairie(framework "" 0.10.0.0)

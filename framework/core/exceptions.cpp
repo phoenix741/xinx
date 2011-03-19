@@ -67,7 +67,6 @@ static void backup_appli_signal(int signal)
 	case SIGFPE		: signalStr = ExceptionManager::tr("Floating point error");			break;
 	case SIGSEGV	: signalStr = ExceptionManager::tr("Segmentation violation");		break;
 	case SIGTERM	: signalStr = ExceptionManager::tr("Termination request");			break;
-	case SIGBREAK	: signalStr = ExceptionManager::tr("Control-break");				break;
 	case SIGABRT	: signalStr = ExceptionManager::tr("Abnormal termination (abort)");	break;
 	}
 
