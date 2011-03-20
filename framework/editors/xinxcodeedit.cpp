@@ -1106,8 +1106,20 @@ bool XinxCodeEdit::dropEvent(QDropEvent *e, QEditor *editor)
 	}
 	else if (e && e->mimeData() && e->mimeData()->hasText())
 	{
+		e->acceptProposedAction();
+
+		editor->cursor().beginEditBlock();
+		editor->cursor().clearSelection();
+
+		editor->clearCursorMirrors();
+		setTextCursor(editor->cursorForPosition(editor->mapToContents(e->pos())));
+
 		QString itemData = e->mimeData()->text();
 		insertDragAndDropText(itemData);
+
+		editor->cursor().endEditBlock();
+		editor->selectionChange();
+
 		return true;
 	}
 	return false;

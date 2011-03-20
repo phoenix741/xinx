@@ -56,7 +56,7 @@ AboutDialogImpl::AboutDialogImpl(QWidget * parent, Qt::WFlags f)
 
 	m_thanksText->setHtml("<b>Nicolas CARON</b><br/>"
 						  "For ideas and reports and more<br/>"
-						  "<b>Sébastien DESPREZ</b><br/>"
+						  "<b>Sebastien DESPREZ</b><br/>"
 						  "For ideas and reports and more<br/>"
 						  "<b>Mickael BERTELOOT</b><br/>"
 						  "For ideas and reports and more<br/>"
