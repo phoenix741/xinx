@@ -25,9 +25,10 @@
 #include <contentview3/filenode.h>
 #include <qdocumentline.h>
 #include <project/xinxprojectproject.h>
+#include <codecompletion/completer.h>
+#include <editors/models/xsl/stylesheet_paramnode.h>
 
 /* XslTextEditor */
-#include <editors/models/xsl/stylesheet_paramnode.h>
 
 XslTextEditor::XslTextEditor(QWidget * parent) : XmlTextEditor(parent)
 {
@@ -76,8 +77,25 @@ QSharedPointer<Core::Stylesheet::TemplateNode> XslTextEditor::globalNodeOfTempla
 
 void XslTextEditor::insertDragAndDropText(const QString& text)
 {
-	// If we are in a HTML input
-    XinxCodeEdit::insertDragAndDropText(text);
+	CodeCompletion::Context context = completer()->context();
+	Core::BaliseDefinition::XmlContextType * context_type = dynamic_cast<Core::BaliseDefinition::XmlContextType*>(context.context(XML_CONTEXT_TYPE));
+	if (! context_type)
+	{
+		qWarning() << tr("No XML context type found. It's a problem");
+		XinxCodeEdit::insertDragAndDropText(text);
+		return;
+	}
+
+	if (context_type->isXsl() && (context_type->xmlnsList().value(context_type->balise().nameSpacePrefix()) == "http://www.w3.org/1999/XSL/Transform"))
+	{
+		// If we are in a XSL input
+		XinxCodeEdit::insertDragAndDropText(text);
+	}
+	else
+	{
+		// If we are in a HTML input
+		XinxCodeEdit::insertDragAndDropText("{" + text + "}");
+	}
 }
 
 QDocumentCursor XslTextEditor::insertCompletionBalises(Core::BaliseDefinition::XmlContextType* context, QDocumentCursor& tc, QSharedPointer< Core::BaliseDefinition::BaliseNode > balise)

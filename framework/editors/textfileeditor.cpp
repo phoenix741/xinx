@@ -155,6 +155,7 @@ void TextFileEditor::initObjects()
 	else
 		m_view->setParent(this);
 
+	m_view->setTextFileEditor(this);
 	setContextMenuPolicy(Qt::DefaultContextMenu);
 	m_view->setContextMenuPolicy(Qt::NoContextMenu);
 	m_view->editor()->setContextMenuPolicy(Qt::NoContextMenu);

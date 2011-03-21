@@ -107,6 +107,7 @@ public slots :
 	virtual void replace(const QString & from, const QString & to, SearchOptions options);
 
 	virtual void updateModel();
+	void updateContext();
 
 	virtual void undo();
 	virtual void redo();
@@ -148,7 +149,6 @@ protected slots:
 	virtual void fileParsed();
 	virtual void cursorPositionChanged();
 private slots:
-	void updateContext();
 	void textChanged();
 	void errorChanged();
 private:

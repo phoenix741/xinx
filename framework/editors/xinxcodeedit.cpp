@@ -26,6 +26,7 @@
 #include <contentview3/node.h>
 #include <codecompletion/model.h>
 #include <codecompletion/completer.h>
+#include <editors/textfileeditor.h>
 
 // Qt header
 #include <QHBoxLayout>
@@ -109,7 +110,7 @@
  *
  * This create the QCodeEdit object with some default option.
  */
-XinxCodeEdit::XinxCodeEdit(QWidget * parent) : QWidget(parent), m_completer(0)
+XinxCodeEdit::XinxCodeEdit(QWidget * parent) : QWidget(parent), _text_file_editor(0), m_completer(0)
 {
 	init(false);
 }
@@ -119,7 +120,7 @@ XinxCodeEdit::XinxCodeEdit(QWidget * parent) : QWidget(parent), m_completer(0)
  *
  * This create the QCodeEdit object with some default option.
  */
-XinxCodeEdit::XinxCodeEdit(bool action, QWidget * parent) : QWidget(parent), m_completer(0)
+XinxCodeEdit::XinxCodeEdit(bool action, QWidget * parent) : QWidget(parent), _text_file_editor(0), m_completer(0)
 {
 	init(action);
 }
@@ -542,14 +543,28 @@ CodeCompletion::Completer * XinxCodeEdit::completer()
 	return m_completer;
 }
 
+//! Set the current file used to read completion framework
 void XinxCodeEdit::setFile(ContentView3::FilePtrWeak file)
 {
 	_file = file;
 }
 
+//! Get the current file
 ContentView3::FilePtrWeak XinxCodeEdit::file() const
 {
 	return _file;
+}
+
+//! Define the text file editor used has parent of the XinxCodeEdit.
+void XinxCodeEdit::setTextFileEditor(TextFileEditor* editor)
+{
+	_text_file_editor = editor;
+}
+
+//! Get the text file editor used has parent of the XinxCodeEdit
+TextFileEditor* XinxCodeEdit::textFileEditor() const
+{
+	return _text_file_editor;
 }
 
 //! Returns whether text can be pasted from the clipboard into the textedit.
@@ -1113,6 +1128,10 @@ bool XinxCodeEdit::dropEvent(QDropEvent *e, QEditor *editor)
 
 		editor->clearCursorMirrors();
 		setTextCursor(editor->cursorForPosition(editor->mapToContents(e->pos())));
+		if (_text_file_editor)
+		{
+			_text_file_editor->updateContext();
+		}
 
 		QString itemData = e->mimeData()->text();
 		insertDragAndDropText(itemData);

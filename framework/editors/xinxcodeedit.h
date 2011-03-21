@@ -32,6 +32,7 @@
 #include <qdocumentcursor.h>
 #include <qeditor.h>
 
+class TextFileEditor;
 class QDocumentSearch;
 class QAbstractItemModel;
 class QCodeEdit;
@@ -85,6 +86,9 @@ public:
 
 	void setFile(ContentView3::FilePtrWeak file);
 	ContentView3::FilePtrWeak file() const;
+
+	void setTextFileEditor(TextFileEditor * editor);
+	TextFileEditor * textFileEditor() const;
 
 	void setTabStopWidth(int width);
 	int tabStopWidth() const;
@@ -165,6 +169,7 @@ private:
 	void key_home(bool);
 	bool isModified();
 
+	TextFileEditor * _text_file_editor;
 	QCodeEdit * m_editor;
 	QDocumentSearch * m_matchingText;
 	CodeCompletion::Completer * m_completer;
