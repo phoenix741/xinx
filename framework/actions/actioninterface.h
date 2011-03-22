@@ -52,6 +52,7 @@ public:
 
 public slots:
 	void updateActionState();
+
 protected:
 	QAction * m_action;
 };
@@ -65,6 +66,7 @@ public:
 
 	virtual bool isVisible() const;
 	void setVisible(bool value);
+
 private:
 	bool _visible;
 };
@@ -84,8 +86,10 @@ protected:
 
 	void setCurrentEditor(AbstractEditor * editor);
 	AbstractEditor * currentEditor() const;
+
 protected slots:
 	virtual void actionTriggered();
+
 private:
 	QPointer<AbstractEditor> _editor;
 	QList<const char *> _signals;

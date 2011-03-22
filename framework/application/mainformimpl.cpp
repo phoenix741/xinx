@@ -132,7 +132,7 @@ void MainformImpl::createMainForm()
 void MainformImpl::createMenus()
 {
 	QMenu * sessionMenu, *projectMenu, * fileMenu, * editMenu, *searchMenu, *bookmarkMenu, *windowsMenu, *toolsMenu, *helpMenu;
-	QToolBar * fileToolBar, * editToolBar, * searchToolBar;
+	QToolBar * projectToolBar, * fileToolBar, * editToolBar, * searchToolBar;
 	m_menuBar = new QMenuBar(this);
 	setMenuBar(m_menuBar);
 	m_menus.insert("session", sessionMenu = new QMenu(tr("Sess&ion"), m_menuBar));
@@ -148,10 +148,12 @@ void MainformImpl::createMenus()
 	m_snipetMenu = SnipetManager::self()->createSnipetMenu(tr("&Snipet"), m_menuBar);
 	connect(m_snipetMenu, SIGNAL(snipetTriggered(int)), this, SLOT(callSnipetAction(int)));
 
+	m_toolBars.insert("project", projectToolBar = new QToolBar(this));
 	m_toolBars.insert("file", fileToolBar = new QToolBar(this));
 	m_toolBars.insert("edit", editToolBar = new QToolBar(this));
 	m_toolBars.insert("search", searchToolBar = new QToolBar(this));
 
+	projectToolBar->setWindowTitle(tr("&Project"));
 	fileToolBar->setWindowTitle(tr("&File"));
 	editToolBar->setWindowTitle(tr("&Edit"));
 	searchToolBar->setWindowTitle(tr("&Search"));
@@ -225,6 +227,13 @@ void MainformImpl::createMenus()
 	searchMenu->addAction(m_searchPreviousAct);
 	searchMenu->addSeparator();
 	searchMenu->addAction(m_replaceAct);
+
+	projectToolBar->addAction(XinxProject::Manager::self()->newProjectAction());
+	projectToolBar->addAction(XinxProject::Manager::self()->openProjectAction());
+	projectToolBar->addAction(XinxProject::Manager::self()->closeProjectAction());
+	projectToolBar->setOrientation(Qt::Horizontal);
+	projectToolBar->setObjectName("projectToolBar");
+	addToolBar(Qt::TopToolBarArea, projectToolBar);
 
 	fileToolBar->addAction(EditorManager::self()->newAction());
 	fileToolBar->addAction(EditorManager::self()->openAction());
