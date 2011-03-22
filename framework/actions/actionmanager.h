@@ -22,6 +22,7 @@
 
 #include <core/lib-config.h>
 #include <core/xinxsingleton.h>
+#include <actions/actioninterface.h>
 
 class QStringList;
 
@@ -54,7 +55,14 @@ public:
 	void addPopupItem(MenuItem * item);
 	void addPopupSeparator();
 
+	const QList<MenuItem*> projectDirectoryPopup() const;
+	void addProjectDirectoryPopupItem(MenuItem * item);
+	void addProjectDirectoryPopupSeparator();
+
 public slots:
+	//! Call when a new selection is made in the projectDirectory dock
+	void updateProjectSelection(QList<XinxAction::ProjectAction::RowInfo> rows);
+
 	//! Call plugins and generate list (erase all). emit changed when finish
 	void generateMenu();
 

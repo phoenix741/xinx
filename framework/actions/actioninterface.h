@@ -30,6 +30,7 @@
 #include <QKeySequence>
 #include <QIcon>
 #include <QPointer>
+#include <project/xinxprojectproject.h>
 
 class AbstractEditor;
 
@@ -93,6 +94,32 @@ protected slots:
 private:
 	QPointer<AbstractEditor> _editor;
 	QList<const char *> _signals;
+
+	friend class ActionManager;
+};
+
+class LIBEXPORT ProjectAction : public Action
+{
+	Q_OBJECT
+public:
+	struct RowInfo
+	{
+		XinxProject::ProjectPtr * project;
+		QString _path;
+	};
+
+	ProjectAction(QAction * a);
+	ProjectAction(const QString & text);
+	ProjectAction(const QString & text, const QKeySequence & shortcut);
+	ProjectAction(const QIcon & icon, const QString & text, const QKeySequence & shortcut);
+	virtual ~ProjectAction();
+
+protected:
+	void setSelectedRows(const QList<RowInfo> & rows);
+	const QList<RowInfo> & selectedRows() const;
+
+private:
+	QList<RowInfo> _selectedRows;
 
 	friend class ActionManager;
 };

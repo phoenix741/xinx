@@ -500,11 +500,6 @@ void Project::setExcludedPath(const QStringList& value)
 	if (d->m_excludedPath != value)
 	{
 		d->m_excludedPath = value;
-		QMutableStringListIterator it(d->m_excludedPath);
-		while (it.hasNext())
-		{
-			it.setValue(QFileInfo(it.value()).canonicalFilePath());
-		}
 
 		d->saveToFile();
 		emit changed();

@@ -45,6 +45,7 @@ public:
 	QMultiHash<QString,MenuItem*> _menus;
 	QMultiHash<QString,MenuItem*> _toolBars;
 	QList<MenuItem*> _popups;
+	QList<MenuItem*> _directoryProjectPopup;
 
 	QSet<MenuItem*> _items;
 };
@@ -171,6 +172,23 @@ void ActionManager::addPopupSeparator()
 	addPopupItem(separator);
 }
 
+const QList< MenuItem* > ActionManager::projectDirectoryPopup() const
+{
+	return d->_directoryProjectPopup;
+}
+
+void ActionManager::addProjectDirectoryPopupItem(MenuItem* item)
+{
+	d->_directoryProjectPopup.append(item);
+	d->_items.insert(item);
+}
+
+void ActionManager::addProjectDirectoryPopupSeparator()
+{
+	Separator * separator = new Separator;
+	addProjectDirectoryPopupItem(separator);
+}
+
 void ActionManager::currentEditorChanged(int index)
 {
 	AbstractEditor * editor = index >= 0 ? EditorManager::self()->editor(index) : NULL;
@@ -234,6 +252,20 @@ void ActionManager::updateMenuItemState()
 	}
 	// Browse popup menu to update separator state
 	d->updateSeparatorState(d->_popups);
+}
+
+void ActionManager::updateProjectSelection(QList< ProjectAction::RowInfo > rows)
+{
+	foreach(MenuItem * item, d->_directoryProjectPopup)
+	{
+		ProjectAction * action = dynamic_cast<ProjectAction*>(item);
+		if (action)
+		{
+			action->setSelectedRows(rows);
+		}
+	}
+
+	d->updateSeparatorState(d->_directoryProjectPopup);
 }
 
 }

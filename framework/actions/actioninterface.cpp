@@ -244,3 +244,42 @@ void Action::setCurrentEditor(AbstractEditor * editor)
 	}
 }
 
+/* ProjectAction */
+
+ProjectAction::ProjectAction(QAction* a): Action(a)
+{
+
+}
+
+ProjectAction::ProjectAction(const QString& text): Action(text)
+{
+
+}
+
+ProjectAction::ProjectAction(const QString& text, const QKeySequence& shortcut): Action(text, shortcut)
+{
+
+}
+
+ProjectAction::ProjectAction(const QIcon& icon, const QString& text, const QKeySequence& shortcut): Action(icon, text, shortcut)
+{
+
+}
+
+ProjectAction::~ProjectAction()
+{
+
+}
+
+void ProjectAction::setSelectedRows(const QList< ProjectAction::RowInfo >& rows)
+{
+	_selectedRows = rows;
+	updateActionState();
+}
+
+const QList< ProjectAction::RowInfo >& ProjectAction::selectedRows() const
+{
+	return _selectedRows;
+}
+
+
