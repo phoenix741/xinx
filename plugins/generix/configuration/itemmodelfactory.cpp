@@ -80,9 +80,12 @@ void ItemModelFactory::generate()
 
 					foreach(const QString & alias, aliases)
 					{
-						AliasItem * item = new AliasItem(alias);
-						item->setContextType(tr("Aliases"));
-						itemInterface()->addItem(item);
+						if (alias.startsWith(context().prefix(), Qt::CaseInsensitive))
+						{
+							AliasItem * item = new AliasItem(alias);
+							item->setContextType(tr("Aliases"));
+							itemInterface()->addItem(item);
+						}
 					}
 				}
 			}

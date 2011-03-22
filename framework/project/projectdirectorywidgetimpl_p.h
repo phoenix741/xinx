@@ -59,6 +59,8 @@ public:
 	QAction* _add_action;
 	QAction* _remove_action;
 	QAction* _revert_action;
+	QAction* _blame_action;
+	QAction* _log_action;
 	QAction* _copy_filename_action;
 	QAction* _copy_pathname_action;
 
@@ -106,6 +108,8 @@ public slots:
 	void addToVersionControlTriggered();
 	void removeFromVersionControlTriggered();
 	void revertFileTriggered();
+	void blameFileTriggered();
+	void showLogTriggered();
 
 	void rcsLogTerminated();
 };

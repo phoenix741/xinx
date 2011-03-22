@@ -125,7 +125,7 @@ RCS * Manager::createRevisionControl(QString revision, QString basePath) const
 	// We will automatically log all data from RCS
 	if (rcs)
 	{
-		connect(rcs, SIGNAL(log(RCS::rcsLog,QString)), this, SLOT(logOperation(RCS::rcsLog,QString)));
+		connect(rcs, SIGNAL(alert(RCS::rcsLog,QString)), this, SLOT(logOperation(RCS::rcsLog,QString)));
 	}
 	return rcs;
 }
@@ -177,10 +177,12 @@ void Manager::updateRevision(RCS * rcs, QString path, QString revision, QByteArr
 
 void Manager::changed(XinxProject::ProjectPtr project)
 {
-	bool rcs_enabled = project && project->rcsProxy() && ! project->projectRCS().isEmpty() && ! isExecuting();
-	m_updateAll->setEnabled(rcs_enabled);
-	m_commitAll->setEnabled(rcs_enabled);
-	m_abort->setEnabled(rcs_enabled);
+	bool rcs_enabled = project && project->rcsProxy() && ! project->projectRCS().isEmpty();
+	RCS::rcsFeatures rcs_features = rcs_enabled ? project->rcsProxy()->currentRCSInterface()->features() : RCS::rcsFeatures();
+
+	m_updateAll->setEnabled(rcs_enabled && ! isExecuting() && rcs_features.testFlag(RCS::RcsFeatureUpdateAndCommit));
+	m_commitAll->setEnabled(rcs_enabled && ! isExecuting() && rcs_features.testFlag(RCS::RcsFeatureUpdateAndCommit));
+	m_abort->setEnabled(rcs_enabled && isExecuting());
 }
 
 void Manager::updateActions()

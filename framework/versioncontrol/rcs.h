@@ -92,20 +92,37 @@ public:
 
 	typedef QList<FileOperation> FilesOperation;
 
+	enum rcsFeature
+	{
+		RcsFeatureUpdateAndCommit	= 0x01,
+		RcsFeatureAdd				= 0x02,
+		RcsFeatureRemove			= 0x04,
+		RcsFeatureRevert			= 0x10,
+		RcsFeatureLog				= 0x20,
+		RcsFeatureBlame				= 0x40
+	};
+
+	Q_DECLARE_FLAGS(rcsFeatures, rcsFeature);
+
 	/* Method on file of the repository */
 
-	virtual void update(const QStringList & paths) = 0;
-	virtual void updateToRevision(const QString & path, const QString & revision, QByteArray * content = 0) = 0;
-	virtual void commit(const QStringList & paths, const QString & message) = 0;
+	virtual void update(const QStringList & paths) {}
+	virtual void updateToRevision(const QString & path, const QString & revision, QByteArray * content = 0) {}
+	virtual void commit(const QStringList & paths, const QString & message) {}
+	virtual void log(const QString & path) {}
+	virtual void blame(const QString & path) {}
 
 	/* Operation on file of the working copy */
 
-	virtual void add(const QStringList & paths) = 0;
-	virtual void remove(const QStringList & paths) = 0;
+	virtual void add(const QStringList & paths) {}
+	virtual void remove(const QStringList & paths) {}
+	virtual void revert(const QStringList & paths) {}
 
-	virtual FilesOperation operations(const QStringList & path) = 0;
+	virtual FilesOperation operations(const QStringList & path) { return FilesOperation(); }
 	virtual struct_rcs_infos info(const QString & path) = 0;
 	virtual QList<struct_rcs_infos> infos(const QString & path) = 0;
+
+	virtual rcsFeatures features() const = 0;
 
 	/* Working Directory */
 
@@ -115,11 +132,12 @@ public slots:
 	virtual void abort() = 0;
 signals:
 	void stateChanged(const QString & fileName, RCS::struct_rcs_infos informations);
-	void log(RCS::rcsLog niveau, const QString & info);
+	void alert(RCS::rcsLog niveau, const QString & info);
 private:
 	QString m_workingDirectory;
 };
 
 Q_DECLARE_METATYPE(RCS::rcsLog)
+Q_DECLARE_OPERATORS_FOR_FLAGS(RCS::rcsFeatures)
 
 #endif // __RCS_H__

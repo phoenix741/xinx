@@ -46,6 +46,11 @@ RCS_SVN::~RCS_SVN()
 
 }
 
+RCS::rcsFeatures RCS_SVN::features() const
+{
+	return RCS::RcsFeatureAdd | RCS::RcsFeatureRemove | RCS::RcsFeatureUpdateAndCommit;
+}
+
 RCS::struct_rcs_infos RCS_SVN::info(const QString & path)
 {
 	if (m_infos.contains(QDir::fromNativeSeparators(path)))
@@ -224,13 +229,13 @@ void RCS_SVN::logMessages()
 	foreach(const QString & error, errors)
 	{
 		if (! error.trimmed().isEmpty())
-			emit log(RCS::LogError, error.trimmed());
+			emit alert(RCS::LogError, error.trimmed());
 	}
 	QStringList infos = QString::fromLocal8Bit(m_process->readAllStandardOutput()).split("\n");
 	foreach(const QString & info, infos)
 	{
 		if (! info.trimmed().isEmpty())
-			emit log(RCS::LogNormal, info.trimmed());
+			emit alert(RCS::LogNormal, info.trimmed());
 	}
 }
 
@@ -239,7 +244,7 @@ void RCS_SVN::finished(int exitCode, QProcess::ExitStatus exitStatus)
 	Q_UNUSED(exitCode);
 	Q_UNUSED(exitStatus);
 
-	emit log(RCS::LogApplication, tr("Process terminated"));
+	emit alert(RCS::LogApplication, tr("Process terminated"));
 
 	foreach(const QString & file,  m_fileChanged)
 	{
@@ -262,11 +267,11 @@ void RCS_SVN::update(const QStringList & path)
 	connect(m_process, SIGNAL(readyReadStandardError()), this, SLOT(logMessages()));
 	connect(m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(logMessages()));
 	connect(m_process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(finished(int,QProcess::ExitStatus)));
-	emit log(RCS::LogApplication, tool + " " + args.join(" "));
+	emit alert(RCS::LogApplication, tool + " " + args.join(" "));
 	m_process->start(tool, args);
 	m_process->waitForStarted();
 	if (m_process->error() == QProcess::FailedToStart)
-		emit log(RCS::LogError, tr("Can't start svn program."));
+		emit alert(RCS::LogError, tr("Can't start svn program."));
 	else
 		m_process->waitForFinished();
 }
@@ -284,11 +289,11 @@ void RCS_SVN::commit(const QStringList & path, const QString & message)
 	connect(m_process, SIGNAL(readyReadStandardError()), this, SLOT(logMessages()));
 	connect(m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(logMessages()));
 	connect(m_process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(finished(int,QProcess::ExitStatus)));
-	emit log(RCS::LogApplication, m_tool + " " + args.join(" "));
+	emit alert(RCS::LogApplication, m_tool + " " + args.join(" "));
 	m_process->start(m_tool, args);
 	m_process->waitForStarted();
 	if (m_process->error() == QProcess::FailedToStart)
-		emit log(RCS::LogError, tr("Can't start svn program."));
+		emit alert(RCS::LogError, tr("Can't start svn program."));
 	else
 		m_process->waitForFinished();
 }
@@ -303,11 +308,11 @@ void RCS_SVN::add(const QStringList & path)
 	connect(m_process, SIGNAL(readyReadStandardError()), this, SLOT(logMessages()));
 	connect(m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(logMessages()));
 	connect(m_process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(finished(int,QProcess::ExitStatus)));
-	emit log(RCS::LogApplication, m_tool + " " + args.join(" "));
+	emit alert(RCS::LogApplication, m_tool + " " + args.join(" "));
 	m_process->start(m_tool, args);
 	m_process->waitForStarted();
 	if (m_process->error() == QProcess::FailedToStart)
-		emit log(RCS::LogError, tr("Can't start svn program."));
+		emit alert(RCS::LogError, tr("Can't start svn program."));
 	else
 		m_process->waitForFinished();
 }
@@ -322,11 +327,11 @@ void RCS_SVN::remove(const QStringList & path)
 	connect(m_process, SIGNAL(readyReadStandardError()), this, SLOT(logMessages()));
 	connect(m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(logMessages()));
 	connect(m_process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(finished(int,QProcess::ExitStatus)));
-	emit log(RCS::LogApplication, m_tool + " " + args.join(" "));
+	emit alert(RCS::LogApplication, m_tool + " " + args.join(" "));
 	m_process->start(m_tool, args);
 	m_process->waitForStarted();
 	if (m_process->error() == QProcess::FailedToStart)
-		emit log(RCS::LogError, tr("Can't start svn program."));
+		emit alert(RCS::LogError, tr("Can't start svn program."));
 	else
 		m_process->waitForFinished();
 }
@@ -343,7 +348,7 @@ void RCS_SVN::updateToRevisionFinished(int exitCode, QProcess::ExitStatus exitSt
 	}
 	temporaryFile.remove();
 
-	emit log(RCS::LogApplication, tr("Process terminated"));
+	emit alert(RCS::LogApplication, tr("Process terminated"));
 
 	delete m_process;
 	m_process = 0;
@@ -360,13 +365,13 @@ void RCS_SVN::updateToRevision(const QString & path, const QString & revision, Q
 	connect(m_process, SIGNAL(readyReadStandardError()), this, SLOT(logMessages()));
 	connect(m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(logMessages()));
 	connect(m_process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(updateToRevisionFinished(int,QProcess::ExitStatus)));
-	emit log(RCS::LogApplication, m_tool + " " + args.join(" "));
+	emit alert(RCS::LogApplication, m_tool + " " + args.join(" "));
 
 	m_process->setWorkingDirectory(QFileInfo(path).absolutePath());
 	m_process->start(m_tool, args);
 	m_process->waitForStarted();
 	if (m_process->error() == QProcess::FailedToStart)
-		emit log(RCS::LogError, tr("Can't start svn program."));
+		emit alert(RCS::LogError, tr("Can't start svn program."));
 	else
 		m_process->waitForFinished();
 }
@@ -380,6 +385,6 @@ void RCS_SVN::abort()
 		perror("GenerateConsoleCtrlEvent");
 	if (GenerateConsoleCtrlEvent(CTRL_C_EVENT, m_process->pid()->dwThreadId) != 0)
 		perror("GenerateConsoleCtrlEvent");
-	emit log(RCS::LogError, tr("Can't stop the process on windows."));
+	emit alert(RCS::LogError, tr("Can't stop the process on windows."));
 #endif
 }

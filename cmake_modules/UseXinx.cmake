@@ -3,9 +3,9 @@ set(CMAKE_CXX_FLAGS "-frtti -fexceptions -Wall") # -Wold-style-cast") # -Woverlo
 
 if (WIN32)
 	add_definitions(-DQT_LARGEFILE_SUPPORT)
-	set(CMAKE_SHARED_LINKER_FLAGS "-mthreads")
-	set(CMAKE_C_FLAGS ${CMAKE_C_FLAGS} "-mthreads")
-	set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-mthreads") # -Wold-style-cast") # -Woverloaded-virtual")
+	set(CMAKE_SHARED_LINKER_FLAGS " -mthreads")
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mthreads")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mthreads") # -Wold-style-cast") # -Woverloaded-virtual")
 endif (WIN32)
 
 add_definitions(-DUNICODE)

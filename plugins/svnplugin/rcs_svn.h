@@ -95,6 +95,8 @@ public:
 	RCS_SVN(const QString & basePath);
 	virtual ~RCS_SVN();
 
+	virtual rcsFeatures features() const;
+
 	virtual struct_rcs_infos info(const QString & path);
 	virtual QList<RCS::struct_rcs_infos> infos(const QString & path);
 	virtual FilesOperation operations(const QStringList & paths);
@@ -102,8 +104,11 @@ public:
 	virtual void commit(const QStringList & path, const QString & message);
 	virtual void add(const QStringList & path);
 	virtual void remove(const QStringList & path);
+	virtual void revert(const QStringList & paths);
 	virtual void updateToRevision(const QString & path, const QString & revision, QByteArray * content = 0);
 
+	virtual void log(const QString & path);
+	virtual void blame(const QString & path);
 public slots:
 	virtual void abort();
 private slots:

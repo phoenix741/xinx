@@ -46,6 +46,11 @@ RCS_CVS::~RCS_CVS()
 	delete m_entriesList;
 }
 
+RCS::rcsFeatures RCS_CVS::features() const
+{
+	return RCS::RcsFeatureAdd | RCS::RcsFeatureRemove | RCS::RcsFeatureUpdateAndCommit;
+}
+
 void RCS_CVS::setPluginSettings(PluginSettings * settings)
 {
 	m_settings = settings;
@@ -215,11 +220,11 @@ void RCS_CVS::update(const QStringList & path)
 
 		callCVS(path, parameters);
 
-		emit log(RCS::LogApplication, tr("Update terminated"));
+		emit alert(RCS::LogApplication, tr("Update terminated"));
 	}
 	catch (ToolsNotDefinedException e)
 	{
-		emit log(RCS::LogError, e.getMessage());
+		emit alert(RCS::LogError, e.getMessage());
 	}
 }
 
@@ -244,11 +249,11 @@ void RCS_CVS::updateToRevision(const QString & path, const QString & revision, Q
 
 		m_content = 0;
 
-		emit log(RCS::LogApplication, tr("Update to revision %1 terminated").arg(revision));
+		emit alert(RCS::LogApplication, tr("Update to revision %1 terminated").arg(revision));
 	}
 	catch (ToolsNotDefinedException e)
 	{
-		emit log(RCS::LogError, e.getMessage());
+		emit alert(RCS::LogError, e.getMessage());
 	}
 }
 
@@ -275,11 +280,11 @@ void RCS_CVS::commit(const QStringList & path, const QString & message)
 
 		callCVS(path, parameters);
 
-		emit log(RCS::LogApplication, tr("Commit terminated"));
+		emit alert(RCS::LogApplication, tr("Commit terminated"));
 	}
 	catch (ToolsNotDefinedException e)
 	{
-		emit log(RCS::LogError, e.getMessage());
+		emit alert(RCS::LogError, e.getMessage());
 	}
 }
 
@@ -294,11 +299,11 @@ void RCS_CVS::add(const QStringList & path)
 
 		callCVS(path, parameters);
 
-		emit log(RCS::LogApplication, tr("Add terminated"));
+		emit alert(RCS::LogApplication, tr("Add terminated"));
 	}
 	catch (ToolsNotDefinedException e)
 	{
-		emit log(RCS::LogError, e.getMessage());
+		emit alert(RCS::LogError, e.getMessage());
 	}
 }
 
@@ -313,11 +318,11 @@ void RCS_CVS::remove(const QStringList & path)
 
 		callCVS(path, parameters);
 
-		emit log(RCS::LogApplication, tr("Remove terminated"));
+		emit alert(RCS::LogApplication, tr("Remove terminated"));
 	}
 	catch (ToolsNotDefinedException e)
 	{
-		emit log(RCS::LogError, e.getMessage());
+		emit alert(RCS::LogError, e.getMessage());
 	}
 }
 
@@ -331,7 +336,7 @@ void RCS_CVS::abort()
 		perror("GenerateConsoleCtrlEvent");
 	if (GenerateConsoleCtrlEvent(CTRL_C_EVENT, m_process->pid()->dwThreadId) != 0)
 		perror("GenerateConsoleCtrlEvent");
-	emit log(RCS::LogError, tr("I'M A PROCESS KILLER"));
+	emit alert(RCS::LogError, tr("I'M A PROCESS KILLER"));
 	m_process->kill();
 #endif
 }
@@ -362,21 +367,21 @@ void RCS_CVS::processLine(const QString & line)
 	QString lline = line.simplified();
 
 	if (lline.startsWith("M "))
-		emit log(RCS::LogLocallyModified, lline);
+		emit alert(RCS::LogLocallyModified, lline);
 	else if (lline.startsWith("A "))
-		emit log(RCS::LogLocallyModified, lline);
+		emit alert(RCS::LogLocallyModified, lline);
 	else if (lline.startsWith("R "))
-		emit log(RCS::LogLocallyModified, lline);
+		emit alert(RCS::LogLocallyModified, lline);
 	else if (lline.startsWith("U "))
-		emit log(RCS::LogRemotlyModified, lline);
+		emit alert(RCS::LogRemotlyModified, lline);
 	else if (lline.startsWith("P "))
-		emit log(RCS::LogRemotlyModified, lline);
+		emit alert(RCS::LogRemotlyModified, lline);
 	else if (lline.startsWith("C "))
-		emit log(RCS::LogConflict, lline);
+		emit alert(RCS::LogConflict, lline);
 	else if (lline.startsWith("? "))
-		emit log(RCS::LogNotManaged, lline);
+		emit alert(RCS::LogNotManaged, lline);
 	else
-		emit log(RCS::LogNormal, lline);
+		emit alert(RCS::LogNormal, lline);
 }
 
 void RCS_CVS::processReadOutput()
@@ -390,7 +395,7 @@ void RCS_CVS::processReadOutput()
 		/* Process error */
 		m_process->setReadChannel(QProcess::StandardError);
 		while (m_process->canReadLine())
-			emit log(RCS::LogError, m_process->readLine().simplified());
+			emit alert(RCS::LogError, m_process->readLine().simplified());
 	}
 	else
 	{
@@ -403,7 +408,7 @@ void RCS_CVS::processReadOutput()
 		/* Process error */
 		m_process->setReadChannel(QProcess::StandardError);
 		while (m_process->canReadLine())
-			emit log(RCS::LogError, m_process->readLine().simplified());
+			emit alert(RCS::LogError, m_process->readLine().simplified());
 	}
 }
 
@@ -444,10 +449,10 @@ void RCS_CVS::callCVS(QStringList paths, const QStringList & options)
 
 		m_process = new QProcess;
 
-		emit log(RCS::LogApplication, QString("Working dir : %1").arg(path));
+		emit alert(RCS::LogApplication, QString("Working dir : %1").arg(path));
 		m_process->setWorkingDirectory(path);
 
-		emit log(RCS::LogApplication, QString("%1 %2").arg(m_cvs).arg(processOptions.join(" ")).simplified());
+		emit alert(RCS::LogApplication, QString("%1 %2").arg(m_cvs).arg(processOptions.join(" ")).simplified());
 		m_process->start(m_cvs, processOptions, QIODevice::ReadWrite | QIODevice::Text);
 
 		while (m_process->state() != QProcess::NotRunning)

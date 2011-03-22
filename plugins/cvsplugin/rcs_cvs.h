@@ -40,6 +40,8 @@ public:
 	RCS_CVS(const QString & base);
 	virtual ~RCS_CVS();
 
+	virtual rcsFeatures features() const;
+
 	virtual void update(const QStringList & path);
 	virtual void updateToRevision(const QString & path, const QString & revision, QByteArray * content = 0);
 	virtual void commit(const QStringList & path, const QString & message);

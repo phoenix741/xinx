@@ -36,6 +36,8 @@ public:
 	RCS_SVN(const QString & basePath);
 	virtual ~RCS_SVN();
 
+	virtual rcsFeatures features() const;
+
 	virtual struct_rcs_infos info(const QString & path);
 	virtual QList<RCS::struct_rcs_infos> infos(const QString & path);
 	virtual FilesOperation operations(const QStringList & paths);

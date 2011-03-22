@@ -284,10 +284,10 @@ void SubVersionContextListener::contextNotify(const char* path, svn_wc_notify_ac
 		break;
 	};
 
-	const QString info = actionStr + " " + QString::fromAscii(path) + " (rev " + QString::number(revision) + ")";
+	const QString info = actionStr + " " + QString::fromAscii(path) + (revision >= 0 ? " (rev " + QString::number(revision) + ")" : QString());
 
 	// Affichage de la nofication
-	emit _parent->log(niveau, info);
+	emit _parent->alert(niveau, info);
 }
 
 bool SubVersionContextListener::contextGetLogMessage(std::string& msg)
@@ -387,6 +387,11 @@ RCS_SVN::~RCS_SVN()
 	delete m_client;
 }
 
+RCS::rcsFeatures RCS_SVN::features() const
+{
+	return RCS::RcsFeatureAdd | RCS::RcsFeatureRemove | RCS::RcsFeatureUpdateAndCommit | RCS::RcsFeatureBlame | RCS::RcsFeatureRevert | RCS::RcsFeatureLog;
+}
+
 RCS::rcsState RCS_SVN::svnStateToRcsState(svn_wc_status_kind textState, svn_wc_status_kind reposTextStatus)
 {
 	switch (textState)
@@ -457,7 +462,7 @@ RCS::struct_rcs_infos RCS_SVN::info(const QString & path)
 		}
 		catch (svn::ClientException e)
 		{
-			emit log(RCS::LogError, e.message());
+			emit alert(RCS::LogError, e.message());
 			entries = m_client->status(qPrintable(path), /* descend */ false, /* get_all */ true, /* update */ false, /* no_ignore */ false, /* ignore_externals */ false);
 		}
 
@@ -468,7 +473,7 @@ RCS::struct_rcs_infos RCS_SVN::info(const QString & path)
 	}
 	catch (svn::ClientException e)
 	{
-		emit log(RCS::LogError, e.message());
+		emit alert(RCS::LogError, e.message());
 	}
 
 	return result;
@@ -488,7 +493,7 @@ QList<RCS::struct_rcs_infos> RCS_SVN::infos(const QString & path)
 		}
 		catch (svn::ClientException e)
 		{
-			emit log(RCS::LogError, e.message());
+			emit alert(RCS::LogError, e.message());
 			entries = m_client->status(qPrintable(path), /* descend */ false, /* get_all */ true, /* update */ false, /* no_ignore */ false, /* ignore_externals */ false);
 		}
 
@@ -499,7 +504,7 @@ QList<RCS::struct_rcs_infos> RCS_SVN::infos(const QString & path)
 	}
 	catch (svn::ClientException e)
 	{
-		emit log(RCS::LogError, e.message());
+		emit alert(RCS::LogError, e.message());
 	}
 
 	return result;
@@ -550,7 +555,7 @@ RCS::FilesOperation RCS_SVN::operations(const QStringList & paths)
 		}
 		catch (svn::ClientException e)
 		{
-			emit log(RCS::LogError, e.message());
+			emit alert(RCS::LogError, e.message());
 		}
 	}
 
@@ -573,11 +578,11 @@ void RCS_SVN::update(const QStringList & paths)
 	try
 	{
 		std::vector<svn_revnum_t> revisions = m_client->update(targets, svn::Revision::HEAD, true, false);
-		emit log(RCS::LogApplication, tr("Files updated."));
+		emit alert(RCS::LogApplication, tr("Files updated."));
 	}
 	catch (svn::ClientException e)
 	{
-		emit log(RCS::LogError, e.message());
+		emit alert(RCS::LogError, e.message());
 	}
 }
 
@@ -598,11 +603,11 @@ void RCS_SVN::commit(const QStringList & paths, const QString & message)
 	try
 	{
 		svn_revnum_t revision = m_client->commit(targets, message.toUtf8().data(), false, false);
-		emit log(RCS::LogApplication, tr("Files commited at revision %2.").arg(revision));
+		emit alert(RCS::LogApplication, tr("Files commited at revision %2.").arg(revision));
 	}
 	catch (svn::ClientException e)
 	{
-		emit log(RCS::LogError, e.message());
+		emit alert(RCS::LogError, e.message());
 	}
 }
 
@@ -619,7 +624,7 @@ void RCS_SVN::add(const QStringList & paths)
 		}
 		catch (svn::ClientException e)
 		{
-			emit log(RCS::LogError, e.message());
+			emit alert(RCS::LogError, e.message());
 		}
 	}
 }
@@ -637,10 +642,81 @@ void RCS_SVN::remove(const QStringList & paths)
 		}
 		catch (svn::ClientException e)
 		{
-			emit log(RCS::LogError, e.message());
+			emit alert(RCS::LogError, e.message());
 		}
 	}
 }
+
+void RCS_SVN::revert(const QStringList & paths)
+{
+	_listener->_cancel = false;
+
+	svn::Targets targets;
+	foreach(const QString & path, paths)
+	{
+		svn::Path svnPath(path.toStdString());
+		targets.push_back(svnPath);
+	}
+
+	try
+	{
+		m_client->revert(targets, false);
+	}
+	catch (svn::ClientException e)
+	{
+		emit alert(RCS::LogError, e.message());
+	}
+}
+
+void RCS_SVN::log(const QString & path)
+{
+	_listener->_cancel = false;
+
+	try
+	{
+		const svn::LogEntries* logs = m_client->log(qPrintable(path), svn::Revision::START, svn::Revision::WORKING);
+
+		svn::LogEntries::const_iterator it = logs->begin();
+		while (it != logs->end())
+		{
+			svn::LogEntry logLine = *it;
+			emit alert(RCS::LogNormal, QString("%1 - %2").arg(QString::fromStdString(logLine.author)).arg(QString::fromStdString(logLine.message)));
+			it++;
+		}
+
+		delete logs;
+	}
+	catch (svn::ClientException e)
+	{
+		emit alert(RCS::LogError, e.message());
+	}
+}
+
+void RCS_SVN::blame(const QString & path)
+{
+	_listener->_cancel = false;
+
+	try
+	{
+		svn::Path svnPath(path.toStdString());
+		svn::AnnotatedFile* annotatedFile = m_client->annotate(svnPath, svn::Revision::START, svn::Revision::HEAD);
+
+		svn::AnnotatedFile::iterator it = annotatedFile->begin();
+		while (it != annotatedFile->end())
+		{
+			svn::AnnotateLine line = *it;
+			emit alert(RCS::LogNormal, QString("%1 - %2").arg(line.lineNumber()).arg(QString::fromStdString(line.line())));
+			it++;
+		}
+
+		delete annotatedFile;
+	}
+	catch (svn::ClientException e)
+	{
+		emit alert(RCS::LogError, e.message());
+	}
+}
+
 
 void RCS_SVN::updateToRevision(const QString & path, const QString & revision, QByteArray * content)
 {
@@ -654,11 +730,11 @@ void RCS_SVN::updateToRevision(const QString & path, const QString & revision, Q
 	{
 		content->clear();
 		content->append(QString::fromStdString(m_client->cat(svnPath, svn::Revision(revision.toLong()))));
-		emit log(RCS::LogApplication, tr("Update %1 to revision %2.").arg(path).arg(revision));
+		emit alert(RCS::LogApplication, tr("Update %1 to revision %2.").arg(path).arg(revision));
 	}
 	catch (svn::ClientException e)
 	{
-		emit log(RCS::LogError, e.message());
+		emit alert(RCS::LogError, e.message());
 	}
 }
 

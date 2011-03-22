@@ -76,6 +76,10 @@ PrivateProjectDirectoryWidgetImpl::PrivateProjectDirectoryWidgetImpl(ProjectDire
 	connect(_remove_action, SIGNAL(triggered()), this, SLOT(removeFromVersionControlTriggered()));
 	_revert_action						= new QAction(tr("Revert file"), this);
 	connect(_revert_action, SIGNAL(triggered()), this, SLOT(revertFileTriggered()));
+	_blame_action						= new QAction(tr("Blame file"), this);
+	connect(_blame_action, SIGNAL(triggered()), this, SLOT(blameFileTriggered()));
+	_log_action						= new QAction(tr("Show log"), this);
+	connect(_log_action, SIGNAL(triggered()), this, SLOT(showLogTriggered()));
 
 	_popup_menu = new QMenu(_parent->_directory_view);
 	_popup_menu->addAction(_set_project_as_default_action);
@@ -94,9 +98,11 @@ PrivateProjectDirectoryWidgetImpl::PrivateProjectDirectoryWidgetImpl(ProjectDire
 	_popup_menu->addAction(_update_action);
 	_popup_menu->addAction(_commit_action);
 	_popup_menu->addSeparator();
+	_popup_menu->addAction(_log_action);
 	_popup_menu->addAction(_add_action);
 	_popup_menu->addAction(_remove_action);
 	_popup_menu->addAction(_revert_action);
+	_popup_menu->addAction(_blame_action);
 	_popup_menu->addSeparator();
 	_popup_menu->addAction(_copy_filename_action);
 	_popup_menu->addAction(_copy_pathname_action);
@@ -122,6 +128,7 @@ void PrivateProjectDirectoryWidgetImpl::updateActions(QModelIndexList selectedRo
 	bool is_rcs_modified = true;
 	bool is_rcs_unknown  = true;
 	bool is_rcs_removed  = true;
+	RCS::rcsFeatures features = is_rcs_actived ? project->rcsProxy()->currentRCSInterface()->features() : RCS::rcsFeatures();
 
 	foreach(QModelIndex index, selectedRows)
 	{
@@ -171,12 +178,14 @@ void PrivateProjectDirectoryWidgetImpl::updateActions(QModelIndexList selectedRo
 	_open_files_action->setVisible(is_file);
 
 	_compare_action->setVisible(nb_selected == 2 && is_file);
-	_compare_with_workingcopy_action->setVisible(is_rcs_actived && (nb_selected == 1) && is_file);
-	_update_action->setVisible(is_rcs_actived && ! is_mutli_project);
-	_commit_action->setVisible(is_rcs_actived && ! is_mutli_project);
-	_add_action->setVisible(is_rcs_actived && ! is_mutli_project && ! is_project && is_rcs_unknown);
-	_remove_action->setVisible(is_rcs_actived && ! is_mutli_project && ! is_project && is_rcs_modified);
-	_revert_action->setVisible(is_rcs_actived && ! is_mutli_project && ! is_project && is_file && (is_rcs_removed || is_rcs_modified));
+	_compare_with_workingcopy_action->setVisible(is_rcs_actived && (nb_selected == 1) && is_file && features.testFlag(RCS::RcsFeatureUpdateAndCommit));
+	_update_action->setVisible(is_rcs_actived && ! is_mutli_project && features.testFlag(RCS::RcsFeatureUpdateAndCommit));
+	_commit_action->setVisible(is_rcs_actived && ! is_mutli_project && features.testFlag(RCS::RcsFeatureUpdateAndCommit));
+	_log_action->setVisible(is_rcs_actived && (nb_selected == 1) && features.testFlag(RCS::RcsFeatureLog));
+	_add_action->setVisible(is_rcs_actived && ! is_mutli_project && ! is_project && is_rcs_unknown && features.testFlag(RCS::RcsFeatureAdd));
+	_remove_action->setVisible(is_rcs_actived && ! is_mutli_project && ! is_project && is_rcs_modified && features.testFlag(RCS::RcsFeatureRemove));
+	_revert_action->setVisible(is_rcs_actived && ! is_mutli_project && ! is_project && is_file && (is_rcs_removed || is_rcs_modified) && features.testFlag(RCS::RcsFeatureRevert));
+	_blame_action->setVisible(is_rcs_actived && (nb_selected == 1) && ! is_mutli_project && ! is_project && is_file && features.testFlag(RCS::RcsFeatureBlame));
 
 	_compare_with_workingcopy_action->setEnabled(is_rcs_enabled);
 	_update_action->setEnabled(is_rcs_enabled);
@@ -184,6 +193,8 @@ void PrivateProjectDirectoryWidgetImpl::updateActions(QModelIndexList selectedRo
 	_add_action->setEnabled(is_rcs_enabled);
 	_remove_action->setEnabled(is_rcs_enabled);
 	_revert_action->setEnabled(is_rcs_enabled);
+	_log_action->setEnabled(is_rcs_enabled);
+	_blame_action->setEnabled(is_rcs_enabled);
 }
 
 void PrivateProjectDirectoryWidgetImpl::rcsLogTerminated()
@@ -430,7 +441,39 @@ void PrivateProjectDirectoryWidgetImpl::removeFromVersionControlTriggered()
 
 void PrivateProjectDirectoryWidgetImpl::revertFileTriggered()
 {
-	// FIXME: For RCS with the option add the possibility to revert a file.
+	QModelIndexList rows = _parent->_directory_view->selectionModel()->selectedRows();
+	if (rows.size() < 1) return;
+
+	XinxProject::ProjectPtr project = _model->fileProject(rows.at(0));
+	Q_ASSERT(! project->projectRCS().isEmpty() && project->rcsProxy() && project->rcsProxy()->currentRCSInterface());
+
+	QStringList list = _parent->selectedFiles();
+	if (list.count() > 0)
+	{
+		project->rcsProxy()->currentRCSInterface()->revert(list);
+	}
+}
+
+void PrivateProjectDirectoryWidgetImpl::blameFileTriggered()
+{
+	QModelIndexList rows = _parent->_directory_view->selectionModel()->selectedRows();
+	if (rows.size() != 1) return;
+
+	XinxProject::ProjectPtr project = _model->fileProject(rows.at(0));
+	Q_ASSERT(! project->projectRCS().isEmpty() && project->rcsProxy() && project->rcsProxy()->currentRCSInterface());
+
+	project->rcsProxy()->currentRCSInterface()->blame(_model->filePath(rows.at(0)));
+}
+
+void PrivateProjectDirectoryWidgetImpl::showLogTriggered()
+{
+	QModelIndexList rows = _parent->_directory_view->selectionModel()->selectedRows();
+	if (rows.size() != 1) return;
+
+	XinxProject::ProjectPtr project = _model->fileProject(rows.at(0));
+	Q_ASSERT(! project->projectRCS().isEmpty() && project->rcsProxy() && project->rcsProxy()->currentRCSInterface());
+
+	project->rcsProxy()->currentRCSInterface()->log(_model->filePath(rows.at(0)));
 }
 
 void PrivateProjectDirectoryWidgetImpl::doubleClicked(const QModelIndex & index)
@@ -681,7 +724,7 @@ QStringList ProjectDirectoryWidgetImpl::selectedFiles() const
 	QStringList paths;
 	QModelIndexList list = _directory_view->selectionModel()->selectedRows();
 	foreach(const QModelIndex & index, list)
-	paths << d->_model->filePath(index);
+		paths << d->_model->filePath(index);
 
 	return paths;
 }
