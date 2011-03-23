@@ -555,6 +555,10 @@ void PrivateProjectListModel::updateLinkedDirectories(XinxProject::ProjectPtr pr
 			{
 				removeVisibleChildren(projectNode, node->_key);
 				projectNode->remove(node->_key);
+				_watcherDirectory.remove(path, node->modelDirectory());
+				_watcher->removePath(path);
+
+				delete node;
 			}
 		}
 	}
@@ -563,6 +567,8 @@ void PrivateProjectListModel::updateLinkedDirectories(XinxProject::ProjectPtr pr
 	{
 		ModelFileNode* linkedPath = projectNode->add(path);
 		linkedPath->_is_linked_path = true;
+		_watcher->addPath(path);
+		_watcherDirectory.insert(path, linkedPath->modelDirectory());
 	}
 }
 
@@ -712,7 +718,8 @@ void PrivateProjectListModel::_allFetchedFiles(const QString & directory, QStrin
 		if (! node_path->_children.value(key)->_is_linked_path)
 		{
 			removeVisibleChildren(node_path, key);
-			node_path->remove(key);
+			ModelFileNode * removedNode = node_path->remove(key);
+			delete removedNode;
 		}
 	}
 }
@@ -750,12 +757,18 @@ void PrivateProjectListModel::fetchNode(ModelFileNode * node)
 	XinxJobManager::self()->addJob(fetcher);
 }
 
-void PrivateProjectListModel::fetchPath(const QString & path)
+void PrivateProjectListModel::fetchPath(const QString & pathToFetch)
 {
-	ModelFileNode * node_path = node(_root_node, path);
-	if (node_path)
+	QStringList paths = _watcherDirectory.values(pathToFetch);
+	if (paths.isEmpty()) paths.append(pathToFetch);
+
+	foreach(const QString path, paths)
 	{
-		fetchNode(node_path);
+		ModelFileNode * node_path = node(_root_node, path);
+		if (node_path)
+		{
+			fetchNode(node_path);
+		}
 	}
 }
 

@@ -31,6 +31,7 @@
 #include <QInputDialog>
 #include <QMessageBox>
 #include <editors/newfilewizardimpl.h>
+#include <actions/actionmanager.h>
 
 /* PrivateProjectDirectoryWidgetImpl */
 
@@ -78,10 +79,11 @@ PrivateProjectDirectoryWidgetImpl::PrivateProjectDirectoryWidgetImpl(ProjectDire
 	connect(_revert_action, SIGNAL(triggered()), this, SLOT(revertFileTriggered()));
 	_blame_action						= new QAction(tr("Blame file"), this);
 	connect(_blame_action, SIGNAL(triggered()), this, SLOT(blameFileTriggered()));
-	_log_action						= new QAction(tr("Show log"), this);
+	_log_action							= new QAction(tr("Show log"), this);
 	connect(_log_action, SIGNAL(triggered()), this, SLOT(showLogTriggered()));
 
 	_popup_menu = new QMenu(_parent->_directory_view);
+	_plugin_separator = _popup_menu->addSeparator();
 	_popup_menu->addAction(_set_project_as_default_action);
 	_popup_menu->addAction(_project_property_action);
 	_popup_menu->addSeparator();
@@ -107,14 +109,25 @@ PrivateProjectDirectoryWidgetImpl::PrivateProjectDirectoryWidgetImpl(ProjectDire
 	_popup_menu->addAction(_copy_filename_action);
 	_popup_menu->addAction(_copy_pathname_action);
 
+	createPluginsActions();
+	connect(XinxAction::ActionManager::self(), SIGNAL(changed()), this, SLOT(createPluginsActions()));
 }
 
 PrivateProjectDirectoryWidgetImpl::~PrivateProjectDirectoryWidgetImpl()
 {
 }
 
+void PrivateProjectDirectoryWidgetImpl::createPluginsActions()
+{
+	foreach(XinxAction::MenuItem * item, XinxAction::ActionManager::self()->projectDirectoryPopup())
+	{
+		_popup_menu->insertAction(_plugin_separator, item->action());
+	}
+}
+
 void PrivateProjectDirectoryWidgetImpl::updateActions(QModelIndexList selectedRows)
 {
+	QList<XinxAction::ProjectAction::RowInfo> rows;
 	const int nb_selected = selectedRows.size();
 	XinxProject::ProjectPtr project = _model->fileProject(selectedRows.at(0));
 
@@ -142,6 +155,11 @@ void PrivateProjectDirectoryWidgetImpl::updateActions(QModelIndexList selectedRo
 		}
 		if (!_model->isProject(index)) is_project = false;
 		if (_model->fileProject(index).data() != project.data()) is_mutli_project = true;
+
+		XinxAction::ProjectAction::RowInfo ri;
+		ri.project = _model->isProject(index) ? _model->fileProject(index) : XinxProject::ProjectPtr();
+		ri.path = _model->filePath(index);
+		rows.append(ri);
 
 		switch (_model->fileState(index))
 		{
@@ -195,6 +213,8 @@ void PrivateProjectDirectoryWidgetImpl::updateActions(QModelIndexList selectedRo
 	_revert_action->setEnabled(is_rcs_enabled);
 	_log_action->setEnabled(is_rcs_enabled);
 	_blame_action->setEnabled(is_rcs_enabled);
+
+	XinxAction::ActionManager::self()->updateProjectSelection(rows);
 }
 
 void PrivateProjectDirectoryWidgetImpl::rcsLogTerminated()

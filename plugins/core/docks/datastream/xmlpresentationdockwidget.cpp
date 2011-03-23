@@ -42,9 +42,19 @@ XmlPresentationDockWidget::~XmlPresentationDockWidget()
 	delete d;
 }
 
+void XmlPresentationDockWidget::setFilename(const QString & filename)
+{
+	d->open(filename);
+}
+
 const QString & XmlPresentationDockWidget::filename() const
 {
 	return d->m_openingFile;
+}
+
+void XmlPresentationDockWidget::evaluate()
+{
+	d->evaluate();
 }
 
 XmlPresentationDockWidget * XmlPresentationDockWidget::self()

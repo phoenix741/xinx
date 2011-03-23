@@ -76,6 +76,23 @@ static void backup_appli_signal(int signal)
 
 /* Message Handler */
 
+static void logError(QString error)
+{
+	// Create a file where write error
+	QFile file(XINXConfig::self()->config().xinxTrace);
+	if (file.open(QIODevice::Append))
+	{
+		QTextStream text(&file);
+		text << QDateTime::currentDateTime().toString();
+		text << " : ";
+		text << error;
+		text << "\n";
+		file.close();
+	}
+
+	std::cout << qPrintable(error) << std::endl;
+}
+
 static void xinxMessageHandler(QtMsgType t, const char * m)
 {
 #ifdef _XINX_RELEASE_MODE_
@@ -99,7 +116,25 @@ static void xinxMessageHandler(QtMsgType t, const char * m)
 
 	error += " : " + QLatin1String(m);
 
-	ExceptionManager::self()->notifyError(error, t, t != QtDebugMsg);
+	if (ExceptionManager::directSelf())
+	{
+		ExceptionManager::directSelf()->notifyError(error, t, t != QtDebugMsg);
+	}
+	else
+	{
+		logError(error);
+
+		if (t == QtFatalMsg)
+		{
+			logError(ExceptionManager::tr("Logger not started"));
+
+#			ifndef _XINX_RELEASE_MODE_
+			abort();
+#			else
+			exit(254);
+#			endif /* _XINX_RELEASE_MODE_ */
+		}
+	}
 }
 
 /* ExceptionManager */
@@ -201,19 +236,7 @@ void ExceptionManager::notifyError(QString error, QtMsgType t, bool showMessage)
 			return;
 	}
 
-	// Create a file where write error
-	QFile file(XINXConfig::self()->config().xinxTrace);
-	if (file.open(QIODevice::Append))
-	{
-		QTextStream text(&file);
-		text << QDateTime::currentDateTime().toString();
-		text << " : ";
-		text << error;
-		text << "\n";
-		file.close();
-	}
-
-	std::cout << qPrintable(error) << std::endl;
+	logError(error);
 
 	if (t == QtFatalMsg)
 	{

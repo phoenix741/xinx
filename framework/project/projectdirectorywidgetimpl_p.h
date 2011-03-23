@@ -43,6 +43,8 @@ public:
 
 	QMenu* _popup_menu;
 
+	QAction* _plugin_separator;
+
 	QAction* _create_directory_action;
 	QAction* _new_file_action;
 	QAction* _open_files_action;
@@ -81,6 +83,8 @@ public:
 
 	void openFile(const QModelIndex & index);
 public slots:
+	void createPluginsActions();
+
 	void toggledFlatView(bool flat);
 	void doubleClicked(const QModelIndex & index);
 	void rowsInserted(const QModelIndex & index, int start, int end);

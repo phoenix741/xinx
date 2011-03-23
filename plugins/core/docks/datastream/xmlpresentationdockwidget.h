@@ -36,12 +36,14 @@ class XmlPresentationDockWidget : public QWidget
 	Q_OBJECT
 public:
 	XmlPresentationDockWidget(QWidget * parent = 0);
-
 	virtual ~XmlPresentationDockWidget();
 
+	void setFilename(const QString & filename);
 	const QString & filename() const;
 
 	static XmlPresentationDockWidget * self();
+public slots:
+	void evaluate();
 signals:
 	void filenameChanged(const QString & filename);
 private:

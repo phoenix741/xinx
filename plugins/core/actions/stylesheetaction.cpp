@@ -86,3 +86,56 @@ void StyleSheetAction::actionTriggered()
 		qobject_cast<HtmlFileEditor*>(EditorManager::self()->currentEditor())->showHtml();
 	}
 }
+
+/* RunXQueryAction */
+
+RunXQueryAction::RunXQueryAction() : XinxAction::Action(tr("Execute X-Query on the path"))
+{
+
+}
+
+bool RunXQueryAction::isVisible() const
+{
+	return true;
+}
+
+bool RunXQueryAction::isEnabled() const
+{
+	return StyleSheetEditor::xmlPresentationDockWidget() && ! StyleSheetEditor::xmlPresentationDockWidget()->filename().isEmpty();
+}
+
+void RunXQueryAction::actionTriggered()
+{
+	StyleSheetEditor::xmlPresentationDockWidget()->evaluate();
+}
+
+
+/* DataStreamAction */
+
+DataStreamAction::DataStreamAction() : XinxAction::ProjectAction(tr("Open in data stream dock"))
+{
+}
+
+bool DataStreamAction::isVisible() const
+{
+	QList<RowInfo> rows = selectedRows();
+	if (rows.size() != 1) return false;
+
+	QString filename = rows.at(0).path;
+	if (! QRegExp("*.xml", Qt::CaseInsensitive, QRegExp::Wildcard).exactMatch(filename)) return false;
+	return true;
+}
+
+bool DataStreamAction::isEnabled() const
+{
+	return StyleSheetEditor::xmlPresentationDockWidget() != 0;
+}
+
+void DataStreamAction::actionTriggered()
+{
+	QList<RowInfo> rows = selectedRows();
+	if (rows.size() != 1) return ;
+	QString filename = rows.at(0).path;
+
+	StyleSheetEditor::xmlPresentationDockWidget()->setFilename(filename);
+}

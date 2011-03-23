@@ -174,6 +174,8 @@ void CorePlugin::generateActionMenu()
 	XinxAction::ActionManager::self()->insertNameOfMenu("bookmark", tr("&Bookmark"));
 	XinxAction::ActionManager::self()->insertNameOfMenu("execute", tr("&Execute"));
 
+	XinxAction::ProjectAction * dataStreamAction = new DataStreamAction;
+
 	XinxAction::Action * undoAction = new UndoAction;
 	XinxAction::Action * redoAction = new RedoAction;
 	XinxAction::Action * cutAction = new CutAction;
@@ -202,9 +204,14 @@ void CorePlugin::generateActionMenu()
 
 	XinxAction::Action * styleSheetAction = new StyleSheetAction;
 	XinxAction::Action * validationAction = new ValidationAction;
+	XinxAction::Action * runXQueryAction = new RunXQueryAction;
+
+
+	XinxAction::ActionManager::self()->addProjectDirectoryPopupItem(dataStreamAction);
 
 	XinxAction::ActionManager::self()->addMenuItem("execute", validationAction);
 	XinxAction::ActionManager::self()->addMenuItem("execute", styleSheetAction);
+	XinxAction::ActionManager::self()->addMenuItem("execute", runXQueryAction);
 
 	XinxAction::ActionManager::self()->addMenuItem("bookmark", clearAllBookmarkAction);
 	XinxAction::ActionManager::self()->addMenuSeparator("bookmark");

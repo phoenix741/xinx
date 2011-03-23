@@ -44,7 +44,6 @@ public:
 
 	Ui::XmlPresentationWidget * m_xmlPresentationWidget;
 	QString m_openingFile;
-	QStringList m_dataStreamLocation;
 
 	QPointer<XmlPresentationModel> m_model;
 	QPointer<RecursiveSortFilterProxyModel> m_sortFilterModel;
@@ -58,13 +57,10 @@ public:
 	enum { THREAD_OPENING, THREAD_FILTERED } m_threadAct;
 
 	void open(const QString& filename);
-	void setComboToolTip(const QString & filename);
+	void close();
 public slots:
-	void projectChanged();
-	void adaptColumns();
 	void open();
-	void initXmlPresentationCombo();
-	void presentationActivated(int index);
+	void adaptColumns();
 	void threadTerminated();
 
 	void filterTextChanged();

@@ -210,6 +210,7 @@ void ActionManager::generateMenu()
 	d->_libelles.clear();
 	d->_menus.clear();
 	d->_popups.clear();
+	d->_directoryProjectPopup.clear();
 	d->_items.clear();
 
 	foreach(XinxPluginElement * element, XinxPluginsLoader::self()->plugins())

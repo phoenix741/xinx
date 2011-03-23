@@ -42,4 +42,30 @@ private:
 	mutable XmlPresentationDockWidget * m_dock;
 };
 
+class RunXQueryAction : public XinxAction::Action
+{
+	Q_OBJECT
+public:
+	RunXQueryAction();
+
+	virtual bool isVisible() const;
+	virtual bool isEnabled() const;
+protected slots:
+	virtual void actionTriggered();
+private:
+};
+
+class DataStreamAction : public XinxAction::ProjectAction
+{
+	Q_OBJECT
+public:
+	DataStreamAction();
+
+	virtual bool isVisible() const;
+	virtual bool isEnabled() const;
+protected slots:
+	virtual void actionTriggered();
+private:
+};
+
 #endif // _STYLESHEETACTION_H_

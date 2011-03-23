@@ -127,6 +127,7 @@ public:
 	IconProjectProvider * _provider;
 	bool _long_directory_name;
 
+	QMultiHash<QString,QString> _watcherDirectory;
 	QFileSystemWatcher * _watcher;
 	DirectoryFetcher * _fetcher;
 

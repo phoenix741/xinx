@@ -104,8 +104,8 @@ class LIBEXPORT ProjectAction : public Action
 public:
 	struct RowInfo
 	{
-		XinxProject::ProjectPtr * project;
-		QString _path;
+		XinxProject::ProjectPtr project;
+		QString path;
 	};
 
 	ProjectAction(QAction * a);
