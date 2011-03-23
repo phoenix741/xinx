@@ -614,6 +614,11 @@ void AbstractEditor::serialize(XinxSession::SessionEditor * data, bool content)
 	data->writeProperty("Modified", QVariant(m_modified));
 	data->writeProperty("Project", projectPath);
 	data->writeProperty("Informations", m_fileTypePlugin ? m_fileTypePlugin->name() : QString());
+
+	foreach(const QByteArray & propertyName, dynamicPropertyNames())
+	{
+		data->writeProperty(QString("dynamicProperty_%1").arg(QLatin1String(propertyName)), property(propertyName));
+	}
 }
 
 /*!
@@ -631,6 +636,15 @@ void AbstractEditor::deserialize(XinxSession::SessionEditor * data)
 	const QString	project_path		= data->readProperty("Project").toString();
 	const QString	relative_file_name	= data->readProperty("FileName").toString();
 	const bool		modified			= data->readProperty("Modified").toBool();
+
+	foreach(const QString & propertyName, data->propertieKeys())
+	{
+		if (propertyName.startsWith("dynamicProperty_"))
+		{
+			const QByteArray bytePropertyName = propertyName.mid(16).toLatin1();
+			setProperty(bytePropertyName, data->readProperty(propertyName));
+		}
+	}
 
 	m_fileTypePlugin					= EditorFactory::self()->interfaceOfName(file_type_name);
 	XinxProject::ProjectPtr project		= XinxProject::Manager::self()->projectOfPath(project_path);

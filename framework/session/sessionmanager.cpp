@@ -198,6 +198,12 @@ bool SessionManager::isApplicationStopping() const
 
 void SessionManager::restoreSession(const QString & sessionName)
 {
+	/* Backup the current session */
+	if (d->_current_session->sessionName() != sessionName)
+	{
+		saveSession();
+	}
+
 	/* Close All */
 	d->_current_session->setSessionUpdatable(false);
 	if (! EditorManager::self()->closeAllFile())
@@ -225,6 +231,12 @@ void SessionManager::restoreSession(const QString & sessionName)
 	EditorManager::self()->deserializeEditors(d->_current_session->serializedEditors());
 }
 
+void SessionManager::saveSession(const QString & sessionName, bool recover)
+{
+	EditorManager::self()->serializeEditors(recover);
+	d->_current_session->saveSession(sessionName);
+}
+
 void SessionManager::renameSession(const QString & sessionName)
 {
 	d->_current_session->saveSession(sessionName);
@@ -241,8 +253,7 @@ void SessionManager::deleteSession()
 
 void SessionManager::createRecoverSession()
 {
-	EditorManager::self()->serializeEditors(true);
-	d->_current_session->saveSession(RECOVER_SESSION);
+	saveSession(RECOVER_SESSION, true);
 }
 
 void SessionManager::deleteRecoverSession()

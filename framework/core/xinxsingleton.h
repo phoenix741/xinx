@@ -33,7 +33,6 @@ template<class T> class LIBEXPORT XinxLibSingleton : public QObject
 public:
 	~XinxLibSingleton()
 	{
-		qDebug() << staticMetaObject.className() << " destroyed";
 		_self = 0;
 	}
 
@@ -41,15 +40,11 @@ public:
 	{
 		if (_self == NULL)
 		{
-			qDebug() << "Lock " << staticMetaObject.className() << " for create instance";
 			QMutexLocker locker(&_self_mutex);
 			if (_self == NULL)
 			{
-				qDebug() << staticMetaObject.className() << " locked for create instance";
 				_self = new T;
-				qDebug() << staticMetaObject.className() << " created.";
 				_self->initialisation();
-				qDebug() << staticMetaObject.className() << " initialized";
 			}
 		}
 
@@ -84,7 +79,6 @@ template<class T> class XinxSingleton : public QObject
 public:
 	~XinxSingleton()
 	{
-		qDebug() << staticMetaObject.className() << " destroyed";
 		_self = 0;
 	}
 
@@ -92,15 +86,11 @@ public:
 	{
 		if (_self == NULL)
 		{
-			qDebug() << "Lock " << staticMetaObject.className() << " for create instance";
 			QMutexLocker locker(&_self_mutex);
 			if (_self == NULL)
 			{
-				qDebug() << staticMetaObject.className() << " locked for create instance";
 				_self = new T;
-				qDebug() << staticMetaObject.className() << " created.";
 				_self->initialisation();
-				qDebug() << staticMetaObject.className() << " initialized";
 			}
 		}
 

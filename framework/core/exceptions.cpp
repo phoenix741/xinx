@@ -49,6 +49,11 @@
 #   include <cxxabi.h>
 #endif
 
+/* Static member */
+
+ExceptionManager * ExceptionManager::s_self = new ExceptionManager();
+
+
 /* Signal Handler */
 
 static void backup_appli_signal(int signal)
@@ -78,18 +83,6 @@ static void backup_appli_signal(int signal)
 
 static void logError(QString error)
 {
-	// Create a file where write error
-	QFile file(XINXConfig::self()->config().xinxTrace);
-	if (file.open(QIODevice::Append))
-	{
-		QTextStream text(&file);
-		text << QDateTime::currentDateTime().toString();
-		text << " : ";
-		text << error;
-		text << "\n";
-		file.close();
-	}
-
 	std::cout << qPrintable(error) << std::endl;
 }
 
@@ -116,25 +109,7 @@ static void xinxMessageHandler(QtMsgType t, const char * m)
 
 	error += " : " + QLatin1String(m);
 
-	if (ExceptionManager::directSelf())
-	{
-		ExceptionManager::directSelf()->notifyError(error, t, t != QtDebugMsg);
-	}
-	else
-	{
-		logError(error);
-
-		if (t == QtFatalMsg)
-		{
-			logError(ExceptionManager::tr("Logger not started"));
-
-#			ifndef _XINX_RELEASE_MODE_
-			abort();
-#			else
-			exit(254);
-#			endif /* _XINX_RELEASE_MODE_ */
-		}
-	}
+	ExceptionManager::self()->notifyError(error, t, t != QtDebugMsg);
 }
 
 /* ExceptionManager */
@@ -168,6 +143,11 @@ ExceptionManager::ExceptionManager()
 ExceptionManager::~ExceptionManager()
 {
 
+}
+
+ExceptionManager * ExceptionManager::self()
+{
+	return s_self;
 }
 
 /*!
@@ -234,6 +214,18 @@ void ExceptionManager::notifyError(QString error, QtMsgType t, bool showMessage)
 	{
 		if (QRegExp(filter).exactMatch(error))
 			return;
+	}
+
+	// Create a file where write error
+	QFile file(XINXConfig::self()->config().xinxTrace);
+	if (file.open(QIODevice::Append))
+	{
+		QTextStream text(&file);
+		text << QDateTime::currentDateTime().toString();
+		text << " : ";
+		text << error;
+		text << "\n";
+		file.close();
 	}
 
 	logError(error);

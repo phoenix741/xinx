@@ -45,6 +45,7 @@ public:
 public slots:
 	void evaluate();
 signals:
+	void updated();
 	void filenameChanged(const QString & filename);
 private:
 	static XmlPresentationDockWidget * s_self;

@@ -64,11 +64,12 @@ private:
 #define EXCEPT_ELSE(assertion, Exception, method, ...) \
 	(assertion ? qt_noop() : throw Exception(#assertion, __FILE__,__LINE__, method, __VA_ARGS__));
 
-class LIBEXPORT ExceptionManager : public XinxLibSingleton<ExceptionManager>
+class LIBEXPORT ExceptionManager : public QObject /* This can't be an official singleton, because it's the logger */
 {
 	Q_OBJECT
 public:
 	virtual ~ExceptionManager();
+	static ExceptionManager * self();
 
 	QStringList stackTrace() const;
 
@@ -84,7 +85,8 @@ private:
 
 	QHash<unsigned long,QStringList> m_stackTrace;
 	QStringList m_exceptionFilter;
-	friend class XinxLibSingleton<ExceptionManager>;
+
+	static ExceptionManager * s_self;
 };
 
 class LIBEXPORT ErrorManager : public XinxLibSingleton<ErrorManager>

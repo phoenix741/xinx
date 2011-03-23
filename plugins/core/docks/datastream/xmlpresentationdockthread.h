@@ -43,7 +43,7 @@ public:
 	~XmlPresentationDockThread();
 
 	Ui::XmlPresentationWidget * m_xmlPresentationWidget;
-	QString m_openingFile;
+	QString m_filename;
 
 	QPointer<XmlPresentationModel> m_model;
 	QPointer<RecursiveSortFilterProxyModel> m_sortFilterModel;
@@ -58,6 +58,8 @@ public:
 
 	void open(const QString& filename);
 	void close();
+
+	void disabledInterface(bool value);
 public slots:
 	void open();
 	void adaptColumns();

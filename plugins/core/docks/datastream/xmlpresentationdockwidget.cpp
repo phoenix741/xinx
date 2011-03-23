@@ -49,7 +49,7 @@ void XmlPresentationDockWidget::setFilename(const QString & filename)
 
 const QString & XmlPresentationDockWidget::filename() const
 {
-	return d->m_openingFile;
+	return d->m_filename;
 }
 
 void XmlPresentationDockWidget::evaluate()

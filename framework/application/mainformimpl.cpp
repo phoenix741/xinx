@@ -875,7 +875,7 @@ void MainformImpl::closeEvent(QCloseEvent *event)
 	emit aboutToClose();
 	storeWindowSettings(); // Store before the project is closed
 
-	XinxSession::SessionManager::self()->currentSession()->saveSession();
+	XinxSession::SessionManager::self()->saveSession();
 	XinxSession::SessionManager::self()->setApplicationStopping(true);
 
 	if (! EditorManager::self()->closeAllFile())

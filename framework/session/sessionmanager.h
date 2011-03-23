@@ -57,6 +57,7 @@ public slots:
 
 	void restoreSession(const QString & sessionName = DEFAULT_SESSION);
 	void renameSession(const QString & sessionName);
+	void saveSession(const QString & sessionName = QString(), bool recover = false);
 	void deleteSession();
 
 	void createRecoverSession();
