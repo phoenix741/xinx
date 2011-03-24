@@ -108,6 +108,9 @@ macro(initialisation_xinx)
 		file(GLOB_RECURSE winresources *.rc)
 	endif(WIN32)
 
+	set_source_files_properties(${translations} PROPERTIES OUTPUT_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/translations")
+
+
 	qt4_wrap_ui(generated_forms ${forms})
 	xinx_automoc(moc_headers ${headers} OPTIONS ${MOC_FRAMEWORK})
 	qt4_add_resources(generated_resources ${resources})
