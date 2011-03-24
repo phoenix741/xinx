@@ -1,8 +1,8 @@
 <RCC>
     <qresource prefix="/" >
-        <file alias="qcodeedit/lan/css.qnfa" >../editors/qcodeedit/css.qnfa</file>
-        <file alias="qcodeedit/lan/js.qnfa" >../editors/qcodeedit/js.qnfa</file>
-        <file alias="qcodeedit/lan/xml.qnfa" >../editors/qcodeedit/xml.qnfa</file>
+        <file alias="qcodeedit/lan/css.qnfa" >editors/qcodeedit/css.qnfa</file>
+        <file alias="qcodeedit/lan/js.qnfa" >editors/qcodeedit/js.qnfa</file>
+        <file alias="qcodeedit/lan/xml.qnfa" >editors/qcodeedit/xml.qnfa</file>
         <file>images/preferences-xmlpres.png</file>
         <file>images/preferences-editors.png</file>
         <file>images/coreplugin.png</file>

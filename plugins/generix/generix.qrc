@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/generix" >
-        <file alias="qcodeedit/lan/maquette.qnfa" >../editors/qcodeedit/maquette.qnfa</file>
+        <file alias="qcodeedit/lan/maquette.qnfa" >editors/qcodeedit/maquette.qnfa</file>
         <file>images/typemaq.png</file>
         <file>images/logo_gce32.png</file>
         <file>images/logo_gce64.png</file>
