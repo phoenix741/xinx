@@ -26,7 +26,9 @@
    <item>
     <widget class="QLabel" name="label_3">
      <property name="text">
-      <string>The WebModule location is usually the place where you find the gce.properties files. It will be use to read the configuration file, and find dictionaries (to complete on labels). </string>
+      <string>This page show you the finding version of your GCE Installation. If the version number doesn't corresponding with your GCE Installation, please verify the configuration of your project. This will have an impact on the directory structure choosed by XINX and on how XINX will access to dictionnary and BV.
+
+On &quot;Location of the data stream&quot; you can fill by the location of the &quot;j2ee/home/log&quot; directory of your Application Server. This will be added as a link in your project to permit you an easy access to open a data stream.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

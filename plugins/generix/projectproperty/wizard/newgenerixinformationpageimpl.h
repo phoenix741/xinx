@@ -38,6 +38,7 @@ public:
 	virtual bool pageIsVisible() const;
 	virtual bool saveSettingsDialog(XinxProject::ProjectPtr project);
 
+	virtual bool isComplete() const;
 	virtual void initializePage();
 private slots:
 	void updateInformations(const QString & path);

@@ -25,6 +25,7 @@
 #include "projectproperty/generixproject.h"
 #include "pluginresolver/gce150fileresolver.h"
 #include <directoryedit.h>
+#include <core/xinxconfig.h>
 
 // Qt header
 #include <QLineEdit>
@@ -56,7 +57,7 @@ bool NewGenerixInformationPageImpl::pageIsVisible() const
 
 bool NewGenerixInformationPageImpl::saveSettingsDialog(XinxProject::ProjectPtr project)
 {
-	project->writeProperty("dataStreamLocation", m_dataStreamEdit->lineEdit()->text());
+	project->setLinkedPath(project->linkedPath() << m_dataStreamEdit->lineEdit()->text());
 	project->writeProperty("moduleInternetAdresse", m_urlLocationEdit->lineEdit()->text());
 
 	return true;
@@ -68,15 +69,30 @@ void NewGenerixInformationPageImpl::initializePage()
 	updateInformations(field("project.path").toString());
 }
 
+bool NewGenerixInformationPageImpl::isComplete() const
+{
+	return m_configurationVersionLabel->version().isValid();
+}
+
 void NewGenerixInformationPageImpl::updateInformations(const QString & path)
 {
 	const QString webModuleLocation     = path;
-	const QString dataStreamLocation    = QDir(QDir(webModuleLocation).absoluteFilePath("../../../log")).canonicalPath();
+	QString dataStreamLocation    = QDir(QDir(webModuleLocation).absoluteFilePath("../../../log")).canonicalPath();
 	QString moduleInternetAdresse = QDir(QDir(webModuleLocation).absoluteFilePath("presentation/common")).canonicalPath();
+
 	if (moduleInternetAdresse.isEmpty() || !QDir(moduleInternetAdresse).exists())
 	{
 		moduleInternetAdresse = QDir(QDir(webModuleLocation).absoluteFilePath("langue/fra/")).canonicalPath();
 	}
+	if (moduleInternetAdresse.isEmpty() || !QDir(moduleInternetAdresse).exists())
+	{
+		moduleInternetAdresse = webModuleLocation;
+	}
+	if (dataStreamLocation.isEmpty())
+	{
+		dataStreamLocation = XINXConfig::self()->config().project.defaultPath;
+	}
+
 	setField("generix.adresse", moduleInternetAdresse);
 	setField("generix.dataStream", dataStreamLocation);
 
@@ -105,5 +121,8 @@ void NewGenerixInformationPageImpl::updateInformations(const QString & path)
 	else
 	{
 		setField("generix.version", QVariant::fromValue(ConfigurationVersion()));
+		m_messageLabel->setVisible(true);
+		m_messageLabel->setText(tr("<p style=\"color: red\"><b>!!! WARNING !!!</b> : XINX can't parse any configuration file. Please check your location. If your project is not supported by XINX, "
+								   "you can create a standard project instead of a Generix project.</p>"));
 	}
 }

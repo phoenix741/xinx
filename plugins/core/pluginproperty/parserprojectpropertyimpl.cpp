@@ -31,8 +31,6 @@
 ParserProjectPropertyImpl::ParserProjectPropertyImpl(QWidget * parent, Qt::WindowFlags f) : QWidget(parent, f)
 {
 	setupUi(this);
-	m_labelDataStream->setBuddy(m_dataStreamEdit->lineEdit());
-	m_dataStreamEdit->setDefaultValue(XINXConfig::self()->config().project.defaultPath);
 }
 
 ParserProjectPropertyImpl::~ParserProjectPropertyImpl()
@@ -63,14 +61,12 @@ bool ParserProjectPropertyImpl::loadSettingsDialog()
 	else
 		m_urlLocationEdit->lineEdit()->setText(moduleAddress);
 
-	m_dataStreamEdit->lineEdit()->setText(QDir(m_project->projectPath()).absoluteFilePath(m_project->readProperty("dataStreamLocation").toString()));
 	return true;
 }
 
 bool ParserProjectPropertyImpl::saveSettingsDialog()
 {
 	m_project->writeProperty("moduleInternetAdresse", QDir(m_project->projectPath()).relativeFilePath(m_urlLocationEdit->lineEdit()->text()));
-	m_project->writeProperty("dataStreamLocation", QDir(m_project->projectPath()).relativeFilePath(m_dataStreamEdit->lineEdit()->text()));
 	return true;
 }
 
@@ -101,37 +97,18 @@ WebPluginProjectPropertyWizard::WebPluginProjectPropertyWizard()
 	setTitle(tr("Web Module Property Page"));
 	setSubTitle(tr("Define information about the web module, like the directory where find JS, Image and CSS."));
 
-	QGridLayout * gridLayout = new QGridLayout(this);
 
-	QLabel * labelUrl = new QLabel(this);
-	gridLayout->addWidget(labelUrl, 0, 0);
+	QFormLayout * formLayout = new QFormLayout(this);
+	formLayout->addRow(tr("Directory used to find CSS, JS and Image files :"), m_urlLocationEdit = new QLineEdit(this));
 
-	m_urlLocationEdit = new QLineEdit(this);
-	gridLayout->addWidget(m_urlLocationEdit, 0, 1);
-
-	QLabel * labelDataStream = new QLabel(this);
-	gridLayout->addWidget(labelDataStream, 1, 0);
-
-	m_dataStreamEdit = new DirectoryEditWidget(this);
-	gridLayout->addWidget(m_dataStreamEdit, 1, 1);
-
-	gridLayout->addItem(new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding), 2, 0);
-
-	labelUrl->setBuddy(m_urlLocationEdit);
-	labelUrl->setText(tr("Directory used to find CSS, JS and Image files :"));
 	m_urlLocationEdit->setText(field("project.path").toString());
 
-	labelDataStream->setBuddy(m_dataStreamEdit);
-	labelDataStream->setText(tr("Location of the &data stream (parsed by the stylesheet) :"));
-	m_dataStreamEdit->lineEdit()->setText(field("project.path").toString());
-
 	registerField("webplugin.adresse", m_urlLocationEdit);
-	registerField("webplugin.dataStream", m_dataStreamEdit);
 }
 
 void WebPluginProjectPropertyWizard::initializePage()
 {
-	m_dataStreamEdit->lineEdit()->setText(field("project.path").toString());
+
 }
 
 QString WebPluginProjectPropertyWizard::pagePluginId() const
@@ -146,7 +123,6 @@ bool WebPluginProjectPropertyWizard::pageIsVisible() const
 
 bool WebPluginProjectPropertyWizard::saveSettingsDialog(XinxProject::ProjectPtr project)
 {
-	project->writeProperty("dataStreamLocation", m_dataStreamEdit->lineEdit()->text());
 	project->writeProperty("moduleInternetAdresse", m_urlLocationEdit->text());
 
 	return true;
