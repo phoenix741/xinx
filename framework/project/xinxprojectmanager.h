@@ -47,6 +47,7 @@ public:
 	ProjectPtr projectOfFile(const QString & filename);
 	ProjectPtr projectOfPath(const QString & path);
 
+	void setSelectedProject(const QString & projectPath);
 	void setSelectedProject(XinxProject::ProjectPtrWeak project);
 	ProjectPtrWeak selectedProject() const;
 

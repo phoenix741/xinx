@@ -53,6 +53,7 @@ public:
 
 	QAction* _toggled_view_action;
 	QAction* _project_property_action;
+	QAction* _close_project_action;
 	QAction* _set_project_as_default_action;
 	QAction* _compare_with_workingcopy_action;
 	QAction* _compare_action;
@@ -103,6 +104,7 @@ public slots:
 
 	void setProjectAsDefaultTriggered();
 	void projectPropertyTriggered();
+	void closeProjectTriggered();
 
 	void compareWithVersionControlTriggered();
 	void compareFilesTriggered();

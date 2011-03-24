@@ -220,7 +220,7 @@ void Manager::initialisation()
 Manager::~Manager()
 {
 	d->m_defaultProject.clear();;
-	d->m_projects.clear();;
+	d->_projects.clear();;
 }
 
 /*!
@@ -233,7 +233,7 @@ Manager::~Manager()
  */
 const QList<ProjectPtr> & Manager::projects() const
 {
-	return d->m_projects;
+	return d->_projects;
 }
 
 ProjectPtr Manager::defaultProject()
@@ -250,7 +250,7 @@ ProjectPtr Manager::defaultProject()
 ProjectPtr Manager::projectOfFile(const QString & filename)
 {
 	const QString cleanFileName = QDir::cleanPath(filename);
-	foreach(XinxProject::ProjectPtr project, d->m_projects)
+	foreach(XinxProject::ProjectPtr project, d->_projects)
 	{
 		const QString cleanDirName = QDir::cleanPath(project->projectPath());
 		if (cleanFileName.contains(cleanDirName))
@@ -267,7 +267,7 @@ ProjectPtr Manager::projectOfPath(const QString & path)
 {
 	const QString cleanPath = QDir::cleanPath(path);
 
-	foreach(XinxProject::ProjectPtr project, d->m_projects)
+	foreach(XinxProject::ProjectPtr project, d->_projects)
 	{
 		const QString cleanDirName = QDir::cleanPath(project->projectPath());
 		if (cleanPath == cleanDirName)
@@ -301,7 +301,7 @@ void Manager::openProject(const QString & directory)
 
 ProjectPtr PrivateManager::projectContains(const QString & directory)
 {
-	foreach(ProjectPtr project, m_projects)
+	foreach(ProjectPtr project, _projects)
 	{
 		if (project->projectPath() == QFileInfo(directory).canonicalFilePath())
 		{
@@ -356,7 +356,7 @@ void Manager::openProject(ProjectPtr project)
 		progressDlg.setLabelText(tr("Close previous project"));
 		qApp->processEvents();
 
-		foreach(ProjectPtr project, d->m_projects)
+		foreach(ProjectPtr project, d->_projects)
 		{
 			closeProject(project, false);
 		}
@@ -379,7 +379,7 @@ void Manager::openProject(ProjectPtr project)
 		delete step;
 	}
 
-	d->m_projects.append(project);
+	d->_projects.append(project);
 
 	// Add the project in recent project
 	XINXConfig::self()->config().project.recentProjectFiles.prepend(project->projectPath());
@@ -434,10 +434,10 @@ bool Manager::closeProject(XinxProject::ProjectPtr project, bool showWelcome)
 		XinxSession::SessionManager::self()->currentSession()->deleteOpenedProject(project->projectPath());
 	}
 
-	d->m_projects.removeAll(project);
+	d->_projects.removeAll(project);
 	if (project.data() == selectedProject().data())
 	{
-		setSelectedProject(d->m_projects.size() ? d->m_projects.first().toWeakRef() : ProjectPtrWeak());
+		setSelectedProject(d->_projects.size() ? d->_projects.first().toWeakRef() : ProjectPtrWeak());
 	}
 
 	// Update the state of action
@@ -446,7 +446,7 @@ bool Manager::closeProject(XinxProject::ProjectPtr project, bool showWelcome)
 	emit changed();
 	emit projectClosed();
 
-	if (showWelcome && (d->m_projects.size() == 0))
+	if (showWelcome && (d->_projects.size() == 0))
 		openWelcomDialog();
 
 	return true;
@@ -454,7 +454,7 @@ bool Manager::closeProject(XinxProject::ProjectPtr project, bool showWelcome)
 
 bool Manager::closeAllProject()
 {
-	foreach(ProjectPtr project, d->m_projects)
+	foreach(ProjectPtr project, d->_projects)
 	{
 		if (! closeProject(project, false))
 		{
@@ -464,16 +464,34 @@ bool Manager::closeAllProject()
 	return true;
 }
 
+void Manager::setSelectedProject(const QString & projectPath)
+{
+	const QString canonicProjectPath = QDir(projectPath).canonicalPath();
+	foreach(ProjectPtr project, d->_projects)
+	{
+		if (project->projectPath() == canonicProjectPath)
+		{
+			setSelectedProject(project.toWeakRef());
+			return;
+		}
+	}
+}
+
 void Manager::setSelectedProject(XinxProject::ProjectPtrWeak project)
 {
-	Q_ASSERT_X(! project || d->m_projects.contains(project), "Manager::setSelectedProject", "Project must be opended");
+	Q_ASSERT_X(! project || d->_projects.contains(project), "Manager::setSelectedProject", "Project must be opended");
 
 	if (project.data() != d->_selected_project.data())
 	{
+		ProjectPtr projectPtr = project.toStrongRef();
+		const QString path = projectPtr.isNull() ? QString() : projectPtr->projectPath();
+
 		d->_selected_project = project;
 		d->updateActions();
 
-		emit selectionChanged(d->_selected_project.toStrongRef());
+		XinxSession::SessionManager::self()->currentSession()->setCurrentProjectPath(path);
+
+		emit selectionChanged(projectPtr);
 	}
 }
 

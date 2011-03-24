@@ -223,9 +223,15 @@ void SessionManager::restoreSession(const QString & sessionName)
 	d->updateSessions();
 
 	/* Restore */
+	const QString currentProjectPath = d->_current_session->currentProjectPath();
 	foreach(const QString & projectPath, d->_current_session->openedProject())
 	{
 		XinxProject::Manager::self()->openProject(projectPath);
+	}
+
+	if (! currentProjectPath.isEmpty())
+	{
+		XinxProject::Manager::self()->setSelectedProject(currentProjectPath);
 	}
 
 	EditorManager::self()->deserializeEditors(d->_current_session->serializedEditors());

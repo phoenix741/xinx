@@ -317,7 +317,7 @@ QString ModelFileNode::modelDirectory() const
 
 /* PrivateProjectListModel */
 
-PrivateProjectListModel::PrivateProjectListModel(ProjectListModel* parent): QObject(parent), _model(parent), _provider(0), _changePathTimer(new QTimer), _long_directory_name(false)
+PrivateProjectListModel::PrivateProjectListModel(ProjectListModel* parent): QObject(parent), _model(parent), _provider(0), _long_directory_name(false), _changePathTimer(new QTimer)
 {
 	qRegisterMetaType<QFileInfoList>("QFileInfoList");
 	qRegisterMetaType< QList<RCS::struct_rcs_infos> >("QList<RCS::struct_rcs_infos>");
@@ -569,7 +569,10 @@ void PrivateProjectListModel::updateLinkedDirectories(XinxProject::ProjectPtr pr
 				removeVisibleChildren(projectNode, node->_key);
 				projectNode->remove(node->_key);
 				_watcherDirectory.remove(path, node->modelDirectory());
-				_watcher->removePath(path);
+				if (! _watcherDirectory.keys().contains(path))
+				{
+					_watcher->removePath(path);
+				}
 
 				delete node;
 			}
@@ -580,7 +583,10 @@ void PrivateProjectListModel::updateLinkedDirectories(XinxProject::ProjectPtr pr
 	{
 		ModelFileNode* linkedPath = projectNode->add(path);
 		linkedPath->_is_linked_path = true;
-		_watcher->addPath(path);
+		if (! _watcher->directories().contains(path))
+		{
+			_watcher->addPath(path);
+		}
 		_watcherDirectory.insert(path, linkedPath->modelDirectory());
 	}
 }

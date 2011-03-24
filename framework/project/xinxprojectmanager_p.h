@@ -39,7 +39,7 @@ public:
 
 	QAction * _new_project_action, * _recent_project_action, * _close_project_action, * _customize_project_action;
 	ProjectPtrWeak _selected_project;
-	QList<ProjectPtr> m_projects;
+	QList<ProjectPtr> _projects;
 	ProjectPtr m_defaultProject;
 	XinxProject::Manager* _manager;
 	QAction * _recent_separator;

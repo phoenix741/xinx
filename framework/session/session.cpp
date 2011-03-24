@@ -49,6 +49,7 @@ void PrivateSession::save(const QString & saveName)
 	settings.beginGroup(saveName);
 
 	settings.setValue("name", _current_session_name);
+	settings.setValue("currentProject", _current_project_path);
 
 	_project_path_opened.removeDuplicates();
 	settings.beginWriteArray("projects");
@@ -103,6 +104,10 @@ void PrivateSession::load()
 	if (!settings.value("name").toString().isEmpty())
 	{
 		_current_session_name = settings.value("name").toString();
+	}
+	if (!settings.value("currentProject").toString().isEmpty())
+	{
+		_current_project_path = settings.value("currentProject").toString();
 	}
 
 	int size = settings.beginReadArray("projects");
@@ -231,6 +236,23 @@ void Session::addOpenedFile(const QString & filename)
 	}
 	d->save(d->_current_session_name);
 	emit changed();
+}
+
+void Session::setCurrentProjectPath(const QString& path)
+{
+	if (!d->_is_session_updatable) return;
+
+	if (d->_current_project_path != path)
+	{
+		d->_current_project_path = path;
+		d->save(d->_current_session_name);
+		emit changed();
+	}
+}
+
+const QString& Session::currentProjectPath() const
+{
+	return d->_current_project_path;
 }
 
 /*!

@@ -61,6 +61,8 @@ PrivateProjectDirectoryWidgetImpl::PrivateProjectDirectoryWidgetImpl(ProjectDire
 	connect(_set_project_as_default_action, SIGNAL(triggered()), this, SLOT(setProjectAsDefaultTriggered()));
 	_project_property_action			= new QAction(tr("Pro&ject Property"), this);
 	connect(_project_property_action, SIGNAL(triggered()), this, SLOT(projectPropertyTriggered()));
+	_close_project_action				= new QAction(QIcon(":/images/project_close.png"), tr("C&lose project"), this);
+	connect(_close_project_action, SIGNAL(triggered()), this, SLOT(closeProjectTriggered()));
 
 	_compare_with_workingcopy_action 	= new QAction(QIcon(":/images/vcs_diff.png"), tr("Compare with the version management"), this);
 	connect(_compare_with_workingcopy_action, SIGNAL(triggered()), this, SLOT(compareWithVersionControlTriggered()));
@@ -86,6 +88,7 @@ PrivateProjectDirectoryWidgetImpl::PrivateProjectDirectoryWidgetImpl(ProjectDire
 	_plugin_separator = _popup_menu->addSeparator();
 	_popup_menu->addAction(_set_project_as_default_action);
 	_popup_menu->addAction(_project_property_action);
+	_popup_menu->addAction(_close_project_action);
 	_popup_menu->addSeparator();
 	_popup_menu->addAction(_create_directory_action);
 	_popup_menu->addAction(_new_file_action);
@@ -189,6 +192,7 @@ void PrivateProjectDirectoryWidgetImpl::updateActions(QModelIndexList selectedRo
 
 	_set_project_as_default_action->setVisible((nb_selected == 1) && is_project && !is_selected);
 	_project_property_action->setVisible((nb_selected == 1) && is_project);
+	_close_project_action->setVisible((nb_selected == 1) && is_project);
 	_create_directory_action->setVisible((nb_selected == 1) && is_directory);
 	_new_file_action->setVisible((nb_selected == 1) && is_directory);
 	_rename_file_action->setVisible((nb_selected == 1) && is_file);
@@ -361,6 +365,14 @@ void PrivateProjectDirectoryWidgetImpl::projectPropertyTriggered()
 	if (list.size() != 1) return;
 
 	XinxProject::Manager::self()->customizeProject(_model->fileProject(list.at(0)));
+}
+
+void PrivateProjectDirectoryWidgetImpl::closeProjectTriggered()
+{
+	QModelIndexList list = _parent->_directory_view->selectionModel()->selectedRows();
+	if (list.size() != 1) return;
+
+	XinxProject::Manager::self()->closeProject(_model->fileProject(list.at(0)));
 }
 
 void PrivateProjectDirectoryWidgetImpl::compareWithVersionControlTriggered()

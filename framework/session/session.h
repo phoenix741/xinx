@@ -61,6 +61,9 @@ public:
 	const QStringList & lastOpenedFile() const;
 	void addOpenedFile(const QString & filename);
 
+	void setCurrentProjectPath(const QString & path);
+	const QString & currentProjectPath() const;
+
 	void clearSerializedEditors();
 	const QList<SessionEditor*> & serializedEditors() const;
 	void addSerializedEditor(SessionEditor * editor);

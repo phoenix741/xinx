@@ -34,6 +34,7 @@ public:
 	void load();
 
 	Session * _session;
+	QString _current_project_path;
 	QString _current_session_name;
 	QStringList _last_opened_file;
 	QStringList _project_path_opened;
