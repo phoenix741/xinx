@@ -112,12 +112,13 @@ XinxProject::ProjectPtr File::project() const
 
 void File::addImport(const QString& import)
 {
-	if (! d->_imports.contains(import))
+	XinxProject::ProjectPtr projectPtr = project();
+	if (projectPtr && ! d->_imports.contains(import))
 	{
 		try
 		{
 			d->_imports.append(import);
-			d->_project.toStrongRef()->cache()->addFileToCache(import);
+			projectPtr->cache()->addFileToCache(import);
 		}
 		catch (CacheParserNotFoundException e)
 		{

@@ -89,16 +89,16 @@ void DictionaryModel::loadDictionaries(const QString & prefix)
 			}
 			else
 			{
-				bool skipLabel = false;
 				if (! childNodePtr->name().contains(regExpPrefix))
 				{
-					skipLabel = true;
+					bool skipLabel = true;
 					foreach(ContentView3::NodePtr childChildPtr, childNodePtr->childs())
 					{
 						QSharedPointer<Generix::Dictionary::LabelNode> labelPtr = childChildPtr.dynamicCast<Generix::Dictionary::LabelNode>();
 						if (labelPtr->value().contains(regExpPrefix))
 						{
 							skipLabel = false;
+							break;
 						}
 					}
 					if (skipLabel)
@@ -106,6 +106,8 @@ void DictionaryModel::loadDictionaries(const QString & prefix)
 						continue;
 					}
 				}
+
+				forceChild = true;
 
 				label = new QStandardItem;
 				label->setText(childNodePtr->name());

@@ -714,6 +714,9 @@ void PrivateProjectListModel::_allFetchedFiles(const QString & directory, QStrin
 {
 	ModelFileNode * node_path = node(_root_node, directory);
 
+	// In this case the project have been deleted while thread is running.
+	if (! node_path) return;
+
 	// If after all adds, there is no more files, we remove the directory
 	if (node_path->_parent && !isNodeMustBeShow(node_path))
 	{
