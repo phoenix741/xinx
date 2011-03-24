@@ -48,6 +48,16 @@ DirectoryFetcher::~DirectoryFetcher()
 
 }
 
+bool DirectoryFetcher::isUnique() const
+{
+	return true;
+}
+
+QString DirectoryFetcher::uniqKey() const
+{
+	return modelDirectory();
+}
+
 void DirectoryFetcher::setModelDirectory(const QString & directory)
 {
 	_modelDirectory = directory;
@@ -307,7 +317,7 @@ QString ModelFileNode::modelDirectory() const
 
 /* PrivateProjectListModel */
 
-PrivateProjectListModel::PrivateProjectListModel(ProjectListModel* parent): QObject(parent), _model(parent), _provider(0), _long_directory_name(false)
+PrivateProjectListModel::PrivateProjectListModel(ProjectListModel* parent): QObject(parent), _model(parent), _provider(0), _changePathTimer(new QTimer), _long_directory_name(false)
 {
 	qRegisterMetaType<QFileInfoList>("QFileInfoList");
 	qRegisterMetaType< QList<RCS::struct_rcs_infos> >("QList<RCS::struct_rcs_infos>");
@@ -316,6 +326,8 @@ PrivateProjectListModel::PrivateProjectListModel(ProjectListModel* parent): QObj
 	_root_node->_is_children_populated = false;
 	_selected_font.setBold(true);
 
+	_changePathTimer->setInterval(1000);
+	_changePathTimer->setSingleShot(true);
 	_watcher = new QFileSystemWatcher(this);
 	_fetcher = new DirectoryFetcher;
 
@@ -326,7 +338,8 @@ PrivateProjectListModel::PrivateProjectListModel(ProjectListModel* parent): QObj
 	connect(XinxProject::Manager::self(), SIGNAL(projectCustomized(XinxProject::ProjectPtr)), this, SLOT(updateProject(XinxProject::ProjectPtr)));
 	connect(XinxProject::Manager::self(), SIGNAL(projectClosing(XinxProject::ProjectPtr)), this, SLOT(removeProject(XinxProject::ProjectPtr)));
 
-	connect(_watcher, SIGNAL(directoryChanged(QString)), this, SLOT(fetchPath(QString)));
+	connect(_watcher, SIGNAL(directoryChanged(QString)), this, SLOT(wantFetchPath(QString)));
+	connect(_changePathTimer.data(), SIGNAL(timeout()), this, SLOT(fetchPathTimeout()));
 }
 
 PrivateProjectListModel::~PrivateProjectListModel()
@@ -755,6 +768,22 @@ void PrivateProjectListModel::fetchNode(ModelFileNode * node)
 	connect(fetcher, SIGNAL(updateFiles(QString,QList<RCS::struct_rcs_infos>)), this, SLOT(_updateFiles(QString,QList<RCS::struct_rcs_infos>)));
 
 	XinxJobManager::self()->addJob(fetcher);
+}
+
+void PrivateProjectListModel::fetchPathTimeout()
+{
+	while (_changedPath.size())
+	{
+		const QString path = _changedPath.pop();
+		fetchPath(path);
+	}
+}
+
+void PrivateProjectListModel::wantFetchPath(const QString & path)
+{
+	_changePathTimer->stop();
+	_changedPath.push(QFileInfo(path).canonicalFilePath());
+	_changePathTimer->start();
 }
 
 void PrivateProjectListModel::fetchPath(const QString & pathToFetch)

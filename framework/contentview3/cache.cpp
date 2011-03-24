@@ -133,8 +133,7 @@ void Cache::addFileToCache(const QString& filename, bool force, ContentView3::Ca
 	// If the file is already in the cache, don't reload it.
 	if (! force && d->_files.contains(absoluteFilename)) return;
 
-	QFile * device = new QFile(absoluteFilename);
-	if (device->open(QFile::ReadOnly))
+	if (QFile::exists(absoluteFilename))
 	{
 		FilePtr file = cachedFile(absoluteFilename);
 
@@ -150,7 +149,7 @@ void Cache::addFileToCache(const QString& filename, bool force, ContentView3::Ca
 		EXCEPT_ELSE(parser, CacheParserNotFoundException, "Cache::addFileToCache", "Can't find a parser for the file %1", absoluteFilename);
 
 		parser->setFile(file);
-		parser->setDevice(device);
+		parser->setDevice(new QFile(absoluteFilename));
 
 		addFileToCache(parser, force, visibility);
 	}

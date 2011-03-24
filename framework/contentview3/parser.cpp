@@ -293,6 +293,11 @@ void Parser::startJob()
 		QMetaObject::invokeMethod(ErrorManager::self(), "clearMessages", Qt::QueuedConnection,
 								  Q_ARG(QString, d->_file ? d->_file->filename() : "XINX"));
 
+		if (d->_device && !d->_device->open(QIODevice::ReadOnly))
+		{
+			throw ParserException(tr("Can't open \"%1\" : %2").arg(description()).arg(d->_device->errorString()), -1);
+		}
+
 		parse();
 
 		d->_file->setRootNode(d->_fileRootNode);

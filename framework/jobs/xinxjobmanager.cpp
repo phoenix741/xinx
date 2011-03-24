@@ -30,8 +30,11 @@ public:
 	QThreadPool * _pool;
 	QAtomicInt _count, _progress_value, _progress_max;
 
+	QScopedPointer<QMutex> _waiting_job_mutex;
+	QList<XinxJob*> _waiting_job_list;
+
 	QScopedPointer<QMutex> _descriptions_mutex;
-	QHash<QObject*,QString> _descriptions_list;
+	QHash<XinxJob*,QString> _descriptions_list;
 };
 
 /* XinxJobManager */
@@ -40,11 +43,14 @@ XinxJobManager::XinxJobManager()
 {
 	d = new PrivateXinxJobManager;
 	d->_descriptions_mutex.reset(new QMutex);
+	d->_waiting_job_mutex.reset(new QMutex);
 	d->_pool = new QThreadPool;
 }
 
 XinxJobManager::~XinxJobManager()
 {
+	d->_pool->waitForDone();
+
 	// FIXME : Que faire si le pool tourne encore
 	delete d->_pool;
 	delete d;
@@ -52,6 +58,19 @@ XinxJobManager::~XinxJobManager()
 
 void XinxJobManager::addJob(XinxJob* job)
 {
+	if (job->isUnique())
+	{
+		QMutexLocker locker(d->_waiting_job_mutex.data());
+		foreach(XinxJob * jb, d->_waiting_job_list)
+		{
+			if (jb->uniqKey() == job->uniqKey())
+			{
+				emit jobCanceled(job);
+				return ;
+			}
+		}
+	}
+
 	connect(job, SIGNAL(jobStarting()), this, SLOT(slotJobStarting()), Qt::BlockingQueuedConnection);
 	connect(job, SIGNAL(jobEnding()), this, SLOT(slotJobEnding()));
 	if (d->_count == 0)
@@ -67,6 +86,10 @@ void XinxJobManager::addJob(XinxJob* job)
 
 	qDebug() << "Add job " << job->description() << " (" << d->_progress_max << ")";
 
+	{
+		QMutexLocker locker(d->_waiting_job_mutex.data());
+		d->_waiting_job_list.append(job);
+	}
 	emit jobAdded(job);
 	d->_pool->start(job);
 	//emit jobStarted(countTotalJob (), countRunningJob ());
@@ -81,6 +104,10 @@ void XinxJobManager::slotJobStarting()
 	{
 		QMutexLocker locker(d->_descriptions_mutex.data());
 		d->_descriptions_list.insert(job, job->description());
+	}
+	{
+		QMutexLocker locker(d->_waiting_job_mutex.data());
+		d->_waiting_job_list.removeAll(job);
 	}
 
 	qDebug() << "Starting job (" << countRunningJob() << "/" << countTotalJob() << ")";

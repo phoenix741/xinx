@@ -35,6 +35,9 @@ public:
 
 	virtual bool isRunning();
 
+	virtual bool isUnique() const;
+	virtual QString uniqKey() const;
+
 	virtual QString description() const = 0;
 	virtual QString status() const;
 

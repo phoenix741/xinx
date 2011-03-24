@@ -39,6 +39,16 @@ XinxJob::~XinxJob()
 
 }
 
+bool XinxJob::isUnique() const
+{
+	return false;
+}
+
+QString XinxJob::uniqKey() const
+{
+	return QString();
+}
+
 void XinxJob::setManagerDelete(bool value)
 {
 	_manager_delete = value;

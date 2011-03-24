@@ -492,23 +492,14 @@ void TextFileEditor::updateModel()
 			buffer->setData(qPrintable(m_view->toPlainText()));
 		}
 
-		if (buffer->open(QBuffer::ReadOnly))
+		parser->setFile(_file);
+		if (project())
 		{
-			parser->setFile(_file);
-			if (project())
-			{
-				parser->setWorkingPath(project()->projectPath());
-			}
-
-			parser->setDevice(buffer);
-
-			project()->cache()->addFileToCache(parser, true, ContentView3::Cache::NONE);
+			parser->setWorkingPath(project()->projectPath());
 		}
-		else
-		{
-			delete buffer;
-			delete parser;
-		}
+
+		parser->setDevice(buffer);
+		project()->cache()->addFileToCache(parser, true, ContentView3::Cache::NONE);
 	}
 
 	emit contentChanged();

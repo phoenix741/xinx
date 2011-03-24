@@ -37,12 +37,11 @@ XmlDefinitionManager::XmlDefinitionManager()
 		QSharedPointer<RootNode> rootNode = RootNode::create("HTML");
 		_html_file->setRootNode(rootNode);
 
-		QFile * file = new QFile(_html_file->filename());
-		if (file->open(QFile::ReadOnly))
+		if (QFileInfo(_html_file->filename()).exists())
 		{
 			XmlCompletionParser * parser = new XmlCompletionParser;
 			parser->setFile(_html_file);
-			static_cast<ContentView3::Parser*>(parser)->setDevice(file);
+			static_cast<ContentView3::Parser*>(parser)->setDevice(new QFile(_html_file->filename()));
 			XinxProject::Manager::self()->defaultProject()->cache()->addFileToCache(parser, false, ContentView3::Cache::PROJECT);
 		}
 	}
@@ -53,12 +52,11 @@ XmlDefinitionManager::XmlDefinitionManager()
 		QSharedPointer<RootNode> rootNode = RootNode::create("XSLT");
 		_xsl_file->setRootNode(rootNode);
 
-		QFile * file = new QFile(_xsl_file->filename());
-		if (file->open(QFile::ReadOnly))
+		if (QFileInfo(_xsl_file->filename()).exists())
 		{
 			XmlCompletionParser * parser = new XmlCompletionParser;
 			parser->setFile(_xsl_file);
-			static_cast<ContentView3::Parser*>(parser)->setDevice(file);
+			static_cast<ContentView3::Parser*>(parser)->setDevice(new QFile(_xsl_file->filename()));
 			XinxProject::Manager::self()->defaultProject()->cache()->addFileToCache(parser, false, ContentView3::Cache::PROJECT);
 		}
 	}

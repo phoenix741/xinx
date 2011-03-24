@@ -41,6 +41,7 @@ signals:
 	void progressRangeChanged(int minimum, int maximum);
 	void progressValueChanged(int value);
 
+	void jobCanceled(XinxJob * job);
 	void jobAdded(XinxJob * job);
 	void jobStarted(XinxJob * job);
 	void jobEnded(XinxJob * job);

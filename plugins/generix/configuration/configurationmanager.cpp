@@ -57,14 +57,13 @@ void ConfigurationManager::addDictionary(const QString & filename)
 	XinxProject::ProjectPtr project = _project.toStrongRef();
 	if (! project) return;
 
-	QFile * device = new QFile(filename);
-	if (device->open(QFile::ReadOnly))
+	if (QFileInfo(filename).exists())
 	{
 		ContentView3::FilePtr file = project->cache()->cachedFile(filename);
 
 		Generix::Dictionary::Parser * dictionaryParser = new Generix::Dictionary::Parser();
 		dictionaryParser->setFile(file);
-		dictionaryParser->setDevice(device);
+		dictionaryParser->setDevice(new QFile(filename));
 
 		project->cache()->addFileToCache(dictionaryParser, false, ContentView3::Cache::PROJECT);
 	}

@@ -28,6 +28,7 @@
 #include <jobs/xinxjob.h>
 #include <QMutex>
 #include <QFileSystemWatcher>
+#include <QStack>
 
 namespace XinxProject
 {
@@ -40,6 +41,9 @@ class DirectoryFetcher : public XinxJob
 public:
 	DirectoryFetcher();
 	~DirectoryFetcher();
+
+	virtual bool isUnique() const;
+	virtual QString uniqKey() const;
 
 	void setModelDirectory(const QString & directory);
 	const QString & modelDirectory() const;
@@ -131,6 +135,9 @@ public:
 	QFileSystemWatcher * _watcher;
 	DirectoryFetcher * _fetcher;
 
+	QScopedPointer<QTimer> _changePathTimer;
+	QStack<QString> _changedPath;
+
 	QFont _selected_font;
 
 	QRegExp _filter_filename;
@@ -152,6 +159,9 @@ public slots:
 
 	void fetchNode(ModelFileNode * node);
 	void fetchPath(const QString & path);
+	void wantFetchPath(const QString & path);
+
+	void fetchPathTimeout();
 
 	void addProject(XinxProject::ProjectPtr project);
 	void removeProject(XinxProject::ProjectPtr project);
