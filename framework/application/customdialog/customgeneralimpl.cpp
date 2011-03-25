@@ -21,6 +21,7 @@
 #include "customgeneralimpl.h"
 #include <core/xinxconfig.h>
 #include <directoryedit.h>
+#include <translations/translationmanager.h>
 
 // Qt header
 #include <QStyleFactory>
@@ -64,10 +65,17 @@ QWidget * CustomGeneralImpl::settingsDialog()
 bool CustomGeneralImpl::loadSettingsDialog()
 {
 	// Language
+	m_langComboBox->clear();
+	m_langComboBox->addItem("C", "C");
 	m_langComboBox->setCurrentIndex(0);
+	foreach(TranslationManager::Language l, TranslationManager::self()->languages())
+	{
+		m_langComboBox->addItem(QIcon(l.image), QString("(%1) %2").arg(l.code).arg(l.name), l.code);
+	}
+
 	for (int i = 0; i < m_langComboBox->count(); i++)
 	{
-		if (m_langComboBox->itemText(i).contains(QString("(%1)").arg(XINXConfig::self()->config().language)))
+		if (m_langComboBox->itemData(i).toString() == XINXConfig::self()->config().language)
 		{
 			m_langComboBox->setCurrentIndex(i);
 			break;
@@ -87,9 +95,7 @@ bool CustomGeneralImpl::loadSettingsDialog()
 bool CustomGeneralImpl::saveSettingsDialog()
 {
 	// Language
-	QRegExp exp("^\\((.*)\\).*$");
-	if (exp.indexIn(m_langComboBox->currentText()) >= 0)
-		XINXConfig::self()->config().language = exp.cap(1);
+	XINXConfig::self()->config().language = m_langComboBox->itemData(m_langComboBox->currentIndex()).toString();
 
 	// Trace Log File
 	XINXConfig::self()->config().xinxTrace = QDir::fromNativeSeparators(m_traceLogWidget->lineEdit()->text());

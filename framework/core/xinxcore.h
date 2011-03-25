@@ -28,6 +28,8 @@
 #include <QObject>
 #include <QObjectCleanupHandler>
 
+class QApplication;
+
 /*!
  * \mainpage XINX Library
  *
@@ -118,5 +120,6 @@ inline void qDeleteAllLater(const Container &c)
 	qDeleteAllLater(c.begin(), c.end());
 }
 
+LIBEXPORT void initSearchPath(QApplication * app);
 
 #endif // __XINXCORE_H__

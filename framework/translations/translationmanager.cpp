@@ -18,6 +18,8 @@
 */
 
 #include "translationmanager_p.h"
+#include <core/xinxconfig.h>
+
 #include <QDir>
 #include <QApplication>
 
@@ -115,4 +117,15 @@ void TranslationManager::apply()
 			qApp->installTranslator(translator);
 		}
 	}
+}
+
+QList<TranslationManager::Language> TranslationManager::languages() const
+{
+	return d->_languages.values();
+}
+
+void startTranslation()
+{
+	TranslationManager::self()->setLanguage(XINXConfig::self()->config().language);
+	TranslationManager::self()->apply();
 }

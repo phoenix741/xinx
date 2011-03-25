@@ -20,12 +20,13 @@
 #ifndef TRANSLATIONMANAGER_H
 #define TRANSLATIONMANAGER_H
 
+#include <core/lib-config.h>
 #include <core/xinxsingleton.h>
 #include <QScopedPointer>
 
 class TranslationManagerPrivate;
 
-class TranslationManager : public XinxLibSingleton<TranslationManager>
+class LIBEXPORT TranslationManager : public XinxLibSingleton<TranslationManager>
 {
 	Q_OBJECT
 public:
@@ -41,11 +42,15 @@ public:
 	void setLanguage(const QString & lang);
 	const QString & language() const;
 
+	QList<Language> languages() const;
+
 	void apply();
 private:
-    TranslationManager();
+	TranslationManager();
 	friend class XinxLibSingleton<TranslationManager>;
 	QScopedPointer<TranslationManagerPrivate> d;
 };
+
+LIBEXPORT void startTranslation();
 
 #endif // TRANSLATIONMANAGER_H

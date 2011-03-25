@@ -1,3 +1,4 @@
+set(LANGUAGES fr en bg)
 set(CMAKE_C_FLAGS "-frtti -fexceptions -Wall")
 set(CMAKE_CXX_FLAGS "-frtti -fexceptions -Wall") # -Wold-style-cast") # -Woverloaded-virtual")
 
@@ -48,7 +49,7 @@ macro(xinx_automoc outfiles)
   endforeach(it)
 endmacro(xinx_automoc)
 
-macro(initialisation_xinx)
+macro(initialisation_xinx cible)
 	unset(LIBRARIES)
 
 	include(${QT_USE_FILE})
@@ -102,7 +103,15 @@ macro(initialisation_xinx)
 	file(GLOB_RECURSE sources *.cpp ${UNIQUE_APPPLICATION_SOURCES} ${SOAP_SOURCES})
 	file(GLOB_RECURSE forms *.ui)
 	file(GLOB_RECURSE resources *.qrc)
-	file(GLOB_RECURSE translations *.ts)
+	file(GLOB_RECURSE other_translations *.ts)
+
+	if(${GENTRANSLATION})
+		set(translations)
+		foreach(language ${LANGUAGES})
+			set(translations ${translations} "translations/${cible}_${language}.ts")
+		endforeach(language ${LANGUAGES})
+		list(REMOVE_ITEM other_translations ${translations})
+	endif()
 
 	if(WIN32)
 		file(GLOB_RECURSE winresources *.rc)
@@ -110,17 +119,21 @@ macro(initialisation_xinx)
 
 	#set_source_files_properties(${translations} PROPERTIES OUTPUT_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/translations")
 	set_source_files_properties(${translations} PROPERTIES OUTPUT_LOCATION "${CMAKE_BINARY_DIR}/i18n")
+	set_source_files_properties(${other_translations} PROPERTIES OUTPUT_LOCATION "${CMAKE_BINARY_DIR}/i18n")
 
 
 	qt4_wrap_ui(generated_forms ${forms})
 	xinx_automoc(moc_headers ${headers} OPTIONS ${MOC_FRAMEWORK})
 	qt4_add_resources(generated_resources ${resources})
-	#qt4_create_translation(translations_qm ${forms} ${headers} ${sources} ${translations})
-	qt4_add_translation(translations_qm ${translations})
+
+	if(${GENTRANSLATION})
+		qt4_create_translation(translations_qm ${forms} ${headers} ${sources} ${translations})
+	endif()
+	qt4_add_translation(other_translations_qm ${other_translations})
 endmacro(initialisation_xinx)
 
 macro(add_xinx_executable cible librairies)
-	initialisation_xinx()
+	initialisation_xinx(${cible})
 
 	add_executable(${cible} WIN32 ${moc_headers} ${sources} ${winresources} ${generated_forms} ${generated_resources} ${translations_qm})
 	target_link_libraries(${cible} ${librairies} ${LIBRARIES} ${QT_LIBRARIES})
@@ -129,7 +142,7 @@ macro(add_xinx_executable cible librairies)
 endmacro(add_xinx_executable)
 
 macro(add_xinx_librairie cible librairies version)
-	initialisation_xinx()
+	initialisation_xinx(${cible})
 
 	#if(WIN32)
 	#	if(MINGW)
@@ -150,7 +163,7 @@ macro(add_xinx_plugins cible is_shared librairies version)
 	set(IS_PLUGINS True)
 	set(IS_SHARED  ${is_shared})
 
-	initialisation_xinx()
+	initialisation_xinx(${cible})
 
 	if(${IS_SHARED})
 		add_library(${cible} MODULE ${moc_headers} ${sources} ${winresources} ${generated_forms} ${generated_resources} ${translations_qm} )
