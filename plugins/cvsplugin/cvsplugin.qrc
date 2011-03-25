@@ -2,6 +2,5 @@
     <qresource prefix="/" >
         <file>images/hi32-app-cervisia.png</file>
         <file>images/hi64-app-cervisia.png</file>
-	<file>translations/cvsplugin_fr.qm</file>
     </qresource>
 </RCC>

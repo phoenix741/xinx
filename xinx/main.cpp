@@ -30,6 +30,7 @@
 #include <session/sessionmanager.h>
 #include <project/xinxprojectmanager.h>
 #include <core/version.h>
+#include <translations/translationmanager.h>
 
 // QCodeEdit header
 #include <qlinemarksinfocenter.h>
@@ -41,7 +42,6 @@
 #include <QFile>
 #include <QMessageBox>
 #include <QLocale>
-#include <QTranslator>
 #include <QDir>
 #include <QThread>
 #include <QBitmap>
@@ -62,6 +62,7 @@ static void initSearchPath(QApplication * app)
 {
 	const QString configDirectory    = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
 	const QString homeDirectory      = QDir::home().absoluteFilePath(configDirectory);
+	const QString i18nDirectory     = QDir(homeDirectory).absoluteFilePath("i18n");
 	const QString datasDirectory     = QDir(homeDirectory).absoluteFilePath("datas");
 	const QString scriptDirectory    = QDir(homeDirectory).absoluteFilePath("scripts");
 	const QString pluginsDirectory   = QDir(homeDirectory).absoluteFilePath("plugins");
@@ -71,6 +72,14 @@ static void initSearchPath(QApplication * app)
 	QDir::home().mkpath(scriptDirectory);
 	QDir::home().mkpath(pluginsDirectory);
 	QDir::home().mkpath(templatesDirectory);
+
+	// .. for i18n ...
+	QDir::addSearchPath("translations", i18nDirectory);
+	QDir::addSearchPath("translations", QDir(QApplication::applicationDirPath()).absoluteFilePath("../i18n"));
+	#ifndef Q_WS_WIN
+	QDir::addSearchPath("translations", QDir(QApplication::applicationDirPath()).absoluteFilePath("../share/xinx/i18n"));
+	QDir::addSearchPath("translations", QDir(QApplication::applicationDirPath()).absoluteFilePath("../lib/xinx/i18n"));
+	#endif // Q_WS_WIN
 
 	// .. for datas ...
 	QDir::addSearchPath("datas", datasDirectory);
@@ -226,18 +235,8 @@ int main(int argc, char *argv[])
 			app.processEvents();
 
 			// ... load qt translation ...
-			QTranslator translator_xinx, translator_qt, translator_libxinx, tranlator_components;
-			translator_qt.load(QString(":/translations/qt_%1").arg(XINXConfig::self()->config().language));
-			app.installTranslator(&translator_qt);
-			// ... load xinx translation ...
-			translator_xinx.load(QString(":/translations/xinx_%1").arg(XINXConfig::self()->config().language));
-			app.installTranslator(&translator_xinx);
-			// ... load xinx library translation ...
-			translator_libxinx.load(QString(":/translations/libxinx_%1").arg(XINXConfig::self()->config().language));
-			app.installTranslator(&translator_libxinx);
-			// ... load components translations
-			tranlator_components.load(QString(":/translations/xinxcomponents_%1").arg(XINXConfig::self()->config().language));
-			app.installTranslator(&tranlator_components);
+			TranslationManager::self()->setLanguage(XINXConfig::self()->config().language);
+			TranslationManager::self()->apply();
 
 			bool recovering = false;
 			if (XinxSession::Session::sessionsNames().contains(RECOVER_SESSION))

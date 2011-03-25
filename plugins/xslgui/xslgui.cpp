@@ -24,7 +24,6 @@
 // Qt header
 #include <QString>
 #include <QVariant>
-#include <QTranslator>
 #include <QApplication>
 
 /* XSLStyleSheetFileType */
@@ -89,10 +88,6 @@ XslGuiPlugin::~XslGuiPlugin()
 
 bool XslGuiPlugin::initializePlugin(const QString & lang)
 {
-	QTranslator * tranlator = new QTranslator(this);
-	tranlator->load(QString(":/xslgui/translations/xslgui_%1").arg(lang));
-	qApp->installTranslator(tranlator);
-
 	return true;
 }
 

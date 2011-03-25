@@ -59,7 +59,6 @@
 #include <QDir>
 #include <QApplication>
 #include <QTextEdit>
-#include <QTranslator>
 #include <QApplication>
 #include <QAction>
 
@@ -86,10 +85,6 @@ CorePlugin::~CorePlugin()
 
 bool CorePlugin::initializePlugin(const QString & lang)
 {
-	QTranslator * tranlator = new QTranslator(this);
-	tranlator->load(QString(":/translations/coreplugin_%1").arg(lang));
-	qApp->installTranslator(tranlator);
-
 	m_resolver = new ManualFileResolver();
 
 	return true;

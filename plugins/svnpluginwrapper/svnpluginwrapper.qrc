@@ -1,6 +1,5 @@
-<RCC> 
+<RCC>
     <qresource prefix="/" >
         <file>images/svnwrapper.png</file>
-	<file>translations/svnpluginwrapper_fr.qm</file>
     </qresource>
 </RCC>

@@ -30,7 +30,6 @@
 // Qt header
 #include <QString>
 #include <QVariant>
-#include <QTranslator>
 #include <QApplication>
 
 class OpenWebServicesObjectStep : public IProjectInitialisationStep
@@ -75,10 +74,6 @@ ServicesPlugin::~ServicesPlugin()
 
 bool ServicesPlugin::initializePlugin(const QString & lang)
 {
-	QTranslator * tranlator = new QTranslator(this);
-	tranlator->load(QString(":/services/translations/servicesplugin_%1").arg(lang));
-	qApp->installTranslator(tranlator);
-
 	return true;
 }
 

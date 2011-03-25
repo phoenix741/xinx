@@ -24,7 +24,6 @@
 // Qt header
 #include <QString>
 #include <QVariant>
-#include <QTranslator>
 #include <QApplication>
 
 /* XSLStyleSheetFileType */
@@ -88,10 +87,6 @@ XsdEditPlugin::~XsdEditPlugin()
 
 bool XsdEditPlugin::initializePlugin(const QString & lang)
 {
-	QTranslator * tranlator = new QTranslator(this);
-	tranlator->load(QString(":/xsd/translations/xsdedit_%1").arg(lang));
-	qApp->installTranslator(tranlator);
-
 	return true;
 }
 

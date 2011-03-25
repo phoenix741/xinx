@@ -46,7 +46,6 @@
 // Qt header
 #include <QString>
 #include <QVariant>
-#include <QTranslator>
 #include <QApplication>
 #include <QDockWidget>
 #include <QDir>
@@ -98,10 +97,6 @@ GenerixPlugin::~GenerixPlugin()
 
 bool GenerixPlugin::initializePlugin(const QString & lang)
 {
-	QTranslator * tranlator = new QTranslator(this);
-	tranlator->load(QString(":/generix/translations/dictionary_%1").arg(lang));
-	qApp->installTranslator(tranlator);
-
 	m_resolver = new Gce150FileResolver();
 
 	return true;

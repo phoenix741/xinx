@@ -26,7 +26,6 @@
 #include <QString>
 #include <QVariant>
 #include <QSettings>
-#include <QTranslator>
 
 /* CVSPlugin */
 
@@ -43,10 +42,6 @@ CVSPlugin::~CVSPlugin()
 
 bool CVSPlugin::initializePlugin(const QString & lang)
 {
-	QTranslator * tranlator = new QTranslator(this);
-	tranlator->load(QString(":/translations/cvsplugin_%1").arg(lang));
-	qApp->installTranslator(tranlator);
-
 	Q_ASSERT(m_settings);
 	m_settings->load();
 

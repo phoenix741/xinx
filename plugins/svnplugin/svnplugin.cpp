@@ -24,7 +24,6 @@
 // Qt header
 #include <QString>
 #include <QVariant>
-#include <QTranslator>
 #include <QApplication>
 #include <QPixmap>
 
@@ -37,10 +36,6 @@ SVNPlugin::SVNPlugin()
 
 bool SVNPlugin::initializePlugin(const QString & lang)
 {
-	QTranslator * tranlator = new QTranslator(this);
-	tranlator->load(QString(":/translations/svnplugin_%1").arg(lang));
-	qApp->installTranslator(tranlator);
-
 	return true;
 }
 

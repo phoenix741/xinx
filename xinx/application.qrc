@@ -3,12 +3,8 @@
         <file alias="licence.html">../licence.html</file>
     </qresource>
     <qresource prefix="/">
-        <file alias="translations/xinxcomponents_fr.qm">../components/translations/xinxcomponents_fr.qm</file>
-        <file alias="translations/libxinx_fr.qm">../framework/translations/libxinx_fr.qm</file>
         <file alias="qcodeedit/marks.qxm">../framework/editors/marks.qxm</file>
         <file alias="qcodeedit/lan/none.qnfa">../framework/editors/none.qnfa</file>
-        <file>translations/qt_fr.qm</file>
-        <file>translations/xinx_fr.qm</file>
         <file>images/error16.png</file>
         <file>images/france.png</file>
         <file>images/usa.png</file>

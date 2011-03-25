@@ -13,7 +13,6 @@
         <file>images/typexsl.png</file>
         <file>images/typexq.png</file>
         <file>images/complete_fn.png</file>
-        <file>translations/coreplugin_fr.qm</file>
         <file>images/run.png</file>
         <file>images/xmlpres.png</file>
     </qresource>

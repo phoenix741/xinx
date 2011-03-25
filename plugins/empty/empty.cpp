@@ -23,7 +23,6 @@
 // Qt header
 #include <QString>
 #include <QVariant>
-#include <QTranslator>
 #include <QApplication>
 #include <QPixmap>
 
@@ -40,10 +39,6 @@ EmptyPlugin::~EmptyPlugin()
 
 bool EmptyPlugin::initializePlugin(const QString & lang)
 {
-	QTranslator * tranlator = new QTranslator(this);
-	tranlator->load(QString(":/empty/translations/empty_%1").arg(lang));
-	qApp->installTranslator(tranlator);
-
 	return true;
 }
 

@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/" >
         <file>images/repos_svn.png</file>
-	<file>translations/svnplugin_fr.qm</file>
     </qresource>
 </RCC>
