@@ -67,13 +67,13 @@
 <context>
     <name>DirectoryEdit</name>
     <message>
-        <location filename="../directoryedit.cpp" line="209"/>
+        <location filename="../directoryedit.cpp" line="388"/>
         <source>Change the path</source>
         <translation>Changer le dossier</translation>
     </message>
     <message>
-        <location filename="../directoryedit.cpp" line="211"/>
-        <location filename="../directoryedit.cpp" line="213"/>
+        <location filename="../directoryedit.cpp" line="390"/>
+        <location filename="../directoryedit.cpp" line="392"/>
         <source>Change the file</source>
         <translation>Changer le fichier</translation>
     </message>
@@ -187,9 +187,24 @@
 <context>
     <name>XinxColorCombo</name>
     <message>
-        <location filename="../xinxcolorcombo.cpp" line="283"/>
         <source>Custom...</source>
-        <translation>Personnaliser ...</translation>
+        <translation type="obsolete">Personnaliser ...</translation>
+    </message>
+</context>
+<context>
+    <name>XinxColorComboPrivate</name>
+    <message>
+        <location filename="../xinxcolorcombo.cpp" line="184"/>
+        <source>Custom...</source>
+        <translation type="unfinished">Personnaliser ...</translation>
+    </message>
+</context>
+<context>
+    <name>XinxDirectoryListWidget</name>
+    <message>
+        <location filename="../xinxdirectorylistwidget.cpp" line="37"/>
+        <source>Get a directory</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

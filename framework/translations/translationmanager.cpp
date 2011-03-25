@@ -28,7 +28,7 @@
 QStringList TranslationManagerPrivate::findQmFiles()
 {
 	QStringList result, filenames;
-	foreach(const QString & path, QDir::searchPaths(":translations"))
+	foreach(const QString & path, QDir::searchPaths("translations"))
 	{
 		QDir dir(path);
 
@@ -54,11 +54,11 @@ TranslationManager::Language TranslationManagerPrivate::languageName(const QStri
 
 	TranslationManager::Language lang;
 
-	lang.code  = qmFile.section("_", -1);
+	lang.code  = qmFile.section("_", -1, -1).remove(".qm");
 	lang.name  = translator.translate("TranslationManager", "C", "Translate this word in the name of your lang (ie: English, Français, ...)");
 	lang.image = translator.translate("TranslationManager", ":/images/unknown.png", "Give the image that contains the flag of your lang");
 
-	if (lang.name == "C")
+	if (lang.name.isEmpty() || (lang.name == "C"))
 	{
 		lang.code = lang.name = lang.image = QString();
 	}
@@ -71,10 +71,10 @@ TranslationManager::Language TranslationManagerPrivate::languageName(const QStri
 
 TranslationManager::TranslationManager() : d(new TranslationManagerPrivate)
 {
-	d->_lang = QLocale::system().name();
+	setLanguage(QLocale::system().name());
 
-	QStringList qmFiles = d->findQmFiles();
-	foreach(const QString & qmFile, qmFiles)
+	d->_files = d->findQmFiles();
+	foreach(const QString & qmFile, d->_files)
 	{
 		Language l = d->languageName(qmFile);
 		if (! l.code.isEmpty())
@@ -91,7 +91,14 @@ TranslationManager::~TranslationManager()
 
 void TranslationManager::setLanguage(const QString& lang)
 {
-	d->_lang = lang;
+	if (lang.contains("_"))
+	{
+		d->_lang = lang.section("_", 0, 0);
+	}
+	else
+	{
+		d->_lang = lang;
+	}
 }
 
 const QString& TranslationManager::language() const

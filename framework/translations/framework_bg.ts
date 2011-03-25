@@ -765,22 +765,12 @@ Only checked files are commited.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customgeneral.ui" line="35"/>
-        <source>(en) English</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customgeneral.ui" line="44"/>
-        <source>(fr_FR) French</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customgeneral.ui" line="56"/>
+        <location filename="../application/customdialog/ui/customgeneral.ui" line="38"/>
         <source>&amp;Trace Log File :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customgeneral.ui" line="82"/>
+        <location filename="../application/customdialog/ui/customgeneral.ui" line="64"/>
         <source>Force current &amp;style :</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1508,6 +1498,7 @@ Do you really want refresh this?</source>
 &lt;p&gt;&lt;i&gt;Only &lt;b&gt;XINX&lt;/b&gt; managed files are commited to the repository.&lt;/i&gt;&lt;/p&gt;</source>
         <translation type="unfinished">
             <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message>
@@ -2123,6 +2114,7 @@ Do you really want refresh this?</source>
         <location filename="../project/projectdirectorywidgetimpl.cpp" line="308"/>
         <source>Can you confirm that you want remove %Ln file(s)</source>
         <translation type="unfinished">
+            <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
@@ -3064,13 +3056,13 @@ A project can define web services too.</source>
 <context>
     <name>TranslationManager</name>
     <message>
-        <location filename="translationmanager.cpp" line="56"/>
+        <location filename="translationmanager.cpp" line="58"/>
         <source>C</source>
         <comment>Translate this word in the name of your lang (ie: English, FranÃ§ais, ...)</comment>
         <translation>Български</translation>
     </message>
     <message>
-        <location filename="translationmanager.cpp" line="57"/>
+        <location filename="translationmanager.cpp" line="59"/>
         <source>:/images/unknown.png</source>
         <comment>Give the image that contains the flag of your lang</comment>
         <translation>:/images/bulgare.png</translation>
