@@ -66,7 +66,7 @@ bool CustomGeneralImpl::loadSettingsDialog()
 {
 	// Language
 	m_langComboBox->clear();
-	m_langComboBox->addItem("C", "C");
+	m_langComboBox->addItem(QIcon(":/images/unknown.png"), "(C) ANSI", "C");
 	m_langComboBox->setCurrentIndex(0);
 	foreach(TranslationManager::Language l, TranslationManager::self()->languages())
 	{

@@ -6,17 +6,17 @@
     <message>
         <location filename="../application/about.ui" line="20"/>
         <source>About XINX</source>
-        <translation type="unfinished"></translation>
+        <translation>A propos de XINX</translation>
     </message>
     <message>
         <location filename="../application/about.ui" line="32"/>
         <source>&lt;b&gt;XINX (use Qt %1)&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;XINX (utilise Qt %1)&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../application/about.ui" line="43"/>
         <source>&amp;About</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;A propos de</translation>
     </message>
     <message>
         <location filename="../application/about.ui" line="74"/>
@@ -27,17 +27,17 @@
     <message>
         <location filename="../application/about.ui" line="89"/>
         <source>A&amp;uthor(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>A&amp;uteur(s)</translation>
     </message>
     <message>
         <location filename="../application/about.ui" line="146"/>
         <source>&amp;Thanks to</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Merci à</translation>
     </message>
     <message>
         <location filename="../application/about.ui" line="203"/>
         <source>Licence</source>
-        <translation type="unfinished"></translation>
+        <translation>Licence d&apos;utilisation</translation>
     </message>
     <message>
         <location filename="../application/about.ui" line="215"/>
@@ -54,7 +54,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../application/aboutdialogimpl.cpp" line="34"/>
         <source>&lt;b&gt;XINX %1 (use Qt %2)&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;XINX %1 (utilise Qt %2)&lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -111,7 +111,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../codecompletion/model.cpp" line="347"/>
         <source>Action</source>
-        <translation type="unfinished"></translation>
+        <translation>Action</translation>
     </message>
 </context>
 <context>
@@ -413,17 +413,17 @@ Seuls les fichiers cochés seront validés.</translation>
     <message>
         <location filename="../application/xinxprojectwizard/projectwizard.cpp" line="177"/>
         <source>Conversion finished</source>
-        <translation type="unfinished"></translation>
+        <translation>Conversion terminée</translation>
     </message>
     <message>
         <location filename="../application/xinxprojectwizard/projectwizard.cpp" line="178"/>
         <source>The conversion is terminated, you can now reopen the project.</source>
-        <translation type="unfinished"></translation>
+        <translation>La conversion est terminée, vous pouvez maintenant ré-ouvrir le projet.</translation>
     </message>
     <message>
         <location filename="../application/xinxprojectwizard/projectwizard.cpp" line="181"/>
         <source>The project is now converted. XINX can now open the project file normally.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le projet est maintenant convertit et XINX peux l&apos;ouvrir normallement.</translation>
     </message>
 </context>
 <context>
@@ -452,7 +452,7 @@ Seuls les fichiers cochés seront validés.</translation>
     <message>
         <location filename="../contentview3/dockwidget.cpp" line="32"/>
         <source>File Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Contenu du fichier</translation>
     </message>
 </context>
 <context>
@@ -460,12 +460,12 @@ Seuls les fichiers cochés seront validés.</translation>
     <message>
         <location filename="../contentview3/parser.cpp" line="141"/>
         <source>Parse the file %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Traitement du fichier %1</translation>
     </message>
     <message>
         <location filename="../contentview3/parser.cpp" line="298"/>
         <source>Can&apos;t open &quot;%1&quot; : %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne peux ouvrir &quot;%1&quot; : %2</translation>
     </message>
 </context>
 <context>
@@ -473,12 +473,12 @@ Seuls les fichiers cochés seront validés.</translation>
     <message>
         <location filename="../application/customdialog/ui/customdialog.ui" line="14"/>
         <source>Customize</source>
-        <translation type="unfinished"></translation>
+        <translation>Personalisation</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customdialog.ui" line="60"/>
         <source>General</source>
-        <translation type="unfinished">Général</translation>
+        <translation>Général</translation>
     </message>
 </context>
 <context>
@@ -486,7 +486,7 @@ Seuls les fichiers cochés seront validés.</translation>
     <message>
         <location filename="../application/customdialog/customdialogimpl.cpp" line="119"/>
         <source>%1 on page &quot;%2&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 sur la page &quot;%2&quot;</translation>
     </message>
 </context>
 <context>
@@ -494,142 +494,146 @@ Seuls les fichiers cochés seront validés.</translation>
     <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="14"/>
         <source>Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Editeur</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="20"/>
         <source>Pretty Print</source>
-        <translation type="unfinished"></translation>
+        <translation>Auto-indentation</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="26"/>
         <source>Manually</source>
-        <translation type="unfinished"></translation>
+        <translation>Manuel</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="33"/>
         <location filename="../application/customdialog/ui/customeditor.ui" line="44"/>
         <source>&lt;p&gt;If the box is checked, when saving the file, &lt;b&gt;XINX &lt;/b&gt;apply the pretty print function on the text. This format the code on saving file. &lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Saving file can be slower.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Si la case est cochée, à la sauvegarde du fichier, &lt;b&gt;XINX &lt;/b&gt; appliquer l&apos;auto-indentation sur le text. Cela mettra en forme le texte à la sauvegarde. &lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Le temps de sauvegarde peut en être augmenté.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="37"/>
         <source>On &amp;saving document</source>
-        <translation type="unfinished"></translation>
+        <translation>A la &amp;sauvegarde du document</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="48"/>
         <source>On &amp;closing document</source>
-        <translation type="unfinished"></translation>
+        <translation>A la &amp;fermeture du document</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="58"/>
         <source>&amp;Editor options</source>
-        <translation type="unfinished"></translation>
+        <translation>Options &amp;éditeurs</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="64"/>
         <source>&amp;Text content refresh :</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Rafraichissement du contenue :</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="74"/>
         <source>Number of ms to wait before reloading of the editor content. This timeout is reseted when you hit your keyboard.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre de seconde à attendre avant de recharger la vue du contenue du document. L&apos;expiration du délai est remis à zéro à la frappe du clavier.</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="77"/>
         <source> ms</source>
-        <translation type="unfinished"></translation>
+        <translation> ms</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="93"/>
         <source>Default text &amp;encoding :</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Encodage du texte par défaut :</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="103"/>
         <source>&lt;p&gt;Choose the default text encoding, when the text encoding can&apos;t be found.
 
 &lt;i&gt;Some editor, can redefined the text encoding (ie: XML and derivated editor). This encoding is used by editor as JavaScript and other&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Choisissez l&apos;encodage du texte par défaut à utiliser quand l&apos;encodage n&apos;a pu être détecté.
+
+&lt;i&gt;Quelques éditeurs peuvent redéfinir l&apos;encodage du texte (example : éditeur XML et dérivé). L&apos;encodage définit ici sera utilisé pour les éditeurs JavaScript, ainsi que les autres éditeurs de textes.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="119"/>
         <source>Wrap Line</source>
-        <translation type="unfinished"></translation>
+        <translation>Retour à la ligne automatique</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="132"/>
         <source>Close Tab Button</source>
-        <translation type="unfinished"></translation>
+        <translation>Bouton de fermeture d&apos;onglet</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="138"/>
         <source>&lt;p&gt;&lt;img src=&quot;:/images/tabclose.png&quot;/&gt;Show a button on the right corner of &lt;b&gt;XINX&lt;/b&gt;.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;&lt;img src=&quot;:/images/tabclose.png&quot;/&gt;Affiche un bouton dans le coin droit de &lt;b&gt;XINX&lt;/b&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="141"/>
         <source>Close button on the &amp;tab widget</source>
-        <translation type="unfinished"></translation>
+        <translation>sur l&apos;&amp;onglet</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="148"/>
         <source>&lt;p&gt;&lt;img src=&quot;:/images/fileclose.png&quot;/&gt;Show a close button on each tab.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;&lt;img src=&quot;:/images/fileclose.png&quot;/&gt;Affiche un bouton de fermeture sur chaque onglet.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="151"/>
         <source>Close button on right &amp;corner</source>
-        <translation type="unfinished"></translation>
+        <translation>sur le &amp;coin droit</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="161"/>
         <source>&lt;p&gt;&lt;img src=&quot;:/images/tabclose.png&quot; /&gt;&lt;img src=&quot;:/images/fileclose.png&quot; /&gt;Show a button on the right corner of &lt;b&gt;XINX&lt;/b&gt; and another on each tab. This option is the concatenation of the two other options&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;&lt;img src=&quot;:/images/tabclose.png&quot; /&gt;&lt;img src=&quot;:/images/fileclose.png&quot; /&gt;Affiche le bouton dans le coin droit de &lt;b&gt;XINX&lt;/b&gt; ainsi que sur chaque onglet. Cette options est l&apos;assemblemetn des deux autres options&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="164"/>
         <source>Close button on the tab widget &amp;and the corner</source>
-        <translation type="unfinished"></translation>
+        <translation>sur le coint droit e&amp;t sur chaque onglet</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="187"/>
         <source>Saving &amp;Options</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Options de sauvegarde</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="193"/>
         <source>&lt;p&gt;Alert user when the file is modified by an extern application. The user has the choice to open the new file (&lt;u&gt;and loose his change&lt;/u&gt;) or keep current file.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Averti l&apos;utilisateur quand un fichier a été modifié par une application externe. L&apos;utilisateur a alors le choix d&apos;ouvrir à nouveau le fichier (&lt;u&gt;et perdre ces modifications&lt;/u&gt;) ou garder ces changements.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="196"/>
         <source>&amp;Popup when file modifed</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Affiche une alert à la modification d&apos;un fichier</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="203"/>
         <source>&lt;p&gt;Create a backup file before saving the file. The backup file is stored in the same directory that the original file. &lt;/p&gt;
 &lt;p&gt;The backup is created by copy the modified file before he his saved.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Créer une copie du fichier avant la sauvegarde ce dernier. La sauvegarde est stocké dans le même dossier que le fichier original.&lt;/p&gt;
+&lt;p&gt;La sauvegarde est créé par copie du fichier modifié avant sa sauvegarde.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="207"/>
         <source>&amp;Create backup file when saving (.bak)</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Créer une copie à la sauvegared (.bak)</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="217"/>
         <source>Editin&amp;g options</source>
-        <translation type="unfinished"></translation>
+        <translation>Options d&apos;éditio&amp;n</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="223"/>
         <source>Automatically open/close error dock</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvre/ferme automatiquement la fenêtre d&apos;erreur</translation>
     </message>
 </context>
 <context>

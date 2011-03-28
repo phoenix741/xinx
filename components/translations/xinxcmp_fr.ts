@@ -196,7 +196,7 @@
     <message>
         <location filename="../xinxcolorcombo.cpp" line="184"/>
         <source>Custom...</source>
-        <translation type="unfinished">Personnaliser ...</translation>
+        <translation>Personnaliser ...</translation>
     </message>
 </context>
 <context>
@@ -204,7 +204,7 @@
     <message>
         <location filename="../xinxdirectorylistwidget.cpp" line="37"/>
         <source>Get a directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Choisir un dossier</translation>
     </message>
 </context>
 <context>

@@ -109,5 +109,6 @@
         <file>rc/tipoftheday_en.txt</file>
         <file>images/newprojectwatermark.png</file>
         <file>images/stop_search.png</file>
+        <file>images/bulgare.png</file>
     </qresource>
 </RCC>
