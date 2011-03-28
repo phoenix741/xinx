@@ -668,19 +668,65 @@ void RCS_SVN::revert(const QStringList & paths)
 	}
 }
 
-void RCS_SVN::log(const QString & path)
+svn::Revision RCS_SVN::stringToRevision(const QString& rev)
+{
+	bool intConvert;
+	svn_revnum_t revnumber = svn_revnum_t(rev.toInt(&intConvert));
+	if (intConvert) return svn::Revision(revnumber);
+
+	QDateTime dateTime = QDateTime::fromString(rev, Qt::DefaultLocaleShortDate);
+	if (dateTime.isValid())
+	{
+		return svn::Revision(apr_time_t(dateTime.toTime_t() * 1000000));
+	}
+
+	return svn::Revision::UNSPECIFIED;
+}
+
+LogEntries RCS_SVN::log(const QString& path, const QString& revisionStart, const QString& revisionEnd)
 {
 	_listener->_cancel = false;
 
+	LogEntries result;
 	try
 	{
-		const svn::LogEntries* logs = m_client->log(qPrintable(path), svn::Revision::START, svn::Revision::WORKING);
+		svn::Revision svnRevisionStart = svn::Revision::START;
+		svn::Revision svnRevisionEnd   = svn::Revision::HEAD;
+
+		if (! revisionStart.isEmpty())
+		{
+			svnRevisionStart = stringToRevision(revisionStart);
+		}
+		if (! revisionEnd.isEmpty())
+		{
+			svnRevisionEnd = stringToRevision(revisionEnd);
+		}
+
+		const svn::LogEntries* logs = m_client->log(qPrintable(path), svnRevisionStart, svnRevisionEnd);
 
 		svn::LogEntries::const_iterator it = logs->begin();
 		while (it != logs->end())
 		{
+			LogEntry logEntry;
 			svn::LogEntry logLine = *it;
-			emit alert(RCS::LogNormal, QString("%1 - %2").arg(QString::fromStdString(logLine.author)).arg(QString::fromStdString(logLine.message)));
+
+			logEntry.dateTime = QDateTime::fromTime_t (quint64(logLine.date / 1000000));
+			logEntry.author   = QString::fromStdString(logLine.author);
+			logEntry.message  = QString::fromStdString(logLine.message);
+			logEntry.revision = QString::number(logLine.revision);
+
+			std::list< svn::LogChangePathEntry >::iterator pathIt = logLine.changedPaths.begin();
+			while (pathIt != logLine.changedPaths.end())
+			{
+				LogPath logPath;
+				svn::LogChangePathEntry logPathLine = *pathIt;
+				logPath.path  = QString::fromStdString(logPathLine.path);
+				logPath.informations.append(QString("%1 (rev %2)").arg(QString::fromStdString(logPathLine.copyFromPath)).arg(QString::number(logPathLine.copyFromRevision)));
+
+				logEntry.changedPath.append(logPath);
+			}
+
+			result.append(logEntry);
 			it++;
 		}
 
@@ -690,6 +736,8 @@ void RCS_SVN::log(const QString & path)
 	{
 		emit alert(RCS::LogError, e.message());
 	}
+
+	return result;
 }
 
 void RCS_SVN::blame(const QString & path)

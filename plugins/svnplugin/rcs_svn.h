@@ -107,7 +107,7 @@ public:
 	virtual void revert(const QStringList & paths);
 	virtual void updateToRevision(const QString & path, const QString & revision, QByteArray * content = 0);
 
-	virtual void log(const QString & path);
+	virtual LogEntries log(const QString & path, const QString & revisionStart, const QString & revisionEnd = QString());
 	virtual void blame(const QString & path);
 public slots:
 	virtual void abort();
@@ -116,6 +116,8 @@ private slots:
 private:
 	RCS::rcsState svnStateToRcsState(svn_wc_status_kind state, svn_wc_status_kind reposTextStatus);
 	RCS::struct_rcs_infos svnInfoToRcsInfos(svn::Status infos);
+
+	svn::Revision stringToRevision(const QString & rev);
 
 	SubVersionContextListener * _listener;
 	svn::Context * m_context;

@@ -72,6 +72,8 @@ public slots:
 
 	void updateToRevision(const QString & path, const QString & revision, QByteArray * content = 0);
 
+	void log(const QString& path, QWidget* parent);
+
 	void abort();
 signals:
 	void stateChange(const QString & filename, RCS::struct_rcs_infos informations);

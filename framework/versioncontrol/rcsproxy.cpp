@@ -32,6 +32,7 @@
 /*!
  * \defgroup RCS Revision Control System
  */
+#include "logdialogimpl.h"
 
 namespace VersionControl
 {
@@ -299,6 +300,16 @@ void RCSProxy::updateToRevision(const QString & path, const QString & revision, 
 
 	VersionControl::Manager::self()->waitForFinished();
 	VersionControl::Manager::self()->updateRevision(m_rcs, path, revision, content);
+}
+
+//! Get the log of a path
+void RCSProxy::log(const QString& path, QWidget * parent)
+{
+	Q_ASSERT(m_rcs);
+
+	LogDialogImpl dlg(parent);
+	dlg.setLogEntries(m_rcs->log(path));
+	dlg.exec();
 }
 
 //! Abort all the opreration

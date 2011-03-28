@@ -505,7 +505,7 @@ void PrivateProjectDirectoryWidgetImpl::showLogTriggered()
 	XinxProject::ProjectPtr project = _model->fileProject(rows.at(0));
 	Q_ASSERT(! project->projectRCS().isEmpty() && project->rcsProxy() && project->rcsProxy()->currentRCSInterface());
 
-	project->rcsProxy()->currentRCSInterface()->log(_model->filePath(rows.at(0)));
+	project->rcsProxy()->log(_model->filePath(rows.at(0)), _parent);
 }
 
 void PrivateProjectDirectoryWidgetImpl::doubleClicked(const QModelIndex & index)

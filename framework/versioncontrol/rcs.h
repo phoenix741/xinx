@@ -24,6 +24,7 @@
 // Xinx header
 #include <core/lib-config.h>
 #include <core/xinxcore.h>
+#include <versioncontrol/logentry.h>
 
 // Qt header
 #include <QMetaType>
@@ -109,7 +110,7 @@ public:
 	virtual void update(const QStringList & paths) {}
 	virtual void updateToRevision(const QString & path, const QString & revision, QByteArray * content = 0) {}
 	virtual void commit(const QStringList & paths, const QString & message) {}
-	virtual void log(const QString & path) {}
+	virtual LogEntries log(const QString & path, const QString & revisionStart = QString(), const QString & revisionEnd = QString()) { return LogEntries(); }
 	virtual void blame(const QString & path) {}
 
 	/* Operation on file of the working copy */
