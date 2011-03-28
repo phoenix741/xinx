@@ -1,4 +1,6 @@
 set(LANGUAGES fr en bg)
+set(GENERATE_TRANSLATION False CACHE BOOL "Generate the translation files")
+
 set(CMAKE_C_FLAGS "-frtti -fexceptions -Wall")
 set(CMAKE_CXX_FLAGS "-frtti -fexceptions -Wall") # -Wold-style-cast") # -Woverloaded-virtual")
 
@@ -105,7 +107,7 @@ macro(initialisation_xinx cible)
 	file(GLOB_RECURSE resources *.qrc)
 	file(GLOB_RECURSE other_translations *.ts)
 
-	if(${GENTRANSLATION})
+	if(${GENERATE_TRANSLATION})
 		set(translations)
 		foreach(language ${LANGUAGES})
 			set(translations ${translations} "translations/${cible}_${language}.ts")
@@ -126,7 +128,7 @@ macro(initialisation_xinx cible)
 	xinx_automoc(moc_headers ${headers} OPTIONS ${MOC_FRAMEWORK})
 	qt4_add_resources(generated_resources ${resources})
 
-	if(${GENTRANSLATION})
+	if(${GENERATE_TRANSLATION})
 		qt4_create_translation(translations_qm ${forms} ${headers} ${sources} ${translations})
 	endif()
 	qt4_add_translation(other_translations_qm ${other_translations})
