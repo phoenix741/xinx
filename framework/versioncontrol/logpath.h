@@ -20,6 +20,8 @@
 #ifndef LOGPATH_H
 #define LOGPATH_H
 
+#include <core/lib-config.h>
+
 #include <QString>
 #include <QStringList>
 

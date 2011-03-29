@@ -20,6 +20,7 @@
 #ifndef LOGENTRY_H
 #define LOGENTRY_H
 
+#include <core/lib-config.h>
 #include <versioncontrol/logpath.h>
 
 #include <QList>
