@@ -68,7 +68,7 @@ void ItemModelFactory::generate()
 		ContentView3::FilePtr file = context().fileStrongRef();
 		XinxProject::ProjectPtr project = file->project();
 
-		if (project)
+		if (project && ConfigurationManager::manager(project))
 		{
 			QSharedPointer<GceConfiguration> configurationFile = ConfigurationManager::manager(project)->getInterface();
 			if (configurationFile)
