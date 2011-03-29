@@ -1,4 +1,4 @@
-set(LANGUAGES fr en bg)
+set(LANGUAGES fr en)
 set(GENERATE_TRANSLATION False CACHE BOOL "Generate the translation files")
 
 set(CMAKE_C_FLAGS "-frtti -fexceptions -Wall")

@@ -34,6 +34,6 @@ XinxDirectoryListWidget::~XinxDirectoryListWidget()
 
 QString XinxDirectoryListWidget::addNewValue()
 {
-    return QDir::toNativeSeparators(QFileDialog::getExistingDirectory(qApp->activeWindow(), tr("Get a directory"), defaultProposedValue()));
+	return QDir::toNativeSeparators(QFileDialog::getExistingDirectory(qApp->activeWindow(), tr("Get a directory"), defaultProposedValue()));
 }
 

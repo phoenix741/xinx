@@ -25,7 +25,7 @@
 #include <QList>
 #include <QDateTime>
 
-class LogEntry
+class LIBEXPORT LogEntry
 {
 public:
 	LogEntry();

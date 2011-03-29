@@ -23,7 +23,7 @@
 #include <QString>
 #include <QStringList>
 
-class LogPath
+class LIBEXPORT LogPath
 {
 public:
 	enum logPathState
