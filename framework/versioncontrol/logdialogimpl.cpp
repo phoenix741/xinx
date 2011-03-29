@@ -30,12 +30,53 @@ LogDialogImplPrivate::~LogDialogImplPrivate()
 {
 }
 
+void LogDialogImplPrivate::updateLogEntries()
+{
+	QRegExp filterRegExp(_ui->searchText->text());
+
+	int index = 0;
+	_ui->logList->clear();
+	foreach(const LogEntry & entry, _logEntries)
+	{
+		if (_ui->searchText->text().isEmpty() || filterRegExp.exactMatch(entry.message))
+		{
+			QTreeWidgetItem * item = new QTreeWidgetItem(_ui->logList, QStringList() << entry.revision << entry.author << entry.dateTime.toString(Qt::SystemLocaleShortDate) << QString(entry.message).remove("\n"));
+			item->setData(0, Qt::UserRole, QVariant(index));
+		}
+
+		index++;
+	}
+}
+
+void LogDialogImplPrivate::updateLogEntry()
+{
+	QTreeWidgetItem * item = _ui->logList->currentItem();
+	if (item)
+	{
+		int index = item->data(0, Qt::UserRole).toInt();
+		LogEntry entry = _logEntries.at(index);
+
+		_ui->logMessage->setPlainText(entry.message);
+
+		_ui->logPath->clear();
+		foreach(const LogPath & path, entry.changedPath)
+		{
+			new QTreeWidgetItem(_ui->logPath, QStringList() << QString() << path.path << path.informations);
+		}
+	}
+}
 
 /* LogDialogImpl */
 
 LogDialogImpl::LogDialogImpl(QWidget* parent, Qt::WindowFlags f): QDialog(parent, f), d(new LogDialogImplPrivate)
 {
 	d->_ui->setupUi(this);
+
+	d->_ui->logPath->hide();
+	d->_ui->label_5->hide();
+
+	connect(d->_ui->searchText, SIGNAL(textChanged(QString)), d.data(), SLOT(updateLogEntries()));
+	connect(d->_ui->logList, SIGNAL(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)), d.data(), SLOT(updateLogEntry()));
 }
 
 LogDialogImpl::~LogDialogImpl()
@@ -46,12 +87,7 @@ LogDialogImpl::~LogDialogImpl()
 void LogDialogImpl::setLogEntries(const LogEntries& log)
 {
 	d->_logEntries = log;
-
-	d->_ui->logList->clear();
-	foreach(const LogEntry & entry, log)
-	{
-		new QTreeWidgetItem(d->_ui->logList, QStringList() << entry.revision << QString() << entry.author << entry.dateTime.toString() << QString(entry.message).remove("\n"));
-	}
+	d->updateLogEntries();
 }
 
 const LogEntries& LogDialogImpl::logEntries() const

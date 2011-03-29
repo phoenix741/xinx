@@ -307,8 +307,13 @@ void RCSProxy::log(const QString& path, QWidget * parent)
 {
 	Q_ASSERT(m_rcs);
 
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
 	LogDialogImpl dlg(parent);
 	dlg.setLogEntries(m_rcs->log(path));
+
+	QApplication::restoreOverrideCursor();
+
 	dlg.exec();
 }
 

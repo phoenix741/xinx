@@ -33,6 +33,9 @@ public:
 
 	QScopedPointer<Ui::LogDialog> _ui;
     LogEntries _logEntries;
+public slots:
+	void updateLogEntries();
+	void updateLogEntry();
 };
 
 #endif // LOGDIALOGIMPLP_H

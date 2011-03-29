@@ -15,37 +15,17 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>&amp;From : </string>
-       </property>
-       <property name="buddy">
-        <cstring>fromRevision</cstring>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="XinxLineEdit" name="fromRevision"/>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>&amp;To :</string>
-       </property>
-       <property name="buddy">
-        <cstring>toRevision</cstring>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="XinxLineEdit" name="toRevision"/>
-     </item>
-     <item>
-      <widget class="XinxLineEdit" name="searchText"/>
-     </item>
-    </layout>
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>&amp;Filter :</string>
+     </property>
+     <property name="buddy">
+      <cstring>searchText</cstring>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="XinxLineEdit" name="searchText"/>
    </item>
    <item>
     <widget class="QLabel" name="label_3">
@@ -68,11 +48,6 @@
      <column>
       <property name="text">
        <string>Revision</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Actions</string>
       </property>
      </column>
      <column>
@@ -159,6 +134,13 @@
    <header location="global">xinxlineedit.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>searchText</tabstop>
+  <tabstop>logList</tabstop>
+  <tabstop>logMessage</tabstop>
+  <tabstop>logPath</tabstop>
+  <tabstop>buttonBox</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

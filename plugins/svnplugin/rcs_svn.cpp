@@ -389,7 +389,7 @@ RCS_SVN::~RCS_SVN()
 
 RCS::rcsFeatures RCS_SVN::features() const
 {
-	return RCS::RcsFeatureAdd | RCS::RcsFeatureRemove | RCS::RcsFeatureUpdateAndCommit | RCS::RcsFeatureBlame | RCS::RcsFeatureRevert | RCS::RcsFeatureLog;
+	return RCS::RcsFeatureAdd | RCS::RcsFeatureRemove | RCS::RcsFeatureUpdateAndCommit /*| RCS::RcsFeatureBlame*/ | RCS::RcsFeatureRevert | RCS::RcsFeatureLog;
 }
 
 RCS::rcsState RCS_SVN::svnStateToRcsState(svn_wc_status_kind textState, svn_wc_status_kind reposTextStatus)
@@ -702,7 +702,7 @@ LogEntries RCS_SVN::log(const QString& path, const QString& revisionStart, const
 			svnRevisionEnd = stringToRevision(revisionEnd);
 		}
 
-		const svn::LogEntries* logs = m_client->log(qPrintable(path), svnRevisionStart, svnRevisionEnd);
+		const svn::LogEntries* logs = m_client->log(qPrintable(path), svnRevisionStart, svnRevisionEnd, false);
 
 		svn::LogEntries::const_iterator it = logs->begin();
 		while (it != logs->end())
@@ -715,6 +715,7 @@ LogEntries RCS_SVN::log(const QString& path, const QString& revisionStart, const
 			logEntry.message  = QString::fromStdString(logLine.message);
 			logEntry.revision = QString::number(logLine.revision);
 
+			/*
 			std::list< svn::LogChangePathEntry >::iterator pathIt = logLine.changedPaths.begin();
 			while (pathIt != logLine.changedPaths.end())
 			{
@@ -725,6 +726,7 @@ LogEntries RCS_SVN::log(const QString& path, const QString& revisionStart, const
 
 				logEntry.changedPath.append(logPath);
 			}
+			*/
 
 			result.append(logEntry);
 			it++;
