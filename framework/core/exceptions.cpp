@@ -67,12 +67,12 @@ static void backup_appli_signal(int signal)
 	QString signalStr;
 	switch(signal)
 	{
-	case SIGINT		: signalStr = ExceptionManager::tr("Interactive attention");		break;
-	case SIGILL		: signalStr = ExceptionManager::tr("Illegal instruction");			break;
-	case SIGFPE		: signalStr = ExceptionManager::tr("Floating point error");			break;
-	case SIGSEGV	: signalStr = ExceptionManager::tr("Segmentation violation");		break;
-	case SIGTERM	: signalStr = ExceptionManager::tr("Termination request");			break;
-	case SIGABRT	: signalStr = ExceptionManager::tr("Abnormal termination (abort)");	break;
+	case SIGINT		: signalStr = ExceptionManager::tr("Interactive attention");							break;
+	case SIGILL		: signalStr = ExceptionManager::tr("Illegal instruction");								break;
+	case SIGFPE		: signalStr = ExceptionManager::tr("Floating point error");								break;
+	case SIGSEGV	: signalStr = ExceptionManager::tr("Segmentation violation (NullPointerException)");	break;
+	case SIGTERM	: signalStr = ExceptionManager::tr("Termination request");								break;
+	case SIGABRT	: signalStr = ExceptionManager::tr("Abnormal termination (abort)");						break;
 	}
 
 	const QString message = ExceptionManager::tr("Signal %1 emited in thread %2").arg (signalStr).arg (thread);
