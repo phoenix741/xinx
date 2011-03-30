@@ -192,10 +192,6 @@ begin
   begin
 	  RegQueryStringValue( HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX', 'Version', VersionString );
   end;
-  if VersionString <> 'v0.9.0' then
-  begin
-	  result := true;
-  end;
 end;
 
 procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
