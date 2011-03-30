@@ -290,7 +290,7 @@ RCS::~RCS()
  */
 
 /*!
- * \fn void RCS::log(RCS::rcsLog niveau, const QString & info)
+ * \fn void RCS::alert(RCS::rcsLog niveau, const QString & info)
  * \brief Signal emited when a new message must be added to the log. The \e niveau is used to highlight the
  * text in different way, depending on the gravity of the message.
  * \param niveau gravity of the message

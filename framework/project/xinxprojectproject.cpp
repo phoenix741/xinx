@@ -508,7 +508,6 @@ void Project::setExcludedPath(const QStringList& value)
 
 /*!
 * \brief Get the list of linked path
-* \param value the list of linked path
 * \sa setLinkedPath()
 */
 QStringList Project::linkedPath() const

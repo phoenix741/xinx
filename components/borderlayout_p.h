@@ -52,9 +52,11 @@
 #include <QLayoutItem>
 #include <QList>
 
+//! \private
 class BorderLayoutPrivate
 {
 public:
+	//! \private
 	struct ItemWrapper
 	{
 		ItemWrapper(QLayoutItem *i, BorderLayout::Position p)

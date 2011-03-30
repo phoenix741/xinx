@@ -47,7 +47,7 @@ public:
 	bool isValid() const;
 
 	static Version fromString(const QString & version, const QLatin1Char & separator = QLatin1Char('.'));
-	QString toString(const VersionNumberFlags & flags = Version::ALL_NUMBER, const QLatin1Char & separator = QLatin1Char('.'));
+	QString toString(const Version::VersionNumberFlags & flags = Version::ALL_NUMBER, const QLatin1Char & separator = QLatin1Char('.'));
 
 	Version & operator=(const QString & version);
 	Version & operator=(const Version & version);

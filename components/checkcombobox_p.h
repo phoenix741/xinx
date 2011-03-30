@@ -46,11 +46,11 @@ signals:
 	void checkStateChanged();
 };
 
-class PrivateCheckComboBox : public QObject
+class CheckComboBoxPrivate : public QObject
 {
 	Q_OBJECT
 public:
-	PrivateCheckComboBox(CheckComboBox * parent);
+	CheckComboBoxPrivate(CheckComboBox * parent);
 	bool eventFilter(QObject* receiver, QEvent* event);
 
 	bool _containerMousePress;

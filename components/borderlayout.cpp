@@ -47,6 +47,38 @@
 // Components header
 #include "borderlayout_p.h"
 
+
+/* BorderLayoutPrivate */
+
+QSize BorderLayoutPrivate::calculateSize(SizeType sizeType) const
+{
+	QSize totalSize;
+
+	for (int i = 0; i < list.size(); ++i)
+	{
+		ItemWrapper *wrapper = list.at(i);
+		BorderLayout::Position position = wrapper->position;
+		QSize itemSize;
+
+		if (wrapper->item->isEmpty()) continue;
+
+		if (sizeType == MinimumSize)
+			itemSize = wrapper->item->minimumSize();
+		else
+			// (sizeType == SizeHint)
+			itemSize = wrapper->item->sizeHint();
+
+		if (position == BorderLayout::North || position == BorderLayout::South || position == BorderLayout::Center)
+			totalSize.rheight() += itemSize.height();
+
+		if (position == BorderLayout::West || position == BorderLayout::East || position == BorderLayout::Center)
+			totalSize.rwidth() += itemSize.width();
+	}
+	return totalSize;
+}
+
+/* BorderLayout */
+
 /*!
  * \defgroup Components Graphical User Interface's components for XINX
  * \brief This group contains GUI components that can be used in XINX.
@@ -288,31 +320,4 @@ QLayoutItem *BorderLayout::takeAt(int index)
 		return layoutStruct->item;
 	}
 	return 0;
-}
-
-QSize BorderLayoutPrivate::calculateSize(SizeType sizeType) const
-{
-	QSize totalSize;
-
-	for (int i = 0; i < list.size(); ++i)
-	{
-		ItemWrapper *wrapper = list.at(i);
-		BorderLayout::Position position = wrapper->position;
-		QSize itemSize;
-
-		if (wrapper->item->isEmpty()) continue;
-
-		if (sizeType == MinimumSize)
-			itemSize = wrapper->item->minimumSize();
-		else
-			// (sizeType == SizeHint)
-			itemSize = wrapper->item->sizeHint();
-
-		if (position == BorderLayout::North || position == BorderLayout::South || position == BorderLayout::Center)
-			totalSize.rheight() += itemSize.height();
-
-		if (position == BorderLayout::West || position == BorderLayout::East || position == BorderLayout::Center)
-			totalSize.rwidth() += itemSize.width();
-	}
-	return totalSize;
 }

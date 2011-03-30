@@ -39,7 +39,7 @@
 #include <components-config.h>
 #include <QComboBox>
 
-class PrivateCheckComboBox;
+class CheckComboBoxPrivate;
 
 class COMPONENTSEXPORT CheckComboBox : public QComboBox
 {
@@ -67,8 +67,8 @@ signals:
 	void checkedItemsChanged(const QStringList& items);
 
 private:
-	QScopedPointer<PrivateCheckComboBox> d;
-	friend class PrivateCheckComboBox;
+	QScopedPointer<CheckComboBoxPrivate> d;
+	friend class CheckComboBoxPrivate;
 };
 
 #endif // CHECKCOMBOBOX_H

@@ -39,12 +39,12 @@
 #include <QKeyEvent>
 
 
-PrivateCheckComboBox::PrivateCheckComboBox(CheckComboBox * parent) : _containerMousePress(false), _separator(QLatin1String(",")), _parent(parent)
+CheckComboBoxPrivate::CheckComboBoxPrivate(CheckComboBox * parent) : _containerMousePress(false), _separator(QLatin1String(",")), _parent(parent)
 {
 
 }
 
-bool PrivateCheckComboBox::eventFilter(QObject* receiver, QEvent* event)
+bool CheckComboBoxPrivate::eventFilter(QObject* receiver, QEvent* event)
 {
 	switch (event->type())
 	{
@@ -77,7 +77,7 @@ bool PrivateCheckComboBox::eventFilter(QObject* receiver, QEvent* event)
 	return false;
 }
 
-void PrivateCheckComboBox::updateCheckedItems()
+void CheckComboBoxPrivate::updateCheckedItems()
 {
 	const QStringList items = _parent->lineEdit ()->text ().split (_separator, QString::SkipEmptyParts);
 	foreach(const QString & item, items)
@@ -91,7 +91,7 @@ void PrivateCheckComboBox::updateCheckedItems()
 	_parent->setCheckedItems (items);
 }
 
-void PrivateCheckComboBox::updateText()
+void CheckComboBoxPrivate::updateText()
 {
 	QStringList items = _parent->checkedItems();
 	if (items.isEmpty())
@@ -102,7 +102,7 @@ void PrivateCheckComboBox::updateText()
 	emit _parent->checkedItemsChanged(items);
 }
 
-void PrivateCheckComboBox::toggleCheckState(int index)
+void CheckComboBoxPrivate::toggleCheckState(int index)
 {
 	QVariant value = _parent->itemData(index, Qt::CheckStateRole);
 	if (value.isValid())
@@ -158,7 +158,7 @@ bool CheckComboModel::setData(const QModelIndex& index, const QVariant& value, i
  * \endcode
  *
  * Exemple of use of the checkbox :
- * 
+ *
  * \image html checkcombobox.png "CheckComboBox in Plastique style."
  * \image latex checkcombobox.eps "CheckComboBox in Plastique style."
  */
@@ -171,7 +171,7 @@ bool CheckComboModel::setData(const QModelIndex& index, const QVariant& value, i
 /*!
  * \brief Constructs a new CheckComboBox with \a parent.
  */
-CheckComboBox::CheckComboBox(QWidget* parent) : QComboBox(parent), d(new PrivateCheckComboBox(this))
+CheckComboBox::CheckComboBox(QWidget* parent) : QComboBox(parent), d(new CheckComboBoxPrivate(this))
 {
 	setModel(new CheckComboModel(this));
 	connect(this, SIGNAL(activated(int)), d.data(), SLOT(toggleCheckState(int)));
