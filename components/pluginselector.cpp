@@ -437,6 +437,8 @@ QSize PluginDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelI
  *
  * \brief The PluginSelector provides a list of configurable plugin elements.
  *
+ * \bc
+ *
  * This class shows to the user the list of plugins with for each
  * plugins a configure button and a about button.
  *
@@ -456,12 +458,12 @@ QSize PluginDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelI
 
 /*!
  * \fn void PluginSelector::configurePlugin(PluginElement * plugin);
- * This signal is emited when the plugin requests to be configured.
+ * \brief This signal is emited when the plugin requests to be configured.
  */
 
 /*!
  * \fn void PluginSelector::aboutPlugin(PluginElement * plugin);
- * The signal is emited when the plugin requests to show a description.
+ * \brief The signal is emited when the plugin requests to show a description.
  */
 
 /*!

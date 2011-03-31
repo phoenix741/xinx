@@ -23,6 +23,7 @@
 #include "versionavailabledialog.h"
 #include <QNetworkReply>
 
+//! \private
 class VersionAvailableDialogPrivate : public QObject
 {
 	Q_OBJECT

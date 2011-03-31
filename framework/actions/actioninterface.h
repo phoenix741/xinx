@@ -29,7 +29,6 @@
 #include <QAction>
 #include <QKeySequence>
 #include <QIcon>
-#include <QPointer>
 #include <project/xinxprojectproject.h>
 
 class AbstractEditor;
@@ -38,6 +37,10 @@ namespace XinxAction
 {
 
 class ActionManager;
+class MenuItemPrivate;
+class SeparatorPrivate;
+class ActionPrivate;
+class ProjectActionPrivate;
 
 class LIBEXPORT MenuItem : public QObject
 {
@@ -55,7 +58,10 @@ public slots:
 	void updateActionState();
 
 protected:
-	QAction * m_action;
+	void setAction(QAction * action);
+
+private:
+	QScopedPointer<MenuItemPrivate> d;
 };
 
 class LIBEXPORT Separator : public MenuItem
@@ -69,7 +75,7 @@ public:
 	void setVisible(bool value);
 
 private:
-	bool _visible;
+	QScopedPointer<SeparatorPrivate> d;
 };
 
 class LIBEXPORT Action : public MenuItem
@@ -92,9 +98,7 @@ protected slots:
 	virtual void actionTriggered();
 
 private:
-	QPointer<AbstractEditor> _editor;
-	QList<const char *> _signals;
-
+	QScopedPointer<ActionPrivate> d;
 	friend class ActionManager;
 };
 
@@ -119,8 +123,7 @@ protected:
 	const QList<RowInfo> & selectedRows() const;
 
 private:
-	QList<RowInfo> _selectedRows;
-
+	QScopedPointer<ProjectActionPrivate> d;
 	friend class ActionManager;
 };
 

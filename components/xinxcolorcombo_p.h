@@ -35,6 +35,7 @@ Boston, MA 02111-1307, USA.
 #include <QObject>
 #include <QColor>
 
+//! \private
 class XinxColorComboPrivate : public QObject
 {
 	Q_OBJECT

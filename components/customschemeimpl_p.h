@@ -31,6 +31,7 @@ class QFormatScheme;
 class QFormat;
 class QLanguageFactory;
 
+//! \private
 class CustomSchemeImplPrivate : public QObject
 {
 	Q_OBJECT

@@ -30,6 +30,7 @@ namespace XinxProject
 
 class Manager;
 
+//! \private
 class LIBEXPORT PrivateManager : public QObject
 {
 	Q_OBJECT

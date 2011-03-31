@@ -24,6 +24,7 @@
 #include "ui_logdialog.h"
 #include "logdialogimpl.h"
 
+//! \private
 class LogDialogImplPrivate : public QObject
 {
 	Q_OBJECT

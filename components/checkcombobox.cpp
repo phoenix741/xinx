@@ -145,6 +145,8 @@ bool CheckComboModel::setData(const QModelIndex& index, const QVariant& value, i
  * \ingroup Components
  * \brief The CheckComboBox widget is an extended QComboBox with checkable items.
  *
+ * \bc
+ *
  * ComboBox is a specialized combo box with checkable items.
  * Checked items are collected together in the line edit.
  *

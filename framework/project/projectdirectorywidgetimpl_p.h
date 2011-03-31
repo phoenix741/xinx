@@ -28,6 +28,7 @@ class QTimer;
 class QAction;
 class QDockWidget;
 
+//! \private
 class PrivateProjectDirectoryWidgetImpl : public QObject
 {
 	Q_OBJECT

@@ -27,6 +27,7 @@
 namespace XinxSession
 {
 
+//! \private
 class PrivateSessionManager : public QObject
 {
 	Q_OBJECT

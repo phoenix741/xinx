@@ -29,6 +29,7 @@
 namespace ContentView3
 {
 
+//! \private
 class TreeNode : public QStandardItem
 {
 public:
@@ -45,6 +46,7 @@ public:
 };
 
 
+//! \private
 class PrivateTreeModel : public QObject
 {
 	Q_OBJECT

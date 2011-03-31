@@ -26,6 +26,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "xinxlistwidgetimpl.h"
 #include <components-config.h>
 
+//! \private
 class XinxListWidgetImplPrivate : public QObject
 {
 	Q_OBJECT

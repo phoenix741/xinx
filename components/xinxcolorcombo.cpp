@@ -216,6 +216,8 @@ void XinxColorComboPrivate::addColors()
  *
  * \brief The XinxColorCombo provides a QComboBox used to select color.
  *
+ * \bc
+ *
  * Combo box to choose a color. The combo box shows you the color
  * and an associated text to the color. The shown color, is standard Qt color.
  * The user can also change, and use a customed color. In this case a dialog

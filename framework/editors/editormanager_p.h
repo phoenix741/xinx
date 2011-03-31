@@ -47,6 +47,7 @@
 #include <QUrl>
 #include <QToolButton>
 
+//! \private
 class PrivateTabWidget : public QTabWidget
 {
 	Q_OBJECT
@@ -62,6 +63,7 @@ private:
 	EditorManager * _manager;
 };
 
+//! \private
 class PrivateEditorManager : public QObject
 {
 	Q_OBJECT

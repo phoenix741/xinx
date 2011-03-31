@@ -23,6 +23,7 @@
 // Qt header
 #include <QListWidget>
 
+//! \private
 class WelcomTreeWidget : public QListWidget
 {
 	Q_OBJECT

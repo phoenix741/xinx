@@ -115,6 +115,8 @@ void DirectoryEditPrivate::slotTextChanged(QString text)
  *
  * \brief A line edit to edit, file or path.
  *
+ * \bc
+ *
  * A line editor using a QCompleter based on the model \p CompleterDirModel to
  * help the user to edit the path.
  *
@@ -269,7 +271,10 @@ bool DirectoryEdit::isError() const
 }
 
 /*!
+ * \brief Set the value of the QLineEdit to \e value
  * \reimp
+ *
+ * If the DirectoryEdit have a prefix() then the value is automatically prefixed.
  */
 void DirectoryEdit::setText(const QString & value)
 {
@@ -284,7 +289,10 @@ void DirectoryEdit::setText(const QString & value)
 }
 
 /*!
+ * \brief Select all the text of the Input
  * \reimp
+ *
+ * Select all the text that the user can changed. If a prefix() is defined the prefix is not defined.
  */
 void DirectoryEdit::selectAll()
 {
@@ -292,7 +300,10 @@ void DirectoryEdit::selectAll()
 }
 
 /*!
+ * \brief Clear the input of the user
  * \reimp
+ *
+ * Clear the input of the user. If a prefix() is defined, the prefix is not cleared.
  */
 void DirectoryEdit::clear()
 {

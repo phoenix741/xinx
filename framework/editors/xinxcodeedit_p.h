@@ -30,6 +30,7 @@
 
 /* XinxEditor */
 
+//! \private
 class XinxEditor : public QEditor
 {
 	Q_OBJECT

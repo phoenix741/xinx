@@ -18,7 +18,7 @@
 */
 
 // Xinx header
-#include "actioninterface.h"
+#include "actioninterface_p.h"
 #include <core/xinxcore.h>
 #include <editors/editormanager.h>
 #include <editors/abstracteditor.h>
@@ -48,14 +48,20 @@ using namespace XinxAction;
  *
  * \brief This class provide a menu item for ActionList
  *
+ * \bc
+ *
  * Class represent a menu item. A menu item can be an action or a separator. This used by XINX throw plugin,
  * to define the type of the element in the menu.
  */
 
 
-MenuItem::MenuItem(QAction * a) : m_action(a)
+/*!
+ * \brief Create a new menu item based on action \e a
+ * \param a The action (or separator) of the menu item
+ */
+MenuItem::MenuItem(QAction * a) : d(new MenuItemPrivate)
 {
-
+	d->m_action = a;
 }
 
 //! Destroy the menu item
@@ -66,7 +72,13 @@ MenuItem::~MenuItem()
 //! This method return the QAction object
 QAction * MenuItem::action() const
 {
-	return m_action;
+	return d->m_action;
+}
+
+//! This methode set the current QAction
+void MenuItem::setAction(QAction* action)
+{
+	d->m_action = action;
 }
 
 /*!
@@ -84,8 +96,8 @@ bool MenuItem::isEnabled() const
 //! Use methode isVisible() and isEnabled() to update the status of the action.
 void MenuItem::updateActionState()
 {
-	m_action->setVisible(isVisible());
-	m_action->setEnabled(isEnabled());
+	d->m_action->setVisible(isVisible());
+	d->m_action->setEnabled(isEnabled());
 }
 
 /*!
@@ -109,13 +121,22 @@ bool MenuItem::isVisible() const
  *
  * \brief This class provide a separator item for ActionList
  *
+ * \bc
+ *
  * This class represent a separator. For a separator there is no data expected.
  */
 
-Separator::Separator() : _visible(true)
+/*!
+ * \brief Create new separator
+ *
+ * An internal action is automatically created as Separator.
+ */
+Separator::Separator() : d(new SeparatorPrivate)
 {
-	m_action = new QAction(this);
-	m_action->setSeparator(true);
+	d->_visible = true;
+	QAction * action = new QAction(this);
+	action->setSeparator(true);
+	setAction(action);
 }
 
 //! Destroy the separator
@@ -125,12 +146,12 @@ Separator::~Separator()
 
 bool Separator::isVisible() const
 {
-	return _visible;
+	return d->_visible;
 }
 
 void Separator::setVisible(bool value)
 {
-	_visible = value;
+	d->_visible = value;
 }
 
 /* Action */
@@ -142,6 +163,8 @@ void Separator::setVisible(bool value)
  *
  * \brief This class provide an action for ActionList
  *
+ * \bc
+ *
  * This class is a wrapper of a QAction. This wrapper is used to facilite
  * the enable, and visible feature of the action. This class inherits from
  * MenuItem too, so we can use it in ActionList.
@@ -152,10 +175,11 @@ void Separator::setVisible(bool value)
  *
  * This method set enabled and visible to true.
  */
-Action::Action(QAction * a) : MenuItem(a), _editor(0)
+Action::Action(QAction * a) : MenuItem(a), d(new ActionPrivate)
 {
+	d->_editor = 0;
 	updateActionState();
-	connect(m_action, SIGNAL(triggered()), this, SLOT(actionTriggered()));
+	connect(action(), SIGNAL(triggered()), this, SLOT(actionTriggered()));
 }
 
 /*!
@@ -164,11 +188,13 @@ Action::Action(QAction * a) : MenuItem(a), _editor(0)
 * This methode create a QAction object with the different information from parameters and
 * use him self as parent of the QAction.
 */
-Action::Action(const QString& text): _editor(0)
+Action::Action(const QString& text): d(new ActionPrivate)
 {
-	m_action = new QAction(text, this);
+	d->_editor = 0;
+	QAction * action = new QAction(text, this);
+	setAction(action);
 	updateActionState();
-	connect(m_action, SIGNAL(triggered()), this, SLOT(actionTriggered()));
+	connect(action, SIGNAL(triggered()), this, SLOT(actionTriggered()));
 }
 
 /*!
@@ -177,12 +203,14 @@ Action::Action(const QString& text): _editor(0)
  * This methode create a QAction object with the different information from parameters and
  * use him self as parent of the QAction.
  */
-Action::Action(const QString & text, const QKeySequence & shortcut) : _editor(0)
+Action::Action(const QString & text, const QKeySequence & shortcut) : d(new ActionPrivate)
 {
-	m_action = new QAction(text, this);
-	m_action->setShortcut(shortcut);
+	d->_editor = 0;
+	QAction * action = new QAction(text, this);
+	action->setShortcut(shortcut);
+	setAction(action);
 	updateActionState();
-	connect(m_action, SIGNAL(triggered()), this, SLOT(actionTriggered()));
+	connect(action, SIGNAL(triggered()), this, SLOT(actionTriggered()));
 }
 
 /*!
@@ -191,12 +219,14 @@ Action::Action(const QString & text, const QKeySequence & shortcut) : _editor(0)
  * This methode create a QAction object with the different information from parameters and
  * use him self as parent of the QAction.
  */
-Action::Action(const QIcon & icon, const QString & text, const QKeySequence & shortcut) : _editor(0)
+Action::Action(const QIcon & icon, const QString & text, const QKeySequence & shortcut) : d(new ActionPrivate)
 {
-	m_action = new QAction(icon, text, this);
-	m_action->setShortcut(shortcut);
+	d->_editor = 0;
+	QAction * action = new QAction(icon, text, this);
+	action->setShortcut(shortcut);
+	setAction(action);
 	updateActionState();
-	connect(m_action, SIGNAL(triggered()), this, SLOT(actionTriggered()));
+	connect(action, SIGNAL(triggered()), this, SLOT(actionTriggered()));
 }
 
 //! Destroy the action
@@ -215,71 +245,145 @@ void Action::actionTriggered()
 {
 }
 
+/*!
+ * \brief Add a signal to observe to update action state.
+ * \since 0.10.0.0
+ *
+ * The signal is automatically added to the list of signal to observer. When the signal
+ * is triggered, the methode updateActionState() is automatically called.
+ *
+ * \param signal The signal to observe. Must have the form SIGNAL(methode())
+ */
 void Action::addEditorSignals(const char* signal)
 {
-	_signals.append(signal);
+	d->_signals.append(signal);
 }
+
+/*!
+ * \brief Return the current editor
+ * \since 0.10.0.0
+ */
 
 AbstractEditor* Action::currentEditor() const
 {
-	return _editor;
+	return d->_editor;
 }
 
+/*!
+ * \brief Change the current editor on the action
+ * \since 0.10.0.0
+ *
+ * When the editor is changed, signal added by addEditorSignals() are activated to
+ * observe the editor.
+ *
+ * \param editor The editor used by user
+ */
 void Action::setCurrentEditor(AbstractEditor * editor)
 {
-	if (_editor && _signals.count())
+	if (d->_editor && d->_signals.count())
 	{
-		foreach(const char * signal, _signals)
+		foreach(const char * signal, d->_signals)
 		{
-			disconnect(_editor, signal, this, SLOT(updateActionState()));
+			disconnect(d->_editor, signal, this, SLOT(updateActionState()));
 		}
 	}
-	_editor = editor;
-	if (_editor && _signals.count())
+	d->_editor = editor;
+	if (d->_editor && d->_signals.count())
 	{
-		foreach(const char * signal, _signals)
+		foreach(const char * signal, d->_signals)
 		{
-			connect(_editor, signal, this, SLOT(updateActionState()));
+			connect(d->_editor, signal, this, SLOT(updateActionState()));
 		}
 	}
 }
 
 /* ProjectAction */
 
-ProjectAction::ProjectAction(QAction* a): Action(a)
+/*!
+ * \class ProjectAction
+ * \brief Represent an action for the project directory dock
+ * \since 0.10.0.0
+ *
+ * \bc
+ *
+ * A project action is not only dependant of the current editor, but is dependant from the
+ * list of selected element in the project directory dock.
+ *
+ * This type of action can be use when the status of the action, or the execution of the action
+ * is depending on the number or type of selected element.
+ */
+
+/*!
+ * \brief Create a ProjectAction with the QAction a
+ * \reimp
+ */
+ProjectAction::ProjectAction(QAction* a): Action(a), d(new ProjectActionPrivate)
 {
 
 }
 
-ProjectAction::ProjectAction(const QString& text): Action(text)
+/*!
+* \brief Create a ProjectAction with the text \e text
+* \reimp
+*/
+ProjectAction::ProjectAction(const QString& text): Action(text), d(new ProjectActionPrivate)
 {
 
 }
 
-ProjectAction::ProjectAction(const QString& text, const QKeySequence& shortcut): Action(text, shortcut)
+/*!
+* \brief Create a ProjectAction with the text \e text and the shortcut \e shortcut
+* \reimp
+*/
+ProjectAction::ProjectAction(const QString& text, const QKeySequence& shortcut): Action(text, shortcut), d(new ProjectActionPrivate)
 {
 
 }
 
-ProjectAction::ProjectAction(const QIcon& icon, const QString& text, const QKeySequence& shortcut): Action(icon, text, shortcut)
+/*!
+* \brief Create a ProjectAction with the icon \e icon, the text \e text, and the shortcut \e shortcut.
+* \reimp
+*/
+ProjectAction::ProjectAction(const QIcon& icon, const QString& text, const QKeySequence& shortcut): Action(icon, text, shortcut), d(new ProjectActionPrivate)
 {
 
 }
 
+/*!
+* \brief Destroy the ProjectAction
+* \reimp
+*/
 ProjectAction::~ProjectAction()
 {
 
 }
 
+/*!
+ * \brief Set the selected row in the project dock view.
+ *
+ * This method is called by the project dock when the user change the selection.
+ *
+ * \param rows List of selected rows. Each row contains the file/directory selected and
+ * the project where is attached the file.
+ *
+ * \sa selectedRows()
+ */
 void ProjectAction::setSelectedRows(const QList< ProjectAction::RowInfo >& rows)
 {
-	_selectedRows = rows;
+	d->_selectedRows = rows;
 	updateActionState();
 }
 
+/*!
+ * \brief Get the selected row list
+ *
+ * This method can be used to get the list of selected rows.
+ *
+ * \sa setSelectedRows()
+ */
 const QList< ProjectAction::RowInfo >& ProjectAction::selectedRows() const
 {
-	return _selectedRows;
+	return d->_selectedRows;
 }
 
 

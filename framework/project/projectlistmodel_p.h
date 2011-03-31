@@ -35,6 +35,7 @@ namespace XinxProject
 
 class PrivateProjectListModel;
 
+//! \private
 class DirectoryFetcher : public XinxJob
 {
 	Q_OBJECT
@@ -67,6 +68,7 @@ private:
 	XinxProject::ProjectPtr _project;
 };
 
+//! \private
 class ModelFileNode
 {
 public:
@@ -109,6 +111,7 @@ public:
 	bool _is_children_populated;
 };
 
+//! \private
 class PrivateProjectListModel : public QObject
 {
 	Q_OBJECT

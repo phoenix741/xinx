@@ -18,34 +18,52 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #pragma once
-#ifndef _QMENUVIEW_P_H_
-#define _QMENUVIEW_P_H_
+#ifndef ACTIONINTERFACE_P_H
+#define ACTIONINTERFACE_P_H
+
+// Xinx header
+#include "actioninterface.h"
 
 // Qt header
-#include <QMenu>
-#include <QAbstractItemModel>
+#include <QPointer>
+#include <QAction>
+#include <QKeySequence>
+#include <QIcon>
 
-#include "qmenuview.h"
-#include <components-config.h>
+class AbstractEditor;
+
+namespace XinxAction
+{
 
 //! \private
-class QMenuViewPrivate : public QObject
+class MenuItemPrivate
 {
-	Q_OBJECT
 public:
-	QMenuViewPrivate(QMenuView * menu);
-	virtual ~QMenuViewPrivate();
-
-	QAction *makeAction(const QModelIndex &index);
-
-	QMenuView * _menu;
-	QAbstractItemModel * m_model;
-	QPersistentModelIndex m_root;
-public slots:
-	void aboutToShow();
-	void triggered(QAction *action);
-	void hovered(QAction *action);
+	QAction * m_action;
 };
 
+//! \private
+class SeparatorPrivate
+{
+public:
+	bool _visible;
+};
 
-#endif /* _QMENUVIEW_P_H_ */
+//! \private
+class ActionPrivate
+{
+public:
+	QPointer<AbstractEditor> _editor;
+	QList<const char *> _signals;
+};
+
+//! \private
+class ProjectActionPrivate
+{
+public:
+	QList<ProjectAction::RowInfo> _selectedRows;
+};
+
+}
+
+#endif // ACTIONINTERFACE_P_H

@@ -22,16 +22,38 @@
 #include <QApplication>
 #include <QFileDialog>
 
+/*!
+* \ingroup Components
+* \class XinxDirectoryListWidget
+ * \brief This list ask to the user to choose the directory to add to the list.
+ * \since 0.10.0.0
+ *
+ * \bc
+ *
+ */
+
+
+/*!
+ * \brief Create a XinxDirectoryListWidget based on the XinxListWidgetImpl
+ */
 XinxDirectoryListWidget::XinxDirectoryListWidget(QWidget* parent, Qt::WindowFlags f): XinxListWidgetImpl(parent, f), d(new XinxDirectoryListWidgetPrivate)
 {
 
 }
 
+//! Destroy the XinxDirectoryListWidget
 XinxDirectoryListWidget::~XinxDirectoryListWidget()
 {
 
 }
 
+/*!
+ * \brief This method is called when a new value is added into the list.
+ * \since 0.10.0.0
+ *
+ * When a new value is added to the list, this method open a dialog box to the user to ask for an existing directory.
+ * The entered value from the user is returned to be added to the list.
+ */
 QString XinxDirectoryListWidget::addNewValue()
 {
 	return QDir::toNativeSeparators(QFileDialog::getExistingDirectory(qApp->activeWindow(), tr("Get a directory"), defaultProposedValue()));

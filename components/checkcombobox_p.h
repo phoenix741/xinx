@@ -31,6 +31,7 @@
 #include <QStandardItemModel>
 #include "checkcombobox.h"
 
+//! \private
 class CheckComboModel : public QStandardItemModel
 {
 	Q_OBJECT
@@ -46,6 +47,7 @@ signals:
 	void checkStateChanged();
 };
 
+//! \private
 class CheckComboBoxPrivate : public QObject
 {
 	Q_OBJECT

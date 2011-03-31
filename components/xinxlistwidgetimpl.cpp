@@ -151,6 +151,8 @@ void XinxListWidgetImplPrivate::on_m_list_itemChanged(QListWidgetItem * item)
  *
  * \brief The class XinxListWidgetImpl provides a widget to create, and sort a list.
  *
+ * \bc
+ *
  * This widget is a list of values (exemple: list of path, list of urls, list of prefix) with
  * a button to add an value, a button to delete a value, and a button to make a value the
  * default (this button can be cached the property defaultVisible()).

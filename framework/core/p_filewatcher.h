@@ -36,6 +36,7 @@
 #include <QTimer>
 #include <QFileInfo>
 
+//! \private
 class FileWatched : public QObject
 {
 	Q_OBJECT
@@ -75,6 +76,7 @@ private:
 	QFileInfo m_file;
 };
 
+//! \private
 class LIBEXPORT FileWatcherManager : public XinxThread
 {
 	Q_OBJECT
@@ -103,6 +105,7 @@ private:
 	QList<FileWatched*> m_watchedfiles;
 };
 
+//! \private
 class PrivateFileWatcher : public QObject
 {
 	Q_OBJECT
@@ -119,6 +122,7 @@ private:
 	FileWatcher * m_parent;
 };
 
+//! \private
 class PrivateFilesWatcher : public QObject
 {
 	Q_OBJECT

@@ -32,6 +32,8 @@
  *
  * \brief Class used by DirectoryEdit to complete on path.
  *
+ * \bc
+ *
  * Completer model class based on a QDirModel which permit to propose a completion on
  * the path.
  * The CompleterDirModel convert path on native separtor. If the path end with a separator,
