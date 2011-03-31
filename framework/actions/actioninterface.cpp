@@ -300,7 +300,8 @@ void Action::setCurrentEditor(AbstractEditor * editor)
 /* ProjectAction */
 
 /*!
- * \class ProjectAction
+ * \ingroup XinxAction
+ * \class XinxAction::ProjectAction
  * \brief Represent an action for the project directory dock
  * \since 0.10.0.0
  *
