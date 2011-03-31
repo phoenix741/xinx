@@ -17,50 +17,39 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "actionmanager.h"
-#include "actioninterface.h"
-#include <plugins/xinxpluginsloader.h>
-#include <plugins/xinxpluginelement.h>
-#include <editors/editormanager.h>
-#include <editors/abstracteditor.h>
-
-// Qt header
-#include <QMultiHash>
-#include <QSet>
+#include "actionmanager_p.h"
 
 namespace XinxAction
 {
 
-/* PrivateActionManager */
+/* ActionManagerPrivate */
 
-class PrivateActionManager
-{
-public:
-	PrivateActionManager();
-	~PrivateActionManager();
-
-	void updateSeparatorState(const QList<MenuItem*> & items);
-
-	QHash<QString,QString> _libelles;
-	QMultiHash<QString,MenuItem*> _menus;
-	QMultiHash<QString,MenuItem*> _toolBars;
-	QList<MenuItem*> _popups;
-	QList<MenuItem*> _directoryProjectPopup;
-
-	QSet<MenuItem*> _items;
-};
-
-PrivateActionManager::PrivateActionManager()
+ActionManagerPrivate::ActionManagerPrivate()
 {
 
 }
 
-PrivateActionManager::~PrivateActionManager()
+ActionManagerPrivate::~ActionManagerPrivate()
 {
 	qDeleteAll(_items);
 }
 
-void PrivateActionManager::updateSeparatorState(const QList<MenuItem*> & items)
+void ActionManagerPrivate::currentEditorChanged(int index)
+{
+	AbstractEditor * editor = index >= 0 ? EditorManager::self()->editor(index) : NULL;
+	foreach(MenuItem * item, _items)
+	{
+		Action * action = dynamic_cast<Action*>(item);
+		if (action)
+		{
+			action->setCurrentEditor(editor);
+		}
+	}
+
+	_parent->updateMenuItemState();
+}
+
+void ActionManagerPrivate::updateSeparatorState(const QList<MenuItem*> & items)
 {
 	bool isPreviousSeparator = true;
 	foreach(MenuItem * item, items)
@@ -90,120 +79,195 @@ void PrivateActionManager::updateSeparatorState(const QList<MenuItem*> & items)
 
 /* ActionManager */
 
-ActionManager::ActionManager()
+/*!
+ * \class XinxAction::ActionManager
+ * \ingroup XinxAction
+ * \brief Singleton class that provide a way to manage all actions.
+ * \since 0.10.0.0
+ *
+ * \bc 0.10.0.0
+ *
+ * This class is used by plugins to add new action to
+ *  - Menu
+ *  - Tool bar
+ *  - Editor popup menu
+ *  - Project directory dock popup menu
+ *
+ * Next this class is used by Mainform, Editor, Project directory dock, to
+ * read actions provide by plugins to add it on the GUI.
+ *
+ * When method IXinxPlugin::generateActionMenu() is called, the plugin must use
+ * add method on the ActionManager singleton.
+ *
+ * This method is called by local methode generateMenu()
+ *
+ * Action will be destroyed by the application automatically (not the plugin). IXinxPlugin
+ * musn't be owner of plugins.
+ */
+
+/*!
+ * \fn void ActionManager::changed()
+ * \brief Signal emited when list of action of ActionManager is updated.
+ */
+
+/*!
+ * \brief Create the ActionManager.
+ * \intern
+ */
+ActionManager::ActionManager() : d(new ActionManagerPrivate)
 {
-	d = new PrivateActionManager;
-	connect(EditorManager::self(), SIGNAL(currentChanged(int)), this, SLOT(currentEditorChanged(int)));
+	d->_parent = this;
+	connect(EditorManager::self(), SIGNAL(currentChanged(int)), d.data(), SLOT(currentEditorChanged(int)));
 }
 
+//! Destroy the ActionManager
 ActionManager::~ActionManager()
 {
-	delete d;
+
 }
 
+//! Retrieve the name to show to the screen for the menu \e menu.
 const QString ActionManager::nameOfMenu(const QString & menu) const
 {
 	return d->_libelles.value(menu);
 }
 
+/*!
+ * \brief Insert a name for the menu of id \e menu with the name \e name
+ *
+ * \param menu The id of the menu
+ * \param name The translated name of the menu (the menu must be protected with tr()
+ * function.
+ */
 void ActionManager::insertNameOfMenu(const QString & menu, const QString & name)
 {
 	d->_libelles.insert(menu, name);
 }
 
+//! Return the list of ID menu to create on the application
 QStringList ActionManager::menus() const
 {
 	return d->_menus.uniqueKeys();
 }
 
-void ActionManager::addMenuItem(const QString& menu, MenuItem* item)
+/*!
+ * \brief Add the \e item to the menu given by \e menuId
+ *
+ * There is several default menu and where there is no need to create the menu with
+ * insertNameOfMenu() :
+ *
+ *  - session
+ *  - project
+ *  - file
+ *  - edit
+ *  - search
+ *  - bookmark
+ *  - windows
+ *  - tools
+ *  - help
+ *
+ */
+void ActionManager::addMenuItem(const QString& menuId, MenuItem* item)
 {
-	d->_menus.insert(menu, item);
+	d->_menus.insert(menuId, item);
 	d->_items.insert(item);
 }
 
-void ActionManager::addMenuSeparator(const QString& menu)
+/*!
+ * \brief Add a separator in the menu \e menuId
+ * \sa addMenuItem()
+ */
+void ActionManager::addMenuSeparator(const QString& menuId)
 {
 	Separator * separator = new Separator;
-	addMenuItem(menu, separator);
+	addMenuItem(menuId, separator);
 }
 
-QList< MenuItem* > ActionManager::menu(const QString& menu) const
+//! List all item for the given menu (separator included)
+QList< MenuItem* > ActionManager::menu(const QString& menuId) const
 {
-	return d->_menus.values(menu);
+	return d->_menus.values(menuId);
 }
 
+//! List all available toolbars ID
 QStringList ActionManager::toolBars() const
 {
 	return d->_toolBars.uniqueKeys();
 }
 
-void ActionManager::addToolBarItem(const QString& toolbar, MenuItem* item)
+/*!
+ * \brief Add the \e item to the toolbar given by \e toolbarId
+ *
+ * There is several default toolbar :
+ *  - project
+ *  - file
+ *  - edit
+ *  - search
+ *
+ */
+void ActionManager::addToolBarItem(const QString& toolbarId, MenuItem* item)
 {
-	d->_toolBars.insert(toolbar, item);
+	d->_toolBars.insert(toolbarId, item);
 	d->_items.insert(item);
 }
 
-void ActionManager::addToolBarSeparator(const QString& toolbar)
+/*!
+ * \brief Add a separator into the toolbar
+ * \sa addToolBarItem()
+ */
+void ActionManager::addToolBarSeparator(const QString& toolbarId)
 {
 	Separator * separator = new Separator;
-	addToolBarItem(toolbar, separator);
+	addToolBarItem(toolbarId, separator);
 }
 
-QList< MenuItem* > ActionManager::toolBar(const QString& toolbar) const
+//! List all item for the given toolbar (separator included)
+QList< MenuItem* > ActionManager::toolBar(const QString& toolbarId) const
 {
-	return d->_toolBars.values(toolbar);
+	return d->_toolBars.values(toolbarId);
 }
 
+//! List all item for the editor popup menu (separator included)
 const QList< MenuItem* >& ActionManager::popup() const
 {
 	return d->_popups;
 }
 
+//! Add a new item to the editor's popup menu
 void ActionManager::addPopupItem(MenuItem* item)
 {
 	d->_popups.append(item);
 	d->_items.insert(item);
 }
 
+//! Add a separator to the editor's popup menu
 void ActionManager::addPopupSeparator()
 {
 	Separator * separator = new Separator;
 	addPopupItem(separator);
 }
 
+//! List all item for the project directory dock popup menu (separator included)
 const QList< MenuItem* > ActionManager::projectDirectoryPopup() const
 {
 	return d->_directoryProjectPopup;
 }
 
+//! Add a new item in the project directory dock popup menu
 void ActionManager::addProjectDirectoryPopupItem(MenuItem* item)
 {
 	d->_directoryProjectPopup.append(item);
 	d->_items.insert(item);
 }
 
+//! Add a new separator in the project directory dock popup menu
 void ActionManager::addProjectDirectoryPopupSeparator()
 {
 	Separator * separator = new Separator;
 	addProjectDirectoryPopupItem(separator);
 }
 
-void ActionManager::currentEditorChanged(int index)
-{
-	AbstractEditor * editor = index >= 0 ? EditorManager::self()->editor(index) : NULL;
-	foreach(MenuItem * item, d->_items)
-	{
-		Action * action = dynamic_cast<Action*>(item);
-		if (action)
-		{
-			action->setCurrentEditor(editor);
-		}
-	}
-
-	updateMenuItemState();
-}
-
+//! Clear (and delete) old actions and regenerate actions list by calling IXinxPlugin::generateActionMenu()
 void ActionManager::generateMenu()
 {
 	QSet<MenuItem*> backupItem = d->_items;
@@ -224,14 +288,16 @@ void ActionManager::generateMenu()
 
 	emit changed();
 
-	qDeleteAll(backupItem);
+	// In case the menu item are in use
+	qDeleteAllLater(backupItem);
 
 	updateMenuItemState();
 }
 
+//! Update the state (visible, enable) of each action (and separator)
 void ActionManager::updateMenuItemState()
 {
-	// Mise à jours des statuts des actions
+	// Update of state of each action
 	foreach(MenuItem * item, d->_items)
 	{
 		Action * action = dynamic_cast<Action*>(item);
@@ -255,6 +321,11 @@ void ActionManager::updateMenuItemState()
 	d->updateSeparatorState(d->_popups);
 }
 
+/*!
+ * \brief Update the project selection for each XinxAction::ProjectAction with \e rows
+ *
+ * Call when the selection change in the project directory dock.
+ */
 void ActionManager::updateProjectSelection(QList< ProjectAction::RowInfo > rows)
 {
 	foreach(MenuItem * item, d->_directoryProjectPopup)

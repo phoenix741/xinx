@@ -92,7 +92,7 @@ QSize BorderLayoutPrivate::calculateSize(SizeType sizeType) const
  *
  * \brief A layout with a central widget.
  *
- * \bc
+ * \bc 0.10.0.0
  *
  * This layout is decomposed with a central widget and four borders. Methods
  * add() and addWidget() have a second parameter \p position used to define

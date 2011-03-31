@@ -28,7 +28,7 @@
  * \brief This list ask to the user to choose the directory to add to the list.
  * \since 0.10.0.0
  *
- * \bc
+ * \bc 0.10.0.0
  *
  */
 

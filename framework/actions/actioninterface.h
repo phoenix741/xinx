@@ -36,7 +36,7 @@ class AbstractEditor;
 namespace XinxAction
 {
 
-class ActionManager;
+class ActionManagerPrivate;
 class MenuItemPrivate;
 class SeparatorPrivate;
 class ActionPrivate;
@@ -99,7 +99,7 @@ protected slots:
 
 private:
 	QScopedPointer<ActionPrivate> d;
-	friend class ActionManager;
+	friend class ActionManagerPrivate;
 };
 
 class LIBEXPORT ProjectAction : public Action

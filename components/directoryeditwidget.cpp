@@ -54,7 +54,7 @@ PrivateDirectoryEditWidget::PrivateDirectoryEditWidget(QWidget * o)
  * \class DirectoryEditWidget
  * \since 0.7.0.0
  *
- * \bc
+ * \bc 0.10.0.0
  *
  * \brief A widget to edit a path. This widget has a button attached to open a dialog.
  *

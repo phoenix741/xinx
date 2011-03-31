@@ -115,7 +115,7 @@ void DirectoryEditPrivate::slotTextChanged(QString text)
  *
  * \brief A line edit to edit, file or path.
  *
- * \bc
+ * \bc 0.10.0.0
  *
  * A line editor using a QCompleter based on the model \p CompleterDirModel to
  * help the user to edit the path.

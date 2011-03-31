@@ -30,7 +30,7 @@ namespace XinxAction
 {
 
 class MenuItem;
-class PrivateActionManager;
+class ActionManagerPrivate;
 
 class LIBEXPORT ActionManager : public XinxLibSingleton<ActionManager>
 {
@@ -42,14 +42,14 @@ public:
 	void insertNameOfMenu(const QString & menu, const QString & name);
 
 	QStringList menus() const;
-	QList<MenuItem*> menu(const QString & menu) const;
-	void addMenuItem(const QString & menu, MenuItem * item);
-	void addMenuSeparator(const QString & menu);
+	QList<MenuItem*> menu(const QString & menuId) const;
+	void addMenuItem(const QString & menuId, MenuItem * item);
+	void addMenuSeparator(const QString & menuId);
 
 	QStringList toolBars() const;
-	QList<MenuItem*> toolBar(const QString & toolbar) const;
-	void addToolBarItem(const QString & toolbar, MenuItem * item);
-	void addToolBarSeparator(const QString & toolbar);
+	QList<MenuItem*> toolBar(const QString & toolbarId) const;
+	void addToolBarItem(const QString & toolbarId, MenuItem * item);
+	void addToolBarSeparator(const QString & toolbarId);
 
 	const QList<MenuItem*> & popup() const;
 	void addPopupItem(MenuItem * item);
@@ -60,23 +60,16 @@ public:
 	void addProjectDirectoryPopupSeparator();
 
 public slots:
-	//! Call when a new selection is made in the projectDirectory dock
 	void updateProjectSelection(QList<XinxAction::ProjectAction::RowInfo> rows);
-
-	//! Call plugins and generate list (erase all). emit changed when finish
 	void generateMenu();
-
-	//! Update the state of menu item and the visibility of separator of different section
 	void updateMenuItemState();
 signals:
 	void changed();
-private slots:
-	virtual void currentEditorChanged(int index);
 private:
 	ActionManager();
 
-	PrivateActionManager * d;
-	friend class PrivateActionManager;
+	QScopedPointer<ActionManagerPrivate> d;
+	friend class ActionManagerPrivate;
 	friend class XinxLibSingleton<ActionManager>;
 };
 

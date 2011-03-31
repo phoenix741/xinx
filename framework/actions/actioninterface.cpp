@@ -31,6 +31,18 @@
  * \since 0.8.1.0
  *
  * \brief Interfaces to manage action in XINX
+ *
+ * This framework can be used by plugins to add new QAction in all different menu of
+ * XINX.
+ *
+ * There is four place where action can be added :
+ *  - The princpal menu bar of the application
+ *  - The tool bar of the application
+ *  - The popup menu of the editor
+ *  - The popup menu of the project directory dock
+ *
+ * The state (visible, enable) of all differentes actions can be updated on different event (as
+ * a signal emited in the editor, a change in the selection, ...)
  */
 
 /*!
@@ -48,7 +60,7 @@ using namespace XinxAction;
  *
  * \brief This class provide a menu item for ActionList
  *
- * \bc
+ * \bc 0.10.0.0
  *
  * Class represent a menu item. A menu item can be an action or a separator. This used by XINX throw plugin,
  * to define the type of the element in the menu.
@@ -163,7 +175,7 @@ void Separator::setVisible(bool value)
  *
  * \brief This class provide an action for ActionList
  *
- * \bc
+ * \bc 0.10.0.0
  *
  * This class is a wrapper of a QAction. This wrapper is used to facilite
  * the enable, and visible feature of the action. This class inherits from
@@ -305,7 +317,7 @@ void Action::setCurrentEditor(AbstractEditor * editor)
  * \brief Represent an action for the project directory dock
  * \since 0.10.0.0
  *
- * \bc
+ * \bc 0.10.0.0
  *
  * A project action is not only dependant of the current editor, but is dependant from the
  * list of selected element in the project directory dock.

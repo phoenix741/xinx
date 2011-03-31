@@ -161,7 +161,7 @@ void CustomSchemeImplPrivate::updateFormatList()
  *
  * \brief Class to help the user to customize the QCodeEdit editor.
  *
- * \bc
+ * \bc 0.10.0.0
  *
  * Create a widget that allows to customize the QCodeEdit editor. This program uses
  * QLanguageFactory and QFormatScheme to show the list of available formats to

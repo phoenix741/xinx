@@ -32,7 +32,7 @@
  *
  * \brief Class used by DirectoryEdit to complete on path.
  *
- * \bc
+ * \bc 0.10.0.0
  *
  * Completer model class based on a QDirModel which permit to propose a completion on
  * the path.

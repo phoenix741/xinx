@@ -106,7 +106,7 @@ void QMenuViewPrivate::aboutToShow()
  *
  * \brief The QMenuView provides a menu based view on a QAbstractItemModel class.
  *
- * \bc
+ * \bc 0.10.0.0
  *
  * This class is used to transform a hierarchical model based on the class
  * QAbstractItemModel into a menu. It can be used to create an action menu, history,

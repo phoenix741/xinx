@@ -27,7 +27,7 @@
  *
  * \brief The class StringComboBox provides a extension of QComboBox to select an item.
  *
- * \bc
+ * \bc 0.10.0.0
  *
  * This special combo box adds a property value that can be used
  * to change dynamically the current index with a string value, instead

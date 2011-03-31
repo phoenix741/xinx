@@ -437,7 +437,7 @@ QSize PluginDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelI
  *
  * \brief The PluginSelector provides a list of configurable plugin elements.
  *
- * \bc
+ * \bc 0.10.0.0
  *
  * This class shows to the user the list of plugins with for each
  * plugins a configure button and a about button.
