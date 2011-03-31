@@ -19,6 +19,7 @@
 
 // Xinx header
 #include "pluginelement.h"
+#include "pluginelement_p.h"
 
 /* PluginElement */
 
@@ -34,9 +35,9 @@
  */
 
 //! Initialise the plugin element
-PluginElement::PluginElement() : m_isActivated(true)
+PluginElement::PluginElement() : d(new PluginElementPrivate)
 {
-
+	d->m_isActivated = true;
 }
 
 //! Destroy the plugin element
@@ -71,7 +72,7 @@ PluginElement::~PluginElement()
  */
 bool PluginElement::isActivated() const
 {
-	return m_isActivated || (! isModifiable());
+	return d->m_isActivated || (! isModifiable());
 }
 
 /*!
@@ -80,9 +81,9 @@ bool PluginElement::isActivated() const
  */
 void PluginElement::setActivated(bool activated)
 {
-	if (m_isActivated != activated)
+	if (d->m_isActivated != activated)
 	{
-		m_isActivated = activated;
+		d->m_isActivated = activated;
 	}
 }
 

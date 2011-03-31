@@ -28,7 +28,7 @@
  * Ulrich Van Den Hekke ( 21/03/2007 ) Simplified version of KLineEdit from KDE4.
  */
 
-#include "xinxlineedit.h"
+#include "xinxlineedit_p.h"
 
 #include <QStyleOption>
 #include <QApplication>
@@ -86,6 +86,93 @@ void XinxLineEditButton::paintEvent(QPaintEvent *event)
 	p.drawPixmap((width() - m_pixmap.width()) / 2, (height() - m_pixmap.height()) / 2, m_pixmap);
 }
 
+/* XinxLineEditPrivate */
+
+void XinxLineEditPrivate::init()
+{
+	clearButton = 0;
+	clickInClear = false;
+	wideEnoughForClear = true;
+
+	clearButton = new XinxLineEditButton(edit);
+	clearButton->setCursor(Qt::ArrowCursor);
+
+	updateClearButtonIcon(edit->text());
+	//updateClearButton();
+	connect(edit, SIGNAL(textChanged(QString)), this, SLOT(updateClearButtonIcon(QString)));
+}
+
+void XinxLineEditPrivate::updateClearButtonIcon(const QString& text)
+{
+	if (edit->isReadOnly())
+	{
+		return;
+	}
+
+	if (text.length() > 0)
+	{
+		clearButton->setVisible(true);
+	}
+	else
+	{
+		clearButton->setVisible(false);
+	}
+
+	if (! clearButton->pixmap().isNull())
+	{
+		return;
+	}
+
+	if (edit->layoutDirection() == Qt::LeftToRight)
+	{
+		clearButton->setPixmap(QPixmap(":/images/edit-clear-locationbar-rtl.png"));
+	}
+	else
+	{
+		clearButton->setPixmap(QPixmap(":/images/edit-clear-locationbar-ltr.png"));
+	}
+
+	clearButton->setVisible(text.length());
+}
+
+void XinxLineEditPrivate::updateClearButton()
+{
+	if (edit->isReadOnly())
+	{
+		return;
+	}
+
+	const QSize geom = edit->size();
+	const int buttonWidth = clearButton->sizeHint().width();
+	const QSize newButtonSize(buttonWidth, geom.height());
+
+	const int frameWidth = edit->style()->pixelMetric(QStyle::PM_DefaultFrameWidth, 0, edit);
+
+	const QFontMetrics fm(edit->font());
+	const int em = fm.width("m");
+
+	const bool wideEnough = geom.width() > 4 * em + buttonWidth + frameWidth;
+
+	if (newButtonSize != clearButton->size())
+	{
+		clearButton->resize(newButtonSize);
+	}
+
+	if (edit->layoutDirection() == Qt::LeftToRight)
+	{
+		clearButton->move(geom.width() - frameWidth - buttonWidth - 1, 0);
+	}
+	else
+	{
+		clearButton->move(frameWidth + 1, 0);
+	}
+
+	if (wideEnough != wideEnoughForClear)
+	{
+		wideEnoughForClear = wideEnough;
+		updateClearButtonIcon(edit->text());
+	}
+}
 
 /* XinxLineEdit */
 
@@ -109,18 +196,20 @@ void XinxLineEditButton::paintEvent(QPaintEvent *event)
  * \param string Text to be shown in the edit widget.
  * \param parent The parent widget of the line edit.
  */
-XinxLineEdit::XinxLineEdit(const QString &string, QWidget *parent) : QLineEdit(string, parent)
+XinxLineEdit::XinxLineEdit(const QString &string, QWidget *parent) : QLineEdit(string, parent), d(new XinxLineEditPrivate)
 {
-	init();
+	d->edit = this;
+	d->init();
 }
 
 /*!
  * \brief Constructs a line edit
  * \param parent The parent widget of the line edit.
  */
-XinxLineEdit::XinxLineEdit(QWidget *parent) : QLineEdit(parent)
+XinxLineEdit::XinxLineEdit(QWidget *parent) : QLineEdit(parent), d(new XinxLineEditPrivate)
 {
-	init();
+	d->edit = this;
+	d->init();
 }
 
 
@@ -135,99 +224,13 @@ XinxLineEdit::~XinxLineEdit()
  * \brief Emitted when the user clicked on the clear button
  */
 
-void XinxLineEdit::init()
-{
-	clearButton = 0;
-	clickInClear = false;
-	wideEnoughForClear = true;
-
-	clearButton = new XinxLineEditButton(this);
-	clearButton->setCursor(Qt::ArrowCursor);
-
-	updateClearButtonIcon(text());
-	//updateClearButton();
-	connect(this, SIGNAL(textChanged(QString)), this, SLOT(updateClearButtonIcon(QString)));
-}
-
-void XinxLineEdit::updateClearButtonIcon(const QString& text)
-{
-	if (isReadOnly())
-	{
-		return;
-	}
-
-	if (text.length() > 0)
-	{
-		clearButton->setVisible(true);
-	}
-	else
-	{
-		clearButton->setVisible(false);
-	}
-
-	if (! clearButton->pixmap().isNull())
-	{
-		return;
-	}
-
-	if (layoutDirection() == Qt::LeftToRight)
-	{
-		clearButton->setPixmap(QPixmap(":/images/edit-clear-locationbar-rtl.png"));
-	}
-	else
-	{
-		clearButton->setPixmap(QPixmap(":/images/edit-clear-locationbar-ltr.png"));
-	}
-
-	clearButton->setVisible(text.length());
-}
-
-void XinxLineEdit::updateClearButton()
-{
-	if (isReadOnly())
-	{
-		return;
-	}
-
-	const QSize geom = size();
-	const int buttonWidth = clearButton->sizeHint().width();
-	const QSize newButtonSize(buttonWidth, geom.height());
-
-	const int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth, 0, this);
-
-	const QFontMetrics fm(font());
-	const int em = fm.width("m");
-
-	const bool wideEnough = geom.width() > 4 * em + buttonWidth + frameWidth;
-
-	if (newButtonSize != clearButton->size())
-	{
-		clearButton->resize(newButtonSize);
-	}
-
-	if (layoutDirection() == Qt::LeftToRight)
-	{
-		clearButton->move(geom.width() - frameWidth - buttonWidth - 1, 0);
-	}
-	else
-	{
-		clearButton->move(frameWidth + 1, 0);
-	}
-
-	if (wideEnough != wideEnoughForClear)
-	{
-		wideEnoughForClear = wideEnough;
-		updateClearButtonIcon(text());
-	}
-}
-
 /*!
  * Re-implemented for internal reasons.  API not affected.
  * \sa QLineEdit::resizeEvent().
  */
 void XinxLineEdit::resizeEvent(QResizeEvent * ev)
 {
-	updateClearButton();
+	d->updateClearButton();
 	QLineEdit::resizeEvent(ev);
 }
 
@@ -237,9 +240,9 @@ void XinxLineEdit::resizeEvent(QResizeEvent * ev)
  */
 void XinxLineEdit::mousePressEvent(QMouseEvent* e)
 {
-	if ((e->button() == Qt::LeftButton || e->button() == Qt::MidButton) && clearButton)
+	if ((e->button() == Qt::LeftButton || e->button() == Qt::MidButton) && d->clearButton)
 	{
-		clickInClear = clearButton->underMouse();
+		d->clickInClear = d->clearButton->underMouse();
 	}
 
 	QLineEdit::mousePressEvent(e);
@@ -251,9 +254,9 @@ void XinxLineEdit::mousePressEvent(QMouseEvent* e)
  */
 void XinxLineEdit::mouseReleaseEvent(QMouseEvent* e)
 {
-	if (clickInClear)
+	if (d->clickInClear)
 	{
-		if (clearButton->underMouse())
+		if (d->clearButton->underMouse())
 		{
 			setSelection(0, text().size());
 			del();
@@ -261,7 +264,7 @@ void XinxLineEdit::mouseReleaseEvent(QMouseEvent* e)
 			emit textChanged(QString());
 		}
 
-		clickInClear = false;
+		d->clickInClear = false;
 		e->accept();
 		return;
 	}

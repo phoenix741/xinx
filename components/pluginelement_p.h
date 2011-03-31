@@ -1,4 +1,4 @@
-/*
+﻿/*
  XINX
  Copyright (C) 2007-2011 by Ulrich Van Den Hekke
  xinx@shadoware.org
@@ -18,35 +18,14 @@
 */
 
 #pragma once
-#ifndef _PLUGINELEMENT_H_
-#define _PLUGINELEMENT_H_
+#ifndef _PLUGINELEMENT_P_H_
+#define _PLUGINELEMENT_P_H_
 
-// Qt header
-#include <QPixmap>
-#include <QString>
-
-#include <components-config.h>
-
-class PluginElementPrivate;
-
-class COMPONENTSEXPORT PluginElement
+//! \private
+class PluginElementPrivate
 {
 public:
-	PluginElement();
-	virtual ~PluginElement();
-
-	virtual bool isModifiable() const = 0;
-	bool isActivated() const;
-	void setActivated(bool activated);
-	void setDesactivated(bool desactivated);
-
-	virtual bool isConfigurable() const = 0;
-
-	virtual QPixmap pixmap() const;
-	virtual QString name() const = 0;
-	virtual QString description() const = 0;
-private:
-	QScopedPointer<PluginElementPrivate> d;
+	bool m_isActivated;
 };
 
-#endif // _PLUGINELEMENT_H_
+#endif // _PLUGINELEMENT_P_H_

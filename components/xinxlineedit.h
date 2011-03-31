@@ -41,23 +41,7 @@
 
 #include <components-config.h>
 
-class COMPONENTSEXPORT XinxLineEditButton : public QWidget
-{
-	Q_OBJECT
-public:
-	XinxLineEditButton(QWidget *parent);
-
-	QSize sizeHint() const;
-
-	void setPixmap(const QPixmap & p);
-	QPixmap pixmap();
-
-protected:
-	void paintEvent(QPaintEvent *event);
-
-private:
-	QPixmap m_pixmap;
-};
+class XinxLineEditPrivate;
 
 class COMPONENTSEXPORT XinxLineEdit : public QLineEdit
 {
@@ -67,24 +51,17 @@ public:
 	explicit XinxLineEdit(QWidget *parent = 0);
 	virtual ~XinxLineEdit();
 
-
-Q_SIGNALS:
+signals:
 	void clearButtonClicked();
+
 protected:
 	virtual void resizeEvent(QResizeEvent *);
 	virtual void mousePressEvent(QMouseEvent *);
 	virtual void mouseReleaseEvent(QMouseEvent *);
 
-private Q_SLOTS:
-	void updateClearButtonIcon(const QString&);
-
 private:
-	void init();
-	void updateClearButton();
-
-	bool clickInClear;
-	bool wideEnoughForClear;
-	XinxLineEditButton *clearButton;
+	QSharedPointer<XinxLineEditPrivate> d;
+	friend class XinxLineEditPrivate;
 };
 
 #endif

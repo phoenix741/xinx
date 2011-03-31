@@ -58,12 +58,12 @@ public:
 	void add(const QString & value);
 
 	QString currentItem() const;
-protected:
-	virtual QString addNewValue();
 signals:
 	void defaultValueChanged(QString value);
 	void currentRowChanged(int value);
 	void itemChanged(const QString & text);
+protected:
+	virtual QString addNewValue();
 private:
 	QScopedPointer<XinxListWidgetImplPrivate> d;
 	friend class XinxListWidgetImplPrivate;
