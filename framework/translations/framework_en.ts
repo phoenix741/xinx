@@ -21,7 +21,16 @@
     <message>
         <location filename="../application/about.ui" line="74"/>
         <source>&lt;p&gt;&lt;b&gt;XINX&lt;/b&gt; Is Not only XML&lt;/p&gt;
-&lt;p&gt;(c) 2006-2007, Ulrich Van Den Hekke&lt;/p&gt;</source>
+&lt;p&gt;(c) 2006-2011, Ulrich Van Den Hekke&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/about.ui" line="215"/>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -37,15 +46,6 @@
     <message>
         <location filename="../application/about.ui" line="203"/>
         <source>Licence</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/about.ui" line="215"/>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -517,7 +517,17 @@ Only checked files are commited.</source>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="141"/>
-        <source>Close button on the &amp;tab widget</source>
+        <source>on the &amp;tab</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="151"/>
+        <source>on right &amp;corner</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="164"/>
+        <source>on the right corner &amp;and on the tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -526,18 +536,8 @@ Only checked files are commited.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="151"/>
-        <source>Close button on right &amp;corner</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="161"/>
         <source>&lt;p&gt;&lt;img src=&quot;:/images/tabclose.png&quot; /&gt;&lt;img src=&quot;:/images/fileclose.png&quot; /&gt;Show a button on the right corner of &lt;b&gt;XINX&lt;/b&gt; and another on each tab. This option is the concatenation of the two other options&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="164"/>
-        <source>Close button on the tab widget &amp;and the corner</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -837,73 +837,72 @@ Only checked files are commited.</source>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customproject.ui" line="42"/>
-        <source>&lt;p&gt;This the path where the save dialog must be opened when you create a new project.&lt;/p&gt;
-&lt;p&gt;&lt;i&gt;As the author set the project path to the Application Server path, this path is now the project path. You can safely use another path, but in &lt;i&gt;New Project Wizard&lt;/i&gt;, the Application Server path would be wrong.&lt;/i&gt;&lt;/p&gt;</source>
+        <source>&lt;p&gt;This the path where the save dialog must be opened when you create a new project.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="50"/>
+        <location filename="../application/customdialog/ui/customproject.ui" line="49"/>
         <source>Refresh Directory &amp;Timeout :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="60"/>
+        <location filename="../application/customdialog/ui/customproject.ui" line="59"/>
         <source>Timeout before the directory view is reloaded with your filter.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="63"/>
+        <location filename="../application/customdialog/ui/customproject.ui" line="62"/>
         <source> ms</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="79"/>
-        <source>Open the last opened project (&lt;i&gt;if any, it&apos;s the opened project when &lt;b&gt;XINX&lt;/b&gt; is closed&lt;/i&gt;), when &lt;b&gt;XINX&lt;/b&gt; is started.</source>
+        <location filename="../application/customdialog/ui/customproject.ui" line="78"/>
+        <source>Open the last session project (&lt;i&gt;if any, it&apos;s the opened session when &lt;b&gt;XINX&lt;/b&gt; is closed&lt;/i&gt;), when &lt;b&gt;XINX&lt;/b&gt; is started.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="82"/>
+        <location filename="../application/customdialog/ui/customproject.ui" line="81"/>
         <source>&amp;Open the last session at start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="89"/>
+        <location filename="../application/customdialog/ui/customproject.ui" line="88"/>
         <source>In this mode &lt;b&gt;XINX&lt;/b&gt; open only one project at a time. If you open a new project, XINX automatically close the previous project. This can be used, if you don&apos;t work on multiple project or want &lt;b&gt;XINX&lt;/b&gt; work as previous version.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="92"/>
+        <location filename="../application/customdialog/ui/customproject.ui" line="91"/>
         <source>&amp;Single project mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="108"/>
+        <location filename="../application/customdialog/ui/customproject.ui" line="107"/>
         <source>General &amp;Revision Control System Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="114"/>
+        <location filename="../application/customdialog/ui/customproject.ui" line="113"/>
         <source>&lt;p&gt;When an action with the revision control system is made, a log window is open and show information about the progress.&lt;/p&gt;
 &lt;p&gt;If checked, the log windows is automaticallyclosed when action (like update, commit ...) finished.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="118"/>
+        <location filename="../application/customdialog/ui/customproject.ui" line="117"/>
         <source>Open/&amp;Close the Version management Log automatically.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="125"/>
+        <location filename="../application/customdialog/ui/customproject.ui" line="124"/>
         <source>&lt;p&gt;When checked, a &lt;i&gt;ChangeLog&lt;/i&gt; file is created/appended at each commit with date, hour, and the commit messages.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="128"/>
+        <location filename="../application/customdialog/ui/customproject.ui" line="127"/>
         <source>&amp;Update &quot;ChangeLog&quot; automatically.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="135"/>
+        <location filename="../application/customdialog/ui/customproject.ui" line="134"/>
         <source>&amp;Auto add file to versionning system</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1087,16 +1086,6 @@ Do you really want refresh this?</source>
         <source>Clear the errors</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../core/errordockimpl.cpp" line="103"/>
-        <source>%1: %2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../core/errordockimpl.cpp" line="105"/>
-        <source>%1</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>ExceptionManager</name>
@@ -1122,7 +1111,7 @@ Do you really want refresh this?</source>
     </message>
     <message>
         <location filename="../core/exceptions.cpp" line="73"/>
-        <source>Segmentation violation</source>
+        <source>Segmentation violation (NullPointerException)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1217,6 +1206,69 @@ Do you really want refresh this?</source>
     <message>
         <location filename="../project/newprojectwizard.cpp" line="270"/>
         <source>The project is now created, please enjoy.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>LogDialog</name>
+    <message>
+        <location filename="../versioncontrol/logdialog.ui" line="14"/>
+        <source>Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../versioncontrol/logdialog.ui" line="20"/>
+        <source>&amp;Filter :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../versioncontrol/logdialog.ui" line="33"/>
+        <source>&amp;Log :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../versioncontrol/logdialog.ui" line="50"/>
+        <source>Revision</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../versioncontrol/logdialog.ui" line="55"/>
+        <source>Author</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../versioncontrol/logdialog.ui" line="60"/>
+        <source>Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../versioncontrol/logdialog.ui" line="65"/>
+        <source>Message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../versioncontrol/logdialog.ui" line="73"/>
+        <source>&amp;Message :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../versioncontrol/logdialog.ui" line="86"/>
+        <source>&amp;Changed path :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../versioncontrol/logdialog.ui" line="103"/>
+        <source>Action</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../versioncontrol/logdialog.ui" line="108"/>
+        <source>Path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../versioncontrol/logdialog.ui" line="113"/>
+        <source>Informations</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3117,27 +3169,27 @@ The version %2 is available on %3.</source>
 <context>
     <name>VersionControl::RCSProxy</name>
     <message>
-        <location filename="../versioncontrol/rcsproxy.cpp" line="117"/>
+        <location filename="../versioncontrol/rcsproxy.cpp" line="118"/>
         <source>No tools defined</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../versioncontrol/rcsproxy.cpp" line="171"/>
+        <location filename="../versioncontrol/rcsproxy.cpp" line="172"/>
         <source>Add a file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../versioncontrol/rcsproxy.cpp" line="171"/>
+        <location filename="../versioncontrol/rcsproxy.cpp" line="172"/>
         <source>Do you want to add the file &apos;%1&apos; to the repository ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../versioncontrol/rcsproxy.cpp" line="267"/>
+        <location filename="../versioncontrol/rcsproxy.cpp" line="268"/>
         <source>&lt;Commit with no text&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../versioncontrol/rcsproxy.cpp" line="278"/>
+        <location filename="../versioncontrol/rcsproxy.cpp" line="279"/>
         <source>Operation cancelled</source>
         <translation type="unfinished"></translation>
     </message>

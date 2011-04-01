@@ -39,8 +39,7 @@
          <enum>Qt::TabFocus</enum>
         </property>
         <property name="whatsThis">
-         <string>&lt;p&gt;This the path where the save dialog must be opened when you create a new project.&lt;/p&gt;
-&lt;p&gt;&lt;i&gt;As the author set the project path to the Application Server path, this path is now the project path. You can safely use another path, but in &lt;i&gt;New Project Wizard&lt;/i&gt;, the Application Server path would be wrong.&lt;/i&gt;&lt;/p&gt;</string>
+         <string>&lt;p&gt;This the path where the save dialog must be opened when you create a new project.&lt;/p&gt;</string>
         </property>
        </widget>
       </item>
@@ -76,7 +75,7 @@
       <item row="4" column="0" colspan="2">
        <widget class="QCheckBox" name="m_openLastSessionCheckBox">
         <property name="whatsThis">
-         <string>Open the last opened project (&lt;i&gt;if any, it's the opened project when &lt;b&gt;XINX&lt;/b&gt; is closed&lt;/i&gt;), when &lt;b&gt;XINX&lt;/b&gt; is started.</string>
+         <string>Open the last session project (&lt;i&gt;if any, it's the opened session when &lt;b&gt;XINX&lt;/b&gt; is closed&lt;/i&gt;), when &lt;b&gt;XINX&lt;/b&gt; is started.</string>
         </property>
         <property name="text">
          <string>&amp;Open the last session at start</string>

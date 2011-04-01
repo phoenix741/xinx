@@ -67,13 +67,13 @@
 <context>
     <name>DirectoryEdit</name>
     <message>
-        <location filename="../directoryedit.cpp" line="388"/>
+        <location filename="../directoryedit.cpp" line="399"/>
         <source>Change the path</source>
         <translation>Changer le dossier</translation>
     </message>
     <message>
-        <location filename="../directoryedit.cpp" line="390"/>
-        <location filename="../directoryedit.cpp" line="392"/>
+        <location filename="../directoryedit.cpp" line="401"/>
+        <location filename="../directoryedit.cpp" line="403"/>
         <source>Change the file</source>
         <translation>Changer le fichier</translation>
     </message>
@@ -202,7 +202,7 @@
 <context>
     <name>XinxDirectoryListWidget</name>
     <message>
-        <location filename="../xinxdirectorylistwidget.cpp" line="37"/>
+        <location filename="../xinxdirectorylistwidget.cpp" line="59"/>
         <source>Get a directory</source>
         <translation>Choisir un dossier</translation>
     </message>

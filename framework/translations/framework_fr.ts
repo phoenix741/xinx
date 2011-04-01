@@ -21,7 +21,16 @@
     <message>
         <location filename="../application/about.ui" line="74"/>
         <source>&lt;p&gt;&lt;b&gt;XINX&lt;/b&gt; Is Not only XML&lt;/p&gt;
-&lt;p&gt;(c) 2006-2007, Ulrich Van Den Hekke&lt;/p&gt;</source>
+&lt;p&gt;(c) 2006-2011, Ulrich Van Den Hekke&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/about.ui" line="215"/>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -38,15 +47,6 @@
         <location filename="../application/about.ui" line="203"/>
         <source>Licence</source>
         <translation>Licence d&apos;utilisation</translation>
-    </message>
-    <message>
-        <location filename="../application/about.ui" line="215"/>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -575,8 +575,22 @@ Seuls les fichiers cochés seront validés.</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="141"/>
-        <source>Close button on the &amp;tab widget</source>
+        <source>on the &amp;tab</source>
         <translation>sur l&apos;&amp;onglet</translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="151"/>
+        <source>on right &amp;corner</source>
+        <translation>sur le &amp;coin droit</translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="164"/>
+        <source>on the right corner &amp;and on the tab</source>
+        <translation>sur le coin droit &amp;et sur l&apos;onglet</translation>
+    </message>
+    <message>
+        <source>Close button on the &amp;tab widget</source>
+        <translation type="obsolete">sur l&apos;&amp;onglet</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="148"/>
@@ -584,9 +598,8 @@ Seuls les fichiers cochés seront validés.</translation>
         <translation>&lt;p&gt;&lt;img src=&quot;:/images/fileclose.png&quot;/&gt;Affiche un bouton de fermeture sur chaque onglet.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="151"/>
         <source>Close button on right &amp;corner</source>
-        <translation>sur le &amp;coin droit</translation>
+        <translation type="obsolete">sur le &amp;coin droit</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="161"/>
@@ -594,9 +607,8 @@ Seuls les fichiers cochés seront validés.</translation>
         <translation>&lt;p&gt;&lt;img src=&quot;:/images/tabclose.png&quot; /&gt;&lt;img src=&quot;:/images/fileclose.png&quot; /&gt;Affiche le bouton dans le coin droit de &lt;b&gt;XINX&lt;/b&gt; ainsi que sur chaque onglet. Cette options est l&apos;assemblemetn des deux autres options&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="164"/>
         <source>Close button on the tab widget &amp;and the corner</source>
-        <translation>sur le coint droit e&amp;t sur chaque onglet</translation>
+        <translation type="obsolete">sur le coint droit e&amp;t sur chaque onglet</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="187"/>
@@ -866,18 +878,18 @@ Seuls les fichiers cochés seront validés.</translation>
     <message>
         <location filename="../application/customdialog/custommodulesimpl.cpp" line="139"/>
         <source>&lt;table&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;hr/&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Author&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;E-Mail&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;mailto:%4&quot;&gt;%4&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Web site&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;%5&quot;&gt;%5&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Version&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Licence&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;table&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;hr/&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Auteur&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;E-Mail&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;mailto:%4&quot;&gt;%4&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Site Internet&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;%5&quot;&gt;%5&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Version&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Licence&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</translation>
     </message>
     <message>
         <location filename="../application/customdialog/custommodulesimpl.cpp" line="185"/>
         <location filename="../application/customdialog/custommodulesimpl.cpp" line="247"/>
         <source>&amp;Informations</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Informations</translation>
     </message>
     <message>
         <location filename="../application/customdialog/custommodulesimpl.cpp" line="217"/>
         <source>&lt;table&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;hr/&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Author&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Version&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Licence&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;table&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;hr/&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Auteur&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Version&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Licence&lt;/b&gt;&lt;/td&gt;&lt;td width=&quot;0&quot;&gt;:&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</translation>
     </message>
 </context>
 <context>
@@ -885,89 +897,99 @@ Seuls les fichiers cochés seront validés.</translation>
     <message>
         <location filename="../application/customdialog/ui/customproject.ui" line="14"/>
         <source>Project</source>
-        <translation type="unfinished"></translation>
+        <translation>Projet</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customproject.ui" line="20"/>
         <source>Project &amp;Management</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Gestion de projet</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customproject.ui" line="29"/>
         <source>Default open &amp;project directory :</source>
-        <translation type="unfinished"></translation>
+        <translation>Dossier &amp;projet par défaut à ouvrir :</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;This the path where the save dialog must be opened when you create a new project.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;As the author set the project path to the Application Server path, this path is now the project path. You can safely use another path, but in &lt;i&gt;New Project Wizard&lt;/i&gt;, the Application Server path would be wrong.&lt;/i&gt;&lt;/p&gt;</source>
+        <translation type="obsolete">&lt;p&gt;C&apos;est le chemin où la la boîte de dialogue de sauvegarde doit être ouvert lors de la création d&apos;un nouveau projet.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;As the author set the project path to the Application Server path, this path is now the project path. You can safely use another path, but in &lt;i&gt;New Project Wizard&lt;/i&gt;, the Application Server path would be wrong.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customproject.ui" line="42"/>
-        <source>&lt;p&gt;This the path where the save dialog must be opened when you create a new project.&lt;/p&gt;
-&lt;p&gt;&lt;i&gt;As the author set the project path to the Application Server path, this path is now the project path. You can safely use another path, but in &lt;i&gt;New Project Wizard&lt;/i&gt;, the Application Server path would be wrong.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <source>&lt;p&gt;This the path where the save dialog must be opened when you create a new project.&lt;/p&gt;</source>
+        <translation>&lt;p&gt;C&apos;est le chemin qui doit être proposé lors de la création d&apos;un nouveau projet &lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="50"/>
+        <location filename="../application/customdialog/ui/customproject.ui" line="49"/>
         <source>Refresh Directory &amp;Timeout :</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Délai de rafraichissement des dossier :</translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="60"/>
+        <location filename="../application/customdialog/ui/customproject.ui" line="59"/>
         <source>Timeout before the directory view is reloaded with your filter.</source>
-        <translation type="unfinished"></translation>
+        <translation>Délai après lequel la vue dossier sera recharger avec le filtre.</translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="63"/>
+        <location filename="../application/customdialog/ui/customproject.ui" line="62"/>
         <source> ms</source>
-        <translation type="unfinished"></translation>
+        <translation> ms</translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="79"/>
         <source>Open the last opened project (&lt;i&gt;if any, it&apos;s the opened project when &lt;b&gt;XINX&lt;/b&gt; is closed&lt;/i&gt;), when &lt;b&gt;XINX&lt;/b&gt; is started.</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Ouvre la dernière session ouverte (&lt;i&gt;s&apos;il y en a un, c&apos;est le projet ouvert, lors de la fermeture de &lt;b&gt;XINX&lt;/b&gt;&lt;/i&gt;), quand &lt;b&gt;XINX&lt;/b&gt; est démarré.</translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="82"/>
+        <location filename="../application/customdialog/ui/customproject.ui" line="78"/>
+        <source>Open the last session project (&lt;i&gt;if any, it&apos;s the opened session when &lt;b&gt;XINX&lt;/b&gt; is closed&lt;/i&gt;), when &lt;b&gt;XINX&lt;/b&gt; is started.</source>
+        <translation>Ouvre la dernière session ouverte (&lt;i&gt;s&apos;il y en a un, c&apos;est le projet ouvert, lors de la fermeture de &lt;b&gt;XINX&lt;/b&gt;&lt;/i&gt;), quand &lt;b&gt;XINX&lt;/b&gt; est démarré.</translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customproject.ui" line="81"/>
         <source>&amp;Open the last session at start</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ouvre la dernière session au démarrage</translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="89"/>
+        <location filename="../application/customdialog/ui/customproject.ui" line="88"/>
         <source>In this mode &lt;b&gt;XINX&lt;/b&gt; open only one project at a time. If you open a new project, XINX automatically close the previous project. This can be used, if you don&apos;t work on multiple project or want &lt;b&gt;XINX&lt;/b&gt; work as previous version.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dans ce mode &lt;b&gt;XINX&lt;/b&gt; ouvre uniquement un projet à la fois. Si vous ouvrez un nouveau projet, &lt;b&gt;XINX&lt;/b&gt; fermera automatiquement le projet précédent. Ceci peut être utilisé, si vous n&apos;utilisez pas le mode multi-projet ou si vous voulez que &lt;b&gt;XINX&lt;/b&gt; fonctionne de la même manière que la précédente version.</translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="92"/>
+        <location filename="../application/customdialog/ui/customproject.ui" line="91"/>
         <source>&amp;Single project mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Mode projet &amp;unique</translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="108"/>
+        <location filename="../application/customdialog/ui/customproject.ui" line="107"/>
         <source>General &amp;Revision Control System Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Options générale du système de gestion de &amp;version</translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="114"/>
+        <location filename="../application/customdialog/ui/customproject.ui" line="113"/>
         <source>&lt;p&gt;When an action with the revision control system is made, a log window is open and show information about the progress.&lt;/p&gt;
 &lt;p&gt;If checked, the log windows is automaticallyclosed when action (like update, commit ...) finished.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Quand une action avec le système de gestion de version est faite, un journal est ouvert et affiche les informations à propos de la progression.&lt;/p&gt;
+&lt;p&gt;Si coché, le journal est automatiquement fermé quand une action (comme la mise à jour, la validation, ...) sera terminé.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="118"/>
+        <location filename="../application/customdialog/ui/customproject.ui" line="117"/>
         <source>Open/&amp;Close the Version management Log automatically.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvre/&amp;Ferme le journal du gestionnaire de version automatiquement.</translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="125"/>
+        <location filename="../application/customdialog/ui/customproject.ui" line="124"/>
         <source>&lt;p&gt;When checked, a &lt;i&gt;ChangeLog&lt;/i&gt; file is created/appended at each commit with date, hour, and the commit messages.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Quand coché, un fichier &lt;i&gt;ChangeLog&lt;/i&gt; est créé et mis à jour à chaque validation, avec la date, l&apos;heure, et le message de validation.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="128"/>
+        <location filename="../application/customdialog/ui/customproject.ui" line="127"/>
         <source>&amp;Update &quot;ChangeLog&quot; automatically.</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Actualise le &quot;ChangeLog&quot; automatiquement.</translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="135"/>
+        <location filename="../application/customdialog/ui/customproject.ui" line="134"/>
         <source>&amp;Auto add file to versionning system</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ajoute automatiquement le fichier au système de version</translation>
     </message>
 </context>
 <context>
@@ -975,7 +997,7 @@ Seuls les fichiers cochés seront validés.</translation>
     <message>
         <location filename="../application/customdialog/customprojectimpl.cpp" line="114"/>
         <source>Directory %1 doesn&apos;t exist.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le dossier %1 n&apos;existe pas.</translation>
     </message>
 </context>
 <context>
@@ -983,82 +1005,82 @@ Seuls les fichiers cochés seront validés.</translation>
     <message>
         <location filename="../application/customdialog/ui/customsnipet.ui" line="14"/>
         <source>Snipet</source>
-        <translation type="unfinished"></translation>
+        <translation>Modèle</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customsnipet.ui" line="22"/>
         <source>&amp;Filter :</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Filtre :</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customsnipet.ui" line="37"/>
         <source>List of snipet that could be used as a completion (with the snipet key) or called manually in the menu. You can also import snipet in &lt;b&gt;XINX&lt;/b&gt; file or export snipet to a &lt;i&gt;XML&lt;/i&gt; file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Liste des modèles qui peuvent être utilisé comme complétion (avec la clé du modèle) ou manuellement dans le menu. Vous pouvez aussi importer ou export des modèles dans &lt;b&gt;XINX&lt;/b&gt; dans un fichier &lt;i&gt;XML&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customsnipet.ui" line="50"/>
         <source>List of snipet (or template) that &lt;b&gt;XINX&lt;/b&gt; can use. A snipet is a piece of code quickly accessible by a key word, or by a menu.</source>
-        <translation type="unfinished"></translation>
+        <translation>Liste des modèles (ou template/snipate) dont &lt;b&gt;XINX&lt;/b&gt; peut utiliser. Un modèle est un morceau de code qui peut être rapidement accessible à l&apos;aide d&apos;un mot clé, ou par le menu.</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customsnipet.ui" line="86"/>
         <source>Open a dialog to create a new snipet.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvre une boite dialogue pour créer un nouveau modèle.</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customsnipet.ui" line="89"/>
         <source>&amp;Add</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ajouter</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customsnipet.ui" line="100"/>
         <source>Delete selected snipet in the list below.</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprime un modèle selectionné dans la liste ci-dessus.</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customsnipet.ui" line="103"/>
         <source>&amp;Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Supprimer</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customsnipet.ui" line="114"/>
         <source>Modify the selected snipet.</source>
-        <translation type="unfinished"></translation>
+        <translation>Modifie un modèle selectionné.</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customsnipet.ui" line="117"/>
         <source>&amp;Modify</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Modifier</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customsnipet.ui" line="128"/>
         <source>Duplicate the selected snipet</source>
-        <translation type="unfinished"></translation>
+        <translation>Duplique un modèle selectionné</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customsnipet.ui" line="131"/>
         <source>D&amp;uplicate</source>
-        <translation type="unfinished"></translation>
+        <translation>D&amp;upliquer</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customsnipet.ui" line="155"/>
         <source>Import a list of snipet from an XML file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Import une liste de modèle à partir d&apos;un fichier XML.</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customsnipet.ui" line="158"/>
         <source>&amp;Import ...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Importer ...</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customsnipet.ui" line="169"/>
         <source>Export selected snipet to an XML file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Exporte les modèles selectionnés vers un fichier XML.</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customsnipet.ui" line="172"/>
         <source>&amp;Export ...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Exporter ...</translation>
     </message>
 </context>
 <context>
@@ -1066,22 +1088,22 @@ Seuls les fichiers cochés seront validés.</translation>
     <message>
         <location filename="../application/customdialog/customsnipetimpl.cpp" line="40"/>
         <source>Add a new Snipet</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter un nouveau modèle</translation>
     </message>
     <message>
         <location filename="../application/customdialog/customsnipetimpl.cpp" line="41"/>
         <source>Add a new Category</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter une nouvelle catégorie</translation>
     </message>
     <message>
         <location filename="../application/customdialog/customsnipetimpl.cpp" line="146"/>
         <source>Import snipets</source>
-        <translation type="unfinished"></translation>
+        <translation>Importer des modèles</translation>
     </message>
     <message>
         <location filename="../application/customdialog/customsnipetimpl.cpp" line="168"/>
         <source>Export snipets</source>
-        <translation type="unfinished"></translation>
+        <translation>Exporter des modèles</translation>
     </message>
 </context>
 <context>
@@ -1089,13 +1111,14 @@ Seuls les fichiers cochés seront validés.</translation>
     <message>
         <location filename="../application/customdialog/ui/customsyntax.ui" line="14"/>
         <source>Syntax</source>
-        <translation type="unfinished"></translation>
+        <translation>Modèle de mise en forme</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customsyntax.ui" line="20"/>
         <source>&lt;p&gt;List of highlighter. Highlighter is used to color a text in an editor. &lt;/p&gt;
 &lt;p&gt;&lt;i&gt;To add new highlighter, you must add the corresponding plugin.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Liste des modèles de mise en forme. Un modèle de mise en forme est utiliser pour colorer le text, ou définir une police de caractère spécial dans le texte.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Pour ajouter un nouveau modèle de mise en forme, il faut ajouter l&apos;extention correspondante.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -1103,14 +1126,16 @@ Seuls les fichiers cochés seront validés.</translation>
     <message>
         <location filename="../application/customdialog/ui/customtools.ui" line="14"/>
         <source>Tools</source>
-        <translation type="unfinished"></translation>
+        <translation>Outils</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customtools.ui" line="20"/>
         <source>&lt;p&gt;List of tools used by &lt;b&gt;XINX&lt;/b&gt; and all plugins. Tools are external application called by this application.&lt;/p&gt;
 &lt;p&gt;If the tool can&apos;t be find, the text color will be &lt;span style=&quot;color:#ff0000;&quot;&gt;red&lt;/span&gt;.&lt;/p&gt;
 &lt;p&gt;To edit a tool, double click (or presse F2) on the path of the tool.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Liste des outils utilisé par &lt;b&gt;XINX&lt;/b&gt; ainsi que par les extentions. Les outils sont des applications externes appeler par &lt;b&gt;XINX&lt;/b&gt;.&lt;/p&gt;
+&lt;p&gt;Si l&apos;outil n&apos;a pu être trouvé, le texte sera de la couleur &lt;span style=&quot;color:#ff0000;&quot;&gt;rouge&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Pour modifier un outil, double cliquez (ou pressé la touche F2) sur le chemin de l&apos;outil.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -1161,23 +1186,24 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="../editors/editormanager.cpp" line="584"/>
         <source>Open text file</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir un fichier text</translation>
     </message>
     <message>
         <location filename="../editors/editormanager.cpp" line="701"/>
         <source>Save text file</source>
-        <translation type="unfinished"></translation>
+        <translation>Sauver un fichier text</translation>
     </message>
     <message>
         <location filename="../editors/editormanager.cpp" line="757"/>
         <source>Application</source>
-        <translation type="unfinished"></translation>
+        <translation>Application</translation>
     </message>
     <message>
         <location filename="../editors/editormanager.cpp" line="757"/>
         <source>The document %1 has been modified.
 Do you really want refresh this?</source>
-        <translation type="unfinished"></translation>
+        <translation>Le document %1 a été modifié.
+Voulez-vous réélement actualiser ce fichier ?</translation>
     </message>
 </context>
 <context>
@@ -1185,22 +1211,20 @@ Do you really want refresh this?</source>
     <message>
         <location filename="../core/errordockimpl.cpp" line="37"/>
         <source>Warnings/Errors</source>
-        <translation type="unfinished"></translation>
+        <translation>Avertissement/Erreurs</translation>
     </message>
     <message>
         <location filename="../core/errordockimpl.cpp" line="43"/>
         <source>Clear the errors</source>
-        <translation type="unfinished"></translation>
+        <translation>Effacer les erreurs</translation>
     </message>
     <message>
-        <location filename="../core/errordockimpl.cpp" line="103"/>
         <source>%1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">%1: %2</translation>
     </message>
     <message>
-        <location filename="../core/errordockimpl.cpp" line="105"/>
         <source>%1</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">%1</translation>
     </message>
 </context>
 <context>
@@ -1227,7 +1251,7 @@ Do you really want refresh this?</source>
     </message>
     <message>
         <location filename="../core/exceptions.cpp" line="73"/>
-        <source>Segmentation violation</source>
+        <source>Segmentation violation (NullPointerException)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1337,6 +1361,69 @@ Do you really want refresh this?</source>
     <message>
         <location filename="../project/newprojectwizard.cpp" line="270"/>
         <source>The project is now created, please enjoy.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>LogDialog</name>
+    <message>
+        <location filename="../versioncontrol/logdialog.ui" line="14"/>
+        <source>Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../versioncontrol/logdialog.ui" line="20"/>
+        <source>&amp;Filter :</source>
+        <translation type="unfinished">&amp;Filtre :</translation>
+    </message>
+    <message>
+        <location filename="../versioncontrol/logdialog.ui" line="33"/>
+        <source>&amp;Log :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../versioncontrol/logdialog.ui" line="50"/>
+        <source>Revision</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../versioncontrol/logdialog.ui" line="55"/>
+        <source>Author</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../versioncontrol/logdialog.ui" line="60"/>
+        <source>Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../versioncontrol/logdialog.ui" line="65"/>
+        <source>Message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../versioncontrol/logdialog.ui" line="73"/>
+        <source>&amp;Message :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../versioncontrol/logdialog.ui" line="86"/>
+        <source>&amp;Changed path :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../versioncontrol/logdialog.ui" line="103"/>
+        <source>Action</source>
+        <translation type="unfinished">Action</translation>
+    </message>
+    <message>
+        <location filename="../versioncontrol/logdialog.ui" line="108"/>
+        <source>Path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../versioncontrol/logdialog.ui" line="113"/>
+        <source>Informations</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1488,7 +1575,7 @@ Do you really want refresh this?</source>
     <message>
         <location filename="../application/mainformimpl.cpp" line="332"/>
         <source>&amp;About</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;A propos de</translation>
     </message>
     <message>
         <location filename="../application/mainformimpl.cpp" line="333"/>
@@ -1767,13 +1854,14 @@ Do you really want refresh this?</source>
     <message>
         <location filename="../application/newversion.ui" line="114"/>
         <source>&amp;Language :</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Langue :</translation>
     </message>
     <message>
         <location filename="../application/newversion.ui" line="124"/>
         <source>&lt;p&gt;Langue in which &lt;b&gt;XINX&lt;/b&gt; must be used.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Modification take effect at restart.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;p&gt;Langue dans laquelle &lt;b&gt;XINX&lt;/b&gt; sera utilisé.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;La modification ne prendra effet qu&apos;au redémarrage.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../application/newversion.ui" line="129"/>
@@ -1793,7 +1881,7 @@ Do you really want refresh this?</source>
     <message>
         <location filename="../application/newversion.ui" line="157"/>
         <source>Open the last opened project (&lt;i&gt;if any, it&apos;s the opened project when &lt;b&gt;XINX&lt;/b&gt; is closed&lt;/i&gt;), when &lt;b&gt;XINX&lt;/b&gt; is started.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ouvre la dernière session ouverte (&lt;i&gt;s&apos;il y en a un, c&apos;est le projet ouvert, lors de la fermeture de &lt;b&gt;XINX&lt;/b&gt;&lt;/i&gt;), quand &lt;b&gt;XINX&lt;/b&gt; est démarré.</translation>
     </message>
     <message>
         <location filename="../application/newversion.ui" line="160"/>
@@ -1803,25 +1891,28 @@ Do you really want refresh this?</source>
     <message>
         <location filename="../application/newversion.ui" line="167"/>
         <source>Default open &amp;project directory :</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dossier &amp;projet par défaut à ouvrir :</translation>
     </message>
     <message>
         <location filename="../application/newversion.ui" line="180"/>
         <source>&lt;p&gt;This the path where the save dialog must be opened when you create a new project.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;As the author set the project path to the Application Server path, this path is now the project path. You can safely use another path, but in &lt;i&gt;New Project Wizard&lt;/i&gt;, the Application Server path would be wrong.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;p&gt;C&apos;est le chemin où la la boîte de dialogue de sauvegarde doit être ouvert lors de la création d&apos;un nouveau projet.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;As the author set the project path to the Application Server path, this path is now the project path. You can safely use another path, but in &lt;i&gt;New Project Wizard&lt;/i&gt;, the Application Server path would be wrong.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../application/newversion.ui" line="188"/>
         <source>&lt;p&gt;Choose the default text encoding, when the text encoding can&apos;t be found.
 
 &lt;i&gt;Some editor, can redefined the text encoding (ie: XML and derivated editor). This encoding is used by editor as JavaScript and other&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;p&gt;Choisissez l&apos;encodage du texte par défaut à utiliser quand l&apos;encodage n&apos;a pu être détecté.
+
+&lt;i&gt;Quelques éditeurs peuvent redéfinir l&apos;encodage du texte (example : éditeur XML et dérivé). L&apos;encodage définit ici sera utilisé pour les éditeurs JavaScript, ainsi que les autres éditeurs de textes.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../application/newversion.ui" line="197"/>
         <source>Default text &amp;encoding :</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Encodage du texte par défaut :</translation>
     </message>
     <message>
         <location filename="../application/newversion.ui" line="208"/>
@@ -1836,23 +1927,24 @@ Do you really want refresh this?</source>
     <message>
         <location filename="../application/newversion.ui" line="217"/>
         <source>&lt;p&gt;Alert user when the file is modified by an extern application. The user has the choice to open the new file (&lt;u&gt;and loose his change&lt;/u&gt;) or keep current file.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;p&gt;Averti l&apos;utilisateur quand un fichier a été modifié par une application externe. L&apos;utilisateur a alors le choix d&apos;ouvrir à nouveau le fichier (&lt;u&gt;et perdre ces modifications&lt;/u&gt;) ou garder ces changements.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../application/newversion.ui" line="220"/>
         <source>&amp;Popup when file modifed</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Affiche une alert à la modification d&apos;un fichier</translation>
     </message>
     <message>
         <location filename="../application/newversion.ui" line="227"/>
         <source>&lt;p&gt;Create a backup file before saving the file. The backup file is stored in the same directory that the original file. &lt;/p&gt;
 &lt;p&gt;The backup is created by copy the modified file before he his saved.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;p&gt;Créer une copie du fichier avant la sauvegarde ce dernier. La sauvegarde est stocké dans le même dossier que le fichier original.&lt;/p&gt;
+&lt;p&gt;La sauvegarde est créé par copie du fichier modifié avant sa sauvegarde.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../application/newversion.ui" line="231"/>
         <source>&amp;Create backup file when saving (.bak)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Créer une copie à la sauvegared (.bak)</translation>
     </message>
     <message>
         <location filename="../application/newversion.ui" line="238"/>
@@ -1894,7 +1986,9 @@ Do you really want refresh this?</source>
         <source>&lt;p&gt;List of tools used by &lt;b&gt;XINX&lt;/b&gt; and all plugins. Tools are external application called by this application.&lt;/p&gt;
 &lt;p&gt;If the tool can&apos;t be find, the text color will be &lt;span style=&quot;color:#ff0000;&quot;&gt;red&lt;/span&gt;.&lt;/p&gt;
 &lt;p&gt;To edit a tool, double click (or presse F2) on the path of the tool.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;p&gt;Liste des outils utilisé par &lt;b&gt;XINX&lt;/b&gt; ainsi que par les extentions. Les outils sont des applications externes appeler par &lt;b&gt;XINX&lt;/b&gt;.&lt;/p&gt;
+&lt;p&gt;Si l&apos;outil n&apos;a pu être trouvé, le texte sera de la couleur &lt;span style=&quot;color:#ff0000;&quot;&gt;rouge&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Pour modifier un outil, double cliquez (ou pressé la touche F2) sur le chemin de l&apos;outil.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../application/newversion.ui" line="319"/>
@@ -2242,6 +2336,7 @@ Do you really want refresh this?</source>
         <location filename="../project/projectdirectorywidgetimpl.cpp" line="308"/>
         <source>Can you confirm that you want remove %Ln file(s)</source>
         <translation type="unfinished">
+            <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
@@ -2954,7 +3049,7 @@ A project can define web services too.</source>
     <message>
         <location filename="../codecompletion/snipets/snipetitem.cpp" line="43"/>
         <source>Snipet</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Modèle</translation>
     </message>
 </context>
 <context>
@@ -2962,7 +3057,7 @@ A project can define web services too.</source>
     <message>
         <location filename="../codecompletion/snipets/snipetitemmodelfactory.cpp" line="49"/>
         <source>Snipet</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Modèle</translation>
     </message>
 </context>
 <context>
@@ -3213,7 +3308,7 @@ A project can define web services too.</source>
     <message>
         <location filename="../snipets/snipetlistwidget.ui" line="28"/>
         <source>&amp;Filter :</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Filtre :</translation>
     </message>
     <message>
         <location filename="../snipets/snipetlistwidget.ui" line="51"/>
@@ -3329,27 +3424,27 @@ The version %2 is available on %3.</source>
 <context>
     <name>VersionControl::RCSProxy</name>
     <message>
-        <location filename="../versioncontrol/rcsproxy.cpp" line="117"/>
+        <location filename="../versioncontrol/rcsproxy.cpp" line="118"/>
         <source>No tools defined</source>
         <translation type="unfinished">Outil non définit</translation>
     </message>
     <message>
-        <location filename="../versioncontrol/rcsproxy.cpp" line="171"/>
+        <location filename="../versioncontrol/rcsproxy.cpp" line="172"/>
         <source>Add a file</source>
         <translation type="unfinished">Ajoute un fichier</translation>
     </message>
     <message>
-        <location filename="../versioncontrol/rcsproxy.cpp" line="171"/>
+        <location filename="../versioncontrol/rcsproxy.cpp" line="172"/>
         <source>Do you want to add the file &apos;%1&apos; to the repository ?</source>
         <translation type="unfinished">Voulez-vous ajouter le fichier &apos;%1&apos; au référenciel ?</translation>
     </message>
     <message>
-        <location filename="../versioncontrol/rcsproxy.cpp" line="267"/>
+        <location filename="../versioncontrol/rcsproxy.cpp" line="268"/>
         <source>&lt;Commit with no text&gt;</source>
         <translation type="unfinished">&lt;Valider sans texte&gt;</translation>
     </message>
     <message>
-        <location filename="../versioncontrol/rcsproxy.cpp" line="278"/>
+        <location filename="../versioncontrol/rcsproxy.cpp" line="279"/>
         <source>Operation cancelled</source>
         <translation type="unfinished">Opération annulée</translation>
     </message>
