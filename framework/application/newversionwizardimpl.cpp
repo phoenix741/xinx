@@ -25,6 +25,7 @@
 #include "customdialog/customdialogimpl.h"
 #include "ui_newversion.h"
 #include <directoryedit.h>
+#include <translations/translationmanager.h>
 
 // Qt header
 #include <QTextCodec>
@@ -117,10 +118,17 @@ bool NewVersionWizardImpl::validateCurrentPage()
 void NewVersionWizardImpl::loadFromConfig()
 {
 	// Language
+	d->_ui->m_langComboBox->clear();
+	d->_ui->m_langComboBox->addItem(QIcon(":/images/unknown.png"), "(C) ANSI", "C");
 	d->_ui->m_langComboBox->setCurrentIndex(0);
-	for (int i = 0; i <d->_ui-> m_langComboBox->count(); i++)
+	foreach(TranslationManager::Language l, TranslationManager::self()->languages())
 	{
-		if (d->_ui->m_langComboBox->itemText(i).contains(QString("(%1)").arg(XINXConfig::self()->config().language)))
+		d->_ui->m_langComboBox->addItem(QIcon(l.image), QString("(%1) %2").arg(l.code).arg(l.name), l.code);
+	}
+
+	for (int i = 0; i < d->_ui->m_langComboBox->count(); i++)
+	{
+		if (d->_ui->m_langComboBox->itemData(i).toString() == XINXConfig::self()->config().language)
 		{
 			d->_ui->m_langComboBox->setCurrentIndex(i);
 			break;
@@ -179,9 +187,7 @@ void NewVersionWizardImpl::loadFromConfig()
 void NewVersionWizardImpl::saveToConfig()
 {
 	// Language
-	QRegExp exp("^\\((.*)\\).*$");
-	if (exp.indexIn(d->_ui->m_langComboBox->currentText()) >= 0)
-		XINXConfig::self()->config().language = exp.cap(1);
+	XINXConfig::self()->config().language = d->_ui->m_langComboBox->itemData(d->_ui->m_langComboBox->currentIndex()).toString();
 
 	// Default project directory
 	XINXConfig::self()->config().project.defaultPath = QDir::fromNativeSeparators(d->_ui->m_projectPathLineEdit->lineEdit()->text());

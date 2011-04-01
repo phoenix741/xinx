@@ -50,7 +50,7 @@ void Manager::initialisation()
 	// Global Commit
 	m_commitAll = new QAction(QIcon(":/images/vcs_commit.png"), tr("Commit project"), this);
 	m_commitAll->setWhatsThis(tr("<p>Commit all files of the project directory (to repository). An optional message can be added.</p>\n"
-								 "<p><i>Only <b>XINX</b> managed files are commited to the repository.</i></p>", 0, QApplication::UnicodeUTF8));
+								 "<p><i>Only <b>XINX</b> managed files are commited to the repository.</i></p>"));
 	m_commitAll->setShortcut(QKeySequence("F6"));
 	m_commitAll->setEnabled(false);
 	connect(m_commitAll, SIGNAL(triggered()), this, SLOT(validWorkingCopy()));
