@@ -38,6 +38,28 @@
 
 /* CustomDialogImpl */
 
+/*!
+ * \class CustomDialogImpl
+ * \brief XINX Custom dialog box used to configure all options of XINX.
+ * \author Ulrich Van Den Hekke
+ * \intern
+ *
+ * Implementation of dialog used to configure custom options in XINX. The options is globals for the application.
+ * This dialog save and restore modification in a XINXConfig class.
+ *
+ * This dialog use the interface IXinxPluginConfigurationPage to permit to plugin to extend the dialog with pages.
+ *
+ *
+ * This dialog mustn't be used directl by plugins. Only framework can use it.
+ */
+
+/*!
+ * \brief Custom dialog constructor.
+ *
+ * The dialog is create with a fixed size
+ * \param parent Parent of the dialog
+ * \param f Flags to use on Windows. By default, the dialog have a fixed size.
+ */
 CustomDialogImpl::CustomDialogImpl(QWidget * parent, Qt::WFlags f)  : QDialog(parent, f)
 {
 	setupUi(this);
@@ -87,23 +109,36 @@ CustomDialogImpl::CustomDialogImpl(QWidget * parent, Qt::WFlags f)  : QDialog(pa
 	updateOkTimer->start();
 }
 
+//! Destroy the custom dialog
 CustomDialogImpl::~CustomDialogImpl()
 {
 	qDeleteAll(m_pages);
 }
 
+//! Call method IXinxPluginConfigurationPage::loadSettingsDialog() on each page
 void CustomDialogImpl::loadConfig()
 {
 	foreach(IXinxPluginConfigurationPage * page, m_pages)
-	page->loadSettingsDialog();
+	{
+		page->loadSettingsDialog();
+	}
 }
 
+//! Call method IXinxPluginConfigurationPage::saveSettingsDialog() on each page
 void CustomDialogImpl::saveConfig()
 {
 	foreach(IXinxPluginConfigurationPage * page, m_pages)
-	page->saveSettingsDialog();
+	{
+		page->saveSettingsDialog();
+	}
 }
 
+/*!
+ * \brief Update the state of the Ok button.
+ *
+ * This method is called automatically every 250ms. This method check IXinxPluginConfigurationPage::isSettingsValid()
+ * on each page and show a red message if settings isn't valid.
+ */
 void CustomDialogImpl::updateOkButton()
 {
 	m_errorLabel->setVisible(false);
@@ -125,6 +160,12 @@ void CustomDialogImpl::updateOkButton()
 	m_buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
 }
 
+/*!
+ * \brief Called when the user accept the content of the dialog.
+ *
+ * This methode save the settings for each page and store in Configuration.
+ * The style of the application is updated if necessary.
+ */
 void CustomDialogImpl::accept()
 {
 	saveConfig();
