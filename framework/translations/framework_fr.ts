@@ -641,168 +641,169 @@ Seuls les fichiers cochés seront validés.</translation>
     <message>
         <location filename="../application/customdialog/ui/customfont.ui" line="14"/>
         <source>Font</source>
-        <translation type="unfinished"></translation>
+        <translation>Police</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customfont.ui" line="20"/>
         <source>&amp;Font name :</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom de la &amp;Poiice :</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customfont.ui" line="30"/>
         <source>Name of the font to use in all editors.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom de la police de caractère utilisé dans tous les éditeurs.</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customfont.ui" line="37"/>
         <source>Font &amp;size :</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Taille de la police :</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customfont.ui" line="47"/>
         <source>Size of the font in the editor. The value is a global value.</source>
-        <translation type="unfinished"></translation>
+        <translation>Taille de la police utilisé dans les éditeurs. La valeur est global à l&apos;application.</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customfont.ui" line="54"/>
         <source>Show the current line in a different color. Usually a blue-gray.</source>
-        <translation type="unfinished"></translation>
+        <translation>Affiche la ligne courante dans une couleur différente (habituellement la couleur est un gris bleu).</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customfont.ui" line="57"/>
         <source>Show current &amp;line</source>
-        <translation type="unfinished"></translation>
+        <translation>Affiche la &amp;ligne courante</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customfont.ui" line="64"/>
         <source>&lt;p&gt;Highlight automatically all same word in the editor in the same color.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;This can be slow down the edition mode.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Surligne automatiquement tous les mots identiques dans l&apos;éditeur, avec la même couleur.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Cette fonctionnalité peux ralentire l&apos;édition&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customfont.ui" line="68"/>
         <source>Auto highlight same &amp;word</source>
-        <translation type="unfinished"></translation>
+        <translation>Surligne automatiquement les &amp;mots identiques</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customfont.ui" line="75"/>
         <source>&amp;Color of highlight:</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Couleur du surlignement :</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customfont.ui" line="85"/>
         <source>Color used for highlight same word</source>
-        <translation type="unfinished"></translation>
+        <translation>Couleur utilisé pour surligner les mots identiques</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customfont.ui" line="89"/>
         <source>Custom...</source>
-        <translation type="unfinished"></translation>
+        <translation>Personaliser...</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customfont.ui" line="94"/>
         <source>Red</source>
-        <translation type="unfinished"></translation>
+        <translation>Rouge</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customfont.ui" line="99"/>
         <source>Green</source>
-        <translation type="unfinished"></translation>
+        <translation>Vert</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customfont.ui" line="104"/>
         <source>Blue</source>
-        <translation type="unfinished"></translation>
+        <translation>Bleu</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customfont.ui" line="109"/>
         <source>Cyan</source>
-        <translation type="unfinished"></translation>
+        <translation>Bleu ciel</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customfont.ui" line="114"/>
         <source>Magenta</source>
-        <translation type="unfinished"></translation>
+        <translation>Magenta</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customfont.ui" line="119"/>
         <source>Yellow</source>
-        <translation type="unfinished"></translation>
+        <translation>Jaune</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customfont.ui" line="124"/>
         <source>Dark Red</source>
-        <translation type="unfinished"></translation>
+        <translation>Rouge foncé</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customfont.ui" line="129"/>
         <source>Dark Green</source>
-        <translation type="unfinished"></translation>
+        <translation>Vert foncé</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customfont.ui" line="134"/>
         <source>Dark Blue</source>
-        <translation type="unfinished"></translation>
+        <translation>Bleu foncé</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customfont.ui" line="139"/>
         <source>Dark Cyan</source>
-        <translation type="unfinished"></translation>
+        <translation>Bleu ciel foncé</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customfont.ui" line="144"/>
         <source>Dark Magenta</source>
-        <translation type="unfinished"></translation>
+        <translation>Magenta foncé</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customfont.ui" line="149"/>
         <source>Dark Yellow</source>
-        <translation type="unfinished"></translation>
+        <translation>Jaune foncé</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customfont.ui" line="154"/>
         <source>White</source>
-        <translation type="unfinished"></translation>
+        <translation>Blanc</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customfont.ui" line="159"/>
         <source>Light Gray</source>
-        <translation type="unfinished"></translation>
+        <translation>Gris clair</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customfont.ui" line="164"/>
         <source>Gray</source>
-        <translation type="unfinished"></translation>
+        <translation>Gris</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customfont.ui" line="169"/>
         <source>Dark Gray</source>
-        <translation type="unfinished"></translation>
+        <translation>Gris foncé</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customfont.ui" line="174"/>
         <source>Black</source>
-        <translation type="unfinished"></translation>
+        <translation>Noir</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customfont.ui" line="182"/>
         <source>Show tabulation and space in the editor with specialcharacter (in greyed colour).</source>
-        <translation type="unfinished"></translation>
+        <translation>Affiche les tabultations et les espaces dans l&apos;éditeurs à l&apos;aide d&apos;un caractère spécial (dans une couleur grisé).</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customfont.ui" line="185"/>
         <source>Show &amp;tabulation and space in the editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Affiche les &amp;tabultation et les espaces dans l&apos;éditeur</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customfont.ui" line="192"/>
         <source>Size of a &amp;tabulation :</source>
-        <translation type="unfinished"></translation>
+        <translation>Taille d&apos;une t&amp;abulation :</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customfont.ui" line="202"/>
         <source>Size of tabulation in number of character. This is the number of character that tabulation replaces.</source>
-        <translation type="unfinished"></translation>
+        <translation>Taille d&apos;une tabulation en nombre de caractère. C&apos;est le nombre de caractère q&apos;une tabulation remplace.</translation>
     </message>
 </context>
 <context>
@@ -810,28 +811,29 @@ Seuls les fichiers cochés seront validés.</translation>
     <message>
         <location filename="../application/customdialog/ui/customgeneral.ui" line="14"/>
         <source>General</source>
-        <translation type="unfinished">Général</translation>
+        <translation>Général</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customgeneral.ui" line="20"/>
         <source>&amp;Language :</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Langue :</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customgeneral.ui" line="30"/>
         <source>&lt;p&gt;Langue in which &lt;b&gt;XINX&lt;/b&gt; must be used.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Modification take effect at restart.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Langue dans laquelle &lt;b&gt;XINX&lt;/b&gt; sera utilisé.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;La modification ne prendra effet qu&apos;au redémarrage.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customgeneral.ui" line="38"/>
         <source>&amp;Trace Log File :</source>
-        <translation type="unfinished"></translation>
+        <translation>Journal de &amp;trace :</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customgeneral.ui" line="64"/>
         <source>Force current &amp;style :</source>
-        <translation type="unfinished"></translation>
+        <translation>Forcer le &amp;style courant :</translation>
     </message>
 </context>
 <context>
@@ -839,23 +841,24 @@ Seuls les fichiers cochés seront validés.</translation>
     <message>
         <location filename="../application/customdialog/ui/custommodules.ui" line="14"/>
         <source>Modules</source>
-        <translation type="unfinished"></translation>
+        <translation>Modules</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/custommodules.ui" line="24"/>
         <source>Plugins</source>
-        <translation type="unfinished"></translation>
+        <translation>Extentions</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/custommodules.ui" line="30"/>
         <source>&lt;p&gt;List of plugins of &lt;b&gt;XINX&lt;/b&gt;. Plugins are piece of software that can be added without reinstall &lt;b&gt;XINX&lt;/b&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;b&gt;XINX&lt;/b&gt; is now modular, so you can wrote your own plugins and enjoy. Plugins are writte in &lt;i&gt;C++&lt;/i&gt;, use &lt;i&gt;Qt&lt;/i&gt;, and must be in licence accepted by &lt;i&gt;Qt&lt;/i&gt;.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Liste des extentions de &lt;b&gt;XINX&lt;/b&gt;. Les extentions sont des morceau de logiciel, qui peuvent être ajouté sans avoir besoin de ré-installation de &lt;b&gt;XINX&lt;/b&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;XINX&lt;/b&gt; est depuis quelques version modulaire. Vous pouvez donc écrire vos propre extentions et jouir de leur utilisation. Les extentions sont écrites en &lt;i&gt;C++&lt;/i&gt;, et utilise &lt;i&gt;Qt&lt;/i&gt;, et doivent donc être dans une licence accepté par celle  de &lt;i&gt;Qt&lt;/i&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/custommodules.ui" line="39"/>
         <source>Scripts</source>
-        <translation type="unfinished"></translation>
+        <translation>Scriptes</translation>
     </message>
 </context>
 <context>

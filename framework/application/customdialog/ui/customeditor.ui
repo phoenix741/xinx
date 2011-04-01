@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>619</width>
+    <width>622</width>
     <height>306</height>
    </rect>
   </property>
@@ -138,7 +138,7 @@
          <string>&lt;p&gt;&lt;img src=&quot;:/images/tabclose.png&quot;/&gt;Show a button on the right corner of &lt;b&gt;XINX&lt;/b&gt;.&lt;/p&gt;</string>
         </property>
         <property name="text">
-         <string>Close button on the &amp;tab widget</string>
+         <string>on the &amp;tab</string>
         </property>
        </widget>
       </item>
@@ -148,7 +148,7 @@
          <string>&lt;p&gt;&lt;img src=&quot;:/images/fileclose.png&quot;/&gt;Show a close button on each tab.&lt;/p&gt;</string>
         </property>
         <property name="text">
-         <string>Close button on right &amp;corner</string>
+         <string>on right &amp;corner</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -161,7 +161,7 @@
          <string>&lt;p&gt;&lt;img src=&quot;:/images/tabclose.png&quot; /&gt;&lt;img src=&quot;:/images/fileclose.png&quot; /&gt;Show a button on the right corner of &lt;b&gt;XINX&lt;/b&gt; and another on each tab. This option is the concatenation of the two other options&lt;/p&gt;</string>
         </property>
         <property name="text">
-         <string>Close button on the tab widget &amp;and the corner</string>
+         <string>on the right corner &amp;and on the tab</string>
         </property>
        </widget>
       </item>
