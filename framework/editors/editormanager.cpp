@@ -216,7 +216,7 @@ void PrivateEditorManager::updateRecentFiles()
 
 	for (int i = 0; i < numRecentFiles; i++)
 	{
-		QString text = tr("&%1 %2").arg(i + 1).arg(QFileInfo(XinxSession::SessionManager::self()->currentSession()->lastOpenedFile()[i]).fileName());
+		QString text = QString("&%1 %2").arg(i + 1).arg(QFileInfo(XinxSession::SessionManager::self()->currentSession()->lastOpenedFile()[i]).fileName());
 		if (XinxPluginsLoader::self()->matchedFileType(QFileInfo(text).fileName()).size())
 			_recent_actions[i]->setIcon(QIcon(XinxPluginsLoader::self()->matchedFileType(QFileInfo(text).fileName()).at(0)->icon()));
 		_recent_actions[i]->setText(text);

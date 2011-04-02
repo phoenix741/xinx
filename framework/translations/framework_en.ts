@@ -25,15 +25,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/about.ui" line="215"/>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../application/about.ui" line="89"/>
         <source>A&amp;uthor(s)</source>
         <translation type="unfinished"></translation>
@@ -429,7 +420,7 @@ Only checked files are commited.</source>
 <context>
     <name>CustomDialogImpl</name>
     <message>
-        <location filename="../application/customdialog/customdialogimpl.cpp" line="119"/>
+        <location filename="../application/customdialog/customdialogimpl.cpp" line="154"/>
         <source>%1 on page &quot;%2&quot;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1544,14 +1535,11 @@ Do you really want refresh this?</source>
         <source>Commit project</source>
         <translation type="unfinished"></translation>
     </message>
-    <message numerus="yes">
+    <message>
         <location filename="../versioncontrol/versioncontrolmanager.cpp" line="52"/>
         <source>&lt;p&gt;Commit all files of the project directory (to repository). An optional message can be added.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Only &lt;b&gt;XINX&lt;/b&gt; managed files are commited to the repository.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../versioncontrol/versioncontrolmanager.cpp" line="59"/>
@@ -1707,143 +1695,132 @@ Do you really want refresh this?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="129"/>
-        <source>(en) English</source>
+        <location filename="../application/newversion.ui" line="142"/>
+        <source>&amp;Open the last session at start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="138"/>
-        <source>(fr_FR) French</source>
+        <location filename="../application/newversion.ui" line="162"/>
+        <source>&lt;p&gt;This the path where the save dialog must be opened when you create a new project.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="150"/>
+        <location filename="../application/newversion.ui" line="189"/>
+        <source>Editor Settings Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/newversion.ui" line="192"/>
+        <source>In this page we adjust settings used by the editor. In this page we can adjust effect, used to facilitate the edition (has show the current line, space, tabulation).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/newversion.ui" line="306"/>
+        <source>We have now customize XINX. You can adjuste XINX settings by opening the good &quot;Customize dialog&quot;. In the tools menu.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/newversion.ui" line="132"/>
         <source>Auto refresh directory dock</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="157"/>
+        <location filename="../application/newversion.ui" line="139"/>
         <source>Open the last opened project (&lt;i&gt;if any, it&apos;s the opened project when &lt;b&gt;XINX&lt;/b&gt; is closed&lt;/i&gt;), when &lt;b&gt;XINX&lt;/b&gt; is started.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="160"/>
-        <source>&amp;Open the last project at start</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/newversion.ui" line="167"/>
+        <location filename="../application/newversion.ui" line="149"/>
         <source>Default open &amp;project directory :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="180"/>
-        <source>&lt;p&gt;This the path where the save dialog must be opened when you create a new project.&lt;/p&gt;
-&lt;p&gt;&lt;i&gt;As the author set the project path to the Application Server path, this path is now the project path. You can safely use another path, but in &lt;i&gt;New Project Wizard&lt;/i&gt;, the Application Server path would be wrong.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/newversion.ui" line="188"/>
+        <location filename="../application/newversion.ui" line="169"/>
         <source>&lt;p&gt;Choose the default text encoding, when the text encoding can&apos;t be found.
 
 &lt;i&gt;Some editor, can redefined the text encoding (ie: XML and derivated editor). This encoding is used by editor as JavaScript and other&lt;/i&gt;&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="197"/>
+        <location filename="../application/newversion.ui" line="178"/>
         <source>Default text &amp;encoding :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="208"/>
-        <source>Edtior Settings Page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/newversion.ui" line="211"/>
-        <source>In this page we adjust settins used by the editor. In this page we can adjust effect, used to facilitate the edition (has show the current line, space, tabulation).</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/newversion.ui" line="217"/>
+        <location filename="../application/newversion.ui" line="198"/>
         <source>&lt;p&gt;Alert user when the file is modified by an extern application. The user has the choice to open the new file (&lt;u&gt;and loose his change&lt;/u&gt;) or keep current file.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="220"/>
+        <location filename="../application/newversion.ui" line="201"/>
         <source>&amp;Popup when file modifed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="227"/>
+        <location filename="../application/newversion.ui" line="208"/>
         <source>&lt;p&gt;Create a backup file before saving the file. The backup file is stored in the same directory that the original file. &lt;/p&gt;
 &lt;p&gt;The backup is created by copy the modified file before he his saved.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="231"/>
+        <location filename="../application/newversion.ui" line="212"/>
         <source>&amp;Create backup file when saving (.bak)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="238"/>
+        <location filename="../application/newversion.ui" line="219"/>
         <source>&amp;Graphics effect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="258"/>
+        <location filename="../application/newversion.ui" line="239"/>
         <source>Show tabulation and space in the editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="266"/>
+        <location filename="../application/newversion.ui" line="247"/>
         <source>Show current line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="274"/>
+        <location filename="../application/newversion.ui" line="255"/>
         <source>Auto highlight same word</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="282"/>
+        <location filename="../application/newversion.ui" line="263"/>
         <source>Pretty Print on saving</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="297"/>
+        <location filename="../application/newversion.ui" line="278"/>
         <source>Tools Settings Page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="300"/>
+        <location filename="../application/newversion.ui" line="281"/>
         <source>In this page you can define path to tools that can be use by XINX.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="306"/>
+        <location filename="../application/newversion.ui" line="287"/>
         <source>&lt;p&gt;List of tools used by &lt;b&gt;XINX&lt;/b&gt; and all plugins. Tools are external application called by this application.&lt;/p&gt;
 &lt;p&gt;If the tool can&apos;t be find, the text color will be &lt;span style=&quot;color:#ff0000;&quot;&gt;red&lt;/span&gt;.&lt;/p&gt;
 &lt;p&gt;To edit a tool, double click (or presse F2) on the path of the tool.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="319"/>
+        <location filename="../application/newversion.ui" line="300"/>
         <source>Conclusion</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="325"/>
-        <source>We have now customize XINX. You can adjsute XINX settings by opening the good &quot;Customize dialog&quot;. In the tools menu.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/newversion.ui" line="335"/>
+        <location filename="../application/newversion.ui" line="316"/>
         <source>Have fun with XINX.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="342"/>
+        <location filename="../application/newversion.ui" line="323"/>
         <source>&amp;Open the customize dialog page to made more settings.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1851,12 +1828,12 @@ Do you really want refresh this?</source>
 <context>
     <name>NewVersionWizardImpl</name>
     <message>
-        <location filename="../application/newversionwizardimpl.cpp" line="110"/>
+        <location filename="../application/newversionwizardimpl.cpp" line="111"/>
         <source>Application page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversionwizardimpl.cpp" line="110"/>
+        <location filename="../application/newversionwizardimpl.cpp" line="111"/>
         <source>The default open location for project must be a valid path.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1889,11 +1866,6 @@ Do you really want refresh this?</source>
     <message>
         <location filename="../editors/editormanager.cpp" line="197"/>
         <source>&amp;Recent file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../editors/editormanager.cpp" line="219"/>
-        <source>&amp;%1 %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

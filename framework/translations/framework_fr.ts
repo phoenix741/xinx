@@ -22,16 +22,8 @@
         <location filename="../application/about.ui" line="74"/>
         <source>&lt;p&gt;&lt;b&gt;XINX&lt;/b&gt; Is Not only XML&lt;/p&gt;
 &lt;p&gt;(c) 2006-2011, Ulrich Van Den Hekke&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/about.ui" line="215"/>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;&lt;b&gt;XINX&lt;/b&gt; Is Not only XML&lt;/p&gt;
+&lt;p&gt;(c) 2006-2011, Ulrich Van Den Hekke&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../application/about.ui" line="89"/>
@@ -484,7 +476,7 @@ Seuls les fichiers cochés seront validés.</translation>
 <context>
     <name>CustomDialogImpl</name>
     <message>
-        <location filename="../application/customdialog/customdialogimpl.cpp" line="119"/>
+        <location filename="../application/customdialog/customdialogimpl.cpp" line="154"/>
         <source>%1 on page &quot;%2&quot;</source>
         <translation>%1 sur la page &quot;%2&quot;</translation>
     </message>
@@ -1699,15 +1691,12 @@ Voulez-vous réélement actualiser ce fichier ?</translation>
         <source>Commit project</source>
         <translation>Valide le projet</translation>
     </message>
-    <message numerus="yes">
+    <message>
         <location filename="../versioncontrol/versioncontrolmanager.cpp" line="52"/>
         <source>&lt;p&gt;Commit all files of the project directory (to repository). An optional message can be added.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Only &lt;b&gt;XINX&lt;/b&gt; managed files are commited to the repository.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation>
-            <numerusform>&lt;p&gt;Pousse tous les fichiers du dossier projet (dans le référenciel). Un message optionnel peut être ajouté.&lt;/p&gt;
-&lt;p&gt;&lt;i&gt;Seuls les fichiers gérés par &lt;b&gt;XINX&lt;/b&gt; peuvent être poussés dans le référenciel.&lt;/i&gt;&lt;/p&gt;</numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation>&lt;p&gt;Pousse tous les fichiers du dossier projet (dans le référenciel). Un message optionnel peut être ajouté.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Seuls les fichiers gérés par &lt;b&gt;XINX&lt;/b&gt; peuvent être poussés dans le référenciel.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../versioncontrol/versioncontrolmanager.cpp" line="59"/>
@@ -1864,43 +1853,56 @@ Voulez-vous réélement actualiser ce fichier ?</translation>
 &lt;p&gt;&lt;i&gt;La modification ne prendra effet qu&apos;au redémarrage.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="129"/>
-        <source>(en) English</source>
-        <translation type="unfinished"></translation>
+        <location filename="../application/newversion.ui" line="142"/>
+        <source>&amp;Open the last session at start</source>
+        <translation>&amp;Ouvre la dernière session au démarrage</translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="138"/>
-        <source>(fr_FR) French</source>
-        <translation type="unfinished"></translation>
+        <location filename="../application/newversion.ui" line="162"/>
+        <source>&lt;p&gt;This the path where the save dialog must be opened when you create a new project.&lt;/p&gt;</source>
+        <translation>&lt;p&gt;C&apos;est le chemin qui doit être proposé lors de la création d&apos;un nouveau projet &lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="150"/>
+        <location filename="../application/newversion.ui" line="189"/>
+        <source>Editor Settings Page</source>
+        <translation>Page de personnalisation de l&apos;éditeur</translation>
+    </message>
+    <message>
+        <location filename="../application/newversion.ui" line="192"/>
+        <source>In this page we adjust settings used by the editor. In this page we can adjust effect, used to facilitate the edition (has show the current line, space, tabulation).</source>
+        <translation>Dans cette page vous pouvez ajustez les paramètres utilisés par l&apos;éditeur. Dans cette page vous pouvez ajuster les effets, utilisez pour faciliter l&apos;édition (comme afficher la ligne courante, les espaces, les tabulations).</translation>
+    </message>
+    <message>
+        <location filename="../application/newversion.ui" line="306"/>
+        <source>We have now customize XINX. You can adjuste XINX settings by opening the good &quot;Customize dialog&quot;. In the tools menu.</source>
+        <translation>Nous avons maintenant personnalisez XINX. Vous pouvez maintenant ajuster les paramètres de XINX en ouvrant la fenêtre de personnalisation dans le menu outil.</translation>
+    </message>
+    <message>
+        <location filename="../application/newversion.ui" line="132"/>
         <source>Auto refresh directory dock</source>
         <translation>Rafraichir automatiquement le dock dossier</translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="157"/>
+        <location filename="../application/newversion.ui" line="139"/>
         <source>Open the last opened project (&lt;i&gt;if any, it&apos;s the opened project when &lt;b&gt;XINX&lt;/b&gt; is closed&lt;/i&gt;), when &lt;b&gt;XINX&lt;/b&gt; is started.</source>
         <translation>Ouvre la dernière session ouverte (&lt;i&gt;s&apos;il y en a un, c&apos;est le projet ouvert, lors de la fermeture de &lt;b&gt;XINX&lt;/b&gt;&lt;/i&gt;), quand &lt;b&gt;XINX&lt;/b&gt; est démarré.</translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="160"/>
         <source>&amp;Open the last project at start</source>
-        <translation>&amp;Ouvre la dernière session au démarrage</translation>
+        <translation type="obsolete">&amp;Ouvre la dernière session au démarrage</translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="167"/>
+        <location filename="../application/newversion.ui" line="149"/>
         <source>Default open &amp;project directory :</source>
         <translation>Dossier &amp;projet par défaut à ouvrir :</translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="180"/>
         <source>&lt;p&gt;This the path where the save dialog must be opened when you create a new project.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;As the author set the project path to the Application Server path, this path is now the project path. You can safely use another path, but in &lt;i&gt;New Project Wizard&lt;/i&gt;, the Application Server path would be wrong.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;C&apos;est le chemin où la fenêtre de sauvegarde doit être ouvert lors de la création d&apos;un nouveau projet.&lt;/p&gt;</translation>
+        <translation type="obsolete">&lt;p&gt;C&apos;est le chemin où la fenêtre de sauvegarde doit être ouvert lors de la création d&apos;un nouveau projet.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="188"/>
+        <location filename="../application/newversion.ui" line="169"/>
         <source>&lt;p&gt;Choose the default text encoding, when the text encoding can&apos;t be found.
 
 &lt;i&gt;Some editor, can redefined the text encoding (ie: XML and derivated editor). This encoding is used by editor as JavaScript and other&lt;/i&gt;&lt;/p&gt;</source>
@@ -1909,79 +1911,77 @@ Voulez-vous réélement actualiser ce fichier ?</translation>
 &lt;i&gt;Quelques éditeurs peuvent redéfinir l&apos;encodage du texte (example : éditeur XML et dérivé). L&apos;encodage définit ici sera utilisé pour les éditeurs JavaScript, ainsi que les autres éditeurs de textes.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="197"/>
+        <location filename="../application/newversion.ui" line="178"/>
         <source>Default text &amp;encoding :</source>
         <translation>&amp;Encodage du texte par défaut :</translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="208"/>
         <source>Edtior Settings Page</source>
-        <translation>Page de personalisation de l&apos;éditeur </translation>
+        <translation type="obsolete">Page de personalisation de l&apos;éditeur </translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="211"/>
         <source>In this page we adjust settins used by the editor. In this page we can adjust effect, used to facilitate the edition (has show the current line, space, tabulation).</source>
-        <translation>Dans cette page vous pouvez ajustez les paramètres utilisés par l&apos;éditeur. Dans cette page vous pouvez ajuster les effets, utilisez pour faciliter l&apos;édition (comme afficher la ligne courante, les espaces, les tabulations).</translation>
+        <translation type="obsolete">Dans cette page vous pouvez ajustez les paramètres utilisés par l&apos;éditeur. Dans cette page vous pouvez ajuster les effets, utilisez pour faciliter l&apos;édition (comme afficher la ligne courante, les espaces, les tabulations).</translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="217"/>
+        <location filename="../application/newversion.ui" line="198"/>
         <source>&lt;p&gt;Alert user when the file is modified by an extern application. The user has the choice to open the new file (&lt;u&gt;and loose his change&lt;/u&gt;) or keep current file.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Averti l&apos;utilisateur quand un fichier a été modifié par une application externe. L&apos;utilisateur a alors le choix d&apos;ouvrir à nouveau le fichier (&lt;u&gt;et perdre ces modifications&lt;/u&gt;) ou garder ces changements.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="220"/>
+        <location filename="../application/newversion.ui" line="201"/>
         <source>&amp;Popup when file modifed</source>
         <translation>&amp;Affiche une alert à la modification d&apos;un fichier</translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="227"/>
+        <location filename="../application/newversion.ui" line="208"/>
         <source>&lt;p&gt;Create a backup file before saving the file. The backup file is stored in the same directory that the original file. &lt;/p&gt;
 &lt;p&gt;The backup is created by copy the modified file before he his saved.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Créer une copie du fichier avant la sauvegarde ce dernier. La sauvegarde est stocké dans le même dossier que le fichier original.&lt;/p&gt;
 &lt;p&gt;La sauvegarde est créé par copie du fichier modifié avant sa sauvegarde.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="231"/>
+        <location filename="../application/newversion.ui" line="212"/>
         <source>&amp;Create backup file when saving (.bak)</source>
         <translation>&amp;Créer une copie à la sauvegared (.bak)</translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="238"/>
+        <location filename="../application/newversion.ui" line="219"/>
         <source>&amp;Graphics effect</source>
         <translation>Effets &amp;graphiques</translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="258"/>
+        <location filename="../application/newversion.ui" line="239"/>
         <source>Show tabulation and space in the editor</source>
         <translation>Afficher les tabulations et les espaces dans l&apos;éditeur</translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="266"/>
+        <location filename="../application/newversion.ui" line="247"/>
         <source>Show current line</source>
         <translation>Affiche la ligne courante</translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="274"/>
+        <location filename="../application/newversion.ui" line="255"/>
         <source>Auto highlight same word</source>
         <translation>Surligner automatiquement les mots identiques</translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="282"/>
+        <location filename="../application/newversion.ui" line="263"/>
         <source>Pretty Print on saving</source>
         <translation>Indentation automatique à la sauvegarde</translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="297"/>
+        <location filename="../application/newversion.ui" line="278"/>
         <source>Tools Settings Page</source>
         <translation>Page de paramétrage des outils</translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="300"/>
+        <location filename="../application/newversion.ui" line="281"/>
         <source>In this page you can define path to tools that can be use by XINX.</source>
         <translation>Dans cette page vous pouvez définir les chemins pour les outils qui peuvent être utilisé par XINX.</translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="306"/>
+        <location filename="../application/newversion.ui" line="287"/>
         <source>&lt;p&gt;List of tools used by &lt;b&gt;XINX&lt;/b&gt; and all plugins. Tools are external application called by this application.&lt;/p&gt;
 &lt;p&gt;If the tool can&apos;t be find, the text color will be &lt;span style=&quot;color:#ff0000;&quot;&gt;red&lt;/span&gt;.&lt;/p&gt;
 &lt;p&gt;To edit a tool, double click (or presse F2) on the path of the tool.&lt;/p&gt;</source>
@@ -1990,22 +1990,21 @@ Voulez-vous réélement actualiser ce fichier ?</translation>
 &lt;p&gt;Pour modifier un outil, double cliquez (ou pressé la touche F2) sur le chemin de l&apos;outil.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="319"/>
+        <location filename="../application/newversion.ui" line="300"/>
         <source>Conclusion</source>
         <translation>Conclusion</translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="325"/>
         <source>We have now customize XINX. You can adjsute XINX settings by opening the good &quot;Customize dialog&quot;. In the tools menu.</source>
-        <translation>Nous avons maintenant personnalisez XINX. Vous pouvez maintenant ajuster les paramètres de XINX en ouvrant la fenêtre de personnalisation dans le menu outil.</translation>
+        <translation type="obsolete">Nous avons maintenant personnalisez XINX. Vous pouvez maintenant ajuster les paramètres de XINX en ouvrant la fenêtre de personnalisation dans le menu outil.</translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="335"/>
+        <location filename="../application/newversion.ui" line="316"/>
         <source>Have fun with XINX.</source>
         <translation>Amusez-vous bien avec XINX.</translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="342"/>
+        <location filename="../application/newversion.ui" line="323"/>
         <source>&amp;Open the customize dialog page to made more settings.</source>
         <translation>&amp;Ouvrez la fenêtre de personnalisation pour personnaliser plus.</translation>
     </message>
@@ -2013,12 +2012,12 @@ Voulez-vous réélement actualiser ce fichier ?</translation>
 <context>
     <name>NewVersionWizardImpl</name>
     <message>
-        <location filename="../application/newversionwizardimpl.cpp" line="110"/>
+        <location filename="../application/newversionwizardimpl.cpp" line="111"/>
         <source>Application page</source>
         <translation>Page de l&apos;application</translation>
     </message>
     <message>
-        <location filename="../application/newversionwizardimpl.cpp" line="110"/>
+        <location filename="../application/newversionwizardimpl.cpp" line="111"/>
         <source>The default open location for project must be a valid path.</source>
         <translation>L&apos;emplacement d&apos;ouverture du projet par défaut doit être un chemin valide.</translation>
     </message>
@@ -2035,7 +2034,7 @@ Voulez-vous réélement actualiser ce fichier ?</translation>
     <message>
         <location filename="../contentview3/parserfactory.cpp" line="66"/>
         <source>Ambigous parser for file %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Analyseur ambigue pour le fichier %1</translation>
     </message>
 </context>
 <context>
@@ -2043,22 +2042,22 @@ Voulez-vous réélement actualiser ce fichier ?</translation>
     <message>
         <location filename="../editors/editormanager.cpp" line="188"/>
         <source>&amp;Open ...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ouvrir ...</translation>
     </message>
     <message>
         <location filename="../editors/editormanager.cpp" line="190"/>
         <source>Open a file on the disk</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvre un fichier sur le disque</translation>
     </message>
     <message>
         <location filename="../editors/editormanager.cpp" line="191"/>
         <source>Open an existing file on the disk</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvre un fichier existant sur le disque</translation>
     </message>
     <message>
         <location filename="../editors/editormanager.cpp" line="197"/>
         <source>&amp;Recent file</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichier &amp;récent</translation>
     </message>
     <message>
         <location filename="../editors/editormanager.cpp" line="219"/>
@@ -2068,155 +2067,155 @@ Voulez-vous réélement actualiser ce fichier ?</translation>
     <message>
         <location filename="../editors/editormanager.cpp" line="235"/>
         <source>&amp;New</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Nouveau</translation>
     </message>
     <message>
         <location filename="../editors/editormanager.cpp" line="236"/>
         <source>New document</source>
-        <translation type="unfinished"></translation>
+        <translation>Nouveau document</translation>
     </message>
     <message>
         <location filename="../editors/editormanager.cpp" line="237"/>
         <source>Create a new document</source>
-        <translation type="unfinished"></translation>
+        <translation>Créer un nouveau document</translation>
     </message>
     <message>
         <location filename="../editors/editormanager.cpp" line="243"/>
         <source>&amp;Refresh</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Rafraichir</translation>
     </message>
     <message>
         <location filename="../editors/editormanager.cpp" line="246"/>
         <source>&amp;Save</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Sauver</translation>
     </message>
     <message>
         <location filename="../editors/editormanager.cpp" line="247"/>
         <source>Save the document</source>
-        <translation type="unfinished"></translation>
+        <translation>Sauvegarde le document</translation>
     </message>
     <message>
         <location filename="../editors/editormanager.cpp" line="248"/>
         <source>Save the document to disk</source>
-        <translation type="unfinished"></translation>
+        <translation>Sauvegarde le document sur le disque</translation>
     </message>
     <message>
         <location filename="../editors/editormanager.cpp" line="252"/>
         <source>Save &amp;As...</source>
-        <translation type="unfinished"></translation>
+        <translation>Sauver  s&amp;ous ...</translation>
     </message>
     <message>
         <location filename="../editors/editormanager.cpp" line="253"/>
         <source>Save the document As</source>
-        <translation type="unfinished"></translation>
+        <translation>Sauver le document sous</translation>
     </message>
     <message>
         <location filename="../editors/editormanager.cpp" line="254"/>
         <source>Save the document with a new name to the disk</source>
-        <translation type="unfinished"></translation>
+        <translation>Sauver le document avec un nouveau nom sur le disque</translation>
     </message>
     <message>
         <location filename="../editors/editormanager.cpp" line="257"/>
         <source>Save A&amp;ll...</source>
-        <translation type="unfinished"></translation>
+        <translation>Sauver &amp;Tout ...</translation>
     </message>
     <message>
         <location filename="../editors/editormanager.cpp" line="258"/>
         <source>Save all documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Sauver tous les documents</translation>
     </message>
     <message>
         <location filename="../editors/editormanager.cpp" line="259"/>
         <source>Save all documents to disk</source>
-        <translation type="unfinished"></translation>
+        <translation>Sauver tous les documents sur le disque</translation>
     </message>
     <message>
         <location filename="../editors/editormanager.cpp" line="262"/>
         <source>&amp;Print ...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Imprimer ...</translation>
     </message>
     <message>
         <location filename="../editors/editormanager.cpp" line="263"/>
         <source>Print the document</source>
-        <translation type="unfinished"></translation>
+        <translation>Imprimer le document</translation>
     </message>
     <message>
         <location filename="../editors/editormanager.cpp" line="264"/>
         <source>Print the current document</source>
-        <translation type="unfinished"></translation>
+        <translation>Imprimer le document courant</translation>
     </message>
     <message>
         <location filename="../editors/editormanager.cpp" line="268"/>
         <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Fermer</translation>
     </message>
     <message>
         <location filename="../editors/editormanager.cpp" line="269"/>
         <source>Close document</source>
-        <translation type="unfinished"></translation>
+        <translation>Fermer le document</translation>
     </message>
     <message>
         <location filename="../editors/editormanager.cpp" line="270"/>
         <source>Close the current document</source>
-        <translation type="unfinished"></translation>
+        <translation>Fermer le document courant</translation>
     </message>
     <message>
         <location filename="../editors/editormanager.cpp" line="274"/>
         <source>&amp;Close All</source>
-        <translation type="unfinished"></translation>
+        <translation>F&amp;ermer tout</translation>
     </message>
     <message>
         <location filename="../editors/editormanager.cpp" line="275"/>
         <location filename="../editors/editormanager.cpp" line="276"/>
         <source>Close All document</source>
-        <translation type="unfinished"></translation>
+        <translation>Fermer tout les documents</translation>
     </message>
     <message>
         <location filename="../editors/editormanager.cpp" line="279"/>
         <source>C&amp;lose All except current</source>
-        <translation type="unfinished"></translation>
+        <translation>Fe&amp;rmer tous sauf le document courant</translation>
     </message>
     <message>
         <location filename="../editors/editormanager.cpp" line="280"/>
         <location filename="../editors/editormanager.cpp" line="281"/>
         <source>Close all document except the current</source>
-        <translation type="unfinished"></translation>
+        <translation>Sauver tous les document sauf le document courant</translation>
     </message>
     <message>
         <location filename="../editors/editormanager.cpp" line="284"/>
         <source>&amp;Copy filename to Clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>C&amp;opy le nom du fichier vers le presse papier</translation>
     </message>
     <message>
         <location filename="../editors/editormanager.cpp" line="287"/>
         <source>C&amp;opy path to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Cop&amp;y le chemin dans le presse papier</translation>
     </message>
     <message>
         <location filename="../editors/editormanager.cpp" line="290"/>
         <location filename="../editors/editormanager.cpp" line="291"/>
         <source>Next tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Onglet suivant</translation>
     </message>
     <message>
         <location filename="../editors/editormanager.cpp" line="295"/>
         <source>Previous Tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Onglet précédent</translation>
     </message>
     <message>
         <location filename="../editors/editormanager.cpp" line="354"/>
         <source>The project isn&apos;t correctly defined. It&apos;s a possible bug</source>
-        <translation type="unfinished"></translation>
+        <translation>Le projet n&apos;est pas définit correctement, c&apos;est un défaut possible</translation>
     </message>
     <message>
         <location filename="../editors/editormanager.cpp" line="358"/>
         <source>The file isn&apos;t a part of a project</source>
-        <translation type="unfinished"></translation>
+        <translation>Le fichier ne fait pas partit d&apos;un projet</translation>
     </message>
     <message>
         <location filename="../editors/editormanager.cpp" line="362"/>
         <source>The project name is &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Le nom du projet est &quot;%1&quot;</translation>
     </message>
 </context>
 <context>
@@ -2224,129 +2223,130 @@ Voulez-vous réélement actualiser ce fichier ?</translation>
     <message>
         <location filename="../project/projectdirectorywidgetimpl.cpp" line="44"/>
         <source>C&amp;reate directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Cré&amp;er un dossier</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidgetimpl.cpp" line="46"/>
         <source>&amp;Create file ...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Créer un fichier ...</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidgetimpl.cpp" line="48"/>
         <source>&amp;Open</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ouvrir</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidgetimpl.cpp" line="50"/>
         <source>Remo&amp;ve</source>
-        <translation type="unfinished"></translation>
+        <translation>Sup&amp;primer</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidgetimpl.cpp" line="52"/>
         <source>Rename</source>
-        <translation type="unfinished"></translation>
+        <translation>Rennomer</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidgetimpl.cpp" line="55"/>
         <source>&amp;Copy filename to Clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>C&amp;opy le nom du fichier vers le presse papier</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidgetimpl.cpp" line="57"/>
         <source>Co&amp;py path to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Cop&amp;y le chemin dans le presse papier</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidgetimpl.cpp" line="60"/>
         <source>Set the project as &amp;default</source>
-        <translation type="unfinished"></translation>
+        <translation>Définir comme projet par &amp;défaut</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidgetimpl.cpp" line="62"/>
         <source>Pro&amp;ject Property</source>
-        <translation type="unfinished"></translation>
+        <translation>Propriété du pro&amp;jet</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidgetimpl.cpp" line="64"/>
         <source>C&amp;lose project</source>
-        <translation type="unfinished"></translation>
+        <translation>F&amp;ermer le projet</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidgetimpl.cpp" line="67"/>
         <source>Compare with the version management</source>
-        <translation type="unfinished"></translation>
+        <translation>Comparer avec le gestionnaire de version</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidgetimpl.cpp" line="69"/>
         <source>Co&amp;mpare files</source>
-        <translation type="unfinished"></translation>
+        <translation>Co&amp;mparer les fichiers</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidgetimpl.cpp" line="72"/>
         <source>Update project</source>
-        <translation type="unfinished">Mise à jour du projet</translation>
+        <translation>Mise à jour du projet</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidgetimpl.cpp" line="74"/>
         <source>Commit project</source>
-        <translation type="unfinished">Valide le projet</translation>
+        <translation>Valide le projet</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidgetimpl.cpp" line="76"/>
         <source>Add file(s) to project</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter le(s) fichier(s) aux projets</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidgetimpl.cpp" line="78"/>
         <source>Delete file(s) from project</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer le(s) fichier(s) aux projets</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidgetimpl.cpp" line="80"/>
         <source>Revert file</source>
-        <translation type="unfinished"></translation>
+        <translation>Annuler les modifications</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidgetimpl.cpp" line="82"/>
         <source>Blame file</source>
-        <translation type="unfinished"></translation>
+        <translation>Dénnoncer</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidgetimpl.cpp" line="84"/>
         <source>Show log</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher le journal</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidgetimpl.cpp" line="256"/>
         <source>Create a new directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Créer un nouveau dossier</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidgetimpl.cpp" line="256"/>
         <source>Enter the name of the new directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Entrer le nom du nouveau dossier</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidgetimpl.cpp" line="308"/>
         <source>Delete file(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer le(s) fichier(s)</translation>
     </message>
     <message numerus="yes">
         <location filename="../project/projectdirectorywidgetimpl.cpp" line="308"/>
         <source>Can you confirm that you want remove %Ln file(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Pouvez-vous confirmer que vous voulez supprimer %n fichiers</numerusform>
+            <numerusform>Pouvez-vous confirmer que vous voulez supprimer %n fichier</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidgetimpl.cpp" line="328"/>
         <source>Rename a file</source>
-        <translation type="unfinished"></translation>
+        <translation>Renommer le fichier</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidgetimpl.cpp" line="328"/>
         <source>Enter the name of the new file name</source>
-        <translation type="unfinished"></translation>
+        <translation>Entrez le nom du nouveau fichier</translation>
     </message>
 </context>
 <context>
@@ -2354,12 +2354,12 @@ Voulez-vous réélement actualiser ce fichier ?</translation>
     <message>
         <location filename="../application/xinxprojectwizard/projectwizard.cpp" line="147"/>
         <source>Progress of the conversion</source>
-        <translation type="unfinished"></translation>
+        <translation>Progression de la conversion</translation>
     </message>
     <message>
         <location filename="../application/xinxprojectwizard/projectwizard.cpp" line="148"/>
         <source>Please wait ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Patientez s&apos;il vous plait ...</translation>
     </message>
 </context>
 <context>
@@ -2378,7 +2378,7 @@ Voulez-vous réélement actualiser ce fichier ?</translation>
     <message>
         <location filename="../application/xinxprojectwizard/projectconverter.cpp" line="281"/>
         <source>XINX Project file</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichier projet XINX</translation>
     </message>
 </context>
 <context>
@@ -2388,124 +2388,125 @@ Voulez-vous réélement actualiser ce fichier ?</translation>
         <location filename="../project/projectdirectorywidget.ui" line="42"/>
         <location filename="../project/projectdirectorywidget.ui" line="56"/>
         <source>...</source>
-        <translation type="unfinished"></translation>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidget.ui" line="74"/>
         <source>Update project</source>
-        <translation type="unfinished">Mise à jour du projet</translation>
+        <translation>Mise à jour du projet</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidget.ui" line="77"/>
         <source>Call the update fonction of your &lt;i&gt;revision control system&lt;/i&gt; for all the project directory.</source>
-        <translation type="unfinished"></translation>
+        <translation>Appel la fonction de mise à jour du &lt;i&gt;gestionnaire de version&lt;/i&gt; pour tout le dossier projet.</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidget.ui" line="88"/>
         <source>Commit project</source>
-        <translation type="unfinished">Valide le projet</translation>
+        <translation>Valide le projet</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidget.ui" line="91"/>
         <source>&lt;p&gt;Call the commit method of your &lt;i&gt;revision control sytem&lt;/i&gt; for all the project directory. An optional message can be added.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Only &lt;b&gt;XINX&lt;/b&gt; managed files are commited to the repository.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Appel la méthode de validation du &lt;i&gt;gestionnaire de version&lt;/i&gt; pour tout les dossiers projets. Un message optionnel peut être ajouté.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Seul les fichiers gérés par &lt;b&gt;XINX&lt;/b&gt; peuvent être pousser vers le référenciel.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidget.ui" line="116"/>
         <source>If checked the list is showed as flat instead of tree. Each list of file is preceded of a directory header.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si coché la liste est affiché à plat au lieu d&apos;être affiché sous forme d&apos;arbre. Chaque liste de fichier est précédé d&apos;un entête avec le nom du dossier.</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidget.ui" line="132"/>
         <source>File Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom du fichier</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidget.ui" line="137"/>
         <source>Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Taille</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidget.ui" line="142"/>
         <source>Date</source>
-        <translation type="unfinished"></translation>
+        <translation>Date</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidget.ui" line="147"/>
         <source>Contains</source>
-        <translation type="unfinished"></translation>
+        <translation>Contenue</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidget.ui" line="152"/>
         <source>Status</source>
-        <translation type="unfinished"></translation>
+        <translation>Status</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidget.ui" line="176"/>
         <location filename="../project/projectdirectorywidget.ui" line="254"/>
         <source>Filter the view on files present in the project directory. (joker as * and ? can be used). When filter is actived, the view is automatically switched in flat view. When filter is cleared, the view is switched in tree view.</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtre la vue avec les fichiers uniquement présent dans le dossier projet (les joker comme * et ? peuvent être utilisé). Quand le filtre est activé, la vue est automatiquement basculer sur une vue planne. Quand le filtre est effacé, la vue est basculé vers un vue arbre.</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidget.ui" line="191"/>
         <source>&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&gt;</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidget.ui" line="196"/>
         <source>&gt;=</source>
-        <translation type="unfinished"></translation>
+        <translation>&gt;=</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidget.ui" line="201"/>
         <source>=</source>
-        <translation type="unfinished"></translation>
+        <translation>=</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidget.ui" line="206"/>
         <source>&lt;=</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;=</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidget.ui" line="211"/>
         <source>&lt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidget.ui" line="216"/>
         <source>&lt;&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;&gt;</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidget.ui" line="224"/>
         <source> kb</source>
-        <translation type="unfinished"></translation>
+        <translation> ko</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidget.ui" line="269"/>
         <source>Modified</source>
-        <translation type="unfinished"></translation>
+        <translation>Modifié</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidget.ui" line="274"/>
         <source>Added</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouté</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidget.ui" line="279"/>
         <source>Removed</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimé</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidget.ui" line="284"/>
         <source>To update</source>
-        <translation type="unfinished"></translation>
+        <translation>A mettre à jour</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidget.ui" line="289"/>
         <source>Updated</source>
-        <translation type="unfinished"></translation>
+        <translation>A jour</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidget.ui" line="310"/>
@@ -2518,7 +2519,15 @@ Voulez-vous réélement actualiser ce fichier ?</translation>
 &lt;li&gt;Add the file to &lt;i&gt;revision control system.&lt;/i&gt;&lt;/li&gt;
 &lt;li&gt;Commit the file to &lt;i&gt;revision control system.&lt;/i&gt;&lt;/li&gt;&lt;/ul&gt;
 &lt;p&gt;You can compare two file too.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;La vue affiche tous les fichier du dossier projet (et peuvent également être filtré par le champ ci-dessus).&lt;/p&gt;
+&lt;p&gt;Par un clique droit avec votre souris, vous pouvez :&lt;/p&gt;
+&lt;ul&gt;&lt;li&gt;Comparer les fichiers avec le standard&lt;/li&gt;
+&lt;li&gt;Comparer les fichiers avec la version du tronc&lt;/li&gt;
+&lt;li&gt;Mettre à jour les fichiers à partir du &lt;i&gt;gestionnaire de version&lt;/i&gt;.&lt;/li&gt;
+&lt;li&gt;Supprimer un fichier du &lt;i&gt;gestionnaire de version&lt;/i&gt;.&lt;/li&gt;
+&lt;li&gt;Ajouter un fichier au &lt;i&gt;gestionnaire de version.&lt;/i&gt;&lt;/li&gt;
+&lt;li&gt;Pousser les fichiers vers le &lt;i&gt;gestionnaire de version.&lt;/i&gt;&lt;/li&gt;&lt;/ul&gt;
+&lt;p&gt;Vous pouvez également comparer deux fichiers enssemble.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2526,17 +2535,17 @@ Voulez-vous réélement actualiser ce fichier ?</translation>
     <message>
         <location filename="../project/projectdirectorywidgetimpl.cpp" line="698"/>
         <source>Project Directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Dossier projet</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidgetimpl.cpp" line="701"/>
         <source>Toggled Flat View</source>
-        <translation type="unfinished"></translation>
+        <translation>Basculer vers la vue planne</translation>
     </message>
     <message>
         <location filename="../project/projectdirectorywidgetimpl.cpp" line="702"/>
         <source>If checked the list is showed as flat instead of tree. Each list of file is preceded of a directory header.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si coché la liste est affiché à plat au lieu d&apos;être affiché sous forme d&apos;arbre. Chaque liste de fichier est précédé d&apos;un entête avec le nom du dossier.</translation>
     </message>
 </context>
 <context>
@@ -2544,7 +2553,7 @@ Voulez-vous réélement actualiser ce fichier ?</translation>
     <message>
         <location filename="../project/newprojectwizard_project.ui" line="14"/>
         <source>Define Project</source>
-        <translation type="unfinished"></translation>
+        <translation>Définit le projet</translation>
     </message>
     <message>
         <location filename="../project/newprojectwizard_project.ui" line="20"/>
@@ -2668,7 +2677,7 @@ A project can define web services too.</source>
     <message>
         <location filename="../project/projectpropertyimpl.cpp" line="174"/>
         <source>Can&apos;t save &quot;%1&quot; page</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ne peux sauvegarder la page &quot;%1&quot;</translation>
     </message>
 </context>
 <context>
