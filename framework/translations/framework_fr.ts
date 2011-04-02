@@ -2560,33 +2560,36 @@ Voulez-vous réélement actualiser ce fichier ?</translation>
         <source>This wizard will help you to create a &lt;b&gt;XINX&lt;/b&gt; project and define some important variables.&lt;br/&gt;&lt;br/&gt;
 In &lt;b&gt;XINX&lt;/b&gt;, a project is used to use the &lt;i&gt;file research&lt;/i&gt;in a project, use a &lt;i&gt;revision control system&lt;/i&gt;, or use for other purpose in the &lt;b&gt;XINX&lt;/b&gt; modules.&lt;br/&gt;&lt;br/&gt;
 A project can define web services too.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cet assistant va vous aider à créer un projet &lt;b&gt;XINX&lt;/b&gt; et définir les données importantes.&lt;br/&gt;&lt;br/&gt;
+Dans &lt;b&gt;XINX&lt;/b&gt;, le projet est utilisé pour &lt;i&gt;rechercher un fichier&lt;/i&gt; du projet, pour utiliser le &lt;i&gt;gestionnaire de version&lt;/i&gt;, ainsi que pour plein d&apos;autre chose dans les modules &lt;b&gt;XINX&lt;/b&gt;.&lt;br/&gt;&lt;br/&gt;
+Un projet peux également être connecté à des services Internet.</translation>
     </message>
     <message>
         <location filename="../project/newprojectwizard_project.ui" line="32"/>
         <source>&amp;Name of the project :</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Nom du projet :</translation>
     </message>
     <message>
         <location filename="../project/newprojectwizard_project.ui" line="42"/>
         <source>Name of the project showed in the title bar of &lt;b&gt;XINX&lt;/b&gt;, the project name is appended to the application server directory and showed the project directory.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom du projet affiché dans la bar de titre de &lt;b&gt;XINX&lt;/b&gt;, le nom du projet est ajouté au nom du dossier projet par défaut, et affiché en tant que dossier projet.</translation>
     </message>
     <message>
         <location filename="../project/newprojectwizard_project.ui" line="49"/>
         <source>&amp;Project Directory :</source>
-        <translation type="unfinished"></translation>
+        <translation>Dossier du &amp;projet :</translation>
     </message>
     <message>
         <location filename="../project/newprojectwizard_project.ui" line="59"/>
         <source>&lt;p&gt;This is the project directory, generally where is stored the &lt;i&gt;configuration.xml&lt;/i&gt; file.&lt;/p&gt;
 &lt;p&gt;This is the racine where the &lt;i&gt;project file view&lt;/i&gt; start.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;C&apos;est le dossier projet, généralement où est stocké le fichier &lt;i&gt;configuration.xml&lt;/i&gt; pour un projet Générix&lt;/p&gt;
+&lt;p&gt;C&apos;est la racine du projet qui sera affiché dans la &lt;i&gt;vue projet&lt;/i&gt; au commencement.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../project/newprojectwizard_project.ui" line="80"/>
         <source>...</source>
-        <translation type="unfinished"></translation>
+        <translation>...</translation>
     </message>
 </context>
 <context>
@@ -2594,7 +2597,7 @@ A project can define web services too.</source>
     <message>
         <location filename="../project/projectproperty.ui" line="14"/>
         <source>Project property</source>
-        <translation type="unfinished"></translation>
+        <translation>Propriété du projet</translation>
     </message>
     <message>
         <location filename="../project/projectproperty.ui" line="46"/>
