@@ -2060,11 +2060,6 @@ Voulez-vous réélement actualiser ce fichier ?</translation>
         <translation>Fichier &amp;récent</translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="219"/>
-        <source>&amp;%1 %2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../editors/editormanager.cpp" line="235"/>
         <source>&amp;New</source>
         <translation>&amp;Nouveau</translation>
@@ -2600,49 +2595,48 @@ Un projet peux également être connecté à des services Internet.</translation
         <translation>Propriété du projet</translation>
     </message>
     <message>
-        <location filename="../project/projectproperty.ui" line="46"/>
-        <source>1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../project/projectproperty.ui" line="64"/>
         <source>Project &amp;Name :</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Nom du projet :</translation>
+    </message>
+    <message>
+        <source>This is the project name showed in the title bar of &lt;b&gt;XINX&lt;/b&gt;.This just an informative information useless.</source>
+        <translation type="obsolete">C&apos;est le nom du projet qui sera affiché dans toutes l&apos;application àdans la bare de titre de &lt;b&gt;XINX&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../project/projectproperty.ui" line="74"/>
-        <source>This is the project name showed in the title bar of &lt;b&gt;XINX&lt;/b&gt;.This just an informative information useless.</source>
-        <translation type="unfinished"></translation>
+        <source>This is the project name showed in all the application instead of the projet path. Choose a name that can be used to easily find your projet.</source>
+        <translation>C&apos;est le nom du projet qui sera affiché dans toutes l&apos;application à la place du chemin du projet. Choississez un nom qui peut être utilisé pour facilement retrouver le nom du fichier.</translation>
     </message>
     <message>
         <location filename="../project/projectproperty.ui" line="81"/>
         <source>Project Directory :</source>
-        <translation type="unfinished"></translation>
+        <translation>Dossier projet :</translation>
     </message>
     <message>
         <location filename="../project/projectproperty.ui" line="88"/>
         <source>Project &amp;RCS :</source>
-        <translation type="unfinished"></translation>
+        <translation>Gestionnaire du &amp;version :</translation>
     </message>
     <message>
         <location filename="../project/projectproperty.ui" line="98"/>
         <source>This the list of &lt;i&gt;revision control system&lt;/i&gt;. The list is appended by modules that you can find in the customize dialog.</source>
-        <translation type="unfinished"></translation>
+        <translation>C&apos;est la liste de &lt;i&gt;gestionnaire de version&lt;/i&gt; disponible. Cette liste est mis à jour par les extentions que vous pouvez trouver dans la boite de dialogue de personnalisation.</translation>
     </message>
     <message>
         <location filename="../project/projectproperty.ui" line="119"/>
         <source>&amp;Actually preloaded files</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichiers &amp;actuellement préchargés</translation>
     </message>
     <message>
         <location filename="../project/projectproperty.ui" line="140"/>
         <source>&amp;Link to directory :</source>
-        <translation type="unfinished"></translation>
+        <translation>Chemin &amp;lié :</translation>
     </message>
     <message>
         <location filename="../project/projectproperty.ui" line="166"/>
         <source>&amp;Exclude path (use regular expression) :</source>
-        <translation type="unfinished"></translation>
+        <translation>Chemin &amp;exclus (utilisez des expressions rationnelles) :</translation>
     </message>
 </context>
 <context>
@@ -2650,37 +2644,37 @@ Un projet peux également être connecté à des services Internet.</translation
     <message>
         <location filename="../project/projectpropertyimpl.cpp" line="46"/>
         <source>General</source>
-        <translation type="unfinished">Général</translation>
+        <translation>Général</translation>
     </message>
     <message>
         <location filename="../project/projectpropertyimpl.cpp" line="51"/>
         <source>Project Definition</source>
-        <translation type="unfinished"></translation>
+        <translation>Définition du projet</translation>
     </message>
     <message>
         <location filename="../project/projectpropertyimpl.cpp" line="54"/>
         <source>&lt;No Revision Control System&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;Aucun gestionnaire de version&gt;</translation>
     </message>
     <message>
         <location filename="../project/projectpropertyimpl.cpp" line="67"/>
         <source>Preloaded files</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichiers préchargés</translation>
     </message>
     <message>
         <location filename="../project/projectpropertyimpl.cpp" line="72"/>
         <source>Directories path</source>
-        <translation type="unfinished"></translation>
+        <translation>Dossiers</translation>
     </message>
     <message>
         <location filename="../project/projectpropertyimpl.cpp" line="161"/>
         <source>Can&apos;t load &quot;%1&quot; page</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne peux charger la page &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../project/projectpropertyimpl.cpp" line="174"/>
         <source>Can&apos;t save &quot;%1&quot; page</source>
-        <translation type="unfinished">Ne peux sauvegarder la page &quot;%1&quot;</translation>
+        <translation>Ne peux sauvegarder la page &quot;%1&quot;</translation>
     </message>
 </context>
 <context>
@@ -2688,7 +2682,7 @@ Un projet peux également être connecté à des services Internet.</translation
     <message>
         <location filename="../application/xinxprojectwizard/projectwizard.cpp" line="54"/>
         <source>Project wizard</source>
-        <translation type="unfinished"></translation>
+        <translation>Assistant projet</translation>
     </message>
 </context>
 <context>
@@ -2715,7 +2709,7 @@ Un projet peux également être connecté à des services Internet.</translation
     <message>
         <location filename="../versioncontrol/rcsdock.ui" line="27"/>
         <source>&lt;html&gt;This is where &lt;b&gt;XINX&lt;/b&gt; store it&apos;s message from &lt;i&gt;revision control system&lt;/i&gt; console.</source>
-        <translation type="unfinished"></translation>
+        <translation>C&apos;est l&apos;emplacement où &lt;b&gt;XINX&lt;/b&gt; enregistre les messages issue du &lt;i&gt;gestionnaire de version&lt;/i&gt;.</translation>
     </message>
 </context>
 <context>
@@ -2723,7 +2717,7 @@ Un projet peux également être connecté à des services Internet.</translation
     <message>
         <location filename="../versioncontrol/rcslogdockimpl.cpp" line="35"/>
         <source>Version Control Logs</source>
-        <translation type="unfinished"></translation>
+        <translation>Journal des Gestionnaires de Versions</translation>
     </message>
 </context>
 <context>
@@ -2779,142 +2773,144 @@ Un projet peux également être connecté à des services Internet.</translation
     <message>
         <location filename="../search/replace.ui" line="14"/>
         <source>Find or Replace a text</source>
-        <translation type="unfinished"></translation>
+        <translation>Trouve ou Remplace un texte</translation>
     </message>
     <message>
         <location filename="../search/replace.ui" line="31"/>
         <source>Find &amp;what :</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Chercher :</translation>
     </message>
     <message>
         <location filename="../search/replace.ui" line="41"/>
         <source>&lt;p&gt;Text to search in the editor. The search string can be &lt;i&gt;string literal&lt;/i&gt; or a &lt;i&gt;regular expression&lt;/i&gt; (if the corresponding checkbox is checked).&lt;/p&gt;
 &lt;p&gt;&lt;b&gt;XINX&lt;/b&gt; keep history of searched text.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Text à recherche dans l&apos;éditeur. La chaine peut être &lt;i&gt;literal&lt;/i&gt; ou &lt;i&gt;rationnelle&lt;/i&gt; (si la case à coché correspondante est coché).&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;XINX&lt;/b&gt; peut garder l&apos;historique des textes recherchés.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../search/replace.ui" line="58"/>
         <source>p&gt;If checked, &lt;b&gt;XINX&lt;/b&gt; replace the searched string by this  sting.&lt;/p&gt;
 &lt;p&gt;If the search string is a &lt;i&gt;regular expression&lt;/i&gt;, you can use \1 or \2 for captured string. Captured string in the find string is in bracket.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Si coché, &lt;b&gt;XINX&lt;/b&gt; remplace le texte recherché par cette chaine&lt;/p&gt;
+&lt;p&gt;Si la chaine recherché est une &lt;i&gt;expression rationnelle&lt;/i&gt;, vous pouvez utiliseé \1 ou \2 pour capturer le text. Les chaines capturés dans la chaine de  recherche sont entre parenthèse.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../search/replace.ui" line="62"/>
         <source>&amp;Replace by :</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Remplacer par :</translation>
     </message>
     <message>
         <location filename="../search/replace.ui" line="85"/>
         <source>&amp;Where</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Où :</translation>
     </message>
     <message>
         <location filename="../search/replace.ui" line="111"/>
         <source>&amp;Extention :</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Extention :</translation>
     </message>
     <message>
         <location filename="../search/replace.ui" line="144"/>
         <source>Direction where &lt;b&gt;XINX&lt;/b&gt; must go for search string.</source>
-        <translation type="unfinished"></translation>
+        <translation>Direction dans laquelle &lt;b&gt;XINX&lt;/b&gt; doit faire sa recherche.</translation>
     </message>
     <message>
         <location filename="../search/replace.ui" line="147"/>
         <source>Direction</source>
-        <translation type="unfinished"></translation>
+        <translation>Direction</translation>
     </message>
     <message>
         <location filename="../search/replace.ui" line="159"/>
         <source>Go up</source>
-        <translation type="unfinished"></translation>
+        <translation>Vers le haut</translation>
     </message>
     <message>
         <location filename="../search/replace.ui" line="166"/>
         <source>Go down</source>
-        <translation type="unfinished"></translation>
+        <translation>Vers le bas</translation>
     </message>
     <message>
         <location filename="../search/replace.ui" line="192"/>
         <source>If &lt;i&gt;All&lt;/i&gt; is checked &lt;b&gt;XINX&lt;/b&gt; search in the whole document, else &lt;b&gt;XINX&lt;/b&gt; search only in the selection.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si &lt;i&gt;Tout&lt;/i&gt; est coché &lt;b&gt;XINX&lt;/b&gt; recherche dans tout le document, sinon &lt;b&gt;XINX&lt;/b&gt; recherche uniquement la sélection.</translation>
     </message>
     <message>
         <location filename="../search/replace.ui" line="195"/>
         <source>Extend</source>
-        <translation type="unfinished"></translation>
+        <translation>Zone de recherche</translation>
     </message>
     <message>
         <location filename="../search/replace.ui" line="207"/>
         <source>Current document</source>
-        <translation type="unfinished"></translation>
+        <translation>Document courrant</translation>
     </message>
     <message>
         <location filename="../search/replace.ui" line="213"/>
         <location filename="../search/replace.ui" line="223"/>
         <location filename="../search/replace.ui" line="236"/>
         <location filename="../search/replace.ui" line="249"/>
-        <source>m_extedButtonGroup</source>
+        <source>m_extendButtonGroup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../search/replace.ui" line="220"/>
         <source>Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Sélection</translation>
     </message>
     <message>
         <location filename="../search/replace.ui" line="230"/>
         <source>Projects files</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichiers du projets</translation>
     </message>
     <message>
         <location filename="../search/replace.ui" line="243"/>
         <source>Custom files</source>
-        <translation type="unfinished"></translation>
+        <translation>Chemin personalisé</translation>
     </message>
     <message>
         <location filename="../search/replace.ui" line="259"/>
         <source>Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Options</translation>
     </message>
     <message>
         <location filename="../search/replace.ui" line="271"/>
         <source>If checked, &lt;b&gt;XINX&lt;/b&gt; search the case sensitive string.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si coché, &lt;b&gt;XINX&lt;/b&gt; recherche le texte en tenant compte de la casse.</translation>
     </message>
     <message>
         <location filename="../search/replace.ui" line="274"/>
         <source>Match c&amp;ase</source>
-        <translation type="unfinished"></translation>
+        <translation>Sensible à la C&amp;asse</translation>
     </message>
     <message>
         <location filename="../search/replace.ui" line="281"/>
         <source>If checked, &lt;b&gt;XINX&lt;/b&gt; search the word from the start of the document, else &lt;b&gt;XINX&lt;/b&gt; search from the cursor position.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si coché, &lt;b&gt;XINX&lt;/b&gt; recherche un mot depuis le début du document, sinon &lt;b&gt;XINX&lt;/b&gt; recherche depuis la position courante.</translation>
     </message>
     <message>
         <location filename="../search/replace.ui" line="284"/>
         <source>Search from &amp;start</source>
-        <translation type="unfinished"></translation>
+        <translation>Recherche depuis le &amp;début</translation>
     </message>
     <message>
         <location filename="../search/replace.ui" line="291"/>
         <source>If unchecked, &lt;b&gt;XINX&lt;/b&gt; search string include in other word, else only whole word is searched.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si non coché, &lt;b&gt;XINX&lt;/b&gt; recherche les chaines incluses dans d&apos;autres mots, sinon seul les mots complèts sont cherchés.</translation>
     </message>
     <message>
         <location filename="../search/replace.ui" line="294"/>
         <source>&amp;Whole words</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Mots entiers</translation>
     </message>
     <message>
         <location filename="../search/replace.ui" line="301"/>
         <source>If checked, &lt;b&gt;XINX&lt;/b&gt; use regular expression to match string.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si coché, &lt;b&gt;XINX&lt;/b&gt; utilise une expression rationnelle pour la recherche.</translation>
     </message>
     <message>
         <location filename="../search/replace.ui" line="304"/>
         <source>&amp;Use regular expression</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Utiliser expression rationnelle</translation>
     </message>
 </context>
 <context>
@@ -2923,12 +2919,12 @@ Un projet peux également être connecté à des services Internet.</translation
         <location filename="../search/replacedialogimpl.cpp" line="35"/>
         <location filename="../search/replacedialogimpl.cpp" line="47"/>
         <source>Find</source>
-        <translation type="unfinished"></translation>
+        <translation>Trouver</translation>
     </message>
     <message>
         <location filename="../search/replacedialogimpl.cpp" line="45"/>
         <source>Replace</source>
-        <translation type="unfinished"></translation>
+        <translation>Remplacer</translation>
     </message>
 </context>
 <context>
@@ -2936,27 +2932,27 @@ Un projet peux également être connecté à des services Internet.</translation
     <message>
         <location filename="../editors/savingdialog.ui" line="14"/>
         <source>Select document to save</source>
-        <translation type="unfinished"></translation>
+        <translation>Selectionne le document à sauvegarder</translation>
     </message>
     <message>
         <location filename="../editors/savingdialog.ui" line="20"/>
         <source>The following document have been modified and should be saved. Please check files you want to save and click Ok to continue.</source>
-        <translation type="unfinished"></translation>
+        <translation>Les documents suivants ont été modifiés et doivent être sauvés. Veuillez verifier les fichiers que vous souhaitez sauver et cliquer sur Ok pour continuer.</translation>
     </message>
     <message>
         <location filename="../editors/savingdialog.cpp" line="47"/>
         <source>Pretty Print on closing is activated. This option change file when you closing it.</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;indentation à la sauvegarde est activé. Cette option va modifier le fichier quand ce dernier sera fermé.</translation>
     </message>
     <message>
         <location filename="../editors/savingdialog.cpp" line="49"/>
         <source>Select All</source>
-        <translation type="unfinished"></translation>
+        <translation>Tout sélectionner</translation>
     </message>
     <message>
         <location filename="../editors/savingdialog.cpp" line="50"/>
         <source>Deselect All</source>
-        <translation type="unfinished"></translation>
+        <translation>Tout déselectionner</translation>
     </message>
 </context>
 <context>
@@ -2964,7 +2960,7 @@ Un projet peux également être connecté à des services Internet.</translation
     <message>
         <location filename="../application/customdialog/scriptelement.cpp" line="66"/>
         <source>Author : </source>
-        <translation type="unfinished"></translation>
+        <translation>Auteur :</translation>
     </message>
 </context>
 <context>
@@ -2997,22 +2993,22 @@ Un projet peux également être connecté à des services Internet.</translation
     <message>
         <location filename="../search/searchdock.ui" line="26"/>
         <source>...</source>
-        <translation type="unfinished"></translation>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../search/searchdock.ui" line="46"/>
         <source>Directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Dossier</translation>
     </message>
     <message>
         <location filename="../search/searchdock.ui" line="51"/>
         <source>Filename</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom du fichier</translation>
     </message>
     <message>
         <location filename="../search/searchdock.ui" line="56"/>
         <source>Text</source>
-        <translation type="unfinished"></translation>
+        <translation>Texte</translation>
     </message>
 </context>
 <context>
@@ -3020,7 +3016,7 @@ Un projet peux également être connecté à des services Internet.</translation
     <message>
         <location filename="../search/searchdockimpl.cpp" line="85"/>
         <source>Search Result</source>
-        <translation type="unfinished"></translation>
+        <translation>Résultat de la recherche</translation>
     </message>
 </context>
 <context>
@@ -3028,17 +3024,17 @@ Un projet peux également être connecté à des services Internet.</translation
     <message>
         <location filename="../search/searchfilethread.cpp" line="43"/>
         <source>Search %1 in %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Recherche de %1 dans %2</translation>
     </message>
     <message>
         <location filename="../search/searchfilethread.cpp" line="60"/>
         <source>Not supported</source>
-        <translation type="unfinished"></translation>
+        <translation>Non supporté</translation>
     </message>
     <message>
         <location filename="../search/searchfilethread.cpp" line="60"/>
         <source>Replacement on multiple file is not yet supported</source>
-        <translation type="unfinished"></translation>
+        <translation>Le remplacement de texte dans un enssemble de fichier n&apos;est pas encore supporté</translation>
     </message>
 </context>
 <context>
@@ -3046,7 +3042,7 @@ Un projet peux également être connecté à des services Internet.</translation
     <message>
         <location filename="../snipets/snipetdockwidget.cpp" line="53"/>
         <source>Snipets</source>
-        <translation type="unfinished"></translation>
+        <translation>Modèles</translation>
     </message>
 </context>
 <context>
@@ -3054,12 +3050,12 @@ Un projet peux également être connecté à des services Internet.</translation
     <message>
         <location filename="../codecompletion/snipets/snipetitem.cpp" line="38"/>
         <source>Add the snipet &quot;%1&quot; to the editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajoute un modèle &quot;%1&quot; à l&apos;éditeur</translation>
     </message>
     <message>
         <location filename="../codecompletion/snipets/snipetitem.cpp" line="43"/>
         <source>Snipet</source>
-        <translation type="unfinished">Modèle</translation>
+        <translation>Modèle</translation>
     </message>
 </context>
 <context>
@@ -3067,7 +3063,7 @@ Un projet peux également être connecté à des services Internet.</translation
     <message>
         <location filename="../codecompletion/snipets/snipetitemmodelfactory.cpp" line="49"/>
         <source>Snipet</source>
-        <translation type="unfinished">Modèle</translation>
+        <translation>Modèle</translation>
     </message>
 </context>
 <context>
@@ -3313,25 +3309,25 @@ Un projet peux également être connecté à des services Internet.</translation
     <message>
         <location filename="../snipets/snipetlistwidget.ui" line="14"/>
         <source>Snipets</source>
-        <translation type="unfinished"></translation>
+        <translation>Modèles</translation>
     </message>
     <message>
         <location filename="../snipets/snipetlistwidget.ui" line="28"/>
         <source>&amp;Filter :</source>
-        <translation type="unfinished">&amp;Filtre :</translation>
+        <translation>&amp;Filtre :</translation>
     </message>
     <message>
         <location filename="../snipets/snipetlistwidget.ui" line="51"/>
         <location filename="../snipets/snipetlistwidget.ui" line="62"/>
         <source>...</source>
-        <translation type="unfinished"></translation>
+        <translation>...</translation>
     </message>
 </context>
 <context>
     <name>TemplateDialog</name>
     <message>
         <location filename="../project/templatedialog.ui" line="14"/>
-        <source>Form</source>
+        <source>Template</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3362,12 +3358,12 @@ Un projet peux également être connecté à des services Internet.</translation
     <message>
         <location filename="../application/customdialog/toolsmodelindex.cpp" line="106"/>
         <source>Tool name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom de l&apos;outil</translation>
     </message>
     <message>
         <location filename="../application/customdialog/toolsmodelindex.cpp" line="108"/>
         <source>Tool path</source>
-        <translation type="unfinished"></translation>
+        <translation>Chemin de l&apos;outil</translation>
     </message>
 </context>
 <context>
@@ -3398,7 +3394,7 @@ Un projet peux également être connecté à des services Internet.</translation
     <message>
         <location filename="../application/versionavailabledialog.cpp" line="146"/>
         <source>New release of XINX available</source>
-        <translation type="unfinished"></translation>
+        <translation>Nouvelle version de XINX disponible</translation>
     </message>
 </context>
 <context>
@@ -3406,29 +3402,31 @@ Un projet peux également être connecté à des services Internet.</translation
     <message>
         <location filename="../application/versionavailabledialog.cpp" line="84"/>
         <source>For version %1 :</source>
-        <translation type="unfinished"></translation>
+        <translation>Pour la version %1 :</translation>
     </message>
     <message>
         <location filename="../application/versionavailabledialog.cpp" line="108"/>
         <source>The current version is %1.
 
 The version %2 is available on %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>La version courante est %1.
+
+La version %2 est disponible à l&apos;adresse %3.</translation>
     </message>
     <message>
         <location filename="../application/versionavailabledialog.cpp" line="111"/>
         <source>&lt;span style=&quot;font-weight: bold&quot;&gt;A new version of XINX is available !&lt;/span&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;span style=&quot;font-weight: bold&quot;&gt;Une nouvelle version de XINX est disponible !&lt;/span&gt;</translation>
     </message>
     <message>
         <location filename="../application/versionavailabledialog.cpp" line="121"/>
         <source>&lt;span style=&quot;font-weight: bold&quot;&gt;A new snapshot version of XINX is available !&lt;/span&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;span style=&quot;font-weight: bold&quot;&gt;Une nouvelle snapshot de XINX est disponible !&lt;/span&gt;</translation>
     </message>
     <message>
         <location filename="../application/versionavailabledialog.cpp" line="131"/>
         <source>&lt;span style=&quot;font-weight: bold&quot;&gt;There is no new version of XINX.&lt;/span&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;span style=&quot;font-weight: bold&quot;&gt;Il n&apos;y a pas de nouvelle version de XINX !&lt;/span&gt;</translation>
     </message>
 </context>
 <context>
@@ -3436,27 +3434,27 @@ The version %2 is available on %3.</source>
     <message>
         <location filename="../versioncontrol/rcsproxy.cpp" line="118"/>
         <source>No tools defined</source>
-        <translation type="unfinished">Outil non définit</translation>
+        <translation>Outil non définit</translation>
     </message>
     <message>
         <location filename="../versioncontrol/rcsproxy.cpp" line="172"/>
         <source>Add a file</source>
-        <translation type="unfinished">Ajoute un fichier</translation>
+        <translation>Ajoute un fichier</translation>
     </message>
     <message>
         <location filename="../versioncontrol/rcsproxy.cpp" line="172"/>
         <source>Do you want to add the file &apos;%1&apos; to the repository ?</source>
-        <translation type="unfinished">Voulez-vous ajouter le fichier &apos;%1&apos; au référenciel ?</translation>
+        <translation>Voulez-vous ajouter le fichier &apos;%1&apos; au référenciel ?</translation>
     </message>
     <message>
         <location filename="../versioncontrol/rcsproxy.cpp" line="268"/>
         <source>&lt;Commit with no text&gt;</source>
-        <translation type="unfinished">&lt;Valider sans texte&gt;</translation>
+        <translation>&lt;Valider sans texte&gt;</translation>
     </message>
     <message>
         <location filename="../versioncontrol/rcsproxy.cpp" line="279"/>
         <source>Operation cancelled</source>
-        <translation type="unfinished">Opération annulée</translation>
+        <translation>Opération annulée</translation>
     </message>
 </context>
 <context>

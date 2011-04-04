@@ -43,7 +43,7 @@
      </attribute>
      <column>
       <property name="text">
-       <string>1</string>
+       <string notr="true">1</string>
       </property>
      </column>
     </widget>
@@ -71,7 +71,7 @@
        <item row="0" column="1">
         <widget class="QLineEdit" name="m_nameLineEdit">
          <property name="whatsThis">
-          <string>This is the project name showed in the title bar of &lt;b&gt;XINX&lt;/b&gt;.This just an informative information useless.</string>
+          <string>This is the project name showed in all the application instead of the projet path. Choose a name that can be used to easily find your projet.</string>
          </property>
         </widget>
        </item>

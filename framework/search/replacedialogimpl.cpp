@@ -54,7 +54,7 @@ void ReplaceDialogImpl::initialize(bool hasEditor)
 	m_searchAllRadioButton->setChecked(hasEditor);
 	m_projectFilesRadioButton->setChecked((! hasEditor) && (XinxProject::Manager::self()->projects().count() > 0));
 	m_customFilesRadioButton->setChecked((! hasEditor) && (XinxProject::Manager::self()->projects().count() == 0));
-	on_m_extedButtonGroup_buttonClicked(m_extedButtonGroup->checkedButton());
+	on_m_extendButtonGroup_buttonClicked(m_extendButtonGroup->checkedButton());
 
 	m_comboFind->lineEdit()->selectAll();
 	m_comboFind->lineEdit()->setFocus(Qt::ActiveWindowFocusReason);
@@ -91,7 +91,7 @@ void ReplaceDialogImpl::setReplace(bool value)
 	m_replaceCheckBox->setChecked(value) ;
 }
 
-void ReplaceDialogImpl::on_m_extedButtonGroup_buttonClicked(QAbstractButton* button)
+void ReplaceDialogImpl::on_m_extendButtonGroup_buttonClicked(QAbstractButton* button)
 {
 	if (button == m_searchAllRadioButton)
 	{

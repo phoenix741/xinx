@@ -46,7 +46,7 @@ private slots:
 	void m_findButton_clicked();
 	void on_m_replaceCheckBox_toggled(bool checked);
 
-	void on_m_extedButtonGroup_buttonClicked(QAbstractButton * button);
+	void on_m_extendButtonGroup_buttonClicked(QAbstractButton * button);
 private:
 
 	QPushButton * m_findButton;

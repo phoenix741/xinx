@@ -2381,18 +2381,13 @@ A project can define web services too.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectproperty.ui" line="46"/>
-        <source>1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../project/projectproperty.ui" line="64"/>
         <source>Project &amp;Name :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../project/projectproperty.ui" line="74"/>
-        <source>This is the project name showed in the title bar of &lt;b&gt;XINX&lt;/b&gt;.This just an informative information useless.</source>
+        <source>This is the project name showed in all the application instead of the projet path. Choose a name that can be used to easily find your projet.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2567,7 +2562,7 @@ A project can define web services too.</source>
         <location filename="../search/replace.ui" line="223"/>
         <location filename="../search/replace.ui" line="236"/>
         <location filename="../search/replace.ui" line="249"/>
-        <source>m_extedButtonGroup</source>
+        <source>m_extendButtonGroup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3042,7 +3037,7 @@ A project can define web services too.</source>
     <name>TemplateDialog</name>
     <message>
         <location filename="../project/templatedialog.ui" line="14"/>
-        <source>Form</source>
+        <source>Template</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

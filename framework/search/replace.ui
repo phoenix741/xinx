@@ -210,7 +210,7 @@
            <bool>false</bool>
           </property>
           <attribute name="buttonGroup">
-           <string>m_extedButtonGroup</string>
+           <string>m_extendButtonGroup</string>
           </attribute>
          </widget>
         </item>
@@ -220,7 +220,7 @@
            <string>Selection</string>
           </property>
           <attribute name="buttonGroup">
-           <string>m_extedButtonGroup</string>
+           <string>m_extendButtonGroup</string>
           </attribute>
          </widget>
         </item>
@@ -233,7 +233,7 @@
            <bool>false</bool>
           </property>
           <attribute name="buttonGroup">
-           <string>m_extedButtonGroup</string>
+           <string>m_extendButtonGroup</string>
           </attribute>
          </widget>
         </item>
@@ -246,7 +246,7 @@
            <bool>true</bool>
           </property>
           <attribute name="buttonGroup">
-           <string>m_extedButtonGroup</string>
+           <string>m_extendButtonGroup</string>
           </attribute>
          </widget>
         </item>
@@ -543,6 +543,6 @@
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="m_extedButtonGroup"/>
+  <buttongroup name="m_extendButtonGroup"/>
  </buttongroups>
 </ui>
