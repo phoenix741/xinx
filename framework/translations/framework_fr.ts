@@ -3328,7 +3328,7 @@ Un projet peux également être connecté à des services Internet.</translation
     <message>
         <location filename="../project/templatedialog.ui" line="14"/>
         <source>Template</source>
-        <translation type="unfinished"></translation>
+        <translation>Modèle</translation>
     </message>
 </context>
 <context>
@@ -3462,18 +3462,19 @@ La version %2 est disponible à l&apos;adresse %3.</translation>
     <message>
         <location filename="../application/xinxprojectwizard/projectwizard.cpp" line="118"/>
         <source>Version informations</source>
-        <translation type="unfinished"></translation>
+        <translation>Information de Version</translation>
     </message>
     <message>
         <location filename="../application/xinxprojectwizard/projectwizard.cpp" line="119"/>
         <source>This page show you some informations about the selected project file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cette page vous affiche quelques informations à propos des ifchiers projet selectionnés.</translation>
     </message>
     <message>
         <location filename="../application/xinxprojectwizard/projectwizard.cpp" line="134"/>
         <source>You want convert a %1 (version %2).
 This wizard will convert the project to the last version of XINX. Wizard must convert %3 opened file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous pouvez convertir %1 (version %2)
+Cette assistant va convertir le projet à la dernière version de de XINX. L&apos;assistant doit convertir %3 fichier ouvert.</translation>
     </message>
 </context>
 <context>
@@ -3481,17 +3482,17 @@ This wizard will convert the project to the last version of XINX. Wizard must co
     <message>
         <location filename="../project/newprojectwizard.cpp" line="208"/>
         <source>Define Revision Control</source>
-        <translation type="unfinished"></translation>
+        <translation>Définit le gestionnaire de version</translation>
     </message>
     <message>
         <location filename="../project/newprojectwizard.cpp" line="209"/>
         <source>Define the revision control used for the project if you want to used one.</source>
-        <translation type="unfinished"></translation>
+        <translation>Définit le gestion de version à utiliser pour le projet, si vous voulez en utiliser un.</translation>
     </message>
     <message>
         <location filename="../project/newprojectwizard.cpp" line="211"/>
         <source>No revision control system.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pas de gestionnaire de version.</translation>
     </message>
 </context>
 <context>
@@ -3499,7 +3500,7 @@ This wizard will convert the project to the last version of XINX. Wizard must co
     <message>
         <location filename="../application/welcomdlg.ui" line="14"/>
         <source>Welcom to XINX</source>
-        <translation type="unfinished"></translation>
+        <translation>Bienvenue sur XINX</translation>
     </message>
     <message>
         <location filename="../application/welcomdlg.ui" line="35"/>
@@ -3521,7 +3522,15 @@ This wizard will convert the project to the last version of XINX. Wizard must co
 		&lt;hr/&gt;
 	&lt;/body&gt;
 &lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;
+	&lt;head&gt;
+		&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;
+	&lt;/head&gt;
+	&lt;body style=&quot;font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+		&lt;span style=&quot;font-size:x-large&quot;&gt;Sessions&lt;/span&gt;
+		&lt;hr/&gt;
+	&lt;/body&gt;
+&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../application/welcomdlg.ui" line="134"/>
@@ -3534,17 +3543,25 @@ This wizard will convert the project to the last version of XINX. Wizard must co
 		&lt;hr/&gt;
 	&lt;/body&gt;
 &lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;
+	&lt;head&gt;
+		&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;
+	&lt;/head&gt;
+	&lt;body style=&quot;font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+		&lt;span style=&quot;font-size:x-large&quot;&gt;Projet récent&lt;/span&gt;
+		&lt;hr/&gt;
+	&lt;/body&gt;
+&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../application/welcomdlg.ui" line="187"/>
         <source>Create New Project...</source>
-        <translation type="unfinished"></translation>
+        <translation>Créer un nouveau projet ...</translation>
     </message>
     <message>
         <location filename="../application/welcomdlg.ui" line="194"/>
         <source>&amp;Open Existing Project ...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ouvrir un projet existant ...</translation>
     </message>
     <message>
         <location filename="../application/welcomdlg.ui" line="219"/>
@@ -3557,7 +3574,15 @@ This wizard will convert the project to the last version of XINX. Wizard must co
 		&lt;hr/&gt;
 	&lt;/body&gt;
 &lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;
+	&lt;head&gt;
+		&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;
+	&lt;/head&gt;
+	&lt;body style=&quot;font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+		&lt;span style=&quot;font-size:x-large&quot;&gt;Le saviez vous ?&lt;/span&gt;
+		&lt;hr/&gt;
+	&lt;/body&gt;
+&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -3581,27 +3606,27 @@ This wizard will convert the project to the last version of XINX. Wizard must co
     <message>
         <location filename="../jobs/xinxjob.cpp" line="67"/>
         <source>Waiting ...</source>
-        <translation type="unfinished"></translation>
+        <translation>En attente ...</translation>
     </message>
     <message>
         <location filename="../jobs/xinxjob.cpp" line="69"/>
         <source>Running ...</source>
-        <translation type="unfinished"></translation>
+        <translation>En cours ...</translation>
     </message>
     <message>
         <location filename="../jobs/xinxjob.cpp" line="71"/>
         <source>Cleaning ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Nettoyage ...</translation>
     </message>
     <message>
         <location filename="../jobs/xinxjob.cpp" line="73"/>
         <source>Unknown</source>
-        <translation type="unfinished">Inconnu</translation>
+        <translation>Inconnu</translation>
     </message>
     <message>
         <location filename="../jobs/xinxjob.cpp" line="143"/>
         <source>Unknown exception</source>
-        <translation type="unfinished"></translation>
+        <translation>Exception inconnue</translation>
     </message>
 </context>
 <context>
@@ -3609,7 +3634,7 @@ This wizard will convert the project to the last version of XINX. Wizard must co
     <message>
         <location filename="../jobs/xinxjobprogressdock.cpp" line="45"/>
         <source>Progress</source>
-        <translation type="unfinished"></translation>
+        <translation>Progression</translation>
     </message>
 </context>
 <context>
@@ -3617,7 +3642,7 @@ This wizard will convert the project to the last version of XINX. Wizard must co
     <message>
         <location filename="../jobs/xinxjobwidget.cpp" line="86"/>
         <source>Cancel this operation.</source>
-        <translation type="unfinished"></translation>
+        <translation>Annuler cette opération.</translation>
     </message>
 </context>
 <context>
@@ -3675,7 +3700,7 @@ This wizard will convert the project to the last version of XINX. Wizard must co
     <message>
         <location filename="../project/projectlistmodel.cpp" line="93"/>
         <source>Fetch files of %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Récupére les fichiers de %1</translation>
     </message>
 </context>
 <context>
@@ -3683,17 +3708,17 @@ This wizard will convert the project to the last version of XINX. Wizard must co
     <message>
         <location filename="../project/xinxprojectmanager.cpp" line="191"/>
         <source>&amp;New project ...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Nouveau projet ...</translation>
     </message>
     <message>
         <location filename="../project/xinxprojectmanager.cpp" line="192"/>
         <source>Create a new project</source>
-        <translation type="unfinished"></translation>
+        <translation>Créer un nouveau projet</translation>
     </message>
     <message>
         <location filename="../project/xinxprojectmanager.cpp" line="196"/>
         <source>&amp;Recent Project ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Projet &amp;récent ...</translation>
     </message>
     <message>
         <location filename="../project/xinxprojectmanager.cpp" line="197"/>
