@@ -6,7 +6,7 @@
     <message>
         <location filename="../editors/models/html_xsl_base/definition_attributenode.cpp" line="45"/>
         <source>Attribute</source>
-        <translation type="unfinished"></translation>
+        <translation>Attribut</translation>
     </message>
 </context>
 <context>
@@ -14,7 +14,7 @@
     <message>
         <location filename="../actions/texteditoractions.cpp" line="253"/>
         <source>Pretty print</source>
-        <translation type="unfinished"></translation>
+        <translation>Auto-indentation</translation>
     </message>
 </context>
 <context>
@@ -22,7 +22,7 @@
     <message>
         <location filename="../editors/models/html_xsl_base/definition_balisenode.cpp" line="53"/>
         <source>Balise</source>
-        <translation type="unfinished"></translation>
+        <translation>Balise</translation>
     </message>
 </context>
 <context>
@@ -30,7 +30,7 @@
     <message>
         <location filename="../actions/bookmarkactions.cpp" line="28"/>
         <source>&amp;Bookmark</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Signet</translation>
     </message>
 </context>
 <context>
@@ -38,12 +38,12 @@
     <message>
         <location filename="../plugindefinition/filetypeplugin.cpp" line="322"/>
         <source>Cascading Style Sheet</source>
-        <translation type="unfinished"></translation>
+        <translation>Cascading Style Sheet</translation>
     </message>
     <message>
         <location filename="../plugindefinition/filetypeplugin.cpp" line="378"/>
         <source>noname</source>
-        <translation type="unfinished"></translation>
+        <translation>sansnom</translation>
     </message>
 </context>
 <context>
@@ -51,7 +51,7 @@
     <message>
         <location filename="../actions/bookmarkactions.cpp" line="118"/>
         <source>&amp;Clear all bookmark</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Effacer tous les signets</translation>
     </message>
 </context>
 <context>
@@ -59,17 +59,17 @@
     <message>
         <location filename="../actions/commentactions.cpp" line="37"/>
         <source>&amp;Comment</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Commenter</translation>
     </message>
     <message>
         <location filename="../actions/commentactions.cpp" line="39"/>
         <source>Comment the selected text</source>
-        <translation type="unfinished"></translation>
+        <translation>Commenter le texte selectionné</translation>
     </message>
     <message>
         <location filename="../actions/commentactions.cpp" line="40"/>
         <source>Comment the selected text by using the language syntax. &lt;ul&gt;&lt;li&gt;In &lt;b&gt;XML&lt;/b&gt; like format &lt;i&gt;&amp;lt;!-- comment --&amp;gt;&lt;/i&gt;&lt;/li&gt; &lt;li&gt;In &lt;b&gt;Javascript&lt;/b&gt; : &lt;i&gt;/* comment */&lt;/i&gt; &lt;/li&gt;&lt;/ul&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Commente le texte selectionné en utilisant la syntaxe du language. &lt;ul&gt;&lt;li&gt;Dans un format comme &lt;b&gt;XML&lt;/b&gt; se sera &lt;i&gt;&amp;lt;!-- comment --&amp;gt;&lt;/i&gt;&lt;/li&gt; &lt;li&gt;En &lt;b&gt;Javascript&lt;/b&gt; : &lt;i&gt;/* comment */&lt;/i&gt; &lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
 </context>
 <context>
@@ -77,7 +77,7 @@
     <message>
         <location filename="../actions/texteditoractions.cpp" line="274"/>
         <source>Completer</source>
-        <translation type="unfinished"></translation>
+        <translation>Compléter</translation>
     </message>
 </context>
 <context>
@@ -85,12 +85,12 @@
     <message>
         <location filename="../actions/clipboardactions.cpp" line="47"/>
         <source>&amp;Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Copie</translation>
     </message>
     <message>
         <location filename="../actions/clipboardactions.cpp" line="49"/>
         <source>Copy the selection to the clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Copie la selection dans le presse-papier</translation>
     </message>
 </context>
 <context>
@@ -98,22 +98,22 @@
     <message>
         <location filename="../editors/models/html_xsl_base/xmlcompletionparser.cpp" line="72"/>
         <source>The file is can&apos;t be used to do completion.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le fichier ne peux être utiliser pour faire de la complétion.</translation>
     </message>
     <message>
         <location filename="../editors/models/html_xsl_base/xmlcompletionparser.cpp" line="96"/>
         <source>Wrong node name &quot;%1&quot; in type element</source>
-        <translation type="unfinished"></translation>
+        <translation>Mauvais nom de noeud &quot;%1&quot; pour un élément</translation>
     </message>
     <message>
         <location filename="../editors/models/html_xsl_base/xmlcompletionparser.cpp" line="126"/>
         <source>Wrong node name &quot;%1&quot; in balise element</source>
-        <translation type="unfinished"></translation>
+        <translation>Mauvais nom de noeud &quot;%1&quot; pour une balise</translation>
     </message>
     <message>
         <location filename="../editors/models/html_xsl_base/xmlcompletionparser.cpp" line="154"/>
         <source>Wrong node name &quot;%1&quot; in attribute element</source>
-        <translation type="unfinished"></translation>
+        <translation>Mauvais nom de noeud &quot;%1&quot; pour un attribut</translation>
     </message>
 </context>
 <context>
@@ -121,12 +121,12 @@
     <message>
         <location filename="../editors/models/xsl/stylesheet_parser.cpp" line="99"/>
         <source>The file is not an Stylesheet file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le fichier n&apos;est pas une feuille de style.</translation>
     </message>
     <message>
         <location filename="../editors/models/xsl/stylesheet_parser.cpp" line="261"/>
         <source>Element at line : %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Element à la ligne : %1</translation>
     </message>
 </context>
 <context>
@@ -134,27 +134,27 @@
     <message>
         <location filename="../plugindefinition/coreplugin.cpp" line="98"/>
         <source>Core Plugin</source>
-        <translation type="unfinished"></translation>
+        <translation>Plugin noyaux</translation>
     </message>
     <message>
         <location filename="../plugindefinition/coreplugin.cpp" line="100"/>
         <source>Minimum editors, completer, docks for XINX.</source>
-        <translation type="unfinished"></translation>
+        <translation>Editeur, completer, et docks minimal pour faire tourner XINX.</translation>
     </message>
     <message>
         <location filename="../plugindefinition/coreplugin.cpp" line="168"/>
         <source>&amp;Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Edition</translation>
     </message>
     <message>
         <location filename="../plugindefinition/coreplugin.cpp" line="169"/>
         <source>&amp;Bookmark</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Signet</translation>
     </message>
     <message>
         <location filename="../plugindefinition/coreplugin.cpp" line="170"/>
         <source>&amp;Execute</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Executer</translation>
     </message>
 </context>
 <context>
@@ -162,12 +162,12 @@
     <message>
         <location filename="../actions/clipboardactions.cpp" line="27"/>
         <source>Cu&amp;t</source>
-        <translation type="unfinished"></translation>
+        <translation>C&amp;ouper</translation>
     </message>
     <message>
         <location filename="../actions/clipboardactions.cpp" line="29"/>
         <source>Cut the selection to the clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Couper la selection vers le presse-papier</translation>
     </message>
 </context>
 <context>
@@ -175,7 +175,7 @@
     <message>
         <location filename="../actions/stylesheetaction.cpp" line="115"/>
         <source>Open in data stream dock</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir dans le dock de flux de donnée</translation>
     </message>
 </context>
 <context>
@@ -183,12 +183,12 @@
     <message>
         <location filename="../actions/texteditoractions.cpp" line="61"/>
         <source>&amp;Duplicate current line</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Dupliquer la ligne courante</translation>
     </message>
     <message>
         <location filename="../actions/texteditoractions.cpp" line="63"/>
         <source>Duplicate the current line</source>
-        <translation type="unfinished"></translation>
+        <translation>Dupliquer la ligne courante</translation>
     </message>
 </context>
 <context>
@@ -196,37 +196,37 @@
     <message>
         <location filename="../config/editorsconfigform.ui" line="14"/>
         <source>Customize Web Plugin</source>
-        <translation type="unfinished"></translation>
+        <translation>Personnaliser le plugin noyau</translation>
     </message>
     <message>
         <location filename="../config/editorsconfigform.ui" line="20"/>
         <source>Active completion on XML</source>
-        <translation type="unfinished"></translation>
+        <translation>Active la complétion sur le XML</translation>
     </message>
     <message>
         <location filename="../config/editorsconfigform.ui" line="35"/>
         <source>Add the default a&amp;ttribute automatically to the balise</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter l&apos;a&amp;ttribut par défaut automatiquement à la balise</translation>
     </message>
     <message>
         <location filename="../config/editorsconfigform.ui" line="42"/>
         <source>Add default sub-&amp;balise automatically (like xsl:when for the xsl:choose balise)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter la sous-&amp;balise par défaut automatiquement (comme xsl:when pour les balises xsl:choose)</translation>
     </message>
     <message>
         <location filename="../config/editorsconfigform.ui" line="49"/>
         <source>&amp;Add closing balise automatically (for the corresponding opening balise)</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ajouter les balise fermante automatiquement (pour la balise ouvrante correspondante)</translation>
     </message>
     <message>
         <location filename="../config/editorsconfigform.ui" line="59"/>
         <source>Active completion on JavaScript</source>
-        <translation type="unfinished"></translation>
+        <translation>Activer la complétion sur le JavaScript</translation>
     </message>
     <message>
         <location filename="../config/editorsconfigform.ui" line="74"/>
         <source>Auto close bracket</source>
-        <translation type="unfinished"></translation>
+        <translation>Ferme automatiquement les parenthèses</translation>
     </message>
 </context>
 <context>
@@ -234,7 +234,7 @@
     <message>
         <location filename="../config/editorsconfigformimpl.cpp" line="43"/>
         <source>Editors Completion</source>
-        <translation type="unfinished"></translation>
+        <translation>Complétion de l&apos;éditeur</translation>
     </message>
 </context>
 <context>
@@ -242,27 +242,27 @@
     <message>
         <location filename="../actions/texteditoractions.cpp" line="33"/>
         <source>Go to &amp;Line ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Aller à la &amp;ligne ...</translation>
     </message>
     <message>
         <location filename="../actions/texteditoractions.cpp" line="35"/>
         <source>Move the cursor to line, choose by user</source>
-        <translation type="unfinished"></translation>
+        <translation>Déplacer le curseur à la ligne, choisis par l&apos;utilisateur</translation>
     </message>
     <message>
         <location filename="../actions/texteditoractions.cpp" line="36"/>
         <source>This action open a dialog box to choose the line number where you want to go.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cette action ouvre une boîte de dialogue afin de choisir la ligne à laquelle vous voulez aller.</translation>
     </message>
     <message>
         <location filename="../actions/texteditoractions.cpp" line="54"/>
         <source>Goto Line</source>
-        <translation type="unfinished"></translation>
+        <translation>Aller à la ligne</translation>
     </message>
     <message>
         <location filename="../actions/texteditoractions.cpp" line="54"/>
         <source>Line:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ligne :</translation>
     </message>
 </context>
 <context>
@@ -270,12 +270,12 @@
     <message>
         <location filename="../plugindefinition/filetypeplugin.cpp" line="216"/>
         <source>HTML File</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichier HTML</translation>
     </message>
     <message>
         <location filename="../plugindefinition/filetypeplugin.cpp" line="236"/>
         <source>noname</source>
-        <translation type="unfinished"></translation>
+        <translation>sansnom</translation>
     </message>
 </context>
 <context>
@@ -283,7 +283,7 @@
     <message>
         <location filename="../actions/texteditoractions.cpp" line="295"/>
         <source>Highlight same word</source>
-        <translation type="unfinished"></translation>
+        <translation>Surligner les mots identiques</translation>
     </message>
 </context>
 <context>
@@ -291,12 +291,12 @@
     <message>
         <location filename="../editors/widgeteditor/html/htmlfileeditor.cpp" line="73"/>
         <source>HTML Source</source>
-        <translation type="unfinished"></translation>
+        <translation>Source HTML</translation>
     </message>
     <message>
         <location filename="../editors/widgeteditor/html/htmlfileeditor.cpp" line="74"/>
         <source>Web View</source>
-        <translation type="unfinished"></translation>
+        <translation>Vue navigateur</translation>
     </message>
 </context>
 <context>
@@ -304,17 +304,17 @@
     <message>
         <location filename="../editors/models/xsl/importitemmodelfactory.cpp" line="82"/>
         <source>Directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Dossier</translation>
     </message>
     <message>
         <location filename="../editors/models/xsl/importitemmodelfactory.cpp" line="87"/>
         <source>File</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichier</translation>
     </message>
     <message>
         <location filename="../editors/models/xsl/importitemmodelfactory.cpp" line="92"/>
         <source>Import</source>
-        <translation type="unfinished"></translation>
+        <translation>Import</translation>
     </message>
 </context>
 <context>
@@ -322,7 +322,7 @@
     <message>
         <location filename="../actions/texteditoractions.cpp" line="211"/>
         <source>Indent Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Indenter le code</translation>
     </message>
 </context>
 <context>
@@ -330,37 +330,37 @@
     <message>
         <location filename="../editors/models/html_xsl_base/itemmodelfactory.cpp" line="103"/>
         <source>XML Style Sheet Nodes</source>
-        <translation type="unfinished"></translation>
+        <translation>Noeuds de feuille de style XML</translation>
     </message>
     <message>
         <location filename="../editors/models/html_xsl_base/itemmodelfactory.cpp" line="103"/>
         <source>HTML Nodes</source>
-        <translation type="unfinished"></translation>
+        <translation>Noeuds HTML</translation>
     </message>
     <message>
         <location filename="../editors/models/html_xsl_base/itemmodelfactory.cpp" line="103"/>
         <source>XML Namespace</source>
-        <translation type="unfinished"></translation>
+        <translation>Espace de nom XML</translation>
     </message>
     <message>
         <location filename="../editors/models/html_xsl_base/itemmodelfactory.cpp" line="212"/>
         <source>Namespace</source>
-        <translation type="unfinished"></translation>
+        <translation>Espace de nom</translation>
     </message>
     <message>
         <location filename="../editors/models/xsl/itemmodelfactory.cpp" line="156"/>
         <source>Template Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Mode de Template</translation>
     </message>
     <message>
         <location filename="../editors/models/xsl/itemmodelfactory.cpp" line="205"/>
         <source>Template %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Template %1</translation>
     </message>
     <message>
         <location filename="../editors/models/xsl/itemmodelfactory.cpp" line="295"/>
         <source>Local</source>
-        <translation type="unfinished"></translation>
+        <translation>Local</translation>
     </message>
 </context>
 <context>
@@ -368,12 +368,12 @@
     <message>
         <location filename="../plugindefinition/filetypeplugin.cpp" line="248"/>
         <source>JavaScript</source>
-        <translation type="unfinished"></translation>
+        <translation>JavaScript</translation>
     </message>
     <message>
         <location filename="../plugindefinition/filetypeplugin.cpp" line="309"/>
         <source>noname</source>
-        <translation type="unfinished"></translation>
+        <translation>sansnom</translation>
     </message>
 </context>
 <context>
@@ -381,12 +381,12 @@
     <message>
         <location filename="../actions/texteditoractions.cpp" line="155"/>
         <source>&amp;Lower Case</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Minuscule</translation>
     </message>
     <message>
         <location filename="../actions/texteditoractions.cpp" line="157"/>
         <source>Make the selected character lower case</source>
-        <translation type="unfinished"></translation>
+        <translation>Passe les caractères selectionnés en minuscule</translation>
     </message>
 </context>
 <context>
@@ -394,7 +394,7 @@
     <message>
         <location filename="../pluginresolver/manualfileresolver.cpp" line="49"/>
         <source>Manual Resolver</source>
-        <translation type="unfinished"></translation>
+        <translation>Resolver manuel</translation>
     </message>
 </context>
 <context>
@@ -403,13 +403,13 @@
         <location filename="../actions/validationaction.cpp" line="49"/>
         <location filename="../actions/validationaction.cpp" line="52"/>
         <source>XML Validation</source>
-        <translation type="unfinished"></translation>
+        <translation>Validation XML</translation>
     </message>
     <message>
         <location filename="../actions/validationaction.cpp" line="49"/>
         <location filename="../actions/validationaction.cpp" line="52"/>
         <source>Line %1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Ligne %1 : %2</translation>
     </message>
 </context>
 <context>
@@ -417,12 +417,12 @@
     <message>
         <location filename="../actions/texteditoractions.cpp" line="103"/>
         <source>&amp;Move line down</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Déplacer la ligne vers le bas</translation>
     </message>
     <message>
         <location filename="../actions/texteditoractions.cpp" line="105"/>
         <source>Move the current line down</source>
-        <translation type="unfinished"></translation>
+        <translation>Déplacer la ligne courante vers le bas</translation>
     </message>
 </context>
 <context>
@@ -430,12 +430,12 @@
     <message>
         <location filename="../actions/texteditoractions.cpp" line="82"/>
         <source>&amp;Move line up</source>
-        <translation type="unfinished"></translation>
+        <translation>Dé&amp;placer vers le haut</translation>
     </message>
     <message>
         <location filename="../actions/texteditoractions.cpp" line="84"/>
         <source>Move the current line up</source>
-        <translation type="unfinished"></translation>
+        <translation>Déplacer la ligne courante vers le haut</translation>
     </message>
 </context>
 <context>
@@ -443,7 +443,7 @@
     <message>
         <location filename="../actions/bookmarkactions.cpp" line="48"/>
         <source>&amp;Next bookmark</source>
-        <translation type="unfinished"></translation>
+        <translation>Signet s&amp;uivant</translation>
     </message>
 </context>
 <context>
@@ -451,7 +451,7 @@
     <message>
         <location filename="../editors/models/xsl/stylesheet_paramnode.cpp" line="39"/>
         <source>Xsl Parameter</source>
-        <translation type="unfinished"></translation>
+        <translation>Paramètre Xsl</translation>
     </message>
 </context>
 <context>
@@ -459,7 +459,7 @@
     <message>
         <location filename="../editors/models/js/jscontentviewparser.cpp" line="80"/>
         <source>Can&apos;t attach variable to function ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne peux attacher une variable à la fonction ?</translation>
     </message>
     <message>
         <location filename="../editors/models/js/jscontentviewparser.cpp" line="92"/>
@@ -468,33 +468,33 @@
         <location filename="../editors/models/js/jscontentviewparser.cpp" line="386"/>
         <location filename="../editors/models/js/jscontentviewparser.cpp" line="395"/>
         <source>End of file is prematured</source>
-        <translation type="unfinished"></translation>
+        <translation>Fin de fichier prématurée</translation>
     </message>
     <message>
         <location filename="../editors/models/js/jscontentviewparser.cpp" line="113"/>
         <source>Too many &apos;}&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Trop de &apos;}&apos;</translation>
     </message>
     <message>
         <location filename="../editors/models/js/jscontentviewparser.cpp" line="117"/>
         <source>I wait something but i don&apos;t know what !</source>
-        <translation type="unfinished"></translation>
+        <translation>J&apos;attends quelque chose mais je ne sais pas quoi !</translation>
     </message>
     <message>
         <location filename="../editors/models/js/jscontentviewparser.cpp" line="328"/>
         <source>I wait an identifier</source>
-        <translation type="unfinished"></translation>
+        <translation>J&apos;attend un identificateur</translation>
     </message>
     <message>
         <location filename="../editors/models/js/jscontentviewparser.cpp" line="350"/>
         <location filename="../editors/models/js/jscontentviewparser.cpp" line="373"/>
         <source>I wait an identifier.</source>
-        <translation type="unfinished"></translation>
+        <translation>J&apos;attend un identificateur.</translation>
     </message>
     <message>
         <location filename="../editors/models/js/jscontentviewparser.cpp" line="380"/>
         <source>I wait a &apos;(&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>J&apos;attend un &apos;(&apos;</translation>
     </message>
 </context>
 <context>
@@ -502,12 +502,12 @@
     <message>
         <location filename="../pluginproperty/parserprojectproperty.ui" line="14"/>
         <source>Xml/Xsl Project Property</source>
-        <translation type="unfinished"></translation>
+        <translation>Propriété projet Xml/Xsl</translation>
     </message>
     <message>
         <location filename="../pluginproperty/parserprojectproperty.ui" line="20"/>
         <source>Directory used to find CSS, JS and Image files :</source>
-        <translation type="unfinished"></translation>
+        <translation>Dossier utilisé pour trouver des CSS, JS et fichiers images :</translation>
     </message>
 </context>
 <context>
@@ -515,12 +515,12 @@
     <message>
         <location filename="../actions/clipboardactions.cpp" line="67"/>
         <source>&amp;Paste</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Coller</translation>
     </message>
     <message>
         <location filename="../actions/clipboardactions.cpp" line="69"/>
         <source>Paste the clipboard&apos;s contents</source>
-        <translation type="unfinished"></translation>
+        <translation>Colle le contenu du presse-papier</translation>
     </message>
 </context>
 <context>
@@ -528,7 +528,7 @@
     <message>
         <location filename="../actions/bookmarkactions.cpp" line="83"/>
         <source>&amp;Previous bookmark</source>
-        <translation type="unfinished"></translation>
+        <translation>Signet &amp;précédent</translation>
     </message>
 </context>
 <context>
@@ -538,7 +538,8 @@
         <location filename="../editors/models/css/css_propertynode.cpp" line="60"/>
         <source>Element at line : %1
 Value = %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Elément à la ligne : %1
+Valeur = %2</translation>
     </message>
 </context>
 <context>
@@ -546,12 +547,12 @@ Value = %2</source>
     <message>
         <location filename="../actions/editoractions.cpp" line="49"/>
         <source>&amp;Redo</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Refaire</translation>
     </message>
     <message>
         <location filename="../actions/editoractions.cpp" line="51"/>
         <source>Redo the next action</source>
-        <translation type="unfinished"></translation>
+        <translation>Refaire l&apos;action suivante</translation>
     </message>
 </context>
 <context>
@@ -559,7 +560,7 @@ Value = %2</source>
     <message>
         <location filename="../actions/stylesheetaction.cpp" line="92"/>
         <source>Execute X-Query on the path</source>
-        <translation type="unfinished"></translation>
+        <translation>Executer la requête X-Query sur le chemin</translation>
     </message>
 </context>
 <context>
@@ -567,7 +568,7 @@ Value = %2</source>
     <message>
         <location filename="../pluginproperty/searchpathlistprjpageform.ui" line="14"/>
         <source>Search Path List Resolver</source>
-        <translation type="unfinished"></translation>
+        <translation>Resolver de recherche de chemin</translation>
     </message>
 </context>
 <context>
@@ -575,12 +576,12 @@ Value = %2</source>
     <message>
         <location filename="../actions/editoractions.cpp" line="69"/>
         <source>&amp;Select All</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Tout sélectionner</translation>
     </message>
     <message>
         <location filename="../actions/editoractions.cpp" line="71"/>
         <source>Select all the text of the current editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Selectionner tout le texte de l&apos;éditeur courant</translation>
     </message>
 </context>
 <context>
@@ -588,7 +589,7 @@ Value = %2</source>
     <message>
         <location filename="../actions/texteditoractions.cpp" line="186"/>
         <source>Show space and &amp;Tabulation</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher les espaces et les &amp;tabulation</translation>
     </message>
 </context>
 <context>
@@ -596,7 +597,7 @@ Value = %2</source>
     <message>
         <location filename="../actions/stylesheetaction.cpp" line="33"/>
         <source>Process stylesheet</source>
-        <translation type="unfinished"></translation>
+        <translation>Traitement de la feuille de style</translation>
     </message>
 </context>
 <context>
@@ -604,17 +605,17 @@ Value = %2</source>
     <message>
         <location filename="../editors/widgeteditor/xsl/xslfileeditor.cpp" line="83"/>
         <source>XSL Source</source>
-        <translation type="unfinished"></translation>
+        <translation>Source XSL</translation>
     </message>
     <message>
         <location filename="../editors/widgeteditor/xsl/xslfileeditor.cpp" line="84"/>
         <source>HTML Source</source>
-        <translation type="unfinished"></translation>
+        <translation>Source HTML</translation>
     </message>
     <message>
         <location filename="../editors/widgeteditor/xsl/xslfileeditor.cpp" line="85"/>
         <source>Web View</source>
-        <translation type="unfinished"></translation>
+        <translation>Vue navigateur</translation>
     </message>
 </context>
 <context>

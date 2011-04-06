@@ -347,7 +347,7 @@ void Parser::loadVariables(const ContentView3::NodePtr & parent, QIODevice * buf
 			nextIdentifier(buffer, type, name);
 
 			if (type != TOKEN_IDENTIFIER)
-				throw ContentView3::ParserException(tr("I wait an identifier."), m_line);
+				throw ContentView3::ParserException(tr("I wait an identifier"), m_line);
 
 			attacheNewVariableNode(parent, name, m_line);
 		}

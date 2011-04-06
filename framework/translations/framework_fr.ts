@@ -3723,47 +3723,47 @@ Cette assistant va convertir le projet à la dernière version de de XINX. L&apo
     <message>
         <location filename="../project/xinxprojectmanager.cpp" line="197"/>
         <source>Open a project file</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir un projet</translation>
     </message>
     <message>
         <location filename="../project/xinxprojectmanager.cpp" line="202"/>
         <source>Close project</source>
-        <translation type="unfinished"></translation>
+        <translation>Fermer le projet</translation>
     </message>
     <message>
         <location filename="../project/xinxprojectmanager.cpp" line="203"/>
         <source>Close the project file</source>
-        <translation type="unfinished"></translation>
+        <translation>Fermer le projet</translation>
     </message>
     <message>
         <location filename="../project/xinxprojectmanager.cpp" line="207"/>
         <source>Project &amp;property</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Propriété du projet</translation>
     </message>
     <message>
         <location filename="../project/xinxprojectmanager.cpp" line="208"/>
         <source>Show/Modify the property of the project</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher/Modifier les propriété du projet</translation>
     </message>
     <message>
         <location filename="../project/xinxprojectmanager.cpp" line="347"/>
         <source>Open the project ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir le projet ...</translation>
     </message>
     <message>
         <location filename="../project/xinxprojectmanager.cpp" line="356"/>
         <source>Close previous project</source>
-        <translation type="unfinished"></translation>
+        <translation>Fermer le projet précédent</translation>
     </message>
     <message>
         <location filename="../project/xinxprojectmanager.cpp" line="374"/>
         <source>Can&apos;t start a project at the step &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne peux ouvrir le projet à l&apos;étape &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../project/xinxprojectmanager.cpp" line="391"/>
         <source>Initialisation of the parser job</source>
-        <translation type="unfinished"></translation>
+        <translation>Initialisation de la tâche d&apos;analyse</translation>
     </message>
 </context>
 <context>
@@ -3776,32 +3776,32 @@ Cette assistant va convertir le projet à la dernière version de de XINX. L&apo
     <message>
         <location filename="../project/xinxprojectmanager.cpp" line="97"/>
         <source>Open a project</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvre un projet</translation>
     </message>
     <message>
         <location filename="../project/xinxprojectmanager.cpp" line="123"/>
         <source>Open project</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir un projet</translation>
     </message>
     <message>
         <location filename="../project/xinxprojectmanager.cpp" line="123"/>
         <source>Can&apos;t open project : %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne peux ouvrir le projet : %1</translation>
     </message>
     <message>
         <location filename="../project/xinxprojectmanager.cpp" line="139"/>
         <source>&amp;Choose file ...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Choisir un fichier ...</translation>
     </message>
     <message>
         <location filename="../project/xinxprojectmanager.cpp" line="140"/>
         <source>Choose a project file</source>
-        <translation type="unfinished"></translation>
+        <translation>Choisir un projet</translation>
     </message>
     <message>
         <location filename="../project/xinxprojectmanager.cpp" line="141"/>
         <source>Choose a project file on the disk</source>
-        <translation type="unfinished"></translation>
+        <translation>Choisir un fichier projet sur le disque</translation>
     </message>
 </context>
 <context>
@@ -3809,43 +3809,43 @@ Cette assistant va convertir le projet à la dernière version de de XINX. L&apo
     <message>
         <location filename="../project/projectlistmodel.cpp" line="693"/>
         <source>Node for directory %1 not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Le noeud pour le dossier %1 n&apos;a pas été trouvé</translation>
     </message>
     <message>
         <location filename="../project/projectlistmodel.cpp" line="817"/>
         <source>Unknown</source>
-        <translation type="unfinished">Inconnu</translation>
+        <translation>Inconnu</translation>
     </message>
     <message>
         <location filename="../project/projectlistmodel.cpp" line="819"/>
         <source>Locally modified</source>
-        <translation type="unfinished">Modifié localement</translation>
+        <translation>Modifié localement</translation>
     </message>
     <message>
         <location filename="../project/projectlistmodel.cpp" line="821"/>
         <source>Locally added</source>
-        <translation type="unfinished">Ajouté localement</translation>
+        <translation>Ajouté localement</translation>
     </message>
     <message>
         <location filename="../project/projectlistmodel.cpp" line="823"/>
         <source>Locally removed</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimé localement</translation>
     </message>
     <message>
         <location filename="../project/projectlistmodel.cpp" line="825"/>
         <source>Has conflict</source>
-        <translation type="unfinished">En conflit</translation>
+        <translation>En conflit</translation>
     </message>
     <message>
         <location filename="../project/projectlistmodel.cpp" line="827"/>
         <location filename="../project/projectlistmodel.cpp" line="828"/>
         <source>No modified</source>
-        <translation type="unfinished">Non modifié</translation>
+        <translation>Non modifié</translation>
     </message>
     <message>
         <location filename="../project/projectlistmodel.cpp" line="827"/>
         <source>Need checkout</source>
-        <translation type="unfinished">Nécessite une mise à jour</translation>
+        <translation>Nécessite une mise à jour</translation>
     </message>
 </context>
 <context>
@@ -3854,36 +3854,36 @@ Cette assistant va convertir le projet à la dernière version de de XINX. L&apo
         <location filename="../project/xinxprojectproject.cpp" line="188"/>
         <source>Cannot read file %1:
 %2.</source>
-        <translation type="unfinished">Ne peut lire le fichier %1 :
+        <translation>Ne peut lire le fichier %1 :
 %2.</translation>
     </message>
     <message>
         <location filename="../project/xinxprojectproject.cpp" line="195"/>
         <source>Parse error at line %1, column %2:
 %3</source>
-        <translation type="unfinished">Erreur de syntaxe à la ligne %1, colonne %2:
+        <translation>Erreur de syntaxe à la ligne %1, colonne %2:
 %3</translation>
     </message>
     <message>
         <location filename="../project/xinxprojectproject.cpp" line="201"/>
         <source>The file isn&apos;t a XINX Project. The root name must be &quot;XinxProject&quot;, not &quot;%1&quot;.</source>
-        <translation type="unfinished">Ce fichier n&apos;est pas un projet XINX. Le noeud principal de l&apos;arbre doit être &quot;XinxProject&quot;, et non &quot;%1&quot;.</translation>
+        <translation>Ce fichier n&apos;est pas un projet XINX. Le noeud principal de l&apos;arbre doit être &quot;XinxProject&quot;, et non &quot;%1&quot;.</translation>
     </message>
     <message>
         <location filename="../project/xinxprojectproject.cpp" line="205"/>
         <source>The file is a too recent XINX Project</source>
-        <translation type="unfinished">Ce fichier est un projet trop récent</translation>
+        <translation>Ce fichier est un projet trop récent</translation>
     </message>
     <message>
         <location filename="../project/xinxprojectproject.cpp" line="207"/>
         <source>The project can&apos;t be opened. Please use the XINX Project Wizard.</source>
-        <translation type="unfinished">Ce projet ne peut pas être ouvert. Utilisez l&apos;assistant de migration des projets XINX, s&apos;il vous plait.</translation>
+        <translation>Ce projet ne peut pas être ouvert. Utilisez l&apos;assistant de migration des projets XINX, s&apos;il vous plait.</translation>
     </message>
     <message>
         <location filename="../project/xinxprojectproject.cpp" line="278"/>
         <source>Cannot write file %1:
 %2.</source>
-        <translation type="unfinished">Ne peut écrire le fichier %1:
+        <translation>Ne peut écrire le fichier %1:
 %2.</translation>
     </message>
 </context>
@@ -3892,7 +3892,7 @@ Cette assistant va convertir le projet à la dernière version de de XINX. L&apo
     <message>
         <location filename="../project/xinxprojectproject.cpp" line="314"/>
         <source>The project must be created in a existing directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Le projet doit être créé dans un dossier existant</translation>
     </message>
 </context>
 <context>
@@ -3903,13 +3903,17 @@ Cette assistant va convertir le projet à la dernière version de de XINX. L&apo
 Date in Version Control : %1
 Status : %2
 Version : %3</source>
-        <translation type="unfinished"></translation>
+        <translation>
+Date dans le gestionnaire de version : %1
+Status : %2
+Version : %3</translation>
     </message>
     <message>
         <location filename="../project/projectlistmodel.cpp" line="1116"/>
         <source>Filename : %1
 Date of file : %2%3</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom du fichier : %1
+Date du fichier : %2%3</translation>
     </message>
 </context>
 <context>
@@ -3941,39 +3945,39 @@ Date of file : %2%3</source>
         <location filename="../session/sessionmanager.cpp" line="69"/>
         <location filename="../session/sessionmanager.cpp" line="74"/>
         <source>Create a new session</source>
-        <translation type="unfinished"></translation>
+        <translation>Création d&apos;une nouvelle session</translation>
     </message>
     <message>
         <location filename="../session/sessionmanager.cpp" line="69"/>
         <source>Name of the new session</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom de la nouvelle session</translation>
     </message>
     <message>
         <location filename="../session/sessionmanager.cpp" line="74"/>
         <location filename="../session/sessionmanager.cpp" line="90"/>
         <source>The name %1 is already used by another session</source>
-        <translation type="unfinished"></translation>
+        <translation>Le nom %1 est déjà utilisé par une autre session</translation>
     </message>
     <message>
         <location filename="../session/sessionmanager.cpp" line="85"/>
         <location filename="../session/sessionmanager.cpp" line="90"/>
         <source>Rename session</source>
-        <translation type="unfinished"></translation>
+        <translation>Renomme la session</translation>
     </message>
     <message>
         <location filename="../session/sessionmanager.cpp" line="85"/>
         <source>New name of the session</source>
-        <translation type="unfinished"></translation>
+        <translation>Nouveau nom de la session</translation>
     </message>
     <message>
         <location filename="../session/sessionmanager.cpp" line="101"/>
         <source>Delete a session</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprime une session</translation>
     </message>
     <message>
         <location filename="../session/sessionmanager.cpp" line="101"/>
         <source>Are you sure to delete the session %1 ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Êtes-vous sur de supprimer la session %1 ?</translation>
     </message>
 </context>
 <context>
@@ -3981,32 +3985,32 @@ Date of file : %2%3</source>
     <message>
         <location filename="../session/sessionmanager.cpp" line="148"/>
         <source>&amp;New session ...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Nouvelle session ...</translation>
     </message>
     <message>
         <location filename="../session/sessionmanager.cpp" line="149"/>
         <source>Create a new session (list of project)</source>
-        <translation type="unfinished"></translation>
+        <translation>Créer une nouvelle session (liste des projets)</translation>
     </message>
     <message>
         <location filename="../session/sessionmanager.cpp" line="153"/>
         <source>&amp;Remove session ...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Supprimer session ...</translation>
     </message>
     <message>
         <location filename="../session/sessionmanager.cpp" line="154"/>
         <source>Remove the current session</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer la session courante</translation>
     </message>
     <message>
         <location filename="../session/sessionmanager.cpp" line="158"/>
         <source>Rename session ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Renommer la session ...</translation>
     </message>
     <message>
         <location filename="../session/sessionmanager.cpp" line="159"/>
         <source>Change the name of the current session</source>
-        <translation type="unfinished"></translation>
+        <translation>Changer le nom de la session courante</translation>
     </message>
 </context>
 </TS>

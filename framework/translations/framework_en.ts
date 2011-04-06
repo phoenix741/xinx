@@ -3411,11 +3411,6 @@ This wizard will convert the project to the last version of XINX. Wizard must co
 <context>
     <name>XinxProject::PrivateManager</name>
     <message>
-        <location filename="../project/xinxprojectmanager.cpp" line="83"/>
-        <source>&amp;%1 %2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../project/xinxprojectmanager.cpp" line="97"/>
         <source>Open a project</source>
         <translation type="unfinished"></translation>

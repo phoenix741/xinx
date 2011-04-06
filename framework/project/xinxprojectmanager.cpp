@@ -80,7 +80,7 @@ void PrivateManager::updateRecentProjects()
 			projectName = QFileInfo(filename).fileName();
 		}
 
-		QString text = tr("&%1 %2").arg(i + 1).arg(projectName);
+		QString text = QString("&%1 %2").arg(i + 1).arg(projectName);
 		_recent_actions[i]->setText(text);
 		_recent_actions[i]->setData(XINXConfig::self()->config().project.recentProjectFiles[i]);
 		_recent_actions[i]->setVisible(true);

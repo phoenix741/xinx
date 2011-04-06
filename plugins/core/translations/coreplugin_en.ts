@@ -482,11 +482,11 @@
     </message>
     <message>
         <location filename="../editors/models/js/jscontentviewparser.cpp" line="328"/>
+        <location filename="../editors/models/js/jscontentviewparser.cpp" line="350"/>
         <source>I wait an identifier</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/models/js/jscontentviewparser.cpp" line="350"/>
         <location filename="../editors/models/js/jscontentviewparser.cpp" line="373"/>
         <source>I wait an identifier.</source>
         <translation type="unfinished"></translation>
