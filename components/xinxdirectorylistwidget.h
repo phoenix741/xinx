@@ -28,11 +28,11 @@ class COMPONENTSEXPORT XinxDirectoryListWidget : public XinxListWidgetImpl
 {
 	Q_OBJECT
 public:
-    XinxDirectoryListWidget(QWidget* parent = 0, Qt::WindowFlags f = 0);
-    virtual ~XinxDirectoryListWidget();
+	XinxDirectoryListWidget(QWidget* parent = 0, Qt::WindowFlags f = 0);
+	virtual ~XinxDirectoryListWidget();
 
 protected:
-    virtual QString addNewValue();
+	virtual QString addNewValue();
 
 private:
 	QScopedPointer<XinxDirectoryListWidgetPrivate> d;
