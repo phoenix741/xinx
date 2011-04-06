@@ -6,17 +6,17 @@
     <message>
         <location filename="../cvsplugin.cpp" line="56"/>
         <source>Wrapper of CVS</source>
-        <translation type="unfinished"></translation>
+        <translation>Encapsulation de CVS</translation>
     </message>
     <message>
         <location filename="../cvsplugin.cpp" line="58"/>
         <source>Enable using CVS as a wrapper of the cvs commande.</source>
-        <translation type="unfinished"></translation>
+        <translation>Active l&apos;utilisation de CVS comme une encapsulation de la commande cvs.</translation>
     </message>
     <message>
         <location filename="../cvsplugin.cpp" line="104"/>
         <source>CVS - Concurent Version System</source>
-        <translation type="unfinished"></translation>
+        <translation>CVS - Concurent Version System</translation>
     </message>
 </context>
 <context>
@@ -24,97 +24,97 @@
     <message>
         <location filename="../ui/customize.ui" line="14"/>
         <source>Customization of CVS Plugin</source>
-        <translation type="unfinished"></translation>
+        <translation>Personnalisation du plugin CVS</translation>
     </message>
     <message>
         <location filename="../ui/customize.ui" line="20"/>
         <source>Progress message: </source>
-        <translation type="unfinished"></translation>
+        <translation>Message de progression :</translation>
     </message>
     <message>
         <location filename="../ui/customize.ui" line="31"/>
         <source>Very Quiet (-Q)</source>
-        <translation type="unfinished"></translation>
+        <translation>Vraiment silencieux (-Q)</translation>
     </message>
     <message>
         <location filename="../ui/customize.ui" line="36"/>
         <source>Discret (-q)</source>
-        <translation type="unfinished"></translation>
+        <translation>Discret (-q)</translation>
     </message>
     <message>
         <location filename="../ui/customize.ui" line="41"/>
         <source>Verbose</source>
-        <translation type="unfinished"></translation>
+        <translation>Bavard</translation>
     </message>
     <message>
         <location filename="../ui/customize.ui" line="49"/>
         <source>Compression:</source>
-        <translation type="unfinished"></translation>
+        <translation>Compression :</translation>
     </message>
     <message>
         <location filename="../ui/customize.ui" line="60"/>
         <source>-z0 Disabled </source>
-        <translation type="unfinished"></translation>
+        <translation>-z0 Désactivé</translation>
     </message>
     <message>
         <location filename="../ui/customize.ui" line="65"/>
         <source>-z1 Low level</source>
-        <translation type="unfinished"></translation>
+        <translation>-z1 Faible</translation>
     </message>
     <message>
         <location filename="../ui/customize.ui" line="70"/>
         <source>-z2</source>
-        <translation type="unfinished"></translation>
+        <translation>-z2</translation>
     </message>
     <message>
         <location filename="../ui/customize.ui" line="75"/>
         <source>-z3</source>
-        <translation type="unfinished"></translation>
+        <translation>-z3</translation>
     </message>
     <message>
         <location filename="../ui/customize.ui" line="80"/>
         <source>-z4</source>
-        <translation type="unfinished"></translation>
+        <translation>-z4</translation>
     </message>
     <message>
         <location filename="../ui/customize.ui" line="85"/>
         <source>-z5 Medium Level</source>
-        <translation type="unfinished"></translation>
+        <translation>-z5 Intermédiare</translation>
     </message>
     <message>
         <location filename="../ui/customize.ui" line="90"/>
         <source>-z6</source>
-        <translation type="unfinished"></translation>
+        <translation>-z6</translation>
     </message>
     <message>
         <location filename="../ui/customize.ui" line="95"/>
         <source>-z7</source>
-        <translation type="unfinished"></translation>
+        <translation>-z7</translation>
     </message>
     <message>
         <location filename="../ui/customize.ui" line="100"/>
         <source>-z8</source>
-        <translation type="unfinished"></translation>
+        <translation>-z8</translation>
     </message>
     <message>
         <location filename="../ui/customize.ui" line="105"/>
         <source>-z9 High level</source>
-        <translation type="unfinished"></translation>
+        <translation>-z9 Forte</translation>
     </message>
     <message>
         <location filename="../ui/customize.ui" line="113"/>
         <source>Prune empty directories. (-P)</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer les dossiers vide (-P)</translation>
     </message>
     <message>
         <location filename="../ui/customize.ui" line="120"/>
         <source>Create missing directories. (-d)</source>
-        <translation type="unfinished"></translation>
+        <translation>Création des dossiers manquant (-d)</translation>
     </message>
     <message>
         <location filename="../customizeplugin.cpp" line="40"/>
         <source>CVS</source>
-        <translation type="unfinished"></translation>
+        <translation>CVS</translation>
     </message>
 </context>
 <context>
@@ -122,37 +122,37 @@
     <message>
         <location filename="../rcs_cvs.cpp" line="223"/>
         <source>Update terminated</source>
-        <translation type="unfinished"></translation>
+        <translation>Mise à jour terminée</translation>
     </message>
     <message>
         <location filename="../rcs_cvs.cpp" line="252"/>
         <source>Update to revision %1 terminated</source>
-        <translation type="unfinished"></translation>
+        <translation>Mise à jour à la révision %1 terminé</translation>
     </message>
     <message>
         <location filename="../rcs_cvs.cpp" line="269"/>
         <source>Files commited :</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichiers validés :</translation>
     </message>
     <message>
         <location filename="../rcs_cvs.cpp" line="283"/>
         <source>Commit terminated</source>
-        <translation type="unfinished"></translation>
+        <translation>Validation terminée</translation>
     </message>
     <message>
         <location filename="../rcs_cvs.cpp" line="302"/>
         <source>Add terminated</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajout terminé</translation>
     </message>
     <message>
         <location filename="../rcs_cvs.cpp" line="321"/>
         <source>Remove terminated</source>
-        <translation type="unfinished"></translation>
+        <translation>Suppression terminé</translation>
     </message>
     <message>
         <location filename="../rcs_cvs.cpp" line="339"/>
         <source>I&apos;M A PROCESS KILLER</source>
-        <translation type="unfinished"></translation>
+        <translation>Je suis un tueur d&apos;application</translation>
     </message>
 </context>
 </TS>

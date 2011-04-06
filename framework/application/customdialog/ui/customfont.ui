@@ -84,96 +84,6 @@
      <property name="whatsThis">
       <string>Color used for highlight same word</string>
      </property>
-     <item>
-      <property name="text">
-       <string>Custom...</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Red</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Green</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Blue</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Cyan</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Magenta</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Yellow</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Dark Red</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Dark Green</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Dark Blue</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Dark Cyan</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Dark Magenta</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Dark Yellow</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>White</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Light Gray</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Gray</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Dark Gray</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Black</string>
-      </property>
-     </item>
     </widget>
    </item>
    <item row="5" column="0" colspan="2">
@@ -225,9 +135,6 @@
    <header>xinxcolorcombo.h</header>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="../../../components/xinxpluginselector.qrc"/>
-  <include location="../../application.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

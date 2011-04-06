@@ -13,9 +13,6 @@
   <property name="focusPolicy">
    <enum>Qt::StrongFocus</enum>
   </property>
-  <property name="windowTitle">
-   <string>WizardPage</string>
-  </property>
   <property name="title">
    <string>Define informations used by the Generix module of XINX</string>
   </property>

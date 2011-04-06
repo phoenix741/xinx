@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>428</width>
-    <height>150</height>
+    <height>157</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,7 +27,7 @@
    <item row="1" column="0" colspan="2">
     <widget class="QLabel" name="_repository_path">
      <property name="text">
-      <string>http://</string>
+      <string notr="true">http://</string>
      </property>
     </widget>
    </item>

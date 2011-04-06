@@ -6,12 +6,12 @@
     <message>
         <location filename="../empty.cpp" line="50"/>
         <source>XINX Demo Empty Plugin</source>
-        <translation type="unfinished"></translation>
+        <translation>Plugin de demonstration vide de XINX</translation>
     </message>
     <message>
         <location filename="../empty.cpp" line="52"/>
         <source>This small plugin do nothing and is just a demo</source>
-        <translation type="unfinished"></translation>
+        <translation>C&apos;est un petit plugin qui ne fait rien, juste une démonstration</translation>
     </message>
 </context>
 </TS>

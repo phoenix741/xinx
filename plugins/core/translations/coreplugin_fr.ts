@@ -624,19 +624,20 @@ Valeur = %2</translation>
         <location filename="../editors/models/xsl/stylesheet_templatenode.cpp" line="39"/>
         <location filename="../editors/models/xsl/stylesheet_templatenode.cpp" line="73"/>
         <source>Xsl Template</source>
-        <translation type="unfinished"></translation>
+        <translation>Template Xsl</translation>
     </message>
     <message>
         <location filename="../editors/models/xsl/stylesheet_templatenode.cpp" line="50"/>
         <location filename="../editors/models/xsl/stylesheet_templatenode.cpp" line="56"/>
         <source>Element at line : %1
 Mode = %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Elément à la ligne : %1
+Valeur = %2</translation>
     </message>
     <message>
         <location filename="../editors/models/xsl/stylesheet_templatenode.cpp" line="69"/>
         <source>Xsl named Template</source>
-        <translation type="unfinished"></translation>
+        <translation>Template Xsl nommé </translation>
     </message>
 </context>
 <context>
@@ -644,12 +645,12 @@ Mode = %2</source>
     <message>
         <location filename="../plugindefinition/filetypeplugin.cpp" line="34"/>
         <source>Text File</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichier texte</translation>
     </message>
     <message>
         <location filename="../plugindefinition/filetypeplugin.cpp" line="86"/>
         <source>noname</source>
-        <translation type="unfinished"></translation>
+        <translation>sansnom</translation>
     </message>
 </context>
 <context>
@@ -657,17 +658,17 @@ Mode = %2</source>
     <message>
         <location filename="../actions/commentactions.cpp" line="69"/>
         <source>&amp;Uncomment</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Décommenter</translation>
     </message>
     <message>
         <location filename="../actions/commentactions.cpp" line="71"/>
         <source>Uncomment the selected text if commented</source>
-        <translation type="unfinished"></translation>
+        <translation>Décommente le texte selectionné si commenté</translation>
     </message>
     <message>
         <location filename="../actions/commentactions.cpp" line="72"/>
         <source>See the comment helper function</source>
-        <translation type="unfinished"></translation>
+        <translation>Voir l&apos;aide de la fonction d&apos;ajout de commentaire</translation>
     </message>
 </context>
 <context>
@@ -675,12 +676,12 @@ Mode = %2</source>
     <message>
         <location filename="../actions/editoractions.cpp" line="29"/>
         <source>&amp;Undo</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Défaire</translation>
     </message>
     <message>
         <location filename="../actions/editoractions.cpp" line="31"/>
         <source>Undo the last action</source>
-        <translation type="unfinished"></translation>
+        <translation>Défait la dernière action</translation>
     </message>
 </context>
 <context>
@@ -688,7 +689,7 @@ Mode = %2</source>
     <message>
         <location filename="../actions/texteditoractions.cpp" line="232"/>
         <source>Unindent code</source>
-        <translation type="unfinished"></translation>
+        <translation>Désindente le code</translation>
     </message>
 </context>
 <context>
@@ -696,12 +697,12 @@ Mode = %2</source>
     <message>
         <location filename="../actions/texteditoractions.cpp" line="124"/>
         <source>&amp;Upper Case</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Majuscule</translation>
     </message>
     <message>
         <location filename="../actions/texteditoractions.cpp" line="126"/>
         <source>Make the selected character upper case</source>
-        <translation type="unfinished"></translation>
+        <translation>Passe le texte selectionné en majuscule</translation>
     </message>
 </context>
 <context>
@@ -709,23 +710,23 @@ Mode = %2</source>
     <message>
         <location filename="../actions/validationaction.cpp" line="61"/>
         <source>&amp;Validate ...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Valide ...</translation>
     </message>
     <message>
         <location filename="../actions/validationaction.cpp" line="78"/>
         <location filename="../actions/validationaction.cpp" line="98"/>
         <source>XML Validation</source>
-        <translation type="unfinished"></translation>
+        <translation>Validation XML</translation>
     </message>
     <message>
         <location filename="../actions/validationaction.cpp" line="78"/>
         <source>Schemas (*.xsd)</source>
-        <translation type="unfinished"></translation>
+        <translation>Schémas (*.xsd)</translation>
     </message>
     <message>
         <location filename="../actions/validationaction.cpp" line="98"/>
         <source>File validate with success</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichier validé avec succé</translation>
     </message>
 </context>
 <context>
@@ -733,7 +734,7 @@ Mode = %2</source>
     <message>
         <location filename="../editors/models/html_xsl_base/definition_valuenode.cpp" line="45"/>
         <source>Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Valeur</translation>
     </message>
 </context>
 <context>
@@ -741,14 +742,15 @@ Mode = %2</source>
     <message>
         <location filename="../editors/models/xsl/stylesheet_variablenode.cpp" line="43"/>
         <source>Xsl Variable</source>
-        <translation type="unfinished"></translation>
+        <translation>Variable Xsl</translation>
     </message>
     <message>
         <location filename="../editors/models/xsl/stylesheet_variablenode.cpp" line="54"/>
         <location filename="../editors/models/xsl/stylesheet_variablenode.cpp" line="60"/>
         <source>Element at line : %1
 Value = %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Elément à la ligne : %1
+Valeur = %2</translation>
     </message>
 </context>
 <context>
@@ -756,17 +758,17 @@ Value = %2</source>
     <message>
         <location filename="../pluginproperty/parserprojectpropertyimpl.cpp" line="97"/>
         <source>Web Module Property Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Page des propriété du web module</translation>
     </message>
     <message>
         <location filename="../pluginproperty/parserprojectpropertyimpl.cpp" line="98"/>
         <source>Define information about the web module, like the directory where find JS, Image and CSS.</source>
-        <translation type="unfinished"></translation>
+        <translation>Définit les informations à propos du web module, comme le dossier où on peux trouver les JS, images et CSS.</translation>
     </message>
     <message>
         <location filename="../pluginproperty/parserprojectpropertyimpl.cpp" line="102"/>
         <source>Directory used to find CSS, JS and Image files :</source>
-        <translation type="unfinished"></translation>
+        <translation>Dossier utilisé pour trouver les CSS, JS et les fichiers images :</translation>
     </message>
 </context>
 <context>
@@ -774,12 +776,12 @@ Value = %2</source>
     <message>
         <location filename="../plugindefinition/filetypeplugin.cpp" line="98"/>
         <source>XML File</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichier XML</translation>
     </message>
     <message>
         <location filename="../plugindefinition/filetypeplugin.cpp" line="166"/>
         <source>noname</source>
-        <translation type="unfinished"></translation>
+        <translation>sansnom</translation>
     </message>
 </context>
 <context>
@@ -787,12 +789,12 @@ Value = %2</source>
     <message>
         <location filename="../plugindefinition/filetypeplugin.cpp" line="404"/>
         <source>XQuery</source>
-        <translation type="unfinished"></translation>
+        <translation>XQuery</translation>
     </message>
     <message>
         <location filename="../plugindefinition/filetypeplugin.cpp" line="483"/>
         <source>noname</source>
-        <translation type="unfinished"></translation>
+        <translation>sansnom</translation>
     </message>
 </context>
 <context>
@@ -800,17 +802,17 @@ Value = %2</source>
     <message>
         <location filename="../docks/datastream/xquery.ui" line="14"/>
         <source>Evaluate X-PATH</source>
-        <translation type="unfinished"></translation>
+        <translation>Evaluer le X-PATH</translation>
     </message>
     <message>
         <location filename="../docks/datastream/xquery.ui" line="20"/>
         <source>Your Query</source>
-        <translation type="unfinished"></translation>
+        <translation>Votre requête</translation>
     </message>
     <message>
         <location filename="../docks/datastream/xquery.ui" line="26"/>
         <source>&amp;Current X-PATH :</source>
-        <translation type="unfinished"></translation>
+        <translation>X-PATH &amp;Courrant :</translation>
     </message>
     <message>
         <location filename="../docks/datastream/xquery.ui" line="41"/>
@@ -845,12 +847,12 @@ Value = %2</source>
     <message>
         <location filename="../docks/datastream/xquery.ui" line="85"/>
         <source>&amp;Query :</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Requête :</translation>
     </message>
     <message>
         <location filename="../docks/datastream/xquery.ui" line="101"/>
         <source>&amp;Result (encapsulated in the Result balise)</source>
-        <translation type="unfinished"></translation>
+        <translation>R&amp;esultat (encapsulé dans une balise Result)</translation>
     </message>
 </context>
 <context>
@@ -858,17 +860,17 @@ Value = %2</source>
     <message>
         <location filename="../docks/datastream/xquerydialogimpl.cpp" line="128"/>
         <source>&amp;Evaluate</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Evaluer</translation>
     </message>
     <message>
         <location filename="../docks/datastream/xquerydialogimpl.cpp" line="157"/>
         <source>Error while opening presentation file : %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur lors de l&apos;ouverture du fichier de présentation : &quot;%1</translation>
     </message>
     <message>
         <location filename="../docks/datastream/xquerydialogimpl.cpp" line="189"/>
         <source>Resolved in %1 ms</source>
-        <translation type="unfinished"></translation>
+        <translation>Résolu en %1 ms</translation>
     </message>
 </context>
 <context>
@@ -876,22 +878,22 @@ Value = %2</source>
     <message>
         <location filename="../docks/datastream/xquerydialogimpl.cpp" line="57"/>
         <source>Warning in %1, at line %2, column %3: %4</source>
-        <translation type="unfinished"></translation>
+        <translation>Attention dans %1, à la ligne %2, colonne %3 : %4</translation>
     </message>
     <message>
         <location filename="../docks/datastream/xquerydialogimpl.cpp" line="64"/>
         <source>Warning in %1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Attention dans %1 : %2</translation>
     </message>
     <message>
         <location filename="../docks/datastream/xquerydialogimpl.cpp" line="85"/>
         <source>Error %1 in %2, at line %3, column %4: %5</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur %1 dans %2, à la ligne %3, colonne %4 : %5</translation>
     </message>
     <message>
         <location filename="../docks/datastream/xquerydialogimpl.cpp" line="93"/>
         <source>Error %1 in %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur %1 dans %2 : %3</translation>
     </message>
 </context>
 <context>
@@ -899,12 +901,12 @@ Value = %2</source>
     <message>
         <location filename="../plugindefinition/filetypeplugin.cpp" line="179"/>
         <source>XSL Stylesheet</source>
-        <translation type="unfinished"></translation>
+        <translation>Feuille de style XSL</translation>
     </message>
     <message>
         <location filename="../plugindefinition/filetypeplugin.cpp" line="204"/>
         <source>noname</source>
-        <translation type="unfinished"></translation>
+        <translation>sansnom</translation>
     </message>
 </context>
 <context>
@@ -917,22 +919,22 @@ Value = %2</source>
     <message>
         <location filename="../config/xmlpresconfigform.ui" line="22"/>
         <source>&amp;Default expand path :</source>
-        <translation type="unfinished"></translation>
+        <translation>Chemin à afficher par &amp;défaut :</translation>
     </message>
     <message>
         <location filename="../config/xmlpresconfigform.ui" line="32"/>
         <source>This is the path where the view must begin. Generally the first node is the root path (ie. &lt;i&gt;/layout_data&lt;/i&gt;)</source>
-        <translation type="unfinished"></translation>
+        <translation>C&apos;est le chemin que la vue affichera par défaut lors de l&apos;ouverture d&apos;un flux de présentation. Généralement c&apos;est le premier noeud de votre arbre (par exemple : &lt;i&gt;/layout_data&lt;/i&gt;)</translation>
     </message>
     <message>
         <location filename="../config/xmlpresconfigform.ui" line="41"/>
         <source>&amp;Element to hide :</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Element à cacher :</translation>
     </message>
     <message>
         <location filename="../config/xmlpresconfigform.ui" line="60"/>
         <source>&amp;Option</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Option</translation>
     </message>
     <message>
         <location filename="../config/xmlpresconfigform.ui" line="66"/>
@@ -941,12 +943,12 @@ Value = %2</source>
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;If checked, when the text is filtered, the list shows sub-elements of the node whose filter matches the node name.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Si coché, quand le text est filtré, la liste affiche les sous-éléments du noeud dont le filtre correspond a noeud rechercher</translation>
     </message>
     <message>
         <location filename="../config/xmlpresconfigform.ui" line="73"/>
         <source>&amp;Show sub-element of the corresponding node</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Afficher les sous-éléments du noeud recherché</translation>
     </message>
     <message>
         <location filename="../config/xmlpresconfigform.ui" line="80"/>
@@ -956,27 +958,32 @@ p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If checked the name attribute is added in &lt;span style=&quot; font-style:italic;&quot;&gt;XPATH&lt;/span&gt; if possible. &lt;/p&gt;
 &lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If checked the &lt;span style=&quot; font-style:italic;&quot;&gt;XPATH&lt;/span&gt; will be : &lt;span style=&quot; font-family:&apos;Courier New,courier&apos;;&quot;&gt;VueXXXX[@name=&apos;MyName&apos;]&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Si coché l&apos;attribut name est ajouté dans le &lt;span style=&quot; font-style:italic;&quot;&gt;XPATH&lt;/span&gt; s&apos;il existe. &lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Si coché, le &lt;span style=&quot; font-style:italic;&quot;&gt;XPATH&lt;/span&gt; ressemblera à ceci  : &lt;span style=&quot; font-family:&apos;Courier New,courier&apos;;&quot;&gt;VueXXXX[@name=&apos;MyName&apos;]&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../config/xmlpresconfigform.ui" line="88"/>
         <source>Show name attribute if it exists</source>
-        <translation type="unfinished"></translation>
+        <translation>Affiche l&apos;attribut name, s&apos;il existe</translation>
     </message>
     <message>
         <location filename="../config/xmlpresconfigform.ui" line="111"/>
         <source>&amp;Color</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Couleur</translation>
     </message>
     <message>
         <location filename="../config/xmlpresconfigform.ui" line="117"/>
         <source>&amp;View color :</source>
-        <translation type="unfinished"></translation>
+        <translation>Couleur d&apos;une &amp;vue :</translation>
     </message>
     <message>
         <location filename="../config/xmlpresconfigform.ui" line="127"/>
         <source>Color of the node of view type (Generally begins by &lt;i&gt;Vue...&lt;/i&gt;)</source>
-        <translation type="unfinished"></translation>
+        <translation>Couleur du noeud de type vue (Commençant générallement par &lt;i&gt;Vue...&lt;/i&gt;)</translation>
     </message>
     <message>
         <location filename="../config/xmlpresconfigform.ui" line="131"/>
@@ -1113,22 +1120,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../config/xmlpresconfigform.ui" line="319"/>
         <source>&amp;Error color :</source>
-        <translation type="unfinished"></translation>
+        <translation>Couleur des &amp;erreurs :</translation>
     </message>
     <message>
         <location filename="../config/xmlpresconfigform.ui" line="329"/>
         <source>Color of a node with a sub-element of name error.</source>
-        <translation type="unfinished"></translation>
+        <translation>Couleur des noeud avec un sous-élément portant le nom error.</translation>
     </message>
     <message>
         <location filename="../config/xmlpresconfigform.ui" line="521"/>
         <source>&amp;Screen data color :</source>
-        <translation type="unfinished"></translation>
+        <translation>Couleur des &amp;Screen_data :</translation>
     </message>
     <message>
         <location filename="../config/xmlpresconfigform.ui" line="531"/>
         <source>Color of a balise with a &lt;i&gt;screen_data&lt;/i&gt; node.</source>
-        <translation type="unfinished"></translation>
+        <translation>Couleur de la balise avec un noeud nommé &lt;i&gt;screen_data&lt;/i&gt;.</translation>
     </message>
 </context>
 <context>
@@ -1136,7 +1143,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../config/xmlpresconfigformimpl.cpp" line="45"/>
         <source>XML Pres.</source>
-        <translation type="unfinished"></translation>
+        <translation>Flux de donnée</translation>
     </message>
 </context>
 <context>
@@ -1144,7 +1151,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../docks/datastream/xmlpresentationdockthread.cpp" line="174"/>
         <source>Can&apos;t read file %1 because of error &quot;%2&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne peux lire le fichier %1 à cause de l&apos;erreur &quot;%2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -1152,7 +1159,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../docks/datastream/xmlpresentationdockwidget.cpp" line="35"/>
         <source>Xml Presentation</source>
-        <translation type="unfinished"></translation>
+        <translation>Flux de donnée</translation>
     </message>
 </context>
 <context>
@@ -1160,12 +1167,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../docks/datastream/xmlpresentationitem.cpp" line="159"/>
         <source>(empty)</source>
-        <translation type="unfinished"></translation>
+        <translation>(vide)</translation>
     </message>
     <message>
         <location filename="../docks/datastream/xmlpresentationitem.cpp" line="286"/>
         <source>Node</source>
-        <translation type="unfinished"></translation>
+        <translation>Noeud</translation>
     </message>
 </context>
 <context>
@@ -1173,28 +1180,29 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../docks/datastream/xmlpresentationwidget.ui" line="49"/>
         <source>&amp;Filtre :</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Filtre :</translation>
     </message>
     <message>
         <location filename="../docks/datastream/xmlpresentationwidget.ui" line="59"/>
         <source>Filter to use in the view. &lt;b&gt;XINX&lt;/b&gt; searches the node where the name matches the filter (literal or regular expression).</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtre à utiliser ans la vue. &lt;b&gt;XINX&lt;/b&gt; recherche les noeud dont le nom correspond au filtre (literallement ou suivant une expression rationnelle).</translation>
     </message>
     <message>
         <location filename="../docks/datastream/xmlpresentationwidget.ui" line="66"/>
         <source>If &lt;i&gt;Sub-element&lt;/i&gt; is selected when an element is found, all sub-elements are showed. &lt;br/&gt;
 If &lt;i&gt;None&lt;/i&gt; is selected only matched elements is showed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si  &lt;i&gt;Sous-élément&lt;/i&gt; est selectionné, quand un noeud est trouvé, tous les sous-éléments sont affiché.&lt;/br&gt;
+Si &lt;i&gt;Aucun&lt;/i&gt; est selectionné, seul les noeuds trouvé sont affiché.</translation>
     </message>
     <message>
         <location filename="../docks/datastream/xmlpresentationwidget.ui" line="71"/>
         <source>Sub-element</source>
-        <translation type="unfinished"></translation>
+        <translation>Sous-élément</translation>
     </message>
     <message>
         <location filename="../docks/datastream/xmlpresentationwidget.ui" line="76"/>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation>Aucun</translation>
     </message>
 </context>
 <context>
@@ -1202,7 +1210,7 @@ If &lt;i&gt;None&lt;/i&gt; is selected only matched elements is showed.</source>
     <message>
         <location filename="../editors/widgeteditor/xml/xmltexteditor.cpp" line="253"/>
         <source>No XML context type found. It&apos;s a problem</source>
-        <translation type="unfinished"></translation>
+        <translation>Pas de contenue de type XML trouvé. C&apos;est un problème</translation>
     </message>
 </context>
 <context>
@@ -1210,7 +1218,7 @@ If &lt;i&gt;None&lt;/i&gt; is selected only matched elements is showed.</source>
     <message>
         <location filename="../editors/widgeteditor/xsl/xsltexteditor.cpp" line="84"/>
         <source>No XML context type found. It&apos;s a problem</source>
-        <translation type="unfinished"></translation>
+        <translation>Pas de contenue de type XML trouvé. C&apos;est un problème</translation>
     </message>
 </context>
 </TS>

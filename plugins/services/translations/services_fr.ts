@@ -21,27 +21,27 @@
     <message>
         <location filename="../ui/servicesbatch.ui" line="14"/>
         <source>Web Services List</source>
-        <translation type="unfinished"></translation>
+        <translation>Liste des Services internet</translation>
     </message>
     <message>
         <location filename="../ui/servicesbatch.ui" line="20"/>
         <source>This list contains all web services files. This can be used to launch WebServices in parallele way.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cette liste contient tous les fichiers de type Service Internet. Cet écran peux être utilisé pour lancer les Services Internet en parrallèle.</translation>
     </message>
     <message>
         <location filename="../ui/servicesbatch.ui" line="40"/>
         <source>Execution time</source>
-        <translation type="unfinished"></translation>
+        <translation>Temps d&apos;éxecution</translation>
     </message>
     <message>
         <location filename="../ui/servicesbatch.ui" line="45"/>
         <source>Result</source>
-        <translation type="unfinished"></translation>
+        <translation>Résultat</translation>
     </message>
     <message>
         <location filename="../ui/servicesbatch.ui" line="50"/>
         <source>Errors</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreurs</translation>
     </message>
 </context>
 <context>
@@ -49,7 +49,7 @@
     <message>
         <location filename="../servicesbatchdialogimpl.cpp" line="28"/>
         <source>&amp;Launch</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Lancer</translation>
     </message>
 </context>
 <context>
@@ -73,7 +73,7 @@
     <message>
         <location filename="../servicesplugin.cpp" line="48"/>
         <source>Open WebServices project</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir un projet WebSerivces</translation>
     </message>
     <message>
         <location filename="../servicesplugin.cpp" line="85"/>
@@ -195,7 +195,7 @@
     <message>
         <location filename="../webservicesfiletype.h" line="64"/>
         <source>noname</source>
-        <translation type="unfinished"></translation>
+        <translation>sansnom</translation>
     </message>
 </context>
 <context>
@@ -221,7 +221,7 @@
     <message>
         <location filename="../webservicesaction.cpp" line="50"/>
         <source>Update WebServices List</source>
-        <translation type="unfinished">Mettre à jour la liste des Services Internet</translation>
+        <translation>Mettre à jour la liste des Services Internet</translation>
     </message>
 </context>
 <context>
@@ -229,7 +229,7 @@
     <message>
         <location filename="../webservicesaction.cpp" line="67"/>
         <source>Call the service</source>
-        <translation type="unfinished">Appeler un Service</translation>
+        <translation>Appeler un Service</translation>
     </message>
 </context>
 <context>
@@ -237,17 +237,17 @@
     <message>
         <location filename="../webservicesaction.cpp" line="96"/>
         <source>Launch multiple WebServices</source>
-        <translation type="unfinished"></translation>
+        <translation>Lancer plusieurs WebServices</translation>
     </message>
     <message>
         <location filename="../webservicesaction.cpp" line="125"/>
         <source>No editor opened</source>
-        <translation type="unfinished"></translation>
+        <translation>Pas d&apos;éditeur ouvert</translation>
     </message>
     <message>
         <location filename="../webservicesaction.cpp" line="125"/>
         <source>Please open all stream you want launch in a editor.</source>
-        <translation type="unfinished"></translation>
+        <translation>Veuillez ouvrir tous les flux métier que vous souhaitez lancer dans un éditeur.</translation>
     </message>
 </context>
 </TS>

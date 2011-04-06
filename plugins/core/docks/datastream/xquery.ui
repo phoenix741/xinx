@@ -38,42 +38,42 @@
         <item>
          <widget class="QPushButton" name="m_pushButtonCount">
           <property name="text">
-           <string>count()</string>
+           <string notr="true">count()</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="m_pushButtonSum">
           <property name="text">
-           <string>sum()</string>
+           <string notr="true">sum()</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="m_pushButtonFormatNumber">
           <property name="text">
-           <string>format-number()</string>
+           <string notr="true">format-number()</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="m_pushButtonConcat">
           <property name="text">
-           <string>concat()</string>
+           <string notr="true">concat()</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="m_pushButtonNormalize">
           <property name="text">
-           <string>normalize-space()</string>
+           <string notr="true">normalize-space()</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="m_pushButtonNot">
           <property name="text">
-           <string>not()</string>
+           <string notr="true">not()</string>
           </property>
          </widget>
         </item>

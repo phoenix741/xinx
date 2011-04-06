@@ -6,7 +6,7 @@
     <message>
         <location filename="../configuration/itemmodelfactory.cpp" line="43"/>
         <source>Alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Alias</translation>
     </message>
 </context>
 <context>
@@ -158,9 +158,9 @@
     <message numerus="yes">
         <location filename="../docks/dictionary/dictionarydockwidgetimpl.cpp" line="43"/>
         <source>%n label(s) loaded.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n libellé chargé.</numerusform>
+            <numerusform>%n libellés chargés</numerusform>
         </translation>
     </message>
     <message>
@@ -173,7 +173,7 @@
     <message>
         <location filename="../docks/dictionary/dictionarymodel.cpp" line="67"/>
         <source>Please type a prefix to list labels.</source>
-        <translation type="unfinished"></translation>
+        <translation>Veuillez entrer un prefix pour liste les libellés.</translation>
     </message>
 </context>
 <context>
@@ -215,12 +215,12 @@
     <message>
         <location filename="../configuration/gceconfigurationdefparser.cpp" line="63"/>
         <source>Can&apos;t open configurationdef file</source>
-        <translation type="unfinished">Ne peut ouvrir le fichier  configurationdef</translation>
+        <translation>Ne peut ouvrir le fichier  configurationdef</translation>
     </message>
     <message>
         <location filename="../configuration/gceconfigurationdefparser.cpp" line="67"/>
         <source>Can&apos;t read the content of the configurationdef file</source>
-        <translation type="unfinished">Ne peut lire le contenu du fichier configurationdef</translation>
+        <translation>Ne peut lire le contenu du fichier configurationdef</translation>
     </message>
 </context>
 <context>
@@ -228,7 +228,7 @@
     <message>
         <location filename="../configuration/gceparser.cpp" line="50"/>
         <source>Parse the configuration file %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Analyse du fichier de configuration %1</translation>
     </message>
 </context>
 <context>
@@ -251,17 +251,17 @@
     <message>
         <location filename="../configuration/gcepropertiesparser.cpp" line="67"/>
         <source>Can&apos;t open the gce properties file</source>
-        <translation type="unfinished">Ne peut ouvrir le fichier de propriété gce</translation>
+        <translation>Ne peut ouvrir le fichier de propriété gce</translation>
     </message>
     <message>
         <location filename="../configuration/gcepropertiesparser.cpp" line="75"/>
         <source>Can&apos;t read the root element of the gce properties file</source>
-        <translation type="unfinished">Ne peut lire l&apos;élément racine du fichier de propriété gce</translation>
+        <translation>Ne peut lire l&apos;élément racine du fichier de propriété gce</translation>
     </message>
     <message>
         <location filename="../configuration/gcepropertiesparser.cpp" line="84"/>
         <source>Unable to create new XPath context</source>
-        <translation type="unfinished">Ne peut pas créer le nouveau contexte du XPath</translation>
+        <translation>Ne peut pas créer le nouveau contexte du XPath</translation>
     </message>
 </context>
 <context>
@@ -269,18 +269,18 @@
     <message>
         <location filename="../docks/dictionary/dictionary_parser.cpp" line="77"/>
         <source>The file is not an dictionary file.</source>
-        <translation type="unfinished">Ce fichier n&apos;est pas un dictionnaire.</translation>
+        <translation>Ce fichier n&apos;est pas un dictionnaire.</translation>
     </message>
     <message>
         <location filename="../docks/dictionary/dictionary_parser.cpp" line="103"/>
         <location filename="../docks/dictionary/dictionary_parser.cpp" line="129"/>
         <source>Labels node expected. %1 found</source>
-        <translation type="unfinished">Noeud &quot;Labels&quot; attendu. %1 trouvé</translation>
+        <translation>Noeud &quot;Labels&quot; attendu. %1 trouvé</translation>
     </message>
     <message>
         <location filename="../docks/dictionary/dictionary_parser.cpp" line="157"/>
         <source>Label node expected. %1 found</source>
-        <translation type="unfinished">Noeud &quot;label&quot; attendu. %1 trouvé</translation>
+        <translation>Noeud &quot;label&quot; attendu. %1 trouvé</translation>
     </message>
 </context>
 <context>
@@ -311,7 +311,7 @@
     <message>
         <location filename="../projectproperty/std/generixderivationoptionspage.cpp" line="105"/>
         <source>A prefix must be filled if you want add a prefix to each derivated files</source>
-        <translation type="unfinished"></translation>
+        <translation>Un prefix doit être renseigné, si vous voulez ajouter un prefix pour chaque fichiers dérivés</translation>
     </message>
 </context>
 <context>
@@ -426,7 +426,7 @@ courant :</translation>
     <message>
         <location filename="../configuration/itemmodelfactory.cpp" line="86"/>
         <source>Aliases</source>
-        <translation type="unfinished"></translation>
+        <translation>Aliases</translation>
     </message>
 </context>
 <context>
@@ -434,12 +434,12 @@ courant :</translation>
     <message>
         <location filename="../plugindefinition/filetypeplugin.cpp" line="32"/>
         <source>Generix Maquette File</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichier de maquette Generix</translation>
     </message>
     <message>
         <location filename="../plugindefinition/filetypeplugin.cpp" line="102"/>
         <source>noname</source>
-        <translation type="unfinished"></translation>
+        <translation>sansnom</translation>
     </message>
 </context>
 <context>
@@ -474,7 +474,7 @@ En &lt;b&gt;GCE 150&lt;/b&gt; ou plus, le choix à peu d&apos;impact</translatio
     <message>
         <location filename="../projectproperty/wizard/newgenerixderivation1page.ui" line="47"/>
         <source>Derivation in a &amp;project directory (integration)</source>
-        <translation type="unfinished">Dérivation dans un dossier &amp;projet (intégration)</translation>
+        <translation>Dérivation dans un dossier &amp;projet (intégration)</translation>
     </message>
     <message>
         <location filename="../projectproperty/wizard/newgenerixderivation1page.ui" line="77"/>
@@ -492,7 +492,7 @@ En &lt;b&gt;GCE 150&lt;/b&gt; ou plus, le choix à peu d&apos;impact</translatio
     <message>
         <location filename="../projectproperty/wizard/newgenerixderivation2page.ui" line="14"/>
         <source>WizardPage</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../projectproperty/wizard/newgenerixderivation2page.ui" line="17"/>
@@ -598,7 +598,9 @@ En &lt;b&gt;GCE 150&lt;/b&gt; ou plus, le choix à peu d&apos;impact</translatio
         <source>This page show you the finding version of your GCE Installation. If the version number doesn&apos;t corresponding with your GCE Installation, please verify the configuration of your project. This will have an impact on the directory structure choosed by XINX and on how XINX will access to dictionnary and BV.
 
 On &quot;Location of the data stream&quot; you can fill by the location of the &quot;j2ee/home/log&quot; directory of your Application Server. This will be added as a link in your project to permit you an easy access to open a data stream.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cette page vous affiche la version trouvé de votre version de GCE. Si ce numéro de version ne correspond pas à votre installation de GCE, veuillez vérifier le fichier de configuration de votre projet. Cela peux avoir un impact sur la structure des dossiers chois par XINX, ainsi que comme XINX essayera d&apos;accéder au dictionnaire et à la liste des BusinessView.
+
+Sur l&apos;emplacement des flux de données, vous pouvez remplir par l&apos;emplacement du dossier &quot;j2ee/home/log&quot; de votre seveur d&apos;application. Cela sera ajouté automatiquement comme lien à l&apos;interieur de votre projet et vous permettra d&apos;accéder facilement aux flux de données.</translation>
     </message>
     <message>
         <location filename="../projectproperty/wizard/newgenerixinformationpage.ui" line="62"/>
@@ -631,7 +633,7 @@ On &quot;Location of the data stream&quot; you can fill by the location of the &
     <message>
         <location filename="../projectproperty/wizard/newgenerixinformationpageimpl.cpp" line="125"/>
         <source>&lt;p style=&quot;color: red&quot;&gt;&lt;b&gt;!!! WARNING !!!&lt;/b&gt; : XINX can&apos;t parse any configuration file. Please check your location. If your project is not supported by XINX, you can create a standard project instead of a Generix project.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p style=&quot;color: red&quot;&gt;&lt;b&gt;!!! WARNING !!!&lt;/b&gt; : XINX ne peux parser aucun fichier de configuration. Veuillez vérifier l&apos;emplacement. Si votre projet n&apos;est pas supporté par XINX vous pouvez créer un projet standard au lieu d&apos;un faire un projet Generix.&lt;/p&gt;</translation>
     </message>
 </context>
 </TS>
