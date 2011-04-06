@@ -25,6 +25,7 @@
 #include "ui_customdialog.h"
 #include <core/xinxconfig.h>
 
+class CustomDialogImplPrivate;
 class PluginElement;
 class RecursiveSortFilterProxyModel;
 class IXinxPluginConfigurationPage;
@@ -40,12 +41,8 @@ public:
 	void saveConfig();
 public slots:
 	virtual void accept();
-
-private slots:
-	void updateOkButton();
 private:
-	QMultiHash<PluginElement*,IXinxPluginConfigurationPage*> m_pluginsPages;
-	QList<IXinxPluginConfigurationPage*> m_pages;
+	QScopedPointer<CustomDialogImplPrivate> d;
 };
 
 #endif

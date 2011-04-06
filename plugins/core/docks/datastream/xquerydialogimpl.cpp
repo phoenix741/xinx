@@ -19,6 +19,7 @@
 
 // Xinx header
 #include "xquerydialogimpl.h"
+#include "xquerydialogimpl_p.h"
 #include <plugins/xinxpluginsloader.h>
 
 #include "editors/models/xq/xqmodelcompleter.h"
@@ -34,77 +35,75 @@
 
 /* XQueryDialogMessageHandler */
 
-class XQueryDialogMessageHandler : public QAbstractMessageHandler
+XQueryDialogMessageHandler::XQueryDialogMessageHandler(QObject * parent) : QAbstractMessageHandler(parent)
 {
-public:
-	XQueryDialogMessageHandler(QObject * parent = 0) : QAbstractMessageHandler(parent) { }
-	virtual ~XQueryDialogMessageHandler() { }
+}
 
-	const QStringList & messages() const
+XQueryDialogMessageHandler::~XQueryDialogMessageHandler() {
+}
+
+const QStringList & XQueryDialogMessageHandler::messages() const
+{
+	return m_messages;
+}
+
+void XQueryDialogMessageHandler::handleMessage(QtMsgType type, const QString & description, const QUrl & identifier, const QSourceLocation & sourceLocation)
+{
+	const bool hasLine = sourceLocation.line() != -1;
+
+	switch (type)
 	{
-		return m_messages;
+	case QtWarningMsg:
+		if (hasLine)
+		{
+			m_messages += tr("Warning in %1, at line %2, column %3: %4").arg(QString::fromLatin1(sourceLocation.uri().toEncoded()),
+							QString::number(sourceLocation.line()),
+							QString::number(sourceLocation.column()),
+							description);
+		}
+		else
+		{
+			m_messages += tr("Warning in %1: %2").arg(QString::fromLatin1(sourceLocation.uri().toEncoded()),
+							description);
+		}
+
+		break;
+	case QtFatalMsg:
+	{
+		Q_ASSERT(!sourceLocation.isNull());
+		const QString errorCode(identifier.fragment());
+		Q_ASSERT(!errorCode.isEmpty());
+		QUrl uri(identifier);
+		uri.setFragment(QString());
+
+		QString errorId;
+		if (uri.toString() == QLatin1String("http://www.w3.org/2005/xqt-errors"))
+			errorId = errorCode;
+		else
+			errorId = QString::fromLatin1(identifier.toEncoded());
+
+		if (hasLine)
+		{
+			m_messages += tr("Error %1 in %2, at line %3, column %4: %5").arg(errorId,
+							QString::fromLatin1(sourceLocation.uri().toEncoded()),
+							QString::number(sourceLocation.line()),
+							QString::number(sourceLocation.column()),
+							description);
+		}
+		else
+		{
+			m_messages += tr("Error %1 in %2: %3").arg(errorId,
+							QString::fromLatin1(sourceLocation.uri().toEncoded()),
+							description);
+		}
+		break;
 	}
-protected:
-	virtual void handleMessage(QtMsgType type, const QString & description, const QUrl & identifier, const QSourceLocation & sourceLocation)
-	{
-		const bool hasLine = sourceLocation.line() != -1;
-
-		switch (type)
-		{
-		case QtWarningMsg:
-			if (hasLine)
-			{
-				m_messages += tr("Warning in %1, at line %2, column %3: %4").arg(QString::fromLatin1(sourceLocation.uri().toEncoded()),
-							  QString::number(sourceLocation.line()),
-							  QString::number(sourceLocation.column()),
-							  description);
-			}
-			else
-			{
-				m_messages += tr("Warning in %1: %2").arg(QString::fromLatin1(sourceLocation.uri().toEncoded()),
-							  description);
-			}
-
-			break;
-		case QtFatalMsg:
-		{
-			Q_ASSERT(!sourceLocation.isNull());
-			const QString errorCode(identifier.fragment());
-			Q_ASSERT(!errorCode.isEmpty());
-			QUrl uri(identifier);
-			uri.setFragment(QString());
-
-			QString errorId;
-			if (uri.toString() == QLatin1String("http://www.w3.org/2005/xqt-errors"))
-				errorId = errorCode;
-			else
-				errorId = QString::fromLatin1(identifier.toEncoded());
-
-			if (hasLine)
-			{
-				m_messages += tr("Error %1 in %2, at line %3, column %4: %5").arg(errorId,
-							  QString::fromLatin1(sourceLocation.uri().toEncoded()),
-							  QString::number(sourceLocation.line()),
-							  QString::number(sourceLocation.column()),
-							  description);
-			}
-			else
-			{
-				m_messages += tr("Error %1 in %2: %3").arg(errorId,
-							  QString::fromLatin1(sourceLocation.uri().toEncoded()),
-							  description);
-			}
-			break;
-		}
-		case QtCriticalMsg:
-		case QtDebugMsg:
-			Q_ASSERT_X(false, Q_FUNC_INFO, "message() is not supposed to receive QtCriticalMsg or QtDebugMsg.");
-			return;
-		}
-	};
-private:
-	QStringList m_messages;
-};
+	case QtCriticalMsg:
+	case QtDebugMsg:
+		Q_ASSERT_X(false, Q_FUNC_INFO, "message() is not supposed to receive QtCriticalMsg or QtDebugMsg.");
+		return;
+	}
+}
 
 /* XQueryDialogImpl */
 

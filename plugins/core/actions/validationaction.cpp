@@ -19,6 +19,7 @@
 
 // Xinx header
 #include "validationaction.h"
+#include "validationaction_p.h"
 #include <editors/editormanager.h>
 #include <editors/textfileeditor.h>
 #include "editors/widgeteditor/xml/xmltexteditor.h"
@@ -30,13 +31,6 @@
 #include <QXmlSchemaValidator>
 
 /* MessageHandler */
-
-class MessageHandler : public QAbstractMessageHandler
-{
-public:
-	virtual void handleMessage(QtMsgType type, const QString & description, const QUrl & identifier, const QSourceLocation & sourceLocation);
-
-};
 
 void MessageHandler::handleMessage(QtMsgType type, const QString & description, const QUrl & identifier, const QSourceLocation & sourceLocation)
 {

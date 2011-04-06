@@ -24,9 +24,6 @@
 // Xinx header
 #include <actions/actioninterface.h>
 
-// Qt header
-#include <QAbstractMessageHandler>
-
 class XmlPresentationDockWidget;
 
 class ValidationAction : public XinxAction::Action

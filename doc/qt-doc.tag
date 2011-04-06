@@ -840,9 +840,19 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * )</arglist>
+    </member>
+    <member kind="function">
       <name>exitFullScreen</name>
       <anchor>exitFullScreen</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseMoveEvent</name>
+      <anchor>mouseMoveEvent</anchor>
+      <arglist>( QMouseEvent * )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -888,19 +898,9 @@
       <anchor>AudioOutputDeviceModel-typedef</anchor>
       <arglist></arglist>
     </member>
-    <member kind="function">
-      <name>AudioOutputInterface</name>
-      <anchor>AudioOutputInterface-typedef</anchor>
-      <arglist></arglist>
-    </member>
     <member kind="enum">
       <name>Category</name>
       <anchor>Category-enum</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="function">
-      <name>CleanUpFunction</name>
-      <anchor>CleanUpFunction-typedef</anchor>
       <arglist></arglist>
     </member>
     <member kind="enum">
@@ -1191,14 +1191,79 @@
       <arglist>( int index, Q3PopupMenu * menu, Q3Action * a )</arglist>
     </member>
     <member kind="function">
+      <name>addedTo</name>
+      <anchor>addedTo-3</anchor>
+      <arglist>( QWidget * actionWidget, QWidget * container )</arglist>
+    </member>
+    <member kind="function">
+      <name>addedTo</name>
+      <anchor>addedTo-4</anchor>
+      <arglist>( int index, Q3PopupMenu * menu )</arglist>
+    </member>
+    <member kind="function">
+      <name>childEvent</name>
+      <anchor>childEvent</anchor>
+      <arglist>( QChildEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>insert</name>
       <anchor>insert</anchor>
       <arglist>( Q3Action * action )</arglist>
     </member>
     <member kind="function">
+      <name>removeFrom</name>
+      <anchor>removeFrom</anchor>
+      <arglist>( QWidget * w )</arglist>
+    </member>
+    <member kind="function">
       <name>selected</name>
       <anchor>selected</anchor>
       <arglist>( Q3Action * action )</arglist>
+    </member>
+    <member kind="function">
+      <name>setEnabled</name>
+      <anchor>setEnabled</anchor>
+      <arglist>( bool enable )</arglist>
+    </member>
+    <member kind="function">
+      <name>setIconSet</name>
+      <anchor>setIconSet</anchor>
+      <arglist>( const QIcon &amp; icon )</arglist>
+    </member>
+    <member kind="function">
+      <name>setMenuText</name>
+      <anchor>setMenuText</anchor>
+      <arglist>( const QString &amp; text )</arglist>
+    </member>
+    <member kind="function">
+      <name>setOn</name>
+      <anchor>setOn</anchor>
+      <arglist>( bool on )</arglist>
+    </member>
+    <member kind="function">
+      <name>setText</name>
+      <anchor>setText</anchor>
+      <arglist>( const QString &amp; txt )</arglist>
+    </member>
+    <member kind="function">
+      <name>setToggleAction</name>
+      <anchor>setToggleAction</anchor>
+      <arglist>( bool toggle )</arglist>
+    </member>
+    <member kind="function">
+      <name>setToolTip</name>
+      <anchor>setToolTip</anchor>
+      <arglist>( const QString &amp; text )</arglist>
+    </member>
+    <member kind="function">
+      <name>setVisible</name>
+      <anchor>setVisible</anchor>
+      <arglist>( bool visible )</arglist>
+    </member>
+    <member kind="function">
+      <name>setWhatsThis</name>
+      <anchor>setWhatsThis</anchor>
+      <arglist>( const QString &amp; text )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -1563,6 +1628,11 @@
       <name>count</name>
       <anchor>count</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>find</name>
@@ -2001,6 +2071,16 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>areaPoints</name>
+      <anchor>areaPoints</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>collidesWith</name>
+      <anchor>collidesWith</anchor>
+      <arglist>( const Q3CanvasItem * i )</arglist>
+    </member>
+    <member kind="function">
       <name>drawShape</name>
       <anchor>drawShape</anchor>
       <arglist>( QPainter &amp; p )</arglist>
@@ -2258,14 +2338,34 @@
       <arglist>( Q3Canvas * canvas )</arglist>
     </member>
     <member kind="function">
+      <name>areaPoints</name>
+      <anchor>areaPoints</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>drawShape</name>
+      <anchor>drawShape</anchor>
+      <arglist>( QPainter &amp; p )</arglist>
+    </member>
+    <member kind="function">
       <name>endPoint</name>
       <anchor>endPoint</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>moveBy</name>
+      <anchor>moveBy</anchor>
+      <arglist>( double dx, double dy )</arglist>
+    </member>
+    <member kind="function">
       <name>rtti</name>
       <anchor>rtti</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>setPen</name>
+      <anchor>setPen</anchor>
+      <arglist>( QPen p )</arglist>
     </member>
     <member kind="function">
       <name>setPoints</name>
@@ -2390,6 +2490,11 @@
       <arglist>( QPainter &amp; p )</arglist>
     </member>
     <member kind="function">
+      <name>moveBy</name>
+      <anchor>moveBy</anchor>
+      <arglist>( double dx, double dy )</arglist>
+    </member>
+    <member kind="function">
       <name>points</name>
       <anchor>points</anchor>
       <arglist>()</arglist>
@@ -2432,6 +2537,11 @@
       <name>brush</name>
       <anchor>brush</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>collidesWith</name>
+      <anchor>collidesWith</anchor>
+      <arglist>( const Q3CanvasItem * i )</arglist>
     </member>
     <member kind="function">
       <name>draw</name>
@@ -2503,9 +2613,19 @@
       <arglist>( int x, int y, int width, int height, Q3Canvas * canvas )</arglist>
     </member>
     <member kind="function">
+      <name>areaPoints</name>
+      <anchor>areaPoints</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>chunks</name>
       <anchor>chunks</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>collidesWith</name>
+      <anchor>collidesWith</anchor>
+      <arglist>( const Q3CanvasItem * i )</arglist>
     </member>
     <member kind="function">
       <name>drawShape</name>
@@ -2604,6 +2724,11 @@
       <name>boundingRect</name>
       <anchor>boundingRect</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>collidesWith</name>
+      <anchor>collidesWith</anchor>
+      <arglist>( const Q3CanvasItem * i )</arglist>
     </member>
     <member kind="function">
       <name>draw</name>
@@ -2730,6 +2855,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>collidesWith</name>
+      <anchor>collidesWith</anchor>
+      <arglist>( const Q3CanvasItem * i )</arglist>
+    </member>
+    <member kind="function">
       <name>color</name>
       <anchor>color</anchor>
       <arglist>()</arglist>
@@ -2743,6 +2873,11 @@
       <name>font</name>
       <anchor>font</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>moveBy</name>
+      <anchor>moveBy</anchor>
+      <arglist>( double dx, double dy )</arglist>
     </member>
     <member kind="function">
       <name>rtti</name>
@@ -2928,6 +3063,11 @@
       <arglist>( bool b )</arglist>
     </member>
     <member kind="function">
+      <name>setup</name>
+      <anchor>setup</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>state</name>
       <anchor>state</anchor>
       <arglist>()</arglist>
@@ -2943,6 +3083,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>text</name>
+      <anchor>text-2</anchor>
+      <arglist>( int n )</arglist>
+    </member>
+    <member kind="function">
       <name>turnOffChild</name>
       <anchor>turnOffChild</anchor>
       <arglist>()</arglist>
@@ -2951,6 +3096,11 @@
       <name>type</name>
       <anchor>type</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>width</name>
+      <anchor>width</anchor>
+      <arglist>( const QFontMetrics &amp; fm, const Q3ListView * lv, int column )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -2962,9 +3112,19 @@
       <arglist>( Q3Table * table, const QString &amp; txt )</arglist>
     </member>
     <member kind="function">
+      <name>createEditor</name>
+      <anchor>createEditor</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>isChecked</name>
       <anchor>isChecked</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>paint</name>
+      <anchor>paint</anchor>
+      <arglist>( QPainter * p, const QColorGroup &amp; cg, const QRect &amp; cr, bool selected )</arglist>
     </member>
     <member kind="function">
       <name>rtti</name>
@@ -2975,6 +3135,21 @@
       <name>setChecked</name>
       <anchor>setChecked</anchor>
       <arglist>( bool b )</arglist>
+    </member>
+    <member kind="function">
+      <name>setContentFromEditor</name>
+      <anchor>setContentFromEditor</anchor>
+      <arglist>( QWidget * w )</arglist>
+    </member>
+    <member kind="function">
+      <name>setText</name>
+      <anchor>setText</anchor>
+      <arglist>( const QString &amp; t )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -3070,6 +3245,16 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>focusInEvent</name>
+      <anchor>focusInEvent</anchor>
+      <arglist>( QFocusEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusOutEvent</name>
+      <anchor>focusOutEvent</anchor>
+      <arglist>( QFocusEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>hide</name>
       <anchor>hide</anchor>
       <arglist>()</arglist>
@@ -3120,6 +3305,11 @@
       <arglist>( const QStringList &amp; list, int index = -1 )</arglist>
     </member>
     <member kind="function">
+      <name>keyPressEvent</name>
+      <anchor>keyPressEvent</anchor>
+      <arglist>( QKeyEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>lineEdit</name>
       <anchor>lineEdit</anchor>
       <arglist>()</arglist>
@@ -3128,6 +3318,31 @@
       <name>listBox</name>
       <anchor>listBox</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseDoubleClickEvent</name>
+      <anchor>mouseDoubleClickEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseMoveEvent</name>
+      <anchor>mouseMoveEvent</anchor>
+      <arglist>( QMouseEvent * )</arglist>
+    </member>
+    <member kind="function">
+      <name>mousePressEvent</name>
+      <anchor>mousePressEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseReleaseEvent</name>
+      <anchor>mouseReleaseEvent</anchor>
+      <arglist>( QMouseEvent * )</arglist>
+    </member>
+    <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * )</arglist>
     </member>
     <member kind="function">
       <name>pixmap</name>
@@ -3143,6 +3358,11 @@
       <name>removeItem</name>
       <anchor>removeItem</anchor>
       <arglist>( int index )</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>setAutoResize</name>
@@ -3185,6 +3405,11 @@
       <arglist>( const QValidator * v )</arglist>
     </member>
     <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>text</name>
       <anchor>text</anchor>
       <arglist>( int index )</arglist>
@@ -3204,6 +3429,11 @@
       <anchor>validator</anchor>
       <arglist>()</arglist>
     </member>
+    <member kind="function">
+      <name>wheelEvent</name>
+      <anchor>wheelEvent</anchor>
+      <arglist>( QWheelEvent * e )</arglist>
+    </member>
   </compound>
   <compound kind="class">
     <name>Q3ComboTableItem</name>
@@ -3216,6 +3446,11 @@
     <member kind="function">
       <name>count</name>
       <anchor>count</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>createEditor</name>
+      <anchor>createEditor</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -3234,9 +3469,19 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>paint</name>
+      <anchor>paint</anchor>
+      <arglist>( QPainter * p, const QColorGroup &amp; cg, const QRect &amp; cr, bool selected )</arglist>
+    </member>
+    <member kind="function">
       <name>rtti</name>
       <anchor>rtti</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>setContentFromEditor</name>
+      <anchor>setContentFromEditor</anchor>
+      <arglist>( QWidget * w )</arglist>
     </member>
     <member kind="function">
       <name>setCurrentItem</name>
@@ -3257,6 +3502,11 @@
       <name>setStringList</name>
       <anchor>setStringList</anchor>
       <arglist>( const QStringList &amp; l )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>text</name>
@@ -3676,6 +3926,11 @@
       <arglist>( Q3SqlCursor * cursor, bool autoPopulate = false, QWidget * parent = 0, const char * name = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>activateNextCell</name>
+      <anchor>activateNextCell</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>addColumn</name>
       <anchor>addColumn</anchor>
       <arglist>( const QString &amp; fieldName, const QString &amp; label = QString()</arglist>
@@ -3716,6 +3971,16 @@
       <arglist>( int row, int col, bool replace )</arglist>
     </member>
     <member kind="function">
+      <name>clearCell</name>
+      <anchor>clearCell</anchor>
+      <arglist>( int row, int col )</arglist>
+    </member>
+    <member kind="function">
+      <name>columnClicked</name>
+      <anchor>columnClicked</anchor>
+      <arglist>( int col )</arglist>
+    </member>
+    <member kind="function">
       <name>Confirm</name>
       <anchor>confirmCancel</anchor>
       <arglist> Q3DataTable::confirmCancel( QSql::Op m )</arglist>
@@ -3724,6 +3989,21 @@
       <name>Confirm</name>
       <anchor>confirmEdit</anchor>
       <arglist> Q3DataTable::confirmEdit( QSql::Op m )</arglist>
+    </member>
+    <member kind="function">
+      <name>contentsContextMenuEvent</name>
+      <anchor>contentsContextMenuEvent</anchor>
+      <arglist>( QContextMenuEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>contentsMousePressEvent</name>
+      <anchor>contentsMousePressEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>createEditor</name>
+      <anchor>createEditor</anchor>
+      <arglist>( int row, int col, bool initFromCell )</arglist>
     </member>
     <member kind="function">
       <name>currentChanged</name>
@@ -3746,6 +4026,21 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>drawContents</name>
+      <anchor>drawContents</anchor>
+      <arglist>( QPainter * p, int cx, int cy, int cw, int ch )</arglist>
+    </member>
+    <member kind="function">
+      <name>endEdit</name>
+      <anchor>endEdit</anchor>
+      <arglist>( int row, int col, bool accept, bool replace )</arglist>
+    </member>
+    <member kind="function">
+      <name>eventFilter</name>
+      <anchor>eventFilter</anchor>
+      <arglist>( QObject * o, QEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>fieldAlignment</name>
       <anchor>fieldAlignment</anchor>
       <arglist>( const QSqlField * field )</arglist>
@@ -3759,6 +4054,11 @@
       <name>handleError</name>
       <anchor>handleError</anchor>
       <arglist>( const QSqlError &amp; e )</arglist>
+    </member>
+    <member kind="function">
+      <name>hideColumn</name>
+      <anchor>hideColumn</anchor>
+      <arglist>( int col )</arglist>
     </member>
     <member kind="function">
       <name>indexOf</name>
@@ -3779,6 +4079,21 @@
       <name>installPropertyMap</name>
       <anchor>installPropertyMap</anchor>
       <arglist>( Q3SqlPropertyMap * m )</arglist>
+    </member>
+    <member kind="function">
+      <name>item</name>
+      <anchor>item</anchor>
+      <arglist>( int row, int col )</arglist>
+    </member>
+    <member kind="function">
+      <name>keyPressEvent</name>
+      <anchor>keyPressEvent</anchor>
+      <arglist>( QKeyEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>paintCell</name>
+      <anchor>paintCell</anchor>
+      <arglist>( QPainter * p, int row, int col, const QRect &amp; cr, bool selected, const QColorGroup &amp; cg )</arglist>
     </member>
     <member kind="function">
       <name>paintField</name>
@@ -3826,6 +4141,21 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>resizeData</name>
+      <anchor>resizeData</anchor>
+      <arglist>( int len )</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>selectRow</name>
+      <anchor>selectRow</anchor>
+      <arglist>( int row )</arglist>
+    </member>
+    <member kind="function">
       <name>setAutoDelete</name>
       <anchor>setAutoDelete</anchor>
       <arglist>( bool enable )</arglist>
@@ -3836,9 +4166,34 @@
       <arglist>( uint col, const QString &amp; fieldName, const QString &amp; label = QString()</arglist>
     </member>
     <member kind="function">
+      <name>setColumnStretchable</name>
+      <anchor>setColumnStretchable</anchor>
+      <arglist>( int col, bool s )</arglist>
+    </member>
+    <member kind="function">
       <name>setColumnWidth</name>
       <anchor>setColumnWidth</anchor>
       <arglist>( int col, int w )</arglist>
+    </member>
+    <member kind="function">
+      <name>setItem</name>
+      <anchor>setItem</anchor>
+      <arglist>( int row, int col, Q3TableItem * item )</arglist>
+    </member>
+    <member kind="function">
+      <name>setNumCols</name>
+      <anchor>setNumCols</anchor>
+      <arglist>( int r )</arglist>
+    </member>
+    <member kind="function">
+      <name>setNumRows</name>
+      <anchor>setNumRows</anchor>
+      <arglist>( int r )</arglist>
+    </member>
+    <member kind="function">
+      <name>setPixmap</name>
+      <anchor>setPixmap</anchor>
+      <arglist>( int row, int col, const QPixmap &amp; pix )</arglist>
     </member>
     <member kind="function">
       <name>setSize</name>
@@ -3849,6 +4204,11 @@
       <name>setSqlCursor</name>
       <anchor>setSqlCursor</anchor>
       <arglist>( Q3SqlCursor * cursor = 0, bool autoPopulate = false, bool autoDelete = false )</arglist>
+    </member>
+    <member kind="function">
+      <name>showColumn</name>
+      <anchor>showColumn</anchor>
+      <arglist>( int col )</arglist>
     </member>
     <member kind="function">
       <name>sortAscending</name>
@@ -3869,6 +4229,16 @@
       <name>sqlCursor</name>
       <anchor>sqlCursor</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>swapColumns</name>
+      <anchor>swapColumns</anchor>
+      <arglist>( int col1, int col2, bool swapHeaders = false )</arglist>
+    </member>
+    <member kind="function">
+      <name>takeItem</name>
+      <anchor>takeItem</anchor>
+      <arglist>( Q3TableItem * i )</arglist>
     </member>
     <member kind="function">
       <name>text</name>
@@ -3954,9 +4324,24 @@
       <arglist>( const QDate &amp; date, QWidget * parent = 0, const char * name = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>fix</name>
       <anchor>fix</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>minimumSizeHint</name>
+      <anchor>minimumSizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * )</arglist>
     </member>
     <member kind="function">
       <name>sectionFormattedText</name>
@@ -3994,6 +4379,16 @@
       <arglist>( int year )</arglist>
     </member>
     <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>timerEvent</name>
+      <anchor>timerEvent</anchor>
+      <arglist>( QTimerEvent * )</arglist>
+    </member>
+    <member kind="function">
       <name>updateButtons</name>
       <anchor>updateButtons</anchor>
       <arglist>()</arglist>
@@ -4028,9 +4423,24 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>minimumSizeHint</name>
+      <anchor>minimumSizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>setAutoAdvance</name>
       <anchor>setAutoAdvance</anchor>
       <arglist>( bool advance )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>timeEdit</name>
@@ -4327,6 +4737,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>eventFilter</name>
+      <anchor>eventFilter</anchor>
+      <arglist>( QObject * o, QEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>hasDockWindow</name>
       <anchor>hasDockWindow</anchor>
       <arglist>( Q3DockWindow * w, int * index = 0 )</arglist>
@@ -4396,14 +4811,44 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>contextMenuEvent</name>
+      <anchor>contextMenuEvent</anchor>
+      <arglist>( QContextMenuEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>dock</name>
       <anchor>dock</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>drawContents</name>
+      <anchor>drawContents</anchor>
+      <arglist>( QPainter * p )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawFrame</name>
+      <anchor>drawFrame</anchor>
+      <arglist>( QPainter * p )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>eventFilter</name>
+      <anchor>eventFilter</anchor>
+      <arglist>( QObject * o, QEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>fixedExtent</name>
       <anchor>fixedExtent</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>hideEvent</name>
+      <anchor>hideEvent</anchor>
+      <arglist>( QHideEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>isCloseEnabled</name>
@@ -4421,6 +4866,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>minimumSizeHint</name>
+      <anchor>minimumSizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>Orientation</name>
       <anchor>orientation</anchor>
       <arglist> Q3DockWindow::orientation()</arglist>
@@ -4434,6 +4884,11 @@
       <name>placeChanged</name>
       <anchor>placeChanged</anchor>
       <arglist>( Q3DockWindow::Place p )</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>setFixedExtentHeight</name>
@@ -4464,6 +4919,16 @@
       <name>setWidget</name>
       <anchor>setWidget</anchor>
       <arglist>( QWidget * w )</arglist>
+    </member>
+    <member kind="function">
+      <name>showEvent</name>
+      <anchor>showEvent</anchor>
+      <arglist>( QShowEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>undock</name>
@@ -4657,6 +5122,16 @@
       <arglist>( const QString &amp; directory )</arglist>
     </member>
     <member kind="function">
+      <name>done</name>
+      <anchor>done</anchor>
+      <arglist>( int i )</arglist>
+    </member>
+    <member kind="function">
+      <name>eventFilter</name>
+      <anchor>eventFilter</anchor>
+      <arglist>( QObject * o, QEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>fileHighlighted</name>
       <anchor>fileHighlighted</anchor>
       <arglist>( const QString &amp; file )</arglist>
@@ -4702,9 +5177,19 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>keyPressEvent</name>
+      <anchor>keyPressEvent</anchor>
+      <arglist>( QKeyEvent * ke )</arglist>
+    </member>
+    <member kind="function">
       <name>rereadDir</name>
       <anchor>rereadDir</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>resortDir</name>
@@ -4988,6 +5473,36 @@
       <arglist>( const QString &amp; dir )</arglist>
     </member>
     <member kind="function">
+      <name>operationGet</name>
+      <anchor>operationGet</anchor>
+      <arglist>( Q3NetworkOperation * op )</arglist>
+    </member>
+    <member kind="function">
+      <name>operationListChildren</name>
+      <anchor>operationListChildren</anchor>
+      <arglist>( Q3NetworkOperation * op )</arglist>
+    </member>
+    <member kind="function">
+      <name>operationMkDir</name>
+      <anchor>operationMkDir</anchor>
+      <arglist>( Q3NetworkOperation * op )</arglist>
+    </member>
+    <member kind="function">
+      <name>operationPut</name>
+      <anchor>operationPut</anchor>
+      <arglist>( Q3NetworkOperation * op )</arglist>
+    </member>
+    <member kind="function">
+      <name>operationRemove</name>
+      <anchor>operationRemove</anchor>
+      <arglist>( Q3NetworkOperation * op )</arglist>
+    </member>
+    <member kind="function">
+      <name>operationRename</name>
+      <anchor>operationRename</anchor>
+      <arglist>( Q3NetworkOperation * op )</arglist>
+    </member>
+    <member kind="function">
       <name>put</name>
       <anchor>put</anchor>
       <arglist>( QIODevice * dev, const QString &amp; file )</arglist>
@@ -5047,6 +5562,11 @@
       <anchor>stateChanged</anchor>
       <arglist>( int state )</arglist>
     </member>
+    <member kind="function">
+      <name>supportedOperations</name>
+      <anchor>supportedOperations</anchor>
+      <arglist>()</arglist>
+    </member>
   </compound>
   <compound kind="class">
     <name>Q3Grid</name>
@@ -5062,9 +5582,19 @@
       <arglist>( int n, Qt::Orientation orient, QWidget * parent = 0, const char * name = 0, Qt::WindowFlags f = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>frameChanged</name>
+      <anchor>frameChanged</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>setSpacing</name>
       <anchor>setSpacing</anchor>
       <arglist>( int space )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -5094,6 +5624,11 @@
       <name>dimensionChange</name>
       <anchor>dimensionChange</anchor>
       <arglist>( int oldNumRows, int oldNumCols )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawContents</name>
+      <anchor>drawContents</anchor>
+      <arglist>( QPainter * p, int cx, int cy, int cw, int ch )</arglist>
     </member>
     <member kind="function">
       <name>ensureCellVisible</name>
@@ -5165,6 +5700,21 @@
       <arglist>( int size )</arglist>
     </member>
     <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>childEvent</name>
+      <anchor>childEvent</anchor>
+      <arglist>( QChildEvent * c )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>frameStyle</name>
       <anchor>frameStyle</anchor>
       <arglist>()</arglist>
@@ -5178,6 +5728,11 @@
       <name>insideSpacing</name>
       <anchor>insideSpacing</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>setColumnLayout</name>
@@ -5214,6 +5769,11 @@
       <arglist>( bool horizontal, QWidget * parent, const char * name, Qt::WindowFlags f = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>frameChanged</name>
+      <anchor>frameChanged</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>setSpacing</name>
       <anchor>setSpacing</anchor>
       <arglist>( int space )</arglist>
@@ -5222,6 +5782,11 @@
       <name>setStretchFactor</name>
       <anchor>setStretchFactor</anchor>
       <arglist>( QWidget * w, int stretch )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -5306,6 +5871,11 @@
       <arglist>( int i )</arglist>
     </member>
     <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * ev )</arglist>
+    </member>
+    <member kind="function">
       <name>clicked</name>
       <anchor>clicked</anchor>
       <arglist>( int section )</arglist>
@@ -5336,6 +5906,16 @@
       <arglist>( int section = -1 )</arglist>
     </member>
     <member kind="function">
+      <name>keyPressEvent</name>
+      <anchor>keyPressEvent</anchor>
+      <arglist>( QKeyEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>keyReleaseEvent</name>
+      <anchor>keyReleaseEvent</anchor>
+      <arglist>( QKeyEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>label</name>
       <anchor>label</anchor>
       <arglist>( int section )</arglist>
@@ -5361,6 +5941,26 @@
       <arglist>( int index )</arglist>
     </member>
     <member kind="function">
+      <name>mouseDoubleClickEvent</name>
+      <anchor>mouseDoubleClickEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseMoveEvent</name>
+      <anchor>mouseMoveEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mousePressEvent</name>
+      <anchor>mousePressEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseReleaseEvent</name>
+      <anchor>mouseReleaseEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>moveCell</name>
       <anchor>moveCell</anchor>
       <arglist>( int fromIdx, int toIdx )</arglist>
@@ -5374,6 +5974,11 @@
       <name>moved</name>
       <anchor>moved</anchor>
       <arglist>( int fromIndex, int toIndex )</arglist>
+    </member>
+    <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>paintSection</name>
@@ -5399,6 +6004,11 @@
       <name>removeLabel</name>
       <anchor>removeLabel</anchor>
       <arglist>( int section )</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>resizeSection</name>
@@ -5476,9 +6086,19 @@
       <arglist>( int section, bool ascending = true )</arglist>
     </member>
     <member kind="function">
+      <name>showEvent</name>
+      <anchor>showEvent</anchor>
+      <arglist>( QShowEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>sizeChange</name>
       <anchor>sizeChange</anchor>
       <arglist>( int section, int oldSize, int newSize )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>SortOrder</name>
@@ -5614,6 +6234,16 @@
       <arglist>( const QString &amp; path )</arglist>
     </member>
     <member kind="function">
+      <name>operationGet</name>
+      <anchor>operationGet</anchor>
+      <arglist>( Q3NetworkOperation * op )</arglist>
+    </member>
+    <member kind="function">
+      <name>operationPut</name>
+      <anchor>operationPut</anchor>
+      <arglist>( Q3NetworkOperation * op )</arglist>
+    </member>
+    <member kind="function">
       <name>post</name>
       <anchor>post</anchor>
       <arglist>( const QString &amp; path, QIODevice * data, QIODevice * to = 0 )</arglist>
@@ -5677,6 +6307,16 @@
       <name>stateChanged</name>
       <anchor>stateChanged</anchor>
       <arglist>( int state )</arglist>
+    </member>
+    <member kind="function">
+      <name>supportedOperations</name>
+      <anchor>supportedOperations</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>timerEvent</name>
+      <anchor>timerEvent</anchor>
+      <arglist>( QTimerEvent * e )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -5826,6 +6466,11 @@
       <anchor>setRequest</anchor>
       <arglist>( const QString &amp; method, const QString &amp; path, int majorVer = 1, int minorVer = 1 )</arglist>
     </member>
+    <member kind="function">
+      <name>toString</name>
+      <anchor>toString</anchor>
+      <arglist>()</arglist>
+    </member>
   </compound>
   <compound kind="class">
     <name>Q3HttpResponseHeader</name>
@@ -5860,6 +6505,11 @@
       <anchor>statusCode</anchor>
       <arglist>()</arglist>
     </member>
+    <member kind="function">
+      <name>toString</name>
+      <anchor>toString</anchor>
+      <arglist>()</arglist>
+    </member>
   </compound>
   <compound kind="class">
     <name>Q3IconDrag</name>
@@ -5883,6 +6533,11 @@
       <name>encodedData</name>
       <anchor>encodedData</anchor>
       <arglist>( const char * mime )</arglist>
+    </member>
+    <member kind="function">
+      <name>format</name>
+      <anchor>format</anchor>
+      <arglist>( int i )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -5958,6 +6613,11 @@
       <arglist>( bool update = true )</arglist>
     </member>
     <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * ev )</arglist>
+    </member>
+    <member kind="function">
       <name>clear</name>
       <anchor>clear</anchor>
       <arglist>()</arglist>
@@ -5976,6 +6636,51 @@
       <name>clicked</name>
       <anchor>clicked-2</anchor>
       <arglist>( Q3IconViewItem * item, const QPoint &amp; pos )</arglist>
+    </member>
+    <member kind="function">
+      <name>contentsContextMenuEvent</name>
+      <anchor>contentsContextMenuEvent</anchor>
+      <arglist>( QContextMenuEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>contentsDragEnterEvent</name>
+      <anchor>contentsDragEnterEvent</anchor>
+      <arglist>( QDragEnterEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>contentsDragLeaveEvent</name>
+      <anchor>contentsDragLeaveEvent</anchor>
+      <arglist>( QDragLeaveEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>contentsDragMoveEvent</name>
+      <anchor>contentsDragMoveEvent</anchor>
+      <arglist>( QDragMoveEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>contentsDropEvent</name>
+      <anchor>contentsDropEvent</anchor>
+      <arglist>( QDropEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>contentsMouseDoubleClickEvent</name>
+      <anchor>contentsMouseDoubleClickEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>contentsMouseMoveEvent</name>
+      <anchor>contentsMouseMoveEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>contentsMousePressEvent</name>
+      <anchor>contentsMousePressEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>contentsMouseReleaseEvent</name>
+      <anchor>contentsMouseReleaseEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>contextMenuRequested</name>
@@ -6013,6 +6718,11 @@
       <arglist>( QPainter * p, const QRect &amp; r )</arglist>
     </member>
     <member kind="function">
+      <name>drawContents</name>
+      <anchor>drawContents</anchor>
+      <arglist>( QPainter * p, int cx, int cy, int cw, int ch )</arglist>
+    </member>
+    <member kind="function">
       <name>drawRubber</name>
       <anchor>drawRubber</anchor>
       <arglist>( QPainter * p )</arglist>
@@ -6031,6 +6741,16 @@
       <name>ensureItemVisible</name>
       <anchor>ensureItemVisible</anchor>
       <arglist>( Q3IconViewItem * item )</arglist>
+    </member>
+    <member kind="function">
+      <name>enterEvent</name>
+      <anchor>enterEvent</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>eventFilter</name>
+      <anchor>eventFilter</anchor>
+      <arglist>( QObject * o, QEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>findFirstVisibleItem</name>
@@ -6058,9 +6778,24 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>focusInEvent</name>
+      <anchor>focusInEvent</anchor>
+      <arglist>( QFocusEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusOutEvent</name>
+      <anchor>focusOutEvent</anchor>
+      <arglist>( QFocusEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>index</name>
       <anchor>index</anchor>
       <arglist>( const Q3IconViewItem * item )</arglist>
+    </member>
+    <member kind="function">
+      <name>inputMethodQuery</name>
+      <anchor>inputMethodQuery</anchor>
+      <arglist>( Qt::InputMethodQuery query )</arglist>
     </member>
     <member kind="function">
       <name>insertInGrid</name>
@@ -6093,6 +6828,11 @@
       <arglist>( Q3IconViewItem * item )</arglist>
     </member>
     <member kind="function">
+      <name>keyPressEvent</name>
+      <anchor>keyPressEvent</anchor>
+      <arglist>( QKeyEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>lastItem</name>
       <anchor>lastItem</anchor>
       <arglist>()</arglist>
@@ -6101,6 +6841,11 @@
       <name>makeRowLayout</name>
       <anchor>makeRowLayout</anchor>
       <arglist>( Q3IconViewItem * begin, int &amp; y, bool &amp; changed )</arglist>
+    </member>
+    <member kind="function">
+      <name>minimumSizeHint</name>
+      <anchor>minimumSizeHint</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>mouseButtonClicked</name>
@@ -6148,6 +6893,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>returnPressed</name>
       <anchor>returnPressed</anchor>
       <arglist>( Q3IconViewItem * item )</arglist>
@@ -6178,6 +6928,11 @@
       <arglist>( Q3IconViewItem * item )</arglist>
     </member>
     <member kind="function">
+      <name>setContentsPos</name>
+      <anchor>setContentsPos</anchor>
+      <arglist>( int x, int y )</arglist>
+    </member>
+    <member kind="function">
       <name>setCurrentItem</name>
       <anchor>setCurrentItem</anchor>
       <arglist>( Q3IconViewItem * item )</arglist>
@@ -6191,6 +6946,16 @@
       <name>setSorting</name>
       <anchor>setSorting</anchor>
       <arglist>( bool sort, bool ascending = true )</arglist>
+    </member>
+    <member kind="function">
+      <name>showEvent</name>
+      <anchor>showEvent</anchor>
+      <arglist>( QShowEvent * )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>slotUpdate</name>
@@ -6559,6 +7324,16 @@
       <name>decode</name>
       <anchor>decode-2</anchor>
       <arglist>( const QMimeSource * source, QPixmap &amp; pixmap )</arglist>
+    </member>
+    <member kind="function">
+      <name>encodedData</name>
+      <anchor>encodedData</anchor>
+      <arglist>( const char * fmt )</arglist>
+    </member>
+    <member kind="function">
+      <name>format</name>
+      <anchor>format</anchor>
+      <arglist>( int i )</arglist>
     </member>
     <member kind="function">
       <name>setImage</name>
@@ -6951,6 +7726,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * ev )</arglist>
+    </member>
+    <member kind="function">
       <name>changeItem</name>
       <anchor>changeItem</anchor>
       <arglist>( const Q3ListBoxItem * lbi, int index )</arglist>
@@ -6991,6 +7771,11 @@
       <arglist>( Q3ListBoxItem * item, const QPoint &amp; pnt )</arglist>
     </member>
     <member kind="function">
+      <name>contentsContextMenuEvent</name>
+      <anchor>contentsContextMenuEvent</anchor>
+      <arglist>( QContextMenuEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>contextMenuRequested</name>
       <anchor>contextMenuRequested</anchor>
       <arglist>( Q3ListBoxItem * item, const QPoint &amp; pos )</arglist>
@@ -7021,6 +7806,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>eventFilter</name>
+      <anchor>eventFilter</anchor>
+      <arglist>( QObject * o, QEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>findItem</name>
       <anchor>findItem</anchor>
       <arglist>( const QString &amp; text, ComparisonFlags compare = BeginsWith )</arglist>
@@ -7034,6 +7824,16 @@
       <name>firstItem</name>
       <anchor>firstItem</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>focusInEvent</name>
+      <anchor>focusInEvent</anchor>
+      <arglist>( QFocusEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusOutEvent</name>
+      <anchor>focusOutEvent</anchor>
+      <arglist>( QFocusEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>highlighted</name>
@@ -7064,6 +7864,11 @@
       <name>index</name>
       <anchor>index</anchor>
       <arglist>( const Q3ListBoxItem * lbi )</arglist>
+    </member>
+    <member kind="function">
+      <name>inputMethodQuery</name>
+      <anchor>inputMethodQuery</anchor>
+      <arglist>( Qt::InputMethodQuery query )</arglist>
     </member>
     <member kind="function">
       <name>insertItem</name>
@@ -7151,8 +7956,18 @@
       <arglist>( const Q3ListBoxItem * item )</arglist>
     </member>
     <member kind="function">
+      <name>keyPressEvent</name>
+      <anchor>keyPressEvent</anchor>
+      <arglist>( QKeyEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>maxItemWidth</name>
       <anchor>maxItemWidth</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>minimumSizeHint</name>
+      <anchor>minimumSizeHint</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -7164,6 +7979,26 @@
       <name>mouseButtonPressed</name>
       <anchor>mouseButtonPressed</anchor>
       <arglist>( int button, Q3ListBoxItem * item, const QPoint &amp; pos )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseDoubleClickEvent</name>
+      <anchor>mouseDoubleClickEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseMoveEvent</name>
+      <anchor>mouseMoveEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mousePressEvent</name>
+      <anchor>mousePressEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseReleaseEvent</name>
+      <anchor>mouseReleaseEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>numCols</name>
@@ -7204,6 +8039,11 @@
       <name>removeItem</name>
       <anchor>removeItem</anchor>
       <arglist>( int index )</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>returnPressed</name>
@@ -7321,6 +8161,16 @@
       <arglist>( bool b )</arglist>
     </member>
     <member kind="function">
+      <name>showEvent</name>
+      <anchor>showEvent</anchor>
+      <arglist>( QShowEvent * )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>smoothScrolling</name>
       <anchor>smoothScrolling</anchor>
       <arglist>()</arglist>
@@ -7374,6 +8224,11 @@
       <name>updateItem</name>
       <anchor>updateItem-2</anchor>
       <arglist>( Q3ListBoxItem * i )</arglist>
+    </member>
+    <member kind="function">
+      <name>viewportPaintEvent</name>
+      <anchor>viewportPaintEvent</anchor>
+      <arglist>( QPaintEvent * e )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -7524,6 +8379,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>rtti</name>
+      <anchor>rtti</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>width</name>
       <anchor>width</anchor>
       <arglist>( const Q3ListBox * lb )</arglist>
@@ -7556,6 +8416,11 @@
       <name>paint</name>
       <anchor>paint</anchor>
       <arglist>( QPainter * painter )</arglist>
+    </member>
+    <member kind="function">
+      <name>rtti</name>
+      <anchor>rtti</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>width</name>
@@ -7617,6 +8482,11 @@
       <arglist>( int col )</arglist>
     </member>
     <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * ev )</arglist>
+    </member>
+    <member kind="function">
       <name>clear</name>
       <anchor>clear</anchor>
       <arglist>()</arglist>
@@ -7660,6 +8530,31 @@
       <name>columnWidthMode</name>
       <anchor>columnWidthMode</anchor>
       <arglist>( int c )</arglist>
+    </member>
+    <member kind="function">
+      <name>contentsContextMenuEvent</name>
+      <anchor>contentsContextMenuEvent</anchor>
+      <arglist>( QContextMenuEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>contentsDragEnterEvent</name>
+      <anchor>contentsDragEnterEvent</anchor>
+      <arglist>( QDragEnterEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>contentsDragLeaveEvent</name>
+      <anchor>contentsDragLeaveEvent</anchor>
+      <arglist>( QDragLeaveEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>contentsDragMoveEvent</name>
+      <anchor>contentsDragMoveEvent</anchor>
+      <arglist>( QDragMoveEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>contentsDropEvent</name>
+      <anchor>contentsDropEvent</anchor>
+      <arglist>( QDropEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>contentsMouseDoubleClickEvent</name>
@@ -7752,6 +8647,16 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>focusInEvent</name>
+      <anchor>focusInEvent</anchor>
+      <arglist>( QFocusEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusOutEvent</name>
+      <anchor>focusOutEvent</anchor>
+      <arglist>( QFocusEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>header</name>
       <anchor>header</anchor>
       <arglist>()</arglist>
@@ -7760,6 +8665,11 @@
       <name>hideColumn</name>
       <anchor>hideColumn</anchor>
       <arglist>( int column )</arglist>
+    </member>
+    <member kind="function">
+      <name>inputMethodQuery</name>
+      <anchor>inputMethodQuery</anchor>
+      <arglist>( Qt::InputMethodQuery query )</arglist>
     </member>
     <member kind="function">
       <name>insertItem</name>
@@ -7812,8 +8722,18 @@
       <arglist>( Q3ListViewItem * item, int col )</arglist>
     </member>
     <member kind="function">
+      <name>keyPressEvent</name>
+      <anchor>keyPressEvent</anchor>
+      <arglist>( QKeyEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>lastItem</name>
       <anchor>lastItem</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>minimumSizeHint</name>
+      <anchor>minimumSizeHint</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -7932,6 +8852,11 @@
       <arglist>( int c, WidthMode mode )</arglist>
     </member>
     <member kind="function">
+      <name>setContentsPos</name>
+      <anchor>setContentsPos</anchor>
+      <arglist>( int x, int y )</arglist>
+    </member>
+    <member kind="function">
       <name>setCurrentItem</name>
       <anchor>setCurrentItem</anchor>
       <arglist>( Q3ListViewItem * i )</arglist>
@@ -7965,6 +8890,16 @@
       <name>setSorting</name>
       <anchor>setSorting</anchor>
       <arglist>( int column, bool ascending = true )</arglist>
+    </member>
+    <member kind="function">
+      <name>showEvent</name>
+      <anchor>showEvent</anchor>
+      <arglist>( QShowEvent * )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>sort</name>
@@ -8005,6 +8940,11 @@
       <name>updateContents</name>
       <anchor>updateContents</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>viewportResizeEvent</name>
+      <anchor>viewportResizeEvent</anchor>
+      <arglist>( QResizeEvent * e )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -8458,6 +9398,41 @@
       <anchor>Q3LocalFs</anchor>
       <arglist>()</arglist>
     </member>
+    <member kind="function">
+      <name>operationGet</name>
+      <anchor>operationGet</anchor>
+      <arglist>( Q3NetworkOperation * op )</arglist>
+    </member>
+    <member kind="function">
+      <name>operationListChildren</name>
+      <anchor>operationListChildren</anchor>
+      <arglist>( Q3NetworkOperation * op )</arglist>
+    </member>
+    <member kind="function">
+      <name>operationMkDir</name>
+      <anchor>operationMkDir</anchor>
+      <arglist>( Q3NetworkOperation * op )</arglist>
+    </member>
+    <member kind="function">
+      <name>operationPut</name>
+      <anchor>operationPut</anchor>
+      <arglist>( Q3NetworkOperation * op )</arglist>
+    </member>
+    <member kind="function">
+      <name>operationRemove</name>
+      <anchor>operationRemove</anchor>
+      <arglist>( Q3NetworkOperation * op )</arglist>
+    </member>
+    <member kind="function">
+      <name>operationRename</name>
+      <anchor>operationRename</anchor>
+      <arglist>( Q3NetworkOperation * op )</arglist>
+    </member>
+    <member kind="function">
+      <name>supportedOperations</name>
+      <anchor>supportedOperations</anchor>
+      <arglist>()</arglist>
+    </member>
   </compound>
   <compound kind="class">
     <name>Q3MainWindow</name>
@@ -8538,6 +9513,16 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>eventFilter</name>
+      <anchor>eventFilter</anchor>
+      <arglist>( QObject * o, QEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>getLocation</name>
       <anchor>getLocation</anchor>
       <arglist>( Q3DockWindow * dw, Qt::Dock &amp; dock, int &amp; index, bool &amp; nl, int &amp; extraOffset )</arglist>
@@ -8603,6 +9588,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>minimumSizeHint</name>
+      <anchor>minimumSizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>moveDockWindow</name>
       <anchor>moveDockWindow</anchor>
       <arglist>( Q3DockWindow * dockWindow, Qt::Dock edge = Qt::DockTop )</arglist>
@@ -8621,6 +9611,11 @@
       <name>moveToolBar</name>
       <anchor>moveToolBar-2</anchor>
       <arglist>( Q3DockWindow * dockWindow, Qt::Dock position, bool nl, int index, int extraOffset = -1 )</arglist>
+    </member>
+    <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * )</arglist>
     </member>
     <member kind="function">
       <name>pixmapSizeChanged</name>
@@ -8678,9 +9673,19 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>setVisible</name>
+      <anchor>setVisible</anchor>
+      <arglist>( bool visible )</arglist>
+    </member>
+    <member kind="function">
       <name>showDockMenu</name>
       <anchor>showDockMenu</anchor>
       <arglist>( const QPoint &amp; globalPos )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>statusBar</name>
@@ -9107,6 +10112,11 @@
     <member kind="function">
       <name>insertAt</name>
       <anchor>insertAt</anchor>
+      <arglist>( const QString &amp; s, int line, int col )</arglist>
+    </member>
+    <member kind="function">
+      <name>insertAt</name>
+      <anchor>insertAt-2</anchor>
       <arglist>( const QString &amp; s, int line, int col, bool mark )</arglist>
     </member>
     <member kind="function">
@@ -9157,6 +10167,11 @@
     <member kind="function">
       <name>setCursorPosition</name>
       <anchor>setCursorPosition</anchor>
+      <arglist>( int line, int col )</arglist>
+    </member>
+    <member kind="function">
+      <name>setCursorPosition</name>
+      <anchor>setCursorPosition-2</anchor>
       <arglist>( int line, int col, bool mark )</arglist>
     </member>
     <member kind="function">
@@ -9722,6 +10737,16 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>connectNotify</name>
+      <anchor>connectNotify</anchor>
+      <arglist>( const char * signal )</arglist>
+    </member>
+    <member kind="function">
+      <name>disconnectNotify</name>
+      <anchor>disconnectNotify</anchor>
+      <arglist>( const char * signal )</arglist>
+    </member>
+    <member kind="function">
       <name>exitStatus</name>
       <anchor>exitStatus</anchor>
       <arglist>()</arglist>
@@ -9866,9 +10891,24 @@
       <arglist>( int totalSteps, QWidget * parent = 0, Qt::WindowFlags f = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * ev )</arglist>
+    </member>
+    <member kind="function">
       <name>margin</name>
       <anchor>margin</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>minimumSizeHint</name>
+      <anchor>minimumSizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * )</arglist>
     </member>
     <member kind="function">
       <name>reset</name>
@@ -9884,6 +10924,16 @@
       <name>setMargin</name>
       <anchor>setMargin</anchor>
       <arglist>( int margin )</arglist>
+    </member>
+    <member kind="function">
+      <name>setVisible</name>
+      <anchor>setVisible</anchor>
+      <arglist>( bool visible )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -9925,6 +10975,16 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>closeEvent</name>
+      <anchor>closeEvent</anchor>
+      <arglist>( QCloseEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>forceShow</name>
       <anchor>forceShow</anchor>
       <arglist>()</arglist>
@@ -9933,6 +10993,11 @@
       <name>reset</name>
       <anchor>reset</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * )</arglist>
     </member>
     <member kind="function">
       <name>setBar</name>
@@ -9953,6 +11018,11 @@
       <name>setLabel</name>
       <anchor>setLabel</anchor>
       <arglist>( QLabel * label )</arglist>
+    </member>
+    <member kind="function">
+      <name>showEvent</name>
+      <anchor>showEvent</anchor>
+      <arglist>( QShowEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>sizeHint</name>
@@ -10802,7 +11872,7 @@
     </member>
     <member kind="function">
       <name>lineStep</name>
-      <anchor>lineStep</anchor>
+      <anchor>lineStepx</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -11020,6 +12090,11 @@
       <arglist>( QWheelEvent * e )</arglist>
     </member>
     <member kind="function">
+      <name>contextMenuEvent</name>
+      <anchor>contextMenuEvent</anchor>
+      <arglist>( QContextMenuEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>cornerWidget</name>
       <anchor>cornerWidget</anchor>
       <arglist>()</arglist>
@@ -11053,6 +12128,16 @@
       <name>eventFilter</name>
       <anchor>eventFilter</anchor>
       <arglist>( QObject * obj, QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusNextPrevChild</name>
+      <anchor>focusNextPrevChild</anchor>
+      <arglist>( bool next )</arglist>
+    </member>
+    <member kind="function">
+      <name>frameChanged</name>
+      <anchor>frameChanged</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>hasStaticBackground</name>
@@ -11090,6 +12175,31 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>minimumSizeHint</name>
+      <anchor>minimumSizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseDoubleClickEvent</name>
+      <anchor>mouseDoubleClickEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseMoveEvent</name>
+      <anchor>mouseMoveEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mousePressEvent</name>
+      <anchor>mousePressEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseReleaseEvent</name>
+      <anchor>mouseReleaseEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>moveChild</name>
       <anchor>moveChild</anchor>
       <arglist>( QWidget * child, int x, int y )</arglist>
@@ -11118,6 +12228,11 @@
       <name>resizeContents</name>
       <anchor>resizeContents</anchor>
       <arglist>( int w, int h )</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * event )</arglist>
     </member>
     <member kind="function">
       <name>rightMargin</name>
@@ -11158,6 +12273,16 @@
       <name>setVBarGeometry</name>
       <anchor>setVBarGeometry</anchor>
       <arglist>( QScrollBar &amp; vbar, int x, int y, int w, int h )</arglist>
+    </member>
+    <member kind="function">
+      <name>setVisible</name>
+      <anchor>setVisible</anchor>
+      <arglist>( bool visible )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>topMargin</name>
@@ -11228,6 +12353,11 @@
       <name>viewportToContents</name>
       <anchor>viewportToContents-2</anchor>
       <arglist>( const QPoint &amp; vp )</arglist>
+    </member>
+    <member kind="function">
+      <name>wheelEvent</name>
+      <anchor>wheelEvent</anchor>
+      <arglist>( QWheelEvent * e )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -11748,6 +12878,11 @@
       <arglist>( Offset offset )</arglist>
     </member>
     <member kind="function">
+      <name>atEnd</name>
+      <anchor>atEnd</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>bind</name>
       <anchor>bind</anchor>
       <arglist>( const QHostAddress &amp; address, Q_UINT16 port )</arglist>
@@ -11760,6 +12895,11 @@
     <member kind="function">
       <name>bytesAvailable</name>
       <anchor>bytesAvailable</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>close</name>
+      <anchor>close</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -11866,6 +13006,11 @@
       <name>setSocket</name>
       <anchor>setSocket</anchor>
       <arglist>( int socket, Type type )</arglist>
+    </member>
+    <member kind="function">
+      <name>size</name>
+      <anchor>size</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>socket</name>
@@ -12480,6 +13625,11 @@
       <arglist>( const char * format )</arglist>
     </member>
     <member kind="function">
+      <name>format</name>
+      <anchor>format</anchor>
+      <arglist>( int i )</arglist>
+    </member>
+    <member kind="function">
       <name>setEncodedData</name>
       <anchor>setEncodedData</anchor>
       <arglist>( const QByteArray &amp; data )</arglist>
@@ -13018,9 +14168,19 @@
       <arglist>( QWidget * w )</arglist>
     </member>
     <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * )</arglist>
+    </member>
+    <member kind="function">
       <name>removePage</name>
       <anchor>removePage</anchor>
       <arglist>( QWidget * w )</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>selected</name>
@@ -13091,6 +14251,11 @@
       <name>setTabEnabled</name>
       <anchor>setTabEnabled</anchor>
       <arglist>( QWidget * w, bool enable )</arglist>
+    </member>
+    <member kind="function">
+      <name>showEvent</name>
+      <anchor>showEvent</anchor>
+      <arglist>( QShowEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>showPage</name>
@@ -13227,6 +14392,11 @@
       <arglist>( int col )</arglist>
     </member>
     <member kind="function">
+      <name>contentsContextMenuEvent</name>
+      <anchor>contentsContextMenuEvent</anchor>
+      <arglist>( QContextMenuEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>contentsDragEnterEvent</name>
       <anchor>contentsDragEnterEvent</anchor>
       <arglist>( QDragEnterEvent * e )</arglist>
@@ -13245,6 +14415,26 @@
       <name>contentsDropEvent</name>
       <anchor>contentsDropEvent</anchor>
       <arglist>( QDropEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>contentsMouseDoubleClickEvent</name>
+      <anchor>contentsMouseDoubleClickEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>contentsMouseMoveEvent</name>
+      <anchor>contentsMouseMoveEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>contentsMousePressEvent</name>
+      <anchor>contentsMousePressEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>contentsMouseReleaseEvent</name>
+      <anchor>contentsMouseReleaseEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>contextMenuRequested</name>
@@ -13332,6 +14522,21 @@
       <arglist>( int row, int col )</arglist>
     </member>
     <member kind="function">
+      <name>eventFilter</name>
+      <anchor>eventFilter</anchor>
+      <arglist>( QObject * o, QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusInEvent</name>
+      <anchor>focusInEvent</anchor>
+      <arglist>( QFocusEvent * )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusOutEvent</name>
+      <anchor>focusOutEvent</anchor>
+      <arglist>( QFocusEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>hideColumn</name>
       <anchor>hideColumn</anchor>
       <arglist>( int col )</arglist>
@@ -13350,6 +14555,11 @@
       <name>indexOf</name>
       <anchor>indexOf</anchor>
       <arglist>( int row, int col )</arglist>
+    </member>
+    <member kind="function">
+      <name>inputMethodQuery</name>
+      <anchor>inputMethodQuery</anchor>
+      <arglist>( Qt::InputMethodQuery query )</arglist>
     </member>
     <member kind="function">
       <name>insertColumns</name>
@@ -13422,6 +14632,11 @@
       <arglist>( int row, int col )</arglist>
     </member>
     <member kind="function">
+      <name>keyPressEvent</name>
+      <anchor>keyPressEvent</anchor>
+      <arglist>( QKeyEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>paintCell</name>
       <anchor>paintCell</anchor>
       <arglist>( QPainter * p, int row, int col, const QRect &amp; cr, bool selected, const QColorGroup &amp; cg )</arglist>
@@ -13435,6 +14650,11 @@
       <name>paintEmptyArea</name>
       <anchor>paintEmptyArea</anchor>
       <arglist>( QPainter * p, int cx, int cy, int cw, int ch )</arglist>
+    </member>
+    <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>paintFocus</name>
@@ -13637,9 +14857,19 @@
       <arglist>( int col )</arglist>
     </member>
     <member kind="function">
+      <name>showEvent</name>
+      <anchor>showEvent</anchor>
+      <arglist>( QShowEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>showRow</name>
       <anchor>showRow</anchor>
       <arglist>( int row )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>sortColumn</name>
@@ -13695,6 +14925,11 @@
       <name>verticalHeader</name>
       <anchor>verticalHeader</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>viewportResizeEvent</name>
+      <anchor>viewportResizeEvent</anchor>
+      <arglist>( QResizeEvent * e )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -13996,6 +15231,11 @@
     <member kind="function">
       <name>setText</name>
       <anchor>setText</anchor>
+      <arglist>( const QString &amp; txt, const QString &amp; context )</arglist>
+    </member>
+    <member kind="function">
+      <name>setText</name>
+      <anchor>setText-2</anchor>
       <arglist>( const QString &amp; txt )</arglist>
     </member>
     <member kind="function">
@@ -14031,6 +15271,16 @@
       <name>decode</name>
       <anchor>decode-2</anchor>
       <arglist>( const QMimeSource * source, QString &amp; string, QString &amp; subtype )</arglist>
+    </member>
+    <member kind="function">
+      <name>encodedData</name>
+      <anchor>encodedData</anchor>
+      <arglist>( const char * mime )</arglist>
+    </member>
+    <member kind="function">
+      <name>format</name>
+      <anchor>format</anchor>
+      <arglist>( int i )</arglist>
     </member>
     <member kind="function">
       <name>setSubtype</name>
@@ -14107,6 +15357,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * ev )</arglist>
+    </member>
+    <member kind="function">
       <name>charAt</name>
       <anchor>charAt</anchor>
       <arglist>( const QPoint &amp; pos, int * para )</arglist>
@@ -14130,6 +15385,56 @@
       <name>color</name>
       <anchor>color</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>contentsContextMenuEvent</name>
+      <anchor>contentsContextMenuEvent</anchor>
+      <arglist>( QContextMenuEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>contentsDragEnterEvent</name>
+      <anchor>contentsDragEnterEvent</anchor>
+      <arglist>( QDragEnterEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>contentsDragLeaveEvent</name>
+      <anchor>contentsDragLeaveEvent</anchor>
+      <arglist>( QDragLeaveEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>contentsDragMoveEvent</name>
+      <anchor>contentsDragMoveEvent</anchor>
+      <arglist>( QDragMoveEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>contentsDropEvent</name>
+      <anchor>contentsDropEvent</anchor>
+      <arglist>( QDropEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>contentsMouseDoubleClickEvent</name>
+      <anchor>contentsMouseDoubleClickEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>contentsMouseMoveEvent</name>
+      <anchor>contentsMouseMoveEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>contentsMousePressEvent</name>
+      <anchor>contentsMousePressEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>contentsMouseReleaseEvent</name>
+      <anchor>contentsMouseReleaseEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>contentsWheelEvent</name>
+      <anchor>contentsWheelEvent</anchor>
+      <arglist>( QWheelEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>context</name>
@@ -14207,9 +15512,24 @@
       <arglist>( int para, int pos )</arglist>
     </member>
     <member kind="function">
+      <name>drawContents</name>
+      <anchor>drawContents</anchor>
+      <arglist>( QPainter * p, int cx, int cy, int cw, int ch )</arglist>
+    </member>
+    <member kind="function">
       <name>ensureCursorVisible</name>
       <anchor>ensureCursorVisible</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>eventFilter</name>
+      <anchor>eventFilter</anchor>
+      <arglist>( QObject * o, QEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>family</name>
@@ -14245,6 +15565,11 @@
       <name>heightForWidth</name>
       <anchor>heightForWidth</anchor>
       <arglist>( int w )</arglist>
+    </member>
+    <member kind="function">
+      <name>inputMethodEvent</name>
+      <anchor>inputMethodEvent</anchor>
+      <arglist>( QInputMethodEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>insert</name>
@@ -14392,6 +15717,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>returnPressed</name>
       <anchor>returnPressed</anchor>
       <arglist>()</arglist>
@@ -14492,6 +15822,11 @@
       <arglist>( Q3TextEdit::VerticalAlignment a )</arglist>
     </member>
     <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>styleSheet</name>
       <anchor>styleSheet</anchor>
       <arglist>()</arglist>
@@ -14535,6 +15870,11 @@
       <name>verticalAlignment</name>
       <anchor>verticalAlignment</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>viewportResizeEvent</name>
+      <anchor>viewportResizeEvent</anchor>
+      <arglist>( QResizeEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>zoomIn</name>
@@ -14884,6 +16224,21 @@
       <arglist>( const QTime &amp; time, QWidget * parent = 0, const char * name = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>minimumSizeHint</name>
+      <anchor>minimumSizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * )</arglist>
+    </member>
+    <member kind="function">
       <name>sectionFormattedText</name>
       <anchor>sectionFormattedText</anchor>
       <arglist>( int sec )</arglist>
@@ -14917,6 +16272,16 @@
       <name>setSeparator</name>
       <anchor>setSeparator</anchor>
       <arglist>( const QString &amp; s )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>timerEvent</name>
+      <anchor>timerEvent</anchor>
+      <arglist>( QTimerEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>valueChanged</name>
@@ -14953,14 +16318,39 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>mainWindow</name>
       <anchor>mainWindow</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>minimumSizeHint</name>
+      <anchor>minimumSizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>setOrientation</name>
+      <anchor>setOrientation</anchor>
+      <arglist>( Qt::Orientation o )</arglist>
+    </member>
+    <member kind="function">
       <name>setStretchableWidget</name>
       <anchor>setStretchableWidget</anchor>
       <arglist>( QWidget * w )</arglist>
+    </member>
+    <member kind="function">
+      <name>setVisible</name>
+      <anchor>setVisible</anchor>
+      <arglist>( bool visible )</arglist>
     </member>
     <member kind="function">
       <name>setFilenames</name>
@@ -15395,6 +16785,11 @@
       <arglist>( const Q3ValueList&lt;QUrlInfo&gt; &amp; i, Q3NetworkOperation * op )</arglist>
     </member>
     <member kind="function">
+      <name>parse</name>
+      <anchor>parse</anchor>
+      <arglist>( const QString &amp; url )</arglist>
+    </member>
+    <member kind="function">
       <name>put</name>
       <anchor>put</anchor>
       <arglist>( const QByteArray &amp; data, const QString &amp; location = QString()</arglist>
@@ -15415,9 +16810,19 @@
       <arglist>( const QString &amp; oldname, const QString &amp; newname )</arglist>
     </member>
     <member kind="function">
+      <name>reset</name>
+      <anchor>reset</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>setNameFilter</name>
       <anchor>setNameFilter</anchor>
       <arglist>( const QString &amp; nameFilter )</arglist>
+    </member>
+    <member kind="function">
+      <name>setPath</name>
+      <anchor>setPath</anchor>
+      <arglist>( const QString &amp; path )</arglist>
     </member>
     <member kind="function">
       <name>start</name>
@@ -15899,9 +17304,29 @@
       <arglist>( QWidget * w, int id = -1 )</arglist>
     </member>
     <member kind="function">
+      <name>childEvent</name>
+      <anchor>childEvent</anchor>
+      <arglist>( QChildEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>frameChanged</name>
+      <anchor>frameChanged</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>id</name>
       <anchor>id</anchor>
       <arglist>( QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>minimumSizeHint</name>
+      <anchor>minimumSizeHint</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>raiseWidget</name>
@@ -15919,8 +17344,23 @@
       <arglist>( QWidget * w )</arglist>
     </member>
     <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>setChildGeometries</name>
       <anchor>setChildGeometries</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>setVisible</name>
+      <anchor>setVisible</anchor>
+      <arglist>( bool visible )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -15976,6 +17416,11 @@
       <name>currentPage</name>
       <anchor>currentPage</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>eventFilter</name>
+      <anchor>eventFilter</anchor>
+      <arglist>( QObject * o, QEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>finishButton</name>
@@ -16087,6 +17532,110 @@
       <anchor>title</anchor>
       <arglist>( QWidget * page )</arglist>
     </member>
+  </compound>
+  <compound kind="class">
+    <name>QAbstractAnimation</name>
+    <filename>qabstractanimation.html</filename>
+    <member kind="enum">
+      <name>DeletionPolicy</name>
+      <anchor>DeletionPolicy-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enum">
+      <name>Direction</name>
+      <anchor>Direction-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enum">
+      <name>State</name>
+      <anchor>State-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>QAbstractAnimation</name>
+      <anchor>QAbstractAnimation</anchor>
+      <arglist>( QObject * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>currentLoopChanged</name>
+      <anchor>currentLoopChanged</anchor>
+      <arglist>( int currentLoop )</arglist>
+    </member>
+    <member kind="function">
+      <name>currentLoopTime</name>
+      <anchor>currentLoopTime</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>directionChanged</name>
+      <anchor>directionChanged</anchor>
+      <arglist>( QAbstractAnimation::Direction newDirection )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>finished</name>
+      <anchor>finished</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>group</name>
+      <anchor>group</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>pause</name>
+      <anchor>pause</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>resume</name>
+      <anchor>resume</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>setPaused</name>
+      <anchor>setPaused</anchor>
+      <arglist>( bool paused )</arglist>
+    </member>
+    <member kind="function">
+      <name>start</name>
+      <anchor>start</anchor>
+      <arglist>( QAbstractAnimation::DeletionPolicy policy = KeepWhenStopped )</arglist>
+    </member>
+    <member kind="function">
+      <name>stateChanged</name>
+      <anchor>stateChanged</anchor>
+      <arglist>( QAbstractAnimation::State newState, QAbstractAnimation::State oldState )</arglist>
+    </member>
+    <member kind="function">
+      <name>stop</name>
+      <anchor>stop</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>totalDuration</name>
+      <anchor>totalDuration</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>updateCurrentTime</name>
+      <anchor>updateCurrentTime</anchor>
+      <arglist>( int currentTime )</arglist>
+    </member>
+    <member kind="function">
+      <name>updateDirection</name>
+      <anchor>updateDirection</anchor>
+      <arglist>( QAbstractAnimation::Direction direction )</arglist>
+    </member>
+    <member kind="function">
+      <name>updateState</name>
+      <anchor>updateState</anchor>
+      <arglist>( QAbstractAnimation::State newState, QAbstractAnimation::State oldState )</arglist>
+    </member>
     <member kind="function">
       <name>QAbstractButton</name>
       <anchor>QAbstractButton-2</anchor>
@@ -16157,6 +17706,11 @@
       <arglist>( int msec = 100 )</arglist>
     </member>
     <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>checkStateSet</name>
       <anchor>checkStateSet</anchor>
       <arglist>()</arglist>
@@ -16172,6 +17726,21 @@
       <arglist>( bool checked = false )</arglist>
     </member>
     <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusInEvent</name>
+      <anchor>focusInEvent</anchor>
+      <arglist>( QFocusEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusOutEvent</name>
+      <anchor>focusOutEvent</anchor>
+      <arglist>( QFocusEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>group</name>
       <anchor>group</anchor>
       <arglist>()</arglist>
@@ -16182,9 +17751,39 @@
       <arglist>( const QPoint &amp; pos )</arglist>
     </member>
     <member kind="function">
+      <name>keyPressEvent</name>
+      <anchor>keyPressEvent</anchor>
+      <arglist>( QKeyEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>keyReleaseEvent</name>
+      <anchor>keyReleaseEvent</anchor>
+      <arglist>( QKeyEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseMoveEvent</name>
+      <anchor>mouseMoveEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mousePressEvent</name>
+      <anchor>mousePressEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseReleaseEvent</name>
+      <anchor>mouseReleaseEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>nextCheckState</name>
       <anchor>nextCheckState</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>pressed</name>
@@ -16195,6 +17794,11 @@
       <name>released</name>
       <anchor>released</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>timerEvent</name>
+      <anchor>timerEvent</anchor>
+      <arglist>( QTimerEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>toggle</name>
@@ -16652,6 +18256,108 @@
     </member>
   </compound>
   <compound kind="class">
+    <name>FixedPoint</name>
+    <filename>qabstractfontengine-fixedpoint.html</filename>
+    <member kind="function">
+      <name>x</name>
+      <anchor>x-var</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>y</name>
+      <anchor>y-var</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>GlyphMetrics</name>
+    <filename>qabstractfontengine-glyphmetrics.html</filename>
+    <member kind="function">
+      <name>GlyphMetrics</name>
+      <anchor>GlyphMetricsx</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>advance</name>
+      <anchor>advance-var</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>height</name>
+      <anchor>height-var</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>width</name>
+      <anchor>width-var</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>x</name>
+      <anchor>x-var</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>y</name>
+      <anchor>y-var</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QAbstractFontEngine</name>
+    <filename>qabstractfontengine.html</filename>
+    <member kind="function">
+      <name>Fixed</name>
+      <anchor>Fixed-typedef</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enum">
+      <name>FontProperty</name>
+      <anchor>FontProperty-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>QAbstractFontEngine</name>
+      <anchor>QAbstractFontEngine</anchor>
+      <arglist>( QObject * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>addGlyphOutlinesToPath</name>
+      <anchor>addGlyphOutlinesToPath</anchor>
+      <arglist>( uint * glyphs, int numGlyphs, FixedPoint * positions, QPainterPath * path )</arglist>
+    </member>
+    <member kind="function">
+      <name>capabilities</name>
+      <anchor>capabilities</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>convertStringToGlyphIndices</name>
+      <anchor>convertStringToGlyphIndices</anchor>
+      <arglist>( const QChar * string, int length, uint * glyphs, int * numGlyphs, TextShapingFlags flags )</arglist>
+    </member>
+    <member kind="function">
+      <name>fontProperty</name>
+      <anchor>fontProperty</anchor>
+      <arglist>( FontProperty property )</arglist>
+    </member>
+    <member kind="function">
+      <name>getGlyphAdvances</name>
+      <anchor>getGlyphAdvances</anchor>
+      <arglist>( const uint * glyphs, int numGlyphs, Fixed * advances, TextShapingFlags flags )</arglist>
+    </member>
+    <member kind="function">
+      <name>glyphMetrics</name>
+      <anchor>glyphMetrics</anchor>
+      <arglist>( uint glyph )</arglist>
+    </member>
+    <member kind="function">
+      <name>renderGlyph</name>
+      <anchor>renderGlyph</anchor>
+      <arglist>( uint glyph, int depth, int bytesPerLine, int height, uchar * buffer )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
     <name>QAbstractFormBuilder</name>
     <filename>qabstractformbuilder.html</filename>
     <member kind="function">
@@ -16691,6 +18397,16 @@
     <member kind="function">
       <name>brush</name>
       <anchor>brush</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>isObscuredBy</name>
+      <anchor>isObscuredBy</anchor>
+      <arglist>( const QGraphicsItem * item )</arglist>
+    </member>
+    <member kind="function">
+      <name>opaqueArea</name>
+      <anchor>opaqueArea</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -16807,6 +18523,16 @@
       <arglist>( const QModelIndex &amp; parent, int first, int last )</arglist>
     </member>
     <member kind="function">
+      <name>beginMoveColumns</name>
+      <anchor>beginMoveColumns</anchor>
+      <arglist>( const QModelIndex &amp; sourceParent, int sourceFirst, int sourceLast, const QModelIndex &amp; destinationParent, int destinationChild )</arglist>
+    </member>
+    <member kind="function">
+      <name>beginMoveRows</name>
+      <anchor>beginMoveRows</anchor>
+      <arglist>( const QModelIndex &amp; sourceParent, int sourceFirst, int sourceLast, const QModelIndex &amp; destinationParent, int destinationChild )</arglist>
+    </member>
+    <member kind="function">
       <name>beginRemoveColumns</name>
       <anchor>beginRemoveColumns</anchor>
       <arglist>( const QModelIndex &amp; parent, int first, int last )</arglist>
@@ -16815,6 +18541,11 @@
       <name>beginRemoveRows</name>
       <anchor>beginRemoveRows</anchor>
       <arglist>( const QModelIndex &amp; parent, int first, int last )</arglist>
+    </member>
+    <member kind="function">
+      <name>beginResetModel</name>
+      <anchor>beginResetModel</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>buddy</name>
@@ -16847,6 +18578,11 @@
       <arglist>( const QModelIndex &amp; parent, int start, int end )</arglist>
     </member>
     <member kind="function">
+      <name>columnsAboutToBeMoved</name>
+      <anchor>columnsAboutToBeMoved</anchor>
+      <arglist>( const QModelIndex &amp; sourceParent, int sourceStart, int sourceEnd, const QModelIndex &amp; destinationParent, int destinationColumn )</arglist>
+    </member>
+    <member kind="function">
       <name>columnsAboutToBeRemoved</name>
       <anchor>columnsAboutToBeRemoved</anchor>
       <arglist>( const QModelIndex &amp; parent, int start, int end )</arglist>
@@ -16855,6 +18591,11 @@
       <name>columnsInserted</name>
       <anchor>columnsInserted</anchor>
       <arglist>( const QModelIndex &amp; parent, int start, int end )</arglist>
+    </member>
+    <member kind="function">
+      <name>columnsMoved</name>
+      <anchor>columnsMoved</anchor>
+      <arglist>( const QModelIndex &amp; sourceParent, int sourceStart, int sourceEnd, const QModelIndex &amp; destinationParent, int destinationColumn )</arglist>
     </member>
     <member kind="function">
       <name>columnsRemoved</name>
@@ -16897,6 +18638,16 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>endMoveColumns</name>
+      <anchor>endMoveColumns</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>endMoveRows</name>
+      <anchor>endMoveRows</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>endRemoveColumns</name>
       <anchor>endRemoveColumns</anchor>
       <arglist>()</arglist>
@@ -16904,6 +18655,11 @@
     <member kind="function">
       <name>endRemoveRows</name>
       <anchor>endRemoveRows</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>endResetModel</name>
+      <anchor>endResetModel</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -17042,6 +18798,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>roleNames</name>
+      <anchor>roleNames</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>rowCount</name>
       <anchor>rowCount</anchor>
       <arglist>( const QModelIndex &amp; parent = QModelIndex()</arglist>
@@ -17052,6 +18813,11 @@
       <arglist>( const QModelIndex &amp; parent, int start, int end )</arglist>
     </member>
     <member kind="function">
+      <name>rowsAboutToBeMoved</name>
+      <anchor>rowsAboutToBeMoved</anchor>
+      <arglist>( const QModelIndex &amp; sourceParent, int sourceStart, int sourceEnd, const QModelIndex &amp; destinationParent, int destinationRow )</arglist>
+    </member>
+    <member kind="function">
       <name>rowsAboutToBeRemoved</name>
       <anchor>rowsAboutToBeRemoved</anchor>
       <arglist>( const QModelIndex &amp; parent, int start, int end )</arglist>
@@ -17060,6 +18826,11 @@
       <name>rowsInserted</name>
       <anchor>rowsInserted</anchor>
       <arglist>( const QModelIndex &amp; parent, int start, int end )</arglist>
+    </member>
+    <member kind="function">
+      <name>rowsMoved</name>
+      <anchor>rowsMoved</anchor>
+      <arglist>( const QModelIndex &amp; sourceParent, int sourceStart, int sourceEnd, const QModelIndex &amp; destinationParent, int destinationRow )</arglist>
     </member>
     <member kind="function">
       <name>rowsRemoved</name>
@@ -17080,6 +18851,11 @@
       <name>setItemData</name>
       <anchor>setItemData</anchor>
       <arglist>( const QModelIndex &amp; index, const QMap&lt;int, QVariant&gt; &amp; roles )</arglist>
+    </member>
+    <member kind="function">
+      <name>setRoleNames</name>
+      <anchor>setRoleNames</anchor>
+      <arglist>( const QHash&lt;int, QByteArray&gt; &amp; roleNames )</arglist>
     </member>
     <member kind="function">
       <name>setSupportedDragActions</name>
@@ -17178,6 +18954,11 @@
     <member kind="enum">
       <name>State</name>
       <anchor>State-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>DropAction</name>
+      <anchor>defaultDropAction-prop</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
@@ -17291,6 +19072,11 @@
       <arglist>( const QModelIndex &amp; index )</arglist>
     </member>
     <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>executeDelayedItemsLayout</name>
       <anchor>executeDelayedItemsLayout</anchor>
       <arglist>()</arglist>
@@ -17299,6 +19085,11 @@
       <name>focusInEvent</name>
       <anchor>focusInEvent</anchor>
       <arglist>( QFocusEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusNextPrevChild</name>
+      <anchor>focusNextPrevChild</anchor>
+      <arglist>( bool next )</arglist>
     </member>
     <member kind="function">
       <name>focusOutEvent</name>
@@ -17319,6 +19110,16 @@
       <name>indexWidget</name>
       <anchor>indexWidget</anchor>
       <arglist>( const QModelIndex &amp; index )</arglist>
+    </member>
+    <member kind="function">
+      <name>inputMethodEvent</name>
+      <anchor>inputMethodEvent</anchor>
+      <arglist>( QInputMethodEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>inputMethodQuery</name>
+      <anchor>inputMethodQuery</anchor>
+      <arglist>( Qt::InputMethodQuery query )</arglist>
     </member>
     <member kind="function">
       <name>isIndexHidden</name>
@@ -17605,6 +19406,11 @@
       <arglist>( QObject * parent = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>dropMimeData</name>
+      <anchor>dropMimeData</anchor>
+      <arglist>( const QMimeData * data, Qt::DropAction action, int row, int column, const QModelIndex &amp; parent )</arglist>
+    </member>
+    <member kind="function">
       <name>index</name>
       <anchor>index</anchor>
       <arglist>( int row, int column = 0, const QModelIndex &amp; parent = QModelIndex()</arglist>
@@ -17776,6 +19582,26 @@
       <arglist>( QObject * parent = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>data</name>
+      <anchor>data</anchor>
+      <arglist>( const QModelIndex &amp; proxyIndex, int role = Qt::DisplayRole )</arglist>
+    </member>
+    <member kind="function">
+      <name>ItemFlags</name>
+      <anchor>flags</anchor>
+      <arglist> QAbstractProxyModel::flags( const QModelIndex &amp; index )</arglist>
+    </member>
+    <member kind="function">
+      <name>headerData</name>
+      <anchor>headerData</anchor>
+      <arglist>( int section, Qt::Orientation orientation, int role )</arglist>
+    </member>
+    <member kind="function">
+      <name>itemData</name>
+      <anchor>itemData</anchor>
+      <arglist>( const QModelIndex &amp; proxyIndex )</arglist>
+    </member>
+    <member kind="function">
       <name>mapFromSource</name>
       <anchor>mapFromSource</anchor>
       <arglist>( const QModelIndex &amp; sourceIndex )</arglist>
@@ -17796,6 +19622,21 @@
       <arglist>( const QModelIndex &amp; proxyIndex )</arglist>
     </member>
     <member kind="function">
+      <name>revert</name>
+      <anchor>revert</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>setData</name>
+      <anchor>setData</anchor>
+      <arglist>( const QModelIndex &amp; index, const QVariant &amp; value, int role = Qt::EditRole )</arglist>
+    </member>
+    <member kind="function">
+      <name>setHeaderData</name>
+      <anchor>setHeaderData</anchor>
+      <arglist>( int section, Qt::Orientation orientation, const QVariant &amp; value, int role = Qt::EditRole )</arglist>
+    </member>
+    <member kind="function">
       <name>setSourceModel</name>
       <anchor>setSourceModel</anchor>
       <arglist>( QAbstractItemModel * sourceModel )</arglist>
@@ -17803,6 +19644,11 @@
     <member kind="function">
       <name>sourceModel</name>
       <anchor>sourceModel</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>submit</name>
+      <anchor>submit</anchor>
       <arglist>()</arglist>
     </member>
   </compound>
@@ -17860,6 +19706,11 @@
       <arglist>( QDropEvent * event )</arglist>
     </member>
     <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>horizontalScrollBar</name>
       <anchor>horizontalScrollBar</anchor>
       <arglist>()</arglist>
@@ -17872,6 +19723,11 @@
     <member kind="function">
       <name>maximumViewportSize</name>
       <anchor>maximumViewportSize</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>minimumSizeHint</name>
+      <anchor>minimumSizeHint</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -17940,9 +19796,19 @@
       <arglist>( int left, int top, int right, int bottom )</arglist>
     </member>
     <member kind="function">
+      <name>setViewportMargins</name>
+      <anchor>setViewportMargins-2</anchor>
+      <arglist>( const QMargins &amp; margins )</arglist>
+    </member>
+    <member kind="function">
       <name>setupViewport</name>
       <anchor>setupViewport</anchor>
       <arglist>( QWidget * viewport )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>verticalScrollBar</name>
@@ -17976,7 +19842,7 @@
     </member>
     <member kind="function">
       <name>lineStep</name>
-      <anchor>lineStep</anchor>
+      <anchor>lineStepx</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -18049,6 +19915,21 @@
       <arglist>( int action )</arglist>
     </member>
     <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>keyPressEvent</name>
+      <anchor>keyPressEvent</anchor>
+      <arglist>( QKeyEvent * ev )</arglist>
+    </member>
+    <member kind="function">
       <name>rangeChanged</name>
       <anchor>rangeChanged</anchor>
       <arglist>( int min, int max )</arglist>
@@ -18089,6 +19970,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>timerEvent</name>
+      <anchor>timerEvent</anchor>
+      <arglist>( QTimerEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>triggerAction</name>
       <anchor>triggerAction</anchor>
       <arglist>( SliderAction action )</arglist>
@@ -18097,6 +19983,11 @@
       <name>valueChanged</name>
       <anchor>valueChanged</anchor>
       <arglist>( int value )</arglist>
+    </member>
+    <member kind="function">
+      <name>wheelEvent</name>
+      <anchor>wheelEvent</anchor>
+      <arglist>( QWheelEvent * e )</arglist>
     </member>
     <member kind="enum">
       <name>Error</name>
@@ -18148,6 +20039,11 @@
       <arglist></arglist>
     </member>
     <member kind="enum">
+      <name>SocketOption</name>
+      <anchor>SocketOption-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enum">
       <name>SocketState</name>
       <anchor>SocketState-enum</anchor>
       <arglist></arglist>
@@ -18165,6 +20061,11 @@
     <member kind="function">
       <name>abort</name>
       <anchor>abort</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>atEnd</name>
+      <anchor>atEnd</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -18243,6 +20144,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>isSequential</name>
+      <anchor>isSequential</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>isValid</name>
       <anchor>isValid</anchor>
       <arglist>()</arglist>
@@ -18286,6 +20192,16 @@
       <name>readBufferSize</name>
       <anchor>readBufferSize</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>readData</name>
+      <anchor>readData</anchor>
+      <arglist>( char * data, qint64 maxSize )</arglist>
+    </member>
+    <member kind="function">
+      <name>readLineData</name>
+      <anchor>readLineData</anchor>
+      <arglist>( char * data, qint64 maxlen )</arglist>
     </member>
     <member kind="function">
       <name>setLocalAddress</name>
@@ -18333,6 +20249,11 @@
       <arglist>( SocketError socketError )</arglist>
     </member>
     <member kind="function">
+      <name>setSocketOption</name>
+      <anchor>setSocketOption</anchor>
+      <arglist>( QAbstractSocket::SocketOption option, const QVariant &amp; value )</arglist>
+    </member>
+    <member kind="function">
       <name>setSocketState</name>
       <anchor>setSocketState</anchor>
       <arglist>( SocketState state )</arglist>
@@ -18341,6 +20262,11 @@
       <name>socketDescriptor</name>
       <anchor>socketDescriptor</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>socketOption</name>
+      <anchor>socketOption</anchor>
+      <arglist>( QAbstractSocket::SocketOption option )</arglist>
     </member>
     <member kind="function">
       <name>socketType</name>
@@ -18358,6 +20284,11 @@
       <arglist>( QAbstractSocket::SocketState socketState )</arglist>
     </member>
     <member kind="function">
+      <name>waitForBytesWritten</name>
+      <anchor>waitForBytesWritten</anchor>
+      <arglist>( int msecs = 30000 )</arglist>
+    </member>
+    <member kind="function">
       <name>waitForConnected</name>
       <anchor>waitForConnected</anchor>
       <arglist>( int msecs = 30000 )</arglist>
@@ -18371,6 +20302,11 @@
       <name>waitForReadyRead</name>
       <anchor>waitForReadyRead</anchor>
       <arglist>( int msecs = 30000 )</arglist>
+    </member>
+    <member kind="function">
+      <name>writeData</name>
+      <anchor>writeData</anchor>
+      <arglist>( const char * data, qint64 size )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -18397,9 +20333,24 @@
       <arglist>( QWidget * parent = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>clear</name>
       <anchor>clear</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>closeEvent</name>
+      <anchor>closeEvent</anchor>
+      <arglist>( QCloseEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>contextMenuEvent</name>
+      <anchor>contextMenuEvent</anchor>
+      <arglist>( QContextMenuEvent * event )</arglist>
     </member>
     <member kind="function">
       <name>editingFinished</name>
@@ -18407,9 +20358,29 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>fixup</name>
       <anchor>fixup</anchor>
       <arglist>( QString &amp; input )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusInEvent</name>
+      <anchor>focusInEvent</anchor>
+      <arglist>( QFocusEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusOutEvent</name>
+      <anchor>focusOutEvent</anchor>
+      <arglist>( QFocusEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>hideEvent</name>
+      <anchor>hideEvent</anchor>
+      <arglist>( QHideEvent * event )</arglist>
     </member>
     <member kind="function">
       <name>initStyleOption</name>
@@ -18417,14 +20388,59 @@
       <arglist>( QStyleOptionSpinBox * option )</arglist>
     </member>
     <member kind="function">
+      <name>inputMethodQuery</name>
+      <anchor>inputMethodQuery</anchor>
+      <arglist>( Qt::InputMethodQuery query )</arglist>
+    </member>
+    <member kind="function">
       <name>interpretText</name>
       <anchor>interpretText</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>keyPressEvent</name>
+      <anchor>keyPressEvent</anchor>
+      <arglist>( QKeyEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>keyReleaseEvent</name>
+      <anchor>keyReleaseEvent</anchor>
+      <arglist>( QKeyEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>lineEdit</name>
       <anchor>lineEdit</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>minimumSizeHint</name>
+      <anchor>minimumSizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseMoveEvent</name>
+      <anchor>mouseMoveEvent</anchor>
+      <arglist>( QMouseEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>mousePressEvent</name>
+      <anchor>mousePressEvent</anchor>
+      <arglist>( QMouseEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseReleaseEvent</name>
+      <anchor>mouseReleaseEvent</anchor>
+      <arglist>( QMouseEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * event )</arglist>
     </member>
     <member kind="function">
       <name>selectAll</name>
@@ -18435,6 +20451,16 @@
       <name>setLineEdit</name>
       <anchor>setLineEdit</anchor>
       <arglist>( QLineEdit * lineEdit )</arglist>
+    </member>
+    <member kind="function">
+      <name>showEvent</name>
+      <anchor>showEvent</anchor>
+      <arglist>( QShowEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>stepBy</name>
@@ -18457,9 +20483,63 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>timerEvent</name>
+      <anchor>timerEvent</anchor>
+      <arglist>( QTimerEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>State</name>
       <anchor>validate</anchor>
       <arglist> QAbstractSpinBox::validate( QString &amp; input, int &amp; pos )</arglist>
+    </member>
+    <member kind="function">
+      <name>wheelEvent</name>
+      <anchor>wheelEvent</anchor>
+      <arglist>( QWheelEvent * event )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QAbstractState</name>
+    <filename>qabstractstate.html</filename>
+    <member kind="function">
+      <name>QAbstractState</name>
+      <anchor>QAbstractState</anchor>
+      <arglist>( QState * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>entered</name>
+      <anchor>entered</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>exited</name>
+      <anchor>exited</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>machine</name>
+      <anchor>machine</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>onEntry</name>
+      <anchor>onEntry</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>onExit</name>
+      <anchor>onExit</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>parentState</name>
+      <anchor>parentState</anchor>
+      <arglist>()</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -18469,6 +20549,11 @@
       <name>QAbstractTableModel</name>
       <anchor>QAbstractTableModel</anchor>
       <arglist>( QObject * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>dropMimeData</name>
+      <anchor>dropMimeData</anchor>
+      <arglist>( const QMimeData * data, Qt::DropAction action, int row, int column, const QModelIndex &amp; parent )</arglist>
     </member>
     <member kind="function">
       <name>index</name>
@@ -18629,6 +20714,55 @@
     </member>
   </compound>
   <compound kind="class">
+    <name>QAbstractTransition</name>
+    <filename>qabstracttransition.html</filename>
+    <member kind="function">
+      <name>QAbstractTransition</name>
+      <anchor>QAbstractTransition</anchor>
+      <arglist>( QState * sourceState = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>addAnimation</name>
+      <anchor>addAnimation</anchor>
+      <arglist>( QAbstractAnimation * animation )</arglist>
+    </member>
+    <member kind="function">
+      <name>animations</name>
+      <anchor>animations</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>eventTest</name>
+      <anchor>eventTest</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>machine</name>
+      <anchor>machine</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>onTransition</name>
+      <anchor>onTransition</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>removeAnimation</name>
+      <anchor>removeAnimation</anchor>
+      <arglist>( QAbstractAnimation * animation )</arglist>
+    </member>
+    <member kind="function">
+      <name>triggered</name>
+      <anchor>triggered</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
     <name>QAbstractUriResolver</name>
     <filename>qabstracturiresolver.html</filename>
     <member kind="function">
@@ -18640,6 +20774,129 @@
       <name>resolve</name>
       <anchor>resolve</anchor>
       <arglist>( const QUrl &amp; relative, const QUrl &amp; baseURI )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QAbstractVideoBuffer</name>
+    <filename>qabstractvideobuffer.html</filename>
+    <member kind="enum">
+      <name>HandleType</name>
+      <anchor>HandleType-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enum">
+      <name>MapMode</name>
+      <anchor>MapMode-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>QAbstractVideoBuffer</name>
+      <anchor>QAbstractVideoBuffer</anchor>
+      <arglist>( HandleType type )</arglist>
+    </member>
+    <member kind="function">
+      <name>handle</name>
+      <anchor>handle</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>handleType</name>
+      <anchor>handleType</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>map</name>
+      <anchor>map</anchor>
+      <arglist>( MapMode mode, int * numBytes, int * bytesPerLine )</arglist>
+    </member>
+    <member kind="function">
+      <name>mapMode</name>
+      <anchor>mapMode</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>unmap</name>
+      <anchor>unmap</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QAbstractVideoSurface</name>
+    <filename>qabstractvideosurface.html</filename>
+    <member kind="enum">
+      <name>Error</name>
+      <anchor>Error-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>QAbstractVideoSurface</name>
+      <anchor>QAbstractVideoSurface</anchor>
+      <arglist>( QObject * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>activeChanged</name>
+      <anchor>activeChanged</anchor>
+      <arglist>( bool active )</arglist>
+    </member>
+    <member kind="function">
+      <name>error</name>
+      <anchor>error</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>isActive</name>
+      <anchor>isActive</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>isFormatSupported</name>
+      <anchor>isFormatSupported</anchor>
+      <arglist>( const QVideoSurfaceFormat &amp; format )</arglist>
+    </member>
+    <member kind="function">
+      <name>nearestFormat</name>
+      <anchor>nearestFormat</anchor>
+      <arglist>( const QVideoSurfaceFormat &amp; format )</arglist>
+    </member>
+    <member kind="function">
+      <name>present</name>
+      <anchor>present</anchor>
+      <arglist>( const QVideoFrame &amp; frame )</arglist>
+    </member>
+    <member kind="function">
+      <name>setError</name>
+      <anchor>setError</anchor>
+      <arglist>( Error error )</arglist>
+    </member>
+    <member kind="function">
+      <name>start</name>
+      <anchor>start</anchor>
+      <arglist>( const QVideoSurfaceFormat &amp; format )</arglist>
+    </member>
+    <member kind="function">
+      <name>stop</name>
+      <anchor>stop</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>supportedFormatsChanged</name>
+      <anchor>supportedFormatsChanged</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>PixelFormat</name>
+      <anchor>supportedPixelFormats</anchor>
+      <arglist>&gt; QAbstractVideoSurface::supportedPixelFormats( QAbstractVideoBuffer::HandleType type = QAbstractVideoBuffer::NoHandle )</arglist>
+    </member>
+    <member kind="function">
+      <name>surfaceFormat</name>
+      <anchor>surfaceFormat</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>surfaceFormatChanged</name>
+      <anchor>surfaceFormatChanged</anchor>
+      <arglist>( const QVideoSurfaceFormat &amp; format )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -18734,6 +20991,11 @@
       <name>root</name>
       <anchor>root</anchor>
       <arglist>( const QXmlNodeModelIndex &amp; n )</arglist>
+    </member>
+    <member kind="function">
+      <name>sourceLocation</name>
+      <anchor>sourceLocation</anchor>
+      <arglist>( const QXmlNodeModelIndex &amp; index )</arglist>
     </member>
     <member kind="function">
       <name>stringValue</name>
@@ -19038,6 +21300,41 @@
       <anchor>QAccessibleObject</anchor>
       <arglist>( QObject * object )</arglist>
     </member>
+    <member kind="function">
+      <name>actionText</name>
+      <anchor>actionText</anchor>
+      <arglist>( int action, Text t, int child )</arglist>
+    </member>
+    <member kind="function">
+      <name>doAction</name>
+      <anchor>doAction</anchor>
+      <arglist>( int action, int child, const QVariantList &amp; params )</arglist>
+    </member>
+    <member kind="function">
+      <name>isValid</name>
+      <anchor>isValid</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>object</name>
+      <anchor>object</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>rect</name>
+      <anchor>rect</anchor>
+      <arglist>( int child )</arglist>
+    </member>
+    <member kind="function">
+      <name>setText</name>
+      <anchor>setText</anchor>
+      <arglist>( Text t, int child, const QString &amp; text )</arglist>
+    </member>
+    <member kind="function">
+      <name>userActionCount</name>
+      <anchor>userActionCount</anchor>
+      <arglist>( int child )</arglist>
+    </member>
   </compound>
   <compound kind="class">
     <name>QAccessiblePlugin</name>
@@ -19067,14 +21364,59 @@
       <arglist>( QWidget * w, Role role = Client, const QString &amp; name = QString()</arglist>
     </member>
     <member kind="function">
+      <name>actionText</name>
+      <anchor>actionText</anchor>
+      <arglist>( int action, Text t, int child )</arglist>
+    </member>
+    <member kind="function">
       <name>addControllingSignal</name>
       <anchor>addControllingSignal</anchor>
       <arglist>( const QString &amp; signal )</arglist>
     </member>
     <member kind="function">
+      <name>childAt</name>
+      <anchor>childAt</anchor>
+      <arglist>( int x, int y )</arglist>
+    </member>
+    <member kind="function">
+      <name>childCount</name>
+      <anchor>childCount</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>doAction</name>
+      <anchor>doAction</anchor>
+      <arglist>( int action, int child, const QVariantList &amp; params )</arglist>
+    </member>
+    <member kind="function">
+      <name>indexOfChild</name>
+      <anchor>indexOfChild</anchor>
+      <arglist>( const QAccessibleInterface * child )</arglist>
+    </member>
+    <member kind="function">
+      <name>navigate</name>
+      <anchor>navigate</anchor>
+      <arglist>( RelationFlag relation, int entry, QAccessibleInterface ** target )</arglist>
+    </member>
+    <member kind="function">
       <name>parentObject</name>
       <anchor>parentObject</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>rect</name>
+      <anchor>rect</anchor>
+      <arglist>( int child )</arglist>
+    </member>
+    <member kind="function">
+      <name>relationTo</name>
+      <anchor>relationTo</anchor>
+      <arglist>( int child, const QAccessibleInterface * other, int otherChild )</arglist>
+    </member>
+    <member kind="function">
+      <name>role</name>
+      <anchor>role</anchor>
+      <arglist>( int child )</arglist>
     </member>
     <member kind="function">
       <name>setAccelerator</name>
@@ -19095,6 +21437,21 @@
       <name>setValue</name>
       <anchor>setValue</anchor>
       <arglist>( const QString &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>state</name>
+      <anchor>state</anchor>
+      <arglist>( int child )</arglist>
+    </member>
+    <member kind="function">
+      <name>text</name>
+      <anchor>text</anchor>
+      <arglist>( Text t, int child )</arglist>
+    </member>
+    <member kind="function">
+      <name>userActionCount</name>
+      <anchor>userActionCount</anchor>
+      <arglist>( int child )</arglist>
     </member>
     <member kind="function">
       <name>widget</name>
@@ -19195,6 +21552,16 @@
       <anchor>MenuRole-enum</anchor>
       <arglist></arglist>
     </member>
+    <member kind="enum">
+      <name>Priority</name>
+      <anchor>Priority-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enum">
+      <name>SoftKeyRole</name>
+      <anchor>SoftKeyRole-enum</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="function">
       <name>ShortcutContext</name>
       <anchor>shortcutContext-prop</anchor>
@@ -19244,6 +21611,11 @@
       <name>data</name>
       <anchor>data</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>hover</name>
@@ -19428,6 +21800,60 @@
       <anchor>triggered</anchor>
       <arglist>( QAction * action )</arglist>
     </member>
+  </compound>
+  <compound kind="class">
+    <name>QAnimationGroup</name>
+    <filename>qanimationgroup.html</filename>
+    <member kind="function">
+      <name>QAnimationGroup</name>
+      <anchor>QAnimationGroup</anchor>
+      <arglist>( QObject * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>addAnimation</name>
+      <anchor>addAnimation</anchor>
+      <arglist>( QAbstractAnimation * animation )</arglist>
+    </member>
+    <member kind="function">
+      <name>animationAt</name>
+      <anchor>animationAt</anchor>
+      <arglist>( int index )</arglist>
+    </member>
+    <member kind="function">
+      <name>animationCount</name>
+      <anchor>animationCount</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>clear</name>
+      <anchor>clear</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>indexOfAnimation</name>
+      <anchor>indexOfAnimation</anchor>
+      <arglist>( QAbstractAnimation * animation )</arglist>
+    </member>
+    <member kind="function">
+      <name>insertAnimation</name>
+      <anchor>insertAnimation</anchor>
+      <arglist>( int index, QAbstractAnimation * animation )</arglist>
+    </member>
+    <member kind="function">
+      <name>removeAnimation</name>
+      <anchor>removeAnimation</anchor>
+      <arglist>( QAbstractAnimation * animation )</arglist>
+    </member>
+    <member kind="function">
+      <name>takeAnimation</name>
+      <anchor>takeAnimation</anchor>
+      <arglist>( int index )</arglist>
+    </member>
     <member kind="function">
       <name>ColorMode</name>
       <anchor>ColorMode-typedef</anchor>
@@ -19547,6 +21973,11 @@
       <anchor>ColorSpec-enum</anchor>
       <arglist></arglist>
     </member>
+    <member kind="function">
+      <name>QS60MainApplicationFactory</name>
+      <anchor>QS60MainApplicationFactory-typedef</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="enum">
       <name>Type</name>
       <anchor>Type-enum</anchor>
@@ -19581,6 +22012,11 @@
       <name>QApplication</name>
       <anchor>QApplication-5</anchor>
       <arglist>( Display * display, int &amp; argc, char ** argv, Qt::HANDLE visual = 0, Qt::HANDLE colormap = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>QApplication</name>
+      <anchor>QApplication-6</anchor>
+      <arglist>( QApplication::QS60MainApplicationFactory factory, int &amp; argc, char ** argv )</arglist>
     </member>
     <member kind="function">
       <name>aboutQt</name>
@@ -19656,6 +22092,11 @@
       <name>desktopSettingsAware</name>
       <anchor>desktopSettingsAware</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>exec</name>
@@ -19750,12 +22191,22 @@
     <member kind="function">
       <name>macEventFilter</name>
       <anchor>macEventFilter</anchor>
-      <arglist>( EventHandlerCallRef, EventRef )</arglist>
+      <arglist>( EventHandlerCallRef caller, EventRef event )</arglist>
     </member>
     <member kind="function">
       <name>MouseButtons</name>
       <anchor>mouseButtons</anchor>
       <arglist> QApplication::mouseButtons()</arglist>
+    </member>
+    <member kind="function">
+      <name>NavigationMode</name>
+      <anchor>navigationMode</anchor>
+      <arglist> QApplication::navigationMode()</arglist>
+    </member>
+    <member kind="function">
+      <name>notify</name>
+      <anchor>notify</anchor>
+      <arglist>( QObject * receiver, QEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>overrideCursor</name>
@@ -19863,9 +22314,9 @@
       <arglist>( QInputContext * inputContext )</arglist>
     </member>
     <member kind="function">
-      <name>setKeypadNavigationEnabled</name>
-      <anchor>setKeypadNavigationEnabled</anchor>
-      <arglist>( bool enable )</arglist>
+      <name>setNavigationMode</name>
+      <anchor>setNavigationMode</anchor>
+      <arglist>( Qt::NavigationMode mode )</arglist>
     </member>
     <member kind="function">
       <name>setOverrideCursor</name>
@@ -19891,6 +22342,16 @@
       <name>style</name>
       <anchor>style</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>symbianEventFilter</name>
+      <anchor>symbianEventFilter</anchor>
+      <arglist>( const QSymbianEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>symbianProcessEvent</name>
+      <anchor>symbianProcessEvent</anchor>
+      <arglist>( const QSymbianEvent * event )</arglist>
     </member>
     <member kind="function">
       <name>syncX</name>
@@ -20274,6 +22735,432 @@
       <anchor>operator-eq-eq</anchor>
       <arglist>( T * value )</arglist>
     </member>
+    <member kind="enum">
+      <name>Error</name>
+      <anchor>Error-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enum">
+      <name>Mode</name>
+      <anchor>Mode-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enum">
+      <name>State</name>
+      <anchor>State-enum</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QAudioDeviceInfo</name>
+    <filename>qaudiodeviceinfo.html</filename>
+    <member kind="function">
+      <name>QAudioDeviceInfo</name>
+      <anchor>QAudioDeviceInfo</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>QAudioDeviceInfo</name>
+      <anchor>QAudioDeviceInfo-2</anchor>
+      <arglist>( const QAudioDeviceInfo &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>availableDevices</name>
+      <anchor>availableDevices</anchor>
+      <arglist>( QAudio::Mode mode )</arglist>
+    </member>
+    <member kind="function">
+      <name>defaultInputDevice</name>
+      <anchor>defaultInputDevice</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>defaultOutputDevice</name>
+      <anchor>defaultOutputDevice</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>deviceName</name>
+      <anchor>deviceName</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>isFormatSupported</name>
+      <anchor>isFormatSupported</anchor>
+      <arglist>( const QAudioFormat &amp; settings )</arglist>
+    </member>
+    <member kind="function">
+      <name>isNull</name>
+      <anchor>isNull</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>nearestFormat</name>
+      <anchor>nearestFormat</anchor>
+      <arglist>( const QAudioFormat &amp; settings )</arglist>
+    </member>
+    <member kind="function">
+      <name>preferredFormat</name>
+      <anchor>preferredFormat</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>Endian</name>
+      <anchor>supportedByteOrders</anchor>
+      <arglist>&gt; QAudioDeviceInfo::supportedByteOrders()</arglist>
+    </member>
+    <member kind="function">
+      <name>supportedChannels</name>
+      <anchor>supportedChannels</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>supportedCodecs</name>
+      <anchor>supportedCodecs</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>supportedFrequencies</name>
+      <anchor>supportedFrequencies</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>supportedSampleSizes</name>
+      <anchor>supportedSampleSizes</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>SampleType</name>
+      <anchor>supportedSampleTypes</anchor>
+      <arglist>&gt; QAudioDeviceInfo::supportedSampleTypes()</arglist>
+    </member>
+    <member kind="function">
+      <name>operator=</name>
+      <anchor>operator-eq</anchor>
+      <arglist>( const QAudioDeviceInfo &amp; other )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QAudioFormat</name>
+    <filename>qaudioformat.html</filename>
+    <member kind="enum">
+      <name>Endian</name>
+      <anchor>Endian-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enum">
+      <name>SampleType</name>
+      <anchor>SampleType-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>QAudioFormat</name>
+      <anchor>QAudioFormat</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>QAudioFormat</name>
+      <anchor>QAudioFormat-2</anchor>
+      <arglist>( const QAudioFormat &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>Endian</name>
+      <anchor>byteOrder</anchor>
+      <arglist> QAudioFormat::byteOrder()</arglist>
+    </member>
+    <member kind="function">
+      <name>channels</name>
+      <anchor>channels</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>codec</name>
+      <anchor>codec</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>frequency</name>
+      <anchor>frequency</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>isValid</name>
+      <anchor>isValid</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>sampleSize</name>
+      <anchor>sampleSize</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>SampleType</name>
+      <anchor>sampleType</anchor>
+      <arglist> QAudioFormat::sampleType()</arglist>
+    </member>
+    <member kind="function">
+      <name>setByteOrder</name>
+      <anchor>setByteOrder</anchor>
+      <arglist>( QAudioFormat::Endian byteOrder )</arglist>
+    </member>
+    <member kind="function">
+      <name>setChannels</name>
+      <anchor>setChannels</anchor>
+      <arglist>( int channels )</arglist>
+    </member>
+    <member kind="function">
+      <name>setCodec</name>
+      <anchor>setCodec</anchor>
+      <arglist>( const QString &amp; codec )</arglist>
+    </member>
+    <member kind="function">
+      <name>setFrequency</name>
+      <anchor>setFrequency</anchor>
+      <arglist>( int frequency )</arglist>
+    </member>
+    <member kind="function">
+      <name>setSampleSize</name>
+      <anchor>setSampleSize</anchor>
+      <arglist>( int sampleSize )</arglist>
+    </member>
+    <member kind="function">
+      <name>setSampleType</name>
+      <anchor>setSampleType</anchor>
+      <arglist>( QAudioFormat::SampleType sampleType )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator!=</name>
+      <anchor>operator-not-eq</anchor>
+      <arglist>( const QAudioFormat &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator=</name>
+      <anchor>operator-eq</anchor>
+      <arglist>( const QAudioFormat &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator==</name>
+      <anchor>operator-eq-eq</anchor>
+      <arglist>( const QAudioFormat &amp; other )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QAudioInput</name>
+    <filename>qaudioinput.html</filename>
+    <member kind="function">
+      <name>QAudioInput</name>
+      <anchor>QAudioInput</anchor>
+      <arglist>( const QAudioFormat &amp; format = QAudioFormat()</arglist>
+    </member>
+    <member kind="function">
+      <name>QAudioInput</name>
+      <anchor>QAudioInput-2</anchor>
+      <arglist>( const QAudioDeviceInfo &amp; audioDevice, const QAudioFormat &amp; format = QAudioFormat()</arglist>
+    </member>
+    <member kind="function">
+      <name>bufferSize</name>
+      <anchor>bufferSize</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>bytesReady</name>
+      <anchor>bytesReady</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>elapsedUSecs</name>
+      <anchor>elapsedUSecs</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>Error</name>
+      <anchor>error</anchor>
+      <arglist> QAudioInput::error()</arglist>
+    </member>
+    <member kind="function">
+      <name>format</name>
+      <anchor>format</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>notify</name>
+      <anchor>notify</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>notifyInterval</name>
+      <anchor>notifyInterval</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>periodSize</name>
+      <anchor>periodSize</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>processedUSecs</name>
+      <anchor>processedUSecs</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>reset</name>
+      <anchor>reset</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>resume</name>
+      <anchor>resume</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>setBufferSize</name>
+      <anchor>setBufferSize</anchor>
+      <arglist>( int value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setNotifyInterval</name>
+      <anchor>setNotifyInterval</anchor>
+      <arglist>( int ms )</arglist>
+    </member>
+    <member kind="function">
+      <name>start</name>
+      <anchor>start</anchor>
+      <arglist>( QIODevice * device )</arglist>
+    </member>
+    <member kind="function">
+      <name>start</name>
+      <anchor>start-2</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>State</name>
+      <anchor>state</anchor>
+      <arglist> QAudioInput::state()</arglist>
+    </member>
+    <member kind="function">
+      <name>stateChanged</name>
+      <anchor>stateChanged</anchor>
+      <arglist>( QAudio::State state )</arglist>
+    </member>
+    <member kind="function">
+      <name>stop</name>
+      <anchor>stop</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>suspend</name>
+      <anchor>suspend</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QAudioOutput</name>
+    <filename>qaudiooutput.html</filename>
+    <member kind="function">
+      <name>QAudioOutput</name>
+      <anchor>QAudioOutput</anchor>
+      <arglist>( const QAudioFormat &amp; format = QAudioFormat()</arglist>
+    </member>
+    <member kind="function">
+      <name>QAudioOutput</name>
+      <anchor>QAudioOutput-2</anchor>
+      <arglist>( const QAudioDeviceInfo &amp; audioDevice, const QAudioFormat &amp; format = QAudioFormat()</arglist>
+    </member>
+    <member kind="function">
+      <name>bufferSize</name>
+      <anchor>bufferSize</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>bytesFree</name>
+      <anchor>bytesFree</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>elapsedUSecs</name>
+      <anchor>elapsedUSecs</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>Error</name>
+      <anchor>error</anchor>
+      <arglist> QAudioOutput::error()</arglist>
+    </member>
+    <member kind="function">
+      <name>format</name>
+      <anchor>format</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>notify</name>
+      <anchor>notify</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>notifyInterval</name>
+      <anchor>notifyInterval</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>periodSize</name>
+      <anchor>periodSize</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>processedUSecs</name>
+      <anchor>processedUSecs</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>reset</name>
+      <anchor>reset</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>resume</name>
+      <anchor>resume</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>setBufferSize</name>
+      <anchor>setBufferSize</anchor>
+      <arglist>( int value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setNotifyInterval</name>
+      <anchor>setNotifyInterval</anchor>
+      <arglist>( int ms )</arglist>
+    </member>
+    <member kind="function">
+      <name>start</name>
+      <anchor>start</anchor>
+      <arglist>( QIODevice * device )</arglist>
+    </member>
+    <member kind="function">
+      <name>start</name>
+      <anchor>start-2</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>State</name>
+      <anchor>state</anchor>
+      <arglist> QAudioOutput::state()</arglist>
+    </member>
+    <member kind="function">
+      <name>stateChanged</name>
+      <anchor>stateChanged</anchor>
+      <arglist>( QAudio::State state )</arglist>
+    </member>
+    <member kind="function">
+      <name>stop</name>
+      <anchor>stop</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>suspend</name>
+      <anchor>suspend</anchor>
+      <arglist>()</arglist>
+    </member>
   </compound>
   <compound kind="class">
     <name>QAuthenticator</name>
@@ -20332,6 +23219,647 @@
       <name>operator==</name>
       <anchor>operator-eq-eq</anchor>
       <arglist>( const QAuthenticator &amp; other )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QAxAggregated</name>
+    <filename>qaxaggregated.html</filename>
+    <member kind="function">
+      <name>controllingUnknown</name>
+      <anchor>controllingUnknown</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>object</name>
+      <anchor>object</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>queryInterface</name>
+      <anchor>queryInterface</anchor>
+      <arglist>( const QUuid &amp; iid, void ** iface )</arglist>
+    </member>
+    <member kind="function">
+      <name>widget</name>
+      <anchor>widget</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QAxBase</name>
+    <filename>qaxbase.html</filename>
+    <member kind="function">
+      <name>PropertyBag</name>
+      <anchor>PropertyBag-typedef</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>QAxBase</name>
+      <anchor>QAxBase</anchor>
+      <arglist>( IUnknown * iface = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>asVariant</name>
+      <anchor>asVariant</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>clear</name>
+      <anchor>clear</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>disableClassInfo</name>
+      <anchor>disableClassInfo</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>disableEventSink</name>
+      <anchor>disableEventSink</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>disableMetaObject</name>
+      <anchor>disableMetaObject</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>dynamicCall</name>
+      <anchor>dynamicCall</anchor>
+      <arglist>( const char * function, const QVariant &amp; var1 = QVariant()</arglist>
+    </member>
+    <member kind="function">
+      <name>dynamicCall</name>
+      <anchor>dynamicCall-2</anchor>
+      <arglist>( const char * function, QList&lt;QVariant&gt; &amp; vars )</arglist>
+    </member>
+    <member kind="function">
+      <name>exception</name>
+      <anchor>exception</anchor>
+      <arglist>( int code, const QString &amp; source, const QString &amp; desc, const QString &amp; help )</arglist>
+    </member>
+    <member kind="function">
+      <name>generateDocumentation</name>
+      <anchor>generateDocumentation</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>initialize</name>
+      <anchor>initialize</anchor>
+      <arglist>( IUnknown ** ptr )</arglist>
+    </member>
+    <member kind="function">
+      <name>initializeActive</name>
+      <anchor>initializeActive</anchor>
+      <arglist>( IUnknown ** ptr )</arglist>
+    </member>
+    <member kind="function">
+      <name>initializeFromFile</name>
+      <anchor>initializeFromFile</anchor>
+      <arglist>( IUnknown ** ptr )</arglist>
+    </member>
+    <member kind="function">
+      <name>initializeLicensed</name>
+      <anchor>initializeLicensed</anchor>
+      <arglist>( IUnknown ** ptr )</arglist>
+    </member>
+    <member kind="function">
+      <name>initializeRemote</name>
+      <anchor>initializeRemote</anchor>
+      <arglist>( IUnknown ** ptr )</arglist>
+    </member>
+    <member kind="function">
+      <name>isNull</name>
+      <anchor>isNull</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>propertyBag</name>
+      <anchor>propertyBag</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>propertyChanged</name>
+      <anchor>propertyChanged</anchor>
+      <arglist>( const QString &amp; name )</arglist>
+    </member>
+    <member kind="function">
+      <name>propertyWritable</name>
+      <anchor>propertyWritable</anchor>
+      <arglist>( const char * prop )</arglist>
+    </member>
+    <member kind="function">
+      <name>queryInterface</name>
+      <anchor>queryInterface</anchor>
+      <arglist>( const QUuid &amp; uuid, void ** iface )</arglist>
+    </member>
+    <member kind="function">
+      <name>querySubObject</name>
+      <anchor>querySubObject</anchor>
+      <arglist>( const char * name, const QVariant &amp; var1 = QVariant()</arglist>
+    </member>
+    <member kind="function">
+      <name>querySubObject</name>
+      <anchor>querySubObject-2</anchor>
+      <arglist>( const char * name, QList&lt;QVariant&gt; &amp; vars )</arglist>
+    </member>
+    <member kind="function">
+      <name>setPropertyBag</name>
+      <anchor>setPropertyBag</anchor>
+      <arglist>( const PropertyBag &amp; bag )</arglist>
+    </member>
+    <member kind="function">
+      <name>setPropertyWritable</name>
+      <anchor>setPropertyWritable</anchor>
+      <arglist>( const char * prop, bool ok )</arglist>
+    </member>
+    <member kind="function">
+      <name>signal</name>
+      <anchor>signal</anchor>
+      <arglist>( const QString &amp; name, int argc, void * argv )</arglist>
+    </member>
+    <member kind="function">
+      <name>verbs</name>
+      <anchor>verbs</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QAxBindable</name>
+    <filename>qaxbindable.html</filename>
+    <member kind="function">
+      <name>QAxBindable</name>
+      <anchor>QAxBindable</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>clientSite</name>
+      <anchor>clientSite</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>createAggregate</name>
+      <anchor>createAggregate</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>propertyChanged</name>
+      <anchor>propertyChanged</anchor>
+      <arglist>( const char * property )</arglist>
+    </member>
+    <member kind="function">
+      <name>readData</name>
+      <anchor>readData</anchor>
+      <arglist>( QIODevice * source, const QString &amp; format )</arglist>
+    </member>
+    <member kind="function">
+      <name>reportError</name>
+      <anchor>reportError</anchor>
+      <arglist>( int code, const QString &amp; src, const QString &amp; desc, const QString &amp; context = QString()</arglist>
+    </member>
+    <member kind="function">
+      <name>requestPropertyChange</name>
+      <anchor>requestPropertyChange</anchor>
+      <arglist>( const char * property )</arglist>
+    </member>
+    <member kind="function">
+      <name>writeData</name>
+      <anchor>writeData</anchor>
+      <arglist>( QIODevice * sink )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QAxFactory</name>
+    <filename>qaxfactory.html</filename>
+    <member kind="enum">
+      <name>ServerType</name>
+      <anchor>ServerType-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>QAxFactory</name>
+      <anchor>QAxFactory</anchor>
+      <arglist>( const QUuid &amp; libid, const QUuid &amp; appid )</arglist>
+    </member>
+    <member kind="function">
+      <name>appID</name>
+      <anchor>appID</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>classID</name>
+      <anchor>classIDx</anchor>
+      <arglist>( const QString &amp; key )</arglist>
+    </member>
+    <member kind="function">
+      <name>createObject</name>
+      <anchor>createObject</anchor>
+      <arglist>( const QString &amp; key )</arglist>
+    </member>
+    <member kind="function">
+      <name>createObjectWrapper</name>
+      <anchor>createObjectWrapper</anchor>
+      <arglist>( QObject * object, IDispatch ** wrapper )</arglist>
+    </member>
+    <member kind="function">
+      <name>eventsID</name>
+      <anchor>eventsID</anchor>
+      <arglist>( const QString &amp; key )</arglist>
+    </member>
+    <member kind="function">
+      <name>exposeToSuperClass</name>
+      <anchor>exposeToSuperClass</anchor>
+      <arglist>( const QString &amp; key )</arglist>
+    </member>
+    <member kind="function">
+      <name>featureList</name>
+      <anchor>featureList</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>hasStockEvents</name>
+      <anchor>hasStockEvents</anchor>
+      <arglist>( const QString &amp; key )</arglist>
+    </member>
+    <member kind="function">
+      <name>interfaceID</name>
+      <anchor>interfaceID</anchor>
+      <arglist>( const QString &amp; key )</arglist>
+    </member>
+    <member kind="function">
+      <name>isServer</name>
+      <anchor>isServer</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>isService</name>
+      <anchor>isService</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>metaObject</name>
+      <anchor>metaObject</anchor>
+      <arglist>( const QString &amp; key )</arglist>
+    </member>
+    <member kind="function">
+      <name>registerActiveObject</name>
+      <anchor>registerActiveObject</anchor>
+      <arglist>( QObject * object )</arglist>
+    </member>
+    <member kind="function">
+      <name>registerClass</name>
+      <anchor>registerClass</anchor>
+      <arglist>( const QString &amp; key, QSettings * settings )</arglist>
+    </member>
+    <member kind="function">
+      <name>serverDirPath</name>
+      <anchor>serverDirPath</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>serverFilePath</name>
+      <anchor>serverFilePath</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>startServer</name>
+      <anchor>startServer</anchor>
+      <arglist>( ServerType type = MultipleInstances )</arglist>
+    </member>
+    <member kind="function">
+      <name>stayTopLevel</name>
+      <anchor>stayTopLevel</anchor>
+      <arglist>( const QString &amp; key )</arglist>
+    </member>
+    <member kind="function">
+      <name>stopServer</name>
+      <anchor>stopServer</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>typeLibID</name>
+      <anchor>typeLibID</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>unregisterClass</name>
+      <anchor>unregisterClass</anchor>
+      <arglist>( const QString &amp; key, QSettings * settings )</arglist>
+    </member>
+    <member kind="function">
+      <name>validateLicenseKey</name>
+      <anchor>validateLicenseKey</anchor>
+      <arglist>( const QString &amp; key, const QString &amp; licenseKey )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QAxObject</name>
+    <filename>qaxobject.html</filename>
+    <member kind="function">
+      <name>QAxObject</name>
+      <anchor>QAxObject</anchor>
+      <arglist>( QObject * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>QAxObject</name>
+      <anchor>QAxObject-2</anchor>
+      <arglist>( const QString &amp; c, QObject * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>QAxObject</name>
+      <anchor>QAxObject-3</anchor>
+      <arglist>( IUnknown * iface, QObject * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>connectNotify</name>
+      <anchor>connectNotify</anchor>
+      <arglist>( const char * signal )</arglist>
+    </member>
+    <member kind="function">
+      <name>doVerb</name>
+      <anchor>doVerb</anchor>
+      <arglist>( const QString &amp; verb )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QAxScript</name>
+    <filename>qaxscript.html</filename>
+    <member kind="enum">
+      <name>FunctionFlags</name>
+      <anchor>FunctionFlags-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>QAxScript</name>
+      <anchor>QAxScript</anchor>
+      <arglist>( const QString &amp; name, QAxScriptManager * manager )</arglist>
+    </member>
+    <member kind="function">
+      <name>call</name>
+      <anchor>call</anchor>
+      <arglist>( const QString &amp; function, const QVariant &amp; var1 = QVariant()</arglist>
+    </member>
+    <member kind="function">
+      <name>call</name>
+      <anchor>call-2</anchor>
+      <arglist>( const QString &amp; function, QList&lt;QVariant&gt; &amp; arguments )</arglist>
+    </member>
+    <member kind="function">
+      <name>entered</name>
+      <anchor>entered</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>error</name>
+      <anchor>error</anchor>
+      <arglist>( int code, const QString &amp; description, int sourcePosition, const QString &amp; sourceText )</arglist>
+    </member>
+    <member kind="function">
+      <name>finished</name>
+      <anchor>finished</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>finished</name>
+      <anchor>finished-2</anchor>
+      <arglist>( const QVariant &amp; result )</arglist>
+    </member>
+    <member kind="function">
+      <name>finished</name>
+      <anchor>finished-3</anchor>
+      <arglist>( int code, const QString &amp; source, const QString &amp; description, const QString &amp; help )</arglist>
+    </member>
+    <member kind="function">
+      <name>functions</name>
+      <anchor>functions</anchor>
+      <arglist>( FunctionFlags flags = FunctionNames )</arglist>
+    </member>
+    <member kind="function">
+      <name>load</name>
+      <anchor>load</anchor>
+      <arglist>( const QString &amp; code, const QString &amp; language = QString()</arglist>
+    </member>
+    <member kind="function">
+      <name>scriptCode</name>
+      <anchor>scriptCode</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>scriptEngine</name>
+      <anchor>scriptEngine</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>scriptName</name>
+      <anchor>scriptName</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>stateChanged</name>
+      <anchor>stateChanged</anchor>
+      <arglist>( int state )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QAxScriptEngine</name>
+    <filename>qaxscriptengine.html</filename>
+    <member kind="enum">
+      <name>State</name>
+      <anchor>State-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>QAxScriptEngine</name>
+      <anchor>QAxScriptEngine</anchor>
+      <arglist>( const QString &amp; language, QAxScript * script )</arglist>
+    </member>
+    <member kind="function">
+      <name>addItem</name>
+      <anchor>addItem</anchor>
+      <arglist>( const QString &amp; name )</arglist>
+    </member>
+    <member kind="function">
+      <name>hasIntrospection</name>
+      <anchor>hasIntrospection</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>initialize</name>
+      <anchor>initialize</anchor>
+      <arglist>( IUnknown ** ptr )</arglist>
+    </member>
+    <member kind="function">
+      <name>isValid</name>
+      <anchor>isValid</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>queryInterface</name>
+      <anchor>queryInterface</anchor>
+      <arglist>( const QUuid &amp; uuid, void ** iface )</arglist>
+    </member>
+    <member kind="function">
+      <name>scriptLanguage</name>
+      <anchor>scriptLanguage</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>setState</name>
+      <anchor>setState</anchor>
+      <arglist>( State st )</arglist>
+    </member>
+    <member kind="function">
+      <name>state</name>
+      <anchor>state</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QAxScriptManager</name>
+    <filename>qaxscriptmanager.html</filename>
+    <member kind="function">
+      <name>QAxScriptManager</name>
+      <anchor>QAxScriptManager</anchor>
+      <arglist>( QObject * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>addObject</name>
+      <anchor>addObject</anchor>
+      <arglist>( QAxBase * object )</arglist>
+    </member>
+    <member kind="function">
+      <name>addObject</name>
+      <anchor>addObject-2</anchor>
+      <arglist>( QObject * object )</arglist>
+    </member>
+    <member kind="function">
+      <name>call</name>
+      <anchor>call</anchor>
+      <arglist>( const QString &amp; function, const QVariant &amp; var1 = QVariant()</arglist>
+    </member>
+    <member kind="function">
+      <name>call</name>
+      <anchor>call-2</anchor>
+      <arglist>( const QString &amp; function, QList&lt;QVariant&gt; &amp; arguments )</arglist>
+    </member>
+    <member kind="function">
+      <name>error</name>
+      <anchor>error</anchor>
+      <arglist>( QAxScript * script, int code, const QString &amp; description, int sourcePosition, const QString &amp; sourceText )</arglist>
+    </member>
+    <member kind="function">
+      <name>functions</name>
+      <anchor>functions</anchor>
+      <arglist>( QAxScript::FunctionFlags flags = QAxScript::FunctionNames )</arglist>
+    </member>
+    <member kind="function">
+      <name>load</name>
+      <anchor>load</anchor>
+      <arglist>( const QString &amp; code, const QString &amp; name, const QString &amp; language )</arglist>
+    </member>
+    <member kind="function">
+      <name>load</name>
+      <anchor>load-2</anchor>
+      <arglist>( const QString &amp; file, const QString &amp; name )</arglist>
+    </member>
+    <member kind="function">
+      <name>registerEngine</name>
+      <anchor>registerEngine</anchor>
+      <arglist>( const QString &amp; name, const QString &amp; extension, const QString &amp; code = QString()</arglist>
+    </member>
+    <member kind="function">
+      <name>script</name>
+      <anchor>script</anchor>
+      <arglist>( const QString &amp; name )</arglist>
+    </member>
+    <member kind="function">
+      <name>scriptFileFilter</name>
+      <anchor>scriptFileFilter</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>scriptNames</name>
+      <anchor>scriptNames</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QAxWidget</name>
+    <filename>qaxwidget.html</filename>
+    <member kind="function">
+      <name>QAxWidget</name>
+      <anchor>QAxWidget</anchor>
+      <arglist>( QWidget * parent = 0, Qt::WindowFlags f = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>QAxWidget</name>
+      <anchor>QAxWidget-2</anchor>
+      <arglist>( const QString &amp; c, QWidget * parent = 0, Qt::WindowFlags f = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>QAxWidget</name>
+      <anchor>QAxWidget-3</anchor>
+      <arglist>( IUnknown * iface, QWidget * parent = 0, Qt::WindowFlags f = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>clear</name>
+      <anchor>clear</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>connectNotify</name>
+      <anchor>connectNotify</anchor>
+      <arglist>( const char * signal )</arglist>
+    </member>
+    <member kind="function">
+      <name>createAggregate</name>
+      <anchor>createAggregate</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>createHostWindow</name>
+      <anchor>createHostWindow</anchor>
+      <arglist>( bool initialized )</arglist>
+    </member>
+    <member kind="function">
+      <name>createHostWindow</name>
+      <anchor>createHostWindow-2</anchor>
+      <arglist>( bool initialized, const QByteArray &amp; data )</arglist>
+    </member>
+    <member kind="function">
+      <name>doVerb</name>
+      <anchor>doVerb</anchor>
+      <arglist>( const QString &amp; verb )</arglist>
+    </member>
+    <member kind="function">
+      <name>initialize</name>
+      <anchor>initialize</anchor>
+      <arglist>( IUnknown ** ptr )</arglist>
+    </member>
+    <member kind="function">
+      <name>minimumSizeHint</name>
+      <anchor>minimumSizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>translateKeyEvent</name>
+      <anchor>translateKeyEvent</anchor>
+      <arglist>( int message, int keycode )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -20517,6 +24045,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>transformed</name>
+      <anchor>transformed-2</anchor>
+      <arglist>( const QMatrix &amp; matrix )</arglist>
+    </member>
+    <member kind="function">
       <name>QBitmap</name>
       <anchor>QBitmap-6</anchor>
       <arglist>( int width, int height, bool clear )</arglist>
@@ -20601,11 +24134,6 @@
       <arglist>( const QTransform &amp; matrix )</arglist>
     </member>
     <member kind="function">
-      <name>transformed</name>
-      <anchor>transformed-2</anchor>
-      <arglist>( const QMatrix &amp; matrix )</arglist>
-    </member>
-    <member kind="function">
       <name>operator</name>
       <anchor>operator-QVariant</anchor>
       <arglist> QVariant()</arglist>
@@ -20650,6 +24178,11 @@
       <arglist>( Direction dir, QWidget * parent = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>addItem</name>
+      <anchor>addItem</anchor>
+      <arglist>( QLayoutItem * item )</arglist>
+    </member>
+    <member kind="function">
       <name>addLayout</name>
       <anchor>addLayout</anchor>
       <arglist>( QLayout * layout, int stretch = 0 )</arglist>
@@ -20680,9 +24213,29 @@
       <arglist>( QWidget * widget, int stretch = 0, Qt::Alignment alignment = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>count</name>
+      <anchor>count</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>direction</name>
       <anchor>direction</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>Orientations</name>
+      <anchor>expandingDirections</anchor>
+      <arglist> QBoxLayout::expandingDirections()</arglist>
+    </member>
+    <member kind="function">
+      <name>hasHeightForWidth</name>
+      <anchor>hasHeightForWidth</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>heightForWidth</name>
+      <anchor>heightForWidth</anchor>
+      <arglist>( int w )</arglist>
     </member>
     <member kind="function">
       <name>insertItem</name>
@@ -20720,9 +24273,34 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>itemAt</name>
+      <anchor>itemAt</anchor>
+      <arglist>( int index )</arglist>
+    </member>
+    <member kind="function">
+      <name>maximumSize</name>
+      <anchor>maximumSize</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>minimumHeightForWidth</name>
+      <anchor>minimumHeightForWidth</anchor>
+      <arglist>( int w )</arglist>
+    </member>
+    <member kind="function">
+      <name>minimumSize</name>
+      <anchor>minimumSize</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>setDirection</name>
       <anchor>setDirection</anchor>
       <arglist>( Direction direction )</arglist>
+    </member>
+    <member kind="function">
+      <name>setGeometry</name>
+      <anchor>setGeometry</anchor>
+      <arglist>( const QRect &amp; r )</arglist>
     </member>
     <member kind="function">
       <name>setSpacing</name>
@@ -20745,6 +24323,11 @@
       <arglist>( QLayout * layout, int stretch )</arglist>
     </member>
     <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>spacing</name>
       <anchor>spacing</anchor>
       <arglist>()</arglist>
@@ -20752,6 +24335,11 @@
     <member kind="function">
       <name>stretch</name>
       <anchor>stretch</anchor>
+      <arglist>( int index )</arglist>
+    </member>
+    <member kind="function">
+      <name>takeAt</name>
+      <anchor>takeAt</anchor>
       <arglist>( int index )</arglist>
     </member>
     <member kind="function">
@@ -20933,6 +24521,11 @@
       <arglist>( QByteArray * byteArray, QObject * parent = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>atEnd</name>
+      <anchor>atEnd</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>buffer</name>
       <anchor>buffer</anchor>
       <arglist>()</arglist>
@@ -20943,9 +24536,39 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>canReadLine</name>
+      <anchor>canReadLine</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>close</name>
+      <anchor>close</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>data</name>
       <anchor>data</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>open</name>
+      <anchor>open</anchor>
+      <arglist>( OpenMode flags )</arglist>
+    </member>
+    <member kind="function">
+      <name>pos</name>
+      <anchor>pos</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>readData</name>
+      <anchor>readData</anchor>
+      <arglist>( char * data, qint64 len )</arglist>
+    </member>
+    <member kind="function">
+      <name>seek</name>
+      <anchor>seek</anchor>
+      <arglist>( qint64 pos )</arglist>
     </member>
     <member kind="function">
       <name>setBuffer</name>
@@ -20961,6 +24584,16 @@
       <name>setData</name>
       <anchor>setData-2</anchor>
       <arglist>( const char * data, int size )</arglist>
+    </member>
+    <member kind="function">
+      <name>size</name>
+      <anchor>size</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>writeData</name>
+      <anchor>writeData</anchor>
+      <arglist>( const char * data, qint64 len )</arglist>
     </member>
     <member kind="function">
       <name>insert</name>
@@ -21058,7 +24691,7 @@
     </member>
     <member kind="function">
       <name>QByteArray</name>
-      <anchor>QByteArray-6</anchor>
+      <anchor>QByteArray-7</anchor>
       <arglist>( int size )</arglist>
     </member>
     <member kind="function">
@@ -21177,7 +24810,7 @@
     </member>
     <member kind="function">
       <name>QByteArray</name>
-      <anchor>QByteArray-5</anchor>
+      <anchor>QByteArray-6</anchor>
       <arglist>( const QByteArray &amp; other )</arglist>
     </member>
     <member kind="function">
@@ -21353,6 +24986,11 @@
     <member kind="function">
       <name>insert</name>
       <anchor>insert-4</anchor>
+      <arglist>( int i, const char * str, int len )</arglist>
+    </member>
+    <member kind="function">
+      <name>insert</name>
+      <anchor>insert-5</anchor>
       <arglist>( int i, char ch )</arglist>
     </member>
     <member kind="function">
@@ -21443,6 +25081,11 @@
     <member kind="function">
       <name>prepend</name>
       <anchor>prepend-3</anchor>
+      <arglist>( const char * str, int len )</arglist>
+    </member>
+    <member kind="function">
+      <name>prepend</name>
+      <anchor>prepend-4</anchor>
       <arglist>( char ch )</arglist>
     </member>
     <member kind="function">
@@ -22008,8 +25651,28 @@
       <arglist>( const QDate &amp; date )</arglist>
     </member>
     <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>eventFilter</name>
+      <anchor>eventFilter</anchor>
+      <arglist>( QObject * watched, QEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>headerTextFormat</name>
       <anchor>headerTextFormat</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>keyPressEvent</name>
+      <anchor>keyPressEvent</anchor>
+      <arglist>( QKeyEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>minimumSizeHint</name>
+      <anchor>minimumSizeHint</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -22018,9 +25681,19 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>mousePressEvent</name>
+      <anchor>mousePressEvent</anchor>
+      <arglist>( QMouseEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>paintCell</name>
       <anchor>paintCell</anchor>
       <arglist>( QPainter * painter, const QRect &amp; rect, const QDate &amp; date )</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * event )</arglist>
     </member>
     <member kind="function">
       <name>selectionChanged</name>
@@ -22083,6 +25756,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>updateCell</name>
       <anchor>updateCell</anchor>
       <arglist>( const QDate &amp; date )</arglist>
@@ -22110,6 +25788,26 @@
       <name>QCDEStyle</name>
       <anchor>QCDEStyle</anchor>
       <arglist>( bool useHighlightCols = false )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawControl</name>
+      <anchor>drawControl</anchor>
+      <arglist>( ControlElement element, const QStyleOption * opt, QPainter * p, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawPrimitive</name>
+      <anchor>drawPrimitive</anchor>
+      <arglist>( PrimitiveElement pe, const QStyleOption * opt, QPainter * p, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>pixelMetric</name>
+      <anchor>pixelMetric</anchor>
+      <arglist>( PixelMetric metric, const QStyleOption * option = 0, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>standardPalette</name>
+      <anchor>standardPalette</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>ascii</name>
@@ -22600,14 +26298,49 @@
       <arglist> QCheckBox::checkState()</arglist>
     </member>
     <member kind="function">
+      <name>checkStateSet</name>
+      <anchor>checkStateSet</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>hitButton</name>
+      <anchor>hitButton</anchor>
+      <arglist>( const QPoint &amp; pos )</arglist>
+    </member>
+    <member kind="function">
       <name>initStyleOption</name>
       <anchor>initStyleOption</anchor>
       <arglist>( QStyleOptionButton * option )</arglist>
     </member>
     <member kind="function">
+      <name>mouseMoveEvent</name>
+      <anchor>mouseMoveEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>nextCheckState</name>
+      <anchor>nextCheckState</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * )</arglist>
+    </member>
+    <member kind="function">
       <name>setCheckState</name>
       <anchor>setCheckState</anchor>
       <arglist>( Qt::CheckState state )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>stateChanged</name>
@@ -22658,9 +26391,104 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>drawComplexControl</name>
+      <anchor>drawComplexControl</anchor>
+      <arglist>( ComplexControl control, const QStyleOptionComplex * option, QPainter * painter, const QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawControl</name>
+      <anchor>drawControl</anchor>
+      <arglist>( ControlElement element, const QStyleOption * option, QPainter * painter, const QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawItemPixmap</name>
+      <anchor>drawItemPixmap</anchor>
+      <arglist>( QPainter * painter, const QRect &amp; rect, int alignment, const QPixmap &amp; pixmap )</arglist>
+    </member>
+    <member kind="function">
       <name>drawItemText</name>
       <anchor>drawItemText</anchor>
       <arglist>( QPainter * painter, const QRect &amp; rectangle, int alignment, const QPalette &amp; palette, bool enabled, const QString &amp; text, QPalette::ColorRole textRole = QPalette::NoRole )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawPrimitive</name>
+      <anchor>drawPrimitive</anchor>
+      <arglist>( PrimitiveElement elem, const QStyleOption * option, QPainter * painter, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>generatedIconPixmap</name>
+      <anchor>generatedIconPixmap</anchor>
+      <arglist>( QIcon::Mode iconMode, const QPixmap &amp; pixmap, const QStyleOption * opt )</arglist>
+    </member>
+    <member kind="function">
+      <name>hitTestComplexControl</name>
+      <anchor>hitTestComplexControl</anchor>
+      <arglist>( ComplexControl cc, const QStyleOptionComplex * opt, const QPoint &amp; pt, const QWidget * w = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>itemPixmapRect</name>
+      <anchor>itemPixmapRect</anchor>
+      <arglist>( const QRect &amp; r, int flags, const QPixmap &amp; pixmap )</arglist>
+    </member>
+    <member kind="function">
+      <name>pixelMetric</name>
+      <anchor>pixelMetric</anchor>
+      <arglist>( PixelMetric metric, const QStyleOption * option = 0, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>polish</name>
+      <anchor>polish</anchor>
+      <arglist>( QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>polish</name>
+      <anchor>polish-2</anchor>
+      <arglist>( QApplication * app )</arglist>
+    </member>
+    <member kind="function">
+      <name>polish</name>
+      <anchor>polish-3</anchor>
+      <arglist>( QPalette &amp; pal )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeFromContents</name>
+      <anchor>sizeFromContents</anchor>
+      <arglist>( ContentsType type, const QStyleOption * option, const QSize &amp; size, const QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>standardPalette</name>
+      <anchor>standardPalette</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>standardPixmap</name>
+      <anchor>standardPixmap</anchor>
+      <arglist>( StandardPixmap standardPixmap, const QStyleOption * opt, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>styleHint</name>
+      <anchor>styleHint</anchor>
+      <arglist>( StyleHint hint, const QStyleOption * option = 0, const QWidget * widget = 0, QStyleHintReturn * returnData = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>subControlRect</name>
+      <anchor>subControlRect</anchor>
+      <arglist>( ComplexControl control, const QStyleOptionComplex * option, SubControl subControl, const QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>subElementRect</name>
+      <anchor>subElementRect</anchor>
+      <arglist>( SubElement sr, const QStyleOption * opt, const QWidget * w = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>unpolish</name>
+      <anchor>unpolish</anchor>
+      <arglist>( QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>unpolish</name>
+      <anchor>unpolish-2</anchor>
+      <arglist>( QApplication * app )</arglist>
     </member>
     <member kind="function">
       <name>data</name>
@@ -22695,6 +26523,11 @@
       <name>dataChanged</name>
       <anchor>dataChanged</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>findBufferChanged</name>
@@ -22940,6 +26773,16 @@
       <arglist>( qreal c, qreal m, qreal y, qreal k, qreal a = 1.0 )</arglist>
     </member>
     <member kind="function">
+      <name>fromHsl</name>
+      <anchor>fromHsl</anchor>
+      <arglist>( int h, int s, int l, int a = 255 )</arglist>
+    </member>
+    <member kind="function">
+      <name>fromHslF</name>
+      <anchor>fromHslF</anchor>
+      <arglist>( qreal h, qreal s, qreal l, qreal a = 1.0 )</arglist>
+    </member>
+    <member kind="function">
       <name>fromHsv</name>
       <anchor>fromHsv</anchor>
       <arglist>( int h, int s, int v, int a = 255 )</arglist>
@@ -22980,6 +26823,16 @@
       <arglist>( qreal * c, qreal * m, qreal * y, qreal * k, qreal * a = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>getHsl</name>
+      <anchor>getHsl</anchor>
+      <arglist>( int * h, int * s, int * l, int * a = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>getHslF</name>
+      <anchor>getHslF</anchor>
+      <arglist>( qreal * h, qreal * s, qreal * l, qreal * a = 0 )</arglist>
+    </member>
+    <member kind="function">
       <name>getHsv</name>
       <anchor>getHsv</anchor>
       <arglist>( int * h, int * s, int * v, int * a = 0 )</arglist>
@@ -23010,6 +26863,46 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>hslHue</name>
+      <anchor>hslHue</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>hslHueF</name>
+      <anchor>hslHueF</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>hslSaturation</name>
+      <anchor>hslSaturation</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>hslSaturationF</name>
+      <anchor>hslSaturationF</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>hsvHue</name>
+      <anchor>hsvHue</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>hsvHueF</name>
+      <anchor>hsvHueF</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>hsvSaturation</name>
+      <anchor>hsvSaturation</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>hsvSaturationF</name>
+      <anchor>hsvSaturationF</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>hue</name>
       <anchor>hue</anchor>
       <arglist>()</arglist>
@@ -23028,6 +26921,16 @@
       <name>lighter</name>
       <anchor>lighter</anchor>
       <arglist>( int factor = 150 )</arglist>
+    </member>
+    <member kind="function">
+      <name>lightness</name>
+      <anchor>lightness</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>lightnessF</name>
+      <anchor>lightnessF</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>magenta</name>
@@ -23120,6 +27023,16 @@
       <arglist>( qreal green )</arglist>
     </member>
     <member kind="function">
+      <name>setHsl</name>
+      <anchor>setHsl</anchor>
+      <arglist>( int h, int s, int l, int a = 255 )</arglist>
+    </member>
+    <member kind="function">
+      <name>setHslF</name>
+      <anchor>setHslF</anchor>
+      <arglist>( qreal h, qreal s, qreal l, qreal a = 1.0 )</arglist>
+    </member>
+    <member kind="function">
       <name>setHsv</name>
       <anchor>setHsv</anchor>
       <arglist>( int h, int s, int v, int a = 255 )</arglist>
@@ -23172,6 +27085,11 @@
     <member kind="function">
       <name>toCmyk</name>
       <anchor>toCmyk</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>toHsl</name>
+      <anchor>toHsl</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -23257,6 +27175,11 @@
       <name>QColorDialog</name>
       <anchor>QColorDialog-2</anchor>
       <arglist>( const QColor &amp; initial, QWidget * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>colorSelected</name>
@@ -23536,13 +27459,63 @@
       <arglist>( const QModelIndex &amp; index )</arglist>
     </member>
     <member kind="function">
+      <name>currentChanged</name>
+      <anchor>currentChanged</anchor>
+      <arglist>( const QModelIndex &amp; current, const QModelIndex &amp; previous )</arglist>
+    </member>
+    <member kind="function">
+      <name>horizontalOffset</name>
+      <anchor>horizontalOffset</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>indexAt</name>
+      <anchor>indexAt</anchor>
+      <arglist>( const QPoint &amp; point )</arglist>
+    </member>
+    <member kind="function">
       <name>initializeColumn</name>
       <anchor>initializeColumn</anchor>
       <arglist>( QAbstractItemView * column )</arglist>
     </member>
     <member kind="function">
+      <name>isIndexHidden</name>
+      <anchor>isIndexHidden</anchor>
+      <arglist>( const QModelIndex &amp; index )</arglist>
+    </member>
+    <member kind="function">
+      <name>moveCursor</name>
+      <anchor>moveCursor</anchor>
+      <arglist>( CursorAction cursorAction, Qt::KeyboardModifiers modifiers )</arglist>
+    </member>
+    <member kind="function">
       <name>previewWidget</name>
       <anchor>previewWidget</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>rowsInserted</name>
+      <anchor>rowsInserted</anchor>
+      <arglist>( const QModelIndex &amp; parent, int start, int end )</arglist>
+    </member>
+    <member kind="function">
+      <name>scrollContentsBy</name>
+      <anchor>scrollContentsBy</anchor>
+      <arglist>( int dx, int dy )</arglist>
+    </member>
+    <member kind="function">
+      <name>scrollTo</name>
+      <anchor>scrollTo</anchor>
+      <arglist>( const QModelIndex &amp; index, ScrollHint hint = EnsureVisible )</arglist>
+    </member>
+    <member kind="function">
+      <name>selectAll</name>
+      <anchor>selectAll</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -23551,14 +27524,54 @@
       <arglist>( const QList&lt;int&gt; &amp; list )</arglist>
     </member>
     <member kind="function">
+      <name>setModel</name>
+      <anchor>setModel</anchor>
+      <arglist>( QAbstractItemModel * model )</arglist>
+    </member>
+    <member kind="function">
       <name>setPreviewWidget</name>
       <anchor>setPreviewWidget</anchor>
       <arglist>( QWidget * widget )</arglist>
     </member>
     <member kind="function">
+      <name>setRootIndex</name>
+      <anchor>setRootIndex</anchor>
+      <arglist>( const QModelIndex &amp; index )</arglist>
+    </member>
+    <member kind="function">
+      <name>setSelection</name>
+      <anchor>setSelection</anchor>
+      <arglist>( const QRect &amp; rect, QItemSelectionModel::SelectionFlags command )</arglist>
+    </member>
+    <member kind="function">
+      <name>setSelectionModel</name>
+      <anchor>setSelectionModel</anchor>
+      <arglist>( QItemSelectionModel * newSelectionModel )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>updatePreviewWidget</name>
       <anchor>updatePreviewWidget</anchor>
       <arglist>( const QModelIndex &amp; index )</arglist>
+    </member>
+    <member kind="function">
+      <name>verticalOffset</name>
+      <anchor>verticalOffset</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>visualRect</name>
+      <anchor>visualRect</anchor>
+      <arglist>( const QModelIndex &amp; index )</arglist>
+    </member>
+    <member kind="function">
+      <name>visualRegionForSelection</name>
+      <anchor>visualRegionForSelection</anchor>
+      <arglist>( const QItemSelection &amp; selection )</arglist>
     </member>
     <member kind="function">
       <name>CaseSensitivity</name>
@@ -23720,6 +27733,11 @@
       <arglist>( const QStringList &amp; texts )</arglist>
     </member>
     <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>clear</name>
       <anchor>clear</anchor>
       <arglist>()</arglist>
@@ -23733,6 +27751,11 @@
       <name>completer</name>
       <anchor>completer</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>contextMenuEvent</name>
+      <anchor>contextMenuEvent</anchor>
+      <arglist>( QContextMenuEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>currentIndexChanged</name>
@@ -23750,6 +27773,11 @@
       <arglist>( const QString &amp; text )</arglist>
     </member>
     <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>findData</name>
       <anchor>findData</anchor>
       <arglist>( const QVariant &amp; data, int role = Qt::UserRole, Qt::MatchFlags flags = Qt::MatchExactly | Qt::MatchCaseSensitive )</arglist>
@@ -23758,6 +27786,21 @@
       <name>findText</name>
       <anchor>findText</anchor>
       <arglist>( const QString &amp; text, Qt::MatchFlags flags = Qt::MatchExactly | Qt::MatchCaseSensitive )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusInEvent</name>
+      <anchor>focusInEvent</anchor>
+      <arglist>( QFocusEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusOutEvent</name>
+      <anchor>focusOutEvent</anchor>
+      <arglist>( QFocusEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>hideEvent</name>
+      <anchor>hideEvent</anchor>
+      <arglist>( QHideEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>hidePopup</name>
@@ -23778,6 +27821,16 @@
       <name>initStyleOption</name>
       <anchor>initStyleOption</anchor>
       <arglist>( QStyleOptionComboBox * option )</arglist>
+    </member>
+    <member kind="function">
+      <name>inputMethodEvent</name>
+      <anchor>inputMethodEvent</anchor>
+      <arglist>( QInputMethodEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>inputMethodQuery</name>
+      <anchor>inputMethodQuery</anchor>
+      <arglist>( Qt::InputMethodQuery query )</arglist>
     </member>
     <member kind="function">
       <name>insertItem</name>
@@ -23820,8 +27873,23 @@
       <arglist>( int index )</arglist>
     </member>
     <member kind="function">
+      <name>keyPressEvent</name>
+      <anchor>keyPressEvent</anchor>
+      <arglist>( QKeyEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>keyReleaseEvent</name>
+      <anchor>keyReleaseEvent</anchor>
+      <arglist>( QKeyEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>lineEdit</name>
       <anchor>lineEdit</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>minimumSizeHint</name>
+      <anchor>minimumSizeHint</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -23830,9 +27898,29 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>mousePressEvent</name>
+      <anchor>mousePressEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseReleaseEvent</name>
+      <anchor>mouseReleaseEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>removeItem</name>
       <anchor>removeItem</anchor>
       <arglist>( int index )</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>rootModelIndex</name>
@@ -23895,8 +27983,18 @@
       <arglist>( QAbstractItemView * itemView )</arglist>
     </member>
     <member kind="function">
+      <name>showEvent</name>
+      <anchor>showEvent</anchor>
+      <arglist>( QShowEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>showPopup</name>
       <anchor>showPopup</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -23908,6 +28006,11 @@
       <name>view</name>
       <anchor>view</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>wheelEvent</name>
+      <anchor>wheelEvent</anchor>
+      <arglist>( QWheelEvent * e )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -23928,6 +28031,31 @@
       <anchor>QCommandLinkButton-3</anchor>
       <arglist>( const QString &amp; text, const QString &amp; description, QWidget * parent = 0 )</arglist>
     </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>heightForWidth</name>
+      <anchor>heightForWidth</anchor>
+      <arglist>( int width )</arglist>
+    </member>
+    <member kind="function">
+      <name>minimumSizeHint</name>
+      <anchor>minimumSizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
   </compound>
   <compound kind="class">
     <name>QCommonStyle</name>
@@ -23936,6 +28064,86 @@
       <name>QCommonStyle</name>
       <anchor>QCommonStyle</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>drawComplexControl</name>
+      <anchor>drawComplexControl</anchor>
+      <arglist>( ComplexControl cc, const QStyleOptionComplex * opt, QPainter * p, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawControl</name>
+      <anchor>drawControl</anchor>
+      <arglist>( ControlElement element, const QStyleOption * opt, QPainter * p, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawPrimitive</name>
+      <anchor>drawPrimitive</anchor>
+      <arglist>( PrimitiveElement pe, const QStyleOption * opt, QPainter * p, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>generatedIconPixmap</name>
+      <anchor>generatedIconPixmap</anchor>
+      <arglist>( QIcon::Mode iconMode, const QPixmap &amp; pixmap, const QStyleOption * opt )</arglist>
+    </member>
+    <member kind="function">
+      <name>hitTestComplexControl</name>
+      <anchor>hitTestComplexControl</anchor>
+      <arglist>( ComplexControl cc, const QStyleOptionComplex * opt, const QPoint &amp; pt, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>pixelMetric</name>
+      <anchor>pixelMetric</anchor>
+      <arglist>( PixelMetric m, const QStyleOption * opt = 0, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>polish</name>
+      <anchor>polish</anchor>
+      <arglist>( QPalette &amp; pal )</arglist>
+    </member>
+    <member kind="function">
+      <name>polish</name>
+      <anchor>polish-2</anchor>
+      <arglist>( QApplication * app )</arglist>
+    </member>
+    <member kind="function">
+      <name>polish</name>
+      <anchor>polish-3</anchor>
+      <arglist>( QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeFromContents</name>
+      <anchor>sizeFromContents</anchor>
+      <arglist>( ContentsType ct, const QStyleOption * opt, const QSize &amp; csz, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>standardPixmap</name>
+      <anchor>standardPixmap</anchor>
+      <arglist>( StandardPixmap sp, const QStyleOption * option = 0, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>styleHint</name>
+      <anchor>styleHint</anchor>
+      <arglist>( StyleHint sh, const QStyleOption * opt = 0, const QWidget * widget = 0, QStyleHintReturn * hret = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>subControlRect</name>
+      <anchor>subControlRect</anchor>
+      <arglist>( ComplexControl cc, const QStyleOptionComplex * opt, SubControl sc, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>subElementRect</name>
+      <anchor>subElementRect</anchor>
+      <arglist>( SubElement sr, const QStyleOption * opt, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>unpolish</name>
+      <anchor>unpolish</anchor>
+      <arglist>( QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>unpolish</name>
+      <anchor>unpolish-2</anchor>
+      <arglist>( QApplication * application )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -24010,6 +28218,16 @@
       <name>currentRow</name>
       <anchor>currentRow</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>eventFilter</name>
+      <anchor>eventFilter</anchor>
+      <arglist>( QObject * o, QEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>highlighted</name>
@@ -24198,6 +28416,219 @@
       <anchor>y</anchor>
       <arglist>()</arglist>
     </member>
+  </compound>
+  <compound kind="class">
+    <name>QContiguousCache</name>
+    <filename>qcontiguouscache.html</filename>
+    <member kind="function">
+      <name>QContiguousCache</name>
+      <anchor>QContiguousCache</anchor>
+      <arglist>( int capacity = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>QContiguousCache</name>
+      <anchor>QContiguousCache-2</anchor>
+      <arglist>( const QContiguousCache&lt;T&gt; &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>append</name>
+      <anchor>append</anchor>
+      <arglist>( const T &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>areIndexesValid</name>
+      <anchor>areIndexesValid</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>at</name>
+      <anchor>at</anchor>
+      <arglist>( int i )</arglist>
+    </member>
+    <member kind="function">
+      <name>available</name>
+      <anchor>available</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>capacity</name>
+      <anchor>capacity</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>clear</name>
+      <anchor>clear</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>containsIndex</name>
+      <anchor>containsIndex</anchor>
+      <arglist>( int i )</arglist>
+    </member>
+    <member kind="function">
+      <name>count</name>
+      <anchor>count</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>first</name>
+      <anchor>first</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>first</name>
+      <anchor>first-2</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>firstIndex</name>
+      <anchor>firstIndex</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>insert</name>
+      <anchor>insert</anchor>
+      <arglist>( int i, const T &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>isEmpty</name>
+      <anchor>isEmpty</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>isFull</name>
+      <anchor>isFull</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>last</name>
+      <anchor>last</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>last</name>
+      <anchor>last-2</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>lastIndex</name>
+      <anchor>lastIndex</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>normalizeIndexes</name>
+      <anchor>normalizeIndexes</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>prepend</name>
+      <anchor>prepend</anchor>
+      <arglist>( const T &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>removeFirst</name>
+      <anchor>removeFirst</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>removeLast</name>
+      <anchor>removeLast</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>setCapacity</name>
+      <anchor>setCapacity</anchor>
+      <arglist>( int size )</arglist>
+    </member>
+    <member kind="function">
+      <name>size</name>
+      <anchor>size</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>takeFirst</name>
+      <anchor>takeFirst</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>takeLast</name>
+      <anchor>takeLast</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>operator!=</name>
+      <anchor>operator-not-eq</anchor>
+      <arglist>( const QContiguousCache&lt;T&gt; &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator=</name>
+      <anchor>operator-eq</anchor>
+      <arglist>( const QContiguousCache&lt;T&gt; &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator==</name>
+      <anchor>operator-eq-eq</anchor>
+      <arglist>( const QContiguousCache&lt;T&gt; &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator[]</name>
+      <anchor>operator-5b-5d</anchor>
+      <arglist>( int i )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator[]</name>
+      <anchor>operator-5b-5d-2</anchor>
+      <arglist>( int i )</arglist>
+    </member>
+    <member kind="function">
+      <name>QCopChannel</name>
+      <anchor>QCopChannel-2</anchor>
+      <arglist>( const QString &amp; channel, QObject * parent, const char * name )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QCopChannel</name>
+    <filename>qcopchannel.html</filename>
+    <member kind="function">
+      <name>QCopChannel</name>
+      <anchor>QCopChannel</anchor>
+      <arglist>( const QString &amp; channel, QObject * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>channel</name>
+      <anchor>channel</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>flush</name>
+      <anchor>flush</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>isRegistered</name>
+      <anchor>isRegistered</anchor>
+      <arglist>( const QString &amp; channel )</arglist>
+    </member>
+    <member kind="function">
+      <name>receive</name>
+      <anchor>receive</anchor>
+      <arglist>( const QString &amp; message, const QByteArray &amp; data )</arglist>
+    </member>
+    <member kind="function">
+      <name>received</name>
+      <anchor>received</anchor>
+      <arglist>( const QString &amp; message, const QByteArray &amp; data )</arglist>
+    </member>
+    <member kind="function">
+      <name>send</name>
+      <anchor>send</anchor>
+      <arglist>( const QString &amp; channel, const QString &amp; message, const QByteArray &amp; data )</arglist>
+    </member>
+    <member kind="function">
+      <name>send</name>
+      <anchor>send-2</anchor>
+      <arglist>( const QString &amp; channel, const QString &amp; message )</arglist>
+    </member>
     <member kind="function">
       <name>argc</name>
       <anchor>argc</anchor>
@@ -24301,6 +28732,11 @@
       <name>closingDown</name>
       <anchor>closingDown</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>exec</name>
@@ -24445,7 +28881,7 @@
     <member kind="function">
       <name>winEventFilter</name>
       <anchor>winEventFilter</anchor>
-      <arglist>( MSG * message, long * result )</arglist>
+      <arglist>( MSG * msg, long * result )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -24629,6 +29065,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>metric</name>
+      <anchor>metric</anchor>
+      <arglist>( PaintDeviceMetric m )</arglist>
+    </member>
+    <member kind="function">
       <name>unsetDevice</name>
       <anchor>unsetDevice</anchor>
       <arglist>()</arglist>
@@ -24670,6 +29111,11 @@
     <member kind="enum">
       <name>ByteOrder</name>
       <anchor>ByteOrder-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enum">
+      <name>FloatingPointPrecision</name>
+      <anchor>FloatingPointPrecision-enum</anchor>
       <arglist></arglist>
     </member>
     <member kind="enum">
@@ -24718,6 +29164,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>floatingPointPrecision</name>
+      <anchor>floatingPointPrecision</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>readBytes</name>
       <anchor>readBytes</anchor>
       <arglist>( char *&amp; s, uint &amp; l )</arglist>
@@ -24741,6 +29192,11 @@
       <name>setDevice</name>
       <anchor>setDevice</anchor>
       <arglist>( QIODevice * d )</arglist>
+    </member>
+    <member kind="function">
+      <name>setFloatingPointPrecision</name>
+      <anchor>setFloatingPointPrecision</anchor>
+      <arglist>( FloatingPointPrecision precision )</arglist>
     </member>
     <member kind="function">
       <name>setStatus</name>
@@ -25508,6 +29964,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>clear</name>
+      <anchor>clear</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>dateChanged</name>
       <anchor>dateChanged</anchor>
       <arglist>( const QDate &amp; date )</arglist>
@@ -25523,9 +29984,44 @@
       <arglist>( const QString &amp; text )</arglist>
     </member>
     <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>fixup</name>
+      <anchor>fixup</anchor>
+      <arglist>( QString &amp; input )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusInEvent</name>
+      <anchor>focusInEvent</anchor>
+      <arglist>( QFocusEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusNextPrevChild</name>
+      <anchor>focusNextPrevChild</anchor>
+      <arglist>( bool next )</arglist>
+    </member>
+    <member kind="function">
       <name>initStyleOption</name>
       <anchor>initStyleOption</anchor>
       <arglist>( QStyleOptionSpinBox * option )</arglist>
+    </member>
+    <member kind="function">
+      <name>keyPressEvent</name>
+      <anchor>keyPressEvent</anchor>
+      <arglist>( QKeyEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>mousePressEvent</name>
+      <anchor>mousePressEvent</anchor>
+      <arglist>( QMouseEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * event )</arglist>
     </member>
     <member kind="function">
       <name>sectionAt</name>
@@ -25563,6 +30059,21 @@
       <arglist>( const QTime &amp; min, const QTime &amp; max )</arglist>
     </member>
     <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>stepBy</name>
+      <anchor>stepBy</anchor>
+      <arglist>( int steps )</arglist>
+    </member>
+    <member kind="function">
+      <name>stepEnabled</name>
+      <anchor>stepEnabled</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>textFromDateTime</name>
       <anchor>textFromDateTime</anchor>
       <arglist>( const QDateTime &amp; dateTime )</arglist>
@@ -25571,6 +30082,16 @@
       <name>timeChanged</name>
       <anchor>timeChanged</anchor>
       <arglist>( const QTime &amp; time )</arglist>
+    </member>
+    <member kind="function">
+      <name>State</name>
+      <anchor>validate</anchor>
+      <arglist> QDateTimeEdit::validate( QString &amp; text, int &amp; pos )</arglist>
+    </member>
+    <member kind="function">
+      <name>wheelEvent</name>
+      <anchor>wheelEvent</anchor>
+      <arglist>( QWheelEvent * event )</arglist>
     </member>
     <member kind="enum">
       <name>CallMode</name>
@@ -25974,6 +30495,11 @@
       <arglist>( const QString &amp; service, const QString &amp; path, const QString &amp; interface, const QString &amp; name, const QString &amp; signature, QObject * receiver, const char * slot )</arglist>
     </member>
     <member kind="function">
+      <name>connect</name>
+      <anchor>connect-3</anchor>
+      <arglist>( const QString &amp; service, const QString &amp; path, const QString &amp; interface, const QString &amp; name, const QStringList &amp; argumentMatch, const QString &amp; signature, QObject * receiver, const char * slot )</arglist>
+    </member>
+    <member kind="function">
       <name>connectToBus</name>
       <anchor>connectToBus</anchor>
       <arglist>( BusType type, const QString &amp; name )</arglist>
@@ -25992,6 +30518,11 @@
       <name>disconnect</name>
       <anchor>disconnect-2</anchor>
       <arglist>( const QString &amp; service, const QString &amp; path, const QString &amp; interface, const QString &amp; name, const QString &amp; signature, QObject * receiver, const char * slot )</arglist>
+    </member>
+    <member kind="function">
+      <name>disconnect</name>
+      <anchor>disconnect-3</anchor>
+      <arglist>( const QString &amp; service, const QString &amp; path, const QString &amp; interface, const QString &amp; name, const QStringList &amp; argumentMatch, const QString &amp; signature, QObject * receiver, const char * slot )</arglist>
     </member>
     <member kind="function">
       <name>disconnectFromBus</name>
@@ -26432,6 +30963,16 @@
       <arglist>( const QDBusPendingCall &amp; other )</arglist>
     </member>
     <member kind="function">
+      <name>fromCompletedCall</name>
+      <anchor>fromCompletedCall</anchor>
+      <arglist>( const QDBusMessage &amp; msg )</arglist>
+    </member>
+    <member kind="function">
+      <name>fromError</name>
+      <anchor>fromError</anchor>
+      <arglist>( const QDBusError &amp; error )</arglist>
+    </member>
+    <member kind="function">
       <name>operator=</name>
       <anchor>operator-eq</anchor>
       <arglist>( const QDBusPendingCall &amp; other )</arglist>
@@ -26649,6 +31190,55 @@
     </member>
   </compound>
   <compound kind="class">
+    <name>QDBusServiceWatcher</name>
+    <filename>qdbusservicewatcher.html</filename>
+    <member kind="function">
+      <name>QDBusServiceWatcher</name>
+      <anchor>QDBusServiceWatcher</anchor>
+      <arglist>( QObject * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>QDBusServiceWatcher</name>
+      <anchor>QDBusServiceWatcher-2</anchor>
+      <arglist>( const QString &amp; service, const QDBusConnection &amp; connection, WatchMode watchMode = WatchForOwnerChange, QObject * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>addWatchedService</name>
+      <anchor>addWatchedService</anchor>
+      <arglist>( const QString &amp; newService )</arglist>
+    </member>
+    <member kind="function">
+      <name>connection</name>
+      <anchor>connection</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>removeWatchedService</name>
+      <anchor>removeWatchedService</anchor>
+      <arglist>( const QString &amp; service )</arglist>
+    </member>
+    <member kind="function">
+      <name>serviceOwnerChanged</name>
+      <anchor>serviceOwnerChanged</anchor>
+      <arglist>( const QString &amp; serviceName, const QString &amp; oldOwner, const QString &amp; newOwner )</arglist>
+    </member>
+    <member kind="function">
+      <name>serviceRegistered</name>
+      <anchor>serviceRegistered</anchor>
+      <arglist>( const QString &amp; serviceName )</arglist>
+    </member>
+    <member kind="function">
+      <name>serviceUnregistered</name>
+      <anchor>serviceUnregistered</anchor>
+      <arglist>( const QString &amp; serviceName )</arglist>
+    </member>
+    <member kind="function">
+      <name>setConnection</name>
+      <anchor>setConnection</anchor>
+      <arglist>( const QDBusConnection &amp; connection )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
     <name>QDBusSignature</name>
     <filename>qdbussignature.html</filename>
     <member kind="function">
@@ -26848,6 +31438,147 @@
       <name>operator=</name>
       <anchor>operator-eq</anchor>
       <arglist>( const QDebug &amp; other )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QDecoration</name>
+    <filename>qdecoration.html</filename>
+    <member kind="enum">
+      <name>DecorationRegion</name>
+      <anchor>DecorationRegion-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enum">
+      <name>DecorationState</name>
+      <anchor>DecorationState-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>QDecoration</name>
+      <anchor>QDecoration</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>buildSysMenu</name>
+      <anchor>buildSysMenu</anchor>
+      <arglist>( QWidget * widget, QMenu * menu )</arglist>
+    </member>
+    <member kind="function">
+      <name>menuTriggered</name>
+      <anchor>menuTriggered</anchor>
+      <arglist>( QWidget * widget, QAction * action )</arglist>
+    </member>
+    <member kind="function">
+      <name>paint</name>
+      <anchor>paint</anchor>
+      <arglist>( QPainter * painter, const QWidget * widget, int decorationRegion = All, DecorationState state = Normal )</arglist>
+    </member>
+    <member kind="function">
+      <name>region</name>
+      <anchor>region</anchor>
+      <arglist>( const QWidget * widget, const QRect &amp; rectangle, int decorationRegion = All )</arglist>
+    </member>
+    <member kind="function">
+      <name>region</name>
+      <anchor>region-2</anchor>
+      <arglist>( const QWidget * widget, int decorationRegion = All )</arglist>
+    </member>
+    <member kind="function">
+      <name>regionAt</name>
+      <anchor>regionAt</anchor>
+      <arglist>( const QWidget * widget, const QPoint &amp; point )</arglist>
+    </member>
+    <member kind="function">
+      <name>regionClicked</name>
+      <anchor>regionClicked</anchor>
+      <arglist>( QWidget * widget, int region )</arglist>
+    </member>
+    <member kind="function">
+      <name>regionDoubleClicked</name>
+      <anchor>regionDoubleClicked</anchor>
+      <arglist>( QWidget * widget, int region )</arglist>
+    </member>
+    <member kind="function">
+      <name>startMove</name>
+      <anchor>startMove</anchor>
+      <arglist>( QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>startResize</name>
+      <anchor>startResize</anchor>
+      <arglist>( QWidget * widget )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QDecorationDefault</name>
+    <filename>qdecorationdefault.html</filename>
+    <member kind="function">
+      <name>QDecorationDefault</name>
+      <anchor>QDecorationDefault</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>paint</name>
+      <anchor>paint</anchor>
+      <arglist>( QPainter * painter, const QWidget * widget, int decorationRegion = All, DecorationState state = Normal )</arglist>
+    </member>
+    <member kind="function">
+      <name>paintButton</name>
+      <anchor>paintButton</anchor>
+      <arglist>( QPainter * painter, const QWidget * widget, int buttonRegion, DecorationState state, const QPalette &amp; palette )</arglist>
+    </member>
+    <member kind="function">
+      <name>pixmapFor</name>
+      <anchor>pixmapFor</anchor>
+      <arglist>( const QWidget * widget, int decorationRegion, int &amp; xoff, int &amp; yoff )</arglist>
+    </member>
+    <member kind="function">
+      <name>region</name>
+      <anchor>region</anchor>
+      <arglist>( const QWidget * widget, const QRect &amp; rect, int decorationRegion = All )</arglist>
+    </member>
+    <member kind="function">
+      <name>titleBarHeight</name>
+      <anchor>titleBarHeight</anchor>
+      <arglist>( const QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>xpmForRegion</name>
+      <anchor>xpmForRegion</anchor>
+      <arglist>( int region )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QDecorationFactory</name>
+    <filename>qdecorationfactory.html</filename>
+    <member kind="function">
+      <name>create</name>
+      <anchor>create</anchor>
+      <arglist>( const QString &amp; key )</arglist>
+    </member>
+    <member kind="function">
+      <name>keys</name>
+      <anchor>keys</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QDecorationPlugin</name>
+    <filename>qdecorationplugin.html</filename>
+    <member kind="function">
+      <name>QDecorationPlugin</name>
+      <anchor>QDecorationPlugin</anchor>
+      <arglist>( QObject * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>create</name>
+      <anchor>create</anchor>
+      <arglist>( const QString &amp; key )</arglist>
+    </member>
+    <member kind="function">
+      <name>keys</name>
+      <anchor>keys</anchor>
+      <arglist>()</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -27903,6 +32634,11 @@
       <anchor>unsetUrlHandler</anchor>
       <arglist>( const QString &amp; scheme )</arglist>
     </member>
+    <member kind="function">
+      <name>numScreens</name>
+      <anchor>numScreens</anchor>
+      <arglist>()</arglist>
+    </member>
   </compound>
   <compound kind="class">
     <name>QDesktopWidget</name>
@@ -27923,19 +32659,9 @@
       <arglist>( const QPoint &amp; p )</arglist>
     </member>
     <member kind="function">
-      <name>isVirtualDesktop</name>
-      <anchor>isVirtualDesktop</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <name>numScreens</name>
-      <anchor>numScreens</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <name>primaryScreen</name>
-      <anchor>primaryScreen</anchor>
-      <arglist>()</arglist>
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * event )</arglist>
     </member>
     <member kind="function">
       <name>resized</name>
@@ -27946,6 +32672,11 @@
       <name>screen</name>
       <anchor>screen</anchor>
       <arglist>( int screen = -1 )</arglist>
+    </member>
+    <member kind="function">
+      <name>screenCountChanged</name>
+      <anchor>screenCountChanged</anchor>
+      <arglist>( int newCount )</arglist>
     </member>
     <member kind="function">
       <name>screenGeometry</name>
@@ -28012,9 +32743,54 @@
       <arglist>( QWidget * parent = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>initStyleOption</name>
       <anchor>initStyleOption</anchor>
       <arglist>( QStyleOptionSlider * option )</arglist>
+    </member>
+    <member kind="function">
+      <name>minimumSizeHint</name>
+      <anchor>minimumSizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseMoveEvent</name>
+      <anchor>mouseMoveEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mousePressEvent</name>
+      <anchor>mousePressEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseReleaseEvent</name>
+      <anchor>mouseReleaseEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * pe )</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>sliderChange</name>
+      <anchor>sliderChange</anchor>
+      <arglist>( SliderChange change )</arglist>
     </member>
     <member kind="function">
       <name>extension</name>
@@ -28071,9 +32847,29 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>closeEvent</name>
+      <anchor>closeEvent</anchor>
+      <arglist>( QCloseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>contextMenuEvent</name>
+      <anchor>contextMenuEvent</anchor>
+      <arglist>( QContextMenuEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>done</name>
       <anchor>done</anchor>
       <arglist>( int r )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>eventFilter</name>
+      <anchor>eventFilter</anchor>
+      <arglist>( QObject * o, QEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>exec</name>
@@ -28084,6 +32880,16 @@
       <name>finished</name>
       <anchor>finished</anchor>
       <arglist>( int result )</arglist>
+    </member>
+    <member kind="function">
+      <name>keyPressEvent</name>
+      <anchor>keyPressEvent</anchor>
+      <arglist>( QKeyEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>minimumSizeHint</name>
+      <anchor>minimumSizeHint</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>open</name>
@@ -28101,6 +32907,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * )</arglist>
+    </member>
+    <member kind="function">
       <name>result</name>
       <anchor>result</anchor>
       <arglist>()</arglist>
@@ -28109,6 +32920,21 @@
       <name>setResult</name>
       <anchor>setResult</anchor>
       <arglist>( int i )</arglist>
+    </member>
+    <member kind="function">
+      <name>setVisible</name>
+      <anchor>setVisible</anchor>
+      <arglist>( bool visible )</arglist>
+    </member>
+    <member kind="function">
+      <name>showEvent</name>
+      <anchor>showEvent</anchor>
+      <arglist>( QShowEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -28180,6 +33006,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>clear</name>
       <anchor>clear</anchor>
       <arglist>()</arglist>
@@ -28188,6 +33019,11 @@
       <name>clicked</name>
       <anchor>clicked</anchor>
       <arglist>( QAbstractButton * button )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * event )</arglist>
     </member>
     <member kind="function">
       <name>helpRequested</name>
@@ -28628,6 +33464,135 @@
       <anchor>operator-5b-5d</anchor>
       <arglist>( int pos )</arglist>
     </member>
+    <member kind="function">
+      <name>region</name>
+      <anchor>region</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>reserveRegion</name>
+      <anchor>reserveRegion</anchor>
+      <arglist>( const QRegion &amp; region )</arglist>
+    </member>
+    <member kind="function">
+      <name>reservedRegion</name>
+      <anchor>reservedRegion</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QDirectPainter</name>
+    <filename>qdirectpainter.html</filename>
+    <member kind="enum">
+      <name>SurfaceFlag</name>
+      <anchor>SurfaceFlag-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>QDirectPainter</name>
+      <anchor>QDirectPainter</anchor>
+      <arglist>( QObject * parent = 0, SurfaceFlag flag = NonReserved )</arglist>
+    </member>
+    <member kind="function">
+      <name>allocatedRegion</name>
+      <anchor>allocatedRegion</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>endPainting</name>
+      <anchor>endPainting</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>endPainting</name>
+      <anchor>endPainting-2</anchor>
+      <arglist>( const QRegion &amp; region )</arglist>
+    </member>
+    <member kind="function">
+      <name>flush</name>
+      <anchor>flush</anchor>
+      <arglist>( const QRegion &amp; region )</arglist>
+    </member>
+    <member kind="function">
+      <name>frameBuffer</name>
+      <anchor>frameBuffer</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>geometry</name>
+      <anchor>geometry</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>linestep</name>
+      <anchor>linestep</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>lock</name>
+      <anchor>lock</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>lower</name>
+      <anchor>lower</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>raise</name>
+      <anchor>raise</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>regionChanged</name>
+      <anchor>regionChanged</anchor>
+      <arglist>( const QRegion &amp; newRegion )</arglist>
+    </member>
+    <member kind="function">
+      <name>requestedRegion</name>
+      <anchor>requestedRegion</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>screenDepth</name>
+      <anchor>screenDepth</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>screenHeight</name>
+      <anchor>screenHeight</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>screenWidth</name>
+      <anchor>screenWidth</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>setGeometry</name>
+      <anchor>setGeometry</anchor>
+      <arglist>( const QRect &amp; rectangle )</arglist>
+    </member>
+    <member kind="function">
+      <name>setRegion</name>
+      <anchor>setRegion</anchor>
+      <arglist>( const QRegion &amp; region )</arglist>
+    </member>
+    <member kind="function">
+      <name>startPainting</name>
+      <anchor>startPainting</anchor>
+      <arglist>( bool lockDisplay = true )</arglist>
+    </member>
+    <member kind="function">
+      <name>unlock</name>
+      <anchor>unlock</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>winId</name>
+      <anchor>winId</anchor>
+      <arglist>()</arglist>
+    </member>
   </compound>
   <compound kind="class">
     <name>QDirIterator</name>
@@ -28886,9 +33851,24 @@
       <arglist>( Qt::DockWidgetAreas allowedAreas )</arglist>
     </member>
     <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>closeEvent</name>
+      <anchor>closeEvent</anchor>
+      <arglist>( QCloseEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>dockLocationChanged</name>
       <anchor>dockLocationChanged</anchor>
       <arglist>( Qt::DockWidgetArea area )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * event )</arglist>
     </member>
     <member kind="function">
       <name>featuresChanged</name>
@@ -28904,6 +33884,11 @@
       <name>isAreaAllowed</name>
       <anchor>isAreaAllowed</anchor>
       <arglist>( Qt::DockWidgetArea area )</arglist>
+    </member>
+    <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * event )</arglist>
     </member>
     <member kind="function">
       <name>setTitleBarWidget</name>
@@ -29924,7 +34909,7 @@
     </member>
     <member kind="function">
       <name>namespaceURI</name>
-      <anchor>namespaceURI</anchor>
+      <anchor>namespaceURIx</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -30263,6 +35248,11 @@
       <arglist>( QWidget * parent = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>fixup</name>
+      <anchor>fixup</anchor>
+      <arglist>( QString &amp; input )</arglist>
+    </member>
+    <member kind="function">
       <name>setRange</name>
       <anchor>setRange</anchor>
       <arglist>( double minimum, double maximum )</arglist>
@@ -30271,6 +35261,11 @@
       <name>textFromValue</name>
       <anchor>textFromValue</anchor>
       <arglist>( double value )</arglist>
+    </member>
+    <member kind="function">
+      <name>State</name>
+      <anchor>validate</anchor>
+      <arglist> QDoubleSpinBox::validate( QString &amp; text, int &amp; pos )</arglist>
     </member>
     <member kind="function">
       <name>valueChanged</name>
@@ -30580,6 +35575,100 @@
       <anchor>propertyName</anchor>
       <arglist>()</arglist>
     </member>
+  </compound>
+  <compound kind="class">
+    <name>QEasingCurve</name>
+    <filename>qeasingcurve.html</filename>
+    <member kind="function">
+      <name>EasingFunction</name>
+      <anchor>EasingFunction-typedef</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enum">
+      <name>Type</name>
+      <anchor>Type-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>QEasingCurve</name>
+      <anchor>QEasingCurve</anchor>
+      <arglist>( Type type = Linear )</arglist>
+    </member>
+    <member kind="function">
+      <name>QEasingCurve</name>
+      <anchor>QEasingCurve-2</anchor>
+      <arglist>( const QEasingCurve &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>amplitude</name>
+      <anchor>amplitude</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>customType</name>
+      <anchor>customType</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>overshoot</name>
+      <anchor>overshoot</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>period</name>
+      <anchor>period</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>setAmplitude</name>
+      <anchor>setAmplitude</anchor>
+      <arglist>( qreal amplitude )</arglist>
+    </member>
+    <member kind="function">
+      <name>setCustomType</name>
+      <anchor>setCustomType</anchor>
+      <arglist>( EasingFunction func )</arglist>
+    </member>
+    <member kind="function">
+      <name>setOvershoot</name>
+      <anchor>setOvershoot</anchor>
+      <arglist>( qreal overshoot )</arglist>
+    </member>
+    <member kind="function">
+      <name>setPeriod</name>
+      <anchor>setPeriod</anchor>
+      <arglist>( qreal period )</arglist>
+    </member>
+    <member kind="function">
+      <name>setType</name>
+      <anchor>setType</anchor>
+      <arglist>( Type type )</arglist>
+    </member>
+    <member kind="function">
+      <name>type</name>
+      <anchor>type</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>valueForProgress</name>
+      <anchor>valueForProgress</anchor>
+      <arglist>( qreal progress )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator!=</name>
+      <anchor>operator-not-eq</anchor>
+      <arglist>( const QEasingCurve &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator=</name>
+      <anchor>operator-eq</anchor>
+      <arglist>( const QEasingCurve &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator==</name>
+      <anchor>operator-eq-eq</anchor>
+      <arglist>( const QEasingCurve &amp; other )</arglist>
+    </member>
     <member kind="function">
       <name>message</name>
       <anchor>message</anchor>
@@ -30593,6 +35682,16 @@
       <name>QErrorMessage</name>
       <anchor>QErrorMessage</anchor>
       <arglist>( QWidget * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>done</name>
+      <anchor>done</anchor>
+      <arglist>( int a )</arglist>
     </member>
     <member kind="function">
       <name>qtHandler</name>
@@ -30694,6 +35793,40 @@
     </member>
   </compound>
   <compound kind="class">
+    <name>QEventTransition</name>
+    <filename>qeventtransition.html</filename>
+    <member kind="function">
+      <name>Type</name>
+      <anchor>eventType-prop</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>QEventTransition</name>
+      <anchor>QEventTransition</anchor>
+      <arglist>( QState * sourceState = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>QEventTransition</name>
+      <anchor>QEventTransition-2</anchor>
+      <arglist>( QObject * object, QEvent::Type type, QState * sourceState = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>eventTest</name>
+      <anchor>eventTest</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>onTransition</name>
+      <anchor>onTransition</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
     <name>QExplicitlySharedDataPointer</name>
     <filename>qexplicitlyshareddatapointer.html</filename>
     <member kind="function">
@@ -30745,6 +35878,11 @@
       <name>reset</name>
       <anchor>reset</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>swap</name>
+      <anchor>swap</anchor>
+      <arglist>( QExplicitlySharedDataPointer &amp; other )</arglist>
     </member>
     <member kind="function">
       <name>operator</name>
@@ -31034,6 +36172,21 @@
       <arglist>( const QString &amp; fileName )</arglist>
     </member>
     <member kind="function">
+      <name>pos</name>
+      <anchor>pos</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>readData</name>
+      <anchor>readData</anchor>
+      <arglist>( char * data, qint64 len )</arglist>
+    </member>
+    <member kind="function">
+      <name>readLineData</name>
+      <anchor>readLineData</anchor>
+      <arglist>( char * data, qint64 maxlen )</arglist>
+    </member>
+    <member kind="function">
       <name>remove</name>
       <anchor>remove</anchor>
       <arglist>()</arglist>
@@ -31062,6 +36215,11 @@
       <name>resize</name>
       <anchor>resize-2</anchor>
       <arglist>( const QString &amp; fileName, qint64 sz )</arglist>
+    </member>
+    <member kind="function">
+      <name>seek</name>
+      <anchor>seek</anchor>
+      <arglist>( qint64 off )</arglist>
     </member>
     <member kind="function">
       <name>setDecodingFunction</name>
@@ -31112,6 +36270,11 @@
       <name>unsetError</name>
       <anchor>unsetError</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>writeData</name>
+      <anchor>writeData</anchor>
+      <arglist>( const char * data, qint64 len )</arglist>
     </member>
     <member kind="function">
       <name>filters</name>
@@ -31223,6 +36386,16 @@
       <arglist>( QWidget * parent = 0, const QString &amp; caption = QString()</arglist>
     </member>
     <member kind="function">
+      <name>accept</name>
+      <anchor>accept</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>currentChanged</name>
       <anchor>currentChanged</anchor>
       <arglist>( const QString &amp; path )</arglist>
@@ -31236,6 +36409,11 @@
       <name>directoryEntered</name>
       <anchor>directoryEntered</anchor>
       <arglist>( const QString &amp; directory )</arglist>
+    </member>
+    <member kind="function">
+      <name>done</name>
+      <anchor>done</anchor>
+      <arglist>( int result )</arglist>
     </member>
     <member kind="function">
       <name>fileSelected</name>
@@ -31401,6 +36579,11 @@
       <name>setSidebarUrls</name>
       <anchor>setSidebarUrls</anchor>
       <arglist>( const QList&lt;QUrl&gt; &amp; urls )</arglist>
+    </member>
+    <member kind="function">
+      <name>setVisible</name>
+      <anchor>setVisible</anchor>
+      <arglist>( bool visible )</arglist>
     </member>
     <member kind="function">
       <name>sidebarUrls</name>
@@ -31764,6 +36947,11 @@
       <anchor>file</anchor>
       <arglist>()</arglist>
     </member>
+    <member kind="function">
+      <name>url</name>
+      <anchor>url</anchor>
+      <arglist>()</arglist>
+    </member>
   </compound>
   <compound kind="class">
     <name>QFileSystemModel</name>
@@ -31779,9 +36967,34 @@
       <arglist>( QObject * parent = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>canFetchMore</name>
+      <anchor>canFetchMore</anchor>
+      <arglist>( const QModelIndex &amp; parent )</arglist>
+    </member>
+    <member kind="function">
+      <name>columnCount</name>
+      <anchor>columnCount</anchor>
+      <arglist>( const QModelIndex &amp; parent = QModelIndex()</arglist>
+    </member>
+    <member kind="function">
+      <name>data</name>
+      <anchor>data</anchor>
+      <arglist>( const QModelIndex &amp; index, int role = Qt::DisplayRole )</arglist>
+    </member>
+    <member kind="function">
       <name>dropMimeData</name>
       <anchor>dropMimeData</anchor>
       <arglist>( const QMimeData * data, Qt::DropAction action, int row, int column, const QModelIndex &amp; parent )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>fetchMore</name>
+      <anchor>fetchMore</anchor>
+      <arglist>( const QModelIndex &amp; parent )</arglist>
     </member>
     <member kind="function">
       <name>fileIcon</name>
@@ -31814,6 +37027,21 @@
       <arglist> QFileSystemModel::filter()</arglist>
     </member>
     <member kind="function">
+      <name>ItemFlags</name>
+      <anchor>flags</anchor>
+      <arglist> QFileSystemModel::flags( const QModelIndex &amp; index )</arglist>
+    </member>
+    <member kind="function">
+      <name>hasChildren</name>
+      <anchor>hasChildren</anchor>
+      <arglist>( const QModelIndex &amp; parent = QModelIndex()</arglist>
+    </member>
+    <member kind="function">
+      <name>headerData</name>
+      <anchor>headerData</anchor>
+      <arglist>( int section, Qt::Orientation orientation, int role = Qt::DisplayRole )</arglist>
+    </member>
+    <member kind="function">
       <name>iconProvider</name>
       <anchor>iconProvider</anchor>
       <arglist>()</arglist>
@@ -31821,6 +37049,11 @@
     <member kind="function">
       <name>index</name>
       <anchor>index</anchor>
+      <arglist>( int row, int column, const QModelIndex &amp; parent = QModelIndex()</arglist>
+    </member>
+    <member kind="function">
+      <name>index</name>
+      <anchor>index-2</anchor>
       <arglist>( const QString &amp; path, int column = 0 )</arglist>
     </member>
     <member kind="function">
@@ -31859,6 +37092,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>parent</name>
+      <anchor>parent</anchor>
+      <arglist>( const QModelIndex &amp; index )</arglist>
+    </member>
+    <member kind="function">
       <name>Permissions</name>
       <anchor>permissions</anchor>
       <arglist> QFileSystemModel::permissions( const QModelIndex &amp; index )</arglist>
@@ -31889,6 +37127,16 @@
       <arglist>( const QString &amp; newPath )</arglist>
     </member>
     <member kind="function">
+      <name>rowCount</name>
+      <anchor>rowCount</anchor>
+      <arglist>( const QModelIndex &amp; parent = QModelIndex()</arglist>
+    </member>
+    <member kind="function">
+      <name>setData</name>
+      <anchor>setData</anchor>
+      <arglist>( const QModelIndex &amp; idx, const QVariant &amp; value, int role = Qt::EditRole )</arglist>
+    </member>
+    <member kind="function">
       <name>setFilter</name>
       <anchor>setFilter</anchor>
       <arglist>( QDir::Filters filters )</arglist>
@@ -31912,6 +37160,21 @@
       <name>size</name>
       <anchor>size</anchor>
       <arglist>( const QModelIndex &amp; index )</arglist>
+    </member>
+    <member kind="function">
+      <name>sort</name>
+      <anchor>sort</anchor>
+      <arglist>( int column, Qt::SortOrder order = Qt::AscendingOrder )</arglist>
+    </member>
+    <member kind="function">
+      <name>DropActions</name>
+      <anchor>supportedDropActions</anchor>
+      <arglist> QFileSystemModel::supportedDropActions()</arglist>
+    </member>
+    <member kind="function">
+      <name>timerEvent</name>
+      <anchor>timerEvent</anchor>
+      <arglist>( QTimerEvent * event )</arglist>
     </member>
     <member kind="function">
       <name>type</name>
@@ -31971,6 +37234,30 @@
       <name>removePaths</name>
       <anchor>removePaths</anchor>
       <arglist>( const QStringList &amp; paths )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QFinalState</name>
+    <filename>qfinalstate.html</filename>
+    <member kind="function">
+      <name>QFinalState</name>
+      <anchor>QFinalState</anchor>
+      <arglist>( QState * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>onEntry</name>
+      <anchor>onEntry</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>onExit</name>
+      <anchor>onExit</anchor>
+      <arglist>( QEvent * event )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -32144,9 +37431,24 @@
       <arglist>( QWidget * parent = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>eventFilter</name>
+      <anchor>eventFilter</anchor>
+      <arglist>( QObject * o, QEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>initStyleOption</name>
       <anchor>initStyleOption</anchor>
       <arglist>( QStyleOption * option )</arglist>
+    </member>
+    <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * )</arglist>
     </member>
     <member kind="function">
       <name>setWidget</name>
@@ -32591,6 +37893,16 @@
       <anchor>currentFontChanged</anchor>
       <arglist>( const QFont &amp; font )</arglist>
     </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
   </compound>
   <compound kind="class">
     <name>QFontDatabase</name>
@@ -32745,6 +38057,11 @@
       <arglist>( const QFont &amp; initial, QWidget * parent = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>currentFontChanged</name>
       <anchor>currentFontChanged</anchor>
       <arglist>( const QFont &amp; font )</arglist>
@@ -32805,9 +38122,72 @@
       <arglist>( FontDialogOption option, bool on = true )</arglist>
     </member>
     <member kind="function">
+      <name>setVisible</name>
+      <anchor>setVisible</anchor>
+      <arglist>( bool visible )</arglist>
+    </member>
+    <member kind="function">
       <name>testOption</name>
       <anchor>testOption</anchor>
       <arglist>( FontDialogOption option )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QFontEngineInfo</name>
+    <filename>qfontengineinfo.html</filename>
+    <member kind="function">
+      <name>Style</name>
+      <anchor>style-prop</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>WritingSystem</name>
+      <anchor>writingSystems-prop</anchor>
+      <arglist>&gt;</arglist>
+    </member>
+    <member kind="function">
+      <name>QFontEngineInfo</name>
+      <anchor>QFontEngineInfo</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>QFontEngineInfo</name>
+      <anchor>QFontEngineInfo-2</anchor>
+      <arglist>( const QString &amp; family )</arglist>
+    </member>
+    <member kind="function">
+      <name>QFontEngineInfo</name>
+      <anchor>QFontEngineInfo-3</anchor>
+      <arglist>( const QFontEngineInfo &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator=</name>
+      <anchor>operator-eq</anchor>
+      <arglist>( const QFontEngineInfo &amp; other )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QFontEnginePlugin</name>
+    <filename>qfontengineplugin.html</filename>
+    <member kind="function">
+      <name>QFontEnginePlugin</name>
+      <anchor>QFontEnginePlugin</anchor>
+      <arglist>( const QString &amp; foundry, QObject * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>availableFontEngines</name>
+      <anchor>availableFontEngines</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>create</name>
+      <anchor>create</anchor>
+      <arglist>( const QFontEngineInfo &amp; info )</arglist>
+    </member>
+    <member kind="function">
+      <name>keys</name>
+      <anchor>keys</anchor>
+      <arglist>()</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -33330,6 +38710,11 @@
       <arglist>( QWidget * parent = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>addItem</name>
+      <anchor>addItem</anchor>
+      <arglist>( QLayoutItem * item )</arglist>
+    </member>
+    <member kind="function">
       <name>addRow</name>
       <anchor>addRow</anchor>
       <arglist>( QWidget * label, QWidget * field )</arglist>
@@ -33360,6 +38745,16 @@
       <arglist>( QLayout * layout )</arglist>
     </member>
     <member kind="function">
+      <name>count</name>
+      <anchor>count</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>Orientations</name>
+      <anchor>expandingDirections</anchor>
+      <arglist> QFormLayout::expandingDirections()</arglist>
+    </member>
+    <member kind="function">
       <name>getItemPosition</name>
       <anchor>getItemPosition</anchor>
       <arglist>( int index, int * rowPtr, ItemRole * rolePtr )</arglist>
@@ -33373,6 +38768,16 @@
       <name>getWidgetPosition</name>
       <anchor>getWidgetPosition</anchor>
       <arglist>( QWidget * widget, int * rowPtr, ItemRole * rolePtr )</arglist>
+    </member>
+    <member kind="function">
+      <name>hasHeightForWidth</name>
+      <anchor>hasHeightForWidth</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>heightForWidth</name>
+      <anchor>heightForWidth</anchor>
+      <arglist>( int width )</arglist>
     </member>
     <member kind="function">
       <name>insertRow</name>
@@ -33405,9 +38810,19 @@
       <arglist>( int row, QLayout * layout )</arglist>
     </member>
     <member kind="function">
+      <name>invalidate</name>
+      <anchor>invalidate</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>itemAt</name>
       <anchor>itemAt</anchor>
       <arglist>( int row, ItemRole role )</arglist>
+    </member>
+    <member kind="function">
+      <name>itemAt</name>
+      <anchor>itemAt-2</anchor>
+      <arglist>( int index )</arglist>
     </member>
     <member kind="function">
       <name>labelForField</name>
@@ -33420,9 +38835,19 @@
       <arglist>( QLayout * field )</arglist>
     </member>
     <member kind="function">
+      <name>minimumSize</name>
+      <anchor>minimumSize</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>rowCount</name>
       <anchor>rowCount</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>setGeometry</name>
+      <anchor>setGeometry</anchor>
+      <arglist>( const QRect &amp; rect )</arglist>
     </member>
     <member kind="function">
       <name>setItem</name>
@@ -33445,9 +38870,19 @@
       <arglist>( int row, ItemRole role, QWidget * widget )</arglist>
     </member>
     <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>spacing</name>
       <anchor>spacing</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>takeAt</name>
+      <anchor>takeAt</anchor>
+      <arglist>( int index )</arglist>
     </member>
     <member kind="function">
       <name>QFrame</name>
@@ -33479,14 +38914,34 @@
       <arglist>( QWidget * parent = 0, Qt::WindowFlags f = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>frameStyle</name>
       <anchor>frameStyle</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * )</arglist>
+    </member>
+    <member kind="function">
       <name>setFrameStyle</name>
       <anchor>setFrameStyle</anchor>
       <arglist>( int style )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -33508,6 +38963,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>close</name>
+      <anchor>close</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>copy</name>
       <anchor>copy</anchor>
       <arglist>( const QString &amp; copyName )</arglist>
@@ -33523,8 +38983,48 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>extension</name>
+      <anchor>extension</anchor>
+      <arglist>( Extension extension, const ExtensionOption * option = 0, ExtensionReturn * output = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>fileFlags</name>
+      <anchor>fileFlags</anchor>
+      <arglist>( FileFlags type )</arglist>
+    </member>
+    <member kind="function">
+      <name>fileName</name>
+      <anchor>fileName</anchor>
+      <arglist>( FileName file )</arglist>
+    </member>
+    <member kind="function">
+      <name>fileTime</name>
+      <anchor>fileTime</anchor>
+      <arglist>( FileTime time )</arglist>
+    </member>
+    <member kind="function">
+      <name>flush</name>
+      <anchor>flush</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>handle</name>
+      <anchor>handle</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>homePath</name>
       <anchor>homePath</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>isRelativePath</name>
+      <anchor>isRelativePath</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>isSequential</name>
+      <anchor>isSequential</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -33533,8 +39033,18 @@
       <arglist>( const QString &amp; newName )</arglist>
     </member>
     <member kind="function">
+      <name>mkdir</name>
+      <anchor>mkdir</anchor>
+      <arglist>( const QString &amp; name, bool createParentDirectories )</arglist>
+    </member>
+    <member kind="function">
       <name>open</name>
       <anchor>open</anchor>
+      <arglist>( QIODevice::OpenMode openMode )</arglist>
+    </member>
+    <member kind="function">
+      <name>open</name>
+      <anchor>open-2</anchor>
       <arglist>( QIODevice::OpenMode openMode, FILE * fh )</arglist>
     </member>
     <member kind="function">
@@ -33543,9 +39053,44 @@
       <arglist>( QIODevice::OpenMode openMode, int fd )</arglist>
     </member>
     <member kind="function">
+      <name>owner</name>
+      <anchor>owner</anchor>
+      <arglist>( FileOwner own )</arglist>
+    </member>
+    <member kind="function">
       <name>ownerId</name>
       <anchor>ownerId</anchor>
       <arglist>( FileOwner own )</arglist>
+    </member>
+    <member kind="function">
+      <name>pos</name>
+      <anchor>pos</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>read</name>
+      <anchor>read</anchor>
+      <arglist>( char * data, qint64 maxlen )</arglist>
+    </member>
+    <member kind="function">
+      <name>readLine</name>
+      <anchor>readLine</anchor>
+      <arglist>( char * data, qint64 maxlen )</arglist>
+    </member>
+    <member kind="function">
+      <name>remove</name>
+      <anchor>remove</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>rename</name>
+      <anchor>rename</anchor>
+      <arglist>( const QString &amp; newName )</arglist>
+    </member>
+    <member kind="function">
+      <name>rmdir</name>
+      <anchor>rmdir</anchor>
+      <arglist>( const QString &amp; name, bool recurseParentDirectories )</arglist>
     </member>
     <member kind="function">
       <name>rootPath</name>
@@ -33553,14 +39098,49 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>seek</name>
+      <anchor>seek</anchor>
+      <arglist>( qint64 pos )</arglist>
+    </member>
+    <member kind="function">
       <name>setCurrentPath</name>
       <anchor>setCurrentPath</anchor>
       <arglist>( const QString &amp; path )</arglist>
     </member>
     <member kind="function">
+      <name>setFileName</name>
+      <anchor>setFileName</anchor>
+      <arglist>( const QString &amp; file )</arglist>
+    </member>
+    <member kind="function">
+      <name>setPermissions</name>
+      <anchor>setPermissions</anchor>
+      <arglist>( uint perms )</arglist>
+    </member>
+    <member kind="function">
+      <name>setSize</name>
+      <anchor>setSize</anchor>
+      <arglist>( qint64 size )</arglist>
+    </member>
+    <member kind="function">
+      <name>size</name>
+      <anchor>size</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>supportsExtension</name>
+      <anchor>supportsExtension</anchor>
+      <arglist>( Extension extension )</arglist>
+    </member>
+    <member kind="function">
       <name>tempPath</name>
       <anchor>tempPath</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>write</name>
+      <anchor>write</anchor>
+      <arglist>( const char * data, qint64 len )</arglist>
     </member>
     <member kind="function">
       <name>QFtp</name>
@@ -34337,12 +39917,278 @@
     </member>
   </compound>
   <compound kind="class">
+    <name>QGenericMatrix</name>
+    <filename>qgenericmatrix.html</filename>
+    <member kind="function">
+      <name>QGenericMatrix</name>
+      <anchor>QGenericMatrix</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>QGenericMatrix</name>
+      <anchor>QGenericMatrix-2</anchor>
+      <arglist>( const QGenericMatrix&lt;N, M, T&gt; &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>QGenericMatrix</name>
+      <anchor>QGenericMatrix-3</anchor>
+      <arglist>( const T * values )</arglist>
+    </member>
+    <member kind="function">
+      <name>constData</name>
+      <anchor>constData</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>copyDataTo</name>
+      <anchor>copyDataTo</anchor>
+      <arglist>( T * values )</arglist>
+    </member>
+    <member kind="function">
+      <name>data</name>
+      <anchor>data</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>data</name>
+      <anchor>data-2</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>fill</name>
+      <anchor>fill</anchor>
+      <arglist>( T value )</arglist>
+    </member>
+    <member kind="function">
+      <name>isIdentity</name>
+      <anchor>isIdentity</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>setToIdentity</name>
+      <anchor>setToIdentity</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>transposed</name>
+      <anchor>transposed</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>operator!=</name>
+      <anchor>operator-not-eq</anchor>
+      <arglist>( const QGenericMatrix&lt;N, M, T&gt; &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator()</name>
+      <anchor>operator-28-29</anchor>
+      <arglist>( int row, int column )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator()</name>
+      <anchor>operator-28-29-2</anchor>
+      <arglist>( int row, int column )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator*=</name>
+      <anchor>operator-2a-eq</anchor>
+      <arglist>( T factor )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator+=</name>
+      <anchor>operator-2b-eq</anchor>
+      <arglist>( const QGenericMatrix&lt;N, M, T&gt; &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator-=</name>
+      <anchor>operator--eq</anchor>
+      <arglist>( const QGenericMatrix&lt;N, M, T&gt; &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator/=</name>
+      <anchor>operator-2f-eq</anchor>
+      <arglist>( T divisor )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator==</name>
+      <anchor>operator-eq-eq</anchor>
+      <arglist>( const QGenericMatrix&lt;N, M, T&gt; &amp; other )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
     <name>QGenericReturnArgument</name>
     <filename>qgenericreturnargument.html</filename>
     <member kind="function">
       <name>QGenericReturnArgument</name>
       <anchor>QGenericReturnArgument</anchor>
       <arglist>( const char * name = 0, void * data = 0 )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QGesture</name>
+    <filename>qgesture.html</filename>
+    <member kind="enum">
+      <name>GestureCancelPolicy</name>
+      <anchor>GestureCancelPolicy-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>GestureCancelPolicy</name>
+      <anchor>gestureCancelPolicy-prop</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>GestureType</name>
+      <anchor>gestureType-prop</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>GestureState</name>
+      <anchor>state-prop</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>QGesture</name>
+      <anchor>QGesture</anchor>
+      <arglist>( QObject * parent = 0 )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QGestureEvent</name>
+    <filename>qgestureevent.html</filename>
+    <member kind="function">
+      <name>QGestureEvent</name>
+      <anchor>QGestureEvent</anchor>
+      <arglist>( const QList&lt;QGesture *&gt; &amp; gestures )</arglist>
+    </member>
+    <member kind="function">
+      <name>accept</name>
+      <anchor>accept</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>accept</name>
+      <anchor>accept-2</anchor>
+      <arglist>( QGesture * gesture )</arglist>
+    </member>
+    <member kind="function">
+      <name>accept</name>
+      <anchor>accept-3</anchor>
+      <arglist>( Qt::GestureType gestureType )</arglist>
+    </member>
+    <member kind="function">
+      <name>activeGestures</name>
+      <anchor>activeGestures</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>canceledGestures</name>
+      <anchor>canceledGestures</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>gesture</name>
+      <anchor>gesture</anchor>
+      <arglist>( Qt::GestureType type )</arglist>
+    </member>
+    <member kind="function">
+      <name>gestures</name>
+      <anchor>gestures</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>ignore</name>
+      <anchor>ignore</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>ignore</name>
+      <anchor>ignore-2</anchor>
+      <arglist>( QGesture * gesture )</arglist>
+    </member>
+    <member kind="function">
+      <name>ignore</name>
+      <anchor>ignore-3</anchor>
+      <arglist>( Qt::GestureType gestureType )</arglist>
+    </member>
+    <member kind="function">
+      <name>isAccepted</name>
+      <anchor>isAccepted</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>isAccepted</name>
+      <anchor>isAccepted-2</anchor>
+      <arglist>( QGesture * gesture )</arglist>
+    </member>
+    <member kind="function">
+      <name>isAccepted</name>
+      <anchor>isAccepted-3</anchor>
+      <arglist>( Qt::GestureType gestureType )</arglist>
+    </member>
+    <member kind="function">
+      <name>mapToGraphicsScene</name>
+      <anchor>mapToGraphicsScene</anchor>
+      <arglist>( const QPointF &amp; gesturePoint )</arglist>
+    </member>
+    <member kind="function">
+      <name>setAccepted</name>
+      <anchor>setAccepted</anchor>
+      <arglist>( bool accepted )</arglist>
+    </member>
+    <member kind="function">
+      <name>setAccepted</name>
+      <anchor>setAccepted-2</anchor>
+      <arglist>( QGesture * gesture, bool value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setAccepted</name>
+      <anchor>setAccepted-3</anchor>
+      <arglist>( Qt::GestureType gestureType, bool value )</arglist>
+    </member>
+    <member kind="function">
+      <name>widget</name>
+      <anchor>widget</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QGestureRecognizer</name>
+    <filename>qgesturerecognizer.html</filename>
+    <member kind="function">
+      <name>QGestureRecognizer</name>
+      <anchor>QGestureRecognizer</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>create</name>
+      <anchor>create</anchor>
+      <arglist>( QObject * target )</arglist>
+    </member>
+    <member kind="function">
+      <name>recognize</name>
+      <anchor>recognize</anchor>
+      <arglist>( QGesture * gesture, QObject * watched, QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>GestureType</name>
+      <anchor>registerRecognizer</anchor>
+      <arglist> QGestureRecognizer::registerRecognizer( QGestureRecognizer * recognizer )</arglist>
+    </member>
+    <member kind="function">
+      <name>reset</name>
+      <anchor>reset</anchor>
+      <arglist>( QGesture * gesture )</arglist>
+    </member>
+    <member kind="function">
+      <name>unregisterRecognizer</name>
+      <anchor>unregisterRecognizer</anchor>
+      <arglist>( Qt::GestureType type )</arglist>
+    </member>
+    <member kind="function">
+      <name>setPreferredPaintEngine</name>
+      <anchor>setPreferredPaintEngine</anchor>
+      <arglist>( QPaintEngine::Type engineType )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -34428,9 +40274,14 @@
       <arglist>( const QGLFormat &amp; format )</arglist>
     </member>
     <member kind="function">
+      <name>areSharing</name>
+      <anchor>areSharing</anchor>
+      <arglist>( const QGLContext * context1, const QGLContext * context2 )</arglist>
+    </member>
+    <member kind="function">
       <name>bindTexture</name>
       <anchor>bindTexture</anchor>
-      <arglist>( const QImage &amp; image, GLenum target = GL_TEXTURE_2D, GLint format = GL_RGBA )</arglist>
+      <arglist>( const QImage &amp; image, GLenum target, GLint format, BindOptions options )</arglist>
     </member>
     <member kind="function">
       <name>bindTexture</name>
@@ -34440,7 +40291,17 @@
     <member kind="function">
       <name>bindTexture</name>
       <anchor>bindTexture-3</anchor>
+      <arglist>( const QImage &amp; image, GLenum target = GL_TEXTURE_2D, GLint format = GL_RGBA )</arglist>
+    </member>
+    <member kind="function">
+      <name>bindTexture</name>
+      <anchor>bindTexture-4</anchor>
       <arglist>( const QPixmap &amp; pixmap, GLenum target = GL_TEXTURE_2D, GLint format = GL_RGBA )</arglist>
+    </member>
+    <member kind="function">
+      <name>bindTexture</name>
+      <anchor>bindTexture-5</anchor>
+      <arglist>( const QPixmap &amp; pixmap, GLenum target, GLint format, BindOptions options )</arglist>
     </member>
     <member kind="function">
       <name>chooseContext</name>
@@ -34450,7 +40311,7 @@
     <member kind="function">
       <name>chooseMacVisual</name>
       <anchor>chooseMacVisual</anchor>
-      <arglist>( GDHandle )</arglist>
+      <arglist>( GDHandle handle )</arglist>
     </member>
     <member kind="function">
       <name>choosePixelFormat</name>
@@ -34575,11 +40436,6 @@
     <member kind="function">
       <name>textureCacheLimit</name>
       <anchor>textureCacheLimit</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <name>updatePaintDevice</name>
-      <anchor>updatePaintDevice</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -34878,11 +40734,21 @@
     <member kind="function">
       <name>QGLFramebufferObject</name>
       <anchor>QGLFramebufferObject-3</anchor>
-      <arglist>( int width, int height, Attachment attachment, GLenum target = GL_TEXTURE_2D, GLenum internal_format = GL_RGBA8 )</arglist>
+      <arglist>( const QSize &amp; size, const QGLFramebufferObjectFormat &amp; format )</arglist>
     </member>
     <member kind="function">
       <name>QGLFramebufferObject</name>
       <anchor>QGLFramebufferObject-4</anchor>
+      <arglist>( int width, int height, const QGLFramebufferObjectFormat &amp; format )</arglist>
+    </member>
+    <member kind="function">
+      <name>QGLFramebufferObject</name>
+      <anchor>QGLFramebufferObject-5</anchor>
+      <arglist>( int width, int height, Attachment attachment, GLenum target = GL_TEXTURE_2D, GLenum internal_format = GL_RGBA8 )</arglist>
+    </member>
+    <member kind="function">
+      <name>QGLFramebufferObject</name>
+      <anchor>QGLFramebufferObject-6</anchor>
       <arglist>( const QSize &amp; size, Attachment attachment, GLenum target = GL_TEXTURE_2D, GLenum internal_format = GL_RGBA8 )</arglist>
     </member>
     <member kind="function">
@@ -34896,6 +40762,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>blitFramebuffer</name>
+      <anchor>blitFramebuffer</anchor>
+      <arglist>( QGLFramebufferObject * target, const QRect &amp; targetRect, QGLFramebufferObject * source, const QRect &amp; sourceRect, GLbitfield buffers = GL_COLOR_BUFFER_BIT, GLenum filter = GL_NEAREST )</arglist>
+    </member>
+    <member kind="function">
       <name>drawTexture</name>
       <anchor>drawTexture</anchor>
       <arglist>( const QRectF &amp; target, GLuint textureId, GLenum textureTarget = GL_TEXTURE_2D )</arglist>
@@ -34906,8 +40777,18 @@
       <arglist>( const QPointF &amp; point, GLuint textureId, GLenum textureTarget = GL_TEXTURE_2D )</arglist>
     </member>
     <member kind="function">
+      <name>format</name>
+      <anchor>format</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>handle</name>
       <anchor>handle</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>hasOpenGLFramebufferBlit</name>
+      <anchor>hasOpenGLFramebufferBlit</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -34923,6 +40804,16 @@
     <member kind="function">
       <name>isValid</name>
       <anchor>isValid</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>metric</name>
+      <anchor>metric</anchor>
+      <arglist>( PaintDeviceMetric metric )</arglist>
+    </member>
+    <member kind="function">
+      <name>paintEngine</name>
+      <anchor>paintEngine</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -34944,6 +40835,75 @@
       <name>toImage</name>
       <anchor>toImage</anchor>
       <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QGLFramebufferObjectFormat</name>
+    <filename>qglframebufferobjectformat.html</filename>
+    <member kind="function">
+      <name>QGLFramebufferObjectFormat</name>
+      <anchor>QGLFramebufferObjectFormat</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>QGLFramebufferObjectFormat</name>
+      <anchor>QGLFramebufferObjectFormat-2</anchor>
+      <arglist>( const QGLFramebufferObjectFormat &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>Attachment</name>
+      <anchor>attachment</anchor>
+      <arglist> QGLFramebufferObjectFormat::attachment()</arglist>
+    </member>
+    <member kind="function">
+      <name>internalTextureFormat</name>
+      <anchor>internalTextureFormat</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>samples</name>
+      <anchor>samples</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>setAttachment</name>
+      <anchor>setAttachment</anchor>
+      <arglist>( QGLFramebufferObject::Attachment attachment )</arglist>
+    </member>
+    <member kind="function">
+      <name>setInternalTextureFormat</name>
+      <anchor>setInternalTextureFormat</anchor>
+      <arglist>( GLenum internalTextureFormat )</arglist>
+    </member>
+    <member kind="function">
+      <name>setSamples</name>
+      <anchor>setSamples</anchor>
+      <arglist>( int samples )</arglist>
+    </member>
+    <member kind="function">
+      <name>setTextureTarget</name>
+      <anchor>setTextureTarget</anchor>
+      <arglist>( GLenum target )</arglist>
+    </member>
+    <member kind="function">
+      <name>textureTarget</name>
+      <anchor>textureTarget</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>operator!=</name>
+      <anchor>operator-not-eq</anchor>
+      <arglist>( const QGLFramebufferObjectFormat &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator=</name>
+      <anchor>operator-eq</anchor>
+      <arglist>( const QGLFramebufferObjectFormat &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator==</name>
+      <anchor>operator-eq-eq</anchor>
+      <arglist>( const QGLFramebufferObjectFormat &amp; other )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -35030,6 +40990,16 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>metric</name>
+      <anchor>metric</anchor>
+      <arglist>( PaintDeviceMetric metric )</arglist>
+    </member>
+    <member kind="function">
+      <name>paintEngine</name>
+      <anchor>paintEngine</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>releaseFromDynamicTexture</name>
       <anchor>releaseFromDynamicTexture</anchor>
       <arglist>()</arglist>
@@ -35048,6 +41018,749 @@
       <name>updateDynamicTexture</name>
       <anchor>updateDynamicTexture</anchor>
       <arglist>( GLuint texture_id )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QGLShader</name>
+    <filename>qglshader.html</filename>
+    <member kind="function">
+      <name>QGLShader</name>
+      <anchor>QGLShader</anchor>
+      <arglist>( QGLShader::ShaderType type, QObject * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>QGLShader</name>
+      <anchor>QGLShader-2</anchor>
+      <arglist>( QGLShader::ShaderType type, const QGLContext * context, QObject * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>compileSourceCode</name>
+      <anchor>compileSourceCode</anchor>
+      <arglist>( const char * source )</arglist>
+    </member>
+    <member kind="function">
+      <name>compileSourceCode</name>
+      <anchor>compileSourceCode-2</anchor>
+      <arglist>( const QByteArray &amp; source )</arglist>
+    </member>
+    <member kind="function">
+      <name>compileSourceCode</name>
+      <anchor>compileSourceCode-3</anchor>
+      <arglist>( const QString &amp; source )</arglist>
+    </member>
+    <member kind="function">
+      <name>compileSourceFile</name>
+      <anchor>compileSourceFile</anchor>
+      <arglist>( const QString &amp; fileName )</arglist>
+    </member>
+    <member kind="function">
+      <name>isCompiled</name>
+      <anchor>isCompiled</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>log</name>
+      <anchor>log</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>shaderId</name>
+      <anchor>shaderId</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>ShaderType</name>
+      <anchor>shaderType</anchor>
+      <arglist> QGLShader::shaderType()</arglist>
+    </member>
+    <member kind="function">
+      <name>sourceCode</name>
+      <anchor>sourceCode</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QGLShaderProgram</name>
+    <filename>qglshaderprogram.html</filename>
+    <member kind="function">
+      <name>QGLShaderProgram</name>
+      <anchor>QGLShaderProgram</anchor>
+      <arglist>( QObject * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>QGLShaderProgram</name>
+      <anchor>QGLShaderProgram-2</anchor>
+      <arglist>( const QGLContext * context, QObject * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>addShader</name>
+      <anchor>addShader</anchor>
+      <arglist>( QGLShader * shader )</arglist>
+    </member>
+    <member kind="function">
+      <name>addShaderFromSourceCode</name>
+      <anchor>addShaderFromSourceCode</anchor>
+      <arglist>( QGLShader::ShaderType type, const char * source )</arglist>
+    </member>
+    <member kind="function">
+      <name>addShaderFromSourceCode</name>
+      <anchor>addShaderFromSourceCode-2</anchor>
+      <arglist>( QGLShader::ShaderType type, const QByteArray &amp; source )</arglist>
+    </member>
+    <member kind="function">
+      <name>addShaderFromSourceCode</name>
+      <anchor>addShaderFromSourceCode-3</anchor>
+      <arglist>( QGLShader::ShaderType type, const QString &amp; source )</arglist>
+    </member>
+    <member kind="function">
+      <name>addShaderFromSourceFile</name>
+      <anchor>addShaderFromSourceFile</anchor>
+      <arglist>( QGLShader::ShaderType type, const QString &amp; fileName )</arglist>
+    </member>
+    <member kind="function">
+      <name>attributeLocation</name>
+      <anchor>attributeLocation</anchor>
+      <arglist>( const char * name )</arglist>
+    </member>
+    <member kind="function">
+      <name>attributeLocation</name>
+      <anchor>attributeLocation-2</anchor>
+      <arglist>( const QByteArray &amp; name )</arglist>
+    </member>
+    <member kind="function">
+      <name>attributeLocation</name>
+      <anchor>attributeLocation-3</anchor>
+      <arglist>( const QString &amp; name )</arglist>
+    </member>
+    <member kind="function">
+      <name>bind</name>
+      <anchor>bind</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>bindAttributeLocation</name>
+      <anchor>bindAttributeLocation</anchor>
+      <arglist>( const char * name, int location )</arglist>
+    </member>
+    <member kind="function">
+      <name>bindAttributeLocation</name>
+      <anchor>bindAttributeLocation-2</anchor>
+      <arglist>( const QByteArray &amp; name, int location )</arglist>
+    </member>
+    <member kind="function">
+      <name>bindAttributeLocation</name>
+      <anchor>bindAttributeLocation-3</anchor>
+      <arglist>( const QString &amp; name, int location )</arglist>
+    </member>
+    <member kind="function">
+      <name>disableAttributeArray</name>
+      <anchor>disableAttributeArray</anchor>
+      <arglist>( int location )</arglist>
+    </member>
+    <member kind="function">
+      <name>disableAttributeArray</name>
+      <anchor>disableAttributeArray-2</anchor>
+      <arglist>( const char * name )</arglist>
+    </member>
+    <member kind="function">
+      <name>enableAttributeArray</name>
+      <anchor>enableAttributeArray</anchor>
+      <arglist>( int location )</arglist>
+    </member>
+    <member kind="function">
+      <name>enableAttributeArray</name>
+      <anchor>enableAttributeArray-2</anchor>
+      <arglist>( const char * name )</arglist>
+    </member>
+    <member kind="function">
+      <name>hasOpenGLShaderPrograms</name>
+      <anchor>hasOpenGLShaderPrograms</anchor>
+      <arglist>( const QGLContext * context = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>isLinked</name>
+      <anchor>isLinked</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>link</name>
+      <anchor>link</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>log</name>
+      <anchor>log</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>programId</name>
+      <anchor>programId</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>release</name>
+      <anchor>release</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>removeAllShaders</name>
+      <anchor>removeAllShaders</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>removeShader</name>
+      <anchor>removeShader</anchor>
+      <arglist>( QGLShader * shader )</arglist>
+    </member>
+    <member kind="function">
+      <name>setAttributeArray</name>
+      <anchor>setAttributeArray</anchor>
+      <arglist>( int location, const GLfloat * values, int tupleSize, int stride = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>setAttributeArray</name>
+      <anchor>setAttributeArray-2</anchor>
+      <arglist>( int location, const QVector2D * values, int stride = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>setAttributeArray</name>
+      <anchor>setAttributeArray-3</anchor>
+      <arglist>( int location, const QVector3D * values, int stride = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>setAttributeArray</name>
+      <anchor>setAttributeArray-4</anchor>
+      <arglist>( int location, const QVector4D * values, int stride = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>setAttributeArray</name>
+      <anchor>setAttributeArray-5</anchor>
+      <arglist>( const char * name, const GLfloat * values, int tupleSize, int stride = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>setAttributeArray</name>
+      <anchor>setAttributeArray-6</anchor>
+      <arglist>( const char * name, const QVector2D * values, int stride = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>setAttributeArray</name>
+      <anchor>setAttributeArray-7</anchor>
+      <arglist>( const char * name, const QVector3D * values, int stride = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>setAttributeArray</name>
+      <anchor>setAttributeArray-8</anchor>
+      <arglist>( const char * name, const QVector4D * values, int stride = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>setAttributeValue</name>
+      <anchor>setAttributeValue</anchor>
+      <arglist>( int location, GLfloat value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setAttributeValue</name>
+      <anchor>setAttributeValue-2</anchor>
+      <arglist>( int location, GLfloat x, GLfloat y )</arglist>
+    </member>
+    <member kind="function">
+      <name>setAttributeValue</name>
+      <anchor>setAttributeValue-3</anchor>
+      <arglist>( int location, GLfloat x, GLfloat y, GLfloat z )</arglist>
+    </member>
+    <member kind="function">
+      <name>setAttributeValue</name>
+      <anchor>setAttributeValue-4</anchor>
+      <arglist>( int location, GLfloat x, GLfloat y, GLfloat z, GLfloat w )</arglist>
+    </member>
+    <member kind="function">
+      <name>setAttributeValue</name>
+      <anchor>setAttributeValue-5</anchor>
+      <arglist>( int location, const QVector2D &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setAttributeValue</name>
+      <anchor>setAttributeValue-6</anchor>
+      <arglist>( int location, const QVector3D &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setAttributeValue</name>
+      <anchor>setAttributeValue-7</anchor>
+      <arglist>( int location, const QVector4D &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setAttributeValue</name>
+      <anchor>setAttributeValue-8</anchor>
+      <arglist>( int location, const QColor &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setAttributeValue</name>
+      <anchor>setAttributeValue-9</anchor>
+      <arglist>( int location, const GLfloat * values, int columns, int rows )</arglist>
+    </member>
+    <member kind="function">
+      <name>setAttributeValue</name>
+      <anchor>setAttributeValue-10</anchor>
+      <arglist>( const char * name, GLfloat value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setAttributeValue</name>
+      <anchor>setAttributeValue-11</anchor>
+      <arglist>( const char * name, GLfloat x, GLfloat y )</arglist>
+    </member>
+    <member kind="function">
+      <name>setAttributeValue</name>
+      <anchor>setAttributeValue-12</anchor>
+      <arglist>( const char * name, GLfloat x, GLfloat y, GLfloat z )</arglist>
+    </member>
+    <member kind="function">
+      <name>setAttributeValue</name>
+      <anchor>setAttributeValue-13</anchor>
+      <arglist>( const char * name, GLfloat x, GLfloat y, GLfloat z, GLfloat w )</arglist>
+    </member>
+    <member kind="function">
+      <name>setAttributeValue</name>
+      <anchor>setAttributeValue-14</anchor>
+      <arglist>( const char * name, const QVector2D &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setAttributeValue</name>
+      <anchor>setAttributeValue-15</anchor>
+      <arglist>( const char * name, const QVector3D &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setAttributeValue</name>
+      <anchor>setAttributeValue-16</anchor>
+      <arglist>( const char * name, const QVector4D &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setAttributeValue</name>
+      <anchor>setAttributeValue-17</anchor>
+      <arglist>( const char * name, const QColor &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setAttributeValue</name>
+      <anchor>setAttributeValue-18</anchor>
+      <arglist>( const char * name, const GLfloat * values, int columns, int rows )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue</anchor>
+      <arglist>( int location, GLfloat value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-36</anchor>
+      <arglist>( const char * name, const QPointF &amp; point )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-37</anchor>
+      <arglist>( const char * name, const QSize &amp; size )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-38</anchor>
+      <arglist>( const char * name, const QSizeF &amp; size )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-39</anchor>
+      <arglist>( const char * name, const QMatrix2x2 &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-40</anchor>
+      <arglist>( const char * name, const QMatrix2x3 &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-41</anchor>
+      <arglist>( const char * name, const QMatrix2x4 &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-42</anchor>
+      <arglist>( const char * name, const QMatrix3x2 &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-43</anchor>
+      <arglist>( const char * name, const QMatrix3x3 &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-44</anchor>
+      <arglist>( const char * name, const QMatrix3x4 &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-45</anchor>
+      <arglist>( const char * name, const QMatrix4x2 &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-46</anchor>
+      <arglist>( const char * name, const QMatrix4x3 &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-47</anchor>
+      <arglist>( const char * name, const QMatrix4x4 &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-48</anchor>
+      <arglist>( int location, const GLfloat[4][4] value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-49</anchor>
+      <arglist>( const char * name, const GLfloat[4][4] value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-50</anchor>
+      <arglist>( const char * name, const QTransform &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-2</anchor>
+      <arglist>( int location, GLint value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-3</anchor>
+      <arglist>( int location, GLuint value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-4</anchor>
+      <arglist>( int location, GLfloat x, GLfloat y )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-5</anchor>
+      <arglist>( int location, GLfloat x, GLfloat y, GLfloat z )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-6</anchor>
+      <arglist>( int location, GLfloat x, GLfloat y, GLfloat z, GLfloat w )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-7</anchor>
+      <arglist>( int location, const QVector2D &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-8</anchor>
+      <arglist>( int location, const QVector3D &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-9</anchor>
+      <arglist>( int location, const QVector4D &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-10</anchor>
+      <arglist>( int location, const QColor &amp; color )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-11</anchor>
+      <arglist>( int location, const QPoint &amp; point )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-12</anchor>
+      <arglist>( int location, const QPointF &amp; point )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-13</anchor>
+      <arglist>( int location, const QSize &amp; size )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-14</anchor>
+      <arglist>( int location, const QSizeF &amp; size )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-15</anchor>
+      <arglist>( int location, const QMatrix2x2 &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-16</anchor>
+      <arglist>( int location, const QMatrix2x3 &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-17</anchor>
+      <arglist>( int location, const QMatrix2x4 &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-18</anchor>
+      <arglist>( int location, const QMatrix3x2 &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-19</anchor>
+      <arglist>( int location, const QMatrix3x3 &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-20</anchor>
+      <arglist>( int location, const QMatrix3x4 &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-21</anchor>
+      <arglist>( int location, const QMatrix4x2 &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-22</anchor>
+      <arglist>( int location, const QMatrix4x3 &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-23</anchor>
+      <arglist>( int location, const QMatrix4x4 &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-24</anchor>
+      <arglist>( int location, const QTransform &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-25</anchor>
+      <arglist>( const char * name, GLfloat value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-26</anchor>
+      <arglist>( const char * name, GLint value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-27</anchor>
+      <arglist>( const char * name, GLuint value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-28</anchor>
+      <arglist>( const char * name, GLfloat x, GLfloat y )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-29</anchor>
+      <arglist>( const char * name, GLfloat x, GLfloat y, GLfloat z )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-30</anchor>
+      <arglist>( const char * name, GLfloat x, GLfloat y, GLfloat z, GLfloat w )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-31</anchor>
+      <arglist>( const char * name, const QVector2D &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-32</anchor>
+      <arglist>( const char * name, const QVector3D &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-33</anchor>
+      <arglist>( const char * name, const QVector4D &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-34</anchor>
+      <arglist>( const char * name, const QColor &amp; color )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValue</name>
+      <anchor>setUniformValue-35</anchor>
+      <arglist>( const char * name, const QPoint &amp; point )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValueArray</name>
+      <anchor>setUniformValueArray</anchor>
+      <arglist>( int location, const GLfloat * values, int count, int tupleSize )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValueArray</name>
+      <anchor>setUniformValueArray-2</anchor>
+      <arglist>( int location, const GLint * values, int count )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValueArray</name>
+      <anchor>setUniformValueArray-3</anchor>
+      <arglist>( int location, const GLuint * values, int count )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValueArray</name>
+      <anchor>setUniformValueArray-4</anchor>
+      <arglist>( int location, const QVector2D * values, int count )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValueArray</name>
+      <anchor>setUniformValueArray-5</anchor>
+      <arglist>( int location, const QVector3D * values, int count )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValueArray</name>
+      <anchor>setUniformValueArray-6</anchor>
+      <arglist>( int location, const QVector4D * values, int count )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValueArray</name>
+      <anchor>setUniformValueArray-7</anchor>
+      <arglist>( int location, const QMatrix2x2 * values, int count )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValueArray</name>
+      <anchor>setUniformValueArray-8</anchor>
+      <arglist>( int location, const QMatrix2x3 * values, int count )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValueArray</name>
+      <anchor>setUniformValueArray-9</anchor>
+      <arglist>( int location, const QMatrix2x4 * values, int count )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValueArray</name>
+      <anchor>setUniformValueArray-10</anchor>
+      <arglist>( int location, const QMatrix3x2 * values, int count )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValueArray</name>
+      <anchor>setUniformValueArray-11</anchor>
+      <arglist>( int location, const QMatrix3x3 * values, int count )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValueArray</name>
+      <anchor>setUniformValueArray-12</anchor>
+      <arglist>( int location, const QMatrix3x4 * values, int count )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValueArray</name>
+      <anchor>setUniformValueArray-13</anchor>
+      <arglist>( int location, const QMatrix4x2 * values, int count )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValueArray</name>
+      <anchor>setUniformValueArray-14</anchor>
+      <arglist>( int location, const QMatrix4x3 * values, int count )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValueArray</name>
+      <anchor>setUniformValueArray-15</anchor>
+      <arglist>( int location, const QMatrix4x4 * values, int count )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValueArray</name>
+      <anchor>setUniformValueArray-16</anchor>
+      <arglist>( const char * name, const GLint * values, int count )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValueArray</name>
+      <anchor>setUniformValueArray-17</anchor>
+      <arglist>( const char * name, const GLuint * values, int count )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValueArray</name>
+      <anchor>setUniformValueArray-18</anchor>
+      <arglist>( const char * name, const GLfloat * values, int count, int tupleSize )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValueArray</name>
+      <anchor>setUniformValueArray-19</anchor>
+      <arglist>( const char * name, const QVector2D * values, int count )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValueArray</name>
+      <anchor>setUniformValueArray-20</anchor>
+      <arglist>( const char * name, const QVector3D * values, int count )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValueArray</name>
+      <anchor>setUniformValueArray-21</anchor>
+      <arglist>( const char * name, const QVector4D * values, int count )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValueArray</name>
+      <anchor>setUniformValueArray-22</anchor>
+      <arglist>( const char * name, const QMatrix2x2 * values, int count )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValueArray</name>
+      <anchor>setUniformValueArray-23</anchor>
+      <arglist>( const char * name, const QMatrix2x3 * values, int count )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValueArray</name>
+      <anchor>setUniformValueArray-24</anchor>
+      <arglist>( const char * name, const QMatrix2x4 * values, int count )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValueArray</name>
+      <anchor>setUniformValueArray-25</anchor>
+      <arglist>( const char * name, const QMatrix3x2 * values, int count )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValueArray</name>
+      <anchor>setUniformValueArray-26</anchor>
+      <arglist>( const char * name, const QMatrix3x3 * values, int count )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValueArray</name>
+      <anchor>setUniformValueArray-27</anchor>
+      <arglist>( const char * name, const QMatrix3x4 * values, int count )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValueArray</name>
+      <anchor>setUniformValueArray-28</anchor>
+      <arglist>( const char * name, const QMatrix4x2 * values, int count )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValueArray</name>
+      <anchor>setUniformValueArray-29</anchor>
+      <arglist>( const char * name, const QMatrix4x3 * values, int count )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUniformValueArray</name>
+      <anchor>setUniformValueArray-30</anchor>
+      <arglist>( const char * name, const QMatrix4x4 * values, int count )</arglist>
+    </member>
+    <member kind="function">
+      <name>shaders</name>
+      <anchor>shaders</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>uniformLocation</name>
+      <anchor>uniformLocation</anchor>
+      <arglist>( const char * name )</arglist>
+    </member>
+    <member kind="function">
+      <name>uniformLocation</name>
+      <anchor>uniformLocation-2</anchor>
+      <arglist>( const QByteArray &amp; name )</arglist>
+    </member>
+    <member kind="function">
+      <name>uniformLocation</name>
+      <anchor>uniformLocation-3</anchor>
+      <arglist>( const QString &amp; name )</arglist>
     </member>
     <member kind="function">
       <name>fontDisplayListBase</name>
@@ -35111,6 +41824,16 @@
     <member kind="function">
       <name>bindTexture</name>
       <anchor>bindTexture-3</anchor>
+      <arglist>( const QImage &amp; image, GLenum target, GLint format, QGLContext::BindOptions options )</arglist>
+    </member>
+    <member kind="function">
+      <name>bindTexture</name>
+      <anchor>bindTexture-4</anchor>
+      <arglist>( const QPixmap &amp; pixmap, GLenum target, GLint format, QGLContext::BindOptions options )</arglist>
+    </member>
+    <member kind="function">
+      <name>bindTexture</name>
+      <anchor>bindTexture-5</anchor>
       <arglist>( const QString &amp; fileName )</arglist>
     </member>
     <member kind="function">
@@ -35152,6 +41875,11 @@
       <name>drawTexture</name>
       <anchor>drawTexture-2</anchor>
       <arglist>( const QPointF &amp; point, GLuint textureId, GLenum textureTarget = GL_TEXTURE_2D )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>format</name>
@@ -35364,6 +42092,255 @@
     </member>
   </compound>
   <compound kind="class">
+    <name>QGraphicsAnchor</name>
+    <filename>qgraphicsanchor.html</filename>
+    <member kind="function">
+      <name>Policy</name>
+      <anchor>sizePolicy-prop</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QGraphicsAnchorLayout</name>
+    <filename>qgraphicsanchorlayout.html</filename>
+    <member kind="function">
+      <name>QGraphicsAnchorLayout</name>
+      <anchor>QGraphicsAnchorLayout</anchor>
+      <arglist>( QGraphicsLayoutItem * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>addAnchor</name>
+      <anchor>addAnchor</anchor>
+      <arglist>( QGraphicsLayoutItem * firstItem, Qt::AnchorPoint firstEdge, QGraphicsLayoutItem * secondItem, Qt::AnchorPoint secondEdge )</arglist>
+    </member>
+    <member kind="function">
+      <name>addAnchors</name>
+      <anchor>addAnchors</anchor>
+      <arglist>( QGraphicsLayoutItem * firstItem, QGraphicsLayoutItem * secondItem, Qt::Orientations orientations = Qt::Horizontal | Qt::Vertical )</arglist>
+    </member>
+    <member kind="function">
+      <name>addCornerAnchors</name>
+      <anchor>addCornerAnchors</anchor>
+      <arglist>( QGraphicsLayoutItem * firstItem, Qt::Corner firstCorner, QGraphicsLayoutItem * secondItem, Qt::Corner secondCorner )</arglist>
+    </member>
+    <member kind="function">
+      <name>anchor</name>
+      <anchor>anchor</anchor>
+      <arglist>( QGraphicsLayoutItem * firstItem, Qt::AnchorPoint firstEdge, QGraphicsLayoutItem * secondItem, Qt::AnchorPoint secondEdge )</arglist>
+    </member>
+    <member kind="function">
+      <name>count</name>
+      <anchor>count</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>horizontalSpacing</name>
+      <anchor>horizontalSpacing</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>invalidate</name>
+      <anchor>invalidate</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>itemAt</name>
+      <anchor>itemAt</anchor>
+      <arglist>( int index )</arglist>
+    </member>
+    <member kind="function">
+      <name>removeAt</name>
+      <anchor>removeAt</anchor>
+      <arglist>( int index )</arglist>
+    </member>
+    <member kind="function">
+      <name>setGeometry</name>
+      <anchor>setGeometry</anchor>
+      <arglist>( const QRectF &amp; geom )</arglist>
+    </member>
+    <member kind="function">
+      <name>setHorizontalSpacing</name>
+      <anchor>setHorizontalSpacing</anchor>
+      <arglist>( qreal spacing )</arglist>
+    </member>
+    <member kind="function">
+      <name>setSpacing</name>
+      <anchor>setSpacing</anchor>
+      <arglist>( qreal spacing )</arglist>
+    </member>
+    <member kind="function">
+      <name>setVerticalSpacing</name>
+      <anchor>setVerticalSpacing</anchor>
+      <arglist>( qreal spacing )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>( Qt::SizeHint which, const QSizeF &amp; constraint = QSizeF()</arglist>
+    </member>
+    <member kind="function">
+      <name>verticalSpacing</name>
+      <anchor>verticalSpacing</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QGraphicsBlurEffect</name>
+    <filename>qgraphicsblureffect.html</filename>
+    <member kind="function">
+      <name>QGraphicsBlurEffect</name>
+      <anchor>QGraphicsBlurEffect</anchor>
+      <arglist>( QObject * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>blurHintsChanged</name>
+      <anchor>blurHintsChanged</anchor>
+      <arglist>( BlurHints hints )</arglist>
+    </member>
+    <member kind="function">
+      <name>blurRadiusChanged</name>
+      <anchor>blurRadiusChanged</anchor>
+      <arglist>( qreal radius )</arglist>
+    </member>
+    <member kind="function">
+      <name>boundingRectFor</name>
+      <anchor>boundingRectFor</anchor>
+      <arglist>( const QRectF &amp; rect )</arglist>
+    </member>
+    <member kind="function">
+      <name>draw</name>
+      <anchor>draw</anchor>
+      <arglist>( QPainter * painter )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QGraphicsColorizeEffect</name>
+    <filename>qgraphicscolorizeeffect.html</filename>
+    <member kind="function">
+      <name>QGraphicsColorizeEffect</name>
+      <anchor>QGraphicsColorizeEffect</anchor>
+      <arglist>( QObject * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>colorChanged</name>
+      <anchor>colorChanged</anchor>
+      <arglist>( const QColor &amp; color )</arglist>
+    </member>
+    <member kind="function">
+      <name>draw</name>
+      <anchor>draw</anchor>
+      <arglist>( QPainter * painter )</arglist>
+    </member>
+    <member kind="function">
+      <name>strengthChanged</name>
+      <anchor>strengthChanged</anchor>
+      <arglist>( qreal strength )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QGraphicsDropShadowEffect</name>
+    <filename>qgraphicsdropshadoweffect.html</filename>
+    <member kind="function">
+      <name>QGraphicsDropShadowEffect</name>
+      <anchor>QGraphicsDropShadowEffect</anchor>
+      <arglist>( QObject * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>blurRadiusChanged</name>
+      <anchor>blurRadiusChanged</anchor>
+      <arglist>( qreal blurRadius )</arglist>
+    </member>
+    <member kind="function">
+      <name>boundingRectFor</name>
+      <anchor>boundingRectFor</anchor>
+      <arglist>( const QRectF &amp; rect )</arglist>
+    </member>
+    <member kind="function">
+      <name>colorChanged</name>
+      <anchor>colorChanged</anchor>
+      <arglist>( const QColor &amp; color )</arglist>
+    </member>
+    <member kind="function">
+      <name>draw</name>
+      <anchor>draw</anchor>
+      <arglist>( QPainter * painter )</arglist>
+    </member>
+    <member kind="function">
+      <name>offsetChanged</name>
+      <anchor>offsetChanged</anchor>
+      <arglist>( const QPointF &amp; offset )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QGraphicsEffect</name>
+    <filename>qgraphicseffect.html</filename>
+    <member kind="enum">
+      <name>PixmapPadMode</name>
+      <anchor>PixmapPadMode-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>QGraphicsEffect</name>
+      <anchor>QGraphicsEffect</anchor>
+      <arglist>( QObject * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>boundingRect</name>
+      <anchor>boundingRect</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>boundingRectFor</name>
+      <anchor>boundingRectFor</anchor>
+      <arglist>( const QRectF &amp; rect )</arglist>
+    </member>
+    <member kind="function">
+      <name>draw</name>
+      <anchor>draw</anchor>
+      <arglist>( QPainter * painter )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawSource</name>
+      <anchor>drawSource</anchor>
+      <arglist>( QPainter * painter )</arglist>
+    </member>
+    <member kind="function">
+      <name>enabledChanged</name>
+      <anchor>enabledChanged</anchor>
+      <arglist>( bool enabled )</arglist>
+    </member>
+    <member kind="function">
+      <name>sourceBoundingRect</name>
+      <anchor>sourceBoundingRect</anchor>
+      <arglist>( Qt::CoordinateSystem system = Qt::LogicalCoordinates )</arglist>
+    </member>
+    <member kind="function">
+      <name>sourceChanged</name>
+      <anchor>sourceChanged</anchor>
+      <arglist>( ChangeFlags flags )</arglist>
+    </member>
+    <member kind="function">
+      <name>sourceIsPixmap</name>
+      <anchor>sourceIsPixmap</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>sourcePixmap</name>
+      <anchor>sourcePixmap</anchor>
+      <arglist>( Qt::CoordinateSystem system = Qt::LogicalCoordinates, QPoint * offset = 0, PixmapPadMode mode = PadToEffectiveBoundingRect )</arglist>
+    </member>
+    <member kind="function">
+      <name>update</name>
+      <anchor>update</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>updateBoundingRect</name>
+      <anchor>updateBoundingRect</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
     <name>QGraphicsEllipseItem</name>
     <filename>qgraphicsellipseitem.html</filename>
     <member kind="function">
@@ -35380,6 +42357,31 @@
       <name>QGraphicsEllipseItem</name>
       <anchor>QGraphicsEllipseItem-3</anchor>
       <arglist>( qreal x, qreal y, qreal width, qreal height, QGraphicsItem * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>boundingRect</name>
+      <anchor>boundingRect</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>contains</name>
+      <anchor>contains</anchor>
+      <arglist>( const QPointF &amp; point )</arglist>
+    </member>
+    <member kind="function">
+      <name>isObscuredBy</name>
+      <anchor>isObscuredBy</anchor>
+      <arglist>( const QGraphicsItem * item )</arglist>
+    </member>
+    <member kind="function">
+      <name>opaqueArea</name>
+      <anchor>opaqueArea</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>paint</name>
+      <anchor>paint</anchor>
+      <arglist>( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 )</arglist>
     </member>
     <member kind="function">
       <name>rect</name>
@@ -35407,6 +42409,11 @@
       <arglist>( int angle )</arglist>
     </member>
     <member kind="function">
+      <name>shape</name>
+      <anchor>shape</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>spanAngle</name>
       <anchor>spanAngle</anchor>
       <arglist>()</arglist>
@@ -35414,6 +42421,11 @@
     <member kind="function">
       <name>startAngle</name>
       <anchor>startAngle</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>type</name>
+      <anchor>type</anchor>
       <arglist>()</arglist>
     </member>
   </compound>
@@ -35483,6 +42495,11 @@
     <member kind="function">
       <name>horizontalSpacing</name>
       <anchor>horizontalSpacing</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>invalidate</name>
+      <anchor>invalidate</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -35631,6 +42648,11 @@
       <arglist>( qreal spacing )</arglist>
     </member>
     <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>( Qt::SizeHint which, const QSizeF &amp; constraint = QSizeF()</arglist>
+    </member>
+    <member kind="function">
       <name>verticalSpacing</name>
       <anchor>verticalSpacing</anchor>
       <arglist>()</arglist>
@@ -35646,6 +42668,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>handlesChildEvents</name>
+      <anchor>handlesChildEvents</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>matrix</name>
       <anchor>matrix</anchor>
       <arglist>()</arglist>
@@ -35654,6 +42681,16 @@
       <name>resetMatrix</name>
       <anchor>resetMatrix</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>rotate</name>
+      <anchor>rotate</anchor>
+      <arglist>( qreal angle )</arglist>
+    </member>
+    <member kind="function">
+      <name>scale</name>
+      <anchor>scale-2</anchor>
+      <arglist>( qreal sx, qreal sy )</arglist>
     </member>
     <member kind="function">
       <name>sceneMatrix</name>
@@ -35666,9 +42703,24 @@
       <arglist>( bool enabled )</arglist>
     </member>
     <member kind="function">
+      <name>setHandlesChildEvents</name>
+      <anchor>setHandlesChildEvents</anchor>
+      <arglist>( bool enabled )</arglist>
+    </member>
+    <member kind="function">
       <name>setMatrix</name>
       <anchor>setMatrix</anchor>
       <arglist>( const QMatrix &amp; matrix, bool combine = false )</arglist>
+    </member>
+    <member kind="function">
+      <name>shear</name>
+      <anchor>shear</anchor>
+      <arglist>( qreal sh, qreal sv )</arglist>
+    </member>
+    <member kind="function">
+      <name>translate</name>
+      <anchor>translate</anchor>
+      <arglist>( qreal dx, qreal dy )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -35684,6 +42736,11 @@
       <anchor>GraphicsItemChange-enum</anchor>
       <arglist></arglist>
     </member>
+    <member kind="enum">
+      <name>PanelModality</name>
+      <anchor>PanelModality-enum</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="function">
       <name>QGraphicsItem</name>
       <anchor>QGraphicsItem</anchor>
@@ -35697,6 +42754,11 @@
     <member kind="function">
       <name>acceptHoverEvents</name>
       <anchor>acceptHoverEvents</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>acceptTouchEvents</name>
+      <anchor>acceptTouchEvents</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -35830,6 +42892,11 @@
       <arglist>( qreal x, qreal y, qreal w, qreal h, int xmargin = 50, int ymargin = 50 )</arglist>
     </member>
     <member kind="function">
+      <name>filtersChildEvents</name>
+      <anchor>filtersChildEvents</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>flags</name>
       <anchor>flags</anchor>
       <arglist>()</arglist>
@@ -35840,9 +42907,19 @@
       <arglist>( QFocusEvent * event )</arglist>
     </member>
     <member kind="function">
+      <name>focusItem</name>
+      <anchor>focusItem</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>focusOutEvent</name>
       <anchor>focusOutEvent</anchor>
       <arglist>( QFocusEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusProxy</name>
+      <anchor>focusProxy</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>grabKeyboard</name>
@@ -35855,13 +42932,13 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
-      <name>group</name>
-      <anchor>group</anchor>
+      <name>graphicsEffect</name>
+      <anchor>graphicsEffect</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
-      <name>handlesChildEvents</name>
-      <anchor>handlesChildEvents</anchor>
+      <name>group</name>
+      <anchor>group</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -35900,6 +42977,11 @@
       <arglist>( QInputMethodEvent * event )</arglist>
     </member>
     <member kind="function">
+      <name>InputMethodHints</name>
+      <anchor>inputMethodHints</anchor>
+      <arglist> QGraphicsItem::inputMethodHints()</arglist>
+    </member>
+    <member kind="function">
       <name>inputMethodQuery</name>
       <anchor>inputMethodQuery</anchor>
       <arglist>( Qt::InputMethodQuery query )</arglist>
@@ -35910,9 +42992,19 @@
       <arglist>( QGraphicsItem * filterItem )</arglist>
     </member>
     <member kind="function">
+      <name>isActive</name>
+      <anchor>isActive</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>isAncestorOf</name>
       <anchor>isAncestorOf</anchor>
       <arglist>( const QGraphicsItem * child )</arglist>
+    </member>
+    <member kind="function">
+      <name>isBlockedByModalPanel</name>
+      <anchor>isBlockedByModalPanel</anchor>
+      <arglist>( QGraphicsItem ** blockingPanel = 0 )</arglist>
     </member>
     <member kind="function">
       <name>isClipped</name>
@@ -35943,6 +43035,11 @@
       <name>isObscuredBy</name>
       <anchor>isObscuredBy</anchor>
       <arglist>( const QGraphicsItem * item )</arglist>
+    </member>
+    <member kind="function">
+      <name>isPanel</name>
+      <anchor>isPanel</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>isSelected</name>
@@ -36275,8 +43372,23 @@
       <arglist>( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>panel</name>
+      <anchor>panel</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>panelModality</name>
+      <anchor>panelModality</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>parentItem</name>
       <anchor>parentItem</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>parentObject</name>
+      <anchor>parentObject</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -36305,14 +43417,14 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
-      <name>rotate</name>
-      <anchor>rotate</anchor>
-      <arglist>( qreal angle )</arglist>
+      <name>rotation</name>
+      <anchor>rotation</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>scale</name>
       <anchor>scale</anchor>
-      <arglist>( qreal sx, qreal sy )</arglist>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>scene</name>
@@ -36360,9 +43472,19 @@
       <arglist>( bool enabled )</arglist>
     </member>
     <member kind="function">
+      <name>setAcceptTouchEvents</name>
+      <anchor>setAcceptTouchEvents</anchor>
+      <arglist>( bool enabled )</arglist>
+    </member>
+    <member kind="function">
       <name>setAcceptedMouseButtons</name>
       <anchor>setAcceptedMouseButtons</anchor>
       <arglist>( Qt::MouseButtons buttons )</arglist>
+    </member>
+    <member kind="function">
+      <name>setActive</name>
+      <anchor>setActive</anchor>
+      <arglist>( bool active )</arglist>
     </member>
     <member kind="function">
       <name>setBoundingRegionGranularity</name>
@@ -36390,6 +43512,11 @@
       <arglist>( bool enabled )</arglist>
     </member>
     <member kind="function">
+      <name>setFiltersChildEvents</name>
+      <anchor>setFiltersChildEvents</anchor>
+      <arglist>( bool enabled )</arglist>
+    </member>
+    <member kind="function">
       <name>setFlag</name>
       <anchor>setFlag</anchor>
       <arglist>( GraphicsItemFlag flag, bool enabled = true )</arglist>
@@ -36405,14 +43532,24 @@
       <arglist>( Qt::FocusReason focusReason = Qt::OtherFocusReason )</arglist>
     </member>
     <member kind="function">
+      <name>setFocusProxy</name>
+      <anchor>setFocusProxy</anchor>
+      <arglist>( QGraphicsItem * item )</arglist>
+    </member>
+    <member kind="function">
+      <name>setGraphicsEffect</name>
+      <anchor>setGraphicsEffect</anchor>
+      <arglist>( QGraphicsEffect * effect )</arglist>
+    </member>
+    <member kind="function">
       <name>setGroup</name>
       <anchor>setGroup</anchor>
       <arglist>( QGraphicsItemGroup * group )</arglist>
     </member>
     <member kind="function">
-      <name>setHandlesChildEvents</name>
-      <anchor>setHandlesChildEvents</anchor>
-      <arglist>( bool enabled )</arglist>
+      <name>setInputMethodHints</name>
+      <anchor>setInputMethodHints</anchor>
+      <arglist>( Qt::InputMethodHints hints )</arglist>
     </member>
     <member kind="function">
       <name>setOpacity</name>
@@ -36420,9 +43557,14 @@
       <arglist>( qreal opacity )</arglist>
     </member>
     <member kind="function">
+      <name>setPanelModality</name>
+      <anchor>setPanelModality</anchor>
+      <arglist>( PanelModality panelModality )</arglist>
+    </member>
+    <member kind="function">
       <name>setParentItem</name>
       <anchor>setParentItem</anchor>
-      <arglist>( QGraphicsItem * parent )</arglist>
+      <arglist>( QGraphicsItem * newParent )</arglist>
     </member>
     <member kind="function">
       <name>setPos</name>
@@ -36433,6 +43575,16 @@
       <name>setPos</name>
       <anchor>setPos-2</anchor>
       <arglist>( qreal x, qreal y )</arglist>
+    </member>
+    <member kind="function">
+      <name>setRotation</name>
+      <anchor>setRotation</anchor>
+      <arglist>( qreal angle )</arglist>
+    </member>
+    <member kind="function">
+      <name>setScale</name>
+      <anchor>setScale</anchor>
+      <arglist>( qreal factor )</arglist>
     </member>
     <member kind="function">
       <name>setSelected</name>
@@ -36450,9 +43602,34 @@
       <arglist>( const QTransform &amp; matrix, bool combine = false )</arglist>
     </member>
     <member kind="function">
+      <name>setTransformOriginPoint</name>
+      <anchor>setTransformOriginPoint</anchor>
+      <arglist>( const QPointF &amp; origin )</arglist>
+    </member>
+    <member kind="function">
+      <name>setTransformOriginPoint</name>
+      <anchor>setTransformOriginPoint-2</anchor>
+      <arglist>( qreal x, qreal y )</arglist>
+    </member>
+    <member kind="function">
+      <name>setTransformations</name>
+      <anchor>setTransformations</anchor>
+      <arglist>( const QList&lt;QGraphicsTransform *&gt; &amp; transformations )</arglist>
+    </member>
+    <member kind="function">
       <name>setVisible</name>
       <anchor>setVisible</anchor>
       <arglist>( bool visible )</arglist>
+    </member>
+    <member kind="function">
+      <name>setX</name>
+      <anchor>setX</anchor>
+      <arglist>( qreal x )</arglist>
+    </member>
+    <member kind="function">
+      <name>setY</name>
+      <anchor>setY</anchor>
+      <arglist>( qreal y )</arglist>
     </member>
     <member kind="function">
       <name>setZValue</name>
@@ -36465,13 +43642,23 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
-      <name>shear</name>
-      <anchor>shear</anchor>
-      <arglist>( qreal sh, qreal sv )</arglist>
-    </member>
-    <member kind="function">
       <name>show</name>
       <anchor>show</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>stackBefore</name>
+      <anchor>stackBefore</anchor>
+      <arglist>( const QGraphicsItem * sibling )</arglist>
+    </member>
+    <member kind="function">
+      <name>toGraphicsObject</name>
+      <anchor>toGraphicsObject</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>toGraphicsObject</name>
+      <anchor>toGraphicsObject-2</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -36495,9 +43682,14 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
-      <name>translate</name>
-      <anchor>translate</anchor>
-      <arglist>( qreal dx, qreal dy )</arglist>
+      <name>transformOriginPoint</name>
+      <anchor>transformOriginPoint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>transformations</name>
+      <anchor>transformations</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>type</name>
@@ -36553,6 +43745,11 @@
       <name>zValue</name>
       <anchor>zValue</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>Type</name>
+      <anchor>Type-var</anchor>
+      <arglist></arglist>
     </member>
     <member kind="function">
       <name>UserType</name>
@@ -36723,9 +43920,34 @@
       <arglist>( QGraphicsItem * item )</arglist>
     </member>
     <member kind="function">
+      <name>boundingRect</name>
+      <anchor>boundingRect</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>isObscuredBy</name>
+      <anchor>isObscuredBy</anchor>
+      <arglist>( const QGraphicsItem * item )</arglist>
+    </member>
+    <member kind="function">
+      <name>opaqueArea</name>
+      <anchor>opaqueArea</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>paint</name>
+      <anchor>paint</anchor>
+      <arglist>( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
       <name>removeFromGroup</name>
       <anchor>removeFromGroup</anchor>
       <arglist>( QGraphicsItem * item )</arglist>
+    </member>
+    <member kind="function">
+      <name>type</name>
+      <anchor>type</anchor>
+      <arglist>()</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -36742,9 +43964,19 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>addChildLayoutItem</name>
+      <anchor>addChildLayoutItem</anchor>
+      <arglist>( QGraphicsLayoutItem * layoutItem )</arglist>
+    </member>
+    <member kind="function">
       <name>count</name>
       <anchor>count</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>getContentsMargins</name>
+      <anchor>getContentsMargins</anchor>
+      <arglist>( qreal * left, qreal * top, qreal * right, qreal * bottom )</arglist>
     </member>
     <member kind="function">
       <name>invalidate</name>
@@ -36770,6 +44002,11 @@
       <name>setContentsMargins</name>
       <anchor>setContentsMargins</anchor>
       <arglist>( qreal left, qreal top, qreal right, qreal bottom )</arglist>
+    </member>
+    <member kind="function">
+      <name>updateGeometry</name>
+      <anchor>updateGeometry</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>widgetEvent</name>
@@ -37005,6 +44242,11 @@
       <arglist> QGraphicsLinearLayout::alignment( QGraphicsLayoutItem * item )</arglist>
     </member>
     <member kind="function">
+      <name>count</name>
+      <anchor>count</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>insertItem</name>
       <anchor>insertItem</anchor>
       <arglist>( int index, QGraphicsLayoutItem * item )</arglist>
@@ -37013,6 +44255,16 @@
       <name>insertStretch</name>
       <anchor>insertStretch</anchor>
       <arglist>( int index, int stretch = 1 )</arglist>
+    </member>
+    <member kind="function">
+      <name>invalidate</name>
+      <anchor>invalidate</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>itemAt</name>
+      <anchor>itemAt</anchor>
+      <arglist>( int index )</arglist>
     </member>
     <member kind="function">
       <name>itemSpacing</name>
@@ -37040,6 +44292,11 @@
       <arglist>( QGraphicsLayoutItem * item, Qt::Alignment alignment )</arglist>
     </member>
     <member kind="function">
+      <name>setGeometry</name>
+      <anchor>setGeometry</anchor>
+      <arglist>( const QRectF &amp; rect )</arglist>
+    </member>
+    <member kind="function">
       <name>setItemSpacing</name>
       <anchor>setItemSpacing</anchor>
       <arglist>( int index, qreal spacing )</arglist>
@@ -37058,6 +44315,11 @@
       <name>setStretchFactor</name>
       <anchor>setStretchFactor</anchor>
       <arglist>( QGraphicsLayoutItem * item, int stretch )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>( Qt::SizeHint which, const QSizeF &amp; constraint = QSizeF()</arglist>
     </member>
     <member kind="function">
       <name>spacing</name>
@@ -37089,9 +44351,34 @@
       <arglist>( qreal x1, qreal y1, qreal x2, qreal y2, QGraphicsItem * parent = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>boundingRect</name>
+      <anchor>boundingRect</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>contains</name>
+      <anchor>contains</anchor>
+      <arglist>( const QPointF &amp; point )</arglist>
+    </member>
+    <member kind="function">
+      <name>isObscuredBy</name>
+      <anchor>isObscuredBy</anchor>
+      <arglist>( const QGraphicsItem * item )</arglist>
+    </member>
+    <member kind="function">
       <name>line</name>
       <anchor>line</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>opaqueArea</name>
+      <anchor>opaqueArea</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>paint</name>
+      <anchor>paint</anchor>
+      <arglist>( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 )</arglist>
     </member>
     <member kind="function">
       <name>pen</name>
@@ -37113,6 +44400,104 @@
       <anchor>setPen</anchor>
       <arglist>( const QPen &amp; pen )</arglist>
     </member>
+    <member kind="function">
+      <name>shape</name>
+      <anchor>shape</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>type</name>
+      <anchor>type</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QGraphicsObject</name>
+    <filename>qgraphicsobject.html</filename>
+    <member kind="function">
+      <name>QGraphicsObject</name>
+      <anchor>QGraphicsObject</anchor>
+      <arglist>( QGraphicsItem * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>enabledChanged</name>
+      <anchor>enabledChanged</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>grabGesture</name>
+      <anchor>grabGesture</anchor>
+      <arglist>( Qt::GestureType gesture, Qt::GestureFlags flags = Qt::GestureFlags()</arglist>
+    </member>
+    <member kind="function">
+      <name>opacityChanged</name>
+      <anchor>opacityChanged</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>parentChanged</name>
+      <anchor>parentChanged</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>rotationChanged</name>
+      <anchor>rotationChanged</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>scaleChanged</name>
+      <anchor>scaleChanged</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>ungrabGesture</name>
+      <anchor>ungrabGesture</anchor>
+      <arglist>( Qt::GestureType gesture )</arglist>
+    </member>
+    <member kind="function">
+      <name>visibleChanged</name>
+      <anchor>visibleChanged</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>xChanged</name>
+      <anchor>xChanged</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>yChanged</name>
+      <anchor>yChanged</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>zChanged</name>
+      <anchor>zChanged</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QGraphicsOpacityEffect</name>
+    <filename>qgraphicsopacityeffect.html</filename>
+    <member kind="function">
+      <name>QGraphicsOpacityEffect</name>
+      <anchor>QGraphicsOpacityEffect</anchor>
+      <arglist>( QObject * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>draw</name>
+      <anchor>draw</anchor>
+      <arglist>( QPainter * painter )</arglist>
+    </member>
+    <member kind="function">
+      <name>opacityChanged</name>
+      <anchor>opacityChanged</anchor>
+      <arglist>( qreal opacity )</arglist>
+    </member>
+    <member kind="function">
+      <name>opacityMaskChanged</name>
+      <anchor>opacityMaskChanged</anchor>
+      <arglist>( const QBrush &amp; mask )</arglist>
+    </member>
   </compound>
   <compound kind="class">
     <name>QGraphicsPathItem</name>
@@ -37128,6 +44513,31 @@
       <arglist>( const QPainterPath &amp; path, QGraphicsItem * parent = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>boundingRect</name>
+      <anchor>boundingRect</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>contains</name>
+      <anchor>contains</anchor>
+      <arglist>( const QPointF &amp; point )</arglist>
+    </member>
+    <member kind="function">
+      <name>isObscuredBy</name>
+      <anchor>isObscuredBy</anchor>
+      <arglist>( const QGraphicsItem * item )</arglist>
+    </member>
+    <member kind="function">
+      <name>opaqueArea</name>
+      <anchor>opaqueArea</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>paint</name>
+      <anchor>paint</anchor>
+      <arglist>( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
       <name>path</name>
       <anchor>pathx</anchor>
       <arglist>()</arglist>
@@ -37136,6 +44546,16 @@
       <name>setPath</name>
       <anchor>setPath</anchor>
       <arglist>( const QPainterPath &amp; path )</arglist>
+    </member>
+    <member kind="function">
+      <name>shape</name>
+      <anchor>shape</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>type</name>
+      <anchor>type</anchor>
+      <arglist>()</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -37157,9 +44577,34 @@
       <arglist>( const QPixmap &amp; pixmap, QGraphicsItem * parent = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>boundingRect</name>
+      <anchor>boundingRect</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>contains</name>
+      <anchor>contains</anchor>
+      <arglist>( const QPointF &amp; point )</arglist>
+    </member>
+    <member kind="function">
+      <name>isObscuredBy</name>
+      <anchor>isObscuredBy</anchor>
+      <arglist>( const QGraphicsItem * item )</arglist>
+    </member>
+    <member kind="function">
       <name>offset</name>
       <anchor>offset</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>opaqueArea</name>
+      <anchor>opaqueArea</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>paint</name>
+      <anchor>paint</anchor>
+      <arglist>( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget )</arglist>
     </member>
     <member kind="function">
       <name>pixmap</name>
@@ -37192,6 +44637,11 @@
       <arglist>( Qt::TransformationMode mode )</arglist>
     </member>
     <member kind="function">
+      <name>shape</name>
+      <anchor>shape</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>shapeMode</name>
       <anchor>shapeMode</anchor>
       <arglist>()</arglist>
@@ -37200,6 +44650,11 @@
       <name>TransformationMode</name>
       <anchor>transformationMode</anchor>
       <arglist> QGraphicsPixmapItem::transformationMode()</arglist>
+    </member>
+    <member kind="function">
+      <name>type</name>
+      <anchor>type</anchor>
+      <arglist>()</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -37216,9 +44671,34 @@
       <arglist>( const QPolygonF &amp; polygon, QGraphicsItem * parent = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>boundingRect</name>
+      <anchor>boundingRect</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>contains</name>
+      <anchor>contains</anchor>
+      <arglist>( const QPointF &amp; point )</arglist>
+    </member>
+    <member kind="function">
       <name>FillRule</name>
       <anchor>fillRule</anchor>
       <arglist> QGraphicsPolygonItem::fillRule()</arglist>
+    </member>
+    <member kind="function">
+      <name>isObscuredBy</name>
+      <anchor>isObscuredBy</anchor>
+      <arglist>( const QGraphicsItem * item )</arglist>
+    </member>
+    <member kind="function">
+      <name>opaqueArea</name>
+      <anchor>opaqueArea</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>paint</name>
+      <anchor>paint</anchor>
+      <arglist>( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 )</arglist>
     </member>
     <member kind="function">
       <name>polygon</name>
@@ -37235,6 +44715,16 @@
       <anchor>setPolygon</anchor>
       <arglist>( const QPolygonF &amp; polygon )</arglist>
     </member>
+    <member kind="function">
+      <name>shape</name>
+      <anchor>shape</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>type</name>
+      <anchor>type</anchor>
+      <arglist>()</arglist>
+    </member>
   </compound>
   <compound kind="class">
     <name>QGraphicsProxyWidget</name>
@@ -37245,9 +44735,119 @@
       <arglist>( QGraphicsItem * parent = 0, Qt::WindowFlags wFlags = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>contextMenuEvent</name>
+      <anchor>contextMenuEvent</anchor>
+      <arglist>( QGraphicsSceneContextMenuEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>createProxyForChildWidget</name>
       <anchor>createProxyForChildWidget</anchor>
       <arglist>( QWidget * child )</arglist>
+    </member>
+    <member kind="function">
+      <name>dragEnterEvent</name>
+      <anchor>dragEnterEvent</anchor>
+      <arglist>( QGraphicsSceneDragDropEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>dragLeaveEvent</name>
+      <anchor>dragLeaveEvent</anchor>
+      <arglist>( QGraphicsSceneDragDropEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>dragMoveEvent</name>
+      <anchor>dragMoveEvent</anchor>
+      <arglist>( QGraphicsSceneDragDropEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>dropEvent</name>
+      <anchor>dropEvent</anchor>
+      <arglist>( QGraphicsSceneDragDropEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>eventFilter</name>
+      <anchor>eventFilter</anchor>
+      <arglist>( QObject * object, QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusInEvent</name>
+      <anchor>focusInEvent</anchor>
+      <arglist>( QFocusEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusNextPrevChild</name>
+      <anchor>focusNextPrevChild</anchor>
+      <arglist>( bool next )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusOutEvent</name>
+      <anchor>focusOutEvent</anchor>
+      <arglist>( QFocusEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>grabMouseEvent</name>
+      <anchor>grabMouseEvent</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>hideEvent</name>
+      <anchor>hideEvent</anchor>
+      <arglist>( QHideEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>hoverEnterEvent</name>
+      <anchor>hoverEnterEvent</anchor>
+      <arglist>( QGraphicsSceneHoverEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>hoverLeaveEvent</name>
+      <anchor>hoverLeaveEvent</anchor>
+      <arglist>( QGraphicsSceneHoverEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>hoverMoveEvent</name>
+      <anchor>hoverMoveEvent</anchor>
+      <arglist>( QGraphicsSceneHoverEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>itemChange</name>
+      <anchor>itemChange</anchor>
+      <arglist>( GraphicsItemChange change, const QVariant &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>keyPressEvent</name>
+      <anchor>keyPressEvent</anchor>
+      <arglist>( QKeyEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>keyReleaseEvent</name>
+      <anchor>keyReleaseEvent</anchor>
+      <arglist>( QKeyEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseDoubleClickEvent</name>
+      <anchor>mouseDoubleClickEvent</anchor>
+      <arglist>( QGraphicsSceneMouseEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseMoveEvent</name>
+      <anchor>mouseMoveEvent</anchor>
+      <arglist>( QGraphicsSceneMouseEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>mousePressEvent</name>
+      <anchor>mousePressEvent</anchor>
+      <arglist>( QGraphicsSceneMouseEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseReleaseEvent</name>
+      <anchor>mouseReleaseEvent</anchor>
+      <arglist>( QGraphicsSceneMouseEvent * event )</arglist>
     </member>
     <member kind="function">
       <name>newProxyWidget</name>
@@ -37255,14 +44855,54 @@
       <arglist>( const QWidget * child )</arglist>
     </member>
     <member kind="function">
+      <name>paint</name>
+      <anchor>paint</anchor>
+      <arglist>( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QGraphicsSceneResizeEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>setGeometry</name>
+      <anchor>setGeometry</anchor>
+      <arglist>( const QRectF &amp; rect )</arglist>
+    </member>
+    <member kind="function">
       <name>setWidget</name>
       <anchor>setWidget</anchor>
       <arglist>( QWidget * widget )</arglist>
     </member>
     <member kind="function">
+      <name>showEvent</name>
+      <anchor>showEvent</anchor>
+      <arglist>( QShowEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>( Qt::SizeHint which, const QSizeF &amp; constraint = QSizeF()</arglist>
+    </member>
+    <member kind="function">
       <name>subWidgetRect</name>
       <anchor>subWidgetRect</anchor>
       <arglist>( const QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>type</name>
+      <anchor>type</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>ungrabMouseEvent</name>
+      <anchor>ungrabMouseEvent</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>wheelEvent</name>
+      <anchor>wheelEvent</anchor>
+      <arglist>( QGraphicsSceneWheelEvent * event )</arglist>
     </member>
     <member kind="function">
       <name>widget</name>
@@ -37289,6 +44929,31 @@
       <arglist>( qreal x, qreal y, qreal width, qreal height, QGraphicsItem * parent = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>boundingRect</name>
+      <anchor>boundingRect</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>contains</name>
+      <anchor>contains</anchor>
+      <arglist>( const QPointF &amp; point )</arglist>
+    </member>
+    <member kind="function">
+      <name>isObscuredBy</name>
+      <anchor>isObscuredBy</anchor>
+      <arglist>( const QGraphicsItem * item )</arglist>
+    </member>
+    <member kind="function">
+      <name>opaqueArea</name>
+      <anchor>opaqueArea</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>paint</name>
+      <anchor>paint</anchor>
+      <arglist>( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
       <name>rect</name>
       <anchor>rect</anchor>
       <arglist>()</arglist>
@@ -37302,6 +44967,119 @@
       <name>setRect</name>
       <anchor>setRect-2</anchor>
       <arglist>( qreal x, qreal y, qreal width, qreal height )</arglist>
+    </member>
+    <member kind="function">
+      <name>shape</name>
+      <anchor>shape</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>type</name>
+      <anchor>type</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QGraphicsRotation</name>
+    <filename>qgraphicsrotation.html</filename>
+    <member kind="function">
+      <name>QGraphicsRotation</name>
+      <anchor>QGraphicsRotation</anchor>
+      <arglist>( QObject * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>angleChanged</name>
+      <anchor>angleChanged</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>applyTo</name>
+      <anchor>applyTo</anchor>
+      <arglist>( QMatrix4x4 * matrix )</arglist>
+    </member>
+    <member kind="function">
+      <name>axisChanged</name>
+      <anchor>axisChanged</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>originChanged</name>
+      <anchor>originChanged</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QGraphicsScale</name>
+    <filename>qgraphicsscale.html</filename>
+    <member kind="function">
+      <name>QGraphicsScale</name>
+      <anchor>QGraphicsScale</anchor>
+      <arglist>( QObject * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>applyTo</name>
+      <anchor>applyTo</anchor>
+      <arglist>( QMatrix4x4 * matrix )</arglist>
+    </member>
+    <member kind="function">
+      <name>originChanged</name>
+      <anchor>originChanged</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>scaleChanged</name>
+      <anchor>scaleChanged</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>drawItems</name>
+      <anchor>drawItems</anchor>
+      <arglist>( QPainter * painter, int numItems, QGraphicsItem *[] items, const QStyleOptionGraphicsItem[] options, QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>itemAt</name>
+      <anchor>itemAt-2</anchor>
+      <arglist>( const QPointF &amp; position )</arglist>
+    </member>
+    <member kind="function">
+      <name>itemAt</name>
+      <anchor>itemAt-4</anchor>
+      <arglist>( qreal x, qreal y )</arglist>
+    </member>
+    <member kind="function">
+      <name>items</name>
+      <anchor>items-4</anchor>
+      <arglist>( const QPointF &amp; pos )</arglist>
+    </member>
+    <member kind="function">
+      <name>items</name>
+      <anchor>items-5</anchor>
+      <arglist>( qreal x, qreal y, qreal w, qreal h, Qt::ItemSelectionMode mode = Qt::IntersectsItemShape )</arglist>
+    </member>
+    <member kind="function">
+      <name>items</name>
+      <anchor>items-6</anchor>
+      <arglist>( const QRectF &amp; rectangle, Qt::ItemSelectionMode mode = Qt::IntersectsItemShape )</arglist>
+    </member>
+    <member kind="function">
+      <name>items</name>
+      <anchor>items-8</anchor>
+      <arglist>( const QPolygonF &amp; polygon, Qt::ItemSelectionMode mode = Qt::IntersectsItemShape )</arglist>
+    </member>
+    <member kind="function">
+      <name>items</name>
+      <anchor>items-9</anchor>
+      <arglist>( const QPainterPath &amp; path, Qt::ItemSelectionMode mode = Qt::IntersectsItemShape )</arglist>
+    </member>
+    <member kind="function">
+      <name>setSelectionArea</name>
+      <anchor>setSelectionArea-2</anchor>
+      <arglist>( const QPainterPath &amp; path )</arglist>
+    </member>
+    <member kind="function">
+      <name>setSelectionArea</name>
+      <anchor>setSelectionArea-3</anchor>
+      <arglist>( const QPainterPath &amp; path, Qt::ItemSelectionMode mode )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -37326,6 +45104,11 @@
       <name>QGraphicsScene</name>
       <anchor>QGraphicsScene-3</anchor>
       <arglist>( qreal x, qreal y, qreal width, qreal height, QObject * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>activePanel</name>
+      <anchor>activePanel</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>activeWindow</name>
@@ -37468,11 +45251,6 @@
       <arglist>( QPainter * painter, const QRectF &amp; rect )</arglist>
     </member>
     <member kind="function">
-      <name>drawItems</name>
-      <anchor>drawItems</anchor>
-      <arglist>( QPainter * painter, int numItems, QGraphicsItem *[] items, const QStyleOptionGraphicsItem[] options, QWidget * widget = 0 )</arglist>
-    </member>
-    <member kind="function">
       <name>dropEvent</name>
       <anchor>dropEvent</anchor>
       <arglist>( QGraphicsSceneDragDropEvent * event )</arglist>
@@ -37481,6 +45259,11 @@
       <name>event</name>
       <anchor>event</anchor>
       <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>eventFilter</name>
+      <anchor>eventFilter</anchor>
+      <arglist>( QObject * watched, QEvent * event )</arglist>
     </member>
     <member kind="function">
       <name>focusInEvent</name>
@@ -37538,14 +45321,19 @@
       <arglist>( qreal x, qreal y, qreal w, qreal h, SceneLayers layers = AllLayers )</arglist>
     </member>
     <member kind="function">
-      <name>itemAt</name>
-      <anchor>itemAt</anchor>
-      <arglist>( const QPointF &amp; position )</arglist>
+      <name>isActive</name>
+      <anchor>isActive</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>itemAt</name>
-      <anchor>itemAt-2</anchor>
-      <arglist>( qreal x, qreal y )</arglist>
+      <anchor>itemAt</anchor>
+      <arglist>( const QPointF &amp; position, const QTransform &amp; deviceTransform )</arglist>
+    </member>
+    <member kind="function">
+      <name>itemAt</name>
+      <anchor>itemAt-3</anchor>
+      <arglist>( qreal x, qreal y, const QTransform &amp; deviceTransform )</arglist>
     </member>
     <member kind="function">
       <name>items</name>
@@ -37555,27 +45343,32 @@
     <member kind="function">
       <name>items</name>
       <anchor>items-2</anchor>
-      <arglist>( const QPointF &amp; pos )</arglist>
+      <arglist>( Qt::SortOrder order )</arglist>
     </member>
     <member kind="function">
       <name>items</name>
       <anchor>items-3</anchor>
-      <arglist>( qreal x, qreal y, qreal w, qreal h, Qt::ItemSelectionMode mode = Qt::IntersectsItemShape )</arglist>
+      <arglist>( const QPointF &amp; pos, Qt::ItemSelectionMode mode, Qt::SortOrder order, const QTransform &amp; deviceTransform = QTransform()</arglist>
     </member>
     <member kind="function">
       <name>items</name>
-      <anchor>items-4</anchor>
-      <arglist>( const QRectF &amp; rectangle, Qt::ItemSelectionMode mode = Qt::IntersectsItemShape )</arglist>
+      <anchor>items-7</anchor>
+      <arglist>( qreal x, qreal y, qreal w, qreal h, Qt::ItemSelectionMode mode, Qt::SortOrder order, const QTransform &amp; deviceTransform = QTransform()</arglist>
     </member>
     <member kind="function">
       <name>items</name>
-      <anchor>items-5</anchor>
-      <arglist>( const QPolygonF &amp; polygon, Qt::ItemSelectionMode mode = Qt::IntersectsItemShape )</arglist>
+      <anchor>items-10</anchor>
+      <arglist>( const QRectF &amp; rect, Qt::ItemSelectionMode mode, Qt::SortOrder order, const QTransform &amp; deviceTransform = QTransform()</arglist>
     </member>
     <member kind="function">
       <name>items</name>
-      <anchor>items-6</anchor>
-      <arglist>( const QPainterPath &amp; path, Qt::ItemSelectionMode mode = Qt::IntersectsItemShape )</arglist>
+      <anchor>items-11</anchor>
+      <arglist>( const QPolygonF &amp; polygon, Qt::ItemSelectionMode mode, Qt::SortOrder order, const QTransform &amp; deviceTransform = QTransform()</arglist>
+    </member>
+    <member kind="function">
+      <name>items</name>
+      <anchor>items-12</anchor>
+      <arglist>( const QPainterPath &amp; path, Qt::ItemSelectionMode mode, Qt::SortOrder order, const QTransform &amp; deviceTransform = QTransform()</arglist>
     </member>
     <member kind="function">
       <name>itemsBoundingRect</name>
@@ -37648,6 +45441,16 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>sendEvent</name>
+      <anchor>sendEvent</anchor>
+      <arglist>( QGraphicsItem * item, QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>setActivePanel</name>
+      <anchor>setActivePanel</anchor>
+      <arglist>( QGraphicsItem * item )</arglist>
+    </member>
+    <member kind="function">
       <name>setActiveWindow</name>
       <anchor>setActiveWindow</anchor>
       <arglist>( QGraphicsWidget * widget )</arglist>
@@ -37665,12 +45468,12 @@
     <member kind="function">
       <name>setSelectionArea</name>
       <anchor>setSelectionArea</anchor>
-      <arglist>( const QPainterPath &amp; path )</arglist>
+      <arglist>( const QPainterPath &amp; path, const QTransform &amp; deviceTransform )</arglist>
     </member>
     <member kind="function">
       <name>setSelectionArea</name>
-      <anchor>setSelectionArea-2</anchor>
-      <arglist>( const QPainterPath &amp; path, Qt::ItemSelectionMode mode )</arglist>
+      <anchor>setSelectionArea-4</anchor>
+      <arglist>( const QPainterPath &amp; path, Qt::ItemSelectionMode mode, const QTransform &amp; deviceTransform )</arglist>
     </member>
     <member kind="function">
       <name>setStyle</name>
@@ -38023,9 +45826,34 @@
       <arglist>( const QString &amp; text, QGraphicsItem * parent = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>boundingRect</name>
+      <anchor>boundingRect</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>contains</name>
+      <anchor>contains</anchor>
+      <arglist>( const QPointF &amp; point )</arglist>
+    </member>
+    <member kind="function">
       <name>font</name>
       <anchor>font</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>isObscuredBy</name>
+      <anchor>isObscuredBy</anchor>
+      <arglist>( const QGraphicsItem * item )</arglist>
+    </member>
+    <member kind="function">
+      <name>opaqueArea</name>
+      <anchor>opaqueArea</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>paint</name>
+      <anchor>paint</anchor>
+      <arglist>( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget )</arglist>
     </member>
     <member kind="function">
       <name>setFont</name>
@@ -38038,8 +45866,18 @@
       <arglist>( const QString &amp; text )</arglist>
     </member>
     <member kind="function">
+      <name>shape</name>
+      <anchor>shape</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>text</name>
       <anchor>text</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>type</name>
+      <anchor>type</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -38072,14 +45910,9 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
-      <name>elementId</name>
-      <anchor>elementId</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <name>maximumCacheSize</name>
-      <anchor>maximumCacheSize</anchor>
-      <arglist>()</arglist>
+      <name>paint</name>
+      <anchor>paint</anchor>
+      <arglist>( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 )</arglist>
     </member>
     <member kind="function">
       <name>renderer</name>
@@ -38087,19 +45920,14 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
-      <name>setElementId</name>
-      <anchor>setElementId</anchor>
-      <arglist>( const QString &amp; id )</arglist>
-    </member>
-    <member kind="function">
-      <name>setMaximumCacheSize</name>
-      <anchor>setMaximumCacheSize</anchor>
-      <arglist>( const QSize &amp; size )</arglist>
-    </member>
-    <member kind="function">
       <name>setSharedRenderer</name>
       <anchor>setSharedRenderer</anchor>
       <arglist>( QSvgRenderer * renderer )</arglist>
+    </member>
+    <member kind="function">
+      <name>type</name>
+      <anchor>type</anchor>
+      <arglist>()</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -38121,6 +45949,21 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>boundingRect</name>
+      <anchor>boundingRect</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>contains</name>
+      <anchor>contains</anchor>
+      <arglist>( const QPointF &amp; point )</arglist>
+    </member>
+    <member kind="function">
+      <name>contextMenuEvent</name>
+      <anchor>contextMenuEvent</anchor>
+      <arglist>( QGraphicsSceneContextMenuEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>defaultTextColor</name>
       <anchor>defaultTextColor</anchor>
       <arglist>()</arglist>
@@ -38131,9 +45974,79 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>dragEnterEvent</name>
+      <anchor>dragEnterEvent</anchor>
+      <arglist>( QGraphicsSceneDragDropEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>dragLeaveEvent</name>
+      <anchor>dragLeaveEvent</anchor>
+      <arglist>( QGraphicsSceneDragDropEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>dragMoveEvent</name>
+      <anchor>dragMoveEvent</anchor>
+      <arglist>( QGraphicsSceneDragDropEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>dropEvent</name>
+      <anchor>dropEvent</anchor>
+      <arglist>( QGraphicsSceneDragDropEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusInEvent</name>
+      <anchor>focusInEvent</anchor>
+      <arglist>( QFocusEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusOutEvent</name>
+      <anchor>focusOutEvent</anchor>
+      <arglist>( QFocusEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>font</name>
       <anchor>font</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>hoverEnterEvent</name>
+      <anchor>hoverEnterEvent</anchor>
+      <arglist>( QGraphicsSceneHoverEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>hoverLeaveEvent</name>
+      <anchor>hoverLeaveEvent</anchor>
+      <arglist>( QGraphicsSceneHoverEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>hoverMoveEvent</name>
+      <anchor>hoverMoveEvent</anchor>
+      <arglist>( QGraphicsSceneHoverEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>inputMethodEvent</name>
+      <anchor>inputMethodEvent</anchor>
+      <arglist>( QInputMethodEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>inputMethodQuery</name>
+      <anchor>inputMethodQuery</anchor>
+      <arglist>( Qt::InputMethodQuery query )</arglist>
+    </member>
+    <member kind="function">
+      <name>isObscuredBy</name>
+      <anchor>isObscuredBy</anchor>
+      <arglist>( const QGraphicsItem * item )</arglist>
+    </member>
+    <member kind="function">
+      <name>keyPressEvent</name>
+      <anchor>keyPressEvent</anchor>
+      <arglist>( QKeyEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>keyReleaseEvent</name>
+      <anchor>keyReleaseEvent</anchor>
+      <arglist>( QKeyEvent * event )</arglist>
     </member>
     <member kind="function">
       <name>linkActivated</name>
@@ -38144,6 +46057,41 @@
       <name>linkHovered</name>
       <anchor>linkHovered</anchor>
       <arglist>( const QString &amp; link )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseDoubleClickEvent</name>
+      <anchor>mouseDoubleClickEvent</anchor>
+      <arglist>( QGraphicsSceneMouseEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseMoveEvent</name>
+      <anchor>mouseMoveEvent</anchor>
+      <arglist>( QGraphicsSceneMouseEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>mousePressEvent</name>
+      <anchor>mousePressEvent</anchor>
+      <arglist>( QGraphicsSceneMouseEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseReleaseEvent</name>
+      <anchor>mouseReleaseEvent</anchor>
+      <arglist>( QGraphicsSceneMouseEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>opaqueArea</name>
+      <anchor>opaqueArea</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>paint</name>
+      <anchor>paint</anchor>
+      <arglist>( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>sceneEvent</name>
+      <anchor>sceneEvent</anchor>
+      <arglist>( QEvent * event )</arglist>
     </member>
     <member kind="function">
       <name>setDefaultTextColor</name>
@@ -38186,6 +46134,11 @@
       <arglist>( qreal width )</arglist>
     </member>
     <member kind="function">
+      <name>shape</name>
+      <anchor>shape</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>tabChangesFocus</name>
       <anchor>tabChangesFocus</anchor>
       <arglist>()</arglist>
@@ -38209,6 +46162,35 @@
       <name>toPlainText</name>
       <anchor>toPlainText</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>type</name>
+      <anchor>type</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QGraphicsTransform</name>
+    <filename>qgraphicstransform.html</filename>
+    <member kind="function">
+      <name>QGraphicsTransform</name>
+      <anchor>QGraphicsTransform</anchor>
+      <arglist>( QObject * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>applyTo</name>
+      <anchor>applyTo</anchor>
+      <arglist>( QMatrix4x4 * matrix )</arglist>
+    </member>
+    <member kind="function">
+      <name>update</name>
+      <anchor>update</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>drawItems</name>
+      <anchor>drawItems</anchor>
+      <arglist>( QPainter * painter, int numItems, QGraphicsItem *[] items, const QStyleOptionGraphicsItem[] options )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -38270,6 +46252,26 @@
       <arglist>( const QGraphicsItem * item )</arglist>
     </member>
     <member kind="function">
+      <name>contextMenuEvent</name>
+      <anchor>contextMenuEvent</anchor>
+      <arglist>( QContextMenuEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>dragEnterEvent</name>
+      <anchor>dragEnterEvent</anchor>
+      <arglist>( QDragEnterEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>dragLeaveEvent</name>
+      <anchor>dragLeaveEvent</anchor>
+      <arglist>( QDragLeaveEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>dragMoveEvent</name>
+      <anchor>dragMoveEvent</anchor>
+      <arglist>( QDragMoveEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>drawBackground</name>
       <anchor>drawBackground</anchor>
       <arglist>( QPainter * painter, const QRectF &amp; rect )</arglist>
@@ -38280,9 +46282,9 @@
       <arglist>( QPainter * painter, const QRectF &amp; rect )</arglist>
     </member>
     <member kind="function">
-      <name>drawItems</name>
-      <anchor>drawItems</anchor>
-      <arglist>( QPainter * painter, int numItems, QGraphicsItem *[] items, const QStyleOptionGraphicsItem[] options )</arglist>
+      <name>dropEvent</name>
+      <anchor>dropEvent</anchor>
+      <arglist>( QDropEvent * event )</arglist>
     </member>
     <member kind="function">
       <name>ensureVisible</name>
@@ -38300,6 +46302,11 @@
       <arglist>( const QGraphicsItem * item, int xmargin = 50, int ymargin = 50 )</arglist>
     </member>
     <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>fitInView</name>
       <anchor>fitInView</anchor>
       <arglist>( const QRectF &amp; rect, Qt::AspectRatioMode aspectRatioMode = Qt::IgnoreAspectRatio )</arglist>
@@ -38315,9 +46322,39 @@
       <arglist>( const QGraphicsItem * item, Qt::AspectRatioMode aspectRatioMode = Qt::IgnoreAspectRatio )</arglist>
     </member>
     <member kind="function">
+      <name>focusInEvent</name>
+      <anchor>focusInEvent</anchor>
+      <arglist>( QFocusEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusNextPrevChild</name>
+      <anchor>focusNextPrevChild</anchor>
+      <arglist>( bool next )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusOutEvent</name>
+      <anchor>focusOutEvent</anchor>
+      <arglist>( QFocusEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>inputMethodEvent</name>
+      <anchor>inputMethodEvent</anchor>
+      <arglist>( QInputMethodEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>inputMethodQuery</name>
+      <anchor>inputMethodQuery</anchor>
+      <arglist>( Qt::InputMethodQuery query )</arglist>
+    </member>
+    <member kind="function">
       <name>invalidateScene</name>
       <anchor>invalidateScene</anchor>
       <arglist>( const QRectF &amp; rect = QRectF()</arglist>
+    </member>
+    <member kind="function">
+      <name>isTransformed</name>
+      <anchor>isTransformed</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>itemAt</name>
@@ -38363,6 +46400,16 @@
       <name>items</name>
       <anchor>items-7</anchor>
       <arglist>( const QPainterPath &amp; path, Qt::ItemSelectionMode mode = Qt::IntersectsItemShape )</arglist>
+    </member>
+    <member kind="function">
+      <name>keyPressEvent</name>
+      <anchor>keyPressEvent</anchor>
+      <arglist>( QKeyEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>keyReleaseEvent</name>
+      <anchor>keyReleaseEvent</anchor>
+      <arglist>( QKeyEvent * event )</arglist>
     </member>
     <member kind="function">
       <name>mapFromScene</name>
@@ -38430,6 +46477,31 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>mouseDoubleClickEvent</name>
+      <anchor>mouseDoubleClickEvent</anchor>
+      <arglist>( QMouseEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseMoveEvent</name>
+      <anchor>mouseMoveEvent</anchor>
+      <arglist>( QMouseEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>mousePressEvent</name>
+      <anchor>mousePressEvent</anchor>
+      <arglist>( QMouseEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseReleaseEvent</name>
+      <anchor>mouseReleaseEvent</anchor>
+      <arglist>( QMouseEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>render</name>
       <anchor>render</anchor>
       <arglist>( QPainter * painter, const QRectF &amp; target = QRectF()</arglist>
@@ -38450,6 +46522,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>rotate</name>
       <anchor>rotate</anchor>
       <arglist>( qreal angle )</arglist>
@@ -38463,6 +46540,11 @@
       <name>scene</name>
       <anchor>scene</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>scrollContentsBy</name>
+      <anchor>scrollContentsBy</anchor>
+      <arglist>( int dx, int dy )</arglist>
     </member>
     <member kind="function">
       <name>setMatrix</name>
@@ -38500,6 +46582,16 @@
       <arglist>( qreal sh, qreal sv )</arglist>
     </member>
     <member kind="function">
+      <name>showEvent</name>
+      <anchor>showEvent</anchor>
+      <arglist>( QShowEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>transform</name>
       <anchor>transform</anchor>
       <arglist>()</arglist>
@@ -38520,9 +46612,273 @@
       <arglist>( const QRectF &amp; rect )</arglist>
     </member>
     <member kind="function">
+      <name>viewportEvent</name>
+      <anchor>viewportEvent</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>viewportTransform</name>
       <anchor>viewportTransform</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>wheelEvent</name>
+      <anchor>wheelEvent</anchor>
+      <arglist>( QWheelEvent * event )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QGraphicsWebView</name>
+    <filename>qgraphicswebview.html</filename>
+    <member kind="function">
+      <name>QGraphicsWebView</name>
+      <anchor>QGraphicsWebView</anchor>
+      <arglist>( QGraphicsItem * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>back</name>
+      <anchor>back</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>contextMenuEvent</name>
+      <anchor>contextMenuEvent</anchor>
+      <arglist>( QGraphicsSceneContextMenuEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>dragEnterEvent</name>
+      <anchor>dragEnterEvent</anchor>
+      <arglist>( QGraphicsSceneDragDropEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>dragLeaveEvent</name>
+      <anchor>dragLeaveEvent</anchor>
+      <arglist>( QGraphicsSceneDragDropEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>dragMoveEvent</name>
+      <anchor>dragMoveEvent</anchor>
+      <arglist>( QGraphicsSceneDragDropEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>dropEvent</name>
+      <anchor>dropEvent</anchor>
+      <arglist>( QGraphicsSceneDragDropEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>findText</name>
+      <anchor>findText</anchor>
+      <arglist>( const QString &amp; subString, QWebPage::FindFlags options = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusInEvent</name>
+      <anchor>focusInEvent</anchor>
+      <arglist>( QFocusEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusNextPrevChild</name>
+      <anchor>focusNextPrevChild</anchor>
+      <arglist>( bool next )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusOutEvent</name>
+      <anchor>focusOutEvent</anchor>
+      <arglist>( QFocusEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>forward</name>
+      <anchor>forward</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>history</name>
+      <anchor>history</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>hoverLeaveEvent</name>
+      <anchor>hoverLeaveEvent</anchor>
+      <arglist>( QGraphicsSceneHoverEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>hoverMoveEvent</name>
+      <anchor>hoverMoveEvent</anchor>
+      <arglist>( QGraphicsSceneHoverEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>iconChanged</name>
+      <anchor>iconChanged</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>inputMethodEvent</name>
+      <anchor>inputMethodEvent</anchor>
+      <arglist>( QInputMethodEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>inputMethodQuery</name>
+      <anchor>inputMethodQuery</anchor>
+      <arglist>( Qt::InputMethodQuery query )</arglist>
+    </member>
+    <member kind="function">
+      <name>itemChange</name>
+      <anchor>itemChange</anchor>
+      <arglist>( GraphicsItemChange change, const QVariant &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>keyPressEvent</name>
+      <anchor>keyPressEvent</anchor>
+      <arglist>( QKeyEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>keyReleaseEvent</name>
+      <anchor>keyReleaseEvent</anchor>
+      <arglist>( QKeyEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>linkClicked</name>
+      <anchor>linkClicked</anchor>
+      <arglist>( const QUrl &amp; url )</arglist>
+    </member>
+    <member kind="function">
+      <name>load</name>
+      <anchor>load</anchor>
+      <arglist>( const QUrl &amp; url )</arglist>
+    </member>
+    <member kind="function">
+      <name>load</name>
+      <anchor>load-2</anchor>
+      <arglist>( const QNetworkRequest &amp; request, QNetworkAccessManager::Operation operation = QNetworkAccessManager::GetOperation, const QByteArray &amp; body = QByteArray()</arglist>
+    </member>
+    <member kind="function">
+      <name>loadFinished</name>
+      <anchor>loadFinished</anchor>
+      <arglist>( bool ok )</arglist>
+    </member>
+    <member kind="function">
+      <name>loadProgress</name>
+      <anchor>loadProgress</anchor>
+      <arglist>( int progress )</arglist>
+    </member>
+    <member kind="function">
+      <name>loadStarted</name>
+      <anchor>loadStarted</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseDoubleClickEvent</name>
+      <anchor>mouseDoubleClickEvent</anchor>
+      <arglist>( QGraphicsSceneMouseEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseMoveEvent</name>
+      <anchor>mouseMoveEvent</anchor>
+      <arglist>( QGraphicsSceneMouseEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>mousePressEvent</name>
+      <anchor>mousePressEvent</anchor>
+      <arglist>( QGraphicsSceneMouseEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseReleaseEvent</name>
+      <anchor>mouseReleaseEvent</anchor>
+      <arglist>( QGraphicsSceneMouseEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>page</name>
+      <anchor>page</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>pageAction</name>
+      <anchor>pageAction</anchor>
+      <arglist>( QWebPage::WebAction action )</arglist>
+    </member>
+    <member kind="function">
+      <name>paint</name>
+      <anchor>paint</anchor>
+      <arglist>( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>reload</name>
+      <anchor>reload</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>sceneEvent</name>
+      <anchor>sceneEvent</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>setContent</name>
+      <anchor>setContent</anchor>
+      <arglist>( const QByteArray &amp; data, const QString &amp; mimeType = QString()</arglist>
+    </member>
+    <member kind="function">
+      <name>setGeometry</name>
+      <anchor>setGeometry</anchor>
+      <arglist>( const QRectF &amp; rect )</arglist>
+    </member>
+    <member kind="function">
+      <name>setHtml</name>
+      <anchor>setHtml</anchor>
+      <arglist>( const QString &amp; html, const QUrl &amp; baseUrl = QUrl()</arglist>
+    </member>
+    <member kind="function">
+      <name>setPage</name>
+      <anchor>setPage</anchor>
+      <arglist>( QWebPage * page )</arglist>
+    </member>
+    <member kind="function">
+      <name>settings</name>
+      <anchor>settings</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>( Qt::SizeHint which, const QSizeF &amp; constraint )</arglist>
+    </member>
+    <member kind="function">
+      <name>statusBarMessage</name>
+      <anchor>statusBarMessage</anchor>
+      <arglist>( const QString &amp; text )</arglist>
+    </member>
+    <member kind="function">
+      <name>stop</name>
+      <anchor>stop</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>titleChanged</name>
+      <anchor>titleChanged</anchor>
+      <arglist>( const QString &amp; title )</arglist>
+    </member>
+    <member kind="function">
+      <name>triggerPageAction</name>
+      <anchor>triggerPageAction</anchor>
+      <arglist>( QWebPage::WebAction action, bool checked = false )</arglist>
+    </member>
+    <member kind="function">
+      <name>updateGeometry</name>
+      <anchor>updateGeometry</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>urlChanged</name>
+      <anchor>urlChanged</anchor>
+      <arglist>( const QUrl &amp; url )</arglist>
+    </member>
+    <member kind="function">
+      <name>wheelEvent</name>
+      <anchor>wheelEvent</anchor>
+      <arglist>( QGraphicsSceneWheelEvent * ev )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -38569,14 +46925,14 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>boundingRect</name>
+      <anchor>boundingRect</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>changeEvent</name>
       <anchor>changeEvent</anchor>
       <arglist>( QEvent * event )</arglist>
-    </member>
-    <member kind="function">
-      <name>children</name>
-      <anchor>children</anchor>
-      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>close</name>
@@ -38589,9 +46945,24 @@
       <arglist>( QCloseEvent * event )</arglist>
     </member>
     <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusInEvent</name>
+      <anchor>focusInEvent</anchor>
+      <arglist>( QFocusEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>focusNextPrevChild</name>
       <anchor>focusNextPrevChild</anchor>
       <arglist>( bool next )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusOutEvent</name>
+      <anchor>focusOutEvent</anchor>
+      <arglist>( QFocusEvent * event )</arglist>
     </member>
     <member kind="function">
       <name>focusWidget</name>
@@ -38629,6 +47000,16 @@
       <arglist>( QHideEvent * event )</arglist>
     </member>
     <member kind="function">
+      <name>hoverLeaveEvent</name>
+      <anchor>hoverLeaveEvent</anchor>
+      <arglist>( QGraphicsSceneHoverEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>hoverMoveEvent</name>
+      <anchor>hoverMoveEvent</anchor>
+      <arglist>( QGraphicsSceneHoverEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>initStyleOption</name>
       <anchor>initStyleOption</anchor>
       <arglist>( QStyleOption * option )</arglist>
@@ -38649,6 +47030,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>itemChange</name>
+      <anchor>itemChange</anchor>
+      <arglist>( GraphicsItemChange change, const QVariant &amp; value )</arglist>
+    </member>
+    <member kind="function">
       <name>layout</name>
       <anchor>layout</anchor>
       <arglist>()</arglist>
@@ -38657,6 +47043,11 @@
       <name>moveEvent</name>
       <anchor>moveEvent</anchor>
       <arglist>( QGraphicsSceneMoveEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>paint</name>
+      <anchor>paint</anchor>
+      <arglist>( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 )</arglist>
     </member>
     <member kind="function">
       <name>paintWindowFrame</name>
@@ -38734,9 +47125,19 @@
       <arglist>( qreal left, qreal top, qreal right, qreal bottom )</arglist>
     </member>
     <member kind="function">
+      <name>shape</name>
+      <anchor>shape</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>showEvent</name>
       <anchor>showEvent</anchor>
       <arglist>( QShowEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>( Qt::SizeHint which, const QSizeF &amp; constraint = QSizeF()</arglist>
     </member>
     <member kind="function">
       <name>style</name>
@@ -38747,6 +47148,11 @@
       <name>testAttribute</name>
       <anchor>testAttribute</anchor>
       <arglist>( Qt::WidgetAttribute attribute )</arglist>
+    </member>
+    <member kind="function">
+      <name>type</name>
+      <anchor>type</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>ungrabKeyboardEvent</name>
@@ -38918,6 +47324,11 @@
       <arglist>( QLayoutItem * item, int row, int column, int rowSpan = 1, int columnSpan = 1, Qt::Alignment alignment = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>addItem</name>
+      <anchor>addItem-2</anchor>
+      <arglist>( QLayoutItem * item )</arglist>
+    </member>
+    <member kind="function">
       <name>addLayout</name>
       <anchor>addLayout</anchor>
       <arglist>( QLayout * layout, int row, int column, Qt::Alignment alignment = 0 )</arglist>
@@ -38958,14 +47369,59 @@
       <arglist>( int column )</arglist>
     </member>
     <member kind="function">
+      <name>count</name>
+      <anchor>count</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>Orientations</name>
+      <anchor>expandingDirections</anchor>
+      <arglist> QGridLayout::expandingDirections()</arglist>
+    </member>
+    <member kind="function">
       <name>getItemPosition</name>
       <anchor>getItemPosition</anchor>
       <arglist>( int index, int * row, int * column, int * rowSpan, int * columnSpan )</arglist>
     </member>
     <member kind="function">
+      <name>hasHeightForWidth</name>
+      <anchor>hasHeightForWidth</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>heightForWidth</name>
+      <anchor>heightForWidth</anchor>
+      <arglist>( int w )</arglist>
+    </member>
+    <member kind="function">
+      <name>invalidate</name>
+      <anchor>invalidate</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>itemAt</name>
+      <anchor>itemAt</anchor>
+      <arglist>( int index )</arglist>
+    </member>
+    <member kind="function">
       <name>itemAtPosition</name>
       <anchor>itemAtPosition</anchor>
       <arglist>( int row, int column )</arglist>
+    </member>
+    <member kind="function">
+      <name>maximumSize</name>
+      <anchor>maximumSize</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>minimumHeightForWidth</name>
+      <anchor>minimumHeightForWidth</anchor>
+      <arglist>( int w )</arglist>
+    </member>
+    <member kind="function">
+      <name>minimumSize</name>
+      <anchor>minimumSize</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>Corner</name>
@@ -38998,6 +47454,11 @@
       <arglist>( int column, int stretch )</arglist>
     </member>
     <member kind="function">
+      <name>setGeometry</name>
+      <anchor>setGeometry</anchor>
+      <arglist>( const QRect &amp; rect )</arglist>
+    </member>
+    <member kind="function">
       <name>setOriginCorner</name>
       <anchor>setOriginCorner</anchor>
       <arglist>( Qt::Corner corner )</arglist>
@@ -39018,9 +47479,19 @@
       <arglist>( int spacing )</arglist>
     </member>
     <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>spacing</name>
       <anchor>spacing</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>takeAt</name>
+      <anchor>takeAt</anchor>
+      <arglist>( int index )</arglist>
     </member>
     <member kind="function">
       <name>QGroupBox</name>
@@ -39052,14 +47523,64 @@
       <arglist>( const QString &amp; title, QWidget * parent = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>childEvent</name>
+      <anchor>childEvent</anchor>
+      <arglist>( QChildEvent * c )</arglist>
+    </member>
+    <member kind="function">
       <name>clicked</name>
       <anchor>clicked</anchor>
       <arglist>( bool checked = false )</arglist>
     </member>
     <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusInEvent</name>
+      <anchor>focusInEvent</anchor>
+      <arglist>( QFocusEvent * fe )</arglist>
+    </member>
+    <member kind="function">
       <name>initStyleOption</name>
       <anchor>initStyleOption</anchor>
       <arglist>( QStyleOptionGroupBox * option )</arglist>
+    </member>
+    <member kind="function">
+      <name>minimumSizeHint</name>
+      <anchor>minimumSizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseMoveEvent</name>
+      <anchor>mouseMoveEvent</anchor>
+      <arglist>( QMouseEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>mousePressEvent</name>
+      <anchor>mousePressEvent</anchor>
+      <arglist>( QMouseEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseReleaseEvent</name>
+      <anchor>mouseReleaseEvent</anchor>
+      <arglist>( QMouseEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>toggled</name>
@@ -39074,6 +47595,116 @@
       <name>QGtkStyle</name>
       <anchor>QGtkStyle</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>drawComplexControl</name>
+      <anchor>drawComplexControl</anchor>
+      <arglist>( ComplexControl control, const QStyleOptionComplex * option, QPainter * painter, const QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawControl</name>
+      <anchor>drawControl</anchor>
+      <arglist>( ControlElement element, const QStyleOption * option, QPainter * painter, const QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawItemPixmap</name>
+      <anchor>drawItemPixmap</anchor>
+      <arglist>( QPainter * painter, const QRect &amp; rect, int alignment, const QPixmap &amp; pixmap )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawItemText</name>
+      <anchor>drawItemText</anchor>
+      <arglist>( QPainter * painter, const QRect &amp; rect, int alignment, const QPalette &amp; pal, bool enabled, const QString &amp; text, QPalette::ColorRole textRole )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawPrimitive</name>
+      <anchor>drawPrimitive</anchor>
+      <arglist>( PrimitiveElement element, const QStyleOption * option, QPainter * painter, const QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>generatedIconPixmap</name>
+      <anchor>generatedIconPixmap</anchor>
+      <arglist>( QIcon::Mode iconMode, const QPixmap &amp; pixmap, const QStyleOption * opt )</arglist>
+    </member>
+    <member kind="function">
+      <name>getGConfBool</name>
+      <anchor>getGConfBool</anchor>
+      <arglist>( const QString &amp; key, bool fallback = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>getGConfString</name>
+      <anchor>getGConfString</anchor>
+      <arglist>( const QString &amp; value, const QString &amp; fallback = QString()</arglist>
+    </member>
+    <member kind="function">
+      <name>SubControl</name>
+      <anchor>hitTestComplexControl</anchor>
+      <arglist> QGtkStyle::hitTestComplexControl( ComplexControl cc, const QStyleOptionComplex * opt, const QPoint &amp; pt, const QWidget * w )</arglist>
+    </member>
+    <member kind="function">
+      <name>itemPixmapRect</name>
+      <anchor>itemPixmapRect</anchor>
+      <arglist>( const QRect &amp; r, int flags, const QPixmap &amp; pixmap )</arglist>
+    </member>
+    <member kind="function">
+      <name>pixelMetric</name>
+      <anchor>pixelMetric</anchor>
+      <arglist>( PixelMetric metric, const QStyleOption * option = 0, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>polish</name>
+      <anchor>polish</anchor>
+      <arglist>( QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>polish</name>
+      <anchor>polish-2</anchor>
+      <arglist>( QApplication * app )</arglist>
+    </member>
+    <member kind="function">
+      <name>polish</name>
+      <anchor>polish-3</anchor>
+      <arglist>( QPalette &amp; palette )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeFromContents</name>
+      <anchor>sizeFromContents</anchor>
+      <arglist>( ContentsType type, const QStyleOption * option, const QSize &amp; size, const QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>standardPalette</name>
+      <anchor>standardPalette</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>standardPixmap</name>
+      <anchor>standardPixmap</anchor>
+      <arglist>( StandardPixmap sp, const QStyleOption * option, const QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>styleHint</name>
+      <anchor>styleHint</anchor>
+      <arglist>( StyleHint hint, const QStyleOption * option, const QWidget * widget, QStyleHintReturn * returnData )</arglist>
+    </member>
+    <member kind="function">
+      <name>subControlRect</name>
+      <anchor>subControlRect</anchor>
+      <arglist>( ComplexControl control, const QStyleOptionComplex * option, SubControl subControl, const QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>subElementRect</name>
+      <anchor>subElementRect</anchor>
+      <arglist>( SubElement element, const QStyleOption * option, const QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>unpolish</name>
+      <anchor>unpolish</anchor>
+      <arglist>( QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>unpolish</name>
+      <anchor>unpolish-2</anchor>
+      <arglist>( QApplication * app )</arglist>
     </member>
     <member kind="function">
       <name>const_iterator</name>
@@ -39611,6 +48242,16 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>currentChanged</name>
+      <anchor>currentChanged</anchor>
+      <arglist>( const QModelIndex &amp; current, const QModelIndex &amp; old )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>geometriesChanged</name>
       <anchor>geometriesChanged</anchor>
       <arglist>()</arglist>
@@ -39681,6 +48322,26 @@
       <arglist>( const QPoint &amp; pos )</arglist>
     </member>
     <member kind="function">
+      <name>mouseDoubleClickEvent</name>
+      <anchor>mouseDoubleClickEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseMoveEvent</name>
+      <anchor>mouseMoveEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mousePressEvent</name>
+      <anchor>mousePressEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseReleaseEvent</name>
+      <anchor>mouseReleaseEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>moveSection</name>
       <anchor>moveSection</anchor>
       <arglist>( int from, int to )</arglist>
@@ -39696,9 +48357,19 @@
       <arglist> QHeaderView::orientation()</arglist>
     </member>
     <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>paintSection</name>
       <anchor>paintSection</anchor>
       <arglist>( QPainter * painter, const QRect &amp; rect, int logicalIndex )</arglist>
+    </member>
+    <member kind="function">
+      <name>reset</name>
+      <anchor>reset</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>resizeMode</name>
@@ -39826,6 +48497,11 @@
       <arglist>( bool clickable )</arglist>
     </member>
     <member kind="function">
+      <name>setModel</name>
+      <anchor>setModel</anchor>
+      <arglist>( QAbstractItemModel * model )</arglist>
+    </member>
+    <member kind="function">
       <name>setMovable</name>
       <anchor>setMovable</anchor>
       <arglist>( bool movable )</arglist>
@@ -39859,6 +48535,11 @@
       <name>setSectionHidden</name>
       <anchor>setSectionHidden</anchor>
       <arglist>( int logicalIndex, bool hide )</arglist>
+    </member>
+    <member kind="function">
+      <name>setSelection</name>
+      <anchor>setSelection</anchor>
+      <arglist>( const QRect &amp; rect, QItemSelectionModel::SelectionFlags flags )</arglist>
     </member>
     <member kind="function">
       <name>setSortIndicator</name>
@@ -39904,6 +48585,11 @@
       <name>verticalOffset</name>
       <anchor>verticalOffset</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>viewportEvent</name>
+      <anchor>viewportEvent</anchor>
+      <arglist>( QEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>visualIndex</name>
@@ -40292,6 +48978,11 @@
       <anchor>linksActivated</anchor>
       <arglist>( const QMap&lt;QString, QUrl&gt; &amp; links, const QString &amp; keyword )</arglist>
     </member>
+    <member kind="function">
+      <name>hitsCount</name>
+      <anchor>hitsCount</anchor>
+      <arglist>()</arglist>
+    </member>
   </compound>
   <compound kind="class">
     <name>QHelpSearchEngine</name>
@@ -40317,14 +49008,14 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>hitCount</name>
+      <anchor>hitCount</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>hits</name>
       <anchor>hits</anchor>
       <arglist>( int start, int end )</arglist>
-    </member>
-    <member kind="function">
-      <name>hitsCount</name>
-      <anchor>hitsCount</anchor>
-      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>indexingFinished</name>
@@ -40431,6 +49122,40 @@
       <name>QHideEvent</name>
       <anchor>QHideEvent</anchor>
       <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QHistoryState</name>
+    <filename>qhistorystate.html</filename>
+    <member kind="enum">
+      <name>HistoryType</name>
+      <anchor>HistoryType-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>QHistoryState</name>
+      <anchor>QHistoryState</anchor>
+      <arglist>( QState * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>QHistoryState</name>
+      <anchor>QHistoryState-2</anchor>
+      <arglist>( HistoryType type, QState * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>onEntry</name>
+      <anchor>onEntry</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>onExit</name>
+      <anchor>onExit</anchor>
+      <arglist>( QEvent * event )</arglist>
     </member>
     <member kind="function">
       <name>ip4Addr</name>
@@ -41142,6 +49867,11 @@
       <arglist>( const QString &amp; method, const QString &amp; path, int majorVer = 1, int minorVer = 1 )</arglist>
     </member>
     <member kind="function">
+      <name>toString</name>
+      <anchor>toString</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>operator=</name>
       <anchor>operator-eq</anchor>
       <arglist>( const QHttpRequestHeader &amp; header )</arglist>
@@ -41193,6 +49923,11 @@
     <member kind="function">
       <name>statusCode</name>
       <anchor>statusCode</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>toString</name>
+      <anchor>toString</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -41320,6 +50055,16 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>fromTheme</name>
+      <anchor>fromTheme</anchor>
+      <arglist>( const QString &amp; name, const QIcon &amp; fallback = QIcon()</arglist>
+    </member>
+    <member kind="function">
+      <name>hasThemeIcon</name>
+      <anchor>hasThemeIcon</anchor>
+      <arglist>( const QString &amp; name )</arglist>
+    </member>
+    <member kind="function">
       <name>isNull</name>
       <anchor>isNull</anchor>
       <arglist>()</arglist>
@@ -41348,6 +50093,26 @@
       <name>pixmap</name>
       <anchor>pixmap-6</anchor>
       <arglist>( int extent, Mode mode = Normal, State state = Off )</arglist>
+    </member>
+    <member kind="function">
+      <name>setThemeName</name>
+      <anchor>setThemeName</anchor>
+      <arglist>( const QString &amp; name )</arglist>
+    </member>
+    <member kind="function">
+      <name>setThemeSearchPaths</name>
+      <anchor>setThemeSearchPaths</anchor>
+      <arglist>( const QStringList &amp; paths )</arglist>
+    </member>
+    <member kind="function">
+      <name>themeName</name>
+      <anchor>themeName</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>themeSearchPaths</name>
+      <anchor>themeSearchPaths</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>operator</name>
@@ -41494,6 +50259,11 @@
       <arglist>( QDataStream &amp; out )</arglist>
     </member>
     <member kind="function">
+      <name>alphaChannel</name>
+      <anchor>alphaChannel</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>serialNumber</name>
       <anchor>serialNumber</anchor>
       <arglist>()</arglist>
@@ -41624,6 +50394,16 @@
       <arglist>( bool horizontal = false, bool vertical = true )</arglist>
     </member>
     <member kind="function">
+      <name>numBytes</name>
+      <anchor>numBytes</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>numColors</name>
+      <anchor>numColors</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>reset</name>
       <anchor>reset</anchor>
       <arglist>()</arglist>
@@ -41642,6 +50422,11 @@
       <name>setAlphaBuffer</name>
       <anchor>setAlphaBuffer</anchor>
       <arglist>( bool enable )</arglist>
+    </member>
+    <member kind="function">
+      <name>setNumColors</name>
+      <anchor>setNumColors</anchor>
+      <arglist>( int numColors )</arglist>
     </member>
     <member kind="function">
       <name>smoothScale</name>
@@ -41675,7 +50460,7 @@
     </member>
     <member kind="function">
       <name>ImageConversionFlags</name>
-      <anchor>bitBlt-4</anchor>
+      <anchor>bitBlt</anchor>
       <arglist> flags = Qt::AutoColor )</arglist>
     </member>
   </compound>
@@ -41753,11 +50538,6 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
-      <name>alphaChannel</name>
-      <anchor>alphaChannel</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
       <name>bits</name>
       <anchor>bits</anchor>
       <arglist>()</arglist>
@@ -41765,6 +50545,11 @@
     <member kind="function">
       <name>bits</name>
       <anchor>bits-2</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>byteCount</name>
+      <anchor>byteCount</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -41781,6 +50566,11 @@
       <name>color</name>
       <anchor>color</anchor>
       <arglist>( int i )</arglist>
+    </member>
+    <member kind="function">
+      <name>colorCount</name>
+      <anchor>colorCount</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>colorTable</name>
@@ -41908,16 +50698,6 @@
       <arglist>( bool horizontal = false, bool vertical = true )</arglist>
     </member>
     <member kind="function">
-      <name>numBytes</name>
-      <anchor>numBytes</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <name>numColors</name>
-      <anchor>numColors</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
       <name>offset</name>
       <anchor>offset</anchor>
       <arglist>()</arglist>
@@ -41998,6 +50778,11 @@
       <arglist>( int index, QRgb colorValue )</arglist>
     </member>
     <member kind="function">
+      <name>setColorCount</name>
+      <anchor>setColorCount</anchor>
+      <arglist>( int colorCount )</arglist>
+    </member>
+    <member kind="function">
       <name>setColorTable</name>
       <anchor>setColorTable</anchor>
       <arglist>( const QVector&lt;QRgb&gt; colors )</arglist>
@@ -42011,11 +50796,6 @@
       <name>setDotsPerMeterY</name>
       <anchor>setDotsPerMeterY</anchor>
       <arglist>( int y )</arglist>
-    </member>
-    <member kind="function">
-      <name>setNumColors</name>
-      <anchor>setNumColors</anchor>
-      <arglist>( int numColors )</arglist>
     </member>
     <member kind="function">
       <name>setOffset</name>
@@ -42295,6 +51075,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>decideFormatFromContent</name>
+      <anchor>decideFormatFromContent</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>device</name>
       <anchor>device</anchor>
       <arglist>()</arglist>
@@ -42398,6 +51183,11 @@
       <name>setClipRect</name>
       <anchor>setClipRect</anchor>
       <arglist>( const QRect &amp; rect )</arglist>
+    </member>
+    <member kind="function">
+      <name>setDecideFormatFromContent</name>
+      <anchor>setDecideFormatFromContent</anchor>
+      <arglist>( bool ignored )</arglist>
     </member>
     <member kind="function">
       <name>setDevice</name>
@@ -42613,6 +51403,11 @@
       <arglist>( const QEvent * event )</arglist>
     </member>
     <member kind="function">
+      <name>focusWidget</name>
+      <anchor>focusWidget</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>font</name>
       <anchor>font</anchor>
       <arglist>()</arglist>
@@ -42648,9 +51443,19 @@
       <arglist>( const QInputMethodEvent &amp; event )</arglist>
     </member>
     <member kind="function">
+      <name>setFocusWidget</name>
+      <anchor>setFocusWidget</anchor>
+      <arglist>( QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
       <name>standardFormat</name>
       <anchor>standardFormat</anchor>
       <arglist>( StandardFormat s )</arglist>
+    </member>
+    <member kind="function">
+      <name>symbianFilterEvent</name>
+      <anchor>symbianFilterEvent</anchor>
+      <arglist>( QWidget * keywidget, const QSymbianEvent * event )</arglist>
     </member>
     <member kind="function">
       <name>update</name>
@@ -42820,6 +51625,11 @@
       <arglist>( int value )</arglist>
     </member>
     <member kind="function">
+      <name>minimumSizeHint</name>
+      <anchor>minimumSizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>open</name>
       <anchor>open</anchor>
       <arglist>( QObject * receiver, const char * member )</arglist>
@@ -42838,6 +51648,16 @@
       <name>setOption</name>
       <anchor>setOption</anchor>
       <arglist>( InputDialogOption option, bool on = true )</arglist>
+    </member>
+    <member kind="function">
+      <name>setVisible</name>
+      <anchor>setVisible</anchor>
+      <arglist>( bool visible )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>testOption</name>
@@ -42943,7 +51763,7 @@
     <member kind="function">
       <name>QIntValidator</name>
       <anchor>QIntValidator</anchor>
-      <arglist>( QObject * parent )</arglist>
+      <arglist>( QObject * parent = 0 )</arglist>
     </member>
     <member kind="function">
       <name>QIntValidator</name>
@@ -43344,6 +52164,11 @@
       <arglist>( QPainter * painter, const QStyleOptionViewItem &amp; option, const QRect &amp; rect )</arglist>
     </member>
     <member kind="function">
+      <name>editorEvent</name>
+      <anchor>editorEvent</anchor>
+      <arglist>( QEvent * event, QAbstractItemModel * model, const QStyleOptionViewItem &amp; option, const QModelIndex &amp; index )</arglist>
+    </member>
+    <member kind="function">
       <name>eventFilter</name>
       <anchor>eventFilter</anchor>
       <arglist>( QObject * editor, QEvent * event )</arglist>
@@ -43391,6 +52216,16 @@
       <name>QItemEditorCreator</name>
       <anchor>QItemEditorCreator</anchor>
       <arglist>( const QByteArray &amp; valuePropertyName )</arglist>
+    </member>
+    <member kind="function">
+      <name>createWidget</name>
+      <anchor>createWidget</anchor>
+      <arglist>( QWidget * parent )</arglist>
+    </member>
+    <member kind="function">
+      <name>valuePropertyName</name>
+      <anchor>valuePropertyName</anchor>
+      <arglist>()</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -43727,6 +52562,39 @@
       <anchor>operator-eq-eq</anchor>
       <arglist>( const QItemSelectionRange &amp; other )</arglist>
     </member>
+  </compound>
+  <compound kind="class">
+    <name>QKbdDriverFactory</name>
+    <filename>qkbddriverfactory.html</filename>
+    <member kind="function">
+      <name>create</name>
+      <anchor>create</anchor>
+      <arglist>( const QString &amp; key, const QString &amp; device )</arglist>
+    </member>
+    <member kind="function">
+      <name>keys</name>
+      <anchor>keys</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QKbdDriverPlugin</name>
+    <filename>qkbddriverplugin.html</filename>
+    <member kind="function">
+      <name>QKbdDriverPlugin</name>
+      <anchor>QKbdDriverPlugin</anchor>
+      <arglist>( QObject * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>create</name>
+      <anchor>create</anchor>
+      <arglist>( const QString &amp; key, const QString &amp; device )</arglist>
+    </member>
+    <member kind="function">
+      <name>keys</name>
+      <anchor>keys</anchor>
+      <arglist>()</arglist>
+    </member>
     <member kind="function">
       <name>QKeyEvent</name>
       <anchor>QKeyEvent-2</anchor>
@@ -43803,13 +52671,42 @@
     </member>
     <member kind="function">
       <name>StandardKey</name>
-      <anchor>operator-eq-eq-38</anchor>
+      <anchor>operator-eq-eq-49</anchor>
       <arglist> key )</arglist>
     </member>
     <member kind="function">
       <name>StandardKey</name>
-      <anchor>operator-eq-eq-39</anchor>
+      <anchor>operator-eq-eq-50</anchor>
       <arglist> key, QKeyEvent * e )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QKeyEventTransition</name>
+    <filename>qkeyeventtransition.html</filename>
+    <member kind="function">
+      <name>KeyboardModifiers</name>
+      <anchor>modifierMask-prop</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>QKeyEventTransition</name>
+      <anchor>QKeyEventTransition</anchor>
+      <arglist>( QState * sourceState = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>QKeyEventTransition</name>
+      <anchor>QKeyEventTransition-2</anchor>
+      <arglist>( QObject * object, QEvent::Type type, int key, QState * sourceState = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>eventTest</name>
+      <anchor>eventTest</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>onTransition</name>
+      <anchor>onTransition</anchor>
+      <arglist>( QEvent * event )</arglist>
     </member>
     <member kind="function">
       <name>operator</name>
@@ -44000,9 +52897,49 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * ev )</arglist>
+    </member>
+    <member kind="function">
       <name>clear</name>
       <anchor>clear</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>contextMenuEvent</name>
+      <anchor>contextMenuEvent</anchor>
+      <arglist>( QContextMenuEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusInEvent</name>
+      <anchor>focusInEvent</anchor>
+      <arglist>( QFocusEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusNextPrevChild</name>
+      <anchor>focusNextPrevChild</anchor>
+      <arglist>( bool next )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusOutEvent</name>
+      <anchor>focusOutEvent</anchor>
+      <arglist>( QFocusEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>heightForWidth</name>
+      <anchor>heightForWidth</anchor>
+      <arglist>( int w )</arglist>
+    </member>
+    <member kind="function">
+      <name>keyPressEvent</name>
+      <anchor>keyPressEvent</anchor>
+      <arglist>( QKeyEvent * ev )</arglist>
     </member>
     <member kind="function">
       <name>linkActivated</name>
@@ -44015,9 +52952,34 @@
       <arglist>( const QString &amp; link )</arglist>
     </member>
     <member kind="function">
+      <name>minimumSizeHint</name>
+      <anchor>minimumSizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseMoveEvent</name>
+      <anchor>mouseMoveEvent</anchor>
+      <arglist>( QMouseEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>mousePressEvent</name>
+      <anchor>mousePressEvent</anchor>
+      <arglist>( QMouseEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseReleaseEvent</name>
+      <anchor>mouseReleaseEvent</anchor>
+      <arglist>( QMouseEvent * ev )</arglist>
+    </member>
+    <member kind="function">
       <name>movie</name>
       <anchor>movie</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * )</arglist>
     </member>
     <member kind="function">
       <name>picture</name>
@@ -44048,6 +53010,11 @@
       <name>setPicture</name>
       <anchor>setPicture</anchor>
       <arglist>( const QPicture &amp; picture )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -44272,9 +53239,19 @@
       <arglist>( const QRect &amp; r )</arglist>
     </member>
     <member kind="function">
+      <name>childEvent</name>
+      <anchor>childEvent</anchor>
+      <arglist>( QChildEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>closestAcceptableSize</name>
       <anchor>closestAcceptableSize</anchor>
       <arglist>( const QWidget * widget, const QSize &amp; size )</arglist>
+    </member>
+    <member kind="function">
+      <name>contentsMargins</name>
+      <anchor>contentsMargins</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>contentsRect</name>
@@ -44292,6 +53269,11 @@
       <arglist> QLayout::expandingDirections()</arglist>
     </member>
     <member kind="function">
+      <name>geometry</name>
+      <anchor>geometry</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>getContentsMargins</name>
       <anchor>getContentsMargins</anchor>
       <arglist>( int * left, int * top, int * right, int * bottom )</arglist>
@@ -44302,6 +53284,16 @@
       <arglist>( QWidget * widget )</arglist>
     </member>
     <member kind="function">
+      <name>invalidate</name>
+      <anchor>invalidate</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>isEmpty</name>
+      <anchor>isEmpty</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>isEnabled</name>
       <anchor>isEnabled</anchor>
       <arglist>()</arglist>
@@ -44310,6 +53302,11 @@
       <name>itemAt</name>
       <anchor>itemAt</anchor>
       <arglist>( int index )</arglist>
+    </member>
+    <member kind="function">
+      <name>layout</name>
+      <anchor>layout</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>maximumSize</name>
@@ -44362,9 +53359,19 @@
       <arglist>( int left, int top, int right, int bottom )</arglist>
     </member>
     <member kind="function">
+      <name>setContentsMargins</name>
+      <anchor>setContentsMargins-2</anchor>
+      <arglist>( const QMargins &amp; margins )</arglist>
+    </member>
+    <member kind="function">
       <name>setEnabled</name>
       <anchor>setEnabled</anchor>
       <arglist>( bool enable )</arglist>
+    </member>
+    <member kind="function">
+      <name>setGeometry</name>
+      <anchor>setGeometry</anchor>
+      <arglist>( const QRect &amp; r )</arglist>
     </member>
     <member kind="function">
       <name>setMenuBar</name>
@@ -44530,9 +53537,19 @@
       <arglist>( int num )</arglist>
     </member>
     <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>overflow</name>
       <anchor>overflow</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * )</arglist>
     </member>
     <member kind="function">
       <name>setBinMode</name>
@@ -44552,6 +53569,11 @@
     <member kind="function">
       <name>setOctMode</name>
       <anchor>setOctMode</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -44651,6 +53673,11 @@
       <name>LibraryLocation</name>
       <anchor>LibraryLocation-enum</anchor>
       <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>buildDate</name>
+      <anchor>buildDate</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>buildKey</name>
@@ -44960,6 +53987,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * ev )</arglist>
+    </member>
+    <member kind="function">
       <name>clear</name>
       <anchor>clear</anchor>
       <arglist>()</arglist>
@@ -45035,6 +54067,26 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>dragEnterEvent</name>
+      <anchor>dragEnterEvent</anchor>
+      <arglist>( QDragEnterEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>dragLeaveEvent</name>
+      <anchor>dragLeaveEvent</anchor>
+      <arglist>( QDragLeaveEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>dragMoveEvent</name>
+      <anchor>dragMoveEvent</anchor>
+      <arglist>( QDragMoveEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>dropEvent</name>
+      <anchor>dropEvent</anchor>
+      <arglist>( QDropEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>editingFinished</name>
       <anchor>editingFinished</anchor>
       <arglist>()</arglist>
@@ -45043,6 +54095,21 @@
       <name>end</name>
       <anchor>end</anchor>
       <arglist>( bool mark )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusInEvent</name>
+      <anchor>focusInEvent</anchor>
+      <arglist>( QFocusEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusOutEvent</name>
+      <anchor>focusOutEvent</anchor>
+      <arglist>( QFocusEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>getTextMargins</name>
@@ -45060,6 +54127,16 @@
       <arglist>( QStyleOptionFrame * option )</arglist>
     </member>
     <member kind="function">
+      <name>inputMethodEvent</name>
+      <anchor>inputMethodEvent</anchor>
+      <arglist>( QInputMethodEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>inputMethodQuery</name>
+      <anchor>inputMethodQuery</anchor>
+      <arglist>( Qt::InputMethodQuery property )</arglist>
+    </member>
+    <member kind="function">
       <name>insert</name>
       <anchor>insert</anchor>
       <arglist>( const QString &amp; newText )</arglist>
@@ -45073,6 +54150,31 @@
       <name>minimumSizeHint</name>
       <anchor>minimumSizeHint</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseDoubleClickEvent</name>
+      <anchor>mouseDoubleClickEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseMoveEvent</name>
+      <anchor>mouseMoveEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mousePressEvent</name>
+      <anchor>mousePressEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseReleaseEvent</name>
+      <anchor>mouseReleaseEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * )</arglist>
     </member>
     <member kind="function">
       <name>paste</name>
@@ -45120,6 +54222,11 @@
       <arglist>( int left, int top, int right, int bottom )</arglist>
     </member>
     <member kind="function">
+      <name>setTextMargins</name>
+      <anchor>setTextMargins-2</anchor>
+      <arglist>( const QMargins &amp; margins )</arglist>
+    </member>
+    <member kind="function">
       <name>setValidator</name>
       <anchor>setValidator</anchor>
       <arglist>( const QValidator * v )</arglist>
@@ -45138,6 +54245,11 @@
       <name>textEdited</name>
       <anchor>textEdited</anchor>
       <arglist>( const QString &amp; text )</arglist>
+    </member>
+    <member kind="function">
+      <name>textMargins</name>
+      <anchor>textMargins</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>undo</name>
@@ -46674,9 +55786,54 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>currentChanged</name>
+      <anchor>currentChanged</anchor>
+      <arglist>( const QModelIndex &amp; current, const QModelIndex &amp; previous )</arglist>
+    </member>
+    <member kind="function">
+      <name>dataChanged</name>
+      <anchor>dataChanged</anchor>
+      <arglist>( const QModelIndex &amp; topLeft, const QModelIndex &amp; bottomRight )</arglist>
+    </member>
+    <member kind="function">
+      <name>dragLeaveEvent</name>
+      <anchor>dragLeaveEvent</anchor>
+      <arglist>( QDragLeaveEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>dragMoveEvent</name>
+      <anchor>dragMoveEvent</anchor>
+      <arglist>( QDragMoveEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>dropEvent</name>
+      <anchor>dropEvent</anchor>
+      <arglist>( QDropEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>horizontalOffset</name>
+      <anchor>horizontalOffset</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>indexAt</name>
+      <anchor>indexAt</anchor>
+      <arglist>( const QPoint &amp; p )</arglist>
+    </member>
+    <member kind="function">
       <name>indexesMoved</name>
       <anchor>indexesMoved</anchor>
       <arglist>( const QModelIndexList &amp; indexes )</arglist>
+    </member>
+    <member kind="function">
+      <name>isIndexHidden</name>
+      <anchor>isIndexHidden</anchor>
+      <arglist>( const QModelIndex &amp; index )</arglist>
     </member>
     <member kind="function">
       <name>isRowHidden</name>
@@ -46684,9 +55841,59 @@
       <arglist>( int row )</arglist>
     </member>
     <member kind="function">
+      <name>mouseMoveEvent</name>
+      <anchor>mouseMoveEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseReleaseEvent</name>
+      <anchor>mouseReleaseEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>moveCursor</name>
+      <anchor>moveCursor</anchor>
+      <arglist>( CursorAction cursorAction, Qt::KeyboardModifiers modifiers )</arglist>
+    </member>
+    <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>rectForIndex</name>
       <anchor>rectForIndex</anchor>
       <arglist>( const QModelIndex &amp; index )</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>rowsAboutToBeRemoved</name>
+      <anchor>rowsAboutToBeRemoved</anchor>
+      <arglist>( const QModelIndex &amp; parent, int start, int end )</arglist>
+    </member>
+    <member kind="function">
+      <name>rowsInserted</name>
+      <anchor>rowsInserted</anchor>
+      <arglist>( const QModelIndex &amp; parent, int start, int end )</arglist>
+    </member>
+    <member kind="function">
+      <name>scrollTo</name>
+      <anchor>scrollTo</anchor>
+      <arglist>( const QModelIndex &amp; index, ScrollHint hint = EnsureVisible )</arglist>
+    </member>
+    <member kind="function">
+      <name>selectedIndexes</name>
+      <anchor>selectedIndexes</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>selectionChanged</name>
+      <anchor>selectionChanged</anchor>
+      <arglist>( const QItemSelection &amp; selected, const QItemSelection &amp; deselected )</arglist>
     </member>
     <member kind="function">
       <name>setPositionForIndex</name>
@@ -46697,6 +55904,46 @@
       <name>setRowHidden</name>
       <anchor>setRowHidden</anchor>
       <arglist>( int row, bool hide )</arglist>
+    </member>
+    <member kind="function">
+      <name>setSelection</name>
+      <anchor>setSelection</anchor>
+      <arglist>( const QRect &amp; rect, QItemSelectionModel::SelectionFlags command )</arglist>
+    </member>
+    <member kind="function">
+      <name>startDrag</name>
+      <anchor>startDrag</anchor>
+      <arglist>( Qt::DropActions supportedActions )</arglist>
+    </member>
+    <member kind="function">
+      <name>timerEvent</name>
+      <anchor>timerEvent</anchor>
+      <arglist>( QTimerEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>updateGeometries</name>
+      <anchor>updateGeometries</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>verticalOffset</name>
+      <anchor>verticalOffset</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>viewOptions</name>
+      <anchor>viewOptions</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>visualRect</name>
+      <anchor>visualRect</anchor>
+      <arglist>( const QModelIndex &amp; index )</arglist>
+    </member>
+    <member kind="function">
+      <name>visualRegionForSelection</name>
+      <anchor>visualRegionForSelection</anchor>
+      <arglist>( const QItemSelection &amp; selection )</arglist>
     </member>
     <member kind="function">
       <name>isItemHidden</name>
@@ -46773,6 +56020,11 @@
       <arglist>( const QString &amp; currentText )</arglist>
     </member>
     <member kind="function">
+      <name>dropEvent</name>
+      <anchor>dropEvent</anchor>
+      <arglist>( QDropEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>dropMimeData</name>
       <anchor>dropMimeData</anchor>
       <arglist>( int index, const QMimeData * data, Qt::DropAction action )</arglist>
@@ -46781,6 +56033,11 @@
       <name>editItem</name>
       <anchor>editItem</anchor>
       <arglist>( QListWidgetItem * item )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>findItems</name>
@@ -47628,6 +56885,26 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>bytesAvailable</name>
+      <anchor>bytesAvailable</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>bytesToWrite</name>
+      <anchor>bytesToWrite</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>canReadLine</name>
+      <anchor>canReadLine</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>close</name>
+      <anchor>close</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>connectToServer</name>
       <anchor>connectToServer</anchor>
       <arglist>( const QString &amp; name, OpenMode openMode = ReadWrite )</arglist>
@@ -47668,6 +56945,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>isSequential</name>
+      <anchor>isSequential</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>isValid</name>
       <anchor>isValid</anchor>
       <arglist>()</arglist>
@@ -47676,6 +56958,11 @@
       <name>readBufferSize</name>
       <anchor>readBufferSize</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>readData</name>
+      <anchor>readData</anchor>
+      <arglist>( char * data, qint64 c )</arglist>
     </member>
     <member kind="function">
       <name>serverName</name>
@@ -47708,9 +56995,14 @@
       <arglist>( QLocalSocket::LocalSocketState socketState )</arglist>
     </member>
     <member kind="function">
+      <name>waitForBytesWritten</name>
+      <anchor>waitForBytesWritten</anchor>
+      <arglist>( int msecs = 30000 )</arglist>
+    </member>
+    <member kind="function">
       <name>waitForConnected</name>
       <anchor>waitForConnected</anchor>
-      <arglist>( int msec = 30000 )</arglist>
+      <arglist>( int msecs = 30000 )</arglist>
     </member>
     <member kind="function">
       <name>waitForDisconnected</name>
@@ -47721,6 +57013,237 @@
       <name>waitForReadyRead</name>
       <anchor>waitForReadyRead</anchor>
       <arglist>( int msecs = 30000 )</arglist>
+    </member>
+    <member kind="function">
+      <name>writeData</name>
+      <anchor>writeData</anchor>
+      <arglist>( const char * data, qint64 c )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QMacCocoaViewContainer</name>
+    <filename>qmaccocoaviewcontainer.html</filename>
+    <member kind="function">
+      <name>QMacCocoaViewContainer</name>
+      <anchor>QMacCocoaViewContainer</anchor>
+      <arglist>( void * cocoaViewToWrap, QWidget * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>cocoaView</name>
+      <anchor>cocoaView</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>setCocoaView</name>
+      <anchor>setCocoaView</anchor>
+      <arglist>( void * cocoaViewToWrap )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QMacNativeWidget</name>
+    <filename>qmacnativewidget.html</filename>
+    <member kind="function">
+      <name>QMacNativeWidget</name>
+      <anchor>QMacNativeWidget</anchor>
+      <arglist>( void * parentView = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QMacPasteboardMime</name>
+    <filename>qmacpasteboardmime.html</filename>
+    <member kind="function">
+      <name>QMacPasteboardMime</name>
+      <anchor>QMacPasteboardMime</anchor>
+      <arglist>( char t )</arglist>
+    </member>
+    <member kind="function">
+      <name>all</name>
+      <anchor>all</anchor>
+      <arglist>( uchar t )</arglist>
+    </member>
+    <member kind="function">
+      <name>canConvert</name>
+      <anchor>canConvert</anchor>
+      <arglist>( const QString &amp; mime, QString flav )</arglist>
+    </member>
+    <member kind="function">
+      <name>convertFromMime</name>
+      <anchor>convertFromMime</anchor>
+      <arglist>( const QString &amp; mime, QVariant data, QString flav )</arglist>
+    </member>
+    <member kind="function">
+      <name>convertToMime</name>
+      <anchor>convertToMime</anchor>
+      <arglist>( const QString &amp; mime, QList&lt;QByteArray&gt; data, QString flav )</arglist>
+    </member>
+    <member kind="function">
+      <name>convertor</name>
+      <anchor>convertor</anchor>
+      <arglist>( uchar t, const QString &amp; mime, QString flav )</arglist>
+    </member>
+    <member kind="function">
+      <name>convertorName</name>
+      <anchor>convertorName</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>flavorFor</name>
+      <anchor>flavorFor</anchor>
+      <arglist>( const QString &amp; mime )</arglist>
+    </member>
+    <member kind="function">
+      <name>flavorToMime</name>
+      <anchor>flavorToMime</anchor>
+      <arglist>( uchar t, QString flav )</arglist>
+    </member>
+    <member kind="function">
+      <name>mimeFor</name>
+      <anchor>mimeFor</anchor>
+      <arglist>( QString flav )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusRectPolicy</name>
+      <anchor>focusRectPolicy</anchor>
+      <arglist>( const QWidget * w )</arglist>
+    </member>
+    <member kind="function">
+      <name>setFocusRectPolicy</name>
+      <anchor>setFocusRectPolicy</anchor>
+      <arglist>( QWidget * w, FocusRectPolicy policy )</arglist>
+    </member>
+    <member kind="function">
+      <name>setWidgetSizePolicy</name>
+      <anchor>setWidgetSizePolicy</anchor>
+      <arglist>( const QWidget * widget, WidgetSizePolicy policy )</arglist>
+    </member>
+    <member kind="function">
+      <name>widgetSizePolicy</name>
+      <anchor>widgetSizePolicy</anchor>
+      <arglist>( const QWidget * widget )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QMacStyle</name>
+    <filename>qmacstyle.html</filename>
+    <member kind="enum">
+      <name>FocusRectPolicy</name>
+      <anchor>FocusRectPolicy-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enum">
+      <name>WidgetSizePolicy</name>
+      <anchor>WidgetSizePolicy-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>QMacStyle</name>
+      <anchor>QMacStyle</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>drawComplexControl</name>
+      <anchor>drawComplexControl</anchor>
+      <arglist>( ComplexControl cc, const QStyleOptionComplex * opt, QPainter * p, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawControl</name>
+      <anchor>drawControl</anchor>
+      <arglist>( ControlElement ce, const QStyleOption * opt, QPainter * p, const QWidget * w = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawItemText</name>
+      <anchor>drawItemText</anchor>
+      <arglist>( QPainter * p, const QRect &amp; r, int flags, const QPalette &amp; pal, bool enabled, const QString &amp; text, QPalette::ColorRole textRole = QPalette::NoRole )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawPrimitive</name>
+      <anchor>drawPrimitive</anchor>
+      <arglist>( PrimitiveElement pe, const QStyleOption * opt, QPainter * p, const QWidget * w = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>generatedIconPixmap</name>
+      <anchor>generatedIconPixmap</anchor>
+      <arglist>( QIcon::Mode iconMode, const QPixmap &amp; pixmap, const QStyleOption * opt )</arglist>
+    </member>
+    <member kind="function">
+      <name>hitTestComplexControl</name>
+      <anchor>hitTestComplexControl</anchor>
+      <arglist>( ComplexControl cc, const QStyleOptionComplex * opt, const QPoint &amp; pt, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>pixelMetric</name>
+      <anchor>pixelMetric</anchor>
+      <arglist>( PixelMetric metric, const QStyleOption * opt = 0, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>polish</name>
+      <anchor>polish</anchor>
+      <arglist>( QWidget * w )</arglist>
+    </member>
+    <member kind="function">
+      <name>polish</name>
+      <anchor>polish-2</anchor>
+      <arglist>( QApplication * )</arglist>
+    </member>
+    <member kind="function">
+      <name>polish</name>
+      <anchor>polish-3</anchor>
+      <arglist>( QPalette &amp; pal )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeFromContents</name>
+      <anchor>sizeFromContents</anchor>
+      <arglist>( ContentsType ct, const QStyleOption * opt, const QSize &amp; csz, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>standardPalette</name>
+      <anchor>standardPalette</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>standardPixmap</name>
+      <anchor>standardPixmap</anchor>
+      <arglist>( StandardPixmap standardPixmap, const QStyleOption * opt, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>styleHint</name>
+      <anchor>styleHint</anchor>
+      <arglist>( StyleHint sh, const QStyleOption * opt = 0, const QWidget * w = 0, QStyleHintReturn * hret = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>subControlRect</name>
+      <anchor>subControlRect</anchor>
+      <arglist>( ComplexControl cc, const QStyleOptionComplex * opt, SubControl sc, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>subElementRect</name>
+      <anchor>subElementRect</anchor>
+      <arglist>( SubElement sr, const QStyleOption * opt, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>unpolish</name>
+      <anchor>unpolish</anchor>
+      <arglist>( QWidget * w )</arglist>
+    </member>
+    <member kind="function">
+      <name>unpolish</name>
+      <anchor>unpolish-2</anchor>
+      <arglist>( QApplication * )</arglist>
     </member>
     <member kind="function">
       <name>QMainWindow</name>
@@ -47782,6 +57305,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>contextMenuEvent</name>
+      <anchor>contextMenuEvent</anchor>
+      <arglist>( QContextMenuEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>DockWidgetArea</name>
       <anchor>corner</anchor>
       <arglist> QMainWindow::corner( Qt::Corner corner )</arglist>
@@ -47795,6 +57323,11 @@
       <name>DockWidgetArea</name>
       <anchor>dockWidgetArea</anchor>
       <arglist> QMainWindow::dockWidgetArea( QDockWidget * dockwidget )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * event )</arglist>
     </member>
     <member kind="function">
       <name>iconSizeChanged</name>
@@ -48454,6 +57987,70 @@
       <anchor>operator-eq</anchor>
       <arglist>( const QMap&lt;Key, T&gt; &amp; map )</arglist>
     </member>
+  </compound>
+  <compound kind="class">
+    <name>QMargins</name>
+    <filename>qmargins.html</filename>
+    <member kind="function">
+      <name>QMargins</name>
+      <anchor>QMargins</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>QMargins</name>
+      <anchor>QMargins-2</anchor>
+      <arglist>( int left, int top, int right, int bottom )</arglist>
+    </member>
+    <member kind="function">
+      <name>bottom</name>
+      <anchor>bottom</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>isNull</name>
+      <anchor>isNull</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>left</name>
+      <anchor>left</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>right</name>
+      <anchor>right</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>setBottom</name>
+      <anchor>setBottom</anchor>
+      <arglist>( int bottom )</arglist>
+    </member>
+    <member kind="function">
+      <name>setLeft</name>
+      <anchor>setLeft</anchor>
+      <arglist>( int left )</arglist>
+    </member>
+    <member kind="function">
+      <name>setRight</name>
+      <anchor>setRight</anchor>
+      <arglist>( int right )</arglist>
+    </member>
+    <member kind="function">
+      <name>setTop</name>
+      <anchor>setTop</anchor>
+      <arglist>( int Top )</arglist>
+    </member>
+    <member kind="function">
+      <name>top</name>
+      <anchor>top</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>det</name>
+      <anchor>det</anchor>
+      <arglist>()</arglist>
+    </member>
     <member kind="function">
       <name>invert</name>
       <anchor>invert</anchor>
@@ -48480,12 +58077,12 @@
     </member>
     <member kind="function">
       <name>QMatrix</name>
-      <anchor>QMatrix-2</anchor>
+      <anchor>QMatrix-3</anchor>
       <arglist>( qreal m11, qreal m12, qreal m21, qreal m22, qreal dx, qreal dy )</arglist>
     </member>
     <member kind="function">
       <name>QMatrix</name>
-      <anchor>QMatrix-3</anchor>
+      <anchor>QMatrix-4</anchor>
       <arglist>( const QMatrix &amp; matrix )</arglist>
     </member>
     <member kind="function">
@@ -48509,8 +58106,8 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
-      <name>det</name>
-      <anchor>det</anchor>
+      <name>determinant</name>
+      <anchor>determinant</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -48665,6 +58262,310 @@
     </member>
   </compound>
   <compound kind="class">
+    <name>QMatrix4x4</name>
+    <filename>qmatrix4x4.html</filename>
+    <member kind="function">
+      <name>QMatrix4x4</name>
+      <anchor>QMatrix4x4</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>QMatrix4x4</name>
+      <anchor>QMatrix4x4-2</anchor>
+      <arglist>( const qreal * values )</arglist>
+    </member>
+    <member kind="function">
+      <name>QMatrix4x4</name>
+      <anchor>QMatrix4x4-3</anchor>
+      <arglist>( qreal m11, qreal m12, qreal m13, qreal m14, qreal m21, qreal m22, qreal m23, qreal m24, qreal m31, qreal m32, qreal m33, qreal m34, qreal m41, qreal m42, qreal m43, qreal m44 )</arglist>
+    </member>
+    <member kind="function">
+      <name>QMatrix4x4</name>
+      <anchor>QMatrix4x4-4</anchor>
+      <arglist>( const QGenericMatrix&lt;N, M, qreal&gt; &amp; matrix )</arglist>
+    </member>
+    <member kind="function">
+      <name>QMatrix4x4</name>
+      <anchor>QMatrix4x4-6</anchor>
+      <arglist>( const QTransform &amp; transform )</arglist>
+    </member>
+    <member kind="function">
+      <name>QMatrix4x4</name>
+      <anchor>QMatrix4x4-7</anchor>
+      <arglist>( const QMatrix &amp; matrix )</arglist>
+    </member>
+    <member kind="function">
+      <name>column</name>
+      <anchor>column</anchor>
+      <arglist>( int index )</arglist>
+    </member>
+    <member kind="function">
+      <name>constData</name>
+      <anchor>constData</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>copyDataTo</name>
+      <anchor>copyDataTo</anchor>
+      <arglist>( qreal * values )</arglist>
+    </member>
+    <member kind="function">
+      <name>data</name>
+      <anchor>data</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>data</name>
+      <anchor>data-2</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>determinant</name>
+      <anchor>determinant</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>fill</name>
+      <anchor>fill</anchor>
+      <arglist>( qreal value )</arglist>
+    </member>
+    <member kind="function">
+      <name>flipCoordinates</name>
+      <anchor>flipCoordinates</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>frustum</name>
+      <anchor>frustum</anchor>
+      <arglist>( qreal left, qreal right, qreal bottom, qreal top, qreal nearPlane, qreal farPlane )</arglist>
+    </member>
+    <member kind="function">
+      <name>inverted</name>
+      <anchor>inverted</anchor>
+      <arglist>( bool * invertible = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>isIdentity</name>
+      <anchor>isIdentity</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>lookAt</name>
+      <anchor>lookAt</anchor>
+      <arglist>( const QVector3D &amp; eye, const QVector3D &amp; center, const QVector3D &amp; up )</arglist>
+    </member>
+    <member kind="function">
+      <name>map</name>
+      <anchor>map</anchor>
+      <arglist>( const QPoint &amp; point )</arglist>
+    </member>
+    <member kind="function">
+      <name>map</name>
+      <anchor>map-2</anchor>
+      <arglist>( const QPointF &amp; point )</arglist>
+    </member>
+    <member kind="function">
+      <name>map</name>
+      <anchor>map-3</anchor>
+      <arglist>( const QVector3D &amp; point )</arglist>
+    </member>
+    <member kind="function">
+      <name>map</name>
+      <anchor>map-4</anchor>
+      <arglist>( const QVector4D &amp; point )</arglist>
+    </member>
+    <member kind="function">
+      <name>mapRect</name>
+      <anchor>mapRect</anchor>
+      <arglist>( const QRect &amp; rect )</arglist>
+    </member>
+    <member kind="function">
+      <name>mapRect</name>
+      <anchor>mapRect-2</anchor>
+      <arglist>( const QRectF &amp; rect )</arglist>
+    </member>
+    <member kind="function">
+      <name>mapVector</name>
+      <anchor>mapVector</anchor>
+      <arglist>( const QVector3D &amp; vector )</arglist>
+    </member>
+    <member kind="function">
+      <name>normalMatrix</name>
+      <anchor>normalMatrix</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>optimize</name>
+      <anchor>optimize</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>ortho</name>
+      <anchor>ortho</anchor>
+      <arglist>( qreal left, qreal right, qreal bottom, qreal top, qreal nearPlane, qreal farPlane )</arglist>
+    </member>
+    <member kind="function">
+      <name>ortho</name>
+      <anchor>ortho-2</anchor>
+      <arglist>( const QRect &amp; rect )</arglist>
+    </member>
+    <member kind="function">
+      <name>ortho</name>
+      <anchor>ortho-3</anchor>
+      <arglist>( const QRectF &amp; rect )</arglist>
+    </member>
+    <member kind="function">
+      <name>perspective</name>
+      <anchor>perspective</anchor>
+      <arglist>( qreal angle, qreal aspect, qreal nearPlane, qreal farPlane )</arglist>
+    </member>
+    <member kind="function">
+      <name>rotate</name>
+      <anchor>rotate</anchor>
+      <arglist>( qreal angle, const QVector3D &amp; vector )</arglist>
+    </member>
+    <member kind="function">
+      <name>rotate</name>
+      <anchor>rotate-2</anchor>
+      <arglist>( const QQuaternion &amp; quaternion )</arglist>
+    </member>
+    <member kind="function">
+      <name>rotate</name>
+      <anchor>rotate-3</anchor>
+      <arglist>( qreal angle, qreal x, qreal y, qreal z = 0.0f )</arglist>
+    </member>
+    <member kind="function">
+      <name>row</name>
+      <anchor>row</anchor>
+      <arglist>( int index )</arglist>
+    </member>
+    <member kind="function">
+      <name>scale</name>
+      <anchor>scale</anchor>
+      <arglist>( const QVector3D &amp; vector )</arglist>
+    </member>
+    <member kind="function">
+      <name>scale</name>
+      <anchor>scale-2</anchor>
+      <arglist>( qreal x, qreal y )</arglist>
+    </member>
+    <member kind="function">
+      <name>scale</name>
+      <anchor>scale-3</anchor>
+      <arglist>( qreal x, qreal y, qreal z )</arglist>
+    </member>
+    <member kind="function">
+      <name>scale</name>
+      <anchor>scale-4</anchor>
+      <arglist>( qreal factor )</arglist>
+    </member>
+    <member kind="function">
+      <name>setColumn</name>
+      <anchor>setColumn</anchor>
+      <arglist>( int index, const QVector4D &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setRow</name>
+      <anchor>setRow</anchor>
+      <arglist>( int index, const QVector4D &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setToIdentity</name>
+      <anchor>setToIdentity</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>toAffine</name>
+      <anchor>toAffine</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>toGenericMatrix</name>
+      <anchor>toGenericMatrix</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>toTransform</name>
+      <anchor>toTransform</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>toTransform</name>
+      <anchor>toTransform-2</anchor>
+      <arglist>( qreal distanceToPlane )</arglist>
+    </member>
+    <member kind="function">
+      <name>translate</name>
+      <anchor>translate</anchor>
+      <arglist>( const QVector3D &amp; vector )</arglist>
+    </member>
+    <member kind="function">
+      <name>translate</name>
+      <anchor>translate-2</anchor>
+      <arglist>( qreal x, qreal y )</arglist>
+    </member>
+    <member kind="function">
+      <name>translate</name>
+      <anchor>translate-3</anchor>
+      <arglist>( qreal x, qreal y, qreal z )</arglist>
+    </member>
+    <member kind="function">
+      <name>transposed</name>
+      <anchor>transposed</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>operator</name>
+      <anchor>operator-QVariant</anchor>
+      <arglist> QVariant()</arglist>
+    </member>
+    <member kind="function">
+      <name>operator!=</name>
+      <anchor>operator-not-eq</anchor>
+      <arglist>( const QMatrix4x4 &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator()</name>
+      <anchor>operator-28-29</anchor>
+      <arglist>( int row, int column )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator()</name>
+      <anchor>operator-28-29-2</anchor>
+      <arglist>( int row, int column )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator*=</name>
+      <anchor>operator-2a-eq</anchor>
+      <arglist>( const QMatrix4x4 &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator*=</name>
+      <anchor>operator-2a-eq-2</anchor>
+      <arglist>( qreal factor )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator+=</name>
+      <anchor>operator-2b-eq</anchor>
+      <arglist>( const QMatrix4x4 &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator-=</name>
+      <anchor>operator--eq</anchor>
+      <arglist>( const QMatrix4x4 &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator/=</name>
+      <anchor>operator-2f-eq</anchor>
+      <arglist>( qreal divisor )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator==</name>
+      <anchor>operator-eq-eq</anchor>
+      <arglist>( const QMatrix4x4 &amp; other )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
     <name>QMdiArea</name>
     <filename>qmdiarea.html</filename>
     <member kind="enum">
@@ -48718,6 +58619,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>childEvent</name>
+      <anchor>childEvent</anchor>
+      <arglist>( QChildEvent * childEvent )</arglist>
+    </member>
+    <member kind="function">
       <name>closeActiveSubWindow</name>
       <anchor>closeActiveSubWindow</anchor>
       <arglist>()</arglist>
@@ -48733,9 +58639,39 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>eventFilter</name>
+      <anchor>eventFilter</anchor>
+      <arglist>( QObject * object, QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>minimumSizeHint</name>
+      <anchor>minimumSizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * paintEvent )</arglist>
+    </member>
+    <member kind="function">
       <name>removeSubWindow</name>
       <anchor>removeSubWindow</anchor>
       <arglist>( QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * resizeEvent )</arglist>
+    </member>
+    <member kind="function">
+      <name>scrollContentsBy</name>
+      <anchor>scrollContentsBy</anchor>
+      <arglist>( int dx, int dy )</arglist>
     </member>
     <member kind="function">
       <name>setActiveSubWindow</name>
@@ -48751,6 +58687,16 @@
       <name>setupViewport</name>
       <anchor>setupViewport</anchor>
       <arglist>( QWidget * viewport )</arglist>
+    </member>
+    <member kind="function">
+      <name>showEvent</name>
+      <anchor>showEvent</anchor>
+      <arglist>( QShowEvent * showEvent )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>subWindowActivated</name>
@@ -48772,6 +58718,16 @@
       <anchor>tileSubWindows</anchor>
       <arglist>()</arglist>
     </member>
+    <member kind="function">
+      <name>timerEvent</name>
+      <anchor>timerEvent</anchor>
+      <arglist>( QTimerEvent * timerEvent )</arglist>
+    </member>
+    <member kind="function">
+      <name>viewportEvent</name>
+      <anchor>viewportEvent</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
   </compound>
   <compound kind="class">
     <name>QMdiSubWindow</name>
@@ -48787,14 +58743,109 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * changeEvent )</arglist>
+    </member>
+    <member kind="function">
+      <name>childEvent</name>
+      <anchor>childEvent</anchor>
+      <arglist>( QChildEvent * childEvent )</arglist>
+    </member>
+    <member kind="function">
+      <name>closeEvent</name>
+      <anchor>closeEvent</anchor>
+      <arglist>( QCloseEvent * closeEvent )</arglist>
+    </member>
+    <member kind="function">
+      <name>contextMenuEvent</name>
+      <anchor>contextMenuEvent</anchor>
+      <arglist>( QContextMenuEvent * contextMenuEvent )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>eventFilter</name>
+      <anchor>eventFilter</anchor>
+      <arglist>( QObject * object, QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusInEvent</name>
+      <anchor>focusInEvent</anchor>
+      <arglist>( QFocusEvent * focusInEvent )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusOutEvent</name>
+      <anchor>focusOutEvent</anchor>
+      <arglist>( QFocusEvent * focusOutEvent )</arglist>
+    </member>
+    <member kind="function">
+      <name>hideEvent</name>
+      <anchor>hideEvent</anchor>
+      <arglist>( QHideEvent * hideEvent )</arglist>
+    </member>
+    <member kind="function">
       <name>isShaded</name>
       <anchor>isShaded</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>keyPressEvent</name>
+      <anchor>keyPressEvent</anchor>
+      <arglist>( QKeyEvent * keyEvent )</arglist>
+    </member>
+    <member kind="function">
+      <name>leaveEvent</name>
+      <anchor>leaveEvent</anchor>
+      <arglist>( QEvent * leaveEvent )</arglist>
+    </member>
+    <member kind="function">
       <name>mdiArea</name>
       <anchor>mdiArea</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>minimumSizeHint</name>
+      <anchor>minimumSizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseDoubleClickEvent</name>
+      <anchor>mouseDoubleClickEvent</anchor>
+      <arglist>( QMouseEvent * mouseEvent )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseMoveEvent</name>
+      <anchor>mouseMoveEvent</anchor>
+      <arglist>( QMouseEvent * mouseEvent )</arglist>
+    </member>
+    <member kind="function">
+      <name>mousePressEvent</name>
+      <anchor>mousePressEvent</anchor>
+      <arglist>( QMouseEvent * mouseEvent )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseReleaseEvent</name>
+      <anchor>mouseReleaseEvent</anchor>
+      <arglist>( QMouseEvent * mouseEvent )</arglist>
+    </member>
+    <member kind="function">
+      <name>moveEvent</name>
+      <anchor>moveEvent</anchor>
+      <arglist>( QMoveEvent * moveEvent )</arglist>
+    </member>
+    <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * paintEvent )</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * resizeEvent )</arglist>
     </member>
     <member kind="function">
       <name>setOption</name>
@@ -48812,6 +58863,11 @@
       <arglist>( QWidget * widget )</arglist>
     </member>
     <member kind="function">
+      <name>showEvent</name>
+      <anchor>showEvent</anchor>
+      <arglist>( QShowEvent * showEvent )</arglist>
+    </member>
+    <member kind="function">
       <name>showShaded</name>
       <anchor>showShaded</anchor>
       <arglist>()</arglist>
@@ -48819,6 +58875,11 @@
     <member kind="function">
       <name>showSystemMenu</name>
       <anchor>showSystemMenu</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -48830,6 +58891,11 @@
       <name>testOption</name>
       <anchor>testOption</anchor>
       <arglist>( SubWindowOption option )</arglist>
+    </member>
+    <member kind="function">
+      <name>timerEvent</name>
+      <anchor>timerEvent</anchor>
+      <arglist>( QTimerEvent * timerEvent )</arglist>
     </member>
     <member kind="function">
       <name>widget</name>
@@ -49151,6 +59217,11 @@
       <arglist>( const QPoint &amp; pt )</arglist>
     </member>
     <member kind="function">
+      <name>actionEvent</name>
+      <anchor>actionEvent</anchor>
+      <arglist>( QActionEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>actionGeometry</name>
       <anchor>actionGeometry</anchor>
       <arglist>( QAction * act )</arglist>
@@ -49206,6 +59277,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>clear</name>
       <anchor>clear</anchor>
       <arglist>()</arglist>
@@ -49219,6 +59295,16 @@
       <name>defaultAction</name>
       <anchor>defaultAction</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>enterEvent</name>
+      <anchor>enterEvent</anchor>
+      <arglist>( QEvent * )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>exec</name>
@@ -49239,6 +59325,16 @@
       <name>exec</name>
       <anchor>exec-4</anchor>
       <arglist>( QList&lt;QAction *&gt; actions, const QPoint &amp; pos, QAction * at = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusNextPrevChild</name>
+      <anchor>focusNextPrevChild</anchor>
+      <arglist>( bool next )</arglist>
+    </member>
+    <member kind="function">
+      <name>hideEvent</name>
+      <anchor>hideEvent</anchor>
+      <arglist>( QHideEvent * )</arglist>
     </member>
     <member kind="function">
       <name>hideTearOffMenu</name>
@@ -49276,14 +59372,39 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
-      <name>macMenu</name>
-      <anchor>macMenu</anchor>
-      <arglist>( OSMenuRef merge = 0 )</arglist>
+      <name>keyPressEvent</name>
+      <anchor>keyPressEvent</anchor>
+      <arglist>( QKeyEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>leaveEvent</name>
+      <anchor>leaveEvent</anchor>
+      <arglist>( QEvent * )</arglist>
     </member>
     <member kind="function">
       <name>menuAction</name>
       <anchor>menuAction</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseMoveEvent</name>
+      <anchor>mouseMoveEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mousePressEvent</name>
+      <anchor>mousePressEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseReleaseEvent</name>
+      <anchor>mouseReleaseEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>popup</name>
@@ -49301,19 +59422,24 @@
       <arglist>( QAction * act )</arglist>
     </member>
     <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>timerEvent</name>
+      <anchor>timerEvent</anchor>
+      <arglist>( QTimerEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>triggered</name>
       <anchor>triggered</anchor>
       <arglist>( QAction * action )</arglist>
     </member>
     <member kind="function">
-      <name>wceCommands</name>
-      <anchor>wceCommands</anchor>
-      <arglist>( uint command )</arglist>
-    </member>
-    <member kind="function">
-      <name>wceMenu</name>
-      <anchor>wceMenu</anchor>
-      <arglist>( bool create = false )</arglist>
+      <name>wheelEvent</name>
+      <anchor>wheelEvent</anchor>
+      <arglist>( QWheelEvent * e )</arglist>
     </member>
     <member kind="enum">
       <name>Separator</name>
@@ -49580,6 +59706,11 @@
       <arglist>( QWidget * parent = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>actionEvent</name>
+      <anchor>actionEvent</anchor>
+      <arglist>( QActionEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>activeAction</name>
       <anchor>activeAction</anchor>
       <arglist>()</arglist>
@@ -49620,6 +59751,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>clear</name>
       <anchor>clear</anchor>
       <arglist>()</arglist>
@@ -49628,6 +59764,31 @@
       <name>defaultAction</name>
       <anchor>defaultAction</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>eventFilter</name>
+      <anchor>eventFilter</anchor>
+      <arglist>( QObject * object, QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusInEvent</name>
+      <anchor>focusInEvent</anchor>
+      <arglist>( QFocusEvent * )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusOutEvent</name>
+      <anchor>focusOutEvent</anchor>
+      <arglist>( QFocusEvent * )</arglist>
+    </member>
+    <member kind="function">
+      <name>heightForWidth</name>
+      <anchor>heightForWidth</anchor>
+      <arglist>( int )</arglist>
     </member>
     <member kind="function">
       <name>hovered</name>
@@ -49650,14 +59811,44 @@
       <arglist>( QAction * before )</arglist>
     </member>
     <member kind="function">
-      <name>macMenu</name>
-      <anchor>macMenu</anchor>
+      <name>keyPressEvent</name>
+      <anchor>keyPressEvent</anchor>
+      <arglist>( QKeyEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>leaveEvent</name>
+      <anchor>leaveEvent</anchor>
+      <arglist>( QEvent * )</arglist>
+    </member>
+    <member kind="function">
+      <name>minimumSizeHint</name>
+      <anchor>minimumSizeHint</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
-      <name>macUpdateMenuBar</name>
-      <anchor>macUpdateMenuBar</anchor>
-      <arglist>()</arglist>
+      <name>mouseMoveEvent</name>
+      <anchor>mouseMoveEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mousePressEvent</name>
+      <anchor>mousePressEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseReleaseEvent</name>
+      <anchor>mouseReleaseEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * )</arglist>
     </member>
     <member kind="function">
       <name>setActiveAction</name>
@@ -49670,19 +59861,24 @@
       <arglist>( QAction * act )</arglist>
     </member>
     <member kind="function">
+      <name>setVisible</name>
+      <anchor>setVisible</anchor>
+      <arglist>( bool visible )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>timerEvent</name>
+      <anchor>timerEvent</anchor>
+      <arglist>( QTimerEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>triggered</name>
       <anchor>triggered</anchor>
       <arglist>( QAction * action )</arglist>
-    </member>
-    <member kind="function">
-      <name>wceCommands</name>
-      <anchor>wceCommands</anchor>
-      <arglist>( uint command, HWND controlHandle )</arglist>
-    </member>
-    <member kind="function">
-      <name>wceRefresh</name>
-      <anchor>wceRefresh</anchor>
-      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>QMenuItem</name>
@@ -49868,9 +60064,19 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * ev )</arglist>
+    </member>
+    <member kind="function">
       <name>clickedButton</name>
       <anchor>clickedButton</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>closeEvent</name>
+      <anchor>closeEvent</anchor>
+      <arglist>( QCloseEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>critical</name>
@@ -49888,6 +60094,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>exec</name>
       <anchor>exec</anchor>
       <arglist>()</arglist>
@@ -49896,6 +60107,11 @@
       <name>information</name>
       <anchor>information</anchor>
       <arglist>( QWidget * parent, const QString &amp; title, const QString &amp; text, StandardButtons buttons = Ok, StandardButton defaultButton = NoButton )</arglist>
+    </member>
+    <member kind="function">
+      <name>keyPressEvent</name>
+      <anchor>keyPressEvent</anchor>
+      <arglist>( QKeyEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>open</name>
@@ -49911,6 +60127,11 @@
       <name>removeButton</name>
       <anchor>removeButton</anchor>
       <arglist>( QAbstractButton * button )</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * event )</arglist>
     </member>
     <member kind="function">
       <name>setDefaultButton</name>
@@ -49933,6 +60154,11 @@
       <arglist>( StandardButton button )</arglist>
     </member>
     <member kind="function">
+      <name>setVisible</name>
+      <anchor>setVisible</anchor>
+      <arglist>( bool visible )</arglist>
+    </member>
+    <member kind="function">
       <name>setWindowModality</name>
       <anchor>setWindowModality</anchor>
       <arglist>( Qt::WindowModality windowModality )</arglist>
@@ -49941,6 +60167,11 @@
       <name>setWindowTitle</name>
       <anchor>setWindowTitle</anchor>
       <arglist>( const QString &amp; title )</arglist>
+    </member>
+    <member kind="function">
+      <name>showEvent</name>
+      <anchor>showEvent</anchor>
+      <arglist>( QShowEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>standardButton</name>
@@ -50063,6 +60294,11 @@
       <name>invoke</name>
       <anchor>invoke-4</anchor>
       <arglist>( QObject * object, QGenericArgument val0 = QGenericArgument( 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>methodIndex</name>
+      <anchor>methodIndex</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>methodType</name>
@@ -50283,6 +60519,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>isConstant</name>
+      <anchor>isConstant</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>isDesignable</name>
       <anchor>isDesignable</anchor>
       <arglist>( const QObject * object = 0 )</arglist>
@@ -50290,6 +60531,11 @@
     <member kind="function">
       <name>isEnumType</name>
       <anchor>isEnumType</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>isFinal</name>
+      <anchor>isFinal</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -50345,6 +60591,11 @@
     <member kind="function">
       <name>notifySignalIndex</name>
       <anchor>notifySignalIndex</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>propertyIndex</name>
+      <anchor>propertyIndex</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -50658,13 +60909,111 @@
       <arglist>( bool useHighlightCols = false )</arglist>
     </member>
     <member kind="function">
+      <name>drawComplexControl</name>
+      <anchor>drawComplexControl</anchor>
+      <arglist>( ComplexControl cc, const QStyleOptionComplex * opt, QPainter * p, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawControl</name>
+      <anchor>drawControl</anchor>
+      <arglist>( ControlElement element, const QStyleOption * opt, QPainter * p, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawPrimitive</name>
+      <anchor>drawPrimitive</anchor>
+      <arglist>( PrimitiveElement pe, const QStyleOption * opt, QPainter * p, const QWidget * w = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>pixelMetric</name>
+      <anchor>pixelMetric</anchor>
+      <arglist>( PixelMetric pm, const QStyleOption * opt = 0, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>polish</name>
+      <anchor>polish</anchor>
+      <arglist>( QPalette &amp; pal )</arglist>
+    </member>
+    <member kind="function">
       <name>setUseHighlightColors</name>
       <anchor>setUseHighlightColors</anchor>
       <arglist>( bool arg )</arglist>
     </member>
     <member kind="function">
+      <name>sizeFromContents</name>
+      <anchor>sizeFromContents</anchor>
+      <arglist>( ContentsType ct, const QStyleOption * opt, const QSize &amp; contentsSize, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>standardPalette</name>
+      <anchor>standardPalette</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>standardPixmap</name>
+      <anchor>standardPixmap</anchor>
+      <arglist>( StandardPixmap standardPixmap, const QStyleOption * opt, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>styleHint</name>
+      <anchor>styleHint</anchor>
+      <arglist>( StyleHint hint, const QStyleOption * opt = 0, const QWidget * widget = 0, QStyleHintReturn * returnData = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>subControlRect</name>
+      <anchor>subControlRect</anchor>
+      <arglist>( ComplexControl cc, const QStyleOptionComplex * opt, SubControl sc, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>subElementRect</name>
+      <anchor>subElementRect</anchor>
+      <arglist>( SubElement sr, const QStyleOption * opt, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>timerEvent</name>
+      <anchor>timerEvent</anchor>
+      <arglist>( QTimerEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>useHighlightColors</name>
       <anchor>useHighlightColors</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QMouseDriverFactory</name>
+    <filename>qmousedriverfactory.html</filename>
+    <member kind="function">
+      <name>create</name>
+      <anchor>create</anchor>
+      <arglist>( const QString &amp; key, const QString &amp; device )</arglist>
+    </member>
+    <member kind="function">
+      <name>keys</name>
+      <anchor>keys</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QMouseDriverPlugin</name>
+    <filename>qmousedriverplugin.html</filename>
+    <member kind="function">
+      <name>QMouseDriverPlugin</name>
+      <anchor>QMouseDriverPlugin</anchor>
+      <arglist>( QObject * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>create</name>
+      <anchor>create</anchor>
+      <arglist>( const QString &amp; key, const QString &amp; device )</arglist>
+    </member>
+    <member kind="function">
+      <name>keys</name>
+      <anchor>keys</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -50745,6 +61094,50 @@
       <name>y</name>
       <anchor>y</anchor>
       <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QMouseEventTransition</name>
+    <filename>qmouseeventtransition.html</filename>
+    <member kind="function">
+      <name>MouseButton</name>
+      <anchor>button-prop</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>KeyboardModifiers</name>
+      <anchor>modifierMask-prop</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>QMouseEventTransition</name>
+      <anchor>QMouseEventTransition</anchor>
+      <arglist>( QState * sourceState = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>QMouseEventTransition</name>
+      <anchor>QMouseEventTransition-2</anchor>
+      <arglist>( QObject * object, QEvent::Type type, Qt::MouseButton button, QState * sourceState = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>eventTest</name>
+      <anchor>eventTest</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>hitTestPath</name>
+      <anchor>hitTestPath</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>onTransition</name>
+      <anchor>onTransition</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>setHitTestPath</name>
+      <anchor>setHitTestPath</anchor>
+      <arglist>( const QPainterPath &amp; path )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -51829,6 +62222,11 @@
       <arglist>( Operation op, const QNetworkRequest &amp; req, QIODevice * outgoingData = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>deleteResource</name>
+      <anchor>deleteResource</anchor>
+      <arglist>( const QNetworkRequest &amp; request )</arglist>
+    </member>
+    <member kind="function">
       <name>finished</name>
       <anchor>finished</anchor>
       <arglist>( QNetworkReply * reply )</arglist>
@@ -52244,6 +62642,21 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>cacheSize</name>
+      <anchor>cacheSize</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>clear</name>
+      <anchor>clear</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>data</name>
+      <anchor>data</anchor>
+      <arglist>( const QUrl &amp; url )</arglist>
+    </member>
+    <member kind="function">
       <name>expire</name>
       <anchor>expire</anchor>
       <arglist>()</arglist>
@@ -52254,9 +62667,29 @@
       <arglist>( const QString &amp; fileName )</arglist>
     </member>
     <member kind="function">
+      <name>insert</name>
+      <anchor>insert</anchor>
+      <arglist>( QIODevice * device )</arglist>
+    </member>
+    <member kind="function">
       <name>maximumCacheSize</name>
       <anchor>maximumCacheSize</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>metaData</name>
+      <anchor>metaData</anchor>
+      <arglist>( const QUrl &amp; url )</arglist>
+    </member>
+    <member kind="function">
+      <name>prepare</name>
+      <anchor>prepare</anchor>
+      <arglist>( const QNetworkCacheMetaData &amp; metaData )</arglist>
+    </member>
+    <member kind="function">
+      <name>remove</name>
+      <anchor>remove</anchor>
+      <arglist>( const QUrl &amp; url )</arglist>
     </member>
     <member kind="function">
       <name>setCacheDirectory</name>
@@ -52267,6 +62700,11 @@
       <name>setMaximumCacheSize</name>
       <anchor>setMaximumCacheSize</anchor>
       <arglist>( qint64 size )</arglist>
+    </member>
+    <member kind="function">
+      <name>updateMetaData</name>
+      <anchor>updateMetaData</anchor>
+      <arglist>( const QNetworkCacheMetaData &amp; metaData )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -52486,6 +62924,11 @@
       <arglist>( QNetworkProxyFactory * factory )</arglist>
     </member>
     <member kind="function">
+      <name>setUseSystemConfiguration</name>
+      <anchor>setUseSystemConfiguration</anchor>
+      <arglist>( bool enable )</arglist>
+    </member>
+    <member kind="function">
       <name>systemProxyForQuery</name>
       <anchor>systemProxyForQuery</anchor>
       <arglist>( const QNetworkProxyQuery &amp; query = QNetworkProxyQuery()</arglist>
@@ -52664,6 +63107,21 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>ignoreSslErrors</name>
+      <anchor>ignoreSslErrors-2</anchor>
+      <arglist>( const QList&lt;QSslError&gt; &amp; errors )</arglist>
+    </member>
+    <member kind="function">
+      <name>isFinished</name>
+      <anchor>isFinished</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>isRunning</name>
+      <anchor>isRunning</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>manager</name>
       <anchor>manager</anchor>
       <arglist>()</arglist>
@@ -52808,6 +63266,11 @@
       <arglist>( KnownHeaders header )</arglist>
     </member>
     <member kind="function">
+      <name>originatingObject</name>
+      <anchor>originatingObject</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>rawHeader</name>
       <anchor>rawHeader</anchor>
       <arglist>( const QByteArray &amp; headerName )</arglist>
@@ -52826,6 +63289,11 @@
       <name>setHeader</name>
       <anchor>setHeader</anchor>
       <arglist>( KnownHeaders header, const QVariant &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setOriginatingObject</name>
+      <anchor>setOriginatingObject</anchor>
+      <arglist>( QObject * object )</arglist>
     </member>
     <member kind="function">
       <name>setRawHeader</name>
@@ -53215,6 +63683,11 @@
       <arglist>( PageSetupDialogOption option, bool on = true )</arglist>
     </member>
     <member kind="function">
+      <name>setVisible</name>
+      <anchor>setVisible</anchor>
+      <arglist>( bool visible )</arglist>
+    </member>
+    <member kind="function">
       <name>testOption</name>
       <anchor>testOption</anchor>
       <arglist>( PageSetupDialogOption option )</arglist>
@@ -53336,6 +63809,11 @@
     <member kind="function">
       <name>QPaintDevice</name>
       <anchor>QPaintDevice</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>colorCount</name>
+      <anchor>colorCount</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -53542,6 +64020,11 @@
       <anchor>updateState</anchor>
       <arglist>( const QPaintEngineState &amp; state )</arglist>
     </member>
+    <member kind="function">
+      <name>matrix</name>
+      <anchor>matrix</anchor>
+      <arglist>()</arglist>
+    </member>
   </compound>
   <compound kind="class">
     <name>QPaintEngineState</name>
@@ -53602,11 +64085,6 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
-      <name>matrix</name>
-      <anchor>matrix</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
       <name>opacity</name>
       <anchor>opacity</anchor>
       <arglist>()</arglist>
@@ -53642,6 +64120,16 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>combinedMatrix</name>
+      <anchor>combinedMatrix</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>deviceMatrix</name>
+      <anchor>deviceMatrix</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>drawRoundRect</name>
       <anchor>drawRoundRect</anchor>
       <arglist>( const QRectF &amp; r, int xRnd = 25, int yRnd = 25 )</arglist>
@@ -53667,6 +64155,21 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>redirected</name>
+      <anchor>redirected</anchor>
+      <arglist>( const QPaintDevice * device, QPoint * offset = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>resetMatrix</name>
+      <anchor>resetMatrix</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>restoreRedirected</name>
+      <anchor>restoreRedirected</anchor>
+      <arglist>( const QPaintDevice * device )</arglist>
+    </member>
+    <member kind="function">
       <name>setMatrix</name>
       <anchor>setMatrix</anchor>
       <arglist>( const QMatrix &amp; matrix, bool combine = false )</arglist>
@@ -53675,6 +64178,21 @@
       <name>setMatrixEnabled</name>
       <anchor>setMatrixEnabled</anchor>
       <arglist>( bool enable )</arglist>
+    </member>
+    <member kind="function">
+      <name>setRedirected</name>
+      <anchor>setRedirected</anchor>
+      <arglist>( const QPaintDevice * device, QPaintDevice * replacement, const QPoint &amp; offset = QPoint()</arglist>
+    </member>
+    <member kind="function">
+      <name>setWorldMatrix</name>
+      <anchor>setWorldMatrix</anchor>
+      <arglist>( const QMatrix &amp; matrix, bool combine = false )</arglist>
+    </member>
+    <member kind="function">
+      <name>worldMatrix</name>
+      <anchor>worldMatrix</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>backgroundColor</name>
@@ -53891,6 +64409,11 @@
       <arglist>( QPaintDevice * device )</arglist>
     </member>
     <member kind="function">
+      <name>beginNativePainting</name>
+      <anchor>beginNativePainting</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>boundingRect</name>
       <anchor>boundingRect</anchor>
       <arglist>( const QRectF &amp; rectangle, int flags, const QString &amp; text )</arglist>
@@ -53931,11 +64454,6 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
-      <name>combinedMatrix</name>
-      <anchor>combinedMatrix</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
       <name>combinedTransform</name>
       <anchor>combinedTransform</anchor>
       <arglist>()</arglist>
@@ -53948,11 +64466,6 @@
     <member kind="function">
       <name>device</name>
       <anchor>device</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <name>deviceMatrix</name>
-      <anchor>deviceMatrix</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -54416,6 +64929,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>endNativePainting</name>
+      <anchor>endNativePainting</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>eraseRect</name>
       <anchor>eraseRect</anchor>
       <arglist>( const QRectF &amp; rectangle )</arglist>
@@ -54546,18 +65064,8 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
-      <name>redirected</name>
-      <anchor>redirected</anchor>
-      <arglist>( const QPaintDevice * device, QPoint * offset = 0 )</arglist>
-    </member>
-    <member kind="function">
       <name>renderHints</name>
       <anchor>renderHints</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <name>resetMatrix</name>
-      <anchor>resetMatrix</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -54569,11 +65077,6 @@
       <name>restore</name>
       <anchor>restore</anchor>
       <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <name>restoreRedirected</name>
-      <anchor>restoreRedirected</anchor>
-      <arglist>( const QPaintDevice * device )</arglist>
     </member>
     <member kind="function">
       <name>rotate</name>
@@ -54691,11 +65194,6 @@
       <arglist>( Qt::PenStyle style )</arglist>
     </member>
     <member kind="function">
-      <name>setRedirected</name>
-      <anchor>setRedirected</anchor>
-      <arglist>( const QPaintDevice * device, QPaintDevice * replacement, const QPoint &amp; offset = QPoint()</arglist>
-    </member>
-    <member kind="function">
       <name>setRenderHint</name>
       <anchor>setRenderHint</anchor>
       <arglist>( RenderHint hint, bool on = true )</arglist>
@@ -54734,11 +65232,6 @@
       <name>setWindow</name>
       <anchor>setWindow-2</anchor>
       <arglist>( int x, int y, int width, int height )</arglist>
-    </member>
-    <member kind="function">
-      <name>setWorldMatrix</name>
-      <anchor>setWorldMatrix</anchor>
-      <arglist>( const QMatrix &amp; matrix, bool combine = false )</arglist>
     </member>
     <member kind="function">
       <name>setWorldMatrixEnabled</name>
@@ -54798,11 +65291,6 @@
     <member kind="function">
       <name>window</name>
       <anchor>window</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <name>worldMatrix</name>
-      <anchor>worldMatrix</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -55187,6 +65675,26 @@
       <name>toSubpathPolygons</name>
       <anchor>toSubpathPolygons-2</anchor>
       <arglist>( const QMatrix &amp; matrix = QMatrix()</arglist>
+    </member>
+    <member kind="function">
+      <name>translate</name>
+      <anchor>translate</anchor>
+      <arglist>( qreal dx, qreal dy )</arglist>
+    </member>
+    <member kind="function">
+      <name>translate</name>
+      <anchor>translate-2</anchor>
+      <arglist>( const QPointF &amp; offset )</arglist>
+    </member>
+    <member kind="function">
+      <name>translated</name>
+      <anchor>translated</anchor>
+      <arglist>( qreal dx, qreal dy )</arglist>
+    </member>
+    <member kind="function">
+      <name>translated</name>
+      <anchor>translated-2</anchor>
+      <arglist>( const QPointF &amp; offset )</arglist>
     </member>
     <member kind="function">
       <name>united</name>
@@ -55721,6 +66229,68 @@
     </member>
   </compound>
   <compound kind="class">
+    <name>QPanGesture</name>
+    <filename>qpangesture.html</filename>
+  </compound>
+  <compound kind="class">
+    <name>QParallelAnimationGroup</name>
+    <filename>qparallelanimationgroup.html</filename>
+    <member kind="function">
+      <name>QParallelAnimationGroup</name>
+      <anchor>QParallelAnimationGroup</anchor>
+      <arglist>( QObject * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>duration</name>
+      <anchor>duration</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>updateCurrentTime</name>
+      <anchor>updateCurrentTime</anchor>
+      <arglist>( int currentTime )</arglist>
+    </member>
+    <member kind="function">
+      <name>updateDirection</name>
+      <anchor>updateDirection</anchor>
+      <arglist>( QAbstractAnimation::Direction direction )</arglist>
+    </member>
+    <member kind="function">
+      <name>updateState</name>
+      <anchor>updateState</anchor>
+      <arglist>( QAbstractAnimation::State newState, QAbstractAnimation::State oldState )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QPauseAnimation</name>
+    <filename>qpauseanimation.html</filename>
+    <member kind="function">
+      <name>QPauseAnimation</name>
+      <anchor>QPauseAnimation</anchor>
+      <arglist>( QObject * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>QPauseAnimation</name>
+      <anchor>QPauseAnimation-2</anchor>
+      <arglist>( int msecs, QObject * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>updateCurrentTime</name>
+      <anchor>updateCurrentTime</anchor>
+      <arglist>( int )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
     <name>QPen</name>
     <filename>qpen.html</filename>
     <member kind="function">
@@ -56052,11 +66622,6 @@
       <arglist>( QIODevice * dev, const char * format = 0 )</arglist>
     </member>
     <member kind="function">
-      <name>metric</name>
-      <anchor>metric</anchor>
-      <arglist>( PaintDeviceMetric m )</arglist>
-    </member>
-    <member kind="function">
       <name>play</name>
       <anchor>play</anchor>
       <arglist>( QPainter * painter )</arglist>
@@ -56264,10 +66829,24 @@
       <anchor>write</anchor>
       <arglist>()</arglist>
     </member>
+  </compound>
+  <compound kind="class">
+    <name>QPinchGesture</name>
+    <filename>qpinchgesture.html</filename>
+    <member kind="function">
+      <name>alphaChannel</name>
+      <anchor>alphaChannel</anchor>
+      <arglist>()</arglist>
+    </member>
     <member kind="function">
       <name>serialNumber</name>
       <anchor>serialNumber</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>setAlphaChannel</name>
+      <anchor>setAlphaChannel</anchor>
+      <arglist>( const QPixmap &amp; alphaChannel )</arglist>
     </member>
     <member kind="enum">
       <name>ColorMode</name>
@@ -56384,11 +66963,6 @@
       <arglist>( const QSize &amp; size )</arglist>
     </member>
     <member kind="function">
-      <name>alphaChannel</name>
-      <anchor>alphaChannel</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
       <name>cacheKey</name>
       <anchor>cacheKey</anchor>
       <arglist>()</arglist>
@@ -56459,9 +67033,24 @@
       <arglist>( CGImageRef image )</arglist>
     </member>
     <member kind="function">
+      <name>fromSymbianCFbsBitmap</name>
+      <anchor>fromSymbianCFbsBitmap</anchor>
+      <arglist>( CFbsBitmap * bitmap )</arglist>
+    </member>
+    <member kind="function">
+      <name>fromSymbianRSgImage</name>
+      <anchor>fromSymbianRSgImage</anchor>
+      <arglist>( RSgImage * sgImage )</arglist>
+    </member>
+    <member kind="function">
       <name>fromWinHBITMAP</name>
       <anchor>fromWinHBITMAP</anchor>
       <arglist>( HBITMAP bitmap, HBitmapFormat format = NoAlpha )</arglist>
+    </member>
+    <member kind="function">
+      <name>fromWinHICON</name>
+      <anchor>fromWinHICON</anchor>
+      <arglist>( HICON icon )</arglist>
     </member>
     <member kind="function">
       <name>fromX11Pixmap</name>
@@ -56569,9 +67158,14 @@
       <arglist>( int width, Qt::TransformationMode mode = Qt::FastTransformation )</arglist>
     </member>
     <member kind="function">
-      <name>setAlphaChannel</name>
-      <anchor>setAlphaChannel</anchor>
-      <arglist>( const QPixmap &amp; alphaChannel )</arglist>
+      <name>scroll</name>
+      <anchor>scroll</anchor>
+      <arglist>( int dx, int dy, int x, int y, int width, int height, QRegion * exposed = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>scroll</name>
+      <anchor>scroll-2</anchor>
+      <arglist>( int dx, int dy, const QRect &amp; rect, QRegion * exposed = 0 )</arglist>
     </member>
     <member kind="function">
       <name>setMask</name>
@@ -56594,9 +67188,24 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>toSymbianCFbsBitmap</name>
+      <anchor>toSymbianCFbsBitmap</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>toSymbianRSgImage</name>
+      <anchor>toSymbianRSgImage</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>toWinHBITMAP</name>
       <anchor>toWinHBITMAP</anchor>
       <arglist>( HBitmapFormat format = NoAlpha )</arglist>
+    </member>
+    <member kind="function">
+      <name>toWinHICON</name>
+      <anchor>toWinHICON</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>transformed</name>
@@ -56648,9 +67257,23 @@
       <anchor>operator-eq</anchor>
       <arglist>( const QPixmap &amp; pixmap )</arglist>
     </member>
+  </compound>
+  <compound kind="class">
+    <name>Key</name>
+    <filename>qpixmapcache-key.html</filename>
+    <member kind="function">
+      <name>Key</name>
+      <anchor>Keyx</anchor>
+      <arglist>()</arglist>
+    </member>
     <member kind="function">
       <name>find</name>
       <anchor>find-2</anchor>
+      <arglist>( const QString &amp; key, QPixmap &amp; pixmap )</arglist>
+    </member>
+    <member kind="function">
+      <name>find</name>
+      <anchor>find-4</anchor>
       <arglist>( const QString &amp; key )</arglist>
     </member>
   </compound>
@@ -56670,17 +67293,37 @@
     <member kind="function">
       <name>find</name>
       <anchor>find</anchor>
-      <arglist>( const QString &amp; key, QPixmap &amp; pm )</arglist>
+      <arglist>( const QString &amp; key, QPixmap * pixmap )</arglist>
+    </member>
+    <member kind="function">
+      <name>find</name>
+      <anchor>find-3</anchor>
+      <arglist>( const Key &amp; key, QPixmap * pixmap )</arglist>
     </member>
     <member kind="function">
       <name>insert</name>
       <anchor>insert</anchor>
-      <arglist>( const QString &amp; key, const QPixmap &amp; pm )</arglist>
+      <arglist>( const QString &amp; key, const QPixmap &amp; pixmap )</arglist>
+    </member>
+    <member kind="function">
+      <name>insert</name>
+      <anchor>insert-2</anchor>
+      <arglist>( const QPixmap &amp; pixmap )</arglist>
     </member>
     <member kind="function">
       <name>remove</name>
       <anchor>remove</anchor>
       <arglist>( const QString &amp; key )</arglist>
+    </member>
+    <member kind="function">
+      <name>remove</name>
+      <anchor>remove-2</anchor>
+      <arglist>( const Key &amp; key )</arglist>
+    </member>
+    <member kind="function">
+      <name>replace</name>
+      <anchor>replace</anchor>
+      <arglist>( const Key &amp; key, const QPixmap &amp; pixmap )</arglist>
     </member>
     <member kind="function">
       <name>setCacheLimit</name>
@@ -56697,9 +67340,44 @@
       <arglist>( QTextDocument * document )</arglist>
     </member>
     <member kind="function">
+      <name>blockBoundingRect</name>
+      <anchor>blockBoundingRect</anchor>
+      <arglist>( const QTextBlock &amp; block )</arglist>
+    </member>
+    <member kind="function">
+      <name>documentChanged</name>
+      <anchor>documentChanged</anchor>
+      <arglist>( int from, int charsRemoved, int charsAdded )</arglist>
+    </member>
+    <member kind="function">
+      <name>documentSize</name>
+      <anchor>documentSize</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>draw</name>
+      <anchor>draw</anchor>
+      <arglist>( QPainter *, const PaintContext &amp; )</arglist>
+    </member>
+    <member kind="function">
       <name>ensureBlockLayout</name>
       <anchor>ensureBlockLayout</anchor>
       <arglist>( const QTextBlock &amp; block )</arglist>
+    </member>
+    <member kind="function">
+      <name>frameBoundingRect</name>
+      <anchor>frameBoundingRect</anchor>
+      <arglist>( QTextFrame * )</arglist>
+    </member>
+    <member kind="function">
+      <name>hitTest</name>
+      <anchor>hitTest</anchor>
+      <arglist>( const QPointF &amp;, Qt::HitTestAccuracy )</arglist>
+    </member>
+    <member kind="function">
+      <name>pageCount</name>
+      <anchor>pageCount</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>requestUpdate</name>
@@ -56776,6 +67454,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>clear</name>
       <anchor>clear</anchor>
       <arglist>()</arglist>
@@ -56846,6 +67529,26 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>dragEnterEvent</name>
+      <anchor>dragEnterEvent</anchor>
+      <arglist>( QDragEnterEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>dragLeaveEvent</name>
+      <anchor>dragLeaveEvent</anchor>
+      <arglist>( QDragLeaveEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>dragMoveEvent</name>
+      <anchor>dragMoveEvent</anchor>
+      <arglist>( QDragMoveEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>dropEvent</name>
+      <anchor>dropEvent</anchor>
+      <arglist>( QDropEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>ensureCursorVisible</name>
       <anchor>ensureCursorVisible</anchor>
       <arglist>()</arglist>
@@ -56866,9 +67569,34 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>focusInEvent</name>
+      <anchor>focusInEvent</anchor>
+      <arglist>( QFocusEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusNextPrevChild</name>
+      <anchor>focusNextPrevChild</anchor>
+      <arglist>( bool next )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusOutEvent</name>
+      <anchor>focusOutEvent</anchor>
+      <arglist>( QFocusEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>PaintContext</name>
       <anchor>getPaintContext</anchor>
       <arglist> QPlainTextEdit::getPaintContext()</arglist>
+    </member>
+    <member kind="function">
+      <name>inputMethodEvent</name>
+      <anchor>inputMethodEvent</anchor>
+      <arglist>( QInputMethodEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>inputMethodQuery</name>
+      <anchor>inputMethodQuery</anchor>
+      <arglist>( Qt::InputMethodQuery property )</arglist>
     </member>
     <member kind="function">
       <name>insertFromMimeData</name>
@@ -56879,6 +67607,16 @@
       <name>insertPlainText</name>
       <anchor>insertPlainText</anchor>
       <arglist>( const QString &amp; text )</arglist>
+    </member>
+    <member kind="function">
+      <name>keyPressEvent</name>
+      <anchor>keyPressEvent</anchor>
+      <arglist>( QKeyEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>keyReleaseEvent</name>
+      <anchor>keyReleaseEvent</anchor>
+      <arglist>( QKeyEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>loadResource</name>
@@ -56896,9 +67634,34 @@
       <arglist>( bool changed )</arglist>
     </member>
     <member kind="function">
+      <name>mouseDoubleClickEvent</name>
+      <anchor>mouseDoubleClickEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseMoveEvent</name>
+      <anchor>mouseMoveEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mousePressEvent</name>
+      <anchor>mousePressEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseReleaseEvent</name>
+      <anchor>mouseReleaseEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>moveCursor</name>
       <anchor>moveCursor</anchor>
       <arglist>( QTextCursor::MoveOperation operation, QTextCursor::MoveMode mode = QTextCursor::MoveAnchor )</arglist>
+    </member>
+    <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>paste</name>
@@ -56919,6 +67682,16 @@
       <name>redoAvailable</name>
       <anchor>redoAvailable</anchor>
       <arglist>( bool available )</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>scrollContentsBy</name>
+      <anchor>scrollContentsBy</anchor>
+      <arglist>( int dx, int dy )</arglist>
     </member>
     <member kind="function">
       <name>selectAll</name>
@@ -56951,6 +67724,11 @@
       <arglist>( const QTextCursor &amp; cursor )</arglist>
     </member>
     <member kind="function">
+      <name>showEvent</name>
+      <anchor>showEvent</anchor>
+      <arglist>( QShowEvent * )</arglist>
+    </member>
+    <member kind="function">
       <name>textChanged</name>
       <anchor>textChanged</anchor>
       <arglist>()</arglist>
@@ -56975,6 +67753,11 @@
       <anchor>updateRequest</anchor>
       <arglist>( const QRect &amp; rect, int dy )</arglist>
     </member>
+    <member kind="function">
+      <name>wheelEvent</name>
+      <anchor>wheelEvent</anchor>
+      <arglist>( QWheelEvent * e )</arglist>
+    </member>
   </compound>
   <compound kind="class">
     <name>QPlastiqueStyle</name>
@@ -56983,6 +67766,96 @@
       <name>QPlastiqueStyle</name>
       <anchor>QPlastiqueStyle</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>drawComplexControl</name>
+      <anchor>drawComplexControl</anchor>
+      <arglist>( ComplexControl control, const QStyleOptionComplex * option, QPainter * painter, const QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawControl</name>
+      <anchor>drawControl</anchor>
+      <arglist>( ControlElement element, const QStyleOption * option, QPainter * painter, const QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawPrimitive</name>
+      <anchor>drawPrimitive</anchor>
+      <arglist>( PrimitiveElement element, const QStyleOption * option, QPainter * painter, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>eventFilter</name>
+      <anchor>eventFilter</anchor>
+      <arglist>( QObject * watched, QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>hitTestComplexControl</name>
+      <anchor>hitTestComplexControl</anchor>
+      <arglist>( ComplexControl control, const QStyleOptionComplex * option, const QPoint &amp; pos, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>pixelMetric</name>
+      <anchor>pixelMetric</anchor>
+      <arglist>( PixelMetric metric, const QStyleOption * option = 0, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>polish</name>
+      <anchor>polish</anchor>
+      <arglist>( QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>polish</name>
+      <anchor>polish-2</anchor>
+      <arglist>( QApplication * app )</arglist>
+    </member>
+    <member kind="function">
+      <name>polish</name>
+      <anchor>polish-3</anchor>
+      <arglist>( QPalette &amp; pal )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeFromContents</name>
+      <anchor>sizeFromContents</anchor>
+      <arglist>( ContentsType type, const QStyleOption * option, const QSize &amp; size, const QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>standardPalette</name>
+      <anchor>standardPalette</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>standardPixmap</name>
+      <anchor>standardPixmap</anchor>
+      <arglist>( StandardPixmap standardPixmap, const QStyleOption * opt, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>styleHint</name>
+      <anchor>styleHint</anchor>
+      <arglist>( StyleHint hint, const QStyleOption * option = 0, const QWidget * widget = 0, QStyleHintReturn * returnData = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>subControlRect</name>
+      <anchor>subControlRect</anchor>
+      <arglist>( ComplexControl control, const QStyleOptionComplex * option, SubControl subControl, const QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>subElementRect</name>
+      <anchor>subElementRect</anchor>
+      <arglist>( SubElement element, const QStyleOption * option, const QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>timerEvent</name>
+      <anchor>timerEvent</anchor>
+      <arglist>( QTimerEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>unpolish</name>
+      <anchor>unpolish</anchor>
+      <arglist>( QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>unpolish</name>
+      <anchor>unpolish-2</anchor>
+      <arglist>( QApplication * app )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -57186,6 +68059,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>manhattanLength</name>
+      <anchor>manhattanLength</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>rx</name>
       <anchor>rx</anchor>
       <arglist>()</arglist>
@@ -57340,6 +68218,16 @@
       <arglist>( const QPoint &amp; offset )</arglist>
     </member>
     <member kind="function">
+      <name>translated</name>
+      <anchor>translated</anchor>
+      <arglist>( int dx, int dy )</arglist>
+    </member>
+    <member kind="function">
+      <name>translated</name>
+      <anchor>translated-2</anchor>
+      <arglist>( const QPoint &amp; offset )</arglist>
+    </member>
+    <member kind="function">
       <name>united</name>
       <anchor>united</anchor>
       <arglist>( const QPolygon &amp; r )</arglist>
@@ -57424,9 +68312,34 @@
       <arglist>( qreal dx, qreal dy )</arglist>
     </member>
     <member kind="function">
+      <name>translated</name>
+      <anchor>translated</anchor>
+      <arglist>( const QPointF &amp; offset )</arglist>
+    </member>
+    <member kind="function">
+      <name>translated</name>
+      <anchor>translated-2</anchor>
+      <arglist>( qreal dx, qreal dy )</arglist>
+    </member>
+    <member kind="function">
       <name>united</name>
       <anchor>united</anchor>
       <arglist>( const QPolygonF &amp; r )</arglist>
+    </member>
+    <member kind="function">
+      <name>addButton</name>
+      <anchor>addButton</anchor>
+      <arglist>( QPushButton * button )</arglist>
+    </member>
+    <member kind="function">
+      <name>printer</name>
+      <anchor>printer-2</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>setPrinter</name>
+      <anchor>setPrinter</anchor>
+      <arglist>( QPrinter * printer, bool pickupSettings = false )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -57448,14 +68361,14 @@
       <arglist>( QPrinter * printer )</arglist>
     </member>
     <member kind="function">
-      <name>addButton</name>
-      <anchor>addButton</anchor>
-      <arglist>( QPushButton * button )</arglist>
-    </member>
-    <member kind="function">
       <name>done</name>
       <anchor>done</anchor>
       <arglist>( int result )</arglist>
+    </member>
+    <member kind="function">
+      <name>exec</name>
+      <anchor>exec</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>open</name>
@@ -57468,19 +68381,9 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
-      <name>printer</name>
-      <anchor>printer-2</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
       <name>setOption</name>
       <anchor>setOption</anchor>
       <arglist>( PrintDialogOption option, bool on = true )</arglist>
-    </member>
-    <member kind="function">
-      <name>setPrinter</name>
-      <anchor>setPrinter</anchor>
-      <arglist>( QPrinter * printer, bool pickupSettings = false )</arglist>
     </member>
     <member kind="function">
       <name>setVisible</name>
@@ -57698,6 +68601,11 @@
     <member kind="function">
       <name>abort</name>
       <anchor>abort</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>actualNumCopies</name>
+      <anchor>actualNumCopies</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -58074,6 +68982,11 @@
       <arglist>( QWidget * parent = 0, Qt::WindowFlags flags = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>done</name>
+      <anchor>done</anchor>
+      <arglist>( int result )</arglist>
+    </member>
+    <member kind="function">
       <name>open</name>
       <anchor>open</anchor>
       <arglist>( QObject * receiver, const char * member )</arglist>
@@ -58086,6 +68999,16 @@
     <member kind="function">
       <name>printer</name>
       <anchor>printer</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>setVisible</name>
+      <anchor>setVisible</anchor>
+      <arglist>( bool visible )</arglist>
+    </member>
+    <member kind="function">
+      <name>numPages</name>
+      <anchor>numPages</anchor>
       <arglist>()</arglist>
     </member>
   </compound>
@@ -58128,14 +69051,14 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
-      <name>numPages</name>
-      <anchor>numPages</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
       <name>Orientation</name>
       <anchor>orientation</anchor>
       <arglist> QPrintPreviewWidget::orientation()</arglist>
+    </member>
+    <member kind="function">
+      <name>pageCount</name>
+      <anchor>pageCount</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>paintRequested</name>
@@ -58191,6 +69114,11 @@
       <name>setViewMode</name>
       <anchor>setViewMode</anchor>
       <arglist>( ViewMode mode )</arglist>
+    </member>
+    <member kind="function">
+      <name>setVisible</name>
+      <anchor>setVisible</anchor>
+      <arglist>( bool visible )</arglist>
     </member>
     <member kind="function">
       <name>setZoomFactor</name>
@@ -58282,6 +69210,26 @@
       <arglist>( QObject * parent = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>atEnd</name>
+      <anchor>atEnd</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>bytesAvailable</name>
+      <anchor>bytesAvailable</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>bytesToWrite</name>
+      <anchor>bytesToWrite</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>canReadLine</name>
+      <anchor>canReadLine</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>close</name>
       <anchor>close</anchor>
       <arglist>()</arglist>
@@ -58337,6 +69285,11 @@
       <arglist>( int exitCode, QProcess::ExitStatus exitStatus )</arglist>
     </member>
     <member kind="function">
+      <name>isSequential</name>
+      <anchor>isSequential</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>kill</name>
       <anchor>kill</anchor>
       <arglist>()</arglist>
@@ -58349,6 +69302,11 @@
     <member kind="function">
       <name>processChannelMode</name>
       <anchor>processChannelMode</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>processEnvironment</name>
+      <anchor>processEnvironment</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -58365,6 +69323,11 @@
       <name>readChannel</name>
       <anchor>readChannel</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>readData</name>
+      <anchor>readData</anchor>
+      <arglist>( char * data, qint64 maxlen )</arglist>
     </member>
     <member kind="function">
       <name>readyReadStandardError</name>
@@ -58385,6 +69348,11 @@
       <name>setProcessChannelMode</name>
       <anchor>setProcessChannelMode</anchor>
       <arglist>( ProcessChannelMode mode )</arglist>
+    </member>
+    <member kind="function">
+      <name>setProcessEnvironment</name>
+      <anchor>setProcessEnvironment</anchor>
+      <arglist>( const QProcessEnvironment &amp; environment )</arglist>
     </member>
     <member kind="function">
       <name>setProcessState</name>
@@ -58477,8 +69445,18 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>waitForBytesWritten</name>
+      <anchor>waitForBytesWritten</anchor>
+      <arglist>( int msecs = 30000 )</arglist>
+    </member>
+    <member kind="function">
       <name>waitForFinished</name>
       <anchor>waitForFinished</anchor>
+      <arglist>( int msecs = 30000 )</arglist>
+    </member>
+    <member kind="function">
+      <name>waitForReadyRead</name>
+      <anchor>waitForReadyRead</anchor>
       <arglist>( int msecs = 30000 )</arglist>
     </member>
     <member kind="function">
@@ -58490,6 +69468,80 @@
       <name>workingDirectory</name>
       <anchor>workingDirectory</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>writeData</name>
+      <anchor>writeData</anchor>
+      <arglist>( const char * data, qint64 len )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QProcessEnvironment</name>
+    <filename>qprocessenvironment.html</filename>
+    <member kind="function">
+      <name>QProcessEnvironment</name>
+      <anchor>QProcessEnvironment</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>QProcessEnvironment</name>
+      <anchor>QProcessEnvironment-2</anchor>
+      <arglist>( const QProcessEnvironment &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>clear</name>
+      <anchor>clear</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>contains</name>
+      <anchor>contains</anchor>
+      <arglist>( const QString &amp; name )</arglist>
+    </member>
+    <member kind="function">
+      <name>insert</name>
+      <anchor>insert</anchor>
+      <arglist>( const QString &amp; name, const QString &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>isEmpty</name>
+      <anchor>isEmpty</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>remove</name>
+      <anchor>remove</anchor>
+      <arglist>( const QString &amp; name )</arglist>
+    </member>
+    <member kind="function">
+      <name>systemEnvironment</name>
+      <anchor>systemEnvironment</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>toStringList</name>
+      <anchor>toStringList</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>value</name>
+      <anchor>value</anchor>
+      <arglist>( const QString &amp; name, const QString &amp; defaultValue = QString()</arglist>
+    </member>
+    <member kind="function">
+      <name>operator!=</name>
+      <anchor>operator-not-eq</anchor>
+      <arglist>( const QProcessEnvironment &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator=</name>
+      <anchor>operator-eq</anchor>
+      <arglist>( const QProcessEnvironment &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator==</name>
+      <anchor>operator-eq-eq</anchor>
+      <arglist>( const QProcessEnvironment &amp; other )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -58516,9 +69568,24 @@
       <arglist>( QWidget * parent = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>initStyleOption</name>
       <anchor>initStyleOption</anchor>
       <arglist>( QStyleOptionProgressBar * option )</arglist>
+    </member>
+    <member kind="function">
+      <name>minimumSizeHint</name>
+      <anchor>minimumSizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * )</arglist>
     </member>
     <member kind="function">
       <name>reset</name>
@@ -58529,6 +69596,11 @@
       <name>setRange</name>
       <anchor>setRange</anchor>
       <arglist>( int minimum, int maximum )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>valueChanged</name>
@@ -58560,6 +69632,16 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>closeEvent</name>
+      <anchor>closeEvent</anchor>
+      <arglist>( QCloseEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>forceShow</name>
       <anchor>forceShow</anchor>
       <arglist>()</arglist>
@@ -58573,6 +69655,11 @@
       <name>reset</name>
       <anchor>reset</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * event )</arglist>
     </member>
     <member kind="function">
       <name>setBar</name>
@@ -58600,9 +69687,43 @@
       <arglist>( int minimum, int maximum )</arglist>
     </member>
     <member kind="function">
+      <name>showEvent</name>
+      <anchor>showEvent</anchor>
+      <arglist>( QShowEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>sizeHint</name>
       <anchor>sizeHint</anchor>
       <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QPropertyAnimation</name>
+    <filename>qpropertyanimation.html</filename>
+    <member kind="function">
+      <name>QPropertyAnimation</name>
+      <anchor>QPropertyAnimation</anchor>
+      <arglist>( QObject * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>QPropertyAnimation</name>
+      <anchor>QPropertyAnimation-2</anchor>
+      <arglist>( QObject * target, const QByteArray &amp; propertyName, QObject * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>updateCurrentValue</name>
+      <anchor>updateCurrentValue</anchor>
+      <arglist>( const QVariant &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>updateState</name>
+      <anchor>updateState</anchor>
+      <arglist>( QAbstractAnimation::State newState, QAbstractAnimation::State oldState )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -58733,6 +69854,353 @@
       <anchor>supportedDropActions</anchor>
       <arglist> QProxyModel::supportedDropActions()</arglist>
     </member>
+  </compound>
+  <compound kind="class">
+    <name>QProxyScreen</name>
+    <filename>qproxyscreen.html</filename>
+    <member kind="function">
+      <name>QProxyScreen</name>
+      <anchor>QProxyScreen</anchor>
+      <arglist>( int displayId, ClassId classId = ProxyClass )</arglist>
+    </member>
+    <member kind="function">
+      <name>blank</name>
+      <anchor>blank</anchor>
+      <arglist>( bool on )</arglist>
+    </member>
+    <member kind="function">
+      <name>blit</name>
+      <anchor>blit</anchor>
+      <arglist>( const QImage &amp; image, const QPoint &amp; topLeft, const QRegion &amp; region )</arglist>
+    </member>
+    <member kind="function">
+      <name>connect</name>
+      <anchor>connect</anchor>
+      <arglist>( const QString &amp; displaySpec )</arglist>
+    </member>
+    <member kind="function">
+      <name>createSurface</name>
+      <anchor>createSurface</anchor>
+      <arglist>( QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>createSurface</name>
+      <anchor>createSurface-2</anchor>
+      <arglist>( const QString &amp; key )</arglist>
+    </member>
+    <member kind="function">
+      <name>disconnect</name>
+      <anchor>disconnect</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>exposeRegion</name>
+      <anchor>exposeRegion</anchor>
+      <arglist>( QRegion r, int changing )</arglist>
+    </member>
+    <member kind="function">
+      <name>initDevice</name>
+      <anchor>initDevice</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>isInterlaced</name>
+      <anchor>isInterlaced</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>isTransformed</name>
+      <anchor>isTransformed</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>mapFromDevice</name>
+      <anchor>mapFromDevice</anchor>
+      <arglist>( const QSize &amp; s )</arglist>
+    </member>
+    <member kind="function">
+      <name>mapFromDevice</name>
+      <anchor>mapFromDevice-2</anchor>
+      <arglist>( const QPoint &amp; p, const QSize &amp; s )</arglist>
+    </member>
+    <member kind="function">
+      <name>mapFromDevice</name>
+      <anchor>mapFromDevice-3</anchor>
+      <arglist>( const QRect &amp; r, const QSize &amp; s )</arglist>
+    </member>
+    <member kind="function">
+      <name>mapFromDevice</name>
+      <anchor>mapFromDevice-4</anchor>
+      <arglist>( const QRegion &amp; r, const QSize &amp; s )</arglist>
+    </member>
+    <member kind="function">
+      <name>mapToDevice</name>
+      <anchor>mapToDevice</anchor>
+      <arglist>( const QSize &amp; s )</arglist>
+    </member>
+    <member kind="function">
+      <name>mapToDevice</name>
+      <anchor>mapToDevice-2</anchor>
+      <arglist>( const QPoint &amp; p, const QSize &amp; s )</arglist>
+    </member>
+    <member kind="function">
+      <name>mapToDevice</name>
+      <anchor>mapToDevice-3</anchor>
+      <arglist>( const QRect &amp; r, const QSize &amp; s )</arglist>
+    </member>
+    <member kind="function">
+      <name>mapToDevice</name>
+      <anchor>mapToDevice-4</anchor>
+      <arglist>( const QRegion &amp; r, const QSize &amp; s )</arglist>
+    </member>
+    <member kind="function">
+      <name>onCard</name>
+      <anchor>onCard</anchor>
+      <arglist>( const unsigned char * ptr )</arglist>
+    </member>
+    <member kind="function">
+      <name>onCard</name>
+      <anchor>onCard-2</anchor>
+      <arglist>( const unsigned char * ptr, ulong &amp; offset )</arglist>
+    </member>
+    <member kind="function">
+      <name>region</name>
+      <anchor>region</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>restore</name>
+      <anchor>restore</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>save</name>
+      <anchor>save</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>screen</name>
+      <anchor>screen</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>setDirty</name>
+      <anchor>setDirty</anchor>
+      <arglist>( const QRect &amp; rect )</arglist>
+    </member>
+    <member kind="function">
+      <name>setMode</name>
+      <anchor>setMode</anchor>
+      <arglist>( int w, int h, int d )</arglist>
+    </member>
+    <member kind="function">
+      <name>setScreen</name>
+      <anchor>setScreen</anchor>
+      <arglist>( QScreen * screen )</arglist>
+    </member>
+    <member kind="function">
+      <name>shutdownDevice</name>
+      <anchor>shutdownDevice</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>solidFill</name>
+      <anchor>solidFill</anchor>
+      <arglist>( const QColor &amp; color, const QRegion &amp; region )</arglist>
+    </member>
+    <member kind="function">
+      <name>subScreens</name>
+      <anchor>subScreens</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>supportsDepth</name>
+      <anchor>supportsDepth</anchor>
+      <arglist>( int depth )</arglist>
+    </member>
+    <member kind="function">
+      <name>transformOrientation</name>
+      <anchor>transformOrientation</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QProxyScreenCursor</name>
+    <filename>qproxyscreencursor.html</filename>
+    <member kind="function">
+      <name>QProxyScreenCursor</name>
+      <anchor>QProxyScreenCursor</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>hide</name>
+      <anchor>hide</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>move</name>
+      <anchor>move</anchor>
+      <arglist>( int x, int y )</arglist>
+    </member>
+    <member kind="function">
+      <name>screenCursor</name>
+      <anchor>screenCursor</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>set</name>
+      <anchor>set</anchor>
+      <arglist>( const QImage &amp; image, int hotx, int hoty )</arglist>
+    </member>
+    <member kind="function">
+      <name>setScreenCursor</name>
+      <anchor>setScreenCursor</anchor>
+      <arglist>( QScreenCursor * cursor )</arglist>
+    </member>
+    <member kind="function">
+      <name>show</name>
+      <anchor>show</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QProxyStyle</name>
+    <filename>qproxystyle.html</filename>
+    <member kind="function">
+      <name>QProxyStyle</name>
+      <anchor>QProxyStyle</anchor>
+      <arglist>( QStyle * style = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>baseStyle</name>
+      <anchor>baseStyle</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>drawComplexControl</name>
+      <anchor>drawComplexControl</anchor>
+      <arglist>( ComplexControl control, const QStyleOptionComplex * option, QPainter * painter, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawControl</name>
+      <anchor>drawControl</anchor>
+      <arglist>( ControlElement element, const QStyleOption * option, QPainter * painter, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawItemPixmap</name>
+      <anchor>drawItemPixmap</anchor>
+      <arglist>( QPainter * painter, const QRect &amp; rect, int alignment, const QPixmap &amp; pixmap )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawItemText</name>
+      <anchor>drawItemText</anchor>
+      <arglist>( QPainter * painter, const QRect &amp; rect, int flags, const QPalette &amp; pal, bool enabled, const QString &amp; text, QPalette::ColorRole textRole = QPalette::NoRole )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawPrimitive</name>
+      <anchor>drawPrimitive</anchor>
+      <arglist>( PrimitiveElement element, const QStyleOption * option, QPainter * painter, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>generatedIconPixmap</name>
+      <anchor>generatedIconPixmap</anchor>
+      <arglist>( QIcon::Mode iconMode, const QPixmap &amp; pixmap, const QStyleOption * opt )</arglist>
+    </member>
+    <member kind="function">
+      <name>hitTestComplexControl</name>
+      <anchor>hitTestComplexControl</anchor>
+      <arglist>( ComplexControl control, const QStyleOptionComplex * option, const QPoint &amp; pos, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>itemPixmapRect</name>
+      <anchor>itemPixmapRect</anchor>
+      <arglist>( const QRect &amp; r, int flags, const QPixmap &amp; pixmap )</arglist>
+    </member>
+    <member kind="function">
+      <name>itemTextRect</name>
+      <anchor>itemTextRect</anchor>
+      <arglist>( const QFontMetrics &amp; fm, const QRect &amp; r, int flags, bool enabled, const QString &amp; text )</arglist>
+    </member>
+    <member kind="function">
+      <name>layoutSpacingImplementation</name>
+      <anchor>layoutSpacingImplementation</anchor>
+      <arglist>( QSizePolicy::ControlType control1, QSizePolicy::ControlType control2, Qt::Orientation orientation, const QStyleOption * option = 0, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>pixelMetric</name>
+      <anchor>pixelMetric</anchor>
+      <arglist>( PixelMetric metric, const QStyleOption * option = 0, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>polish</name>
+      <anchor>polish</anchor>
+      <arglist>( QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>polish</name>
+      <anchor>polish-2</anchor>
+      <arglist>( QPalette &amp; pal )</arglist>
+    </member>
+    <member kind="function">
+      <name>polish</name>
+      <anchor>polish-3</anchor>
+      <arglist>( QApplication * app )</arglist>
+    </member>
+    <member kind="function">
+      <name>setBaseStyle</name>
+      <anchor>setBaseStyle</anchor>
+      <arglist>( QStyle * style )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeFromContents</name>
+      <anchor>sizeFromContents</anchor>
+      <arglist>( ContentsType type, const QStyleOption * option, const QSize &amp; size, const QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>standardIconImplementation</name>
+      <anchor>standardIconImplementation</anchor>
+      <arglist>( StandardPixmap standardIcon, const QStyleOption * option, const QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>standardPalette</name>
+      <anchor>standardPalette</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>standardPixmap</name>
+      <anchor>standardPixmap</anchor>
+      <arglist>( StandardPixmap standardPixmap, const QStyleOption * opt, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>styleHint</name>
+      <anchor>styleHint</anchor>
+      <arglist>( StyleHint hint, const QStyleOption * option = 0, const QWidget * widget = 0, QStyleHintReturn * returnData = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>subControlRect</name>
+      <anchor>subControlRect</anchor>
+      <arglist>( ComplexControl cc, const QStyleOptionComplex * option, SubControl sc, const QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>subElementRect</name>
+      <anchor>subElementRect</anchor>
+      <arglist>( SubElement element, const QStyleOption * option, const QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>unpolish</name>
+      <anchor>unpolish</anchor>
+      <arglist>( QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>unpolish</name>
+      <anchor>unpolish-2</anchor>
+      <arglist>( QApplication * app )</arglist>
+    </member>
     <member kind="function">
       <name>QPushButton</name>
       <anchor>QPushButton-5</anchor>
@@ -58788,14 +70256,44 @@
       <arglist>( const QIcon &amp; icon, const QString &amp; text, QWidget * parent = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusInEvent</name>
+      <anchor>focusInEvent</anchor>
+      <arglist>( QFocusEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusOutEvent</name>
+      <anchor>focusOutEvent</anchor>
+      <arglist>( QFocusEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>initStyleOption</name>
       <anchor>initStyleOption</anchor>
       <arglist>( QStyleOptionButton * option )</arglist>
     </member>
     <member kind="function">
+      <name>keyPressEvent</name>
+      <anchor>keyPressEvent</anchor>
+      <arglist>( QKeyEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>menu</name>
       <anchor>menu</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>minimumSizeHint</name>
+      <anchor>minimumSizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * )</arglist>
     </member>
     <member kind="function">
       <name>setMenu</name>
@@ -58806,6 +70304,185 @@
       <name>showMenu</name>
       <anchor>showMenu</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QQuaternion</name>
+    <filename>qquaternion.html</filename>
+    <member kind="function">
+      <name>QQuaternion</name>
+      <anchor>QQuaternion</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>QQuaternion</name>
+      <anchor>QQuaternion-2</anchor>
+      <arglist>( qreal scalar, qreal xpos, qreal ypos, qreal zpos )</arglist>
+    </member>
+    <member kind="function">
+      <name>QQuaternion</name>
+      <anchor>QQuaternion-3</anchor>
+      <arglist>( qreal scalar, const QVector3D &amp; vector )</arglist>
+    </member>
+    <member kind="function">
+      <name>QQuaternion</name>
+      <anchor>QQuaternion-4</anchor>
+      <arglist>( const QVector4D &amp; vector )</arglist>
+    </member>
+    <member kind="function">
+      <name>conjugate</name>
+      <anchor>conjugate</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>fromAxisAndAngle</name>
+      <anchor>fromAxisAndAngle</anchor>
+      <arglist>( const QVector3D &amp; axis, qreal angle )</arglist>
+    </member>
+    <member kind="function">
+      <name>fromAxisAndAngle</name>
+      <anchor>fromAxisAndAngle-2</anchor>
+      <arglist>( qreal x, qreal y, qreal z, qreal angle )</arglist>
+    </member>
+    <member kind="function">
+      <name>isIdentity</name>
+      <anchor>isIdentity</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>isNull</name>
+      <anchor>isNull</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>length</name>
+      <anchor>length</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>lengthSquared</name>
+      <anchor>lengthSquared</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>nlerp</name>
+      <anchor>nlerp</anchor>
+      <arglist>( const QQuaternion &amp; q1, const QQuaternion &amp; q2, qreal t )</arglist>
+    </member>
+    <member kind="function">
+      <name>normalize</name>
+      <anchor>normalize</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>normalized</name>
+      <anchor>normalized</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>rotatedVector</name>
+      <anchor>rotatedVector</anchor>
+      <arglist>( const QVector3D &amp; vector )</arglist>
+    </member>
+    <member kind="function">
+      <name>scalar</name>
+      <anchor>scalar</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>setScalar</name>
+      <anchor>setScalar</anchor>
+      <arglist>( qreal scalar )</arglist>
+    </member>
+    <member kind="function">
+      <name>setVector</name>
+      <anchor>setVector</anchor>
+      <arglist>( const QVector3D &amp; vector )</arglist>
+    </member>
+    <member kind="function">
+      <name>setVector</name>
+      <anchor>setVector-2</anchor>
+      <arglist>( qreal x, qreal y, qreal z )</arglist>
+    </member>
+    <member kind="function">
+      <name>setX</name>
+      <anchor>setX</anchor>
+      <arglist>( qreal x )</arglist>
+    </member>
+    <member kind="function">
+      <name>setY</name>
+      <anchor>setY</anchor>
+      <arglist>( qreal y )</arglist>
+    </member>
+    <member kind="function">
+      <name>setZ</name>
+      <anchor>setZ</anchor>
+      <arglist>( qreal z )</arglist>
+    </member>
+    <member kind="function">
+      <name>slerp</name>
+      <anchor>slerp</anchor>
+      <arglist>( const QQuaternion &amp; q1, const QQuaternion &amp; q2, qreal t )</arglist>
+    </member>
+    <member kind="function">
+      <name>toVector4D</name>
+      <anchor>toVector4D</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>vector</name>
+      <anchor>vector</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>x</name>
+      <anchor>x</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>y</name>
+      <anchor>y</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>z</name>
+      <anchor>z</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>operator</name>
+      <anchor>operator-QVariant</anchor>
+      <arglist> QVariant()</arglist>
+    </member>
+    <member kind="function">
+      <name>operator*=</name>
+      <anchor>operator-2a-eq</anchor>
+      <arglist>( qreal factor )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator*=</name>
+      <anchor>operator-2a-eq-2</anchor>
+      <arglist>( const QQuaternion &amp; quaternion )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator+=</name>
+      <anchor>operator-2b-eq</anchor>
+      <arglist>( const QQuaternion &amp; quaternion )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator-=</name>
+      <anchor>operator--eq</anchor>
+      <arglist>( const QQuaternion &amp; quaternion )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator/=</name>
+      <anchor>operator-2f-eq</anchor>
+      <arglist>( qreal divisor )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -58930,9 +70607,34 @@
       <arglist>( const QString &amp; text, QWidget * parent = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>hitButton</name>
+      <anchor>hitButton</anchor>
+      <arglist>( const QPoint &amp; pos )</arglist>
+    </member>
+    <member kind="function">
       <name>initStyleOption</name>
       <anchor>initStyleOption</anchor>
       <arglist>( QStyleOptionButton * option )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseMoveEvent</name>
+      <anchor>mouseMoveEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -58941,6 +70643,11 @@
     <member kind="function">
       <name>QRasterPaintEngine</name>
       <anchor>QRasterPaintEngine</anchor>
+      <arglist>( QPaintDevice * device )</arglist>
+    </member>
+    <member kind="function">
+      <name>begin</name>
+      <anchor>begin</anchor>
       <arglist>( QPaintDevice * device )</arglist>
     </member>
     <member kind="function">
@@ -58956,12 +70663,92 @@
     <member kind="function">
       <name>drawEllipse</name>
       <anchor>drawEllipse</anchor>
+      <arglist>( const QRectF &amp; rect )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawEllipse</name>
+      <anchor>drawEllipse-2</anchor>
       <arglist>( const QRect &amp; rect )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawImage</name>
+      <anchor>drawImage</anchor>
+      <arglist>( const QRectF &amp; r, const QImage &amp; img, const QRectF &amp; sr, Qt::ImageConversionFlags falgs = Qt::AutoColor )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawLines</name>
+      <anchor>drawLines</anchor>
+      <arglist>( const QLine * lines, int lineCount )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawLines</name>
+      <anchor>drawLines-2</anchor>
+      <arglist>( const QLineF * lines, int lineCount )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawPixmap</name>
+      <anchor>drawPixmap</anchor>
+      <arglist>( const QRectF &amp; r, const QPixmap &amp; pixmap, const QRectF &amp; sr )</arglist>
     </member>
     <member kind="function">
       <name>drawPoints</name>
       <anchor>drawPoints</anchor>
+      <arglist>( const QPointF * points, int pointCount )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawPoints</name>
+      <anchor>drawPoints-2</anchor>
       <arglist>( const QPoint * points, int pointCount )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawPolygon</name>
+      <anchor>drawPolygon</anchor>
+      <arglist>( const QPointF * points, int pointCount, PolygonDrawMode mode )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawPolygon</name>
+      <anchor>drawPolygon-2</anchor>
+      <arglist>( const QPoint * points, int pointCount, PolygonDrawMode mode )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawRects</name>
+      <anchor>drawRects</anchor>
+      <arglist>( const QRect * rects, int rectCount )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawRects</name>
+      <anchor>drawRects-2</anchor>
+      <arglist>( const QRectF * rects, int rectCount )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawTextItem</name>
+      <anchor>drawTextItem</anchor>
+      <arglist>( const QPointF &amp; p, const QTextItem &amp; textItem )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawTiledPixmap</name>
+      <anchor>drawTiledPixmap</anchor>
+      <arglist>( const QRectF &amp; r, const QPixmap &amp; pixmap, const QPointF &amp; sr )</arglist>
+    </member>
+    <member kind="function">
+      <name>end</name>
+      <anchor>end</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>fillRect</name>
+      <anchor>fillRect</anchor>
+      <arglist>( const QRectF &amp; r, const QBrush &amp; brush )</arglist>
+    </member>
+    <member kind="function">
+      <name>fillRect</name>
+      <anchor>fillRect-2</anchor>
+      <arglist>( const QRectF &amp; r, const QColor &amp; color )</arglist>
+    </member>
+    <member kind="function">
+      <name>type</name>
+      <anchor>type</anchor>
+      <arglist>()</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -59815,6 +71602,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>numCaptures</name>
+      <anchor>numCaptures</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>search</name>
       <anchor>search</anchor>
       <arglist>( const QString &amp; str, int from = 0, CaretMode caretMode = CaretAtZero )</arglist>
@@ -59874,6 +71666,11 @@
       <arglist>( int nth = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>captureCount</name>
+      <anchor>captureCount</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>capturedTexts</name>
       <anchor>capturedTexts</anchor>
       <arglist>()</arglist>
@@ -59926,11 +71723,6 @@
     <member kind="function">
       <name>matchedLength</name>
       <anchor>matchedLength</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <name>numCaptures</name>
-      <anchor>numCaptures</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -60052,6 +71844,11 @@
       <anchor>isNull</anchor>
       <arglist>()</arglist>
     </member>
+    <member kind="function">
+      <name>numRects</name>
+      <anchor>numRects</anchor>
+      <arglist>()</arglist>
+    </member>
   </compound>
   <compound kind="class">
     <name>QRegion</name>
@@ -60137,8 +71934,8 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
-      <name>numRects</name>
-      <anchor>numRects</anchor>
+      <name>rectCount</name>
+      <anchor>rectCount</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -60305,6 +72102,11 @@
       <anchor>addSearchPath</anchor>
       <arglist>( const QString &amp; path )</arglist>
     </member>
+    <member kind="function">
+      <name>searchPaths</name>
+      <anchor>searchPaths</anchor>
+      <arglist>()</arglist>
+    </member>
   </compound>
   <compound kind="class">
     <name>QResource</name>
@@ -60370,11 +72172,6 @@
       <arglist>( const uchar * rccData, const QString &amp; mapRoot = QString()</arglist>
     </member>
     <member kind="function">
-      <name>searchPaths</name>
-      <anchor>searchPaths</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
       <name>setFileName</name>
       <anchor>setFileName</anchor>
       <arglist>( const QString &amp; file )</arglist>
@@ -60414,6 +72211,16 @@
       <arglist>( Shape s, QWidget * p = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>initStyleOption</name>
       <anchor>initStyleOption</anchor>
       <arglist>( QStyleOptionRubberBand * option )</arglist>
@@ -60429,6 +72236,16 @@
       <arglist>( const QPoint &amp; p )</arglist>
     </member>
     <member kind="function">
+      <name>moveEvent</name>
+      <anchor>moveEvent</anchor>
+      <arglist>( QMoveEvent * )</arglist>
+    </member>
+    <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * )</arglist>
+    </member>
+    <member kind="function">
       <name>resize</name>
       <anchor>resize</anchor>
       <arglist>( int width, int height )</arglist>
@@ -60437,6 +72254,11 @@
       <name>resize</name>
       <anchor>resize-2</anchor>
       <arglist>( const QSize &amp; size )</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * )</arglist>
     </member>
     <member kind="function">
       <name>setGeometry</name>
@@ -60452,6 +72274,11 @@
       <name>shape</name>
       <anchor>shape</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>showEvent</name>
+      <anchor>showEvent</anchor>
+      <arglist>( QShowEvent * e )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -60476,6 +72303,721 @@
       <name>setAutoDelete</name>
       <anchor>setAutoDelete</anchor>
       <arglist>( bool autoDelete )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QS60MainApplication</name>
+    <filename>qs60mainapplication.html</filename>
+    <member kind="function">
+      <name>QS60MainApplication</name>
+      <anchor>QS60MainApplication</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>AppDllUid</name>
+      <anchor>AppDllUid</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>CreateDocumentL</name>
+      <anchor>CreateDocumentL</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>ResourceFileName</name>
+      <anchor>ResourceFileName</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QS60MainAppUi</name>
+    <filename>qs60mainappui.html</filename>
+    <member kind="function">
+      <name>QS60MainAppUi</name>
+      <anchor>QS60MainAppUi</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>ConstructL</name>
+      <anchor>ConstructL</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>DynInitMenuBarL</name>
+      <anchor>DynInitMenuBarL</anchor>
+      <arglist>( TInt resourceId, CEikMenuBar * menuBar )</arglist>
+    </member>
+    <member kind="function">
+      <name>DynInitMenuPaneL</name>
+      <anchor>DynInitMenuPaneL</anchor>
+      <arglist>( TInt resourceId, CEikMenuPane * menuPane )</arglist>
+    </member>
+    <member kind="function">
+      <name>HandleCommandL</name>
+      <anchor>HandleCommandL</anchor>
+      <arglist>( TInt command )</arglist>
+    </member>
+    <member kind="function">
+      <name>HandleResourceChangeL</name>
+      <anchor>HandleResourceChangeL</anchor>
+      <arglist>( TInt type )</arglist>
+    </member>
+    <member kind="function">
+      <name>HandleStatusPaneSizeChange</name>
+      <anchor>HandleStatusPaneSizeChange</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>HandleWsEventL</name>
+      <anchor>HandleWsEventL</anchor>
+      <arglist>( const TWsEvent &amp; wsEvent, CCoeControl * destination )</arglist>
+    </member>
+    <member kind="function">
+      <name>RestoreMenuL</name>
+      <anchor>RestoreMenuL</anchor>
+      <arglist>( CCoeControl * menuWindow, TInt resourceId, TMenuType menuType )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QS60MainDocument</name>
+    <filename>qs60maindocument.html</filename>
+    <member kind="function">
+      <name>QS60MainDocument</name>
+      <anchor>QS60MainDocument</anchor>
+      <arglist>( CEikApplication &amp; mainApplication )</arglist>
+    </member>
+    <member kind="function">
+      <name>CreateAppUiL</name>
+      <anchor>CreateAppUiL</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QS60Style</name>
+    <filename>qs60style.html</filename>
+    <member kind="function">
+      <name>QS60Style</name>
+      <anchor>QS60Style</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>drawComplexControl</name>
+      <anchor>drawComplexControl</anchor>
+      <arglist>( ComplexControl control, const QStyleOptionComplex * option, QPainter * painter, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawControl</name>
+      <anchor>drawControl</anchor>
+      <arglist>( ControlElement element, const QStyleOption * option, QPainter * painter, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawPrimitive</name>
+      <anchor>drawPrimitive</anchor>
+      <arglist>( PrimitiveElement element, const QStyleOption * option, QPainter * painter, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>pixelMetric</name>
+      <anchor>pixelMetric</anchor>
+      <arglist>( PixelMetric metric, const QStyleOption * option = 0, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>polish</name>
+      <anchor>polish</anchor>
+      <arglist>( QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>polish</name>
+      <anchor>polish-2</anchor>
+      <arglist>( QApplication * application )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeFromContents</name>
+      <anchor>sizeFromContents</anchor>
+      <arglist>( ContentsType ct, const QStyleOption * opt, const QSize &amp; csz, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>styleHint</name>
+      <anchor>styleHint</anchor>
+      <arglist>( StyleHint sh, const QStyleOption * opt = 0, const QWidget * widget = 0, QStyleHintReturn * hret = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>subControlRect</name>
+      <anchor>subControlRect</anchor>
+      <arglist>( ComplexControl control, const QStyleOptionComplex * option, SubControl scontrol, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>subElementRect</name>
+      <anchor>subElementRect</anchor>
+      <arglist>( SubElement element, const QStyleOption * opt, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>unpolish</name>
+      <anchor>unpolish</anchor>
+      <arglist>( QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>unpolish</name>
+      <anchor>unpolish-2</anchor>
+      <arglist>( QApplication * application )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QScopedArrayPointer</name>
+    <filename>qscopedarraypointer.html</filename>
+    <member kind="function">
+      <name>QScopedArrayPointer</name>
+      <anchor>QScopedArrayPointer</anchor>
+      <arglist>( T * p = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator[]</name>
+      <anchor>operator-5b-5d</anchor>
+      <arglist>( int i )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator[]</name>
+      <anchor>operator-5b-5d-2</anchor>
+      <arglist>( int i )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QScopedPointer</name>
+    <filename>qscopedpointer.html</filename>
+    <member kind="function">
+      <name>QScopedPointer</name>
+      <anchor>QScopedPointer</anchor>
+      <arglist>( T * p = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>data</name>
+      <anchor>data</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>isNull</name>
+      <anchor>isNull</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>reset</name>
+      <anchor>reset</anchor>
+      <arglist>( T * other = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>swap</name>
+      <anchor>swap</anchor>
+      <arglist>( QScopedPointer&lt;T, Cleanup&gt; &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>take</name>
+      <anchor>take</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>operator</name>
+      <anchor>operator-bool</anchor>
+      <arglist> bool()</arglist>
+    </member>
+    <member kind="function">
+      <name>operator!</name>
+      <anchor>operator-not</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>operator*</name>
+      <anchor>operator-2a</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>operator-&amp;</name>
+      <anchor>operator--gt</anchor>
+      <arglist>gt;()</arglist>
+    </member>
+    <member kind="function">
+      <name>numCols</name>
+      <anchor>numCols</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QScreen</name>
+    <filename>qscreen.html</filename>
+    <member kind="enum">
+      <name>ClassId</name>
+      <anchor>ClassId-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enum">
+      <name>PixelType</name>
+      <anchor>PixelType-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>QScreen</name>
+      <anchor>QScreen</anchor>
+      <arglist>( int display_id, ClassId classId )</arglist>
+    </member>
+    <member kind="function">
+      <name>QScreen</name>
+      <anchor>QScreen-2</anchor>
+      <arglist>( int displayId )</arglist>
+    </member>
+    <member kind="function">
+      <name>alloc</name>
+      <anchor>alloc</anchor>
+      <arglist>( unsigned int red, unsigned int green, unsigned int blue )</arglist>
+    </member>
+    <member kind="function">
+      <name>base</name>
+      <anchor>base</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>blank</name>
+      <anchor>blank</anchor>
+      <arglist>( bool on )</arglist>
+    </member>
+    <member kind="function">
+      <name>blit</name>
+      <anchor>blit</anchor>
+      <arglist>( const QImage &amp; image, const QPoint &amp; topLeft, const QRegion &amp; region )</arglist>
+    </member>
+    <member kind="function">
+      <name>classId</name>
+      <anchor>classId</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>clut</name>
+      <anchor>clut</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>colorCount</name>
+      <anchor>colorCount</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>connect</name>
+      <anchor>connect</anchor>
+      <arglist>( const QString &amp; displaySpec )</arglist>
+    </member>
+    <member kind="function">
+      <name>createSurface</name>
+      <anchor>createSurface</anchor>
+      <arglist>( const QString &amp; key )</arglist>
+    </member>
+    <member kind="function">
+      <name>createSurface</name>
+      <anchor>createSurface-2</anchor>
+      <arglist>( QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>depth</name>
+      <anchor>depth</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>deviceHeight</name>
+      <anchor>deviceHeight</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>deviceWidth</name>
+      <anchor>deviceWidth</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>disconnect</name>
+      <anchor>disconnect</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>exposeRegion</name>
+      <anchor>exposeRegion</anchor>
+      <arglist>( QRegion region, int windowIndex )</arglist>
+    </member>
+    <member kind="function">
+      <name>height</name>
+      <anchor>height</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>initDevice</name>
+      <anchor>initDevice</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>instance</name>
+      <anchor>instance</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>isInterlaced</name>
+      <anchor>isInterlaced</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>isTransformed</name>
+      <anchor>isTransformed</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>linestep</name>
+      <anchor>linestep</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>mapFromDevice</name>
+      <anchor>mapFromDevice</anchor>
+      <arglist>( const QSize &amp; size )</arglist>
+    </member>
+    <member kind="function">
+      <name>mapFromDevice</name>
+      <anchor>mapFromDevice-2</anchor>
+      <arglist>( const QPoint &amp; point, const QSize &amp; screenSize )</arglist>
+    </member>
+    <member kind="function">
+      <name>mapFromDevice</name>
+      <anchor>mapFromDevice-3</anchor>
+      <arglist>( const QRect &amp; rectangle, const QSize &amp; screenSize )</arglist>
+    </member>
+    <member kind="function">
+      <name>mapFromDevice</name>
+      <anchor>mapFromDevice-4</anchor>
+      <arglist>( const QImage &amp; image )</arglist>
+    </member>
+    <member kind="function">
+      <name>mapFromDevice</name>
+      <anchor>mapFromDevice-5</anchor>
+      <arglist>( const QRegion &amp; region, const QSize &amp; screenSize )</arglist>
+    </member>
+    <member kind="function">
+      <name>mapToDevice</name>
+      <anchor>mapToDevice</anchor>
+      <arglist>( const QSize &amp; size )</arglist>
+    </member>
+    <member kind="function">
+      <name>mapToDevice</name>
+      <anchor>mapToDevice-2</anchor>
+      <arglist>( const QPoint &amp; point, const QSize &amp; screenSize )</arglist>
+    </member>
+    <member kind="function">
+      <name>mapToDevice</name>
+      <anchor>mapToDevice-3</anchor>
+      <arglist>( const QRect &amp; rectangle, const QSize &amp; screenSize )</arglist>
+    </member>
+    <member kind="function">
+      <name>mapToDevice</name>
+      <anchor>mapToDevice-4</anchor>
+      <arglist>( const QImage &amp; image )</arglist>
+    </member>
+    <member kind="function">
+      <name>mapToDevice</name>
+      <anchor>mapToDevice-5</anchor>
+      <arglist>( const QRegion &amp; region, const QSize &amp; screenSize )</arglist>
+    </member>
+    <member kind="function">
+      <name>offset</name>
+      <anchor>offset</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>onCard</name>
+      <anchor>onCard</anchor>
+      <arglist>( const unsigned char * buffer )</arglist>
+    </member>
+    <member kind="function">
+      <name>onCard</name>
+      <anchor>onCard-2</anchor>
+      <arglist>( const unsigned char * buffer, ulong &amp; offset )</arglist>
+    </member>
+    <member kind="function">
+      <name>physicalHeight</name>
+      <anchor>physicalHeight</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>physicalWidth</name>
+      <anchor>physicalWidth</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>Format</name>
+      <anchor>pixelFormat</anchor>
+      <arglist> QScreen::pixelFormat()</arglist>
+    </member>
+    <member kind="function">
+      <name>pixelType</name>
+      <anchor>pixelType</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>pixmapDepth</name>
+      <anchor>pixmapDepth</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>pixmapLinestepAlignment</name>
+      <anchor>pixmapLinestepAlignment</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>pixmapOffsetAlignment</name>
+      <anchor>pixmapOffsetAlignment</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>region</name>
+      <anchor>region</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>restore</name>
+      <anchor>restore</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>save</name>
+      <anchor>save</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>screenSize</name>
+      <anchor>screenSize</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>setDirty</name>
+      <anchor>setDirty</anchor>
+      <arglist>( const QRect &amp; rectangle )</arglist>
+    </member>
+    <member kind="function">
+      <name>setMode</name>
+      <anchor>setMode</anchor>
+      <arglist>( int width, int height, int depth )</arglist>
+    </member>
+    <member kind="function">
+      <name>setPixelFormat</name>
+      <anchor>setPixelFormat</anchor>
+      <arglist>( QImage::Format format )</arglist>
+    </member>
+    <member kind="function">
+      <name>shutdownDevice</name>
+      <anchor>shutdownDevice</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>solidFill</name>
+      <anchor>solidFill</anchor>
+      <arglist>( const QColor &amp; color, const QRegion &amp; region )</arglist>
+    </member>
+    <member kind="function">
+      <name>subScreenIndexAt</name>
+      <anchor>subScreenIndexAt</anchor>
+      <arglist>( const QPoint &amp; position )</arglist>
+    </member>
+    <member kind="function">
+      <name>subScreens</name>
+      <anchor>subScreens</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>supportsDepth</name>
+      <anchor>supportsDepth</anchor>
+      <arglist>( int depth )</arglist>
+    </member>
+    <member kind="function">
+      <name>totalSize</name>
+      <anchor>totalSize</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>transformOrientation</name>
+      <anchor>transformOrientation</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>width</name>
+      <anchor>width</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>d</name>
+      <anchor>d-var</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>data</name>
+      <anchor>data-var</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>dh</name>
+      <anchor>dh-var</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>dw</name>
+      <anchor>dw-var</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>grayscale</name>
+      <anchor>grayscale-var</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>h</name>
+      <anchor>h-var</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>lstep</name>
+      <anchor>lstep-var</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>mapsize</name>
+      <anchor>mapsize-var</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>physHeight</name>
+      <anchor>physHeight-var</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>physWidth</name>
+      <anchor>physWidth-var</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>pixeltype</name>
+      <anchor>pixeltype-var</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>screenclut</name>
+      <anchor>screenclut-var</anchor>
+      <arglist>[256]</arglist>
+    </member>
+    <member kind="function">
+      <name>screencols</name>
+      <anchor>screencols-var</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>size</name>
+      <anchor>size-var</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>w</name>
+      <anchor>w-var</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>setTransformation</name>
+      <anchor>setTransformation</anchor>
+      <arglist>( int transformation, int screenNo = -1 )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QScreenCursor</name>
+    <filename>qscreencursor.html</filename>
+    <member kind="function">
+      <name>QScreenCursor</name>
+      <anchor>QScreenCursor</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>boundingRect</name>
+      <anchor>boundingRect</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>hide</name>
+      <anchor>hide</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>image</name>
+      <anchor>image</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>initSoftwareCursor</name>
+      <anchor>initSoftwareCursor</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>instance</name>
+      <anchor>instance</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>isAccelerated</name>
+      <anchor>isAccelerated</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>isVisible</name>
+      <anchor>isVisible</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>move</name>
+      <anchor>move</anchor>
+      <arglist>( int x, int y )</arglist>
+    </member>
+    <member kind="function">
+      <name>set</name>
+      <anchor>set</anchor>
+      <arglist>( const QImage &amp; image, int hotx, int hoty )</arglist>
+    </member>
+    <member kind="function">
+      <name>show</name>
+      <anchor>show</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QScreenDriverFactory</name>
+    <filename>qscreendriverfactory.html</filename>
+    <member kind="function">
+      <name>create</name>
+      <anchor>create</anchor>
+      <arglist>( const QString &amp; key, int displayId )</arglist>
+    </member>
+    <member kind="function">
+      <name>keys</name>
+      <anchor>keys</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QScreenDriverPlugin</name>
+    <filename>qscreendriverplugin.html</filename>
+    <member kind="function">
+      <name>QScreenDriverPlugin</name>
+      <anchor>QScreenDriverPlugin</anchor>
+      <arglist>( QObject * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>create</name>
+      <anchor>create</anchor>
+      <arglist>( const QString &amp; key, int displayId )</arglist>
+    </member>
+    <member kind="function">
+      <name>keys</name>
+      <anchor>keys</anchor>
+      <arglist>()</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -61185,6 +73727,11 @@
       <arglist></arglist>
     </member>
     <member kind="enum">
+      <name>DebuggerState</name>
+      <anchor>DebuggerState-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enum">
       <name>DebuggerWidget</name>
       <anchor>DebuggerWidget-enum</anchor>
       <arglist></arglist>
@@ -61245,6 +73792,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>state</name>
+      <anchor>state</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>widget</name>
       <anchor>widget</anchor>
       <arglist>( DebuggerWidget widget )</arglist>
@@ -61291,6 +73843,11 @@
       <name>isValid</name>
       <anchor>isValid</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>toArrayIndex</name>
+      <anchor>toArrayIndex</anchor>
+      <arglist>( bool * ok = 0 )</arglist>
     </member>
     <member kind="function">
       <name>toString</name>
@@ -61616,11 +74173,6 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
-      <name>scope</name>
-      <anchor>scope</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
       <name>scriptClass</name>
       <anchor>scriptClass</anchor>
       <arglist>()</arglist>
@@ -61649,11 +74201,6 @@
       <name>setPrototype</name>
       <anchor>setPrototype</anchor>
       <arglist>( const QScriptValue &amp; prototype )</arglist>
-    </member>
-    <member kind="function">
-      <name>setScope</name>
-      <anchor>setScope</anchor>
-      <arglist>( const QScriptValue &amp; scope )</arglist>
     </member>
     <member kind="function">
       <name>setScriptClass</name>
@@ -61829,9 +74376,39 @@
       <arglist>( QWidget * childWidget, int xmargin = 50, int ymargin = 50 )</arglist>
     </member>
     <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>eventFilter</name>
+      <anchor>eventFilter</anchor>
+      <arglist>( QObject * o, QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusNextPrevChild</name>
+      <anchor>focusNextPrevChild</anchor>
+      <arglist>( bool next )</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * )</arglist>
+    </member>
+    <member kind="function">
+      <name>scrollContentsBy</name>
+      <anchor>scrollContentsBy</anchor>
+      <arglist>( int dx, int dy )</arglist>
+    </member>
+    <member kind="function">
       <name>setWidget</name>
       <anchor>setWidget</anchor>
       <arglist>( QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>takeWidget</name>
@@ -61878,9 +74455,54 @@
       <arglist>( Qt::Orientation orientation, QWidget * parent = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>contextMenuEvent</name>
+      <anchor>contextMenuEvent</anchor>
+      <arglist>( QContextMenuEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>hideEvent</name>
+      <anchor>hideEvent</anchor>
+      <arglist>( QHideEvent * )</arglist>
+    </member>
+    <member kind="function">
       <name>initStyleOption</name>
       <anchor>initStyleOption</anchor>
       <arglist>( QStyleOptionSlider * option )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseMoveEvent</name>
+      <anchor>mouseMoveEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mousePressEvent</name>
+      <anchor>mousePressEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseReleaseEvent</name>
+      <anchor>mouseReleaseEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>sliderChange</name>
+      <anchor>sliderChange</anchor>
+      <arglist>( SliderChange change )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -61915,6 +74537,55 @@
       <name>tryAcquire</name>
       <anchor>tryAcquire-2</anchor>
       <arglist>( int n, int timeout )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QSequentialAnimationGroup</name>
+    <filename>qsequentialanimationgroup.html</filename>
+    <member kind="function">
+      <name>QSequentialAnimationGroup</name>
+      <anchor>QSequentialAnimationGroup</anchor>
+      <arglist>( QObject * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>addPause</name>
+      <anchor>addPause</anchor>
+      <arglist>( int msecs )</arglist>
+    </member>
+    <member kind="function">
+      <name>currentAnimationChanged</name>
+      <anchor>currentAnimationChanged</anchor>
+      <arglist>( QAbstractAnimation * current )</arglist>
+    </member>
+    <member kind="function">
+      <name>duration</name>
+      <anchor>duration</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>insertPause</name>
+      <anchor>insertPause</anchor>
+      <arglist>( int index, int msecs )</arglist>
+    </member>
+    <member kind="function">
+      <name>updateCurrentTime</name>
+      <anchor>updateCurrentTime</anchor>
+      <arglist>( int currentTime )</arglist>
+    </member>
+    <member kind="function">
+      <name>updateDirection</name>
+      <anchor>updateDirection</anchor>
+      <arglist>( QAbstractAnimation::Direction direction )</arglist>
+    </member>
+    <member kind="function">
+      <name>updateState</name>
+      <anchor>updateState</anchor>
+      <arglist>( QAbstractAnimation::State newState, QAbstractAnimation::State oldState )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -62283,6 +74954,11 @@
       <name>contains</name>
       <anchor>contains</anchor>
       <arglist>( const T &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>contains</name>
+      <anchor>contains-2</anchor>
+      <arglist>( const QSet&lt;T&gt; &amp; other )</arglist>
     </member>
     <member kind="function">
       <name>count</name>
@@ -62758,6 +75434,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>fallbacksEnabled</name>
       <anchor>fallbacksEnabled</anchor>
       <arglist>()</arglist>
@@ -62876,6 +75557,11 @@
     <name>QSharedDataPointer</name>
     <filename>qshareddatapointer.html</filename>
     <member kind="function">
+      <name>Type</name>
+      <anchor>Type-typedef</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
       <name>QSharedDataPointer</name>
       <anchor>QSharedDataPointer</anchor>
       <arglist>()</arglist>
@@ -62914,6 +75600,11 @@
       <name>detach</name>
       <anchor>detach</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>swap</name>
+      <anchor>swap</anchor>
+      <arglist>( QSharedDataPointer &amp; other )</arglist>
     </member>
     <member kind="function">
       <name>operator</name>
@@ -63116,6 +75807,11 @@
     <member kind="function">
       <name>isNull</name>
       <anchor>isNull</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>objectCast</name>
+      <anchor>objectCast</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -63337,6 +76033,35 @@
       <name>signal</name>
       <anchor>signal</anchor>
       <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QSignalTransition</name>
+    <filename>qsignaltransition.html</filename>
+    <member kind="function">
+      <name>QSignalTransition</name>
+      <anchor>QSignalTransition</anchor>
+      <arglist>( QState * sourceState = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>QSignalTransition</name>
+      <anchor>QSignalTransition-2</anchor>
+      <arglist>( QObject * sender, const char * signal, QState * sourceState = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>eventTest</name>
+      <anchor>eventTest</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>onTransition</name>
+      <anchor>onTransition</anchor>
+      <arglist>( QEvent * event )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -63610,6 +76335,21 @@
       <arglist>( QWidget * parent )</arglist>
     </member>
     <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>eventFilter</name>
+      <anchor>eventFilter</anchor>
+      <arglist>( QObject * o, QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>hideEvent</name>
+      <anchor>hideEvent</anchor>
+      <arglist>( QHideEvent * hideEvent )</arglist>
+    </member>
+    <member kind="function">
       <name>mouseMoveEvent</name>
       <anchor>mouseMoveEvent</anchor>
       <arglist>( QMouseEvent * event )</arglist>
@@ -63620,9 +76360,39 @@
       <arglist>( QMouseEvent * event )</arglist>
     </member>
     <member kind="function">
+      <name>mouseReleaseEvent</name>
+      <anchor>mouseReleaseEvent</anchor>
+      <arglist>( QMouseEvent * mouseEvent )</arglist>
+    </member>
+    <member kind="function">
+      <name>moveEvent</name>
+      <anchor>moveEvent</anchor>
+      <arglist>( QMoveEvent * moveEvent )</arglist>
+    </member>
+    <member kind="function">
       <name>paintEvent</name>
       <anchor>paintEvent</anchor>
       <arglist>( QPaintEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>setVisible</name>
+      <anchor>setVisible</anchor>
+      <arglist>( bool visible )</arglist>
+    </member>
+    <member kind="function">
+      <name>showEvent</name>
+      <anchor>showEvent</anchor>
+      <arglist>( QShowEvent * showEvent )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>winEvent</name>
+      <anchor>winEvent</anchor>
+      <arglist>( MSG * m, long * result )</arglist>
     </member>
     <member kind="enum">
       <name>ExpandData</name>
@@ -63878,9 +76648,44 @@
       <arglist>( Qt::Orientation orientation, QWidget * parent = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>initStyleOption</name>
       <anchor>initStyleOption</anchor>
       <arglist>( QStyleOptionSlider * option )</arglist>
+    </member>
+    <member kind="function">
+      <name>minimumSizeHint</name>
+      <anchor>minimumSizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseMoveEvent</name>
+      <anchor>mouseMoveEvent</anchor>
+      <arglist>( QMouseEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>mousePressEvent</name>
+      <anchor>mousePressEvent</anchor>
+      <arglist>( QMouseEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseReleaseEvent</name>
+      <anchor>mouseReleaseEvent</anchor>
+      <arglist>( QMouseEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>QSocketNotifier</name>
@@ -63905,6 +76710,11 @@
       <name>activated</name>
       <anchor>activated</anchor>
       <arglist>( int socket )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>isEnabled</name>
@@ -63956,6 +76766,36 @@
       <arglist>( QObject * parent = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>buddy</name>
+      <anchor>buddy</anchor>
+      <arglist>( const QModelIndex &amp; index )</arglist>
+    </member>
+    <member kind="function">
+      <name>canFetchMore</name>
+      <anchor>canFetchMore</anchor>
+      <arglist>( const QModelIndex &amp; parent )</arglist>
+    </member>
+    <member kind="function">
+      <name>columnCount</name>
+      <anchor>columnCount</anchor>
+      <arglist>( const QModelIndex &amp; parent = QModelIndex()</arglist>
+    </member>
+    <member kind="function">
+      <name>data</name>
+      <anchor>data</anchor>
+      <arglist>( const QModelIndex &amp; index, int role = Qt::DisplayRole )</arglist>
+    </member>
+    <member kind="function">
+      <name>dropMimeData</name>
+      <anchor>dropMimeData</anchor>
+      <arglist>( const QMimeData * data, Qt::DropAction action, int row, int column, const QModelIndex &amp; parent )</arglist>
+    </member>
+    <member kind="function">
+      <name>fetchMore</name>
+      <anchor>fetchMore</anchor>
+      <arglist>( const QModelIndex &amp; parent )</arglist>
+    </member>
+    <member kind="function">
       <name>filterAcceptsColumn</name>
       <anchor>filterAcceptsColumn</anchor>
       <arglist>( int source_column, const QModelIndex &amp; source_parent )</arglist>
@@ -63964,6 +76804,36 @@
       <name>filterAcceptsRow</name>
       <anchor>filterAcceptsRow</anchor>
       <arglist>( int source_row, const QModelIndex &amp; source_parent )</arglist>
+    </member>
+    <member kind="function">
+      <name>ItemFlags</name>
+      <anchor>flags</anchor>
+      <arglist> QSortFilterProxyModel::flags( const QModelIndex &amp; index )</arglist>
+    </member>
+    <member kind="function">
+      <name>hasChildren</name>
+      <anchor>hasChildren</anchor>
+      <arglist>( const QModelIndex &amp; parent = QModelIndex()</arglist>
+    </member>
+    <member kind="function">
+      <name>headerData</name>
+      <anchor>headerData</anchor>
+      <arglist>( int section, Qt::Orientation orientation, int role = Qt::DisplayRole )</arglist>
+    </member>
+    <member kind="function">
+      <name>index</name>
+      <anchor>index</anchor>
+      <arglist>( int row, int column, const QModelIndex &amp; parent = QModelIndex()</arglist>
+    </member>
+    <member kind="function">
+      <name>insertColumns</name>
+      <anchor>insertColumns</anchor>
+      <arglist>( int column, int count, const QModelIndex &amp; parent = QModelIndex()</arglist>
+    </member>
+    <member kind="function">
+      <name>insertRows</name>
+      <anchor>insertRows</anchor>
+      <arglist>( int row, int count, const QModelIndex &amp; parent = QModelIndex()</arglist>
     </member>
     <member kind="function">
       <name>invalidate</name>
@@ -63986,9 +76856,59 @@
       <arglist>( const QModelIndex &amp; sourceIndex )</arglist>
     </member>
     <member kind="function">
+      <name>mapSelectionFromSource</name>
+      <anchor>mapSelectionFromSource</anchor>
+      <arglist>( const QItemSelection &amp; sourceSelection )</arglist>
+    </member>
+    <member kind="function">
+      <name>mapSelectionToSource</name>
+      <anchor>mapSelectionToSource</anchor>
+      <arglist>( const QItemSelection &amp; proxySelection )</arglist>
+    </member>
+    <member kind="function">
       <name>mapToSource</name>
       <anchor>mapToSource</anchor>
       <arglist>( const QModelIndex &amp; proxyIndex )</arglist>
+    </member>
+    <member kind="function">
+      <name>match</name>
+      <anchor>match</anchor>
+      <arglist>( const QModelIndex &amp; start, int role, const QVariant &amp; value, int hits = 1, Qt::MatchFlags flags = Qt::MatchFlags( Qt::MatchStartsWith | Qt::MatchWrap )</arglist>
+    </member>
+    <member kind="function">
+      <name>mimeData</name>
+      <anchor>mimeData</anchor>
+      <arglist>( const QModelIndexList &amp; indexes )</arglist>
+    </member>
+    <member kind="function">
+      <name>mimeTypes</name>
+      <anchor>mimeTypes</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>parent</name>
+      <anchor>parent</anchor>
+      <arglist>( const QModelIndex &amp; child )</arglist>
+    </member>
+    <member kind="function">
+      <name>removeColumns</name>
+      <anchor>removeColumns</anchor>
+      <arglist>( int column, int count, const QModelIndex &amp; parent = QModelIndex()</arglist>
+    </member>
+    <member kind="function">
+      <name>removeRows</name>
+      <anchor>removeRows</anchor>
+      <arglist>( int row, int count, const QModelIndex &amp; parent = QModelIndex()</arglist>
+    </member>
+    <member kind="function">
+      <name>rowCount</name>
+      <anchor>rowCount</anchor>
+      <arglist>( const QModelIndex &amp; parent = QModelIndex()</arglist>
+    </member>
+    <member kind="function">
+      <name>setData</name>
+      <anchor>setData</anchor>
+      <arglist>( const QModelIndex &amp; index, const QVariant &amp; value, int role = Qt::EditRole )</arglist>
     </member>
     <member kind="function">
       <name>setFilterFixedString</name>
@@ -64001,6 +76921,21 @@
       <arglist>( const QString &amp; pattern )</arglist>
     </member>
     <member kind="function">
+      <name>setHeaderData</name>
+      <anchor>setHeaderData</anchor>
+      <arglist>( int section, Qt::Orientation orientation, const QVariant &amp; value, int role = Qt::EditRole )</arglist>
+    </member>
+    <member kind="function">
+      <name>setSourceModel</name>
+      <anchor>setSourceModel</anchor>
+      <arglist>( QAbstractItemModel * sourceModel )</arglist>
+    </member>
+    <member kind="function">
+      <name>sort</name>
+      <anchor>sort</anchor>
+      <arglist>( int column, Qt::SortOrder order = Qt::AscendingOrder )</arglist>
+    </member>
+    <member kind="function">
       <name>sortColumn</name>
       <anchor>sortColumn</anchor>
       <arglist>()</arglist>
@@ -64009,6 +76944,16 @@
       <name>SortOrder</name>
       <anchor>sortOrder</anchor>
       <arglist> QSortFilterProxyModel::sortOrder()</arglist>
+    </member>
+    <member kind="function">
+      <name>span</name>
+      <anchor>span</anchor>
+      <arglist>( const QModelIndex &amp; index )</arglist>
+    </member>
+    <member kind="function">
+      <name>DropActions</name>
+      <anchor>supportedDropActions</anchor>
+      <arglist> QSortFilterProxyModel::supportedDropActions()</arglist>
     </member>
     <member kind="function">
       <name>QSound</name>
@@ -64158,8 +77103,38 @@
       <arglist>( int w, int h, QSizePolicy::Policy hPolicy = QSizePolicy::Minimum, QSizePolicy::Policy vPolicy = QSizePolicy::Minimum )</arglist>
     </member>
     <member kind="function">
+      <name>Orientations</name>
+      <anchor>expandingDirections</anchor>
+      <arglist> QSpacerItem::expandingDirections()</arglist>
+    </member>
+    <member kind="function">
+      <name>geometry</name>
+      <anchor>geometry</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>isEmpty</name>
       <anchor>isEmpty</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>maximumSize</name>
+      <anchor>maximumSize</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>minimumSize</name>
+      <anchor>minimumSize</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>setGeometry</name>
+      <anchor>setGeometry</anchor>
+      <arglist>( const QRect &amp; r )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -64212,6 +77187,16 @@
       <arglist>( QWidget * parent = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>fixup</name>
+      <anchor>fixup</anchor>
+      <arglist>( QString &amp; input )</arglist>
+    </member>
+    <member kind="function">
       <name>setRange</name>
       <anchor>setRange</anchor>
       <arglist>( int minimum, int maximum )</arglist>
@@ -64220,6 +77205,11 @@
       <name>textFromValue</name>
       <anchor>textFromValue</anchor>
       <arglist>( int value )</arglist>
+    </member>
+    <member kind="function">
+      <name>State</name>
+      <anchor>validate</anchor>
+      <arglist> QSpinBox::validate( QString &amp; text, int &amp; pos )</arglist>
     </member>
     <member kind="function">
       <name>valueChanged</name>
@@ -64271,6 +77261,11 @@
       <arglist>( QPainter * painter )</arglist>
     </member>
     <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>finish</name>
       <anchor>finish</anchor>
       <arglist>( QWidget * mainWin )</arglist>
@@ -64279,6 +77274,11 @@
       <name>messageChanged</name>
       <anchor>messageChanged</anchor>
       <arglist>( const QString &amp; message )</arglist>
+    </member>
+    <member kind="function">
+      <name>mousePressEvent</name>
+      <anchor>mousePressEvent</anchor>
+      <arglist>( QMouseEvent * )</arglist>
     </member>
     <member kind="function">
       <name>pixmap</name>
@@ -64370,6 +77370,16 @@
       <arglist>( QWidget * widget )</arglist>
     </member>
     <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>childEvent</name>
+      <anchor>childEvent</anchor>
+      <arglist>( QChildEvent * c )</arglist>
+    </member>
+    <member kind="function">
       <name>closestLegalPosition</name>
       <anchor>closestLegalPosition</anchor>
       <arglist>( int pos, int index )</arglist>
@@ -64383,6 +77393,11 @@
       <name>createHandle</name>
       <anchor>createHandle</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>getRange</name>
@@ -64410,6 +77425,11 @@
       <arglist>( int index )</arglist>
     </member>
     <member kind="function">
+      <name>minimumSizeHint</name>
+      <anchor>minimumSizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>moveSplitter</name>
       <anchor>moveSplitter</anchor>
       <arglist>( int pos, int index )</arglist>
@@ -64418,6 +77438,11 @@
       <name>refresh</name>
       <anchor>refresh</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * )</arglist>
     </member>
     <member kind="function">
       <name>restoreState</name>
@@ -64450,6 +77475,11 @@
       <arglist>( int index, int stretch )</arglist>
     </member>
     <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>sizes</name>
       <anchor>sizes</anchor>
       <arglist>()</arglist>
@@ -64479,6 +77509,26 @@
       <arglist>( int pos )</arglist>
     </member>
     <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseMoveEvent</name>
+      <anchor>mouseMoveEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mousePressEvent</name>
+      <anchor>mousePressEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseReleaseEvent</name>
+      <anchor>mouseReleaseEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>moveSplitter</name>
       <anchor>moveSplitter</anchor>
       <arglist>( int pos )</arglist>
@@ -64494,9 +77544,19 @@
       <arglist> QSplitterHandle::orientation()</arglist>
     </member>
     <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * )</arglist>
+    </member>
+    <member kind="function">
       <name>setOrientation</name>
       <anchor>setOrientation</anchor>
       <arglist>( Qt::Orientation orientation )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>splitter</name>
@@ -64673,6 +77733,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>NumericalPrecisionPolicy</name>
+      <anchor>numericalPrecisionPolicy</anchor>
+      <arglist> QSqlDatabase::numericalPrecisionPolicy()</arglist>
+    </member>
+    <member kind="function">
       <name>open</name>
       <anchor>open</anchor>
       <arglist>()</arglist>
@@ -64731,6 +77796,11 @@
       <name>setHostName</name>
       <anchor>setHostName</anchor>
       <arglist>( const QString &amp; host )</arglist>
+    </member>
+    <member kind="function">
+      <name>setNumericalPrecisionPolicy</name>
+      <anchor>setNumericalPrecisionPolicy</anchor>
+      <arglist>( QSql::NumericalPrecisionPolicy precisionPolicy )</arglist>
     </member>
     <member kind="function">
       <name>setPassword</name>
@@ -64857,6 +77927,16 @@
       <arglist>( DriverFeature feature )</arglist>
     </member>
     <member kind="function">
+      <name>isIdentifierEscaped</name>
+      <anchor>isIdentifierEscaped</anchor>
+      <arglist>( const QString &amp; identifier, IdentifierType type )</arglist>
+    </member>
+    <member kind="function">
+      <name>isIdentifierEscapedImplementation</name>
+      <anchor>isIdentifierEscapedImplementation</anchor>
+      <arglist>( const QString &amp; identifier, IdentifierType type )</arglist>
+    </member>
+    <member kind="function">
       <name>isOpen</name>
       <anchor>isOpen</anchor>
       <arglist>()</arglist>
@@ -64875,6 +77955,11 @@
       <name>notification</name>
       <anchor>notification</anchor>
       <arglist>( const QString &amp; name )</arglist>
+    </member>
+    <member kind="function">
+      <name>NumericalPrecisionPolicy</name>
+      <anchor>numericalPrecisionPolicy</anchor>
+      <arglist> QSqlDriver::numericalPrecisionPolicy()</arglist>
     </member>
     <member kind="function">
       <name>open</name>
@@ -64902,6 +77987,11 @@
       <arglist>( const QSqlError &amp; error )</arglist>
     </member>
     <member kind="function">
+      <name>setNumericalPrecisionPolicy</name>
+      <anchor>setNumericalPrecisionPolicy</anchor>
+      <arglist>( QSql::NumericalPrecisionPolicy precisionPolicy )</arglist>
+    </member>
+    <member kind="function">
       <name>setOpen</name>
       <anchor>setOpen</anchor>
       <arglist>( bool open )</arglist>
@@ -64915,6 +78005,16 @@
       <name>sqlStatement</name>
       <anchor>sqlStatement</anchor>
       <arglist>( StatementType type, const QString &amp; tableName, const QSqlRecord &amp; rec, bool preparedStatement )</arglist>
+    </member>
+    <member kind="function">
+      <name>stripDelimiters</name>
+      <anchor>stripDelimiters</anchor>
+      <arglist>( const QString &amp; identifier, IdentifierType type )</arglist>
+    </member>
+    <member kind="function">
+      <name>stripDelimitersImplementation</name>
+      <anchor>stripDelimitersImplementation</anchor>
+      <arglist>( const QString &amp; identifier, IdentifierType type )</arglist>
     </member>
     <member kind="function">
       <name>subscribeToNotification</name>
@@ -64955,6 +78055,11 @@
   <compound kind="class">
     <name>QSqlDriverCreator</name>
     <filename>qsqldrivercreator.html</filename>
+    <member kind="function">
+      <name>createObject</name>
+      <anchor>createObject</anchor>
+      <arglist>()</arglist>
+    </member>
   </compound>
   <compound kind="class">
     <name>QSqlDriverCreatorBase</name>
@@ -65529,6 +78634,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>columnCount</name>
+      <anchor>columnCount</anchor>
+      <arglist>( const QModelIndex &amp; index = QModelIndex()</arglist>
+    </member>
+    <member kind="function">
       <name>data</name>
       <anchor>data</anchor>
       <arglist>( const QModelIndex &amp; item, int role = Qt::DisplayRole )</arglist>
@@ -65830,6 +78940,21 @@
       <anchor>QSqlRelationalDelegate</anchor>
       <arglist>( QObject * parent = 0 )</arglist>
     </member>
+    <member kind="function">
+      <name>createEditor</name>
+      <anchor>createEditor</anchor>
+      <arglist>( QWidget * parent, const QStyleOptionViewItem &amp; option, const QModelIndex &amp; index )</arglist>
+    </member>
+    <member kind="function">
+      <name>setEditorData</name>
+      <anchor>setEditorData</anchor>
+      <arglist>( QWidget * editor, const QModelIndex &amp; index )</arglist>
+    </member>
+    <member kind="function">
+      <name>setModelData</name>
+      <anchor>setModelData</anchor>
+      <arglist>( QWidget * editor, QAbstractItemModel * model, const QModelIndex &amp; index )</arglist>
+    </member>
   </compound>
   <compound kind="class">
     <name>QSqlRelationalTableModel</name>
@@ -65838,6 +78963,26 @@
       <name>QSqlRelationalTableModel</name>
       <anchor>QSqlRelationalTableModel</anchor>
       <arglist>( QObject * parent = 0, QSqlDatabase db = QSqlDatabase()</arglist>
+    </member>
+    <member kind="function">
+      <name>clear</name>
+      <anchor>clear</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>data</name>
+      <anchor>data</anchor>
+      <arglist>( const QModelIndex &amp; index, int role = Qt::DisplayRole )</arglist>
+    </member>
+    <member kind="function">
+      <name>insertRowIntoTable</name>
+      <anchor>insertRowIntoTable</anchor>
+      <arglist>( const QSqlRecord &amp; values )</arglist>
+    </member>
+    <member kind="function">
+      <name>orderByClause</name>
+      <anchor>orderByClause</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>relation</name>
@@ -65850,6 +78995,26 @@
       <arglist>( int column )</arglist>
     </member>
     <member kind="function">
+      <name>removeColumns</name>
+      <anchor>removeColumns</anchor>
+      <arglist>( int column, int count, const QModelIndex &amp; parent = QModelIndex()</arglist>
+    </member>
+    <member kind="function">
+      <name>revertRow</name>
+      <anchor>revertRow</anchor>
+      <arglist>( int row )</arglist>
+    </member>
+    <member kind="function">
+      <name>select</name>
+      <anchor>select</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>selectStatement</name>
+      <anchor>selectStatement</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>setData</name>
       <anchor>setData</anchor>
       <arglist>( const QModelIndex &amp; index, const QVariant &amp; value, int role = Qt::EditRole )</arglist>
@@ -65858,6 +79023,16 @@
       <name>setRelation</name>
       <anchor>setRelation</anchor>
       <arglist>( int column, const QSqlRelation &amp; relation )</arglist>
+    </member>
+    <member kind="function">
+      <name>setTable</name>
+      <anchor>setTable</anchor>
+      <arglist>( const QString &amp; table )</arglist>
+    </member>
+    <member kind="function">
+      <name>updateRowInTable</name>
+      <anchor>updateRowInTable</anchor>
+      <arglist>( int row, const QSqlRecord &amp; values )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -66123,6 +79298,16 @@
       <arglist>( int row, QSqlRecord &amp; record )</arglist>
     </member>
     <member kind="function">
+      <name>clear</name>
+      <anchor>clear</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>data</name>
+      <anchor>data</anchor>
+      <arglist>( const QModelIndex &amp; index, int role = Qt::DisplayRole )</arglist>
+    </member>
+    <member kind="function">
       <name>database</name>
       <anchor>database</anchor>
       <arglist>()</arglist>
@@ -66146,6 +79331,16 @@
       <name>filter</name>
       <anchor>filter</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>ItemFlags</name>
+      <anchor>flags</anchor>
+      <arglist> QSqlTableModel::flags( const QModelIndex &amp; index )</arglist>
+    </member>
+    <member kind="function">
+      <name>headerData</name>
+      <anchor>headerData</anchor>
+      <arglist>( int section, Qt::Orientation orientation, int role = Qt::DisplayRole )</arglist>
     </member>
     <member kind="function">
       <name>indexInQuery</name>
@@ -66211,6 +79406,11 @@
       <name>revertRow</name>
       <anchor>revertRow</anchor>
       <arglist>( int row )</arglist>
+    </member>
+    <member kind="function">
+      <name>rowCount</name>
+      <anchor>rowCount</anchor>
+      <arglist>( const QModelIndex &amp; parent = QModelIndex()</arglist>
     </member>
     <member kind="function">
       <name>select</name>
@@ -66671,11 +79871,21 @@
     <member kind="function">
       <name>QSslError</name>
       <anchor>QSslError</anchor>
-      <arglist>( SslError error = NoError, const QSslCertificate &amp; certificate = QSslCertificate()</arglist>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>QSslError</name>
       <anchor>QSslError-2</anchor>
+      <arglist>( SslError error )</arglist>
+    </member>
+    <member kind="function">
+      <name>QSslError</name>
+      <anchor>QSslError-3</anchor>
+      <arglist>( SslError error, const QSslCertificate &amp; certificate )</arglist>
+    </member>
+    <member kind="function">
+      <name>QSslError</name>
+      <anchor>QSslError-4</anchor>
       <arglist>( const QSslError &amp; other )</arglist>
     </member>
     <member kind="function">
@@ -66842,8 +80052,28 @@
       <arglist>( const QList&lt;QSslCertificate&gt; &amp; certificates )</arglist>
     </member>
     <member kind="function">
+      <name>atEnd</name>
+      <anchor>atEnd</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>bytesAvailable</name>
+      <anchor>bytesAvailable</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>bytesToWrite</name>
+      <anchor>bytesToWrite</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>caCertificates</name>
       <anchor>caCertificates</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>canReadLine</name>
+      <anchor>canReadLine</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -66852,9 +80082,19 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>close</name>
+      <anchor>close</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>connectToHostEncrypted</name>
       <anchor>connectToHostEncrypted</anchor>
       <arglist>( const QString &amp; hostName, quint16 port, OpenMode mode = ReadWrite )</arglist>
+    </member>
+    <member kind="function">
+      <name>connectToHostEncrypted</name>
+      <anchor>connectToHostEncrypted-2</anchor>
+      <arglist>( const QString &amp; hostName, quint16 port, const QString &amp; sslPeerName, OpenMode mode = ReadWrite )</arglist>
     </member>
     <member kind="function">
       <name>defaultCaCertificates</name>
@@ -66895,6 +80135,11 @@
       <name>ignoreSslErrors</name>
       <anchor>ignoreSslErrors</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>ignoreSslErrors</name>
+      <anchor>ignoreSslErrors-2</anchor>
+      <arglist>( const QList&lt;QSslError&gt; &amp; errors )</arglist>
     </member>
     <member kind="function">
       <name>isEncrypted</name>
@@ -66950,6 +80195,11 @@
       <name>SslProtocol</name>
       <anchor>protocol</anchor>
       <arglist> QSslSocket::protocol()</arglist>
+    </member>
+    <member kind="function">
+      <name>readData</name>
+      <anchor>readData</anchor>
+      <arglist>( char * data, qint64 maxlen )</arglist>
     </member>
     <member kind="function">
       <name>sessionCipher</name>
@@ -67027,9 +80277,19 @@
       <arglist>( int socketDescriptor, SocketState state = ConnectedState, OpenMode openMode = ReadWrite )</arglist>
     </member>
     <member kind="function">
+      <name>setSocketOption</name>
+      <anchor>setSocketOption</anchor>
+      <arglist>( QAbstractSocket::SocketOption option, const QVariant &amp; value )</arglist>
+    </member>
+    <member kind="function">
       <name>setSslConfiguration</name>
       <anchor>setSslConfiguration</anchor>
       <arglist>( const QSslConfiguration &amp; configuration )</arglist>
+    </member>
+    <member kind="function">
+      <name>socketOption</name>
+      <anchor>socketOption</anchor>
+      <arglist>( QAbstractSocket::SocketOption option )</arglist>
     </member>
     <member kind="function">
       <name>sslConfiguration</name>
@@ -67072,6 +80332,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>waitForBytesWritten</name>
+      <anchor>waitForBytesWritten</anchor>
+      <arglist>( int msecs = 30000 )</arglist>
+    </member>
+    <member kind="function">
       <name>waitForConnected</name>
       <anchor>waitForConnected</anchor>
       <arglist>( int msecs = 30000 )</arglist>
@@ -67085,6 +80350,16 @@
       <name>waitForEncrypted</name>
       <anchor>waitForEncrypted</anchor>
       <arglist>( int msecs = 30000 )</arglist>
+    </member>
+    <member kind="function">
+      <name>waitForReadyRead</name>
+      <anchor>waitForReadyRead</anchor>
+      <arglist>( int msecs = 30000 )</arglist>
+    </member>
+    <member kind="function">
+      <name>writeData</name>
+      <anchor>writeData</anchor>
+      <arglist>( const char * data, qint64 len )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -67140,6 +80415,11 @@
       <arglist>( QLayout * parentLayout )</arglist>
     </member>
     <member kind="function">
+      <name>addItem</name>
+      <anchor>addItem</anchor>
+      <arglist>( QLayoutItem * item )</arglist>
+    </member>
+    <member kind="function">
       <name>addWidget</name>
       <anchor>addWidget</anchor>
       <arglist>( QWidget * widget )</arglist>
@@ -67160,9 +80440,34 @@
       <arglist>( int index, QWidget * widget )</arglist>
     </member>
     <member kind="function">
+      <name>itemAt</name>
+      <anchor>itemAt</anchor>
+      <arglist>( int index )</arglist>
+    </member>
+    <member kind="function">
+      <name>minimumSize</name>
+      <anchor>minimumSize</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>setCurrentWidget</name>
       <anchor>setCurrentWidget</anchor>
       <arglist>( QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>setGeometry</name>
+      <anchor>setGeometry</anchor>
+      <arglist>( const QRect &amp; rect )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>takeAt</name>
+      <anchor>takeAt</anchor>
+      <arglist>( int index )</arglist>
     </member>
     <member kind="function">
       <name>widget</name>
@@ -67197,6 +80502,11 @@
       <name>currentWidget</name>
       <anchor>currentWidget</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>indexOf</name>
@@ -67681,6 +80991,16 @@
       <anchor>QStandardItemEditorCreator</anchor>
       <arglist>()</arglist>
     </member>
+    <member kind="function">
+      <name>createWidget</name>
+      <anchor>createWidget</anchor>
+      <arglist>( QWidget * parent )</arglist>
+    </member>
+    <member kind="function">
+      <name>valuePropertyName</name>
+      <anchor>valuePropertyName</anchor>
+      <arglist>()</arglist>
+    </member>
   </compound>
   <compound kind="class">
     <name>QStandardItemModel</name>
@@ -67716,14 +81036,49 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>columnCount</name>
+      <anchor>columnCount</anchor>
+      <arglist>( const QModelIndex &amp; parent = QModelIndex()</arglist>
+    </member>
+    <member kind="function">
+      <name>data</name>
+      <anchor>data</anchor>
+      <arglist>( const QModelIndex &amp; index, int role = Qt::DisplayRole )</arglist>
+    </member>
+    <member kind="function">
+      <name>dropMimeData</name>
+      <anchor>dropMimeData</anchor>
+      <arglist>( const QMimeData * data, Qt::DropAction action, int row, int column, const QModelIndex &amp; parent )</arglist>
+    </member>
+    <member kind="function">
       <name>findItems</name>
       <anchor>findItems</anchor>
       <arglist>( const QString &amp; text, Qt::MatchFlags flags = Qt::MatchExactly, int column = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>ItemFlags</name>
+      <anchor>flags</anchor>
+      <arglist> QStandardItemModel::flags( const QModelIndex &amp; index )</arglist>
+    </member>
+    <member kind="function">
+      <name>hasChildren</name>
+      <anchor>hasChildren</anchor>
+      <arglist>( const QModelIndex &amp; parent = QModelIndex()</arglist>
+    </member>
+    <member kind="function">
+      <name>headerData</name>
+      <anchor>headerData</anchor>
+      <arglist>( int section, Qt::Orientation orientation, int role = Qt::DisplayRole )</arglist>
+    </member>
+    <member kind="function">
       <name>horizontalHeaderItem</name>
       <anchor>horizontalHeaderItem</anchor>
       <arglist>( int column )</arglist>
+    </member>
+    <member kind="function">
+      <name>index</name>
+      <anchor>index</anchor>
+      <arglist>( int row, int column, const QModelIndex &amp; parent = QModelIndex()</arglist>
     </member>
     <member kind="function">
       <name>indexFromItem</name>
@@ -67741,6 +81096,11 @@
       <arglist>( int column, const QModelIndex &amp; parent = QModelIndex()</arglist>
     </member>
     <member kind="function">
+      <name>insertColumns</name>
+      <anchor>insertColumns</anchor>
+      <arglist>( int column, int count, const QModelIndex &amp; parent = QModelIndex()</arglist>
+    </member>
+    <member kind="function">
       <name>insertRow</name>
       <anchor>insertRow</anchor>
       <arglist>( int row, const QList&lt;QStandardItem *&gt; &amp; items )</arglist>
@@ -67754,6 +81114,11 @@
       <name>insertRow</name>
       <anchor>insertRow-3</anchor>
       <arglist>( int row, QStandardItem * item )</arglist>
+    </member>
+    <member kind="function">
+      <name>insertRows</name>
+      <anchor>insertRows</anchor>
+      <arglist>( int row, int count, const QModelIndex &amp; parent = QModelIndex()</arglist>
     </member>
     <member kind="function">
       <name>invisibleRootItem</name>
@@ -67771,6 +81136,11 @@
       <arglist>( QStandardItem * item )</arglist>
     </member>
     <member kind="function">
+      <name>itemData</name>
+      <anchor>itemData</anchor>
+      <arglist>( const QModelIndex &amp; index )</arglist>
+    </member>
+    <member kind="function">
       <name>itemFromIndex</name>
       <anchor>itemFromIndex</anchor>
       <arglist>( const QModelIndex &amp; index )</arglist>
@@ -67781,9 +81151,49 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>mimeData</name>
+      <anchor>mimeData</anchor>
+      <arglist>( const QModelIndexList &amp; indexes )</arglist>
+    </member>
+    <member kind="function">
+      <name>mimeTypes</name>
+      <anchor>mimeTypes</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>parent</name>
+      <anchor>parent</anchor>
+      <arglist>( const QModelIndex &amp; child )</arglist>
+    </member>
+    <member kind="function">
+      <name>removeColumns</name>
+      <anchor>removeColumns</anchor>
+      <arglist>( int column, int count, const QModelIndex &amp; parent = QModelIndex()</arglist>
+    </member>
+    <member kind="function">
+      <name>removeRows</name>
+      <anchor>removeRows</anchor>
+      <arglist>( int row, int count, const QModelIndex &amp; parent = QModelIndex()</arglist>
+    </member>
+    <member kind="function">
+      <name>rowCount</name>
+      <anchor>rowCount</anchor>
+      <arglist>( const QModelIndex &amp; parent = QModelIndex()</arglist>
+    </member>
+    <member kind="function">
       <name>setColumnCount</name>
       <anchor>setColumnCount</anchor>
       <arglist>( int columns )</arglist>
+    </member>
+    <member kind="function">
+      <name>setData</name>
+      <anchor>setData</anchor>
+      <arglist>( const QModelIndex &amp; index, const QVariant &amp; value, int role = Qt::EditRole )</arglist>
+    </member>
+    <member kind="function">
+      <name>setHeaderData</name>
+      <anchor>setHeaderData</anchor>
+      <arglist>( int section, Qt::Orientation orientation, const QVariant &amp; value, int role = Qt::EditRole )</arglist>
     </member>
     <member kind="function">
       <name>setHorizontalHeaderItem</name>
@@ -67806,6 +81216,11 @@
       <arglist>( int row, QStandardItem * item )</arglist>
     </member>
     <member kind="function">
+      <name>setItemData</name>
+      <anchor>setItemData</anchor>
+      <arglist>( const QModelIndex &amp; index, const QMap&lt;int, QVariant&gt; &amp; roles )</arglist>
+    </member>
+    <member kind="function">
       <name>setItemPrototype</name>
       <anchor>setItemPrototype</anchor>
       <arglist>( const QStandardItem * item )</arglist>
@@ -67824,6 +81239,16 @@
       <name>setVerticalHeaderLabels</name>
       <anchor>setVerticalHeaderLabels</anchor>
       <arglist>( const QStringList &amp; labels )</arglist>
+    </member>
+    <member kind="function">
+      <name>sort</name>
+      <anchor>sort</anchor>
+      <arglist>( int column, Qt::SortOrder order = Qt::AscendingOrder )</arglist>
+    </member>
+    <member kind="function">
+      <name>DropActions</name>
+      <anchor>supportedDropActions</anchor>
+      <arglist> QStandardItemModel::supportedDropActions()</arglist>
     </member>
     <member kind="function">
       <name>takeColumn</name>
@@ -67854,6 +81279,232 @@
       <name>verticalHeaderItem</name>
       <anchor>verticalHeaderItem</anchor>
       <arglist>( int row )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QState</name>
+    <filename>qstate.html</filename>
+    <member kind="enum">
+      <name>ChildMode</name>
+      <anchor>ChildMode-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>QState</name>
+      <anchor>QState</anchor>
+      <arglist>( QState * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>QState</name>
+      <anchor>QState-2</anchor>
+      <arglist>( ChildMode childMode, QState * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>addTransition</name>
+      <anchor>addTransition</anchor>
+      <arglist>( QAbstractTransition * transition )</arglist>
+    </member>
+    <member kind="function">
+      <name>addTransition</name>
+      <anchor>addTransition-2</anchor>
+      <arglist>( QObject * sender, const char * signal, QAbstractState * target )</arglist>
+    </member>
+    <member kind="function">
+      <name>addTransition</name>
+      <anchor>addTransition-3</anchor>
+      <arglist>( QAbstractState * target )</arglist>
+    </member>
+    <member kind="function">
+      <name>assignProperty</name>
+      <anchor>assignProperty</anchor>
+      <arglist>( QObject * object, const char * name, const QVariant &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>finished</name>
+      <anchor>finished</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>onEntry</name>
+      <anchor>onEntry</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>onExit</name>
+      <anchor>onExit</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>propertiesAssigned</name>
+      <anchor>propertiesAssigned</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>removeTransition</name>
+      <anchor>removeTransition</anchor>
+      <arglist>( QAbstractTransition * transition )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>SignalEvent</name>
+    <filename>qstatemachine-signalevent.html</filename>
+    <member kind="function">
+      <name>arguments</name>
+      <anchor>arguments</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>sender</name>
+      <anchor>sender</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>signalIndex</name>
+      <anchor>signalIndex</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>WrappedEvent</name>
+    <filename>qstatemachine-wrappedevent.html</filename>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>object</name>
+      <anchor>object</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QStateMachine</name>
+    <filename>qstatemachine.html</filename>
+    <member kind="enum">
+      <name>Error</name>
+      <anchor>Error-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enum">
+      <name>EventPriority</name>
+      <anchor>EventPriority-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enum">
+      <name>RestorePolicy</name>
+      <anchor>RestorePolicy-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>QStateMachine</name>
+      <anchor>QStateMachine</anchor>
+      <arglist>( QObject * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>addDefaultAnimation</name>
+      <anchor>addDefaultAnimation</anchor>
+      <arglist>( QAbstractAnimation * animation )</arglist>
+    </member>
+    <member kind="function">
+      <name>addState</name>
+      <anchor>addState</anchor>
+      <arglist>( QAbstractState * state )</arglist>
+    </member>
+    <member kind="function">
+      <name>cancelDelayedEvent</name>
+      <anchor>cancelDelayedEvent</anchor>
+      <arglist>( int id )</arglist>
+    </member>
+    <member kind="function">
+      <name>clearError</name>
+      <anchor>clearError</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>configuration</name>
+      <anchor>configuration</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>defaultAnimations</name>
+      <anchor>defaultAnimations</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>error</name>
+      <anchor>error</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>eventFilter</name>
+      <anchor>eventFilter</anchor>
+      <arglist>( QObject * watched, QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>isRunning</name>
+      <anchor>isRunning</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>onEntry</name>
+      <anchor>onEntry</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>onExit</name>
+      <anchor>onExit</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>postDelayedEvent</name>
+      <anchor>postDelayedEvent</anchor>
+      <arglist>( QEvent * event, int delay )</arglist>
+    </member>
+    <member kind="function">
+      <name>postEvent</name>
+      <anchor>postEvent</anchor>
+      <arglist>( QEvent * event, EventPriority priority = NormalPriority )</arglist>
+    </member>
+    <member kind="function">
+      <name>removeDefaultAnimation</name>
+      <anchor>removeDefaultAnimation</anchor>
+      <arglist>( QAbstractAnimation * animation )</arglist>
+    </member>
+    <member kind="function">
+      <name>removeState</name>
+      <anchor>removeState</anchor>
+      <arglist>( QAbstractState * state )</arglist>
+    </member>
+    <member kind="function">
+      <name>start</name>
+      <anchor>start</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>started</name>
+      <anchor>started</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>stop</name>
+      <anchor>stop</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>stopped</name>
+      <anchor>stopped</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>QStatusBar</name>
@@ -67905,6 +81556,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>hideOrShow</name>
       <anchor>hideOrShow</anchor>
       <arglist>()</arglist>
@@ -67925,6 +81581,11 @@
       <arglist>( const QString &amp; message )</arglist>
     </member>
     <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>reformat</name>
       <anchor>reformat</anchor>
       <arglist>()</arglist>
@@ -67933,6 +81594,16 @@
       <name>removeWidget</name>
       <anchor>removeWidget</anchor>
       <arglist>( QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>showEvent</name>
+      <anchor>showEvent</anchor>
+      <arglist>( QShowEvent * )</arglist>
     </member>
     <member kind="function">
       <name>showMessage</name>
@@ -69555,9 +83226,19 @@
       <arglist>( const QStringList &amp; strings )</arglist>
     </member>
     <member kind="function">
+      <name>sort</name>
+      <anchor>sort</anchor>
+      <arglist>( int column, Qt::SortOrder order = Qt::AscendingOrder )</arglist>
+    </member>
+    <member kind="function">
       <name>stringList</name>
       <anchor>stringList</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>DropActions</name>
+      <anchor>supportedDropActions</anchor>
+      <arglist> QStringListModel::supportedDropActions()</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -69807,6 +83488,11 @@
       <arglist></arglist>
     </member>
     <member kind="enum">
+      <name>RequestSoftwareInputPanel</name>
+      <anchor>RequestSoftwareInputPanel-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enum">
       <name>StandardPixmap</name>
       <anchor>StandardPixmap-enum</anchor>
       <arglist></arglist>
@@ -69912,6 +83598,11 @@
       <arglist>( QPalette &amp; palette )</arglist>
     </member>
     <member kind="function">
+      <name>proxy</name>
+      <anchor>proxy</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>sizeFromContents</name>
       <anchor>sizeFromContents</anchor>
       <arglist>( ContentsType type, const QStyleOption * option, const QSize &amp; contentsSize, const QWidget * widget = 0 )</arglist>
@@ -69999,6 +83690,11 @@
       <name>displayText</name>
       <anchor>displayText</anchor>
       <arglist>( const QVariant &amp; value, const QLocale &amp; locale )</arglist>
+    </member>
+    <member kind="function">
+      <name>editorEvent</name>
+      <anchor>editorEvent</anchor>
+      <arglist>( QEvent * event, QAbstractItemModel * model, const QStyleOptionViewItem &amp; option, const QModelIndex &amp; index )</arglist>
     </member>
     <member kind="function">
       <name>eventFilter</name>
@@ -70527,6 +84223,16 @@
       <anchor>frameShape-var</anchor>
       <arglist> QStyleOptionFrameV3::frameShape:4</arglist>
     </member>
+    <member kind="function">
+      <name>levelOfDetail</name>
+      <anchor>levelOfDetail-var</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>matrix</name>
+      <anchor>matrix-var</anchor>
+      <arglist></arglist>
+    </member>
   </compound>
   <compound kind="class">
     <name>QStyleOptionGraphicsItem</name>
@@ -70552,18 +84258,13 @@
       <arglist>( const QStyleOptionGraphicsItem &amp; other )</arglist>
     </member>
     <member kind="function">
+      <name>levelOfDetailFromTransform</name>
+      <anchor>levelOfDetailFromTransform</anchor>
+      <arglist>( const QTransform &amp; worldTransform )</arglist>
+    </member>
+    <member kind="function">
       <name>exposedRect</name>
       <anchor>exposedRect-var</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="function">
-      <name>levelOfDetail</name>
-      <anchor>levelOfDetail-var</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="function">
-      <name>matrix</name>
-      <anchor>matrix-var</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -71500,6 +85201,45 @@
     </member>
   </compound>
   <compound kind="class">
+    <name>QStyleOptionTabWidgetFrameV2</name>
+    <filename>qstyleoptiontabwidgetframev2.html</filename>
+    <member kind="enum">
+      <name>StyleOptionVersion</name>
+      <anchor>StyleOptionVersion-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>QStyleOptionTabWidgetFrameV2</name>
+      <anchor>QStyleOptionTabWidgetFrameV2</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>QStyleOptionTabWidgetFrameV2</name>
+      <anchor>QStyleOptionTabWidgetFrameV2-2</anchor>
+      <arglist>( const QStyleOptionTabWidgetFrameV2 &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>QStyleOptionTabWidgetFrameV2</name>
+      <anchor>QStyleOptionTabWidgetFrameV2-3</anchor>
+      <arglist>( const QStyleOptionTabWidgetFrame &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator=</name>
+      <anchor>operator-eq</anchor>
+      <arglist>( const QStyleOptionTabWidgetFrame &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>selectedTabRect</name>
+      <anchor>selectedTabRect-var</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>tabBarRect</name>
+      <anchor>tabBarRect-var</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="class">
     <name>QStyleOptionTitleBar</name>
     <filename>qstyleoptiontitlebar.html</filename>
     <member kind="enum">
@@ -72022,6 +85762,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>metric</name>
+      <anchor>metric</anchor>
+      <arglist>( QPaintDevice::PaintDeviceMetric metric )</arglist>
+    </member>
+    <member kind="function">
       <name>paintEngine</name>
       <anchor>paintEngine</anchor>
       <arglist>()</arglist>
@@ -72150,8 +85895,71 @@
       <arglist>( const QByteArray &amp; contents )</arglist>
     </member>
     <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>renderer</name>
       <anchor>renderer</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QSwipeGesture</name>
+    <filename>qswipegesture.html</filename>
+    <member kind="enum">
+      <name>SwipeDirection</name>
+      <anchor>SwipeDirection-enum</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QSymbianEvent</name>
+    <filename>qsymbianevent.html</filename>
+    <member kind="enum">
+      <name>Type</name>
+      <anchor>Type-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>QSymbianEvent</name>
+      <anchor>QSymbianEvent</anchor>
+      <arglist>( const TWsEvent * windowServerEvent )</arglist>
+    </member>
+    <member kind="function">
+      <name>QSymbianEvent</name>
+      <anchor>QSymbianEvent-2</anchor>
+      <arglist>( Type eventType, int value )</arglist>
+    </member>
+    <member kind="function">
+      <name>command</name>
+      <anchor>command</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>isValid</name>
+      <anchor>isValid</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>resourceChangeType</name>
+      <anchor>resourceChangeType</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>type</name>
+      <anchor>type</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>windowServerEvent</name>
+      <anchor>windowServerEvent</anchor>
       <arglist>()</arglist>
     </member>
   </compound>
@@ -72214,6 +86022,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>rehighlightBlock</name>
+      <anchor>rehighlightBlock</anchor>
+      <arglist>( const QTextBlock &amp; block )</arglist>
+    </member>
+    <member kind="function">
       <name>setCurrentBlockState</name>
       <anchor>setCurrentBlockState</anchor>
       <arglist>( int newState )</arglist>
@@ -72258,14 +86071,34 @@
       <arglist></arglist>
     </member>
     <member kind="enum">
+      <name>S60Version</name>
+      <anchor>S60Version-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enum">
       <name>Sizes</name>
       <anchor>Sizes-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enum">
+      <name>SymbianVersion</name>
+      <anchor>SymbianVersion-enum</anchor>
       <arglist></arglist>
     </member>
     <member kind="enum">
       <name>WinVersion</name>
       <anchor>WinVersion-enum</anchor>
       <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>s60Version</name>
+      <anchor>s60Version</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>symbianVersion</name>
+      <anchor>symbianVersion</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>windowsVersion</name>
@@ -72295,6 +86128,16 @@
       <name>QSystemLocale</name>
       <anchor>QSystemLocale</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>fallbackLocale</name>
+      <anchor>fallbackLocale</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>query</name>
+      <anchor>query</anchor>
+      <arglist>( QueryType type, QVariant in )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -72378,6 +86221,11 @@
       <name>contextMenu</name>
       <anchor>contextMenu</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>geometry</name>
@@ -72480,6 +86328,11 @@
       <arglist></arglist>
     </member>
     <member kind="enum">
+      <name>AnchorPoint</name>
+      <anchor>AnchorPoint-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enum">
       <name>ApplicationAttribute</name>
       <anchor>ApplicationAttribute-enum</anchor>
       <arglist></arglist>
@@ -72535,6 +86388,11 @@
       <arglist></arglist>
     </member>
     <member kind="enum">
+      <name>CoordinateSystem</name>
+      <anchor>CoordinateSystem-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enum">
       <name>Corner</name>
       <anchor>Corner-enum</anchor>
       <arglist></arglist>
@@ -72572,6 +86430,16 @@
     <member kind="enum">
       <name>FocusReason</name>
       <anchor>FocusReason-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enum">
+      <name>GestureState</name>
+      <anchor>GestureState-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enum">
+      <name>GestureType</name>
+      <anchor>GestureType-enum</anchor>
       <arglist></arglist>
     </member>
     <member kind="enum">
@@ -72622,6 +86490,11 @@
     <member kind="enum">
       <name>Modifier</name>
       <anchor>Modifier-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enum">
+      <name>NavigationMode</name>
+      <anchor>NavigationMode-enum</anchor>
       <arglist></arglist>
     </member>
     <member kind="enum">
@@ -72677,6 +86550,11 @@
     <member kind="enum">
       <name>TextFormat</name>
       <anchor>TextFormat-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enum">
+      <name>TileRule</name>
+      <anchor>TileRule-enum</anchor>
       <arglist></arglist>
     </member>
     <member kind="enum">
@@ -72789,9 +86667,24 @@
       <arglist>( const QIcon &amp; icon, const QString &amp; text )</arglist>
     </member>
     <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>currentChanged</name>
       <anchor>currentChanged</anchor>
       <arglist>( int index )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>hideEvent</name>
+      <anchor>hideEvent</anchor>
+      <arglist>( QHideEvent * )</arglist>
     </member>
     <member kind="function">
       <name>initStyleOption</name>
@@ -72814,14 +86707,49 @@
       <arglist>( int index )</arglist>
     </member>
     <member kind="function">
+      <name>keyPressEvent</name>
+      <anchor>keyPressEvent</anchor>
+      <arglist>( QKeyEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>minimumSizeHint</name>
+      <anchor>minimumSizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseMoveEvent</name>
+      <anchor>mouseMoveEvent</anchor>
+      <arglist>( QMouseEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>mousePressEvent</name>
+      <anchor>mousePressEvent</anchor>
+      <arglist>( QMouseEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseReleaseEvent</name>
+      <anchor>mouseReleaseEvent</anchor>
+      <arglist>( QMouseEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>moveTab</name>
       <anchor>moveTab</anchor>
       <arglist>( int from, int to )</arglist>
     </member>
     <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * )</arglist>
+    </member>
+    <member kind="function">
       <name>removeTab</name>
       <anchor>removeTab</anchor>
       <arglist>( int index )</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * )</arglist>
     </member>
     <member kind="function">
       <name>setTabButton</name>
@@ -72862,6 +86790,16 @@
       <name>setTabWhatsThis</name>
       <anchor>setTabWhatsThis</anchor>
       <arglist>( int index, const QString &amp; text )</arglist>
+    </member>
+    <member kind="function">
+      <name>showEvent</name>
+      <anchor>showEvent</anchor>
+      <arglist>( QShowEvent * )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>tabAt</name>
@@ -72937,6 +86875,11 @@
       <name>tabWhatsThis</name>
       <anchor>tabWhatsThis</anchor>
       <arglist>( int index )</arglist>
+    </member>
+    <member kind="function">
+      <name>wheelEvent</name>
+      <anchor>wheelEvent</anchor>
+      <arglist>( QWheelEvent * event )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -73107,6 +87050,11 @@
       <arglist>( int column )</arglist>
     </member>
     <member kind="function">
+      <name>currentChanged</name>
+      <anchor>currentChanged</anchor>
+      <arglist>( const QModelIndex &amp; current, const QModelIndex &amp; previous )</arglist>
+    </member>
+    <member kind="function">
       <name>hideColumn</name>
       <anchor>hideColumn</anchor>
       <arglist>( int column )</arglist>
@@ -73135,6 +87083,11 @@
       <name>isColumnHidden</name>
       <anchor>isColumnHidden</anchor>
       <arglist>( int column )</arglist>
+    </member>
+    <member kind="function">
+      <name>isIndexHidden</name>
+      <anchor>isIndexHidden</anchor>
+      <arglist>( const QModelIndex &amp; index )</arglist>
     </member>
     <member kind="function">
       <name>isRowHidden</name>
@@ -73217,6 +87170,16 @@
       <arglist>( int row )</arglist>
     </member>
     <member kind="function">
+      <name>selectedIndexes</name>
+      <anchor>selectedIndexes</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>selectionChanged</name>
+      <anchor>selectionChanged</anchor>
+      <arglist>( const QItemSelection &amp; selected, const QItemSelection &amp; deselected )</arglist>
+    </member>
+    <member kind="function">
       <name>setColumnHidden</name>
       <anchor>setColumnHidden</anchor>
       <arglist>( int column, bool hide )</arglist>
@@ -73232,6 +87195,16 @@
       <arglist>( QHeaderView * header )</arglist>
     </member>
     <member kind="function">
+      <name>setModel</name>
+      <anchor>setModel</anchor>
+      <arglist>( QAbstractItemModel * model )</arglist>
+    </member>
+    <member kind="function">
+      <name>setRootIndex</name>
+      <anchor>setRootIndex</anchor>
+      <arglist>( const QModelIndex &amp; index )</arglist>
+    </member>
+    <member kind="function">
       <name>setRowHeight</name>
       <anchor>setRowHeight</anchor>
       <arglist>( int row, int height )</arglist>
@@ -73245,6 +87218,11 @@
       <name>setSelection</name>
       <anchor>setSelection</anchor>
       <arglist>( const QRect &amp; rect, QItemSelectionModel::SelectionFlags flags )</arglist>
+    </member>
+    <member kind="function">
+      <name>setSelectionModel</name>
+      <anchor>setSelectionModel</anchor>
+      <arglist>( QItemSelectionModel * selectionModel )</arglist>
     </member>
     <member kind="function">
       <name>setSpan</name>
@@ -73282,6 +87260,16 @@
       <arglist>( int column, Qt::SortOrder order )</arglist>
     </member>
     <member kind="function">
+      <name>timerEvent</name>
+      <anchor>timerEvent</anchor>
+      <arglist>( QTimerEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>updateGeometries</name>
+      <anchor>updateGeometries</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>verticalHeader</name>
       <anchor>verticalHeader</anchor>
       <arglist>()</arglist>
@@ -73289,6 +87277,11 @@
     <member kind="function">
       <name>verticalOffset</name>
       <anchor>verticalOffset</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>viewOptions</name>
+      <anchor>viewOptions</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -73396,6 +87389,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>dropEvent</name>
+      <anchor>dropEvent</anchor>
+      <arglist>( QDropEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>dropMimeData</name>
       <anchor>dropMimeData</anchor>
       <arglist>( int row, int column, const QMimeData * data, Qt::DropAction action )</arglist>
@@ -73404,6 +87402,11 @@
       <name>editItem</name>
       <anchor>editItem</anchor>
       <arglist>( QTableWidgetItem * item )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>findItems</name>
@@ -74093,6 +88096,11 @@
       <arglist>( QWidget * page, const QIcon &amp; icon, const QString &amp; label )</arglist>
     </member>
     <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * ev )</arglist>
+    </member>
+    <member kind="function">
       <name>clear</name>
       <anchor>clear</anchor>
       <arglist>()</arglist>
@@ -74111,6 +88119,11 @@
       <name>currentWidget</name>
       <anchor>currentWidget</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * ev )</arglist>
     </member>
     <member kind="function">
       <name>indexOf</name>
@@ -74138,6 +88151,16 @@
       <arglist>( int index )</arglist>
     </member>
     <member kind="function">
+      <name>keyPressEvent</name>
+      <anchor>keyPressEvent</anchor>
+      <arglist>( QKeyEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>minimumSizeHint</name>
+      <anchor>minimumSizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>paintEvent</name>
       <anchor>paintEvent</anchor>
       <arglist>( QPaintEvent * event )</arglist>
@@ -74146,6 +88169,11 @@
       <name>removeTab</name>
       <anchor>removeTab</anchor>
       <arglist>( int index )</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>setCornerWidget</name>
@@ -74186,6 +88214,16 @@
       <name>setTabWhatsThis</name>
       <anchor>setTabWhatsThis</anchor>
       <arglist>( int index, const QString &amp; text )</arglist>
+    </member>
+    <member kind="function">
+      <name>showEvent</name>
+      <anchor>showEvent</anchor>
+      <arglist>( QShowEvent * )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>tabBar</name>
@@ -74252,6 +88290,14 @@
       <anchor>qUpperBound-3</anchor>
       <arglist> qUpperBound( const Container &amp; container, const T &amp; value )</arglist>
     </member>
+  </compound>
+  <compound kind="class">
+    <name>QTapAndHoldGesture</name>
+    <filename>qtapandholdgesture.html</filename>
+  </compound>
+  <compound kind="class">
+    <name>QTapGesture</name>
+    <filename>qtapgesture.html</filename>
   </compound>
   <compound kind="class">
     <name>Exception</name>
@@ -74618,6 +88664,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>open</name>
+      <anchor>open-2</anchor>
+      <arglist>( OpenMode flags )</arglist>
+    </member>
+    <member kind="function">
       <name>setAutoRemove</name>
       <anchor>setAutoRemove</anchor>
       <arglist>( bool b )</arglist>
@@ -74629,11 +88680,41 @@
     </member>
   </compound>
   <compound kind="class">
-    <name>QBenchmarkIterationController</name>
-    <filename>qtest-qbenchmarkiterationcontroller.html</filename>
+    <name>QTouchEventSequence</name>
+    <filename>qtest-qtoucheventsequence.html</filename>
+    <member kind="function">
+      <name>move</name>
+      <anchor>move</anchor>
+      <arglist>( int touchId, const QPoint &amp; pt, QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>press</name>
+      <anchor>press</anchor>
+      <arglist>( int touchId, const QPoint &amp; pt, QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>release</name>
+      <anchor>release</anchor>
+      <arglist>( int touchId, const QPoint &amp; pt, QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>stationary</name>
+      <anchor>stationary</anchor>
+      <arglist>( int touchId )</arglist>
+    </member>
+    <member kind="enum">
+      <name>AttributeIndex</name>
+      <anchor>AttributeIndex-enum</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="enum">
       <name>KeyAction</name>
       <anchor>KeyAction-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enum">
+      <name>LogElementType</name>
+      <anchor>LogElementType-enum</anchor>
       <arglist></arglist>
     </member>
     <member kind="enum">
@@ -74772,6 +88853,11 @@
       <arglist>( int ms )</arglist>
     </member>
     <member kind="function">
+      <name>qWaitForWindowShown</name>
+      <anchor>qWaitForWindowShown</anchor>
+      <arglist>( QWidget * window )</arglist>
+    </member>
+    <member kind="function">
       <name>toHexRepresentation</name>
       <anchor>toHexRepresentation</anchor>
       <arglist>( const char * ba, int length )</arglist>
@@ -74850,6 +88936,16 @@
       <name>toString</name>
       <anchor>toString-17</anchor>
       <arglist>( const QRectF &amp; rectangle )</arglist>
+    </member>
+    <member kind="function">
+      <name>toString</name>
+      <anchor>toString-18</anchor>
+      <arglist>( const QVariant &amp; variant )</arglist>
+    </member>
+    <member kind="function">
+      <name>touchEvent</name>
+      <anchor>touchEvent</anchor>
+      <arglist>( QWidget * widget = 0, QTouchEvent::DeviceType deviceType = QTouchEvent::TouchScreen )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -75445,6 +89541,21 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusNextPrevChild</name>
+      <anchor>focusNextPrevChild</anchor>
+      <arglist>( bool next )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusOutEvent</name>
+      <anchor>focusOutEvent</anchor>
+      <arglist>( QFocusEvent * ev )</arglist>
+    </member>
+    <member kind="function">
       <name>forward</name>
       <anchor>forward</anchor>
       <arglist>()</arglist>
@@ -75508,6 +89619,26 @@
       <name>loadResource</name>
       <anchor>loadResource</anchor>
       <arglist>( int type, const QUrl &amp; name )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseMoveEvent</name>
+      <anchor>mouseMoveEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mousePressEvent</name>
+      <anchor>mousePressEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseReleaseEvent</name>
+      <anchor>mouseReleaseEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>reload</name>
@@ -75900,6 +90031,16 @@
       <name>codecForTr</name>
       <anchor>codecForTr</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>codecForUtfText</name>
+      <anchor>codecForUtfText</anchor>
+      <arglist>( const QByteArray &amp; ba, QTextCodec * defaultCodec )</arglist>
+    </member>
+    <member kind="function">
+      <name>codecForUtfText</name>
+      <anchor>codecForUtfText-2</anchor>
+      <arglist>( const QByteArray &amp; ba )</arglist>
     </member>
     <member kind="function">
       <name>convertFromUnicode</name>
@@ -76450,6 +90591,16 @@
     <member kind="function">
       <name>allFormats</name>
       <anchor>allFormats</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>availableRedoSteps</name>
+      <anchor>availableRedoSteps</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>availableUndoSteps</name>
+      <anchor>availableUndoSteps</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -77089,6 +91240,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>clear</name>
       <anchor>clear</anchor>
       <arglist>()</arglist>
@@ -77169,6 +91325,26 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>dragEnterEvent</name>
+      <anchor>dragEnterEvent</anchor>
+      <arglist>( QDragEnterEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>dragLeaveEvent</name>
+      <anchor>dragLeaveEvent</anchor>
+      <arglist>( QDragLeaveEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>dragMoveEvent</name>
+      <anchor>dragMoveEvent</anchor>
+      <arglist>( QDragMoveEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>dropEvent</name>
+      <anchor>dropEvent</anchor>
+      <arglist>( QDropEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>ensureCursorVisible</name>
       <anchor>ensureCursorVisible</anchor>
       <arglist>()</arglist>
@@ -77182,6 +91358,21 @@
       <name>find</name>
       <anchor>find</anchor>
       <arglist>( const QString &amp; exp, QTextDocument::FindFlags options = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusInEvent</name>
+      <anchor>focusInEvent</anchor>
+      <arglist>( QFocusEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusNextPrevChild</name>
+      <anchor>focusNextPrevChild</anchor>
+      <arglist>( bool next )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusOutEvent</name>
+      <anchor>focusOutEvent</anchor>
+      <arglist>( QFocusEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>fontFamily</name>
@@ -77209,6 +91400,16 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>inputMethodEvent</name>
+      <anchor>inputMethodEvent</anchor>
+      <arglist>( QInputMethodEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>inputMethodQuery</name>
+      <anchor>inputMethodQuery</anchor>
+      <arglist>( Qt::InputMethodQuery property )</arglist>
+    </member>
+    <member kind="function">
       <name>insertFromMimeData</name>
       <anchor>insertFromMimeData</anchor>
       <arglist>( const QMimeData * source )</arglist>
@@ -77224,6 +91425,16 @@
       <arglist>( const QString &amp; text )</arglist>
     </member>
     <member kind="function">
+      <name>keyPressEvent</name>
+      <anchor>keyPressEvent</anchor>
+      <arglist>( QKeyEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>keyReleaseEvent</name>
+      <anchor>keyReleaseEvent</anchor>
+      <arglist>( QKeyEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>loadResource</name>
       <anchor>loadResource</anchor>
       <arglist>( int type, const QUrl &amp; name )</arglist>
@@ -77232,6 +91443,26 @@
       <name>mergeCurrentCharFormat</name>
       <anchor>mergeCurrentCharFormat</anchor>
       <arglist>( const QTextCharFormat &amp; modifier )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseDoubleClickEvent</name>
+      <anchor>mouseDoubleClickEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseMoveEvent</name>
+      <anchor>mouseMoveEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mousePressEvent</name>
+      <anchor>mousePressEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseReleaseEvent</name>
+      <anchor>mouseReleaseEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>moveCursor</name>
@@ -77262,6 +91493,16 @@
       <name>redoAvailable</name>
       <anchor>redoAvailable</anchor>
       <arglist>( bool available )</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>scrollContentsBy</name>
+      <anchor>scrollContentsBy</anchor>
+      <arglist>( int dx, int dy )</arglist>
     </member>
     <member kind="function">
       <name>scrollToAnchor</name>
@@ -77349,6 +91590,11 @@
       <arglist>( const QTextCursor &amp; cursor )</arglist>
     </member>
     <member kind="function">
+      <name>showEvent</name>
+      <anchor>showEvent</anchor>
+      <arglist>( QShowEvent * )</arglist>
+    </member>
+    <member kind="function">
       <name>textBackgroundColor</name>
       <anchor>textBackgroundColor</anchor>
       <arglist>()</arglist>
@@ -77379,6 +91625,11 @@
       <arglist>( bool available )</arglist>
     </member>
     <member kind="function">
+      <name>wheelEvent</name>
+      <anchor>wheelEvent</anchor>
+      <arglist>( QWheelEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>zoomIn</name>
       <anchor>zoomIn</anchor>
       <arglist>( int range = 1 )</arglist>
@@ -77387,6 +91638,11 @@
       <name>zoomOut</name>
       <anchor>zoomOut</anchor>
       <arglist>( int range = 1 )</arglist>
+    </member>
+    <member kind="function">
+      <name>fromUnicode</name>
+      <anchor>fromUnicode-3</anchor>
+      <arglist>( const QString &amp; uc, int &amp; lenInOut )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -77406,11 +91662,6 @@
       <name>fromUnicode</name>
       <anchor>fromUnicode-2</anchor>
       <arglist>( const QChar * uc, int len )</arglist>
-    </member>
-    <member kind="function">
-      <name>fromUnicode</name>
-      <anchor>fromUnicode-3</anchor>
-      <arglist>( const QString &amp; uc, int &amp; lenInOut )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -78531,6 +92782,16 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>leading</name>
+      <anchor>leading</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>leadingIncluded</name>
+      <anchor>leadingIncluded</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>lineNumber</name>
       <anchor>lineNumber</anchor>
       <arglist>()</arglist>
@@ -78554,6 +92815,11 @@
       <name>rect</name>
       <anchor>rect</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>setLeadingIncluded</name>
+      <anchor>setLeadingIncluded</anchor>
+      <arglist>( bool included )</arglist>
     </member>
     <member kind="function">
       <name>setLineWidth</name>
@@ -79779,6 +94045,16 @@
       <arglist>( int count )</arglist>
     </member>
     <member kind="function">
+      <name>exception</name>
+      <anchor>qt_symbian_exception2Error</anchor>
+      <arglist> &amp; aThrow )</arglist>
+    </member>
+    <member kind="function">
+      <name>exception</name>
+      <anchor>qt_symbian_exception2LeaveL</anchor>
+      <arglist> &amp; aThrow )</arglist>
+    </member>
+    <member kind="function">
       <name>finished</name>
       <anchor>finished-2</anchor>
       <arglist>()</arglist>
@@ -79989,6 +94265,20 @@
       <name>setLocalData</name>
       <anchor>setLocalData</anchor>
       <arglist>( T data )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QTileRules</name>
+    <filename>qtilerules.html</filename>
+    <member kind="function">
+      <name>QTileRules</name>
+      <anchor>QTileRules</anchor>
+      <arglist>( Qt::TileRule horizontalRule, Qt::TileRule verticalRule )</arglist>
+    </member>
+    <member kind="function">
+      <name>QTileRules</name>
+      <anchor>QTileRules-2</anchor>
+      <arglist>( Qt::TileRule rule = Qt::StretchTile )</arglist>
     </member>
     <member kind="function">
       <name>currentTime</name>
@@ -80258,6 +94548,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>timerEvent</name>
+      <anchor>timerEvent</anchor>
+      <arglist>( QTimerEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>toggleDirection</name>
       <anchor>toggleDirection</anchor>
       <arglist>()</arglist>
@@ -80320,6 +94615,11 @@
       <name>timeout</name>
       <anchor>timeout</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>timerEvent</name>
+      <anchor>timerEvent</anchor>
+      <arglist>( QTimerEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>timerId</name>
@@ -80395,6 +94695,11 @@
       <arglist>( int x, int y )</arglist>
     </member>
     <member kind="function">
+      <name>actionEvent</name>
+      <anchor>actionEvent</anchor>
+      <arglist>( QActionEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>actionTriggered</name>
       <anchor>actionTriggered</anchor>
       <arglist>( QAction * action )</arglist>
@@ -80440,9 +94745,24 @@
       <arglist>( Qt::ToolBarAreas allowedAreas )</arglist>
     </member>
     <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>childEvent</name>
+      <anchor>childEvent</anchor>
+      <arglist>( QChildEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>clear</name>
       <anchor>clear</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * event )</arglist>
     </member>
     <member kind="function">
       <name>iconSizeChanged</name>
@@ -80475,6 +94795,16 @@
       <arglist>( Qt::Orientation orientation )</arglist>
     </member>
     <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>toggleViewAction</name>
       <anchor>toggleViewAction</anchor>
       <arglist>()</arglist>
@@ -80483,6 +94813,11 @@
       <name>toolButtonStyleChanged</name>
       <anchor>toolButtonStyleChanged</anchor>
       <arglist>( Qt::ToolButtonStyle toolButtonStyle )</arglist>
+    </member>
+    <member kind="function">
+      <name>topLevelChanged</name>
+      <anchor>topLevelChanged</anchor>
+      <arglist>( bool topLevel )</arglist>
     </member>
     <member kind="function">
       <name>widgetForAction</name>
@@ -80564,6 +94899,11 @@
       <arglist>( QWidget * w, const QString &amp; text )</arglist>
     </member>
     <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * ev )</arglist>
+    </member>
+    <member kind="function">
       <name>currentChanged</name>
       <anchor>currentChanged</anchor>
       <arglist>( int index )</arglist>
@@ -80572,6 +94912,11 @@
       <name>currentWidget</name>
       <anchor>currentWidget</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>indexOf</name>
@@ -80647,6 +94992,11 @@
       <name>setItemToolTip</name>
       <anchor>setItemToolTip</anchor>
       <arglist>( int index, const QString &amp; toolTip )</arglist>
+    </member>
+    <member kind="function">
+      <name>showEvent</name>
+      <anchor>showEvent</anchor>
+      <arglist>( QShowEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>widget</name>
@@ -80808,9 +95158,34 @@
       <arglist>( QWidget * parent = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>actionEvent</name>
+      <anchor>actionEvent</anchor>
+      <arglist>( QActionEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>defaultAction</name>
       <anchor>defaultAction</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>enterEvent</name>
+      <anchor>enterEvent</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>hitButton</name>
+      <anchor>hitButton</anchor>
+      <arglist>( const QPoint &amp; pos )</arglist>
     </member>
     <member kind="function">
       <name>initStyleOption</name>
@@ -80818,8 +95193,33 @@
       <arglist>( QStyleOptionToolButton * option )</arglist>
     </member>
     <member kind="function">
+      <name>leaveEvent</name>
+      <anchor>leaveEvent</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>menu</name>
       <anchor>menu</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>minimumSizeHint</name>
+      <anchor>minimumSizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>mousePressEvent</name>
+      <anchor>mousePressEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseReleaseEvent</name>
+      <anchor>mouseReleaseEvent</anchor>
+      <arglist>( QMouseEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>nextCheckState</name>
+      <anchor>nextCheckState</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -80841,6 +95241,16 @@
       <name>showMenu</name>
       <anchor>showMenu</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>timerEvent</name>
+      <anchor>timerEvent</anchor>
+      <arglist>( QTimerEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>triggered</name>
@@ -80913,6 +95323,144 @@
     </member>
   </compound>
   <compound kind="class">
+    <name>TouchPoint</name>
+    <filename>qtouchevent-touchpoint.html</filename>
+    <member kind="function">
+      <name>id</name>
+      <anchor>id</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>isPrimary</name>
+      <anchor>isPrimary</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>lastNormalizedPos</name>
+      <anchor>lastNormalizedPos</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>lastPos</name>
+      <anchor>lastPos</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>lastScenePos</name>
+      <anchor>lastScenePos</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>lastScreenPos</name>
+      <anchor>lastScreenPos</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>normalizedPos</name>
+      <anchor>normalizedPos</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>pos</name>
+      <anchor>pos</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>pressure</name>
+      <anchor>pressure</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>rect</name>
+      <anchor>rect</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>scenePos</name>
+      <anchor>scenePos</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>sceneRect</name>
+      <anchor>sceneRect</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>screenPos</name>
+      <anchor>screenPos</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>screenRect</name>
+      <anchor>screenRect</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>startNormalizedPos</name>
+      <anchor>startNormalizedPos</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>startPos</name>
+      <anchor>startPos</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>startScenePos</name>
+      <anchor>startScenePos</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>startScreenPos</name>
+      <anchor>startScreenPos</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>TouchPointState</name>
+      <anchor>state</anchor>
+      <arglist> TouchPoint::state()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QTouchEvent</name>
+    <filename>qtouchevent.html</filename>
+    <member kind="enum">
+      <name>DeviceType</name>
+      <anchor>DeviceType-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>QTouchEvent</name>
+      <anchor>QTouchEvent</anchor>
+      <arglist>( QEvent::Type eventType, QTouchEvent::DeviceType deviceType = TouchScreen, Qt::KeyboardModifiers modifiers = Qt::NoModifier, Qt::TouchPointStates touchPointStates = 0, const QList&lt;QTouchEvent::TouchPoint&gt; &amp; touchPoints = QList&lt;QTouchEvent::TouchPoint&gt;()</arglist>
+    </member>
+    <member kind="function">
+      <name>DeviceType</name>
+      <anchor>deviceType</anchor>
+      <arglist> QTouchEvent::deviceType()</arglist>
+    </member>
+    <member kind="function">
+      <name>TouchPointStates</name>
+      <anchor>touchPointStates</anchor>
+      <arglist> QTouchEvent::touchPointStates()</arglist>
+    </member>
+    <member kind="function">
+      <name>TouchPoint</name>
+      <anchor>touchPoints</anchor>
+      <arglist>&gt; &amp; QTouchEvent::touchPoints()</arglist>
+    </member>
+    <member kind="function">
+      <name>widget</name>
+      <anchor>widget</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>det</name>
+      <anchor>det</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
     <name>QTransform</name>
     <filename>qtransform.html</filename>
     <member kind="enum">
@@ -80927,17 +95475,17 @@
     </member>
     <member kind="function">
       <name>QTransform</name>
-      <anchor>QTransform-2</anchor>
+      <anchor>QTransform-3</anchor>
       <arglist>( qreal m11, qreal m12, qreal m13, qreal m21, qreal m22, qreal m23, qreal m31, qreal m32, qreal m33 = 1.0 )</arglist>
     </member>
     <member kind="function">
       <name>QTransform</name>
-      <anchor>QTransform-3</anchor>
+      <anchor>QTransform-4</anchor>
       <arglist>( qreal m11, qreal m12, qreal m21, qreal m22, qreal dx, qreal dy )</arglist>
     </member>
     <member kind="function">
       <name>QTransform</name>
-      <anchor>QTransform-4</anchor>
+      <anchor>QTransform-5</anchor>
       <arglist>( const QMatrix &amp; matrix )</arglist>
     </member>
     <member kind="function">
@@ -80988,11 +95536,6 @@
     <member kind="function">
       <name>adjoint</name>
       <anchor>adjoint</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <name>det</name>
-      <anchor>det</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -81339,6 +95882,21 @@
       <arglist>( int column )</arglist>
     </member>
     <member kind="function">
+      <name>currentChanged</name>
+      <anchor>currentChanged</anchor>
+      <arglist>( const QModelIndex &amp; current, const QModelIndex &amp; previous )</arglist>
+    </member>
+    <member kind="function">
+      <name>dataChanged</name>
+      <anchor>dataChanged</anchor>
+      <arglist>( const QModelIndex &amp; topLeft, const QModelIndex &amp; bottomRight )</arglist>
+    </member>
+    <member kind="function">
+      <name>dragMoveEvent</name>
+      <anchor>dragMoveEvent</anchor>
+      <arglist>( QDragMoveEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>drawBranches</name>
       <anchor>drawBranches</anchor>
       <arglist>( QPainter * painter, const QRect &amp; rect, const QModelIndex &amp; index )</arglist>
@@ -81394,6 +95952,11 @@
       <arglist>( const QModelIndex &amp; index )</arglist>
     </member>
     <member kind="function">
+      <name>indexAt</name>
+      <anchor>indexAt</anchor>
+      <arglist>( const QPoint &amp; point )</arglist>
+    </member>
+    <member kind="function">
       <name>indexBelow</name>
       <anchor>indexBelow</anchor>
       <arglist>( const QModelIndex &amp; index )</arglist>
@@ -81419,14 +95982,59 @@
       <arglist>( int row, const QModelIndex &amp; parent )</arglist>
     </member>
     <member kind="function">
+      <name>isIndexHidden</name>
+      <anchor>isIndexHidden</anchor>
+      <arglist>( const QModelIndex &amp; index )</arglist>
+    </member>
+    <member kind="function">
       <name>isRowHidden</name>
       <anchor>isRowHidden</anchor>
       <arglist>( int row, const QModelIndex &amp; parent )</arglist>
     </member>
     <member kind="function">
+      <name>keyPressEvent</name>
+      <anchor>keyPressEvent</anchor>
+      <arglist>( QKeyEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>keyboardSearch</name>
+      <anchor>keyboardSearch</anchor>
+      <arglist>( const QString &amp; search )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseDoubleClickEvent</name>
+      <anchor>mouseDoubleClickEvent</anchor>
+      <arglist>( QMouseEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseMoveEvent</name>
+      <anchor>mouseMoveEvent</anchor>
+      <arglist>( QMouseEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>mousePressEvent</name>
+      <anchor>mousePressEvent</anchor>
+      <arglist>( QMouseEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseReleaseEvent</name>
+      <anchor>mouseReleaseEvent</anchor>
+      <arglist>( QMouseEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>moveCursor</name>
       <anchor>moveCursor</anchor>
       <arglist>( CursorAction cursorAction, Qt::KeyboardModifiers modifiers )</arglist>
+    </member>
+    <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>reset</name>
+      <anchor>reset</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>resizeColumnToContents</name>
@@ -81464,6 +96072,21 @@
       <arglist>( const QModelIndex &amp; index, ScrollHint hint = EnsureVisible )</arglist>
     </member>
     <member kind="function">
+      <name>selectAll</name>
+      <anchor>selectAll</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>selectedIndexes</name>
+      <anchor>selectedIndexes</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>selectionChanged</name>
+      <anchor>selectionChanged</anchor>
+      <arglist>( const QItemSelection &amp; selected, const QItemSelection &amp; deselected )</arglist>
+    </member>
+    <member kind="function">
       <name>setColumnHidden</name>
       <anchor>setColumnHidden</anchor>
       <arglist>( int column, bool hide )</arglist>
@@ -81489,6 +96112,16 @@
       <arglist>( QHeaderView * header )</arglist>
     </member>
     <member kind="function">
+      <name>setModel</name>
+      <anchor>setModel</anchor>
+      <arglist>( QAbstractItemModel * model )</arglist>
+    </member>
+    <member kind="function">
+      <name>setRootIndex</name>
+      <anchor>setRootIndex</anchor>
+      <arglist>( const QModelIndex &amp; index )</arglist>
+    </member>
+    <member kind="function">
       <name>setRowHidden</name>
       <anchor>setRowHidden</anchor>
       <arglist>( int row, const QModelIndex &amp; parent, bool hide )</arglist>
@@ -81497,6 +96130,11 @@
       <name>setSelection</name>
       <anchor>setSelection</anchor>
       <arglist>( const QRect &amp; rect, QItemSelectionModel::SelectionFlags command )</arglist>
+    </member>
+    <member kind="function">
+      <name>setSelectionModel</name>
+      <anchor>setSelectionModel</anchor>
+      <arglist>( QItemSelectionModel * selectionModel )</arglist>
     </member>
     <member kind="function">
       <name>showColumn</name>
@@ -81514,9 +96152,24 @@
       <arglist>( int column, Qt::SortOrder order )</arglist>
     </member>
     <member kind="function">
+      <name>timerEvent</name>
+      <anchor>timerEvent</anchor>
+      <arglist>( QTimerEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>updateGeometries</name>
+      <anchor>updateGeometries</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>verticalOffset</name>
       <anchor>verticalOffset</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>viewportEvent</name>
+      <anchor>viewportEvent</anchor>
+      <arglist>( QEvent * event )</arglist>
     </member>
     <member kind="function">
       <name>visualRect</name>
@@ -81613,6 +96266,11 @@
       <arglist>( QTreeWidgetItem * current, QTreeWidgetItem * previous )</arglist>
     </member>
     <member kind="function">
+      <name>dropEvent</name>
+      <anchor>dropEvent</anchor>
+      <arglist>( QDropEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>dropMimeData</name>
       <anchor>dropMimeData</anchor>
       <arglist>( QTreeWidgetItem * parent, int index, const QMimeData * data, Qt::DropAction action )</arglist>
@@ -81621,6 +96279,11 @@
       <name>editItem</name>
       <anchor>editItem</anchor>
       <arglist>( QTreeWidgetItem * item, int column = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>expandItem</name>
@@ -81811,6 +96474,11 @@
       <name>setItemWidget</name>
       <anchor>setItemWidget</anchor>
       <arglist>( QTreeWidgetItem * item, int column, QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>setSelectionModel</name>
+      <anchor>setSelectionModel</anchor>
+      <arglist>( QItemSelectionModel * selectionModel )</arglist>
     </member>
     <member kind="function">
       <name>sortColumn</name>
@@ -83019,6 +97687,11 @@
       <arglist>( const QByteArray &amp; input )</arglist>
     </member>
     <member kind="function">
+      <name>fromUserInput</name>
+      <anchor>fromUserInput</anchor>
+      <arglist>( const QString &amp; userInput )</arglist>
+    </member>
+    <member kind="function">
       <name>hasEncodedQueryItem</name>
       <anchor>hasEncodedQueryItem</anchor>
       <arglist>( const QByteArray &amp; key )</arglist>
@@ -83618,7 +98291,7 @@
     <member kind="function">
       <name>QValidator</name>
       <anchor>QValidator</anchor>
-      <arglist>( QObject * parent )</arglist>
+      <arglist>( QObject * parent = 0 )</arglist>
     </member>
     <member kind="function">
       <name>fixup</name>
@@ -83642,7 +98315,7 @@
     </member>
     <member kind="function">
       <name>QVariant</name>
-      <anchor>QVariant-37</anchor>
+      <anchor>QVariant-39</anchor>
       <arglist>( bool b, int dummy )</arglist>
     </member>
     <member kind="function">
@@ -83772,6 +98445,16 @@
     <member kind="function">
       <name>QVariant</name>
       <anchor>QVariant-36</anchor>
+      <arglist>( const QLocale &amp; l )</arglist>
+    </member>
+    <member kind="function">
+      <name>QVariant</name>
+      <anchor>QVariant-37</anchor>
+      <arglist>( const QRegExp &amp; regExp )</arglist>
+    </member>
+    <member kind="function">
+      <name>QVariant</name>
+      <anchor>QVariant-38</anchor>
       <arglist>( Qt::GlobalColor color )</arglist>
     </member>
     <member kind="function">
@@ -83786,163 +98469,158 @@
     </member>
     <member kind="function">
       <name>QVariant</name>
-      <anchor>QVariant-4</anchor>
+      <anchor>QVariant-5</anchor>
       <arglist>( const QVariant &amp; p )</arglist>
     </member>
     <member kind="function">
       <name>QVariant</name>
-      <anchor>QVariant-5</anchor>
+      <anchor>QVariant-6</anchor>
       <arglist>( QDataStream &amp; s )</arglist>
     </member>
     <member kind="function">
       <name>QVariant</name>
-      <anchor>QVariant-6</anchor>
+      <anchor>QVariant-7</anchor>
       <arglist>( int val )</arglist>
     </member>
     <member kind="function">
       <name>QVariant</name>
-      <anchor>QVariant-7</anchor>
+      <anchor>QVariant-8</anchor>
       <arglist>( uint val )</arglist>
     </member>
     <member kind="function">
       <name>QVariant</name>
-      <anchor>QVariant-8</anchor>
+      <anchor>QVariant-9</anchor>
       <arglist>( qlonglong val )</arglist>
     </member>
     <member kind="function">
       <name>QVariant</name>
-      <anchor>QVariant-9</anchor>
+      <anchor>QVariant-10</anchor>
       <arglist>( qulonglong val )</arglist>
     </member>
     <member kind="function">
       <name>QVariant</name>
-      <anchor>QVariant-10</anchor>
+      <anchor>QVariant-11</anchor>
       <arglist>( bool val )</arglist>
     </member>
     <member kind="function">
       <name>QVariant</name>
-      <anchor>QVariant-11</anchor>
+      <anchor>QVariant-12</anchor>
       <arglist>( double val )</arglist>
     </member>
     <member kind="function">
       <name>QVariant</name>
-      <anchor>QVariant-12</anchor>
-      <arglist>( const char * val )</arglist>
-    </member>
-    <member kind="function">
-      <name>QVariant</name>
       <anchor>QVariant-13</anchor>
-      <arglist>( const QByteArray &amp; val )</arglist>
+      <arglist>( float val )</arglist>
     </member>
     <member kind="function">
       <name>QVariant</name>
       <anchor>QVariant-14</anchor>
-      <arglist>( const QBitArray &amp; val )</arglist>
+      <arglist>( const char * val )</arglist>
     </member>
     <member kind="function">
       <name>QVariant</name>
       <anchor>QVariant-15</anchor>
-      <arglist>( const QString &amp; val )</arglist>
+      <arglist>( const QByteArray &amp; val )</arglist>
     </member>
     <member kind="function">
       <name>QVariant</name>
       <anchor>QVariant-16</anchor>
-      <arglist>( const QLatin1String &amp; val )</arglist>
+      <arglist>( const QBitArray &amp; val )</arglist>
     </member>
     <member kind="function">
       <name>QVariant</name>
       <anchor>QVariant-17</anchor>
-      <arglist>( const QStringList &amp; val )</arglist>
+      <arglist>( const QString &amp; val )</arglist>
     </member>
     <member kind="function">
       <name>QVariant</name>
       <anchor>QVariant-18</anchor>
-      <arglist>( const QChar &amp; c )</arglist>
+      <arglist>( const QLatin1String &amp; val )</arglist>
     </member>
     <member kind="function">
       <name>QVariant</name>
       <anchor>QVariant-19</anchor>
-      <arglist>( const QDate &amp; val )</arglist>
+      <arglist>( const QStringList &amp; val )</arglist>
     </member>
     <member kind="function">
       <name>QVariant</name>
       <anchor>QVariant-20</anchor>
-      <arglist>( const QTime &amp; val )</arglist>
+      <arglist>( const QChar &amp; c )</arglist>
     </member>
     <member kind="function">
       <name>QVariant</name>
       <anchor>QVariant-21</anchor>
-      <arglist>( const QDateTime &amp; val )</arglist>
+      <arglist>( const QDate &amp; val )</arglist>
     </member>
     <member kind="function">
       <name>QVariant</name>
       <anchor>QVariant-22</anchor>
-      <arglist>( const QList&lt;QVariant&gt; &amp; val )</arglist>
+      <arglist>( const QTime &amp; val )</arglist>
     </member>
     <member kind="function">
       <name>QVariant</name>
       <anchor>QVariant-23</anchor>
-      <arglist>( const QMap&lt;QString, QVariant&gt; &amp; val )</arglist>
+      <arglist>( const QDateTime &amp; val )</arglist>
     </member>
     <member kind="function">
       <name>QVariant</name>
       <anchor>QVariant-24</anchor>
-      <arglist>( const QHash&lt;QString, QVariant&gt; &amp; val )</arglist>
+      <arglist>( const QList&lt;QVariant&gt; &amp; val )</arglist>
     </member>
     <member kind="function">
       <name>QVariant</name>
       <anchor>QVariant-25</anchor>
-      <arglist>( const QSize &amp; val )</arglist>
+      <arglist>( const QMap&lt;QString, QVariant&gt; &amp; val )</arglist>
     </member>
     <member kind="function">
       <name>QVariant</name>
       <anchor>QVariant-26</anchor>
-      <arglist>( const QSizeF &amp; val )</arglist>
+      <arglist>( const QHash&lt;QString, QVariant&gt; &amp; val )</arglist>
     </member>
     <member kind="function">
       <name>QVariant</name>
       <anchor>QVariant-27</anchor>
-      <arglist>( const QPoint &amp; val )</arglist>
+      <arglist>( const QSize &amp; val )</arglist>
     </member>
     <member kind="function">
       <name>QVariant</name>
       <anchor>QVariant-28</anchor>
-      <arglist>( const QPointF &amp; val )</arglist>
+      <arglist>( const QSizeF &amp; val )</arglist>
     </member>
     <member kind="function">
       <name>QVariant</name>
       <anchor>QVariant-29</anchor>
-      <arglist>( const QLine &amp; val )</arglist>
+      <arglist>( const QPoint &amp; val )</arglist>
     </member>
     <member kind="function">
       <name>QVariant</name>
       <anchor>QVariant-30</anchor>
-      <arglist>( const QLineF &amp; val )</arglist>
+      <arglist>( const QPointF &amp; val )</arglist>
     </member>
     <member kind="function">
       <name>QVariant</name>
       <anchor>QVariant-31</anchor>
-      <arglist>( const QRect &amp; val )</arglist>
+      <arglist>( const QLine &amp; val )</arglist>
     </member>
     <member kind="function">
       <name>QVariant</name>
       <anchor>QVariant-32</anchor>
-      <arglist>( const QRectF &amp; val )</arglist>
+      <arglist>( const QLineF &amp; val )</arglist>
     </member>
     <member kind="function">
       <name>QVariant</name>
       <anchor>QVariant-33</anchor>
-      <arglist>( const QUrl &amp; val )</arglist>
+      <arglist>( const QRect &amp; val )</arglist>
     </member>
     <member kind="function">
       <name>QVariant</name>
       <anchor>QVariant-34</anchor>
-      <arglist>( const QLocale &amp; l )</arglist>
+      <arglist>( const QRectF &amp; val )</arglist>
     </member>
     <member kind="function">
       <name>QVariant</name>
       <anchor>QVariant-35</anchor>
-      <arglist>( const QRegExp &amp; regExp )</arglist>
+      <arglist>( const QUrl &amp; val )</arglist>
     </member>
     <member kind="function">
       <name>canConvert</name>
@@ -84025,6 +98703,11 @@
       <arglist>( bool * ok = 0 )</arglist>
     </member>
     <member kind="function">
+      <name>toFloat</name>
+      <anchor>toFloat</anchor>
+      <arglist>( bool * ok = 0 )</arglist>
+    </member>
+    <member kind="function">
       <name>toHash</name>
       <anchor>toHash</anchor>
       <arglist>()</arglist>
@@ -84073,6 +98756,11 @@
       <name>toPointF</name>
       <anchor>toPointF</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>toReal</name>
+      <anchor>toReal</anchor>
+      <arglist>( bool * ok = 0 )</arglist>
     </member>
     <member kind="function">
       <name>toRect</name>
@@ -84168,6 +98856,75 @@
       <name>operator==</name>
       <anchor>operator-eq-eq</anchor>
       <arglist>( const QVariant &amp; v )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QVariantAnimation</name>
+    <filename>qvariantanimation.html</filename>
+    <member kind="function">
+      <name>KeyValue</name>
+      <anchor>KeyValue-typedef</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>KeyValues</name>
+      <anchor>KeyValues-typedef</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>QVariantAnimation</name>
+      <anchor>QVariantAnimation</anchor>
+      <arglist>( QObject * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>interpolated</name>
+      <anchor>interpolated</anchor>
+      <arglist>( const QVariant &amp; from, const QVariant &amp; to, qreal progress )</arglist>
+    </member>
+    <member kind="function">
+      <name>keyValueAt</name>
+      <anchor>keyValueAt</anchor>
+      <arglist>( qreal step )</arglist>
+    </member>
+    <member kind="function">
+      <name>keyValues</name>
+      <anchor>keyValues</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>setKeyValueAt</name>
+      <anchor>setKeyValueAt</anchor>
+      <arglist>( qreal step, const QVariant &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setKeyValues</name>
+      <anchor>setKeyValues</anchor>
+      <arglist>( const KeyValues &amp; keyValues )</arglist>
+    </member>
+    <member kind="function">
+      <name>updateCurrentTime</name>
+      <anchor>updateCurrentTime</anchor>
+      <arglist>( int )</arglist>
+    </member>
+    <member kind="function">
+      <name>updateCurrentValue</name>
+      <anchor>updateCurrentValue</anchor>
+      <arglist>( const QVariant &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>updateState</name>
+      <anchor>updateState</anchor>
+      <arglist>( QAbstractAnimation::State newState, QAbstractAnimation::State oldState )</arglist>
+    </member>
+    <member kind="function">
+      <name>valueChanged</name>
+      <anchor>valueChanged</anchor>
+      <arglist>( const QVariant &amp; value )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -84703,6 +99460,493 @@
     </member>
   </compound>
   <compound kind="class">
+    <name>QVector2D</name>
+    <filename>qvector2d.html</filename>
+    <member kind="function">
+      <name>QVector2D</name>
+      <anchor>QVector2D</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>QVector2D</name>
+      <anchor>QVector2D-2</anchor>
+      <arglist>( qreal xpos, qreal ypos )</arglist>
+    </member>
+    <member kind="function">
+      <name>QVector2D</name>
+      <anchor>QVector2D-3</anchor>
+      <arglist>( const QPoint &amp; point )</arglist>
+    </member>
+    <member kind="function">
+      <name>QVector2D</name>
+      <anchor>QVector2D-4</anchor>
+      <arglist>( const QPointF &amp; point )</arglist>
+    </member>
+    <member kind="function">
+      <name>QVector2D</name>
+      <anchor>QVector2D-5</anchor>
+      <arglist>( const QVector3D &amp; vector )</arglist>
+    </member>
+    <member kind="function">
+      <name>QVector2D</name>
+      <anchor>QVector2D-6</anchor>
+      <arglist>( const QVector4D &amp; vector )</arglist>
+    </member>
+    <member kind="function">
+      <name>dotProduct</name>
+      <anchor>dotProduct</anchor>
+      <arglist>( const QVector2D &amp; v1, const QVector2D &amp; v2 )</arglist>
+    </member>
+    <member kind="function">
+      <name>isNull</name>
+      <anchor>isNull</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>length</name>
+      <anchor>length</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>lengthSquared</name>
+      <anchor>lengthSquared</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>normalize</name>
+      <anchor>normalize</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>normalized</name>
+      <anchor>normalized</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>setX</name>
+      <anchor>setX</anchor>
+      <arglist>( qreal x )</arglist>
+    </member>
+    <member kind="function">
+      <name>setY</name>
+      <anchor>setY</anchor>
+      <arglist>( qreal y )</arglist>
+    </member>
+    <member kind="function">
+      <name>toPoint</name>
+      <anchor>toPoint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>toPointF</name>
+      <anchor>toPointF</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>toVector3D</name>
+      <anchor>toVector3D</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>toVector4D</name>
+      <anchor>toVector4D</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>x</name>
+      <anchor>x</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>y</name>
+      <anchor>y</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>operator</name>
+      <anchor>operator-QVariant</anchor>
+      <arglist> QVariant()</arglist>
+    </member>
+    <member kind="function">
+      <name>operator*=</name>
+      <anchor>operator-2a-eq</anchor>
+      <arglist>( qreal factor )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator*=</name>
+      <anchor>operator-2a-eq-2</anchor>
+      <arglist>( const QVector2D &amp; vector )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator+=</name>
+      <anchor>operator-2b-eq</anchor>
+      <arglist>( const QVector2D &amp; vector )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator-=</name>
+      <anchor>operator--eq</anchor>
+      <arglist>( const QVector2D &amp; vector )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator/=</name>
+      <anchor>operator-2f-eq</anchor>
+      <arglist>( qreal divisor )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QVector3D</name>
+    <filename>qvector3d.html</filename>
+    <member kind="function">
+      <name>QVector3D</name>
+      <anchor>QVector3D</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>QVector3D</name>
+      <anchor>QVector3D-2</anchor>
+      <arglist>( qreal xpos, qreal ypos, qreal zpos )</arglist>
+    </member>
+    <member kind="function">
+      <name>QVector3D</name>
+      <anchor>QVector3D-3</anchor>
+      <arglist>( const QPoint &amp; point )</arglist>
+    </member>
+    <member kind="function">
+      <name>QVector3D</name>
+      <anchor>QVector3D-4</anchor>
+      <arglist>( const QPointF &amp; point )</arglist>
+    </member>
+    <member kind="function">
+      <name>QVector3D</name>
+      <anchor>QVector3D-5</anchor>
+      <arglist>( const QVector2D &amp; vector )</arglist>
+    </member>
+    <member kind="function">
+      <name>QVector3D</name>
+      <anchor>QVector3D-6</anchor>
+      <arglist>( const QVector2D &amp; vector, qreal zpos )</arglist>
+    </member>
+    <member kind="function">
+      <name>QVector3D</name>
+      <anchor>QVector3D-7</anchor>
+      <arglist>( const QVector4D &amp; vector )</arglist>
+    </member>
+    <member kind="function">
+      <name>crossProduct</name>
+      <anchor>crossProduct</anchor>
+      <arglist>( const QVector3D &amp; v1, const QVector3D &amp; v2 )</arglist>
+    </member>
+    <member kind="function">
+      <name>distanceToLine</name>
+      <anchor>distanceToLine</anchor>
+      <arglist>( const QVector3D &amp; point, const QVector3D &amp; direction )</arglist>
+    </member>
+    <member kind="function">
+      <name>distanceToPlane</name>
+      <anchor>distanceToPlane</anchor>
+      <arglist>( const QVector3D &amp; plane, const QVector3D &amp; normal )</arglist>
+    </member>
+    <member kind="function">
+      <name>distanceToPlane</name>
+      <anchor>distanceToPlane-2</anchor>
+      <arglist>( const QVector3D &amp; plane1, const QVector3D &amp; plane2, const QVector3D &amp; plane3 )</arglist>
+    </member>
+    <member kind="function">
+      <name>dotProduct</name>
+      <anchor>dotProduct</anchor>
+      <arglist>( const QVector3D &amp; v1, const QVector3D &amp; v2 )</arglist>
+    </member>
+    <member kind="function">
+      <name>isNull</name>
+      <anchor>isNull</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>length</name>
+      <anchor>length</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>lengthSquared</name>
+      <anchor>lengthSquared</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>normal</name>
+      <anchor>normal</anchor>
+      <arglist>( const QVector3D &amp; v1, const QVector3D &amp; v2 )</arglist>
+    </member>
+    <member kind="function">
+      <name>normal</name>
+      <anchor>normal-2</anchor>
+      <arglist>( const QVector3D &amp; v1, const QVector3D &amp; v2, const QVector3D &amp; v3 )</arglist>
+    </member>
+    <member kind="function">
+      <name>normalize</name>
+      <anchor>normalize</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>normalized</name>
+      <anchor>normalized</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>setX</name>
+      <anchor>setX</anchor>
+      <arglist>( qreal x )</arglist>
+    </member>
+    <member kind="function">
+      <name>setY</name>
+      <anchor>setY</anchor>
+      <arglist>( qreal y )</arglist>
+    </member>
+    <member kind="function">
+      <name>setZ</name>
+      <anchor>setZ</anchor>
+      <arglist>( qreal z )</arglist>
+    </member>
+    <member kind="function">
+      <name>toPoint</name>
+      <anchor>toPoint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>toPointF</name>
+      <anchor>toPointF</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>toVector2D</name>
+      <anchor>toVector2D</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>toVector4D</name>
+      <anchor>toVector4D</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>x</name>
+      <anchor>x</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>y</name>
+      <anchor>y</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>z</name>
+      <anchor>z</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>operator</name>
+      <anchor>operator-QVariant</anchor>
+      <arglist> QVariant()</arglist>
+    </member>
+    <member kind="function">
+      <name>operator*=</name>
+      <anchor>operator-2a-eq</anchor>
+      <arglist>( qreal factor )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator*=</name>
+      <anchor>operator-2a-eq-2</anchor>
+      <arglist>( const QVector3D &amp; vector )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator+=</name>
+      <anchor>operator-2b-eq</anchor>
+      <arglist>( const QVector3D &amp; vector )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator-=</name>
+      <anchor>operator--eq</anchor>
+      <arglist>( const QVector3D &amp; vector )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator/=</name>
+      <anchor>operator-2f-eq</anchor>
+      <arglist>( qreal divisor )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QVector4D</name>
+    <filename>qvector4d.html</filename>
+    <member kind="function">
+      <name>QVector4D</name>
+      <anchor>QVector4D</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>QVector4D</name>
+      <anchor>QVector4D-2</anchor>
+      <arglist>( qreal xpos, qreal ypos, qreal zpos, qreal wpos )</arglist>
+    </member>
+    <member kind="function">
+      <name>QVector4D</name>
+      <anchor>QVector4D-3</anchor>
+      <arglist>( const QPoint &amp; point )</arglist>
+    </member>
+    <member kind="function">
+      <name>QVector4D</name>
+      <anchor>QVector4D-4</anchor>
+      <arglist>( const QPointF &amp; point )</arglist>
+    </member>
+    <member kind="function">
+      <name>QVector4D</name>
+      <anchor>QVector4D-5</anchor>
+      <arglist>( const QVector2D &amp; vector )</arglist>
+    </member>
+    <member kind="function">
+      <name>QVector4D</name>
+      <anchor>QVector4D-6</anchor>
+      <arglist>( const QVector2D &amp; vector, qreal zpos, qreal wpos )</arglist>
+    </member>
+    <member kind="function">
+      <name>QVector4D</name>
+      <anchor>QVector4D-7</anchor>
+      <arglist>( const QVector3D &amp; vector )</arglist>
+    </member>
+    <member kind="function">
+      <name>QVector4D</name>
+      <anchor>QVector4D-8</anchor>
+      <arglist>( const QVector3D &amp; vector, qreal wpos )</arglist>
+    </member>
+    <member kind="function">
+      <name>dotProduct</name>
+      <anchor>dotProduct</anchor>
+      <arglist>( const QVector4D &amp; v1, const QVector4D &amp; v2 )</arglist>
+    </member>
+    <member kind="function">
+      <name>isNull</name>
+      <anchor>isNull</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>length</name>
+      <anchor>length</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>lengthSquared</name>
+      <anchor>lengthSquared</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>normalize</name>
+      <anchor>normalize</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>normalized</name>
+      <anchor>normalized</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>setW</name>
+      <anchor>setW</anchor>
+      <arglist>( qreal w )</arglist>
+    </member>
+    <member kind="function">
+      <name>setX</name>
+      <anchor>setX</anchor>
+      <arglist>( qreal x )</arglist>
+    </member>
+    <member kind="function">
+      <name>setY</name>
+      <anchor>setY</anchor>
+      <arglist>( qreal y )</arglist>
+    </member>
+    <member kind="function">
+      <name>setZ</name>
+      <anchor>setZ</anchor>
+      <arglist>( qreal z )</arglist>
+    </member>
+    <member kind="function">
+      <name>toPoint</name>
+      <anchor>toPoint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>toPointF</name>
+      <anchor>toPointF</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>toVector2D</name>
+      <anchor>toVector2D</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>toVector2DAffine</name>
+      <anchor>toVector2DAffine</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>toVector3D</name>
+      <anchor>toVector3D</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>toVector3DAffine</name>
+      <anchor>toVector3DAffine</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>w</name>
+      <anchor>w</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>x</name>
+      <anchor>x</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>y</name>
+      <anchor>y</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>z</name>
+      <anchor>z</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>operator</name>
+      <anchor>operator-QVariant</anchor>
+      <arglist> QVariant()</arglist>
+    </member>
+    <member kind="function">
+      <name>operator*=</name>
+      <anchor>operator-2a-eq</anchor>
+      <arglist>( qreal factor )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator*=</name>
+      <anchor>operator-2a-eq-2</anchor>
+      <arglist>( const QVector4D &amp; vector )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator+=</name>
+      <anchor>operator-2b-eq</anchor>
+      <arglist>( const QVector4D &amp; vector )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator-=</name>
+      <anchor>operator--eq</anchor>
+      <arglist>( const QVector4D &amp; vector )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator/=</name>
+      <anchor>operator-2f-eq</anchor>
+      <arglist>( qreal divisor )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
     <name>QVectorIterator</name>
     <filename>qvectoriterator.html</filename>
     <member kind="function">
@@ -84767,6 +100011,334 @@
     </member>
   </compound>
   <compound kind="class">
+    <name>QVideoFrame</name>
+    <filename>qvideoframe.html</filename>
+    <member kind="enum">
+      <name>FieldType</name>
+      <anchor>FieldType-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enum">
+      <name>PixelFormat</name>
+      <anchor>PixelFormat-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>QVideoFrame</name>
+      <anchor>QVideoFrame</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>QVideoFrame</name>
+      <anchor>QVideoFrame-2</anchor>
+      <arglist>( QAbstractVideoBuffer * buffer, const QSize &amp; size, PixelFormat format )</arglist>
+    </member>
+    <member kind="function">
+      <name>QVideoFrame</name>
+      <anchor>QVideoFrame-3</anchor>
+      <arglist>( int bytes, const QSize &amp; size, int bytesPerLine, PixelFormat format )</arglist>
+    </member>
+    <member kind="function">
+      <name>QVideoFrame</name>
+      <anchor>QVideoFrame-4</anchor>
+      <arglist>( const QImage &amp; image )</arglist>
+    </member>
+    <member kind="function">
+      <name>QVideoFrame</name>
+      <anchor>QVideoFrame-5</anchor>
+      <arglist>( const QVideoFrame &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>bits</name>
+      <anchor>bits</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>bits</name>
+      <anchor>bits-2</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>bytesPerLine</name>
+      <anchor>bytesPerLine</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>endTime</name>
+      <anchor>endTime</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>fieldType</name>
+      <anchor>fieldType</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>handle</name>
+      <anchor>handle</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>HandleType</name>
+      <anchor>handleType</anchor>
+      <arglist> QVideoFrame::handleType()</arglist>
+    </member>
+    <member kind="function">
+      <name>height</name>
+      <anchor>height</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>Format</name>
+      <anchor>imageFormatFromPixelFormat</anchor>
+      <arglist> QVideoFrame::imageFormatFromPixelFormat( PixelFormat format )</arglist>
+    </member>
+    <member kind="function">
+      <name>isMapped</name>
+      <anchor>isMapped</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>isReadable</name>
+      <anchor>isReadable</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>isValid</name>
+      <anchor>isValid</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>isWritable</name>
+      <anchor>isWritable</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>map</name>
+      <anchor>map</anchor>
+      <arglist>( QAbstractVideoBuffer::MapMode mode )</arglist>
+    </member>
+    <member kind="function">
+      <name>MapMode</name>
+      <anchor>mapMode</anchor>
+      <arglist> QVideoFrame::mapMode()</arglist>
+    </member>
+    <member kind="function">
+      <name>mappedBytes</name>
+      <anchor>mappedBytes</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>pixelFormat</name>
+      <anchor>pixelFormat</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>pixelFormatFromImageFormat</name>
+      <anchor>pixelFormatFromImageFormat</anchor>
+      <arglist>( QImage::Format format )</arglist>
+    </member>
+    <member kind="function">
+      <name>setEndTime</name>
+      <anchor>setEndTime</anchor>
+      <arglist>( qint64 time )</arglist>
+    </member>
+    <member kind="function">
+      <name>setFieldType</name>
+      <anchor>setFieldType</anchor>
+      <arglist>( FieldType field )</arglist>
+    </member>
+    <member kind="function">
+      <name>setStartTime</name>
+      <anchor>setStartTime</anchor>
+      <arglist>( qint64 time )</arglist>
+    </member>
+    <member kind="function">
+      <name>size</name>
+      <anchor>size</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>startTime</name>
+      <anchor>startTime</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>unmap</name>
+      <anchor>unmap</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>width</name>
+      <anchor>width</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>operator=</name>
+      <anchor>operator-eq</anchor>
+      <arglist>( const QVideoFrame &amp; other )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QVideoSurfaceFormat</name>
+    <filename>qvideosurfaceformat.html</filename>
+    <member kind="enum">
+      <name>Direction</name>
+      <anchor>Direction-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enum">
+      <name>YCbCrColorSpace</name>
+      <anchor>YCbCrColorSpace-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>QVideoSurfaceFormat</name>
+      <anchor>QVideoSurfaceFormat</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>QVideoSurfaceFormat</name>
+      <anchor>QVideoSurfaceFormat-2</anchor>
+      <arglist>( const QSize &amp; size, QVideoFrame::PixelFormat format, QAbstractVideoBuffer::HandleType type = QAbstractVideoBuffer::NoHandle )</arglist>
+    </member>
+    <member kind="function">
+      <name>QVideoSurfaceFormat</name>
+      <anchor>QVideoSurfaceFormat-3</anchor>
+      <arglist>( const QVideoSurfaceFormat &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>frameHeight</name>
+      <anchor>frameHeight</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>frameRate</name>
+      <anchor>frameRate</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>frameSize</name>
+      <anchor>frameSize</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>frameWidth</name>
+      <anchor>frameWidth</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>HandleType</name>
+      <anchor>handleType</anchor>
+      <arglist> QVideoSurfaceFormat::handleType()</arglist>
+    </member>
+    <member kind="function">
+      <name>isValid</name>
+      <anchor>isValid</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>pixelAspectRatio</name>
+      <anchor>pixelAspectRatio</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>PixelFormat</name>
+      <anchor>pixelFormat</anchor>
+      <arglist> QVideoSurfaceFormat::pixelFormat()</arglist>
+    </member>
+    <member kind="function">
+      <name>property</name>
+      <anchor>property</anchor>
+      <arglist>( const char * name )</arglist>
+    </member>
+    <member kind="function">
+      <name>propertyNames</name>
+      <anchor>propertyNames</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>scanLineDirection</name>
+      <anchor>scanLineDirection</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>setFrameRate</name>
+      <anchor>setFrameRate</anchor>
+      <arglist>( qreal rate )</arglist>
+    </member>
+    <member kind="function">
+      <name>setFrameSize</name>
+      <anchor>setFrameSize</anchor>
+      <arglist>( const QSize &amp; size )</arglist>
+    </member>
+    <member kind="function">
+      <name>setFrameSize</name>
+      <anchor>setFrameSize-2</anchor>
+      <arglist>( int width, int height )</arglist>
+    </member>
+    <member kind="function">
+      <name>setPixelAspectRatio</name>
+      <anchor>setPixelAspectRatio</anchor>
+      <arglist>( const QSize &amp; ratio )</arglist>
+    </member>
+    <member kind="function">
+      <name>setPixelAspectRatio</name>
+      <anchor>setPixelAspectRatio-2</anchor>
+      <arglist>( int horizontal, int vertical )</arglist>
+    </member>
+    <member kind="function">
+      <name>setProperty</name>
+      <anchor>setProperty</anchor>
+      <arglist>( const char * name, const QVariant &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setScanLineDirection</name>
+      <anchor>setScanLineDirection</anchor>
+      <arglist>( Direction direction )</arglist>
+    </member>
+    <member kind="function">
+      <name>setViewport</name>
+      <anchor>setViewport</anchor>
+      <arglist>( const QRect &amp; viewport )</arglist>
+    </member>
+    <member kind="function">
+      <name>setYCbCrColorSpace</name>
+      <anchor>setYCbCrColorSpace</anchor>
+      <arglist>( YCbCrColorSpace space )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>viewport</name>
+      <anchor>viewport</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>yCbCrColorSpace</name>
+      <anchor>yCbCrColorSpace</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>operator!=</name>
+      <anchor>operator-not-eq</anchor>
+      <arglist>( const QVideoSurfaceFormat &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator=</name>
+      <anchor>operator-eq</anchor>
+      <arglist>( const QVideoSurfaceFormat &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator==</name>
+      <anchor>operator-eq-eq</anchor>
+      <arglist>( const QVideoSurfaceFormat &amp; other )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
     <name>QWaitCondition</name>
     <filename>qwaitcondition.html</filename>
     <member kind="function">
@@ -84814,8 +100386,18 @@
       <arglist>( const QSharedPointer&lt;T&gt; &amp; other )</arglist>
     </member>
     <member kind="function">
+      <name>QWeakPointer</name>
+      <anchor>QWeakPointer-4</anchor>
+      <arglist>( const QObject * obj )</arglist>
+    </member>
+    <member kind="function">
       <name>clear</name>
       <anchor>clear</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>data</name>
+      <anchor>data</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -84847,6 +100429,11 @@
       <name>operator=</name>
       <anchor>operator-eq-2</anchor>
       <arglist>( const QSharedPointer&lt;T&gt; &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator=</name>
+      <anchor>operator-eq-3</anchor>
+      <arglist>( const QObject * obj )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -84883,6 +100470,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>removeAllDatabases</name>
+      <anchor>removeAllDatabases</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>removeDatabase</name>
       <anchor>removeDatabase</anchor>
       <arglist>( const QWebDatabase &amp; db )</arglist>
@@ -84899,8 +100491,616 @@
     </member>
   </compound>
   <compound kind="class">
+    <name>QWebElement</name>
+    <filename>qwebelement.html</filename>
+    <member kind="enum">
+      <name>StyleResolveStrategy</name>
+      <anchor>StyleResolveStrategy-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>QWebElement</name>
+      <anchor>QWebElement</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>QWebElement</name>
+      <anchor>QWebElement-2</anchor>
+      <arglist>( const QWebElement &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>addClass</name>
+      <anchor>addClass</anchor>
+      <arglist>( const QString &amp; name )</arglist>
+    </member>
+    <member kind="function">
+      <name>appendInside</name>
+      <anchor>appendInside</anchor>
+      <arglist>( const QString &amp; markup )</arglist>
+    </member>
+    <member kind="function">
+      <name>appendInside</name>
+      <anchor>appendInside-2</anchor>
+      <arglist>( const QWebElement &amp; element )</arglist>
+    </member>
+    <member kind="function">
+      <name>appendOutside</name>
+      <anchor>appendOutside</anchor>
+      <arglist>( const QString &amp; markup )</arglist>
+    </member>
+    <member kind="function">
+      <name>appendOutside</name>
+      <anchor>appendOutside-2</anchor>
+      <arglist>( const QWebElement &amp; element )</arglist>
+    </member>
+    <member kind="function">
+      <name>attribute</name>
+      <anchor>attribute</anchor>
+      <arglist>( const QString &amp; name, const QString &amp; defaultValue = QString()</arglist>
+    </member>
+    <member kind="function">
+      <name>attributeNS</name>
+      <anchor>attributeNS</anchor>
+      <arglist>( const QString &amp; namespaceUri, const QString &amp; name, const QString &amp; defaultValue = QString()</arglist>
+    </member>
+    <member kind="function">
+      <name>attributeNames</name>
+      <anchor>attributeNames</anchor>
+      <arglist>( const QString &amp; namespaceUri = QString()</arglist>
+    </member>
+    <member kind="function">
+      <name>classes</name>
+      <anchor>classes</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>clone</name>
+      <anchor>clone</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>document</name>
+      <anchor>document</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>encloseContentsWith</name>
+      <anchor>encloseContentsWith</anchor>
+      <arglist>( const QWebElement &amp; element )</arglist>
+    </member>
+    <member kind="function">
+      <name>encloseContentsWith</name>
+      <anchor>encloseContentsWith-2</anchor>
+      <arglist>( const QString &amp; markup )</arglist>
+    </member>
+    <member kind="function">
+      <name>encloseWith</name>
+      <anchor>encloseWith</anchor>
+      <arglist>( const QString &amp; markup )</arglist>
+    </member>
+    <member kind="function">
+      <name>encloseWith</name>
+      <anchor>encloseWith-2</anchor>
+      <arglist>( const QWebElement &amp; element )</arglist>
+    </member>
+    <member kind="function">
+      <name>evaluateJavaScript</name>
+      <anchor>evaluateJavaScript</anchor>
+      <arglist>( const QString &amp; scriptSource )</arglist>
+    </member>
+    <member kind="function">
+      <name>findAll</name>
+      <anchor>findAll</anchor>
+      <arglist>( const QString &amp; selectorQuery )</arglist>
+    </member>
+    <member kind="function">
+      <name>findFirst</name>
+      <anchor>findFirst</anchor>
+      <arglist>( const QString &amp; selectorQuery )</arglist>
+    </member>
+    <member kind="function">
+      <name>firstChild</name>
+      <anchor>firstChild</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>geometry</name>
+      <anchor>geometry</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>hasAttribute</name>
+      <anchor>hasAttribute</anchor>
+      <arglist>( const QString &amp; name )</arglist>
+    </member>
+    <member kind="function">
+      <name>hasAttributeNS</name>
+      <anchor>hasAttributeNS</anchor>
+      <arglist>( const QString &amp; namespaceUri, const QString &amp; name )</arglist>
+    </member>
+    <member kind="function">
+      <name>hasAttributes</name>
+      <anchor>hasAttributes</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>hasClass</name>
+      <anchor>hasClass</anchor>
+      <arglist>( const QString &amp; name )</arglist>
+    </member>
+    <member kind="function">
+      <name>hasFocus</name>
+      <anchor>hasFocus</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>isNull</name>
+      <anchor>isNull</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>lastChild</name>
+      <anchor>lastChild</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>localName</name>
+      <anchor>localName</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>namespaceUri</name>
+      <anchor>namespaceUri</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>nextSibling</name>
+      <anchor>nextSibling</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>parent</name>
+      <anchor>parent</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>prefix</name>
+      <anchor>prefix</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>prependInside</name>
+      <anchor>prependInside</anchor>
+      <arglist>( const QString &amp; markup )</arglist>
+    </member>
+    <member kind="function">
+      <name>prependInside</name>
+      <anchor>prependInside-2</anchor>
+      <arglist>( const QWebElement &amp; element )</arglist>
+    </member>
+    <member kind="function">
+      <name>prependOutside</name>
+      <anchor>prependOutside</anchor>
+      <arglist>( const QString &amp; markup )</arglist>
+    </member>
+    <member kind="function">
+      <name>prependOutside</name>
+      <anchor>prependOutside-2</anchor>
+      <arglist>( const QWebElement &amp; element )</arglist>
+    </member>
+    <member kind="function">
+      <name>previousSibling</name>
+      <anchor>previousSibling</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>removeAllChildren</name>
+      <anchor>removeAllChildren</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>removeAttribute</name>
+      <anchor>removeAttribute</anchor>
+      <arglist>( const QString &amp; name )</arglist>
+    </member>
+    <member kind="function">
+      <name>removeAttributeNS</name>
+      <anchor>removeAttributeNS</anchor>
+      <arglist>( const QString &amp; namespaceUri, const QString &amp; name )</arglist>
+    </member>
+    <member kind="function">
+      <name>removeClass</name>
+      <anchor>removeClass</anchor>
+      <arglist>( const QString &amp; name )</arglist>
+    </member>
+    <member kind="function">
+      <name>removeFromDocument</name>
+      <anchor>removeFromDocument</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>render</name>
+      <anchor>render</anchor>
+      <arglist>( QPainter * painter )</arglist>
+    </member>
+    <member kind="function">
+      <name>replace</name>
+      <anchor>replace</anchor>
+      <arglist>( const QString &amp; markup )</arglist>
+    </member>
+    <member kind="function">
+      <name>replace</name>
+      <anchor>replace-2</anchor>
+      <arglist>( const QWebElement &amp; element )</arglist>
+    </member>
+    <member kind="function">
+      <name>setAttribute</name>
+      <anchor>setAttribute</anchor>
+      <arglist>( const QString &amp; name, const QString &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setAttributeNS</name>
+      <anchor>setAttributeNS</anchor>
+      <arglist>( const QString &amp; namespaceUri, const QString &amp; name, const QString &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>setFocus</name>
+      <anchor>setFocus</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>setInnerXml</name>
+      <anchor>setInnerXml</anchor>
+      <arglist>( const QString &amp; markup )</arglist>
+    </member>
+    <member kind="function">
+      <name>setOuterXml</name>
+      <anchor>setOuterXml</anchor>
+      <arglist>( const QString &amp; markup )</arglist>
+    </member>
+    <member kind="function">
+      <name>setPlainText</name>
+      <anchor>setPlainText</anchor>
+      <arglist>( const QString &amp; text )</arglist>
+    </member>
+    <member kind="function">
+      <name>setStyleProperty</name>
+      <anchor>setStyleProperty</anchor>
+      <arglist>( const QString &amp; name, const QString &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>styleProperty</name>
+      <anchor>styleProperty</anchor>
+      <arglist>( const QString &amp; name, StyleResolveStrategy strategy )</arglist>
+    </member>
+    <member kind="function">
+      <name>tagName</name>
+      <anchor>tagName</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>takeFromDocument</name>
+      <anchor>takeFromDocument</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>toInnerXml</name>
+      <anchor>toInnerXml</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>toOuterXml</name>
+      <anchor>toOuterXml</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>toPlainText</name>
+      <anchor>toPlainText</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>toggleClass</name>
+      <anchor>toggleClass</anchor>
+      <arglist>( const QString &amp; name )</arglist>
+    </member>
+    <member kind="function">
+      <name>webFrame</name>
+      <anchor>webFrame</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>operator!=</name>
+      <anchor>operator-not-eq</anchor>
+      <arglist>( const QWebElement &amp; o )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator=</name>
+      <anchor>operator-eq</anchor>
+      <arglist>( const QWebElement &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator==</name>
+      <anchor>operator-eq-eq</anchor>
+      <arglist>( const QWebElement &amp; o )</arglist>
+    </member>
+    <member kind="function">
+      <name>const_iterator</name>
+      <anchor>const_iterator</anchor>
+      <arglist>( const const_iterator &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator!=</name>
+      <anchor>operator-not-eq</anchor>
+      <arglist>( const const_iterator &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator*</name>
+      <anchor>operator-2a</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>operator+</name>
+      <anchor>operator-2b</anchor>
+      <arglist>( int j )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator++</name>
+      <anchor>operator-2b-2b</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>operator++</name>
+      <anchor>operator-2b-2b-2</anchor>
+      <arglist>( int )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator+=</name>
+      <anchor>operator-2b-eq</anchor>
+      <arglist>( int j )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator-</name>
+      <anchor>operator-</anchor>
+      <arglist>( int j )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator-</name>
+      <anchor>operator--2</anchor>
+      <arglist>( const_iterator other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator--</name>
+      <anchor>operator--</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>operator--</name>
+      <anchor>operator---2</anchor>
+      <arglist>( int )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator-=</name>
+      <anchor>operator--eq</anchor>
+      <arglist>( int j )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator&lt;</name>
+      <anchor>operator-lt</anchor>
+      <arglist>( const const_iterator &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator&lt;=</name>
+      <anchor>operator-lt-eq</anchor>
+      <arglist>( const const_iterator &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator==</name>
+      <anchor>operator-eq-eq</anchor>
+      <arglist>( const const_iterator &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator&gt;</name>
+      <anchor>operator-gt</anchor>
+      <arglist>( const const_iterator &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator&gt;=</name>
+      <anchor>operator-gt-eq</anchor>
+      <arglist>( const const_iterator &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>iterator</name>
+      <anchor>iterator</anchor>
+      <arglist>( const iterator &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator!=</name>
+      <anchor>operator-not-eq</anchor>
+      <arglist>( const iterator &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator*</name>
+      <anchor>operator-2a</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>operator+</name>
+      <anchor>operator-2b</anchor>
+      <arglist>( int j )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator++</name>
+      <anchor>operator-2b-2b</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>operator++</name>
+      <anchor>operator-2b-2b-2</anchor>
+      <arglist>( int )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator+=</name>
+      <anchor>operator-2b-eq</anchor>
+      <arglist>( int j )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator-</name>
+      <anchor>operator-</anchor>
+      <arglist>( int j )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator-</name>
+      <anchor>operator--2</anchor>
+      <arglist>( iterator other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator--</name>
+      <anchor>operator--</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>operator--</name>
+      <anchor>operator---2</anchor>
+      <arglist>( int )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator-=</name>
+      <anchor>operator--eq</anchor>
+      <arglist>( int j )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator&lt;</name>
+      <anchor>operator-lt</anchor>
+      <arglist>( const iterator &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator&lt;=</name>
+      <anchor>operator-lt-eq</anchor>
+      <arglist>( const iterator &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator==</name>
+      <anchor>operator-eq-eq</anchor>
+      <arglist>( const iterator &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator&gt;</name>
+      <anchor>operator-gt</anchor>
+      <arglist>( const iterator &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator&gt;=</name>
+      <anchor>operator-gt-eq</anchor>
+      <arglist>( const iterator &amp; other )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QWebElementCollection</name>
+    <filename>qwebelementcollection.html</filename>
+    <member kind="function">
+      <name>QWebElementCollection</name>
+      <anchor>QWebElementCollection</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>QWebElementCollection</name>
+      <anchor>QWebElementCollection-2</anchor>
+      <arglist>( const QWebElement &amp; contextElement, const QString &amp; query )</arglist>
+    </member>
+    <member kind="function">
+      <name>QWebElementCollection</name>
+      <anchor>QWebElementCollection-3</anchor>
+      <arglist>( const QWebElementCollection &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>append</name>
+      <anchor>append</anchor>
+      <arglist>( const QWebElementCollection &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>at</name>
+      <anchor>at</anchor>
+      <arglist>( int i )</arglist>
+    </member>
+    <member kind="function">
+      <name>begin</name>
+      <anchor>begin</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>begin</name>
+      <anchor>begin-2</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>constBegin</name>
+      <anchor>constBegin</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>constEnd</name>
+      <anchor>constEnd</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>count</name>
+      <anchor>count</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>end</name>
+      <anchor>end</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>end</name>
+      <anchor>end-2</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>first</name>
+      <anchor>first</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>last</name>
+      <anchor>last</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>toList</name>
+      <anchor>toList</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>operator+</name>
+      <anchor>operator-2b</anchor>
+      <arglist>( const QWebElementCollection &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator+=</name>
+      <anchor>operator-2b-eq</anchor>
+      <arglist>( const QWebElementCollection &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator=</name>
+      <anchor>operator-eq</anchor>
+      <arglist>( const QWebElementCollection &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator[]</name>
+      <anchor>operator-5b-5d</anchor>
+      <arglist>( int position )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
     <name>QWebFrame</name>
     <filename>qwebframe.html</filename>
+    <member kind="enum">
+      <name>RenderLayer</name>
+      <anchor>RenderLayer-enum</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="function">
       <name>addToJavaScriptWindowObject</name>
       <anchor>addToJavaScriptWindowObject</anchor>
@@ -84917,9 +101117,34 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>contentsSizeChanged</name>
+      <anchor>contentsSizeChanged</anchor>
+      <arglist>( const QSize &amp; size )</arglist>
+    </member>
+    <member kind="function">
+      <name>documentElement</name>
+      <anchor>documentElement</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>evaluateJavaScript</name>
       <anchor>evaluateJavaScript</anchor>
       <arglist>( const QString &amp; scriptSource )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>findAllElements</name>
+      <anchor>findAllElements</anchor>
+      <arglist>( const QString &amp; selectorQuery )</arglist>
+    </member>
+    <member kind="function">
+      <name>findFirstElement</name>
+      <anchor>findFirstElement</anchor>
+      <arglist>( const QString &amp; selectorQuery )</arglist>
     </member>
     <member kind="function">
       <name>frameName</name>
@@ -84962,6 +101187,16 @@
       <arglist>( const QWebNetworkRequest &amp; req )</arglist>
     </member>
     <member kind="function">
+      <name>loadFinished</name>
+      <anchor>loadFinished</anchor>
+      <arglist>( bool ok )</arglist>
+    </member>
+    <member kind="function">
+      <name>loadStarted</name>
+      <anchor>loadStarted</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>metaData</name>
       <anchor>metaData</anchor>
       <arglist>()</arglist>
@@ -84989,12 +101224,17 @@
     <member kind="function">
       <name>render</name>
       <anchor>render</anchor>
-      <arglist>( QPainter * painter, const QRegion &amp; clip )</arglist>
+      <arglist>( QPainter * painter )</arglist>
     </member>
     <member kind="function">
       <name>render</name>
       <anchor>render-2</anchor>
-      <arglist>( QPainter * painter )</arglist>
+      <arglist>( QPainter * painter, const QRegion &amp; clip )</arglist>
+    </member>
+    <member kind="function">
+      <name>render</name>
+      <anchor>render-3</anchor>
+      <arglist>( QPainter * painter, RenderLayer layer, const QRegion &amp; clip = QRegion()</arglist>
     </member>
     <member kind="function">
       <name>renderTreeDump</name>
@@ -85005,6 +101245,11 @@
       <name>scroll</name>
       <anchor>scroll</anchor>
       <arglist>( int dx, int dy )</arglist>
+    </member>
+    <member kind="function">
+      <name>scrollBarGeometry</name>
+      <anchor>scrollBarGeometry</anchor>
+      <arglist>( Qt::Orientation orientation )</arglist>
     </member>
     <member kind="function">
       <name>scrollBarMaximum</name>
@@ -85035,6 +101280,11 @@
       <name>setContent</name>
       <anchor>setContent</anchor>
       <arglist>( const QByteArray &amp; data, const QString &amp; mimeType = QString()</arglist>
+    </member>
+    <member kind="function">
+      <name>setFocus</name>
+      <anchor>setFocus</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>setHtml</name>
@@ -85278,6 +101528,16 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>element</name>
+      <anchor>element</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>enclosingBlockElement</name>
+      <anchor>enclosingBlockElement</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>frame</name>
       <anchor>frame</anchor>
       <arglist>()</arglist>
@@ -85300,6 +101560,11 @@
     <member kind="function">
       <name>isNull</name>
       <anchor>isNull</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>linkElement</name>
+      <anchor>linkElement</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -85344,12 +101609,69 @@
     </member>
   </compound>
   <compound kind="class">
+    <name>QWebInspector</name>
+    <filename>qwebinspector.html</filename>
+    <member kind="function">
+      <name>QWebInspector</name>
+      <anchor>QWebInspector</anchor>
+      <arglist>( QWidget * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>hideEvent</name>
+      <anchor>hideEvent</anchor>
+      <arglist>( QHideEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>page</name>
+      <anchor>page</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>setPage</name>
+      <anchor>setPage</anchor>
+      <arglist>( QWebPage * page )</arglist>
+    </member>
+    <member kind="function">
+      <name>showEvent</name>
+      <anchor>showEvent</anchor>
+      <arglist>( QShowEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
     <name>ChooseMultipleFilesExtensionOption</name>
     <filename>qwebpage-choosemultiplefilesextensionoption.html</filename>
   </compound>
   <compound kind="class">
     <name>ChooseMultipleFilesExtensionReturn</name>
     <filename>qwebpage-choosemultiplefilesextensionreturn.html</filename>
+  </compound>
+  <compound kind="class">
+    <name>ErrorPageExtensionOption</name>
+    <filename>qwebpage-errorpageextensionoption.html</filename>
+  </compound>
+  <compound kind="class">
+    <name>ErrorPageExtensionReturn</name>
+    <filename>qwebpage-errorpageextensionreturn.html</filename>
+    <member kind="function">
+      <name>ErrorPageExtensionReturn</name>
+      <anchor>ErrorPageExtensionReturn</anchor>
+      <arglist>()</arglist>
+    </member>
   </compound>
   <compound kind="class">
     <name>QWebPage</name>
@@ -85440,6 +101762,11 @@
       <arglist>( const QNetworkRequest &amp; request )</arglist>
     </member>
     <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * ev )</arglist>
+    </member>
+    <member kind="function">
       <name>extension</name>
       <anchor>extension</anchor>
       <arglist>( Extension extension, const ExtensionOption * option = 0, ExtensionReturn * output = 0 )</arglist>
@@ -85453,6 +101780,11 @@
       <name>focusNextPrevChild</name>
       <anchor>focusNextPrevChild</anchor>
       <arglist>( bool next )</arglist>
+    </member>
+    <member kind="function">
+      <name>frameAt</name>
+      <anchor>frameAt</anchor>
+      <arglist>( const QPoint &amp; pos )</arglist>
     </member>
     <member kind="function">
       <name>frameCreated</name>
@@ -85595,6 +101927,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>shouldInterruptJavaScript</name>
+      <anchor>shouldInterruptJavaScript</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>statusBarMessage</name>
       <anchor>statusBarMessage</anchor>
       <arglist>( const QString &amp; text )</arglist>
@@ -85663,6 +102000,16 @@
   <compound kind="class">
     <name>MimeType</name>
     <filename>qwebpluginfactory-mimetype.html</filename>
+    <member kind="function">
+      <name>operator!=</name>
+      <anchor>operator-not-eq</anchor>
+      <arglist>( const MimeType &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>operator==</name>
+      <anchor>operator-eq-eq</anchor>
+      <arglist>( const MimeType &amp; other )</arglist>
+    </member>
     <member kind="function">
       <name>description</name>
       <anchor>description-var</anchor>
@@ -85746,6 +102093,11 @@
       <arglist>( const QWebSecurityOrigin &amp; other )</arglist>
     </member>
     <member kind="function">
+      <name>addLocalScheme</name>
+      <anchor>addLocalScheme</anchor>
+      <arglist>( const QString &amp; scheme )</arglist>
+    </member>
+    <member kind="function">
       <name>allOrigins</name>
       <anchor>allOrigins</anchor>
       <arglist>()</arglist>
@@ -85771,9 +102123,19 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>localSchemes</name>
+      <anchor>localSchemes</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>port</name>
       <anchor>port</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>removeLocalScheme</name>
+      <anchor>removeLocalScheme</anchor>
+      <arglist>( const QString &amp; scheme )</arglist>
     </member>
     <member kind="function">
       <name>scheme</name>
@@ -85820,6 +102182,21 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>clearMemoryCaches</name>
+      <anchor>clearMemoryCaches</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>defaultTextEncoding</name>
+      <anchor>defaultTextEncoding</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>enablePersistentStorage</name>
+      <anchor>enablePersistentStorage</anchor>
+      <arglist>( const QString &amp; path = QString()</arglist>
+    </member>
+    <member kind="function">
       <name>fontFamily</name>
       <anchor>fontFamily</anchor>
       <arglist>( FontFamily which )</arglist>
@@ -85845,6 +102222,11 @@
       <arglist>( const QUrl &amp; url )</arglist>
     </member>
     <member kind="function">
+      <name>localStoragePath</name>
+      <anchor>localStoragePath</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>maximumPagesInCache</name>
       <anchor>maximumPagesInCache</anchor>
       <arglist>()</arglist>
@@ -85857,6 +102239,16 @@
     <member kind="function">
       <name>offlineStoragePath</name>
       <anchor>offlineStoragePath</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>offlineWebApplicationCachePath</name>
+      <anchor>offlineWebApplicationCachePath</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>offlineWebApplicationCacheQuota</name>
+      <anchor>offlineWebApplicationCacheQuota</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -85880,6 +102272,11 @@
       <arglist>( WebAttribute attribute, bool on )</arglist>
     </member>
     <member kind="function">
+      <name>setDefaultTextEncoding</name>
+      <anchor>setDefaultTextEncoding</anchor>
+      <arglist>( const QString &amp; encoding )</arglist>
+    </member>
+    <member kind="function">
       <name>setFontFamily</name>
       <anchor>setFontFamily</anchor>
       <arglist>( FontFamily which, const QString &amp; family )</arglist>
@@ -85892,6 +102289,11 @@
     <member kind="function">
       <name>setIconDatabasePath</name>
       <anchor>setIconDatabasePath</anchor>
+      <arglist>( const QString &amp; path )</arglist>
+    </member>
+    <member kind="function">
+      <name>setLocalStoragePath</name>
+      <anchor>setLocalStoragePath</anchor>
       <arglist>( const QString &amp; path )</arglist>
     </member>
     <member kind="function">
@@ -85913,6 +102315,16 @@
       <name>setOfflineStoragePath</name>
       <anchor>setOfflineStoragePath</anchor>
       <arglist>( const QString &amp; path )</arglist>
+    </member>
+    <member kind="function">
+      <name>setOfflineWebApplicationCachePath</name>
+      <anchor>setOfflineWebApplicationCachePath</anchor>
+      <arglist>( const QString &amp; path )</arglist>
+    </member>
+    <member kind="function">
+      <name>setOfflineWebApplicationCacheQuota</name>
+      <anchor>setOfflineWebApplicationCacheQuota</anchor>
+      <arglist>( qint64 maximumSize )</arglist>
     </member>
     <member kind="function">
       <name>setUserStyleSheetUrl</name>
@@ -85939,10 +102351,40 @@
       <anchor>webGraphic</anchor>
       <arglist>( WebGraphic type )</arglist>
     </member>
+    <member kind="function">
+      <name>enablePersistentStorage</name>
+      <anchor>enablePersistentStorage</anchor>
+      <arglist>( const QString &amp; path = QString()</arglist>
+    </member>
+    <member kind="function">
+      <name>localStoragePath</name>
+      <anchor>localStoragePath</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>offlineWebApplicationCachePath</name>
+      <anchor>offlineWebApplicationCachePath</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>setLocalStoragePath</name>
+      <anchor>setLocalStoragePath</anchor>
+      <arglist>( const QString &amp; path )</arglist>
+    </member>
+    <member kind="function">
+      <name>setOfflineWebApplicationCachePath</name>
+      <anchor>setOfflineWebApplicationCachePath</anchor>
+      <arglist>( const QString &amp; path )</arglist>
+    </member>
   </compound>
   <compound kind="class">
     <name>QWebView</name>
     <filename>qwebview.html</filename>
+    <member kind="function">
+      <name>RenderHints</name>
+      <anchor>renderHints-prop</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="function">
       <name>QWebView</name>
       <anchor>QWebView</anchor>
@@ -85954,14 +102396,64 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>contextMenuEvent</name>
+      <anchor>contextMenuEvent</anchor>
+      <arglist>( QContextMenuEvent * ev )</arglist>
+    </member>
+    <member kind="function">
       <name>createWindow</name>
       <anchor>createWindow</anchor>
       <arglist>( QWebPage::WebWindowType type )</arglist>
     </member>
     <member kind="function">
+      <name>dragEnterEvent</name>
+      <anchor>dragEnterEvent</anchor>
+      <arglist>( QDragEnterEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>dragLeaveEvent</name>
+      <anchor>dragLeaveEvent</anchor>
+      <arglist>( QDragLeaveEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>dragMoveEvent</name>
+      <anchor>dragMoveEvent</anchor>
+      <arglist>( QDragMoveEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>dropEvent</name>
+      <anchor>dropEvent</anchor>
+      <arglist>( QDropEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>findText</name>
       <anchor>findText</anchor>
       <arglist>( const QString &amp; subString, QWebPage::FindFlags options = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusInEvent</name>
+      <anchor>focusInEvent</anchor>
+      <arglist>( QFocusEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusNextPrevChild</name>
+      <anchor>focusNextPrevChild</anchor>
+      <arglist>( bool next )</arglist>
+    </member>
+    <member kind="function">
+      <name>focusOutEvent</name>
+      <anchor>focusOutEvent</anchor>
+      <arglist>( QFocusEvent * ev )</arglist>
     </member>
     <member kind="function">
       <name>forward</name>
@@ -85977,6 +102469,26 @@
       <name>iconChanged</name>
       <anchor>iconChanged</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>inputMethodEvent</name>
+      <anchor>inputMethodEvent</anchor>
+      <arglist>( QInputMethodEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>inputMethodQuery</name>
+      <anchor>inputMethodQuery</anchor>
+      <arglist>( Qt::InputMethodQuery property )</arglist>
+    </member>
+    <member kind="function">
+      <name>keyPressEvent</name>
+      <anchor>keyPressEvent</anchor>
+      <arglist>( QKeyEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>keyReleaseEvent</name>
+      <anchor>keyReleaseEvent</anchor>
+      <arglist>( QKeyEvent * ev )</arglist>
     </member>
     <member kind="function">
       <name>linkClicked</name>
@@ -86009,6 +102521,26 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>mouseDoubleClickEvent</name>
+      <anchor>mouseDoubleClickEvent</anchor>
+      <arglist>( QMouseEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseMoveEvent</name>
+      <anchor>mouseMoveEvent</anchor>
+      <arglist>( QMouseEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>mousePressEvent</name>
+      <anchor>mousePressEvent</anchor>
+      <arglist>( QMouseEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseReleaseEvent</name>
+      <anchor>mouseReleaseEvent</anchor>
+      <arglist>( QMouseEvent * ev )</arglist>
+    </member>
+    <member kind="function">
       <name>page</name>
       <anchor>page</anchor>
       <arglist>()</arglist>
@@ -86019,6 +102551,11 @@
       <arglist>( QWebPage::WebAction action )</arglist>
     </member>
     <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * ev )</arglist>
+    </member>
+    <member kind="function">
       <name>print</name>
       <anchor>print</anchor>
       <arglist>( QPrinter * printer )</arglist>
@@ -86027,6 +102564,11 @@
       <name>reload</name>
       <anchor>reload</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>selectionChanged</name>
@@ -86049,6 +102591,11 @@
       <arglist>( QWebPage * page )</arglist>
     </member>
     <member kind="function">
+      <name>setRenderHint</name>
+      <anchor>setRenderHint</anchor>
+      <arglist>( QPainter::RenderHint hint, bool enabled = true )</arglist>
+    </member>
+    <member kind="function">
       <name>setTextSizeMultiplier</name>
       <anchor>setTextSizeMultiplier</anchor>
       <arglist>( qreal factor )</arglist>
@@ -86056,6 +102603,11 @@
     <member kind="function">
       <name>settings</name>
       <anchor>settings</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -86087,6 +102639,11 @@
       <name>urlChanged</name>
       <anchor>urlChanged</anchor>
       <arglist>( const QUrl &amp; url )</arglist>
+    </member>
+    <member kind="function">
+      <name>wheelEvent</name>
+      <anchor>wheelEvent</anchor>
+      <arglist>( QWheelEvent * ev )</arglist>
     </member>
     <member kind="function">
       <name>add</name>
@@ -86585,6 +103142,11 @@
       <arglist></arglist>
     </member>
     <member kind="function">
+      <name>InputMethodHints</name>
+      <anchor>inputMethodHints-prop</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
       <name>LayoutDirection</name>
       <anchor>layoutDirection-prop</anchor>
       <arglist></arglist>
@@ -86673,6 +103235,11 @@
       <name>closeEvent</name>
       <anchor>closeEvent</anchor>
       <arglist>( QCloseEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>contentsMargins</name>
+      <anchor>contentsMargins</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>contentsRect</name>
@@ -86805,6 +103372,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>grabGesture</name>
+      <anchor>grabGesture</anchor>
+      <arglist>( Qt::GestureType gesture, Qt::GestureFlags flags = Qt::GestureFlags()</arglist>
+    </member>
+    <member kind="function">
       <name>grabKeyboard</name>
       <anchor>grabKeyboard</anchor>
       <arglist>()</arglist>
@@ -86823,6 +103395,11 @@
       <name>grabShortcut</name>
       <anchor>grabShortcut</anchor>
       <arglist>( const QKeySequence &amp; key, Qt::ShortcutContext context = Qt::WindowShortcut )</arglist>
+    </member>
+    <member kind="function">
+      <name>graphicsEffect</name>
+      <anchor>graphicsEffect</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>graphicsProxyWidget</name>
@@ -87045,6 +103622,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>previousInFocusChain</name>
+      <anchor>previousInFocusChain</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>qwsEvent</name>
       <anchor>qwsEvent</anchor>
       <arglist>( QWSEvent * event )</arglist>
@@ -87150,6 +103732,11 @@
       <arglist>( int left, int top, int right, int bottom )</arglist>
     </member>
     <member kind="function">
+      <name>setContentsMargins</name>
+      <anchor>setContentsMargins-2</anchor>
+      <arglist>( const QMargins &amp; margins )</arglist>
+    </member>
+    <member kind="function">
       <name>setDisabled</name>
       <anchor>setDisabled</anchor>
       <arglist>( bool disable )</arglist>
@@ -87198,6 +103785,11 @@
       <name>setForegroundRole</name>
       <anchor>setForegroundRole</anchor>
       <arglist>( QPalette::ColorRole role )</arglist>
+    </member>
+    <member kind="function">
+      <name>setGraphicsEffect</name>
+      <anchor>setGraphicsEffect</anchor>
+      <arglist>( QGraphicsEffect * effect )</arglist>
     </member>
     <member kind="function">
       <name>setHidden</name>
@@ -87270,6 +103862,11 @@
       <arglist>( QWindowSurface * surface )</arglist>
     </member>
     <member kind="function">
+      <name>setupUi</name>
+      <anchor>setupUi</anchor>
+      <arglist>( QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
       <name>show</name>
       <anchor>show</anchor>
       <arglist>()</arglist>
@@ -87323,6 +103920,11 @@
       <name>underMouse</name>
       <anchor>underMouse</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>ungrabGesture</name>
+      <anchor>ungrabGesture</anchor>
+      <arglist>( Qt::GestureType gesture )</arglist>
     </member>
     <member kind="function">
       <name>update</name>
@@ -87444,6 +104046,16 @@
       <arglist>( QWidget * widget )</arglist>
     </member>
     <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>eventFilter</name>
+      <anchor>eventFilter</anchor>
+      <arglist>( QObject * obj, QEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>releaseWidget</name>
       <anchor>releaseWidget</anchor>
       <arglist>( QWidget * widget )</arglist>
@@ -87468,8 +104080,48 @@
       <arglist>( QWidget * widget )</arglist>
     </member>
     <member kind="function">
+      <name>Orientations</name>
+      <anchor>expandingDirections</anchor>
+      <arglist> QWidgetItem::expandingDirections()</arglist>
+    </member>
+    <member kind="function">
+      <name>geometry</name>
+      <anchor>geometry</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>hasHeightForWidth</name>
+      <anchor>hasHeightForWidth</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>heightForWidth</name>
+      <anchor>heightForWidth</anchor>
+      <arglist>( int w )</arglist>
+    </member>
+    <member kind="function">
       <name>isEmpty</name>
       <anchor>isEmpty</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>maximumSize</name>
+      <anchor>maximumSize</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>minimumSize</name>
+      <anchor>minimumSize</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>setGeometry</name>
+      <anchor>setGeometry</anchor>
+      <arglist>( const QRect &amp; rect )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -87479,12 +104131,131 @@
     </member>
   </compound>
   <compound kind="class">
+    <name>QWindowsMime</name>
+    <filename>qwindowsmime.html</filename>
+    <member kind="function">
+      <name>QWindowsMime</name>
+      <anchor>QWindowsMime</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>canConvertFromMime</name>
+      <anchor>canConvertFromMime</anchor>
+      <arglist>( const FORMATETC &amp; formatetc, const QMimeData * mimeData )</arglist>
+    </member>
+    <member kind="function">
+      <name>canConvertToMime</name>
+      <anchor>canConvertToMime</anchor>
+      <arglist>( const QString &amp; mimeType, IDataObject * pDataObj )</arglist>
+    </member>
+    <member kind="function">
+      <name>convertFromMime</name>
+      <anchor>convertFromMime</anchor>
+      <arglist>( const FORMATETC &amp; formatetc, const QMimeData * mimeData, STGMEDIUM * pmedium )</arglist>
+    </member>
+    <member kind="function">
+      <name>convertToMime</name>
+      <anchor>convertToMime</anchor>
+      <arglist>( const QString &amp; mimeType, IDataObject * pDataObj, QVariant::Type preferredType )</arglist>
+    </member>
+    <member kind="function">
+      <name>formatsForMime</name>
+      <anchor>formatsForMime</anchor>
+      <arglist>( const QString &amp; mimeType, const QMimeData * mimeData )</arglist>
+    </member>
+    <member kind="function">
+      <name>mimeForFormat</name>
+      <anchor>mimeForFormat</anchor>
+      <arglist>( const FORMATETC &amp; formatetc )</arglist>
+    </member>
+    <member kind="function">
+      <name>registerMimeType</name>
+      <anchor>registerMimeType</anchor>
+      <arglist>( const QString &amp; mime )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
     <name>QWindowsStyle</name>
     <filename>qwindowsstyle.html</filename>
     <member kind="function">
       <name>QWindowsStyle</name>
       <anchor>QWindowsStyle</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>drawComplexControl</name>
+      <anchor>drawComplexControl</anchor>
+      <arglist>( ComplexControl cc, const QStyleOptionComplex * opt, QPainter * p, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawControl</name>
+      <anchor>drawControl</anchor>
+      <arglist>( ControlElement ce, const QStyleOption * opt, QPainter * p, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawPrimitive</name>
+      <anchor>drawPrimitive</anchor>
+      <arglist>( PrimitiveElement pe, const QStyleOption * opt, QPainter * p, const QWidget * w = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>eventFilter</name>
+      <anchor>eventFilter</anchor>
+      <arglist>( QObject * o, QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>pixelMetric</name>
+      <anchor>pixelMetric</anchor>
+      <arglist>( PixelMetric pm, const QStyleOption * opt = 0, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>polish</name>
+      <anchor>polish</anchor>
+      <arglist>( QApplication * app )</arglist>
+    </member>
+    <member kind="function">
+      <name>polish</name>
+      <anchor>polish-2</anchor>
+      <arglist>( QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>polish</name>
+      <anchor>polish-3</anchor>
+      <arglist>( QPalette &amp; pal )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeFromContents</name>
+      <anchor>sizeFromContents</anchor>
+      <arglist>( ContentsType ct, const QStyleOption * opt, const QSize &amp; csz, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>standardPixmap</name>
+      <anchor>standardPixmap</anchor>
+      <arglist>( StandardPixmap standardPixmap, const QStyleOption * opt, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>styleHint</name>
+      <anchor>styleHint</anchor>
+      <arglist>( StyleHint hint, const QStyleOption * opt = 0, const QWidget * widget = 0, QStyleHintReturn * returnData = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>subElementRect</name>
+      <anchor>subElementRect</anchor>
+      <arglist>( SubElement sr, const QStyleOption * opt, const QWidget * w = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>timerEvent</name>
+      <anchor>timerEvent</anchor>
+      <arglist>( QTimerEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>unpolish</name>
+      <anchor>unpolish</anchor>
+      <arglist>( QApplication * app )</arglist>
+    </member>
+    <member kind="function">
+      <name>unpolish</name>
+      <anchor>unpolish-2</anchor>
+      <arglist>( QWidget * widget )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -87512,6 +104283,81 @@
       <name>QWindowsXPStyle</name>
       <anchor>QWindowsXPStyle</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>drawComplexControl</name>
+      <anchor>drawComplexControl</anchor>
+      <arglist>( ComplexControl cc, const QStyleOptionComplex * option, QPainter * p, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawControl</name>
+      <anchor>drawControl</anchor>
+      <arglist>( ControlElement element, const QStyleOption * option, QPainter * p, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>drawPrimitive</name>
+      <anchor>drawPrimitive</anchor>
+      <arglist>( PrimitiveElement pe, const QStyleOption * option, QPainter * p, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>pixelMetric</name>
+      <anchor>pixelMetric</anchor>
+      <arglist>( PixelMetric pm, const QStyleOption * option = 0, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>polish</name>
+      <anchor>polish</anchor>
+      <arglist>( QApplication * app )</arglist>
+    </member>
+    <member kind="function">
+      <name>polish</name>
+      <anchor>polish-2</anchor>
+      <arglist>( QWidget * widget )</arglist>
+    </member>
+    <member kind="function">
+      <name>polish</name>
+      <anchor>polish-3</anchor>
+      <arglist>( QPalette &amp; pal )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeFromContents</name>
+      <anchor>sizeFromContents</anchor>
+      <arglist>( ContentsType ct, const QStyleOption * option, const QSize &amp; contentsSize, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>standardPalette</name>
+      <anchor>standardPalette</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>standardPixmap</name>
+      <anchor>standardPixmap</anchor>
+      <arglist>( StandardPixmap standardPixmap, const QStyleOption * option, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>styleHint</name>
+      <anchor>styleHint</anchor>
+      <arglist>( StyleHint hint, const QStyleOption * option = 0, const QWidget * widget = 0, QStyleHintReturn * returnData = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>subControlRect</name>
+      <anchor>subControlRect</anchor>
+      <arglist>( ComplexControl cc, const QStyleOptionComplex * option, SubControl subControl, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>subElementRect</name>
+      <anchor>subElementRect</anchor>
+      <arglist>( SubElement sr, const QStyleOption * option, const QWidget * widget = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>unpolish</name>
+      <anchor>unpolish</anchor>
+      <arglist>( QApplication * app )</arglist>
+    </member>
+    <member kind="function">
+      <name>unpolish</name>
+      <anchor>unpolish-2</anchor>
+      <arglist>( QWidget * widget )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -87588,6 +104434,16 @@
       <arglist>( int which )</arglist>
     </member>
     <member kind="function">
+      <name>done</name>
+      <anchor>done</anchor>
+      <arglist>( int result )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>field</name>
       <anchor>field</anchor>
       <arglist>( const QString &amp; name )</arglist>
@@ -87628,6 +104484,11 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * event )</arglist>
+    </member>
+    <member kind="function">
       <name>pixmap</name>
       <anchor>pixmap</anchor>
       <arglist>( WizardPixmap which )</arglist>
@@ -87636,6 +104497,11 @@
       <name>removePage</name>
       <anchor>removePage</anchor>
       <arglist>( int id )</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * event )</arglist>
     </member>
     <member kind="function">
       <name>restart</name>
@@ -87683,6 +104549,16 @@
       <arglist>( WizardPixmap which, const QPixmap &amp; pixmap )</arglist>
     </member>
     <member kind="function">
+      <name>setVisible</name>
+      <anchor>setVisible</anchor>
+      <arglist>( bool visible )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>testOption</name>
       <anchor>testOption</anchor>
       <arglist>( WizardOption option )</arglist>
@@ -87696,6 +104572,11 @@
       <name>visitedPages</name>
       <anchor>visitedPages</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>winEvent</name>
+      <anchor>winEvent</anchor>
+      <arglist>( MSG * message, long * result )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -87856,6 +104737,16 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * ev )</arglist>
+    </member>
+    <member kind="function">
+      <name>childEvent</name>
+      <anchor>childEvent</anchor>
+      <arglist>( QChildEvent * e )</arglist>
+    </member>
+    <member kind="function">
       <name>closeActiveWindow</name>
       <anchor>closeActiveWindow</anchor>
       <arglist>()</arglist>
@@ -87866,14 +104757,54 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>eventFilter</name>
+      <anchor>eventFilter</anchor>
+      <arglist>( QObject * o, QEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>hideEvent</name>
+      <anchor>hideEvent</anchor>
+      <arglist>( QHideEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * )</arglist>
+    </member>
+    <member kind="function">
       <name>setActiveWindow</name>
       <anchor>setActiveWindow</anchor>
       <arglist>( QWidget * w )</arglist>
     </member>
     <member kind="function">
+      <name>showEvent</name>
+      <anchor>showEvent</anchor>
+      <arglist>( QShowEvent * e )</arglist>
+    </member>
+    <member kind="function">
+      <name>sizeHint</name>
+      <anchor>sizeHint</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>tile</name>
       <anchor>tile</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>wheelEvent</name>
+      <anchor>wheelEvent</anchor>
+      <arglist>( QWheelEvent * e )</arglist>
     </member>
     <member kind="function">
       <name>windowActivated</name>
@@ -87908,6 +104839,663 @@
       <name>unlock</name>
       <anchor>unlock</anchor>
       <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QWSCalibratedMouseHandler</name>
+    <filename>qwscalibratedmousehandler.html</filename>
+    <member kind="function">
+      <name>calibrate</name>
+      <anchor>calibrate</anchor>
+      <arglist>( const QWSPointerCalibrationData * data )</arglist>
+    </member>
+    <member kind="function">
+      <name>clearCalibration</name>
+      <anchor>clearCalibration</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>readCalibration</name>
+      <anchor>readCalibration</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>sendFiltered</name>
+      <anchor>sendFiltered</anchor>
+      <arglist>( const QPoint &amp; position, int state )</arglist>
+    </member>
+    <member kind="function">
+      <name>setFilterSize</name>
+      <anchor>setFilterSize</anchor>
+      <arglist>( int size )</arglist>
+    </member>
+    <member kind="function">
+      <name>transform</name>
+      <anchor>transform</anchor>
+      <arglist>( const QPoint &amp; position )</arglist>
+    </member>
+    <member kind="function">
+      <name>writeCalibration</name>
+      <anchor>writeCalibration</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QWSClient</name>
+    <filename>qwsclient.html</filename>
+    <member kind="function">
+      <name>clientId</name>
+      <anchor>clientId</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>identity</name>
+      <anchor>identity</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QWSEmbedWidget</name>
+    <filename>qwsembedwidget.html</filename>
+    <member kind="function">
+      <name>QWSEmbedWidget</name>
+      <anchor>QWSEmbedWidget</anchor>
+      <arglist>( WId id, QWidget * parent = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>changeEvent</name>
+      <anchor>changeEvent</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>eventFilter</name>
+      <anchor>eventFilter</anchor>
+      <arglist>( QObject * object, QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>hideEvent</name>
+      <anchor>hideEvent</anchor>
+      <arglist>( QHideEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>moveEvent</name>
+      <anchor>moveEvent</anchor>
+      <arglist>( QMoveEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>showEvent</name>
+      <anchor>showEvent</anchor>
+      <arglist>( QShowEvent * event )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QWSEvent</name>
+    <filename>qwsevent.html</filename>
+    <member kind="enum">
+      <name>Type</name>
+      <anchor>Type-enum</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QWSGLWindowSurface</name>
+    <filename>qwsglwindowsurface.html</filename>
+    <member kind="function">
+      <name>QWSGLWindowSurface</name>
+      <anchor>QWSGLWindowSurface</anchor>
+      <arglist>( QWidget * window )</arglist>
+    </member>
+    <member kind="function">
+      <name>QWSGLWindowSurface</name>
+      <anchor>QWSGLWindowSurface-2</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>context</name>
+      <anchor>context</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>setContext</name>
+      <anchor>setContext</anchor>
+      <arglist>( QGLContext * context )</arglist>
+    </member>
+    <member kind="function">
+      <name>sendIMEvent</name>
+      <anchor>sendIMEvent</anchor>
+      <arglist>( QWSServer::IMState state, const QString &amp; text, int cursorPosition, int selectionLength = 0 )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QWSInputMethod</name>
+    <filename>qwsinputmethod.html</filename>
+    <member kind="enum">
+      <name>UpdateType</name>
+      <anchor>UpdateType-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>QWSInputMethod</name>
+      <anchor>QWSInputMethod</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>filter</name>
+      <anchor>filter</anchor>
+      <arglist>( int unicode, int keycode, int modifiers, bool isPress, bool autoRepeat )</arglist>
+    </member>
+    <member kind="function">
+      <name>filter</name>
+      <anchor>filter-2</anchor>
+      <arglist>( const QPoint &amp; position, int state, int wheel )</arglist>
+    </member>
+    <member kind="function">
+      <name>inputResolutionShift</name>
+      <anchor>inputResolutionShift</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseHandler</name>
+      <anchor>mouseHandler</anchor>
+      <arglist>( int offset, int state )</arglist>
+    </member>
+    <member kind="function">
+      <name>queryResponse</name>
+      <anchor>queryResponse</anchor>
+      <arglist>( int property, const QVariant &amp; result )</arglist>
+    </member>
+    <member kind="function">
+      <name>reset</name>
+      <anchor>reset</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>sendCommitString</name>
+      <anchor>sendCommitString</anchor>
+      <arglist>( const QString &amp; commitString, int replaceFromPosition = 0, int replaceLength = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>sendEvent</name>
+      <anchor>sendEvent</anchor>
+      <arglist>( const QInputMethodEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>sendMouseEvent</name>
+      <anchor>sendMouseEvent</anchor>
+      <arglist>( const QPoint &amp; position, int state, int wheel )</arglist>
+    </member>
+    <member kind="function">
+      <name>sendPreeditString</name>
+      <anchor>sendPreeditString</anchor>
+      <arglist>( const QString &amp; preeditString, int cursorPosition, int selectionLength = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>sendQuery</name>
+      <anchor>sendQuery</anchor>
+      <arglist>( int property )</arglist>
+    </member>
+    <member kind="function">
+      <name>setInputResolution</name>
+      <anchor>setInputResolution</anchor>
+      <arglist>( bool isHigh )</arglist>
+    </member>
+    <member kind="function">
+      <name>updateHandler</name>
+      <anchor>updateHandler</anchor>
+      <arglist>( int type )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QWSKeyboardHandler</name>
+    <filename>qwskeyboardhandler.html</filename>
+    <member kind="enum">
+      <name>KeycodeAction</name>
+      <anchor>KeycodeAction-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>QWSKeyboardHandler</name>
+      <anchor>QWSKeyboardHandler</anchor>
+      <arglist>( const QString &amp; device )</arglist>
+    </member>
+    <member kind="function">
+      <name>QWSKeyboardHandler</name>
+      <anchor>QWSKeyboardHandler-2</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>beginAutoRepeat</name>
+      <anchor>beginAutoRepeat</anchor>
+      <arglist>( int unicode, int keycode, Qt::KeyboardModifiers modifier )</arglist>
+    </member>
+    <member kind="function">
+      <name>endAutoRepeat</name>
+      <anchor>endAutoRepeat</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>processKeyEvent</name>
+      <anchor>processKeyEvent</anchor>
+      <arglist>( int unicode, int keycode, Qt::KeyboardModifiers modifiers, bool isPress, bool autoRepeat )</arglist>
+    </member>
+    <member kind="function">
+      <name>processKeycode</name>
+      <anchor>processKeycode</anchor>
+      <arglist>( quint16 keycode, bool isPress, bool autoRepeat )</arglist>
+    </member>
+    <member kind="function">
+      <name>transformDirKey</name>
+      <anchor>transformDirKey</anchor>
+      <arglist>( int keycode )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QWSMouseHandler</name>
+    <filename>qwsmousehandler.html</filename>
+    <member kind="function">
+      <name>QWSMouseHandler</name>
+      <anchor>QWSMouseHandler</anchor>
+      <arglist>( const QString &amp; driver = QString()</arglist>
+    </member>
+    <member kind="function">
+      <name>calibrate</name>
+      <anchor>calibrate</anchor>
+      <arglist>( const QWSPointerCalibrationData * data )</arglist>
+    </member>
+    <member kind="function">
+      <name>clearCalibration</name>
+      <anchor>clearCalibration</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>getCalibration</name>
+      <anchor>getCalibration</anchor>
+      <arglist>( QWSPointerCalibrationData * data )</arglist>
+    </member>
+    <member kind="function">
+      <name>limitToScreen</name>
+      <anchor>limitToScreen</anchor>
+      <arglist>( QPoint &amp; position )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseChanged</name>
+      <anchor>mouseChanged</anchor>
+      <arglist>( const QPoint &amp; position, int state, int wheel = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>pos</name>
+      <anchor>pos</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>resume</name>
+      <anchor>resume</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>setScreen</name>
+      <anchor>setScreen</anchor>
+      <arglist>( const QScreen * screen )</arglist>
+    </member>
+    <member kind="function">
+      <name>suspend</name>
+      <anchor>suspend</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QWSPointerCalibrationData</name>
+    <filename>qwspointercalibrationdata.html</filename>
+    <member kind="enum">
+      <name>Location</name>
+      <anchor>Location-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>devPoints</name>
+      <anchor>devPoints-var</anchor>
+      <arglist>[5]</arglist>
+    </member>
+    <member kind="function">
+      <name>screenPoints</name>
+      <anchor>screenPoints-var</anchor>
+      <arglist>[5]</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QWSScreenSaver</name>
+    <filename>qwsscreensaver.html</filename>
+    <member kind="function">
+      <name>restore</name>
+      <anchor>restore</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>save</name>
+      <anchor>save</anchor>
+      <arglist>( int level )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>KeyboardFilter</name>
+    <filename>qwsserver-keyboardfilter.html</filename>
+    <member kind="function">
+      <name>filter</name>
+      <anchor>filter</anchor>
+      <arglist>( int unicode, int keycode, int modifiers, bool isPress, bool autoRepeat )</arglist>
+    </member>
+    <member kind="enum">
+      <name>IMState</name>
+      <anchor>IMState-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>QWSServer</name>
+      <anchor>QWSServer-2</anchor>
+      <arglist>( int flags, QObject * parent, const char * name )</arglist>
+    </member>
+    <member kind="function">
+      <name>setDesktopBackground</name>
+      <anchor>setDesktopBackground</anchor>
+      <arglist>( const QImage &amp; image )</arglist>
+    </member>
+    <member kind="function">
+      <name>setDesktopBackground</name>
+      <anchor>setDesktopBackground-2</anchor>
+      <arglist>( const QColor &amp; color )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QWSServer</name>
+    <filename>qwsserver.html</filename>
+    <member kind="enum">
+      <name>IMMouse</name>
+      <anchor>IMMouse-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enum">
+      <name>WindowEvent</name>
+      <anchor>WindowEvent-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>addKeyboardFilter</name>
+      <anchor>addKeyboardFilter</anchor>
+      <arglist>( KeyboardFilter * filter )</arglist>
+    </member>
+    <member kind="function">
+      <name>backgroundBrush</name>
+      <anchor>backgroundBrush</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>clientWindows</name>
+      <anchor>clientWindows</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>closeKeyboard</name>
+      <anchor>closeKeyboard</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>closeMouse</name>
+      <anchor>closeMouse</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>enablePainting</name>
+      <anchor>enablePainting</anchor>
+      <arglist>( bool enable )</arglist>
+    </member>
+    <member kind="function">
+      <name>instance</name>
+      <anchor>instance</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>isCursorVisible</name>
+      <anchor>isCursorVisible</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>keyboardHandler</name>
+      <anchor>keyboardHandler</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>markedText</name>
+      <anchor>markedText</anchor>
+      <arglist>( const QString &amp; selection )</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseHandler</name>
+      <anchor>mouseHandler</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>mouseHandlers</name>
+      <anchor>mouseHandlers</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>newChannel</name>
+      <anchor>newChannel</anchor>
+      <arglist>( const QString &amp; channel )</arglist>
+    </member>
+    <member kind="function">
+      <name>openKeyboard</name>
+      <anchor>openKeyboard</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>openMouse</name>
+      <anchor>openMouse</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>processKeyEvent</name>
+      <anchor>processKeyEvent</anchor>
+      <arglist>( int unicode, int keycode, Qt::KeyboardModifiers modifiers, bool isPress, bool autoRepeat )</arglist>
+    </member>
+    <member kind="function">
+      <name>refresh</name>
+      <anchor>refresh</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>refresh</name>
+      <anchor>refresh-2</anchor>
+      <arglist>( QRegion &amp; region )</arglist>
+    </member>
+    <member kind="function">
+      <name>removeKeyboardFilter</name>
+      <anchor>removeKeyboardFilter</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>removedChannel</name>
+      <anchor>removedChannel</anchor>
+      <arglist>( const QString &amp; channel )</arglist>
+    </member>
+    <member kind="function">
+      <name>resumeMouse</name>
+      <anchor>resumeMouse</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>screenSaverActivate</name>
+      <anchor>screenSaverActivate</anchor>
+      <arglist>( bool activate )</arglist>
+    </member>
+    <member kind="function">
+      <name>screenSaverActive</name>
+      <anchor>screenSaverActive</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>sendIMEvent</name>
+      <anchor>sendIMEvent</anchor>
+      <arglist>( const QInputMethodEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>sendIMQuery</name>
+      <anchor>sendIMQuery</anchor>
+      <arglist>( int property )</arglist>
+    </member>
+    <member kind="function">
+      <name>sendKeyEvent</name>
+      <anchor>sendKeyEvent</anchor>
+      <arglist>( int unicode, int keycode, Qt::KeyboardModifiers modifiers, bool isPress, bool autoRepeat )</arglist>
+    </member>
+    <member kind="function">
+      <name>setBackground</name>
+      <anchor>setBackground</anchor>
+      <arglist>( const QBrush &amp; brush )</arglist>
+    </member>
+    <member kind="function">
+      <name>setCurrentInputMethod</name>
+      <anchor>setCurrentInputMethod</anchor>
+      <arglist>( QWSInputMethod * method )</arglist>
+    </member>
+    <member kind="function">
+      <name>setCursorVisible</name>
+      <anchor>setCursorVisible</anchor>
+      <arglist>( bool visible )</arglist>
+    </member>
+    <member kind="function">
+      <name>setDefaultKeyboard</name>
+      <anchor>setDefaultKeyboard</anchor>
+      <arglist>( const char * keyboardDriver )</arglist>
+    </member>
+    <member kind="function">
+      <name>setDefaultMouse</name>
+      <anchor>setDefaultMouse</anchor>
+      <arglist>( const char * mouseDriver )</arglist>
+    </member>
+    <member kind="function">
+      <name>setKeyboardHandler</name>
+      <anchor>setKeyboardHandler</anchor>
+      <arglist>( QWSKeyboardHandler * driver )</arglist>
+    </member>
+    <member kind="function">
+      <name>setMaxWindowRect</name>
+      <anchor>setMaxWindowRect</anchor>
+      <arglist>( const QRect &amp; rectangle )</arglist>
+    </member>
+    <member kind="function">
+      <name>setMouseHandler</name>
+      <anchor>setMouseHandler</anchor>
+      <arglist>( QWSMouseHandler * driver )</arglist>
+    </member>
+    <member kind="function">
+      <name>setScreenSaver</name>
+      <anchor>setScreenSaver</anchor>
+      <arglist>( QWSScreenSaver * screenSaver )</arglist>
+    </member>
+    <member kind="function">
+      <name>setScreenSaverBlockLevel</name>
+      <anchor>setScreenSaverBlockLevel</anchor>
+      <arglist>( int eventBlockLevel )</arglist>
+    </member>
+    <member kind="function">
+      <name>setScreenSaverInterval</name>
+      <anchor>setScreenSaverInterval</anchor>
+      <arglist>( int milliseconds )</arglist>
+    </member>
+    <member kind="function">
+      <name>setScreenSaverIntervals</name>
+      <anchor>setScreenSaverIntervals</anchor>
+      <arglist>( int * intervals )</arglist>
+    </member>
+    <member kind="function">
+      <name>suspendMouse</name>
+      <anchor>suspendMouse</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>windowAt</name>
+      <anchor>windowAt</anchor>
+      <arglist>( const QPoint &amp; position )</arglist>
+    </member>
+    <member kind="function">
+      <name>windowEvent</name>
+      <anchor>windowEvent</anchor>
+      <arglist>( QWSWindow * window, QWSServer::WindowEvent eventType )</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QWSWindow</name>
+    <filename>qwswindow.html</filename>
+    <member kind="enum">
+      <name>State</name>
+      <anchor>State-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <name>caption</name>
+      <anchor>caption</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>client</name>
+      <anchor>client</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>dirtyOnScreen</name>
+      <anchor>dirtyOnScreen</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>isFullyObscured</name>
+      <anchor>isFullyObscured</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>isOpaque</name>
+      <anchor>isOpaque</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>isVisible</name>
+      <anchor>isVisible</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>name</name>
+      <anchor>name</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>opacity</name>
+      <anchor>opacity</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>requestedRegion</name>
+      <anchor>requestedRegion</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>state</name>
+      <anchor>state</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>winId</name>
+      <anchor>winId</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>WindowFlags</name>
+      <anchor>windowFlags</anchor>
+      <arglist> QWSWindow::windowFlags()</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -87958,6 +105546,16 @@
       <anchor>error-2</anchor>
       <arglist>( QX11EmbedContainer::Error error )</arglist>
     </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>paintEvent</name>
+      <anchor>paintEvent</anchor>
+      <arglist>( QPaintEvent * e )</arglist>
+    </member>
   </compound>
   <compound kind="class">
     <name>QX11EmbedWidget</name>
@@ -88001,6 +105599,16 @@
       <name>error</name>
       <anchor>error-2</anchor>
       <arglist>( QX11EmbedWidget::Error error )</arglist>
+    </member>
+    <member kind="function">
+      <name>event</name>
+      <anchor>event</anchor>
+      <arglist>( QEvent * event )</arglist>
+    </member>
+    <member kind="function">
+      <name>resizeEvent</name>
+      <anchor>resizeEvent</anchor>
+      <arglist>( QResizeEvent * event )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -88342,6 +105950,146 @@
       <anchor>QXmlDefaultHandler</anchor>
       <arglist>()</arglist>
     </member>
+    <member kind="function">
+      <name>attributeDecl</name>
+      <anchor>attributeDecl</anchor>
+      <arglist>( const QString &amp; eName, const QString &amp; aName, const QString &amp; type, const QString &amp; valueDefault, const QString &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>characters</name>
+      <anchor>characters</anchor>
+      <arglist>( const QString &amp; ch )</arglist>
+    </member>
+    <member kind="function">
+      <name>comment</name>
+      <anchor>comment</anchor>
+      <arglist>( const QString &amp; ch )</arglist>
+    </member>
+    <member kind="function">
+      <name>endCDATA</name>
+      <anchor>endCDATA</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>endDTD</name>
+      <anchor>endDTD</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>endDocument</name>
+      <anchor>endDocument</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>endElement</name>
+      <anchor>endElement</anchor>
+      <arglist>( const QString &amp; namespaceURI, const QString &amp; localName, const QString &amp; qName )</arglist>
+    </member>
+    <member kind="function">
+      <name>endEntity</name>
+      <anchor>endEntity</anchor>
+      <arglist>( const QString &amp; name )</arglist>
+    </member>
+    <member kind="function">
+      <name>endPrefixMapping</name>
+      <anchor>endPrefixMapping</anchor>
+      <arglist>( const QString &amp; prefix )</arglist>
+    </member>
+    <member kind="function">
+      <name>error</name>
+      <anchor>error</anchor>
+      <arglist>( const QXmlParseException &amp; exception )</arglist>
+    </member>
+    <member kind="function">
+      <name>errorString</name>
+      <anchor>errorString</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>externalEntityDecl</name>
+      <anchor>externalEntityDecl</anchor>
+      <arglist>( const QString &amp; name, const QString &amp; publicId, const QString &amp; systemId )</arglist>
+    </member>
+    <member kind="function">
+      <name>fatalError</name>
+      <anchor>fatalError</anchor>
+      <arglist>( const QXmlParseException &amp; exception )</arglist>
+    </member>
+    <member kind="function">
+      <name>ignorableWhitespace</name>
+      <anchor>ignorableWhitespace</anchor>
+      <arglist>( const QString &amp; ch )</arglist>
+    </member>
+    <member kind="function">
+      <name>internalEntityDecl</name>
+      <anchor>internalEntityDecl</anchor>
+      <arglist>( const QString &amp; name, const QString &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>notationDecl</name>
+      <anchor>notationDecl</anchor>
+      <arglist>( const QString &amp; name, const QString &amp; publicId, const QString &amp; systemId )</arglist>
+    </member>
+    <member kind="function">
+      <name>processingInstruction</name>
+      <anchor>processingInstruction</anchor>
+      <arglist>( const QString &amp; target, const QString &amp; data )</arglist>
+    </member>
+    <member kind="function">
+      <name>resolveEntity</name>
+      <anchor>resolveEntity</anchor>
+      <arglist>( const QString &amp; publicId, const QString &amp; systemId, QXmlInputSource *&amp; ret )</arglist>
+    </member>
+    <member kind="function">
+      <name>setDocumentLocator</name>
+      <anchor>setDocumentLocator</anchor>
+      <arglist>( QXmlLocator * locator )</arglist>
+    </member>
+    <member kind="function">
+      <name>skippedEntity</name>
+      <anchor>skippedEntity</anchor>
+      <arglist>( const QString &amp; name )</arglist>
+    </member>
+    <member kind="function">
+      <name>startCDATA</name>
+      <anchor>startCDATA</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>startDTD</name>
+      <anchor>startDTD</anchor>
+      <arglist>( const QString &amp; name, const QString &amp; publicId, const QString &amp; systemId )</arglist>
+    </member>
+    <member kind="function">
+      <name>startDocument</name>
+      <anchor>startDocument</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>startElement</name>
+      <anchor>startElement</anchor>
+      <arglist>( const QString &amp; namespaceURI, const QString &amp; localName, const QString &amp; qName, const QXmlAttributes &amp; atts )</arglist>
+    </member>
+    <member kind="function">
+      <name>startEntity</name>
+      <anchor>startEntity</anchor>
+      <arglist>( const QString &amp; name )</arglist>
+    </member>
+    <member kind="function">
+      <name>startPrefixMapping</name>
+      <anchor>startPrefixMapping</anchor>
+      <arglist>( const QString &amp; prefix, const QString &amp; uri )</arglist>
+    </member>
+    <member kind="function">
+      <name>unparsedEntityDecl</name>
+      <anchor>unparsedEntityDecl</anchor>
+      <arglist>( const QString &amp; name, const QString &amp; publicId, const QString &amp; systemId, const QString &amp; notationName )</arglist>
+    </member>
+    <member kind="function">
+      <name>warning</name>
+      <anchor>warning</anchor>
+      <arglist>( const QXmlParseException &amp; exception )</arglist>
+    </member>
   </compound>
   <compound kind="class">
     <name>QXmlDTDHandler</name>
@@ -88409,14 +106157,69 @@
       <arglist>( const QXmlQuery &amp; query, QIODevice * outputDevice )</arglist>
     </member>
     <member kind="function">
+      <name>atomicValue</name>
+      <anchor>atomicValue</anchor>
+      <arglist>( const QVariant &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>attribute</name>
+      <anchor>attribute</anchor>
+      <arglist>( const QXmlName &amp; name, const QStringRef &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>characters</name>
+      <anchor>characters</anchor>
+      <arglist>( const QStringRef &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>comment</name>
+      <anchor>comment</anchor>
+      <arglist>( const QString &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>endDocument</name>
+      <anchor>endDocument</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>endElement</name>
+      <anchor>endElement</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>endOfSequence</name>
+      <anchor>endOfSequence</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>indentationDepth</name>
       <anchor>indentationDepth</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>processingInstruction</name>
+      <anchor>processingInstruction</anchor>
+      <arglist>( const QXmlName &amp; name, const QString &amp; value )</arglist>
+    </member>
+    <member kind="function">
       <name>setIndentationDepth</name>
       <anchor>setIndentationDepth</anchor>
       <arglist>( int depth )</arglist>
+    </member>
+    <member kind="function">
+      <name>startDocument</name>
+      <anchor>startDocument</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>startElement</name>
+      <anchor>startElement</anchor>
+      <arglist>( const QXmlName &amp; name )</arglist>
+    </member>
+    <member kind="function">
+      <name>startOfSequence</name>
+      <anchor>startOfSequence</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>QXmlInputSource</name>
@@ -88635,7 +106438,7 @@
     </member>
     <member kind="function">
       <name>namespaceUri</name>
-      <anchor>namespaceUrix</anchor>
+      <anchor>namespaceUri</anchor>
       <arglist>( const QXmlNamePool &amp; namePool )</arglist>
     </member>
     <member kind="function">
@@ -88815,6 +106618,11 @@
       <arglist>( const QString &amp; name = QString()</arglist>
     </member>
     <member kind="function">
+      <name>QXmlParseException</name>
+      <anchor>QXmlParseException-2</anchor>
+      <arglist>( const QXmlParseException &amp; other )</arglist>
+    </member>
+    <member kind="function">
       <name>columnNumber</name>
       <anchor>columnNumber</anchor>
       <arglist>()</arglist>
@@ -88967,6 +106775,11 @@
       <name>setFocus</name>
       <anchor>setFocus-3</anchor>
       <arglist>( QIODevice * document )</arglist>
+    </member>
+    <member kind="function">
+      <name>setFocus</name>
+      <anchor>setFocus-4</anchor>
+      <arglist>( const QString &amp; focus )</arglist>
     </member>
     <member kind="function">
       <name>setInitialTemplateName</name>
@@ -89148,6 +106961,154 @@
     </member>
   </compound>
   <compound kind="class">
+    <name>QXmlSchema</name>
+    <filename>qxmlschema.html</filename>
+    <member kind="function">
+      <name>QXmlSchema</name>
+      <anchor>QXmlSchema</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>QXmlSchema</name>
+      <anchor>QXmlSchema-2</anchor>
+      <arglist>( const QXmlSchema &amp; other )</arglist>
+    </member>
+    <member kind="function">
+      <name>documentUri</name>
+      <anchor>documentUri</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>isValid</name>
+      <anchor>isValid</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>load</name>
+      <anchor>load</anchor>
+      <arglist>( const QUrl &amp; source )</arglist>
+    </member>
+    <member kind="function">
+      <name>load</name>
+      <anchor>load-2</anchor>
+      <arglist>( QIODevice * source, const QUrl &amp; documentUri = QUrl()</arglist>
+    </member>
+    <member kind="function">
+      <name>load</name>
+      <anchor>load-3</anchor>
+      <arglist>( const QByteArray &amp; data, const QUrl &amp; documentUri = QUrl()</arglist>
+    </member>
+    <member kind="function">
+      <name>messageHandler</name>
+      <anchor>messageHandler</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>namePool</name>
+      <anchor>namePool</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>networkAccessManager</name>
+      <anchor>networkAccessManager</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>setMessageHandler</name>
+      <anchor>setMessageHandler</anchor>
+      <arglist>( QAbstractMessageHandler * handler )</arglist>
+    </member>
+    <member kind="function">
+      <name>setNetworkAccessManager</name>
+      <anchor>setNetworkAccessManager</anchor>
+      <arglist>( QNetworkAccessManager * manager )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUriResolver</name>
+      <anchor>setUriResolver</anchor>
+      <arglist>( const QAbstractUriResolver * resolver )</arglist>
+    </member>
+    <member kind="function">
+      <name>uriResolver</name>
+      <anchor>uriResolver</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>QXmlSchemaValidator</name>
+    <filename>qxmlschemavalidator.html</filename>
+    <member kind="function">
+      <name>QXmlSchemaValidator</name>
+      <anchor>QXmlSchemaValidator</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>QXmlSchemaValidator</name>
+      <anchor>QXmlSchemaValidator-2</anchor>
+      <arglist>( const QXmlSchema &amp; schema )</arglist>
+    </member>
+    <member kind="function">
+      <name>messageHandler</name>
+      <anchor>messageHandler</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>namePool</name>
+      <anchor>namePool</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>networkAccessManager</name>
+      <anchor>networkAccessManager</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>schema</name>
+      <anchor>schema</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>setMessageHandler</name>
+      <anchor>setMessageHandler</anchor>
+      <arglist>( QAbstractMessageHandler * handler )</arglist>
+    </member>
+    <member kind="function">
+      <name>setNetworkAccessManager</name>
+      <anchor>setNetworkAccessManager</anchor>
+      <arglist>( QNetworkAccessManager * manager )</arglist>
+    </member>
+    <member kind="function">
+      <name>setSchema</name>
+      <anchor>setSchema</anchor>
+      <arglist>( const QXmlSchema &amp; schema )</arglist>
+    </member>
+    <member kind="function">
+      <name>setUriResolver</name>
+      <anchor>setUriResolver</anchor>
+      <arglist>( const QAbstractUriResolver * resolver )</arglist>
+    </member>
+    <member kind="function">
+      <name>uriResolver</name>
+      <anchor>uriResolver</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>validate</name>
+      <anchor>validate</anchor>
+      <arglist>( const QUrl &amp; source )</arglist>
+    </member>
+    <member kind="function">
+      <name>validate</name>
+      <anchor>validate-2</anchor>
+      <arglist>( QIODevice * source, const QUrl &amp; documentUri = QUrl()</arglist>
+    </member>
+    <member kind="function">
+      <name>validate</name>
+      <anchor>validate-3</anchor>
+      <arglist>( const QByteArray &amp; data, const QUrl &amp; documentUri = QUrl()</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
     <name>QXmlSerializer</name>
     <filename>qxmlserializer.html</filename>
     <member kind="function">
@@ -89156,9 +107117,49 @@
       <arglist>( const QXmlQuery &amp; query, QIODevice * outputDevice )</arglist>
     </member>
     <member kind="function">
+      <name>atomicValue</name>
+      <anchor>atomicValue</anchor>
+      <arglist>( const QVariant &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>attribute</name>
+      <anchor>attribute</anchor>
+      <arglist>( const QXmlName &amp; name, const QStringRef &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>characters</name>
+      <anchor>characters</anchor>
+      <arglist>( const QStringRef &amp; value )</arglist>
+    </member>
+    <member kind="function">
       <name>codec</name>
       <anchor>codec</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>comment</name>
+      <anchor>comment</anchor>
+      <arglist>( const QString &amp; value )</arglist>
+    </member>
+    <member kind="function">
+      <name>endDocument</name>
+      <anchor>endDocument</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>endElement</name>
+      <anchor>endElement</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>endOfSequence</name>
+      <anchor>endOfSequence</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>namespaceBinding</name>
+      <anchor>namespaceBinding</anchor>
+      <arglist>( const QXmlName &amp; nb )</arglist>
     </member>
     <member kind="function">
       <name>outputDevice</name>
@@ -89166,9 +107167,29 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>processingInstruction</name>
+      <anchor>processingInstruction</anchor>
+      <arglist>( const QXmlName &amp; name, const QString &amp; value )</arglist>
+    </member>
+    <member kind="function">
       <name>setCodec</name>
       <anchor>setCodec</anchor>
       <arglist>( const QTextCodec * outputCodec )</arglist>
+    </member>
+    <member kind="function">
+      <name>startDocument</name>
+      <anchor>startDocument</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>startElement</name>
+      <anchor>startElement</anchor>
+      <arglist>( const QXmlName &amp; name )</arglist>
+    </member>
+    <member kind="function">
+      <name>startOfSequence</name>
+      <anchor>startOfSequence</anchor>
+      <arglist>()</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -89180,8 +107201,58 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>DTDHandler</name>
+      <anchor>DTDHandler</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>contentHandler</name>
+      <anchor>contentHandler</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>declHandler</name>
+      <anchor>declHandler</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>entityResolver</name>
+      <anchor>entityResolver</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>errorHandler</name>
+      <anchor>errorHandler</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>feature</name>
+      <anchor>feature</anchor>
+      <arglist>( const QString &amp; name, bool * ok = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>hasFeature</name>
+      <anchor>hasFeature</anchor>
+      <arglist>( const QString &amp; name )</arglist>
+    </member>
+    <member kind="function">
+      <name>hasProperty</name>
+      <anchor>hasProperty</anchor>
+      <arglist>( const QString &amp; name )</arglist>
+    </member>
+    <member kind="function">
+      <name>lexicalHandler</name>
+      <anchor>lexicalHandler</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <name>parse</name>
       <anchor>parse</anchor>
+      <arglist>( const QXmlInputSource &amp; input )</arglist>
+    </member>
+    <member kind="function">
+      <name>parse</name>
+      <anchor>parse-2</anchor>
       <arglist>( const QXmlInputSource * input )</arglist>
     </member>
     <member kind="function">
@@ -89195,9 +107266,49 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <name>property</name>
+      <anchor>property</anchor>
+      <arglist>( const QString &amp; name, bool * ok = 0 )</arglist>
+    </member>
+    <member kind="function">
+      <name>setContentHandler</name>
+      <anchor>setContentHandler</anchor>
+      <arglist>( QXmlContentHandler * handler )</arglist>
+    </member>
+    <member kind="function">
+      <name>setDTDHandler</name>
+      <anchor>setDTDHandler</anchor>
+      <arglist>( QXmlDTDHandler * handler )</arglist>
+    </member>
+    <member kind="function">
+      <name>setDeclHandler</name>
+      <anchor>setDeclHandler</anchor>
+      <arglist>( QXmlDeclHandler * handler )</arglist>
+    </member>
+    <member kind="function">
+      <name>setEntityResolver</name>
+      <anchor>setEntityResolver</anchor>
+      <arglist>( QXmlEntityResolver * handler )</arglist>
+    </member>
+    <member kind="function">
+      <name>setErrorHandler</name>
+      <anchor>setErrorHandler</anchor>
+      <arglist>( QXmlErrorHandler * handler )</arglist>
+    </member>
+    <member kind="function">
       <name>setFeature</name>
       <anchor>setFeature</anchor>
       <arglist>( const QString &amp; name, bool enable )</arglist>
+    </member>
+    <member kind="function">
+      <name>setLexicalHandler</name>
+      <anchor>setLexicalHandler</anchor>
+      <arglist>( QXmlLexicalHandler * handler )</arglist>
+    </member>
+    <member kind="function">
+      <name>setProperty</name>
+      <anchor>setProperty</anchor>
+      <arglist>( const QString &amp; name, void * value )</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -89235,7 +107346,7 @@
     </member>
     <member kind="function">
       <name>namespaceUri</name>
-      <anchor>namespaceUrix</anchor>
+      <anchor>namespaceUri</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -89411,7 +107522,7 @@
     </member>
     <member kind="function">
       <name>namespaceUri</name>
-      <anchor>namespaceUrix</anchor>
+      <anchor>namespaceUri</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -89485,6 +107596,11 @@
     <member kind="enum">
       <name>Error</name>
       <anchor>Error-enum</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enum">
+      <name>ReadElementTextBehaviour</name>
+      <anchor>ReadElementTextBehaviour-enum</anchor>
       <arglist></arglist>
     </member>
     <member kind="enum">
@@ -89699,7 +107815,7 @@
     </member>
     <member kind="function">
       <name>namespaceUri</name>
-      <anchor>namespaceUrix</anchor>
+      <anchor>namespaceUri</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -89735,11 +107851,21 @@
     <member kind="function">
       <name>readElementText</name>
       <anchor>readElementText</anchor>
+      <arglist>( ReadElementTextBehaviour behaviour )</arglist>
+    </member>
+    <member kind="function">
+      <name>readElementText</name>
+      <anchor>readElementText-2</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>readNext</name>
       <anchor>readNext</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <name>readNextStartElement</name>
+      <anchor>readNextStartElement</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -89751,6 +107877,11 @@
       <name>setEntityResolver</name>
       <anchor>setEntityResolver</anchor>
       <arglist>( QXmlStreamEntityResolver * resolver )</arglist>
+    </member>
+    <member kind="function">
+      <name>skipCurrentElement</name>
+      <anchor>skipCurrentElement</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <name>text</name>

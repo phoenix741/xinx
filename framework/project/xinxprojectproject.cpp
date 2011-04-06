@@ -51,6 +51,7 @@ namespace XinxProject
 
 class PrivateXinxProject
 {
+	Q_DECLARE_TR_FUNCTIONS(PrivateXinxProject)
 public:
 	PrivateXinxProject();
 	~PrivateXinxProject();
@@ -65,7 +66,6 @@ public:
 
 	void loadFromFile();
 	void saveToFile();
-	QString tr(const char* arg1);
 
 	int m_version;
 
@@ -104,11 +104,6 @@ void PrivateXinxProject::initialisation()
 	m_rcsProxy		= new VersionControl::RCSProxy(m_self);
 	m_cache			= new ContentView3::Cache(m_self);
 	_resolver		= new ExternalFileResolver(m_self);
-}
-
-QString PrivateXinxProject::tr(const char* arg1)
-{
-	return Project::tr(arg1);
 }
 
 QString PrivateXinxProject::getValue(const QDomDocument & document, const QString & node)

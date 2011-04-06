@@ -92,7 +92,7 @@
     </message>
 </context>
 <context>
-    <name>QObject</name>
+    <name>XinxColorCombo</name>
     <message>
         <location filename="../xinxcolorcombo.cpp" line="59"/>
         <source>None</source>

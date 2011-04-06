@@ -6,32 +6,27 @@
     <message>
         <location filename="../ui/authentification_form.ui" line="14"/>
         <source>SubVersion Login</source>
-        <translation>Connection à SubVersion</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/authentification_form.ui" line="20"/>
         <source>SubVersion need a username and a password to connect to the repository.</source>
-        <translation>SubVersion a besoin d&apos;un nom d&apos;utilisateur et d&apos;un mot de passe pour se connecter au référenciel.</translation>
-    </message>
-    <message>
-        <location filename="../ui/authentification_form.ui" line="30"/>
-        <source>http://</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/authentification_form.ui" line="37"/>
         <source>&amp;User Name :</source>
-        <translation>Nom d&apos;&amp;utilisateur :</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/authentification_form.ui" line="50"/>
         <source>&amp;Password :</source>
-        <translation>&amp;Mot de passe :</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/authentification_form.ui" line="67"/>
         <source>&amp;Save password</source>
-        <translation>&amp;Sauver le mot de passe</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -123,42 +118,42 @@ Do you want to trust this certificate?</source>
     <message>
         <location filename="../rcs_svn.cpp" line="302"/>
         <source>Select a certificate file</source>
-        <translation>Selectionner un certificat</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="302"/>
         <source>Please select a certificate file.</source>
-        <translation>Veuillez selectionner un certificat.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="302"/>
         <source>All files (*.*)</source>
-        <translation>Tous les fichiers (*.*)</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="320"/>
         <source>Paswword for the certificate file</source>
-        <translation>Mot de passe pour le certificat</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="321"/>
         <source>Please give the password for the certificate of %1</source>
-        <translation>Veuillez donner le mot de passe pour le certificat de %1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="581"/>
         <source>Files updated.</source>
-        <translation>Fichiers mis à jours.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="606"/>
         <source>Files commited at revision %2.</source>
-        <translation>Fichiers validés à la révision %2.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="783"/>
         <source>Update %1 to revision %2.</source>
-        <translation>Mise à jours de %1 à la révision %2.</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -166,17 +161,17 @@ Do you want to trust this certificate?</source>
     <message>
         <location filename="../svnplugin.cpp" line="47"/>
         <source>SubVersion</source>
-        <translation>SubVersion</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../svnplugin.cpp" line="49"/>
         <source>Enable using SubVersion directly.</source>
-        <translation>Active l&apos;utilisation de SubVersion directement.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../svnplugin.cpp" line="74"/>
         <source>SVN - Subversion</source>
-        <translation>SVN - SubVersion</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -184,42 +179,42 @@ Do you want to trust this certificate?</source>
     <message>
         <location filename="../rcs_svn.cpp" line="108"/>
         <source>Add</source>
-        <translation>Ajoute</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="114"/>
         <source>Copy</source>
-        <translation>Copie</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="120"/>
         <source>Delete</source>
-        <translation>Supprime</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="126"/>
         <source>Restore</source>
-        <translation>Restore</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="132"/>
         <source>Revert</source>
-        <translation>Annule</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="137"/>
         <source>Failed revert</source>
-        <translation>Echec de l&apos;annulation de</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="141"/>
         <source>Resolved</source>
-        <translation>Résoud</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="144"/>
         <source>Skip</source>
-        <translation>Passe</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="149"/>
@@ -284,32 +279,32 @@ Do you want to trust this certificate?</source>
     <message>
         <location filename="../rcs_svn.cpp" line="219"/>
         <source>Blame revision</source>
-        <translation>Dénonce la révision</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="222"/>
         <source>Locked</source>
-        <translation>Vérouille</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="225"/>
         <source>Unlocked</source>
-        <translation>Dévérouille</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="228"/>
         <source>Failed lock</source>
-        <translation>Echec de verouillage</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="232"/>
         <source>Failed unlock</source>
-        <translation>Echec de dévérouillage</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="236"/>
         <source>Exists</source>
-        <translation>Exists</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="239"/>
@@ -329,12 +324,12 @@ Do you want to trust this certificate?</source>
     <message>
         <location filename="../rcs_svn.cpp" line="248"/>
         <source>Merge begin</source>
-        <translation>Début de la fusion</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="251"/>
         <source>Foreign merge begin</source>
-        <translation>Début de la fusion externe</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="254"/>
@@ -344,22 +339,22 @@ Do you want to trust this certificate?</source>
     <message>
         <location filename="../rcs_svn.cpp" line="257"/>
         <source>Property added</source>
-        <translation>Propriété ajouté</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="260"/>
         <source>Property modified</source>
-        <translation>Propriété modifié</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="263"/>
         <source>Property deleted</source>
-        <translation>Propriété supprimé</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="266"/>
         <source>Property deleted nonexistent</source>
-        <translation>Propriété supprimé non existente</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="269"/>
@@ -374,12 +369,12 @@ Do you want to trust this certificate?</source>
     <message>
         <location filename="../rcs_svn.cpp" line="275"/>
         <source>Merge completed</source>
-        <translation>Fusion terminée</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="278"/>
         <source>Tree conflict</source>
-        <translation>Conflit d&apos;arbre</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="282"/>

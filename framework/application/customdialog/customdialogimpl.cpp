@@ -19,6 +19,7 @@
 
 // Xinx header
 #include "customdialogimpl.h"
+#include "customdialogimpl_p.h"
 
 #include "customgeneralimpl.h"
 #include "customprojectimpl.h"
@@ -36,6 +37,43 @@
 #include <QTimer>
 #include <QDebug>
 
+/* CustomDialogImplPrivate */
+
+CustomDialogImplPrivate::CustomDialogImplPrivate(QObject* parent) : _ui(new Ui::CustomDialog)
+{
+}
+
+CustomDialogImplPrivate::~CustomDialogImplPrivate()
+{
+}
+
+/*!
+* \brief Update the state of the Ok button.
+*
+* This method is called automatically every 250ms. This method check IXinxPluginConfigurationPage::isSettingsValid()
+* on each page and show a red message if settings isn't valid.
+*/
+void CustomDialogImplPrivate::updateOkButton()
+{
+	_ui->m_errorLabel->setVisible(false);
+	foreach(IXinxPluginConfigurationPage * page, _pages)
+	{
+		QString message;
+		if (! page->isSettingsValid(message))
+		{
+			_ui->m_buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+			if (!message.isEmpty())
+			{
+				_ui->m_errorLabel->setVisible(true);
+				_ui->m_errorLabel->setText(QString("<img src=\":/images/error16.png\"/> ") + tr("%1 on page \"%2\"").arg(message).arg(page->name()));
+			}
+			return;
+		}
+	}
+
+	_ui->m_buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+}
+
 /* CustomDialogImpl */
 
 /*!
@@ -50,7 +88,7 @@
  * This dialog use the interface IXinxPluginConfigurationPage to permit to plugin to extend the dialog with pages.
  *
  *
- * This dialog mustn't be used directl by plugins. Only framework can use it.
+ * This dialog mustn't be used directly by plugins. Only framework can use it.
  */
 
 /*!
@@ -60,20 +98,20 @@
  * \param parent Parent of the dialog
  * \param f Flags to use on Windows. By default, the dialog have a fixed size.
  */
-CustomDialogImpl::CustomDialogImpl(QWidget * parent, Qt::WFlags f)  : QDialog(parent, f)
+CustomDialogImpl::CustomDialogImpl(QWidget * parent, Qt::WFlags f)  : QDialog(parent, f), d(new CustomDialogImplPrivate)
 {
-	setupUi(this);
-	m_errorLabel->setVisible(false);
+	d->_ui->setupUi(this);
+	d->_ui->m_errorLabel->setVisible(false);
 
 	delete pageToDelete;
 
-	m_pages << new CustomGeneralImpl(this);
-	m_pages << new CustomProjectImpl(this);
-	m_pages << new CustomEditorImpl(this);
-	m_pages << new CustomFontImpl(this);
-	m_pages << new CustomSyntaxImpl(this);
-	m_pages << new CustomSnipetImpl(this);
-	m_pages << new CustomToolsImpl(this);
+	d->_pages << new CustomGeneralImpl(this);
+	d->_pages << new CustomProjectImpl(this);
+	d->_pages << new CustomEditorImpl(this);
+	d->_pages << new CustomFontImpl(this);
+	d->_pages << new CustomSyntaxImpl(this);
+	d->_pages << new CustomSnipetImpl(this);
+	d->_pages << new CustomToolsImpl(this);
 
 	foreach(XinxPluginElement * plugin, XinxPluginsLoader::self()->plugins())
 	{
@@ -83,17 +121,17 @@ CustomDialogImpl::CustomDialogImpl(QWidget * parent, Qt::WFlags f)  : QDialog(pa
 		if (! p) continue;
 
 		QList<IXinxPluginConfigurationPage*> pages = p->createSettingsDialog(this);
-		m_pages << pages;
+		d->_pages << pages;
 
 		foreach(IXinxPluginConfigurationPage * page, pages)
 		{
-			m_pluginsPages.insertMulti(e, page);
+			d->_pluginsPages.insertMulti(e, page);
 		}
 	}
 
-	m_pages << new CustomModulesImpl(this);
+	d->_pages << new CustomModulesImpl(this);
 
-	foreach(IXinxPluginConfigurationPage * page, m_pages)
+	foreach(IXinxPluginConfigurationPage * page, d->_pages)
 	{
 		QListWidgetItem * item = new QListWidgetItem(QIcon(page->image()), page->name());
 		m_listWidget->addItem(item);
@@ -104,7 +142,7 @@ CustomDialogImpl::CustomDialogImpl(QWidget * parent, Qt::WFlags f)  : QDialog(pa
 	QTimer * updateOkTimer = new QTimer(this);
 	updateOkTimer->setInterval(250);
 	updateOkTimer->setSingleShot(false);
-	connect(updateOkTimer, SIGNAL(timeout()), SLOT(updateOkButton()));
+	connect(updateOkTimer, SIGNAL(timeout()), d.data(), SLOT(updateOkButton()));
 
 	updateOkTimer->start();
 }
@@ -112,13 +150,13 @@ CustomDialogImpl::CustomDialogImpl(QWidget * parent, Qt::WFlags f)  : QDialog(pa
 //! Destroy the custom dialog
 CustomDialogImpl::~CustomDialogImpl()
 {
-	qDeleteAll(m_pages);
+	qDeleteAll(d->_pages);
 }
 
 //! Call method IXinxPluginConfigurationPage::loadSettingsDialog() on each page
 void CustomDialogImpl::loadConfig()
 {
-	foreach(IXinxPluginConfigurationPage * page, m_pages)
+	foreach(IXinxPluginConfigurationPage * page, d->_pages)
 	{
 		page->loadSettingsDialog();
 	}
@@ -127,37 +165,10 @@ void CustomDialogImpl::loadConfig()
 //! Call method IXinxPluginConfigurationPage::saveSettingsDialog() on each page
 void CustomDialogImpl::saveConfig()
 {
-	foreach(IXinxPluginConfigurationPage * page, m_pages)
+	foreach(IXinxPluginConfigurationPage * page, d->_pages)
 	{
 		page->saveSettingsDialog();
 	}
-}
-
-/*!
- * \brief Update the state of the Ok button.
- *
- * This method is called automatically every 250ms. This method check IXinxPluginConfigurationPage::isSettingsValid()
- * on each page and show a red message if settings isn't valid.
- */
-void CustomDialogImpl::updateOkButton()
-{
-	m_errorLabel->setVisible(false);
-	foreach(IXinxPluginConfigurationPage * page, m_pages)
-	{
-		QString message;
-		if (! page->isSettingsValid(message))
-		{
-			m_buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-			if (!message.isEmpty())
-			{
-				m_errorLabel->setVisible(true);
-				m_errorLabel->setText(QString("<img src=\":/images/error16.png\"/> ") + tr("%1 on page \"%2\"").arg(message).arg(page->name()));
-			}
-			return;
-		}
-	}
-
-	m_buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
 }
 
 /*!
