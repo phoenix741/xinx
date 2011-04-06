@@ -43,7 +43,7 @@
 <context>
     <name>AboutDialogImpl</name>
     <message>
-        <location filename="../application/aboutdialogimpl.cpp" line="52"/>
+        <location filename="../application/aboutdialogimpl.cpp" line="34"/>
         <source>&lt;b&gt;XINX %1 (use Qt %2)&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -418,9 +418,9 @@ Only checked files are commited.</source>
     </message>
 </context>
 <context>
-    <name>CustomDialogImplPrivate</name>
+    <name>CustomDialogImpl</name>
     <message>
-        <location filename="../application/customdialog/customdialogimpl.cpp" line="68"/>
+        <location filename="../application/customdialog/customdialogimpl.cpp" line="154"/>
         <source>%1 on page &quot;%2&quot;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -512,23 +512,23 @@ Only checked files are commited.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="148"/>
-        <source>&lt;p&gt;&lt;img src=&quot;:/images/fileclose.png&quot;/&gt;Show a close button on each tab.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="151"/>
         <source>on right &amp;corner</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="161"/>
-        <source>&lt;p&gt;&lt;img src=&quot;:/images/tabclose.png&quot; /&gt;&lt;img src=&quot;:/images/fileclose.png&quot; /&gt;Show a button on the right corner of &lt;b&gt;XINX&lt;/b&gt; and another on each tab. This option is the concatenation of the two other options&lt;/p&gt;</source>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="164"/>
+        <source>on the right corner &amp;and on the tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="164"/>
-        <source>on the right corner &amp;and on the tab</source>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="148"/>
+        <source>&lt;p&gt;&lt;img src=&quot;:/images/fileclose.png&quot;/&gt;Show a close button on each tab.&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="161"/>
+        <source>&lt;p&gt;&lt;img src=&quot;:/images/tabclose.png&quot; /&gt;&lt;img src=&quot;:/images/fileclose.png&quot; /&gt;Show a button on the right corner of &lt;b&gt;XINX&lt;/b&gt; and another on each tab. This option is the concatenation of the two other options&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -627,22 +627,112 @@ Only checked files are commited.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="92"/>
+        <location filename="../application/customdialog/ui/customfont.ui" line="89"/>
+        <source>Custom...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customfont.ui" line="94"/>
+        <source>Red</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customfont.ui" line="99"/>
+        <source>Green</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customfont.ui" line="104"/>
+        <source>Blue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customfont.ui" line="109"/>
+        <source>Cyan</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customfont.ui" line="114"/>
+        <source>Magenta</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customfont.ui" line="119"/>
+        <source>Yellow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customfont.ui" line="124"/>
+        <source>Dark Red</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customfont.ui" line="129"/>
+        <source>Dark Green</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customfont.ui" line="134"/>
+        <source>Dark Blue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customfont.ui" line="139"/>
+        <source>Dark Cyan</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customfont.ui" line="144"/>
+        <source>Dark Magenta</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customfont.ui" line="149"/>
+        <source>Dark Yellow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customfont.ui" line="154"/>
+        <source>White</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customfont.ui" line="159"/>
+        <source>Light Gray</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customfont.ui" line="164"/>
+        <source>Gray</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customfont.ui" line="169"/>
+        <source>Dark Gray</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customfont.ui" line="174"/>
+        <source>Black</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customfont.ui" line="182"/>
         <source>Show tabulation and space in the editor with specialcharacter (in greyed colour).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="95"/>
+        <location filename="../application/customdialog/ui/customfont.ui" line="185"/>
         <source>Show &amp;tabulation and space in the editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="102"/>
+        <location filename="../application/customdialog/ui/customfont.ui" line="192"/>
         <source>Size of a &amp;tabulation :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="112"/>
+        <location filename="../application/customdialog/ui/customfont.ui" line="202"/>
         <source>Size of tabulation in number of character. This is the number of character that tabulation replaces.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1605,6 +1695,31 @@ Do you really want refresh this?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../application/newversion.ui" line="142"/>
+        <source>&amp;Open the last session at start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/newversion.ui" line="162"/>
+        <source>&lt;p&gt;This the path where the save dialog must be opened when you create a new project.&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/newversion.ui" line="189"/>
+        <source>Editor Settings Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/newversion.ui" line="192"/>
+        <source>In this page we adjust settings used by the editor. In this page we can adjust effect, used to facilitate the edition (has show the current line, space, tabulation).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/newversion.ui" line="306"/>
+        <source>We have now customize XINX. You can adjuste XINX settings by opening the good &quot;Customize dialog&quot;. In the tools menu.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../application/newversion.ui" line="132"/>
         <source>Auto refresh directory dock</source>
         <translation type="unfinished"></translation>
@@ -1615,18 +1730,8 @@ Do you really want refresh this?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="142"/>
-        <source>&amp;Open the last session at start</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../application/newversion.ui" line="149"/>
         <source>Default open &amp;project directory :</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/newversion.ui" line="162"/>
-        <source>&lt;p&gt;This the path where the save dialog must be opened when you create a new project.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1639,16 +1744,6 @@ Do you really want refresh this?</source>
     <message>
         <location filename="../application/newversion.ui" line="178"/>
         <source>Default text &amp;encoding :</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/newversion.ui" line="189"/>
-        <source>Editor Settings Page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/newversion.ui" line="192"/>
-        <source>In this page we adjust settings used by the editor. In this page we can adjust effect, used to facilitate the edition (has show the current line, space, tabulation).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1717,11 +1812,6 @@ Do you really want refresh this?</source>
     <message>
         <location filename="../application/newversion.ui" line="300"/>
         <source>Conclusion</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/newversion.ui" line="306"/>
-        <source>We have now customize XINX. You can adjuste XINX settings by opening the good &quot;Customize dialog&quot;. In the tools menu.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2060,42 +2150,6 @@ Do you really want refresh this?</source>
     <message>
         <location filename="../project/projectdirectorywidgetimpl.cpp" line="328"/>
         <source>Enter the name of the new file name</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>PrivateXinxProject</name>
-    <message>
-        <location filename="../project/xinxprojectproject.cpp" line="183"/>
-        <source>Cannot read file %1:
-%2.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../project/xinxprojectproject.cpp" line="190"/>
-        <source>Parse error at line %1, column %2:
-%3</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../project/xinxprojectproject.cpp" line="196"/>
-        <source>The file isn&apos;t a XINX Project. The root name must be &quot;XinxProject&quot;, not &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../project/xinxprojectproject.cpp" line="200"/>
-        <source>The file is a too recent XINX Project</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../project/xinxprojectproject.cpp" line="202"/>
-        <source>The project can&apos;t be opened. Please use the XINX Project Wizard.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../project/xinxprojectproject.cpp" line="273"/>
-        <source>Cannot write file %1:
-%2.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3024,13 +3078,13 @@ A project can define web services too.</source>
         <location filename="translationmanager.cpp" line="58"/>
         <source>C</source>
         <comment>Translate this word in the name of your lang (ie: English, FranÃ§ais, ...)</comment>
-        <translation type="unfinished"></translation>
+        <translation>English</translation>
     </message>
     <message>
         <location filename="translationmanager.cpp" line="59"/>
         <source>:/images/unknown.png</source>
         <comment>Give the image that contains the flag of your lang</comment>
-        <translation type="unfinished"></translation>
+        <translation>:/images/usa.png</translation>
     </message>
 </context>
 <context>
@@ -3432,9 +3486,45 @@ This wizard will convert the project to the last version of XINX. Wizard must co
     </message>
 </context>
 <context>
+    <name>XinxProject::PrivateXinxProject</name>
+    <message>
+        <location filename="../project/xinxprojectproject.cpp" line="188"/>
+        <source>Cannot read file %1:
+%2.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../project/xinxprojectproject.cpp" line="195"/>
+        <source>Parse error at line %1, column %2:
+%3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../project/xinxprojectproject.cpp" line="201"/>
+        <source>The file isn&apos;t a XINX Project. The root name must be &quot;XinxProject&quot;, not &quot;%1&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../project/xinxprojectproject.cpp" line="205"/>
+        <source>The file is a too recent XINX Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../project/xinxprojectproject.cpp" line="207"/>
+        <source>The project can&apos;t be opened. Please use the XINX Project Wizard.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../project/xinxprojectproject.cpp" line="278"/>
+        <source>Cannot write file %1:
+%2.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>XinxProject::Project</name>
     <message>
-        <location filename="../project/xinxprojectproject.cpp" line="309"/>
+        <location filename="../project/xinxprojectproject.cpp" line="314"/>
         <source>The project must be created in a existing directory</source>
         <translation type="unfinished"></translation>
     </message>

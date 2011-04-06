@@ -7,7 +7,7 @@
         <location filename="../rcs_svn.cpp" line="247"/>
         <location filename="../rcs_svn.cpp" line="351"/>
         <source>Process terminated</source>
-        <translation type="unfinished"></translation>
+        <translation>Traitement terminé</translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="274"/>
@@ -16,12 +16,12 @@
         <location filename="../rcs_svn.cpp" line="334"/>
         <location filename="../rcs_svn.cpp" line="374"/>
         <source>Can&apos;t start svn program.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne peux démarrer le programme svn.</translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="388"/>
         <source>Can&apos;t stop the process on windows.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne peux arrêter le process sous Windows.</translation>
     </message>
 </context>
 <context>
@@ -29,17 +29,17 @@
     <message>
         <location filename="../svnpluginwrapper.cpp" line="48"/>
         <source>Wrapper for SubVersion</source>
-        <translation type="unfinished"></translation>
+        <translation>Encapsulation de SubVersion</translation>
     </message>
     <message>
         <location filename="../svnpluginwrapper.cpp" line="50"/>
         <source>Enable using SubVersion throw a wrapper of the svn commande.</source>
-        <translation type="unfinished"></translation>
+        <translation>Active l&apos;utilisation de SubVersion au travers d&apos;une encapsulation de la commande svn.</translation>
     </message>
     <message>
         <location filename="../svnpluginwrapper.cpp" line="86"/>
         <source>SVN - Subversion Wrapper</source>
-        <translation type="unfinished"></translation>
+        <translation>SVN - Encapsulation SubVersion</translation>
     </message>
 </context>
 </TS>

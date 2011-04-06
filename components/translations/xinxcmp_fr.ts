@@ -6,62 +6,62 @@
     <message>
         <location filename="../ui/customscheme.ui" line="13"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Formulaire</translation>
     </message>
     <message>
         <location filename="../ui/customscheme.ui" line="40"/>
         <source>&amp;Format</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Format</translation>
     </message>
     <message>
         <location filename="../ui/customscheme.ui" line="46"/>
         <source>&amp;Bold</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Gras</translation>
     </message>
     <message>
         <location filename="../ui/customscheme.ui" line="53"/>
         <source>&amp;Overline</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Surligner</translation>
     </message>
     <message>
         <location filename="../ui/customscheme.ui" line="60"/>
         <source>&amp;Strikeout</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Barré</translation>
     </message>
     <message>
         <location filename="../ui/customscheme.ui" line="67"/>
         <source>&amp;Italic</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Italique</translation>
     </message>
     <message>
         <location filename="../ui/customscheme.ui" line="74"/>
         <source>&amp;Underline</source>
-        <translation type="unfinished"></translation>
+        <translation>S&amp;ouligné</translation>
     </message>
     <message>
         <location filename="../ui/customscheme.ui" line="84"/>
         <source>&amp;WaveUnderline</source>
-        <translation type="unfinished"></translation>
+        <translation>Souligné en &amp;vague</translation>
     </message>
     <message>
         <location filename="../ui/customscheme.ui" line="100"/>
         <source>&amp;Color</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Couleur</translation>
     </message>
     <message>
         <location filename="../ui/customscheme.ui" line="106"/>
         <source>&amp;Foreground</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Texte</translation>
     </message>
     <message>
         <location filename="../ui/customscheme.ui" line="119"/>
         <source>&amp;Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Arrière &amp;plan</translation>
     </message>
     <message>
         <location filename="../ui/customscheme.ui" line="135"/>
         <source>&amp;Example</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Exemple</translation>
     </message>
 </context>
 <context>
@@ -69,13 +69,13 @@
     <message>
         <location filename="../directoryedit.cpp" line="399"/>
         <source>Change the path</source>
-        <translation type="unfinished"></translation>
+        <translation>Changer le dossier</translation>
     </message>
     <message>
         <location filename="../directoryedit.cpp" line="401"/>
         <location filename="../directoryedit.cpp" line="403"/>
         <source>Change the file</source>
-        <translation type="unfinished"></translation>
+        <translation>Changer le fichier</translation>
     </message>
 </context>
 <context>
@@ -83,12 +83,12 @@
     <message>
         <location filename="../pluginselector.cpp" line="329"/>
         <source>About ...</source>
-        <translation type="unfinished"></translation>
+        <translation>A propos de ...</translation>
     </message>
     <message>
         <location filename="../pluginselector.cpp" line="341"/>
         <source>Configure ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Personnaliser ...</translation>
     </message>
 </context>
 <context>
@@ -96,92 +96,99 @@
     <message>
         <location filename="../xinxcolorcombo.cpp" line="59"/>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation>Aucune</translation>
     </message>
     <message>
         <location filename="../xinxcolorcombo.cpp" line="61"/>
         <source>Red</source>
-        <translation type="unfinished"></translation>
+        <translation>Rouge</translation>
     </message>
     <message>
         <location filename="../xinxcolorcombo.cpp" line="63"/>
         <source>Green</source>
-        <translation type="unfinished"></translation>
+        <translation>Vert</translation>
     </message>
     <message>
         <location filename="../xinxcolorcombo.cpp" line="65"/>
         <source>Blue</source>
-        <translation type="unfinished"></translation>
+        <translation>Bleu</translation>
     </message>
     <message>
         <location filename="../xinxcolorcombo.cpp" line="67"/>
         <source>Cyan</source>
-        <translation type="unfinished"></translation>
+        <translation>Bleu ciel</translation>
     </message>
     <message>
         <location filename="../xinxcolorcombo.cpp" line="69"/>
         <source>Magenta</source>
-        <translation type="unfinished"></translation>
+        <translation>Magenta</translation>
     </message>
     <message>
         <location filename="../xinxcolorcombo.cpp" line="71"/>
         <source>Yellow</source>
-        <translation type="unfinished"></translation>
+        <translation>Jaune</translation>
     </message>
     <message>
         <location filename="../xinxcolorcombo.cpp" line="73"/>
         <source>Dark Red</source>
-        <translation type="unfinished"></translation>
+        <translation>Rouge foncé</translation>
     </message>
     <message>
         <location filename="../xinxcolorcombo.cpp" line="75"/>
         <source>Dark Green</source>
-        <translation type="unfinished"></translation>
+        <translation>Vert foncé</translation>
     </message>
     <message>
         <location filename="../xinxcolorcombo.cpp" line="77"/>
         <source>Dark Blue</source>
-        <translation type="unfinished"></translation>
+        <translation>Bleu foncé</translation>
     </message>
     <message>
         <location filename="../xinxcolorcombo.cpp" line="79"/>
         <source>Dark Cyan</source>
-        <translation type="unfinished"></translation>
+        <translation>Bleu ciel foncé</translation>
     </message>
     <message>
         <location filename="../xinxcolorcombo.cpp" line="81"/>
         <source>Dark Magenta</source>
-        <translation type="unfinished"></translation>
+        <translation>Magenta foncé</translation>
     </message>
     <message>
         <location filename="../xinxcolorcombo.cpp" line="83"/>
         <source>Dark Yellow</source>
-        <translation type="unfinished"></translation>
+        <translation>Jaune foncé</translation>
     </message>
     <message>
         <location filename="../xinxcolorcombo.cpp" line="85"/>
         <source>White</source>
-        <translation type="unfinished"></translation>
+        <translation>Blanc</translation>
     </message>
     <message>
         <location filename="../xinxcolorcombo.cpp" line="87"/>
         <source>Light Gray</source>
-        <translation type="unfinished"></translation>
+        <translation>Gris clair</translation>
     </message>
     <message>
         <location filename="../xinxcolorcombo.cpp" line="89"/>
         <source>Gray</source>
-        <translation type="unfinished"></translation>
+        <translation>Gris</translation>
     </message>
     <message>
         <location filename="../xinxcolorcombo.cpp" line="91"/>
         <source>Dark Gray</source>
-        <translation type="unfinished"></translation>
+        <translation>Gris foncé</translation>
     </message>
     <message>
         <location filename="../xinxcolorcombo.cpp" line="93"/>
         <source>Black</source>
-        <translation type="unfinished"></translation>
+        <translation>Noir</translation>
+    </message>
+</context>
+<context>
+    <name>XinxColorCombo</name>
+    <message>
+        <source>Custom...</source>
+        <translation type="obsolete">Personnaliser ...</translation>
     </message>
 </context>
 <context>
@@ -189,7 +196,7 @@
     <message>
         <location filename="../xinxcolorcombo.cpp" line="184"/>
         <source>Custom...</source>
-        <translation type="unfinished"></translation>
+        <translation>Personnaliser ...</translation>
     </message>
 </context>
 <context>
@@ -197,7 +204,7 @@
     <message>
         <location filename="../xinxdirectorylistwidget.cpp" line="59"/>
         <source>Get a directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Choisir un dossier</translation>
     </message>
 </context>
 <context>
@@ -205,27 +212,27 @@
     <message>
         <location filename="../ui/xinxlistwidget.ui" line="40"/>
         <source>&amp;Add</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ajouter</translation>
     </message>
     <message>
         <location filename="../ui/xinxlistwidget.ui" line="51"/>
         <source>&amp;Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Supprimer</translation>
     </message>
     <message>
         <location filename="../ui/xinxlistwidget.ui" line="62"/>
         <source>&amp;Default</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Défaut</translation>
     </message>
     <message>
         <location filename="../ui/xinxlistwidget.ui" line="86"/>
         <source>Move &amp;Up</source>
-        <translation type="unfinished"></translation>
+        <translation>Déplacer en &amp;haut</translation>
     </message>
     <message>
         <location filename="../ui/xinxlistwidget.ui" line="97"/>
         <source>Move &amp;Down</source>
-        <translation type="unfinished"></translation>
+        <translation>Déplacer en &amp;bas</translation>
     </message>
 </context>
 </TS>
