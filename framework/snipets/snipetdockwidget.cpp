@@ -104,9 +104,7 @@ void SnipetDockWidget::customizeSnipet()
 	CustomDialogImpl dlg(this);
 	dlg.loadConfig();
 
-	dlg.m_listWidget->setCurrentRow(5);
-	dlg.m_listWidget->setVisible(false);
-	if (dlg.exec())
+	if (dlg.execUniquePage(5))
 	{
 		dlg.saveConfig();
 		XINXConfig::self()->save();

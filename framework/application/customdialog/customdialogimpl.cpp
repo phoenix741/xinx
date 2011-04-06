@@ -103,7 +103,7 @@ CustomDialogImpl::CustomDialogImpl(QWidget * parent, Qt::WFlags f)  : QDialog(pa
 	d->_ui->setupUi(this);
 	d->_ui->m_errorLabel->setVisible(false);
 
-	delete pageToDelete;
+	delete d->_ui->pageToDelete;
 
 	d->_pages << new CustomGeneralImpl(this);
 	d->_pages << new CustomProjectImpl(this);
@@ -134,9 +134,9 @@ CustomDialogImpl::CustomDialogImpl(QWidget * parent, Qt::WFlags f)  : QDialog(pa
 	foreach(IXinxPluginConfigurationPage * page, d->_pages)
 	{
 		QListWidgetItem * item = new QListWidgetItem(QIcon(page->image()), page->name());
-		m_listWidget->addItem(item);
+		d->_ui->m_listWidget->addItem(item);
 
-		m_stackedWidget->addWidget(page->settingsDialog());
+		d->_ui->m_stackedWidget->addWidget(page->settingsDialog());
 	}
 
 	QTimer * updateOkTimer = new QTimer(this);
@@ -169,6 +169,14 @@ void CustomDialogImpl::saveConfig()
 	{
 		page->saveSettingsDialog();
 	}
+}
+
+//! Show the page \e page and only this page
+int CustomDialogImpl::execUniquePage(int page)
+{
+	d->_ui->m_listWidget->setCurrentRow(5);
+	d->_ui->m_listWidget->setVisible(false);
+	return exec();
 }
 
 /*!

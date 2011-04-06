@@ -30,7 +30,7 @@ class PluginElement;
 class RecursiveSortFilterProxyModel;
 class IXinxPluginConfigurationPage;
 
-class CustomDialogImpl : public QDialog, public Ui::CustomDialog
+class CustomDialogImpl : public QDialog
 {
 	Q_OBJECT
 public:
@@ -39,6 +39,8 @@ public:
 
 	void loadConfig();
 	void saveConfig();
+
+	int execUniquePage(int page);
 public slots:
 	virtual void accept();
 private:

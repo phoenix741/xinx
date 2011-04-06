@@ -43,7 +43,7 @@
 <context>
     <name>AboutDialogImpl</name>
     <message>
-        <location filename="../application/aboutdialogimpl.cpp" line="34"/>
+        <location filename="../application/aboutdialogimpl.cpp" line="52"/>
         <source>&lt;b&gt;XINX %1 (use Qt %2)&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -418,9 +418,9 @@ Only checked files are commited.</source>
     </message>
 </context>
 <context>
-    <name>CustomDialogImpl</name>
+    <name>CustomDialogImplPrivate</name>
     <message>
-        <location filename="../application/customdialog/customdialogimpl.cpp" line="154"/>
+        <location filename="../application/customdialog/customdialogimpl.cpp" line="68"/>
         <source>%1 on page &quot;%2&quot;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1751,7 +1751,7 @@ Do you really want refresh this?</source>
 <context>
     <name>ParserFactory</name>
     <message>
-        <location filename="../contentview3/parserfactory.cpp" line="65"/>
+        <location filename="../contentview3/parserfactory.cpp" line="66"/>
         <source>Ambigous parser for file %1</source>
         <translation type="unfinished"></translation>
     </message>
