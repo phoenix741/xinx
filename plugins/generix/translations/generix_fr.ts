@@ -446,43 +446,38 @@ courant :</translation>
     <name>NewGenerixDerivation1Page</name>
     <message>
         <location filename="../projectproperty/wizard/newgenerixderivation1page.ui" line="14"/>
-        <source>WizardPage</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation1page.ui" line="17"/>
         <source>Do you want derivate or edit a standard project</source>
         <translation>Voulez- vous dériver ou éditer un projet standard</translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation1page.ui" line="20"/>
+        <location filename="../projectproperty/wizard/newgenerixderivation1page.ui" line="17"/>
         <source>Choose to derivate from a standard project, offer you to copy file in another tree automatically.</source>
         <translation>Si vous choisissez de dériver à partir d&apos;un projet standard, XINX vous permettra de placer une copie du fichier modifié automatiquement dans une nouvelle arborescence.</translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation1page.ui" line="26"/>
+        <location filename="../projectproperty/wizard/newgenerixderivation1page.ui" line="23"/>
         <source>Please tell me, if you want to modify all part of the web module, or prevent the modification of orignal files and derive file in special directory.
 In &lt;b&gt;GCE 150&lt;/b&gt; or later, the choice has few impact</source>
         <translation>Voulez-vous modifier l&apos;ensemble du module Internet, ou prévenir de la modification des fichiers originaux en les dérivant dans un dossier spécial.&lt;br/&gt;
 En &lt;b&gt;GCE 150&lt;/b&gt; ou plus, le choix à peu d&apos;impact</translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation1page.ui" line="40"/>
+        <location filename="../projectproperty/wizard/newgenerixderivation1page.ui" line="37"/>
         <source>&amp;No derivation (editor)</source>
         <translation>&amp;Pas de dérivation (éditeur)</translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation1page.ui" line="47"/>
+        <location filename="../projectproperty/wizard/newgenerixderivation1page.ui" line="44"/>
         <source>Derivation in a &amp;project directory (integration)</source>
         <translation>Dérivation dans un dossier &amp;projet (intégration)</translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation1page.ui" line="77"/>
+        <location filename="../projectproperty/wizard/newgenerixderivation1page.ui" line="74"/>
         <source>&amp;Name of the project directory : </source>
         <translation>&amp;Nom du dossier projet :</translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation1page.ui" line="90"/>
+        <location filename="../projectproperty/wizard/newgenerixderivation1page.ui" line="87"/>
         <source>Add the project directory name as prefix</source>
         <translation>Ajouter le nom du dossier projet saisi en tant que préfixe</translation>
     </message>
@@ -491,79 +486,59 @@ En &lt;b&gt;GCE 150&lt;/b&gt; ou plus, le choix à peu d&apos;impact</translatio
     <name>NewGenerixDerivation2Page</name>
     <message>
         <location filename="../projectproperty/wizard/newgenerixderivation2page.ui" line="14"/>
-        <source>WizardPage</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation2page.ui" line="17"/>
         <source>Define path that should be read only</source>
         <translation>Définit le chemin devant être en lecture uniquement</translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation2page.ui" line="20"/>
+        <location filename="../projectproperty/wizard/newgenerixderivation2page.ui" line="17"/>
         <source>Define the path you want to make read only in your web module. Generally, you should have one path not readonly and all other read only.</source>
         <translation>Définit le chemin que vous souhaitez ne pas modifier dans votre module Web. Généralement , vous devez avoir un des chemins en écriture, et les autres en lecture uniquement.</translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation2page.ui" line="26"/>
+        <location filename="../projectproperty/wizard/newgenerixderivation2page.ui" line="23"/>
         <source>In this list you have all directory detected by &lt;b&gt;XINX&lt;/b&gt;. If the list isn&apos;t complete, you can add or modify the list, later, in the project property.</source>
         <translation>Dans cette liste vous avez tous les dossiers détectés par &lt;b&gt;XINX&lt;/b&gt;. Si la liste n&apos;est pas complète, vous pouvez ajouter ou modifier cette liste plus tard, dans les propriétés du projet.</translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation2page.ui" line="36"/>
+        <location filename="../projectproperty/wizard/newgenerixderivation2page.ui" line="33"/>
         <source>In the list, please check directory that you want make read-only (While modify a file in this directory, this will open a dialog to derive the fie. You always can force to save the file in the original directory.</source>
         <translation>Veuillez cocher les dossiers que vous souhaitez en lecture uniquement (lors de la modification d&apos;un fichier de ce dotion, une boite de dialogue de dérivation sera ouverte). Vous pouvez toujours forcer la sauvegarde du fichier dans le dossier d&apos;origine.</translation>
-    </message>
-    <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation2page.ui" line="63"/>
-        <source>langue/fra/nav</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation2page.ui" line="71"/>
-        <source>langue/fra/nav/project</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>NewGenerixDerivation3Page</name>
     <message>
         <location filename="../projectproperty/wizard/newgenerixderivation3page.ui" line="14"/>
-        <source>WizardPage</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation3page.ui" line="17"/>
         <source>Define option for derivation</source>
         <translation>Définit les options pour la dérivation</translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation3page.ui" line="20"/>
+        <location filename="../projectproperty/wizard/newgenerixderivation3page.ui" line="17"/>
         <source>In this page you can define a prefix to use in your derivation path and the possibility to copy the original file in the destination path too.</source>
         <translation>Dans cette page vous pouvez définir un préfixe à utiliser dans le dossier de dérivation, et la possibilité de faire une copie du fichier d&apos;origine dans ce dossier projet également.</translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation3page.ui" line="26"/>
+        <location filename="../projectproperty/wizard/newgenerixderivation3page.ui" line="23"/>
         <source>&amp;Create automatically missing directory</source>
         <translation>&amp;Créer automatiquement les dossiers manquants</translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation3page.ui" line="33"/>
+        <location filename="../projectproperty/wizard/newgenerixderivation3page.ui" line="30"/>
         <source>&lt;span style=&quot;color: red&quot;&gt;&lt;b&gt;!!! WARNING !!!&lt;/b&gt; : You should check this box, if you don&apos;t want have problem.</source>
         <translation>&lt;span style=&quot;color: red&quot;&gt;&lt;b&gt;!!! ATTENTION !!!&lt;/b&gt; : Vous devriez cocher cette case, si vous ne souhaitez pas avoir de problème.</translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation3page.ui" line="40"/>
+        <location filename="../projectproperty/wizard/newgenerixderivation3page.ui" line="37"/>
         <source>&amp;Prefix derivated files</source>
         <translation>&amp;Préfixe des fichiers dérivés</translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation3page.ui" line="74"/>
+        <location filename="../projectproperty/wizard/newgenerixderivation3page.ui" line="71"/>
         <source>&lt;span style=&quot;color: red&quot;&gt;&lt;b&gt;!!! WARNING !!!&lt;/b&gt; : You should define a prefix, in derivation project mode on this version of GCE.</source>
         <translation>&lt;span style=&quot;color: red&quot;&gt;&lt;b&gt;!!! ATTENTION !!!&lt;/b&gt; : Vous devriez définir un préfixe en mode dérivation dans cette version de GCE.</translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation3page.ui" line="84"/>
+        <location filename="../projectproperty/wizard/newgenerixderivation3page.ui" line="81"/>
         <source>C&amp;opy source file in the derivation path</source>
         <translation>C&amp;opie le fichier d&apos;origine dans le dossier de dérivation</translation>
     </message>
@@ -572,16 +547,11 @@ En &lt;b&gt;GCE 150&lt;/b&gt; ou plus, le choix à peu d&apos;impact</translatio
     <name>NewGenerixInformationPage</name>
     <message>
         <location filename="../projectproperty/wizard/newgenerixinformationpage.ui" line="17"/>
-        <source>WizardPage</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../projectproperty/wizard/newgenerixinformationpage.ui" line="20"/>
         <source>Define informations used by the Generix module of XINX</source>
         <translation>Définit les informations utilisées par le module Generix de XINX</translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixinformationpage.ui" line="23"/>
+        <location filename="../projectproperty/wizard/newgenerixinformationpage.ui" line="20"/>
         <source>In this page, you choose, the location of the Webmodule. This path should be the same of the project path, unless you know what you do.</source>
         <translation>Dans cette page, vous pouvez choisir l&apos;emplacement du module Web. Ce dossier devrait être le même que le dossier projet, sauf si vous savez ce que vous faites.</translation>
     </message>
@@ -594,7 +564,7 @@ En &lt;b&gt;GCE 150&lt;/b&gt; ou plus, le choix à peu d&apos;impact</translatio
         <translation type="obsolete">Emplacement du module &amp;web :</translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixinformationpage.ui" line="29"/>
+        <location filename="../projectproperty/wizard/newgenerixinformationpage.ui" line="26"/>
         <source>This page show you the finding version of your GCE Installation. If the version number doesn&apos;t corresponding with your GCE Installation, please verify the configuration of your project. This will have an impact on the directory structure choosed by XINX and on how XINX will access to dictionnary and BV.
 
 On &quot;Location of the data stream&quot; you can fill by the location of the &quot;j2ee/home/log&quot; directory of your Application Server. This will be added as a link in your project to permit you an easy access to open a data stream.</source>
@@ -603,22 +573,22 @@ On &quot;Location of the data stream&quot; you can fill by the location of the &
 Sur l&apos;emplacement des flux de données, vous pouvez remplir par l&apos;emplacement du dossier &quot;j2ee/home/log&quot; de votre seveur d&apos;application. Cela sera ajouté automatiquement comme lien à l&apos;interieur de votre projet et vous permettra d&apos;accéder facilement aux flux de données.</translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixinformationpage.ui" line="62"/>
+        <location filename="../projectproperty/wizard/newgenerixinformationpage.ui" line="59"/>
         <source>Version :</source>
         <translation>Version :</translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixinformationpage.ui" line="72"/>
+        <location filename="../projectproperty/wizard/newgenerixinformationpage.ui" line="69"/>
         <source>Location of the &amp;data stream :</source>
         <translation>Emplacement du flux de &amp;donnée :</translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixinformationpage.ui" line="89"/>
+        <location filename="../projectproperty/wizard/newgenerixinformationpage.ui" line="86"/>
         <source>Location of the &amp;running page :</source>
         <translation>Emplacement des fichiers &amp;externes (CSS, JS, images, ...) :</translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixinformationpage.ui" line="124"/>
+        <location filename="../projectproperty/wizard/newgenerixinformationpage.ui" line="121"/>
         <source>&lt;p style=&quot;color: red&quot;&gt;&lt;b&gt;!!! WARNING !!!&lt;/b&gt; : The directory structure doesn&apos;t match with the version of the GCE module.&lt;/p&gt;</source>
         <translation>&lt;p style=&quot;color: red&quot;&gt;&lt;b&gt;!!! ATTENTION !!!&lt;/b&gt; : La structure du dossier ne correspond pas à la version du module GCE.&lt;/p&gt;</translation>
     </message>

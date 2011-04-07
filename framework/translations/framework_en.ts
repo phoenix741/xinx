@@ -43,7 +43,7 @@
 <context>
     <name>AboutDialogImpl</name>
     <message>
-        <location filename="../application/aboutdialogimpl.cpp" line="34"/>
+        <location filename="../application/aboutdialogimpl.cpp" line="52"/>
         <source>&lt;b&gt;XINX %1 (use Qt %2)&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -418,9 +418,9 @@ Only checked files are commited.</source>
     </message>
 </context>
 <context>
-    <name>CustomDialogImpl</name>
+    <name>CustomDialogImplPrivate</name>
     <message>
-        <location filename="../application/customdialog/customdialogimpl.cpp" line="154"/>
+        <location filename="../application/customdialog/customdialogimpl.cpp" line="68"/>
         <source>%1 on page &quot;%2&quot;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -438,132 +438,155 @@ Only checked files are commited.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="26"/>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="30"/>
         <source>Manually</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="33"/>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="44"/>
-        <source>&lt;p&gt;If the box is checked, when saving the file, &lt;b&gt;XINX &lt;/b&gt;apply the pretty print function on the text. This format the code on saving file. &lt;/p&gt;
-&lt;p&gt;&lt;i&gt;Saving file can be slower.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="37"/>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="41"/>
         <source>On &amp;saving document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="48"/>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="52"/>
         <source>On &amp;closing document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="58"/>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="62"/>
         <source>&amp;Editor options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="64"/>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="68"/>
         <source>&amp;Text content refresh :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="74"/>
-        <source>Number of ms to wait before reloading of the editor content. This timeout is reseted when you hit your keyboard.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="77"/>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="81"/>
         <source> ms</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="93"/>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="97"/>
         <source>Default text &amp;encoding :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="103"/>
-        <source>&lt;p&gt;Choose the default text encoding, when the text encoding can&apos;t be found.
-
-&lt;i&gt;Some editor, can redefined the text encoding (ie: XML and derivated editor). This encoding is used by editor as JavaScript and other&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="119"/>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="126"/>
         <source>Wrap Line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="132"/>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="139"/>
         <source>Close Tab Button</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="138"/>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="145"/>
         <source>&lt;p&gt;&lt;img src=&quot;:/images/tabclose.png&quot;/&gt;Show a button on the right corner of &lt;b&gt;XINX&lt;/b&gt;.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="141"/>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="148"/>
         <source>on the &amp;tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="151"/>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="158"/>
         <source>on right &amp;corner</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="164"/>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="171"/>
         <source>on the right corner &amp;and on the tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="148"/>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="155"/>
         <source>&lt;p&gt;&lt;img src=&quot;:/images/fileclose.png&quot;/&gt;Show a close button on each tab.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="161"/>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="26"/>
+        <source>&lt;p&gt;When this option is selected, document can be re-indented by using the command in the menu.&lt;/p&gt;
+&lt;p&gt;The document wil not be indented automatically.&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="37"/>
+        <source>&lt;p&gt;If the box is checked, when saving the file, &lt;b&gt;XINX&lt;/b&gt; apply the pretty print function on the text. So the code is formating on saving file.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Saving file can be slower.&lt;/i&gt;&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="48"/>
+        <source>&lt;p&gt;If the box is checked, when closing the file, &lt;b&gt;XINX&lt;/b&gt; apply the pretty print function on the text, after a confirmation from the user. &lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Closing a file can be slower.&lt;/i&gt;&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="78"/>
+        <source>Number of ms to wait before launching the parser and refresh the content view. This also the time after what the error are show. This timeout is reseted when the user hit your keyboard.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="107"/>
+        <source>&lt;p&gt;Choose the default text encoding, when the text encoding can&apos;t be found.&lt;/p&gt;
+
+&lt;p&gt;&lt;i&gt;Some editor, can redefined the text encoding (ie: XML and derivated editor). Encoding defined in the combobox is used by editor for JavaScript and other&lt;/i&gt;&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="116"/>
+        <source>When this checkbox is checked, lines in editor are automatically wrap to fit on the screen. This remove the horizontal scrollbar.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="168"/>
         <source>&lt;p&gt;&lt;img src=&quot;:/images/tabclose.png&quot; /&gt;&lt;img src=&quot;:/images/fileclose.png&quot; /&gt;Show a button on the right corner of &lt;b&gt;XINX&lt;/b&gt; and another on each tab. This option is the concatenation of the two other options&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="187"/>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="194"/>
         <source>Saving &amp;Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="193"/>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="200"/>
         <source>&lt;p&gt;Alert user when the file is modified by an extern application. The user has the choice to open the new file (&lt;u&gt;and loose his change&lt;/u&gt;) or keep current file.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="196"/>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="203"/>
         <source>&amp;Popup when file modifed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="203"/>
-        <source>&lt;p&gt;Create a backup file before saving the file. The backup file is stored in the same directory that the original file. &lt;/p&gt;
+        <location filename="../application/customdialog/ui/customeditor.ui" line="210"/>
+        <source>&lt;p&gt;Create a backup file before saving the file. The backup file is stored in the same directory that the original file (and have extention &lt;code&gt;.bak&lt;/code&gt;). &lt;/p&gt;
 &lt;p&gt;The backup is created by copy the modified file before he his saved.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="207"/>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="214"/>
         <source>&amp;Create backup file when saving (.bak)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="217"/>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="224"/>
         <source>Editin&amp;g options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="223"/>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="230"/>
+        <source>&lt;p&gt;When this box is checked, the error and warning dock is automatically show when an error occure, and automatically hide when error is corrected.&lt;/p&gt;
+
+&lt;p&gt;This can be desactivated because, writing code can be disturbed by the dock that automatically open and close. If desactivated the state of the dock don&apos;t change, but when there is an error, you can see the number of error side of the name of the dock, and a red line in the editor that show you the line where there is an error.&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="235"/>
         <source>Automatically open/close error dock</source>
         <translation type="unfinished"></translation>
     </message>
@@ -627,112 +650,22 @@ Only checked files are commited.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="89"/>
-        <source>Custom...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="94"/>
-        <source>Red</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="99"/>
-        <source>Green</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="104"/>
-        <source>Blue</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="109"/>
-        <source>Cyan</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="114"/>
-        <source>Magenta</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="119"/>
-        <source>Yellow</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="124"/>
-        <source>Dark Red</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="129"/>
-        <source>Dark Green</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="134"/>
-        <source>Dark Blue</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="139"/>
-        <source>Dark Cyan</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="144"/>
-        <source>Dark Magenta</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="149"/>
-        <source>Dark Yellow</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="154"/>
-        <source>White</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="159"/>
-        <source>Light Gray</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="164"/>
-        <source>Gray</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="169"/>
-        <source>Dark Gray</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="174"/>
-        <source>Black</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="182"/>
+        <location filename="../application/customdialog/ui/customfont.ui" line="92"/>
         <source>Show tabulation and space in the editor with specialcharacter (in greyed colour).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="185"/>
+        <location filename="../application/customdialog/ui/customfont.ui" line="95"/>
         <source>Show &amp;tabulation and space in the editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="192"/>
+        <location filename="../application/customdialog/ui/customfont.ui" line="102"/>
         <source>Size of a &amp;tabulation :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="202"/>
+        <location filename="../application/customdialog/ui/customfont.ui" line="112"/>
         <source>Size of tabulation in number of character. This is the number of character that tabulation replaces.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2154,6 +2087,42 @@ Do you really want refresh this?</source>
     </message>
 </context>
 <context>
+    <name>PrivateXinxProject</name>
+    <message>
+        <location filename="../project/xinxprojectproject.cpp" line="183"/>
+        <source>Cannot read file %1:
+%2.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../project/xinxprojectproject.cpp" line="190"/>
+        <source>Parse error at line %1, column %2:
+%3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../project/xinxprojectproject.cpp" line="196"/>
+        <source>The file isn&apos;t a XINX Project. The root name must be &quot;XinxProject&quot;, not &quot;%1&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../project/xinxprojectproject.cpp" line="200"/>
+        <source>The file is a too recent XINX Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../project/xinxprojectproject.cpp" line="202"/>
+        <source>The project can&apos;t be opened. Please use the XINX Project Wizard.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../project/xinxprojectproject.cpp" line="273"/>
+        <source>Cannot write file %1:
+%2.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ProgressWizardPage</name>
     <message>
         <location filename="../application/xinxprojectwizard/projectwizard.cpp" line="147"/>
@@ -3486,45 +3455,9 @@ This wizard will convert the project to the last version of XINX. Wizard must co
     </message>
 </context>
 <context>
-    <name>XinxProject::PrivateXinxProject</name>
-    <message>
-        <location filename="../project/xinxprojectproject.cpp" line="188"/>
-        <source>Cannot read file %1:
-%2.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../project/xinxprojectproject.cpp" line="195"/>
-        <source>Parse error at line %1, column %2:
-%3</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../project/xinxprojectproject.cpp" line="201"/>
-        <source>The file isn&apos;t a XINX Project. The root name must be &quot;XinxProject&quot;, not &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../project/xinxprojectproject.cpp" line="205"/>
-        <source>The file is a too recent XINX Project</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../project/xinxprojectproject.cpp" line="207"/>
-        <source>The project can&apos;t be opened. Please use the XINX Project Wizard.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../project/xinxprojectproject.cpp" line="278"/>
-        <source>Cannot write file %1:
-%2.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>XinxProject::Project</name>
     <message>
-        <location filename="../project/xinxprojectproject.cpp" line="314"/>
+        <location filename="../project/xinxprojectproject.cpp" line="309"/>
         <source>The project must be created in a existing directory</source>
         <translation type="unfinished"></translation>
     </message>

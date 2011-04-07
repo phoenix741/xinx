@@ -183,9 +183,6 @@
         <source>Black</source>
         <translation>Noir</translation>
     </message>
-</context>
-<context>
-    <name>XinxColorCombo</name>
     <message>
         <source>Custom...</source>
         <translation type="obsolete">Personnaliser ...</translation>

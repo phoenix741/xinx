@@ -14,11 +14,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/authentification_form.ui" line="30"/>
-        <source>http://</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../ui/authentification_form.ui" line="37"/>
         <source>&amp;User Name :</source>
         <translation type="unfinished"></translation>

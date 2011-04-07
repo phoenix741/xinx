@@ -22,6 +22,10 @@
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <widget class="QRadioButton" name="m_prettyPrintNeverRadioButton">
+        <property name="whatsThis">
+         <string>&lt;p&gt;When this option is selected, document can be re-indented by using the command in the menu.&lt;/p&gt;
+&lt;p&gt;The document wil not be indented automatically.&lt;/p&gt;</string>
+        </property>
         <property name="text">
          <string>Manually</string>
         </property>
@@ -30,7 +34,7 @@
       <item>
        <widget class="QRadioButton" name="m_prettyPrintOnSavingRadioButton">
         <property name="whatsThis">
-         <string>&lt;p&gt;If the box is checked, when saving the file, &lt;b&gt;XINX &lt;/b&gt;apply the pretty print function on the text. This format the code on saving file. &lt;/p&gt;
+         <string>&lt;p&gt;If the box is checked, when saving the file, &lt;b&gt;XINX&lt;/b&gt; apply the pretty print function on the text. So the code is formating on saving file.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Saving file can be slower.&lt;/i&gt;&lt;/p&gt;</string>
         </property>
         <property name="text">
@@ -41,8 +45,8 @@
       <item>
        <widget class="QRadioButton" name="m_prettyPrintOnClosingRadioButton">
         <property name="whatsThis">
-         <string>&lt;p&gt;If the box is checked, when saving the file, &lt;b&gt;XINX &lt;/b&gt;apply the pretty print function on the text. This format the code on saving file. &lt;/p&gt;
-&lt;p&gt;&lt;i&gt;Saving file can be slower.&lt;/i&gt;&lt;/p&gt;</string>
+         <string>&lt;p&gt;If the box is checked, when closing the file, &lt;b&gt;XINX&lt;/b&gt; apply the pretty print function on the text, after a confirmation from the user. &lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Closing a file can be slower.&lt;/i&gt;&lt;/p&gt;</string>
         </property>
         <property name="text">
          <string>On &amp;closing document</string>
@@ -71,7 +75,7 @@
       <item row="0" column="1">
        <widget class="QSpinBox" name="m_refreshContentTimeoutSpinBox">
         <property name="whatsThis">
-         <string>Number of ms to wait before reloading of the editor content. This timeout is reseted when you hit your keyboard.</string>
+         <string>Number of ms to wait before launching the parser and refresh the content view. This also the time after what the error are show. This timeout is reseted when the user hit your keyboard.</string>
         </property>
         <property name="suffix">
          <string> ms</string>
@@ -100,14 +104,17 @@
       <item row="1" column="1">
        <widget class="QComboBox" name="m_encodingComboBox">
         <property name="whatsThis">
-         <string>&lt;p&gt;Choose the default text encoding, when the text encoding can't be found.
+         <string>&lt;p&gt;Choose the default text encoding, when the text encoding can't be found.&lt;/p&gt;
 
-&lt;i&gt;Some editor, can redefined the text encoding (ie: XML and derivated editor). This encoding is used by editor as JavaScript and other&lt;/i&gt;&lt;/p&gt;</string>
+&lt;p&gt;&lt;i&gt;Some editor, can redefined the text encoding (ie: XML and derivated editor). Encoding defined in the combobox is used by editor for JavaScript and other&lt;/i&gt;&lt;/p&gt;</string>
         </property>
        </widget>
       </item>
       <item row="2" column="1">
        <widget class="QCheckBox" name="m_wrapLineChk">
+        <property name="whatsThis">
+         <string>When this checkbox is checked, lines in editor are automatically wrap to fit on the screen. This remove the horizontal scrollbar.</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -200,7 +207,7 @@
       <item>
        <widget class="QCheckBox" name="m_createBakCheckBox">
         <property name="whatsThis">
-         <string>&lt;p&gt;Create a backup file before saving the file. The backup file is stored in the same directory that the original file. &lt;/p&gt;
+         <string>&lt;p&gt;Create a backup file before saving the file. The backup file is stored in the same directory that the original file (and have extention &lt;code&gt;.bak&lt;/code&gt;). &lt;/p&gt;
 &lt;p&gt;The backup is created by copy the modified file before he his saved.&lt;/p&gt;</string>
         </property>
         <property name="text">
@@ -219,6 +226,11 @@
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
        <widget class="QCheckBox" name="m_autoCloseError">
+        <property name="whatsThis">
+         <string>&lt;p&gt;When this box is checked, the error and warning dock is automatically show when an error occure, and automatically hide when error is corrected.&lt;/p&gt;
+
+&lt;p&gt;This can be desactivated because, writing code can be disturbed by the dock that automatically open and close. If desactivated the state of the dock don't change, but when there is an error, you can see the number of error side of the name of the dock, and a red line in the editor that show you the line where there is an error.&lt;/p&gt;</string>
+        </property>
         <property name="text">
          <string>Automatically open/close error dock</string>
         </property>

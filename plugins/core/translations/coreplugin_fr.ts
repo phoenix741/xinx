@@ -400,14 +400,14 @@
 <context>
     <name>MessageHandler</name>
     <message>
-        <location filename="../actions/validationaction.cpp" line="49"/>
-        <location filename="../actions/validationaction.cpp" line="52"/>
+        <location filename="../actions/validationaction.cpp" line="43"/>
+        <location filename="../actions/validationaction.cpp" line="46"/>
         <source>XML Validation</source>
         <translation>Validation XML</translation>
     </message>
     <message>
-        <location filename="../actions/validationaction.cpp" line="49"/>
-        <location filename="../actions/validationaction.cpp" line="52"/>
+        <location filename="../actions/validationaction.cpp" line="43"/>
+        <location filename="../actions/validationaction.cpp" line="46"/>
         <source>Line %1: %2</source>
         <translation>Ligne %1 : %2</translation>
     </message>
@@ -482,11 +482,11 @@
     </message>
     <message>
         <location filename="../editors/models/js/jscontentviewparser.cpp" line="328"/>
+        <location filename="../editors/models/js/jscontentviewparser.cpp" line="350"/>
         <source>I wait an identifier</source>
         <translation>J&apos;attend un identificateur</translation>
     </message>
     <message>
-        <location filename="../editors/models/js/jscontentviewparser.cpp" line="350"/>
         <location filename="../editors/models/js/jscontentviewparser.cpp" line="373"/>
         <source>I wait an identifier.</source>
         <translation>J&apos;attend un identificateur.</translation>
@@ -708,23 +708,23 @@ Valeur = %2</translation>
 <context>
     <name>ValidationAction</name>
     <message>
-        <location filename="../actions/validationaction.cpp" line="61"/>
+        <location filename="../actions/validationaction.cpp" line="55"/>
         <source>&amp;Validate ...</source>
         <translation>&amp;Valide ...</translation>
     </message>
     <message>
-        <location filename="../actions/validationaction.cpp" line="78"/>
-        <location filename="../actions/validationaction.cpp" line="98"/>
+        <location filename="../actions/validationaction.cpp" line="72"/>
+        <location filename="../actions/validationaction.cpp" line="92"/>
         <source>XML Validation</source>
         <translation>Validation XML</translation>
     </message>
     <message>
-        <location filename="../actions/validationaction.cpp" line="78"/>
+        <location filename="../actions/validationaction.cpp" line="72"/>
         <source>Schemas (*.xsd)</source>
         <translation>Schémas (*.xsd)</translation>
     </message>
     <message>
-        <location filename="../actions/validationaction.cpp" line="98"/>
+        <location filename="../actions/validationaction.cpp" line="92"/>
         <source>File validate with success</source>
         <translation>Fichier validé avec succé</translation>
     </message>
@@ -815,36 +815,6 @@ Valeur = %2</translation>
         <translation>X-PATH &amp;Courrant :</translation>
     </message>
     <message>
-        <location filename="../docks/datastream/xquery.ui" line="41"/>
-        <source>count()</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../docks/datastream/xquery.ui" line="48"/>
-        <source>sum()</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../docks/datastream/xquery.ui" line="55"/>
-        <source>format-number()</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../docks/datastream/xquery.ui" line="62"/>
-        <source>concat()</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../docks/datastream/xquery.ui" line="69"/>
-        <source>normalize-space()</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../docks/datastream/xquery.ui" line="76"/>
-        <source>not()</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../docks/datastream/xquery.ui" line="85"/>
         <source>&amp;Query :</source>
         <translation>&amp;Requête :</translation>
@@ -858,17 +828,17 @@ Valeur = %2</translation>
 <context>
     <name>XQueryDialogImpl</name>
     <message>
-        <location filename="../docks/datastream/xquerydialogimpl.cpp" line="128"/>
+        <location filename="../docks/datastream/xquerydialogimpl.cpp" line="127"/>
         <source>&amp;Evaluate</source>
         <translation>&amp;Evaluer</translation>
     </message>
     <message>
-        <location filename="../docks/datastream/xquerydialogimpl.cpp" line="157"/>
+        <location filename="../docks/datastream/xquerydialogimpl.cpp" line="156"/>
         <source>Error while opening presentation file : %1</source>
         <translation>Erreur lors de l&apos;ouverture du fichier de présentation : &quot;%1</translation>
     </message>
     <message>
-        <location filename="../docks/datastream/xquerydialogimpl.cpp" line="189"/>
+        <location filename="../docks/datastream/xquerydialogimpl.cpp" line="188"/>
         <source>Resolved in %1 ms</source>
         <translation>Résolu en %1 ms</translation>
     </message>
@@ -876,22 +846,22 @@ Valeur = %2</translation>
 <context>
     <name>XQueryDialogMessageHandler</name>
     <message>
-        <location filename="../docks/datastream/xquerydialogimpl.cpp" line="57"/>
+        <location filename="../docks/datastream/xquerydialogimpl.cpp" line="59"/>
         <source>Warning in %1, at line %2, column %3: %4</source>
         <translation>Attention dans %1, à la ligne %2, colonne %3 : %4</translation>
     </message>
     <message>
-        <location filename="../docks/datastream/xquerydialogimpl.cpp" line="64"/>
+        <location filename="../docks/datastream/xquerydialogimpl.cpp" line="66"/>
         <source>Warning in %1: %2</source>
         <translation>Attention dans %1 : %2</translation>
     </message>
     <message>
-        <location filename="../docks/datastream/xquerydialogimpl.cpp" line="85"/>
+        <location filename="../docks/datastream/xquerydialogimpl.cpp" line="87"/>
         <source>Error %1 in %2, at line %3, column %4: %5</source>
         <translation>Erreur %1 dans %2, à la ligne %3, colonne %4 : %5</translation>
     </message>
     <message>
-        <location filename="../docks/datastream/xquerydialogimpl.cpp" line="93"/>
+        <location filename="../docks/datastream/xquerydialogimpl.cpp" line="95"/>
         <source>Error %1 in %2: %3</source>
         <translation>Erreur %1 dans %2 : %3</translation>
     </message>
@@ -912,46 +882,45 @@ Valeur = %2</translation>
 <context>
     <name>XmlPresConfigForm</name>
     <message>
-        <location filename="../config/xmlpresconfigform.ui" line="14"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../config/xmlpresconfigform.ui" line="22"/>
+        <location filename="../config/xmlpresconfigform.ui" line="19"/>
         <source>&amp;Default expand path :</source>
         <translation>Chemin à afficher par &amp;défaut :</translation>
     </message>
     <message>
-        <location filename="../config/xmlpresconfigform.ui" line="32"/>
+        <location filename="../config/xmlpresconfigform.ui" line="29"/>
         <source>This is the path where the view must begin. Generally the first node is the root path (ie. &lt;i&gt;/layout_data&lt;/i&gt;)</source>
         <translation>C&apos;est le chemin que la vue affichera par défaut lors de l&apos;ouverture d&apos;un flux de présentation. Généralement c&apos;est le premier noeud de votre arbre (par exemple : &lt;i&gt;/layout_data&lt;/i&gt;)</translation>
     </message>
     <message>
-        <location filename="../config/xmlpresconfigform.ui" line="41"/>
+        <location filename="../config/xmlpresconfigform.ui" line="38"/>
         <source>&amp;Element to hide :</source>
         <translation>&amp;Element à cacher :</translation>
     </message>
     <message>
-        <location filename="../config/xmlpresconfigform.ui" line="60"/>
+        <location filename="../config/xmlpresconfigform.ui" line="57"/>
         <source>&amp;Option</source>
         <translation>&amp;Option</translation>
     </message>
     <message>
-        <location filename="../config/xmlpresconfigform.ui" line="66"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;If checked, when the text is filtered, the list shows sub-elements of the node whose filter matches the node name.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>Si coché, quand le text est filtré, la liste affiche les sous-éléments du noeud dont le filtre correspond a noeud rechercher</translation>
+        <translation type="obsolete">Si coché, quand le text est filtré, la liste affiche les sous-éléments du noeud dont le filtre correspond a noeud rechercher</translation>
     </message>
     <message>
-        <location filename="../config/xmlpresconfigform.ui" line="73"/>
+        <location filename="../config/xmlpresconfigform.ui" line="63"/>
+        <source>If checked, when the text is filtered, the list shows sub-elements of the node whose filter matches the node name.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../config/xmlpresconfigform.ui" line="66"/>
         <source>&amp;Show sub-element of the corresponding node</source>
         <translation>&amp;Afficher les sous-éléments du noeud recherché</translation>
     </message>
     <message>
-        <location filename="../config/xmlpresconfigform.ui" line="80"/>
+        <location filename="../config/xmlpresconfigform.ui" line="73"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -966,174 +935,42 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Si coché, le &lt;span style=&quot; font-style:italic;&quot;&gt;XPATH&lt;/span&gt; ressemblera à ceci  : &lt;span style=&quot; font-family:&apos;Courier New,courier&apos;;&quot;&gt;VueXXXX[@name=&apos;MyName&apos;]&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../config/xmlpresconfigform.ui" line="88"/>
+        <location filename="../config/xmlpresconfigform.ui" line="81"/>
         <source>Show name attribute if it exists</source>
         <translation>Affiche l&apos;attribut name, s&apos;il existe</translation>
     </message>
     <message>
-        <location filename="../config/xmlpresconfigform.ui" line="111"/>
+        <location filename="../config/xmlpresconfigform.ui" line="104"/>
         <source>&amp;Color</source>
         <translation>&amp;Couleur</translation>
     </message>
     <message>
-        <location filename="../config/xmlpresconfigform.ui" line="117"/>
+        <location filename="../config/xmlpresconfigform.ui" line="110"/>
         <source>&amp;View color :</source>
         <translation>Couleur d&apos;une &amp;vue :</translation>
     </message>
     <message>
-        <location filename="../config/xmlpresconfigform.ui" line="127"/>
+        <location filename="../config/xmlpresconfigform.ui" line="120"/>
         <source>Color of the node of view type (Generally begins by &lt;i&gt;Vue...&lt;/i&gt;)</source>
         <translation>Couleur du noeud de type vue (Commençant générallement par &lt;i&gt;Vue...&lt;/i&gt;)</translation>
     </message>
     <message>
-        <location filename="../config/xmlpresconfigform.ui" line="131"/>
-        <location filename="../config/xmlpresconfigform.ui" line="221"/>
-        <location filename="../config/xmlpresconfigform.ui" line="311"/>
-        <location filename="../config/xmlpresconfigform.ui" line="333"/>
-        <location filename="../config/xmlpresconfigform.ui" line="423"/>
-        <location filename="../config/xmlpresconfigform.ui" line="513"/>
-        <location filename="../config/xmlpresconfigform.ui" line="535"/>
-        <location filename="../config/xmlpresconfigform.ui" line="625"/>
-        <location filename="../config/xmlpresconfigform.ui" line="715"/>
-        <source>Custom...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../config/xmlpresconfigform.ui" line="136"/>
-        <location filename="../config/xmlpresconfigform.ui" line="338"/>
-        <location filename="../config/xmlpresconfigform.ui" line="540"/>
-        <source>Red</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../config/xmlpresconfigform.ui" line="141"/>
-        <location filename="../config/xmlpresconfigform.ui" line="343"/>
-        <location filename="../config/xmlpresconfigform.ui" line="545"/>
-        <source>Green</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../config/xmlpresconfigform.ui" line="146"/>
-        <location filename="../config/xmlpresconfigform.ui" line="348"/>
-        <location filename="../config/xmlpresconfigform.ui" line="550"/>
-        <source>Blue</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../config/xmlpresconfigform.ui" line="151"/>
-        <location filename="../config/xmlpresconfigform.ui" line="353"/>
-        <location filename="../config/xmlpresconfigform.ui" line="555"/>
-        <source>Cyan</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../config/xmlpresconfigform.ui" line="156"/>
-        <location filename="../config/xmlpresconfigform.ui" line="358"/>
-        <location filename="../config/xmlpresconfigform.ui" line="560"/>
-        <source>Magenta</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../config/xmlpresconfigform.ui" line="161"/>
-        <location filename="../config/xmlpresconfigform.ui" line="363"/>
-        <location filename="../config/xmlpresconfigform.ui" line="565"/>
-        <source>Yellow</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../config/xmlpresconfigform.ui" line="166"/>
-        <location filename="../config/xmlpresconfigform.ui" line="368"/>
-        <location filename="../config/xmlpresconfigform.ui" line="570"/>
-        <source>Dark Red</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../config/xmlpresconfigform.ui" line="171"/>
-        <location filename="../config/xmlpresconfigform.ui" line="373"/>
-        <location filename="../config/xmlpresconfigform.ui" line="575"/>
-        <source>Dark Green</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../config/xmlpresconfigform.ui" line="176"/>
-        <location filename="../config/xmlpresconfigform.ui" line="378"/>
-        <location filename="../config/xmlpresconfigform.ui" line="580"/>
-        <source>Dark Blue</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../config/xmlpresconfigform.ui" line="181"/>
-        <location filename="../config/xmlpresconfigform.ui" line="383"/>
-        <location filename="../config/xmlpresconfigform.ui" line="585"/>
-        <source>Dark Cyan</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../config/xmlpresconfigform.ui" line="186"/>
-        <location filename="../config/xmlpresconfigform.ui" line="388"/>
-        <location filename="../config/xmlpresconfigform.ui" line="590"/>
-        <source>Dark Magenta</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../config/xmlpresconfigform.ui" line="191"/>
-        <location filename="../config/xmlpresconfigform.ui" line="393"/>
-        <location filename="../config/xmlpresconfigform.ui" line="595"/>
-        <source>Dark Yellow</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../config/xmlpresconfigform.ui" line="196"/>
-        <location filename="../config/xmlpresconfigform.ui" line="398"/>
-        <location filename="../config/xmlpresconfigform.ui" line="600"/>
-        <source>White</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../config/xmlpresconfigform.ui" line="201"/>
-        <location filename="../config/xmlpresconfigform.ui" line="403"/>
-        <location filename="../config/xmlpresconfigform.ui" line="605"/>
-        <source>Light Gray</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../config/xmlpresconfigform.ui" line="206"/>
-        <location filename="../config/xmlpresconfigform.ui" line="408"/>
-        <location filename="../config/xmlpresconfigform.ui" line="610"/>
-        <source>Gray</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../config/xmlpresconfigform.ui" line="211"/>
-        <location filename="../config/xmlpresconfigform.ui" line="413"/>
-        <location filename="../config/xmlpresconfigform.ui" line="615"/>
-        <source>Dark Gray</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../config/xmlpresconfigform.ui" line="216"/>
-        <location filename="../config/xmlpresconfigform.ui" line="418"/>
-        <location filename="../config/xmlpresconfigform.ui" line="620"/>
-        <source>Black</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../config/xmlpresconfigform.ui" line="319"/>
+        <location filename="../config/xmlpresconfigform.ui" line="127"/>
         <source>&amp;Error color :</source>
         <translation>Couleur des &amp;erreurs :</translation>
     </message>
     <message>
-        <location filename="../config/xmlpresconfigform.ui" line="329"/>
+        <location filename="../config/xmlpresconfigform.ui" line="137"/>
         <source>Color of a node with a sub-element of name error.</source>
         <translation>Couleur des noeud avec un sous-élément portant le nom error.</translation>
     </message>
     <message>
-        <location filename="../config/xmlpresconfigform.ui" line="521"/>
+        <location filename="../config/xmlpresconfigform.ui" line="144"/>
         <source>&amp;Screen data color :</source>
         <translation>Couleur des &amp;Screen_data :</translation>
     </message>
     <message>
-        <location filename="../config/xmlpresconfigform.ui" line="531"/>
+        <location filename="../config/xmlpresconfigform.ui" line="154"/>
         <source>Color of a balise with a &lt;i&gt;screen_data&lt;/i&gt; node.</source>
         <translation>Couleur de la balise avec un noeud nommé &lt;i&gt;screen_data&lt;/i&gt;.</translation>
     </message>
