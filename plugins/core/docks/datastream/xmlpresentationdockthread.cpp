@@ -90,7 +90,7 @@ void XmlPresentationDockThread::adaptColumns()
 }
 
 
-void XmlPresentationDockThread::close()
+void XmlPresentationDockThread::close(bool unassign)
 {
 	Q_ASSERT(! isRunning());
 
@@ -105,8 +105,10 @@ void XmlPresentationDockThread::close()
 	emit m_parent->filenameChanged(QString());
 
 	// Change the current property of the editor
-	if (EditorManager::self() && EditorManager::self()->currentEditor())
+	if (unassign && EditorManager::self() && EditorManager::self()->currentEditor())
+	{
 		EditorManager::self()->currentEditor()->setProperty("XmlPresentationDockThread_filename", QString());
+	}
 }
 
 void XmlPresentationDockThread::open()
@@ -129,7 +131,7 @@ void XmlPresentationDockThread::disabledInterface(bool value)
 	}
 }
 
-void XmlPresentationDockThread::open(const QString& filename)
+void XmlPresentationDockThread::open(QString filename)
 {
 	Q_ASSERT_X(! isRunning(), "XmlPresentationDockThread::open", "The thread mustn't be running.");
 
@@ -140,7 +142,7 @@ void XmlPresentationDockThread::open(const QString& filename)
 	if (m_sortFilterModel && m_xmlPresentationWidget)
 		m_currentXpath = m_sortFilterModel->data(m_xmlPresentationWidget->m_presentationTreeView->currentIndex(), Qt::UserRole).toString();
 
-	close();
+	close(filename.isEmpty());
 
 	if (!QFileInfo(filename).exists())
 	{
@@ -302,6 +304,8 @@ void XmlPresentationDockThread::updateXinxConf(int value)
 
 void XmlPresentationDockThread::editorChanged()
 {
+	wait();
+
 	QString filename;
 	if (EditorManager::self() && EditorManager::self()->currentEditor() && !(filename = EditorManager::self()->currentEditor()->property("XmlPresentationDockThread_filename").toString()).isEmpty())
 	{

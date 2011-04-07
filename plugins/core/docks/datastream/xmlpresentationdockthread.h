@@ -56,8 +56,8 @@ public:
 
 	enum { THREAD_OPENING, THREAD_FILTERED } m_threadAct;
 
-	void open(const QString& filename);
-	void close();
+	void open(QString filename);
+	void close(bool unassign = true);
 
 	void disabledInterface(bool value);
 public slots:
