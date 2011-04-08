@@ -391,7 +391,7 @@ void PrivateProjectDirectoryWidgetImpl::compareWithVersionControlTriggered()
 	_head_content.clear();
 	QString revision = _model->fileVersion(rows.at(0));
 
-	connect(project->rcsProxy(), SIGNAL(stopOperations()), this, SLOT(rcsLogTerminated()));
+	connect(VersionControl::Manager::self(), SIGNAL(finished()), this, SLOT(rcsLogTerminated()));
 	project->rcsProxy()->updateToRevision(_compare_file_name, revision, &_head_content);
 }
 

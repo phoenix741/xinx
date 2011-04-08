@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
 	int indexOfStack = arguments.indexOf("--stack");
 	if ((indexOfStack >= 0) && (indexOfStack + 1 < arguments.count()))
 	{
-		wizard.setStacktrace(arguments.at(indexOfStack + 1).split(";;"));
+		wizard.setStacktrace(arguments.at(indexOfStack + 1).split(";;", QString::SkipEmptyParts));
 	}
 	wizard.show();
 
