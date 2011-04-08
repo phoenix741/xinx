@@ -27,14 +27,18 @@
       </widget>
      </item>
      <item>
-      <widget class="XinxLineEdit" name="m_snipetFilterLineEdit"/>
+      <widget class="XinxLineEdit" name="m_snipetFilterLineEdit">
+       <property name="whatsThis">
+        <string>This filter can be used to search a snipet in the list above.</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
    <item>
     <widget class="QLabel" name="label_13">
      <property name="text">
-      <string>List of snipet that could be used as a completion (with the snipet key) or called manually in the menu. You can also import snipet in &lt;b&gt;XINX&lt;/b&gt; file or export snipet to a &lt;i&gt;XML&lt;/i&gt; file.</string>
+      <string>List of snipet that could be used as a completion (with the snipet key) or called manually in the menu. You can also import snipet in a &lt;i&gt;XML&lt;/i&gt; file or export snipet to a &lt;i&gt;XML&lt;/i&gt; file.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -89,7 +93,7 @@
         <string>&amp;Add</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../components/xinxpluginselector.qrc">
+        <iconset resource="../../../../components/xinxpluginselector.qrc">
          <normaloff>:/images/add.png</normaloff>:/images/add.png</iconset>
        </property>
       </widget>
@@ -103,7 +107,7 @@
         <string>&amp;Delete</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../components/xinxpluginselector.qrc">
+        <iconset resource="../../../../components/xinxpluginselector.qrc">
          <normaloff>:/images/remove.png</normaloff>:/images/remove.png</iconset>
        </property>
       </widget>
@@ -117,7 +121,7 @@
         <string>&amp;Modify</string>
        </property>
        <property name="icon">
-        <iconset resource="../../application.qrc">
+        <iconset resource="../../../../xinx/application.qrc">
          <normaloff>:/images/document-properties.png</normaloff>:/images/document-properties.png</iconset>
        </property>
       </widget>
@@ -131,7 +135,7 @@
         <string>D&amp;uplicate</string>
        </property>
        <property name="icon">
-        <iconset resource="../../application.qrc">
+        <iconset resource="../../../../xinx/application.qrc">
          <normaloff>:/images/editcopy.png</normaloff>:/images/editcopy.png</iconset>
        </property>
       </widget>
@@ -152,13 +156,13 @@
      <item>
       <widget class="QPushButton" name="m_importPushButton">
        <property name="whatsThis">
-        <string>Import a list of snipet from an XML file.</string>
+        <string>Import a list of snipet from an XML file and add it to the list.</string>
        </property>
        <property name="text">
         <string>&amp;Import ...</string>
        </property>
        <property name="icon">
-        <iconset resource="../../application.qrc">
+        <iconset resource="../../../../xinx/application.qrc">
          <normaloff>:/images/document-import.png</normaloff>:/images/document-import.png</iconset>
        </property>
       </widget>
@@ -172,7 +176,7 @@
         <string>&amp;Export ...</string>
        </property>
        <property name="icon">
-        <iconset resource="../../application.qrc">
+        <iconset resource="../../../../xinx/application.qrc">
          <normaloff>:/images/document-export.png</normaloff>:/images/document-export.png</iconset>
        </property>
       </widget>
@@ -189,8 +193,8 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../../components/xinxpluginselector.qrc"/>
-  <include location="../../application.qrc"/>
+  <include location="../../../../components/xinxpluginselector.qrc"/>
+  <include location="../../../../xinx/application.qrc"/>
  </resources>
  <connections/>
 </ui>

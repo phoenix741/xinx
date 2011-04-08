@@ -29,8 +29,8 @@
   </layout>
  </widget>
  <resources>
-  <include location="../../../components/xinxpluginselector.qrc"/>
-  <include location="../../application.qrc"/>
+  <include location="../../../../components/xinxpluginselector.qrc"/>
+  <include location="../../../../xinx/application.qrc"/>
  </resources>
  <connections/>
 </ui>

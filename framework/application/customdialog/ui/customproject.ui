@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>591</width>
+    <width>451</width>
     <height>286</height>
    </rect>
   </property>
@@ -56,7 +56,10 @@
       <item row="2" column="1">
        <widget class="QSpinBox" name="m_refreshProjectTimoutSpinBox">
         <property name="whatsThis">
-         <string>Timeout before the directory view is reloaded with your filter.</string>
+         <string>Timeout before the directory view is reloaded with your filter. If time is set to 0, the view directory is only refresh when you hit &lt;i&gt;Enter&lt;/i&gt; key.</string>
+        </property>
+        <property name="specialValueText">
+         <string>Manual</string>
         </property>
         <property name="suffix">
          <string> ms</string>
@@ -75,7 +78,7 @@
       <item row="4" column="0" colspan="2">
        <widget class="QCheckBox" name="m_openLastSessionCheckBox">
         <property name="whatsThis">
-         <string>Open the last session project (&lt;i&gt;if any, it's the opened session when &lt;b&gt;XINX&lt;/b&gt; is closed&lt;/i&gt;), when &lt;b&gt;XINX&lt;/b&gt; is started.</string>
+         <string>Open the last session (&lt;i&gt;if any, it's the opened session when &lt;b&gt;XINX&lt;/b&gt; is closed&lt;/i&gt;), when &lt;b&gt;XINX&lt;/b&gt; is started.</string>
         </property>
         <property name="text">
          <string>&amp;Open the last session at start</string>
@@ -85,7 +88,7 @@
       <item row="5" column="0" colspan="2">
        <widget class="QCheckBox" name="_single_project_mode_checkbox">
         <property name="whatsThis">
-         <string>In this mode &lt;b&gt;XINX&lt;/b&gt; open only one project at a time. If you open a new project, XINX automatically close the previous project. This can be used, if you don't work on multiple project or want &lt;b&gt;XINX&lt;/b&gt; work as previous version.</string>
+         <string>In this mode &lt;b&gt;XINX&lt;/b&gt; open only one project at a time. If you open a new project, &lt;b&gt;XINX&lt;/b&gt; automatically close the previous project. This can be used, if you don't work on multiple project or want &lt;b&gt;XINX&lt;/b&gt; work as previous version.</string>
         </property>
         <property name="text">
          <string>&amp;Single project mode</string>
@@ -110,8 +113,8 @@
       <item row="0" column="0">
        <widget class="QCheckBox" name="m_closeLogCheckBox">
         <property name="whatsThis">
-         <string>&lt;p&gt;When an action with the revision control system is made, a log window is open and show information about the progress.&lt;/p&gt;
-&lt;p&gt;If checked, the log windows is automaticallyclosed when action (like update, commit ...) finished.&lt;/p&gt;</string>
+         <string>&lt;p&gt;When an action in the &lt;i&gt;revision control system&lt;/i&gt; is made, a log window is open and show information about the progress.&lt;/p&gt;
+&lt;p&gt;If checked, the log windows is automatically closed when action (like update, commit ...) finished.&lt;/p&gt;</string>
         </property>
         <property name="text">
          <string>Open/&amp;Close the Version management Log automatically.</string>
@@ -130,6 +133,9 @@
       </item>
       <item row="2" column="0" colspan="2">
        <widget class="QCheckBox" name="m_autoAddFileChk">
+        <property name="whatsThis">
+         <string>When checked, and new file is created, &lt;b&gt;XINX&lt;/b&gt; will add this files automatically to the &lt;i&gt;revision control system&lt;/i&gt;.</string>
+        </property>
         <property name="text">
          <string>&amp;Auto add file to versionning system</string>
         </property>

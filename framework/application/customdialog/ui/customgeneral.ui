@@ -47,6 +47,9 @@
      <property name="focusPolicy">
       <enum>Qt::TabFocus</enum>
      </property>
+     <property name="whatsThis">
+      <string>This field contains the location where must be stored the trace log file. This file contains all error, and warning that &lt;b&gt;XINX&lt;/b&gt; emit.</string>
+     </property>
      <property name="directory" stdset="0">
       <bool>false</bool>
      </property>
@@ -68,9 +71,6 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="1">
-    <widget class="QComboBox" name="m_styleComboBox"/>
-   </item>
    <item row="3" column="1">
     <spacer name="verticalSpacer">
      <property name="orientation">
@@ -83,6 +83,14 @@
       </size>
      </property>
     </spacer>
+   </item>
+   <item row="2" column="1">
+    <widget class="QComboBox" name="m_styleComboBox">
+     <property name="whatsThis">
+      <string>&lt;p&gt;In this combobox, you can select the current style to use. If you don't select the style, &lt;b&gt;XINX&lt;/b&gt; will use the style of the desktop, else &lt;b&gt;XINX&lt;/b&gt; will use the style you choose.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Modification take effect at restart.&lt;/i&gt;&lt;/p&gt;</string>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

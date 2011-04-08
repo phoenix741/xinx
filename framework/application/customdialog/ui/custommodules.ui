@@ -40,7 +40,12 @@
       </attribute>
       <layout class="QGridLayout" name="_2">
        <item row="0" column="0">
-        <widget class="PluginSelector" name="m_scriptListView"/>
+        <widget class="PluginSelector" name="m_scriptListView">
+         <property name="whatsThis">
+          <string>&lt;p&gt;This is the list of script that can be used by &lt;b&gt;XINX&lt;/b&gt; to extend the application (like plugins).&lt;/p&gt;
+&lt;p&gt;Script is simplier to write that Plugins but isn't powerfull that Plugins writter in &lt;code&gt;C++&lt;/code&gt;&lt;/p&gt;</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -56,8 +61,8 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../../components/xinxpluginselector.qrc"/>
-  <include location="../../application.qrc"/>
+  <include location="../../../../components/xinxpluginselector.qrc"/>
+  <include location="../../../../xinx/application.qrc"/>
  </resources>
  <connections/>
 </ui>

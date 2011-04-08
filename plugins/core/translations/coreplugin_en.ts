@@ -970,7 +970,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>XmlPresentationDockThread</name>
     <message>
-        <location filename="../docks/datastream/xmlpresentationdockthread.cpp" line="174"/>
+        <location filename="../docks/datastream/xmlpresentationdockthread.cpp" line="176"/>
         <source>Can&apos;t read file %1 because of error &quot;%2&quot;.</source>
         <translation type="unfinished"></translation>
     </message>

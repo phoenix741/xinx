@@ -17,7 +17,9 @@
    <item>
     <widget class="QComboBox" name="m_highlighterComboBox">
      <property name="whatsThis">
-      <string>&lt;p&gt;List of highlighter. Highlighter is used to color a text in an editor. &lt;/p&gt;
+      <string>&lt;p&gt;List of Syntax highlighter. Syntax Highlighter is used to color, or change the style (bold, italic, ...) a text in an editor. &lt;/p&gt;
+&lt;p&gt;In this list you can select a Syntax Highlighter to customize it.&lt;/p&gt;
+
 &lt;p&gt;&lt;i&gt;To add new highlighter, you must add the corresponding plugin.&lt;/i&gt;&lt;/p&gt;</string>
      </property>
     </widget>
@@ -35,8 +37,8 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../../components/xinxpluginselector.qrc"/>
-  <include location="../../application.qrc"/>
+  <include location="../../../../components/xinxpluginselector.qrc"/>
+  <include location="../../../../xinx/application.qrc"/>
  </resources>
  <connections/>
 </ui>

@@ -694,8 +694,19 @@ Only checked files are commited.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customgeneral.ui" line="64"/>
+        <location filename="../application/customdialog/ui/customgeneral.ui" line="51"/>
+        <source>This field contains the location where must be stored the trace log file. This file contains all error, and warning that &lt;b&gt;XINX&lt;/b&gt; emit.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customgeneral.ui" line="67"/>
         <source>Force current &amp;style :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customgeneral.ui" line="90"/>
+        <source>&lt;p&gt;In this combobox, you can select the current style to use. If you don&apos;t select the style, &lt;b&gt;XINX&lt;/b&gt; will use the style of the desktop, else &lt;b&gt;XINX&lt;/b&gt; will use the style you choose.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Modification take effect at restart.&lt;/i&gt;&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -720,6 +731,12 @@ Only checked files are commited.</source>
     <message>
         <location filename="../application/customdialog/ui/custommodules.ui" line="39"/>
         <source>Scripts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/custommodules.ui" line="45"/>
+        <source>&lt;p&gt;This is the list of script that can be used by &lt;b&gt;XINX&lt;/b&gt; to extend the application (like plugins).&lt;/p&gt;
+&lt;p&gt;Script is simplier to write that Plugins but isn&apos;t powerfull that Plugins writter in &lt;code&gt;C++&lt;/code&gt;&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -771,62 +788,72 @@ Only checked files are commited.</source>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customproject.ui" line="59"/>
-        <source>Timeout before the directory view is reloaded with your filter.</source>
+        <source>Timeout before the directory view is reloaded with your filter. If time is set to 0, the view directory is only refresh when you hit &lt;i&gt;Enter&lt;/i&gt; key.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customproject.ui" line="62"/>
-        <source> ms</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="78"/>
-        <source>Open the last session project (&lt;i&gt;if any, it&apos;s the opened session when &lt;b&gt;XINX&lt;/b&gt; is closed&lt;/i&gt;), when &lt;b&gt;XINX&lt;/b&gt; is started.</source>
+        <source>Manual</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customproject.ui" line="81"/>
-        <source>&amp;Open the last session at start</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="88"/>
-        <source>In this mode &lt;b&gt;XINX&lt;/b&gt; open only one project at a time. If you open a new project, XINX automatically close the previous project. This can be used, if you don&apos;t work on multiple project or want &lt;b&gt;XINX&lt;/b&gt; work as previous version.</source>
+        <source>Open the last session (&lt;i&gt;if any, it&apos;s the opened session when &lt;b&gt;XINX&lt;/b&gt; is closed&lt;/i&gt;), when &lt;b&gt;XINX&lt;/b&gt; is started.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customproject.ui" line="91"/>
+        <source>In this mode &lt;b&gt;XINX&lt;/b&gt; open only one project at a time. If you open a new project, &lt;b&gt;XINX&lt;/b&gt; automatically close the previous project. This can be used, if you don&apos;t work on multiple project or want &lt;b&gt;XINX&lt;/b&gt; work as previous version.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customproject.ui" line="116"/>
+        <source>&lt;p&gt;When an action in the &lt;i&gt;revision control system&lt;/i&gt; is made, a log window is open and show information about the progress.&lt;/p&gt;
+&lt;p&gt;If checked, the log windows is automatically closed when action (like update, commit ...) finished.&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customproject.ui" line="65"/>
+        <source> ms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customproject.ui" line="84"/>
+        <source>&amp;Open the last session at start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customproject.ui" line="94"/>
         <source>&amp;Single project mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="107"/>
+        <location filename="../application/customdialog/ui/customproject.ui" line="110"/>
         <source>General &amp;Revision Control System Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="113"/>
-        <source>&lt;p&gt;When an action with the revision control system is made, a log window is open and show information about the progress.&lt;/p&gt;
-&lt;p&gt;If checked, the log windows is automaticallyclosed when action (like update, commit ...) finished.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="117"/>
+        <location filename="../application/customdialog/ui/customproject.ui" line="120"/>
         <source>Open/&amp;Close the Version management Log automatically.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="124"/>
+        <location filename="../application/customdialog/ui/customproject.ui" line="127"/>
         <source>&lt;p&gt;When checked, a &lt;i&gt;ChangeLog&lt;/i&gt; file is created/appended at each commit with date, hour, and the commit messages.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="127"/>
+        <location filename="../application/customdialog/ui/customproject.ui" line="130"/>
         <source>&amp;Update &quot;ChangeLog&quot; automatically.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="134"/>
+        <location filename="../application/customdialog/ui/customproject.ui" line="137"/>
+        <source>When checked, and new file is created, &lt;b&gt;XINX&lt;/b&gt; will add this files automatically to the &lt;i&gt;revision control system&lt;/i&gt;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customproject.ui" line="140"/>
         <source>&amp;Auto add file to versionning system</source>
         <translation type="unfinished"></translation>
     </message>
@@ -852,72 +879,77 @@ Only checked files are commited.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customsnipet.ui" line="37"/>
-        <source>List of snipet that could be used as a completion (with the snipet key) or called manually in the menu. You can also import snipet in &lt;b&gt;XINX&lt;/b&gt; file or export snipet to a &lt;i&gt;XML&lt;/i&gt; file.</source>
+        <location filename="../application/customdialog/ui/customsnipet.ui" line="32"/>
+        <source>This filter can be used to search a snipet in the list above.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customsnipet.ui" line="50"/>
+        <location filename="../application/customdialog/ui/customsnipet.ui" line="41"/>
+        <source>List of snipet that could be used as a completion (with the snipet key) or called manually in the menu. You can also import snipet in a &lt;i&gt;XML&lt;/i&gt; file or export snipet to a &lt;i&gt;XML&lt;/i&gt; file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customsnipet.ui" line="54"/>
         <source>List of snipet (or template) that &lt;b&gt;XINX&lt;/b&gt; can use. A snipet is a piece of code quickly accessible by a key word, or by a menu.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customsnipet.ui" line="86"/>
+        <location filename="../application/customdialog/ui/customsnipet.ui" line="90"/>
         <source>Open a dialog to create a new snipet.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customsnipet.ui" line="89"/>
+        <location filename="../application/customdialog/ui/customsnipet.ui" line="93"/>
         <source>&amp;Add</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customsnipet.ui" line="100"/>
+        <location filename="../application/customdialog/ui/customsnipet.ui" line="104"/>
         <source>Delete selected snipet in the list below.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customsnipet.ui" line="103"/>
+        <location filename="../application/customdialog/ui/customsnipet.ui" line="107"/>
         <source>&amp;Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customsnipet.ui" line="114"/>
+        <location filename="../application/customdialog/ui/customsnipet.ui" line="118"/>
         <source>Modify the selected snipet.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customsnipet.ui" line="117"/>
+        <location filename="../application/customdialog/ui/customsnipet.ui" line="121"/>
         <source>&amp;Modify</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customsnipet.ui" line="128"/>
+        <location filename="../application/customdialog/ui/customsnipet.ui" line="132"/>
         <source>Duplicate the selected snipet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customsnipet.ui" line="131"/>
+        <location filename="../application/customdialog/ui/customsnipet.ui" line="135"/>
         <source>D&amp;uplicate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customsnipet.ui" line="155"/>
-        <source>Import a list of snipet from an XML file.</source>
+        <location filename="../application/customdialog/ui/customsnipet.ui" line="159"/>
+        <source>Import a list of snipet from an XML file and add it to the list.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customsnipet.ui" line="158"/>
+        <location filename="../application/customdialog/ui/customsnipet.ui" line="162"/>
         <source>&amp;Import ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customsnipet.ui" line="169"/>
+        <location filename="../application/customdialog/ui/customsnipet.ui" line="173"/>
         <source>Export selected snipet to an XML file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customsnipet.ui" line="172"/>
+        <location filename="../application/customdialog/ui/customsnipet.ui" line="176"/>
         <source>&amp;Export ...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -954,7 +986,9 @@ Only checked files are commited.</source>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customsyntax.ui" line="20"/>
-        <source>&lt;p&gt;List of highlighter. Highlighter is used to color a text in an editor. &lt;/p&gt;
+        <source>&lt;p&gt;List of Syntax highlighter. Syntax Highlighter is used to color, or change the style (bold, italic, ...) a text in an editor. &lt;/p&gt;
+&lt;p&gt;In this list you can select a Syntax Highlighter to customize it.&lt;/p&gt;
+
 &lt;p&gt;&lt;i&gt;To add new highlighter, you must add the corresponding plugin.&lt;/i&gt;&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
