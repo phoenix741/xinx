@@ -48,7 +48,10 @@ public:
 	static int countRunningJob();
 
 	void setManagerDelete(bool value);
-	bool managerDelete() const;
+	bool isManagerDelete() const;
+
+	void setPriority(int value);
+	int priority() const;
 public slots:
 	virtual void abort();
 
@@ -68,6 +71,7 @@ protected:
 	static QAtomicInt _count_job;
 	QAtomicInt _state;
 	bool _manager_delete;
+	int _priority;
 };
 
 #endif // XINXJOBS_H

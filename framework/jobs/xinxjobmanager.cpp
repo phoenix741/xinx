@@ -91,7 +91,7 @@ void XinxJobManager::addJob(XinxJob* job)
 		d->_waiting_job_list.append(job);
 	}
 	emit jobAdded(job);
-	d->_pool->start(job);
+	d->_pool->start(job, job->priority());
 	//emit jobStarted(countTotalJob (), countRunningJob ());
 	emit progressRangeChanged(0, d->_progress_max);
 	emit progressValueChanged(d->_progress_value);
@@ -134,7 +134,7 @@ void XinxJobManager::slotJobEnding()
 
 	qDebug() << "Remove job (" << countRunningJob() << "/" << countTotalJob() << ")";
 
-	if (job->managerDelete())
+	if (job->isManagerDelete())
 	{
 		job->deleteLater();
 	}

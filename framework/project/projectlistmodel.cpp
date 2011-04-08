@@ -40,6 +40,7 @@ bool caseInsensitiveLessThan(const QString &s1, const QString &s2)
 
 DirectoryFetcher::DirectoryFetcher()
 {
+	setPriority(-100);
 	_matchedFileList = XinxPluginsLoader::self()->managedFilters();
 }
 

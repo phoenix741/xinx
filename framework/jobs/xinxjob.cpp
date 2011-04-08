@@ -32,6 +32,7 @@ QAtomicInt XinxJob::_count_job;
 XinxJob::XinxJob() : _state(JOB_WAIT), _manager_delete(true)
 {
 	setAutoDelete(false);
+	setPriority(0);
 }
 
 XinxJob::~XinxJob()
@@ -54,9 +55,19 @@ void XinxJob::setManagerDelete(bool value)
 	_manager_delete = value;
 }
 
-bool XinxJob::managerDelete() const
+bool XinxJob::isManagerDelete() const
 {
 	return _manager_delete;
+}
+
+void XinxJob::setPriority(int value)
+{
+	_priority = value;
+}
+
+int XinxJob::priority() const
+{
+	return _priority;
 }
 
 QString XinxJob::status() const
