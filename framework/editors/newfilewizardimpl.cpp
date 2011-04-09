@@ -138,11 +138,14 @@ void NewFileWizardImpl::done(int result)
 		{
 			file.resize(0);
 		}
-		else
+		else if (project() && project()->rcsProxy())
 		{
-			file.open(QIODevice::WriteOnly);
-			// TODO: Write the content of the file (Licence + Template)
+			project()->rcsProxy()->addFileOperation(VersionControl::RCSProxy::RCS_ADD, QStringList() << filename(), qApp->activeWindow());
+			project()->rcsProxy()->validFileOperations();
 		}
+
+		file.open(QIODevice::WriteOnly);
+		// TODO: Write the content of the file (Licence + Template)
 	}
 	QWizard::done(result);
 }
