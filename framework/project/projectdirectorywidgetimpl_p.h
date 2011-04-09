@@ -23,6 +23,7 @@
 #include "projectdirectorywidgetimpl.h"
 #include "projectlistmodel.h"
 #include "iconprojectprovider.h"
+#include "ui_projectdirectorywidget.h"
 
 class QTimer;
 class QAction;
@@ -36,6 +37,7 @@ public:
 	explicit PrivateProjectDirectoryWidgetImpl(ProjectDirectoryWidgetImpl* parent);
 	virtual ~PrivateProjectDirectoryWidgetImpl();
 
+	QScopedPointer<Ui::ProjectDirectoryWidget> _ui;
 	ProjectDirectoryWidgetImpl * _parent;
 	XinxProject::ProjectListModel * _model;
 	QDockWidget * _dock_widget;

@@ -20,21 +20,18 @@
 #ifndef PROJECTDIRECTORYWIDGETIMPL_H
 #define PROJECTDIRECTORYWIDGETIMPL_H
 
-#include "ui_projectdirectorywidget.h"
 #include "xinxprojectproject.h"
 
 class IFileTypePlugin;
 class QDockWidget;
 class PrivateProjectDirectoryWidgetImpl;
 
-class ProjectDirectoryWidgetImpl : public QWidget, public Ui::ProjectDirectoryWidget
+class ProjectDirectoryWidgetImpl : public QWidget
 {
 	Q_OBJECT
 public:
 	ProjectDirectoryWidgetImpl(QWidget* parent);
 	virtual ~ProjectDirectoryWidgetImpl();
-
-	void setDock(QDockWidget * dock);
 
 	QAction * toggledViewAction() const;
 
@@ -42,7 +39,7 @@ public:
 signals:
 	void open(const QString & filename, IFileTypePlugin* interface, XinxProject::ProjectPtr project);
 private:
-	PrivateProjectDirectoryWidgetImpl * d;
+	QScopedPointer<PrivateProjectDirectoryWidgetImpl> d;
 	friend class PrivateProjectDirectoryWidgetImpl;
 };
 

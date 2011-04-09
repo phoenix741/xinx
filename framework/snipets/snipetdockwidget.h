@@ -23,18 +23,13 @@
 
 // Xinx header
 #include <snipets/snipetdockitemmodel.h>
-#include <editors/abstracteditor.h>
-#include <ui_snipetlistwidget.h>
+#include <QWidget>
 
-// Qt header
-#include <QDockWidget>
-#include <QString>
-#include <QToolBox>
-#include <QHash>
-
-
+class QDockWidget;
+class AbstractEditor;
 class RecursiveSortFilterProxyModel;
 class SnipetDockItemModel;
+class SnipetDockWidgetPrivate;
 
 /*!
  * This dock represent a Snipet Dock Widget to search and place snipet
@@ -49,18 +44,9 @@ public:
 
 public slots:
 	void setEditor(AbstractEditor * ed);
-private slots:
-	void createSnipet();
-	void customizeSnipet();
-	void filterChanged(const QString & filterText);
-	void callSnipet(const QModelIndex & index);
-private:
-	void init();
 
-	AbstractEditor * m_editor;
-	RecursiveSortFilterProxyModel * m_snipetFilterModel;
-	SnipetDockItemModel * m_snipetModel;
-	Ui::SnipetsDockWidget * m_dock;
+private:
+	QScopedPointer<SnipetDockWidgetPrivate> d;
 };
 
 #endif /*__SNIPETDOCKWIDGET_H__*/

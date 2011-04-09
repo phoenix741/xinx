@@ -395,7 +395,7 @@ void MainformImpl::createDockWidget()
 	m_projectDock = new ProjectDirectoryWidgetImpl(this);
 	DToolView * view = addToolView(m_projectDock, Qt::LeftDockWidgetArea);
 	view->setObjectName(QString::fromUtf8("m_projectDock"));
-	m_projectDock->setDock(view);
+	connect(view, SIGNAL(visibilityChanged(bool)), m_projectDock, SLOT(setFocus()));
 
 	QAction * action = view->toggleViewAction();
 	action->setShortcut(QKeySequence("Alt+1"));
@@ -418,6 +418,7 @@ void MainformImpl::createDockWidget()
 	action = view->toggleViewAction();
 	action->setShortcut(QKeySequence("Alt+3"));
 	m_menus["windows"]->addAction(action);
+	connect(view, SIGNAL(visibilityChanged(bool)), m_snipetsDock, SLOT(setFocus()));
 
 	/* Error */
 	m_errorDock = new ErrorDockWidgetImpl(this);
@@ -468,6 +469,7 @@ void MainformImpl::createDockWidget()
 				action = view->toggleViewAction();
 				action->setShortcut(QString("Alt+%1").arg(dockShortcut++));
 				m_menus["windows"]->addAction(action);
+				connect(view, SIGNAL(visibilityChanged(bool)), dock, SLOT(setFocus()));
 			}
 		}
 	}

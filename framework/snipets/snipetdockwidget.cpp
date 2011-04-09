@@ -19,6 +19,7 @@
 
 // Xinx header
 #include "snipetdockwidget.h"
+#include "snipetdockwidget_p.h"
 #include <utils/recursivesortfilterproxymodel.h>
 #include <snipets/snipetdockitemmodel.h>
 #include <snipets/snipetmanager.h>
@@ -33,75 +34,61 @@
 #include <QScrollArea>
 #include <QVariant>
 
-/* SnipetDockWidget */
+/* SnipetDockWidgetPrivate */
 
-SnipetDockWidget::SnipetDockWidget(QWidget * parent) : QWidget(parent)
+SnipetDockWidgetPrivate::SnipetDockWidgetPrivate(SnipetDockWidget* parent) : QObject(parent), _ui(new Ui::SnipetsDockWidget), _dock(0), _widget(parent)
 {
 	init();
 }
 
-SnipetDockWidget::~SnipetDockWidget()
+SnipetDockWidgetPrivate::~SnipetDockWidgetPrivate()
 {
-	delete m_dock;
 
 }
 
-void SnipetDockWidget::init()
+void SnipetDockWidgetPrivate::init()
 {
-	m_dock = new Ui::SnipetsDockWidget();
-	m_dock->setupUi(this);
-	setWindowTitle(tr("Snipets"));
-	setWindowIcon(QIcon(":/images/template.png"));
+	_ui->setupUi(_widget);
+	_widget->setWindowTitle(tr("Snipets"));
+	_widget->setWindowIcon(QIcon(":/images/template.png"));
 
 	/* Snipets Tree */
-	m_snipetFilterModel = new RecursiveSortFilterProxyModel(m_dock->m_snipetTreeView);
+	m_snipetFilterModel = new RecursiveSortFilterProxyModel(_ui->m_snipetTreeView);
 	m_snipetFilterModel->setShowAllChild(true);
 	m_snipetFilterModel->setDynamicSortFilter(true);
 	m_snipetFilterModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
-	//m_snipetFilterModel->setFilterKeyColumn( -1 );
 
 	m_snipetModel = SnipetManager::self()->createSnipetDockItemModel(m_snipetFilterModel);
 	m_snipetModel->select();
 	m_snipetFilterModel->setSourceModel(m_snipetModel);
 	m_snipetFilterModel->setIncludeIndex(QModelIndexList() << m_snipetFilterModel->mapToSource(m_snipetFilterModel->index(0, 0)));
 
-	m_dock->m_snipetTreeView->setModel(m_snipetFilterModel);
-	m_dock->m_snipetTreeView->setSortingEnabled(true);
+	_ui->m_snipetTreeView->setModel(m_snipetFilterModel);
+	_ui->m_snipetTreeView->setSortingEnabled(true);
 
-	m_dock->m_snipetTreeView->sortByColumn(0, Qt::AscendingOrder);
-	m_dock->m_snipetTreeView->expandAll();
+	_ui->m_snipetTreeView->sortByColumn(0, Qt::AscendingOrder);
+	_ui->m_snipetTreeView->expandAll();
 
-	connect(m_dock->m_createSnipetBtn, SIGNAL(clicked()), this, SLOT(createSnipet()));
-	connect(m_dock->m_paramSnipetBtn, SIGNAL(clicked()), this, SLOT(customizeSnipet()));
+	connect(_ui->m_createSnipetBtn, SIGNAL(clicked()), this, SLOT(createSnipet()));
+	connect(_ui->m_paramSnipetBtn, SIGNAL(clicked()), this, SLOT(customizeSnipet()));
 
-	connect(m_dock->m_snipetFilter, SIGNAL(textChanged(QString)), this, SLOT(filterChanged(QString)));
-	connect(m_dock->m_snipetTreeView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(callSnipet(QModelIndex)));
+	connect(_ui->m_snipetFilter, SIGNAL(textChanged(QString)), this, SLOT(filterChanged(QString)));
+	connect(_ui->m_snipetTreeView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(callSnipet(QModelIndex)));
 
 	connect(XINXConfig::self(), SIGNAL(changed()), m_snipetModel, SLOT(select()));
 
-	setEditor(0);
+	_widget->setEditor(0);
 }
 
-void SnipetDockWidget::setEditor(AbstractEditor * ed)
+void SnipetDockWidgetPrivate::createSnipet()
 {
-	if ((!ed) || (m_editor != ed))
-	{
-		m_editor = ed;
-		bool enabled = false;
-		if (qobject_cast<TextFileEditor*>(ed))
-			enabled = true;
-	}
-}
-
-void SnipetDockWidget::createSnipet()
-{
-	SnipetManager::self()->addSnipet(1, this);
+	SnipetManager::self()->addSnipet(1, _widget);
 	m_snipetModel->select();
 }
 
-void SnipetDockWidget::customizeSnipet()
+void SnipetDockWidgetPrivate::customizeSnipet()
 {
-	CustomDialogImpl dlg(this);
+	CustomDialogImpl dlg(_widget);
 	dlg.loadConfig();
 
 	if (dlg.execUniquePage(5))
@@ -111,7 +98,7 @@ void SnipetDockWidget::customizeSnipet()
 	}
 }
 
-void SnipetDockWidget::callSnipet(const QModelIndex & index)
+void SnipetDockWidgetPrivate::callSnipet(const QModelIndex & index)
 {
 	if (index.isValid() && EditorManager::self()->currentEditor())
 	{
@@ -120,7 +107,7 @@ void SnipetDockWidget::callSnipet(const QModelIndex & index)
 			TextFileEditor * ed = qobject_cast<TextFileEditor*>(EditorManager::self()->currentEditor());
 			int id = index.data(SnipetDockItemModel::SnipetIdRole).toInt();
 			QString result;
-			if (SnipetManager::self()->callSnipet(id, &result, this))
+			if (SnipetManager::self()->callSnipet(id, &result, _widget))
 			{
 				ed->textEdit()->insertText(result);
 			}
@@ -128,9 +115,35 @@ void SnipetDockWidget::callSnipet(const QModelIndex & index)
 	}
 }
 
-void SnipetDockWidget::filterChanged(const QString & filterText)
+void SnipetDockWidgetPrivate::filterChanged(const QString & filterText)
 {
 	m_snipetFilterModel->invalidate();
 	m_snipetFilterModel->setFilterRegExp(filterText);
-	m_dock->m_snipetTreeView->expandAll();
+	_ui->m_snipetTreeView->expandAll();
 }
+
+/* SnipetDockWidget */
+
+SnipetDockWidget::SnipetDockWidget(QWidget * parent) : QWidget(parent), d(new SnipetDockWidgetPrivate(this))
+{
+	setFocusProxy(d->_ui->m_snipetFilter);
+}
+
+SnipetDockWidget::~SnipetDockWidget()
+{
+
+}
+
+void SnipetDockWidget::setEditor(AbstractEditor * ed)
+{
+	if ((!ed) || (d->m_editor != ed))
+	{
+		d->m_editor = ed;
+		bool enabled = false;
+		if (qobject_cast<TextFileEditor*>(ed))
+			enabled = true;
+	}
+}
+
+
+

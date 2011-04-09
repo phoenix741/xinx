@@ -32,11 +32,14 @@
 #include <QMessageBox>
 #include <editors/newfilewizardimpl.h>
 #include <actions/actionmanager.h>
+#include <QDockWidget>
 
 /* PrivateProjectDirectoryWidgetImpl */
 
-PrivateProjectDirectoryWidgetImpl::PrivateProjectDirectoryWidgetImpl(ProjectDirectoryWidgetImpl* parent) : QObject(parent), _parent(parent)
+PrivateProjectDirectoryWidgetImpl::PrivateProjectDirectoryWidgetImpl(ProjectDirectoryWidgetImpl* parent) : QObject(parent), _ui(new Ui::ProjectDirectoryWidget), _parent(parent), _dock_widget(0)
 {
+	_ui->setupUi(_parent);
+
 	_refresh_model_timer = new QTimer(this);
 	_refresh_model_timer->setSingleShot(true);
 	connect(_refresh_model_timer, SIGNAL(timeout()), this, SLOT(filterTimeout()));
@@ -84,7 +87,7 @@ PrivateProjectDirectoryWidgetImpl::PrivateProjectDirectoryWidgetImpl(ProjectDire
 	_log_action							= new QAction(tr("Show log"), this);
 	connect(_log_action, SIGNAL(triggered()), this, SLOT(showLogTriggered()));
 
-	_popup_menu = new QMenu(_parent->_directory_view);
+	_popup_menu = new QMenu(_ui->_directory_view);
 	_plugin_separator = _popup_menu->addSeparator();
 	_popup_menu->addAction(_set_project_as_default_action);
 	_popup_menu->addAction(_project_property_action);
@@ -262,7 +265,7 @@ void PrivateProjectDirectoryWidgetImpl::createDirectory()
 
 void PrivateProjectDirectoryWidgetImpl::newFile()
 {
-	const QModelIndexList & indexes = _parent->_directory_view->selectionModel()->selectedRows();
+	const QModelIndexList & indexes = _ui->_directory_view->selectionModel()->selectedRows();
 	Q_ASSERT_X(indexes.count() == 1, "PrivateProjectDirectoryWidgetImpl::newFile", "Too much directory selected");
 	NewFileWizardImpl dlg(qApp->activeWindow());
 	dlg.setProject(_model->fileProject(indexes.at(0)));
@@ -291,7 +294,7 @@ void PrivateProjectDirectoryWidgetImpl::openFile(const QModelIndex & index)
 
 void PrivateProjectDirectoryWidgetImpl::openFiles()
 {
-	foreach(const QModelIndex & index, _parent->_directory_view->selectionModel()->selectedRows())
+	foreach(const QModelIndex & index, _ui->_directory_view->selectionModel()->selectedRows())
 	{
 		openFile(index);
 	}
@@ -299,7 +302,7 @@ void PrivateProjectDirectoryWidgetImpl::openFiles()
 
 void PrivateProjectDirectoryWidgetImpl::removeFiles()
 {
-	QModelIndexList rows = _parent->_directory_view->selectionModel()->selectedRows();
+	QModelIndexList rows = _ui->_directory_view->selectionModel()->selectedRows();
 	if (rows.size() < 1) return;
 
 	XinxProject::ProjectPtr project = _model->fileProject(rows.at(0));
@@ -353,7 +356,7 @@ void PrivateProjectDirectoryWidgetImpl::copyPathNameTriggered()
 
 void PrivateProjectDirectoryWidgetImpl::setProjectAsDefaultTriggered()
 {
-	QModelIndexList list = _parent->_directory_view->selectionModel()->selectedRows();
+	QModelIndexList list = _ui->_directory_view->selectionModel()->selectedRows();
 	if (list.size() != 1) return;
 
 	XinxProject::Manager::self()->setSelectedProject(_model->fileProject(list.at(0)));
@@ -361,7 +364,7 @@ void PrivateProjectDirectoryWidgetImpl::setProjectAsDefaultTriggered()
 
 void PrivateProjectDirectoryWidgetImpl::projectPropertyTriggered()
 {
-	QModelIndexList list = _parent->_directory_view->selectionModel()->selectedRows();
+	QModelIndexList list = _ui->_directory_view->selectionModel()->selectedRows();
 	if (list.size() != 1) return;
 
 	XinxProject::Manager::self()->customizeProject(_model->fileProject(list.at(0)));
@@ -369,7 +372,7 @@ void PrivateProjectDirectoryWidgetImpl::projectPropertyTriggered()
 
 void PrivateProjectDirectoryWidgetImpl::closeProjectTriggered()
 {
-	QModelIndexList list = _parent->_directory_view->selectionModel()->selectedRows();
+	QModelIndexList list = _ui->_directory_view->selectionModel()->selectedRows();
 	if (list.size() != 1) return;
 
 	XinxProject::Manager::self()->closeProject(_model->fileProject(list.at(0)));
@@ -377,7 +380,7 @@ void PrivateProjectDirectoryWidgetImpl::closeProjectTriggered()
 
 void PrivateProjectDirectoryWidgetImpl::compareWithVersionControlTriggered()
 {
-	QModelIndexList rows = _parent->_directory_view->selectionModel()->selectedRows();
+	QModelIndexList rows = _ui->_directory_view->selectionModel()->selectedRows();
 	if (rows.size() != 1) return;
 
 	XinxProject::ProjectPtr project = _model->fileProject(rows.at(0));
@@ -411,7 +414,7 @@ void PrivateProjectDirectoryWidgetImpl::compareFilesTriggered()
 
 void PrivateProjectDirectoryWidgetImpl::updateFromVersionControlTriggered()
 {
-	QModelIndexList rows = _parent->_directory_view->selectionModel()->selectedRows();
+	QModelIndexList rows = _ui->_directory_view->selectionModel()->selectedRows();
 	if (rows.size() < 1) return;
 
 	XinxProject::ProjectPtr project = _model->fileProject(rows.at(0));
@@ -425,7 +428,7 @@ void PrivateProjectDirectoryWidgetImpl::updateFromVersionControlTriggered()
 
 void PrivateProjectDirectoryWidgetImpl::commitToVersionControlTriggered()
 {
-	QModelIndexList rows = _parent->_directory_view->selectionModel()->selectedRows();
+	QModelIndexList rows = _ui->_directory_view->selectionModel()->selectedRows();
 	if (rows.size() < 1) return;
 
 	XinxProject::ProjectPtr project = _model->fileProject(rows.at(0));
@@ -439,7 +442,7 @@ void PrivateProjectDirectoryWidgetImpl::commitToVersionControlTriggered()
 
 void PrivateProjectDirectoryWidgetImpl::addToVersionControlTriggered()
 {
-	QModelIndexList rows = _parent->_directory_view->selectionModel()->selectedRows();
+	QModelIndexList rows = _ui->_directory_view->selectionModel()->selectedRows();
 	if (rows.size() < 1) return;
 
 	XinxProject::ProjectPtr project = _model->fileProject(rows.at(0));
@@ -456,7 +459,7 @@ void PrivateProjectDirectoryWidgetImpl::addToVersionControlTriggered()
 
 void PrivateProjectDirectoryWidgetImpl::removeFromVersionControlTriggered()
 {
-	QModelIndexList rows = _parent->_directory_view->selectionModel()->selectedRows();
+	QModelIndexList rows = _ui->_directory_view->selectionModel()->selectedRows();
 	if (rows.size() < 1) return;
 
 	XinxProject::ProjectPtr project = _model->fileProject(rows.at(0));
@@ -473,7 +476,7 @@ void PrivateProjectDirectoryWidgetImpl::removeFromVersionControlTriggered()
 
 void PrivateProjectDirectoryWidgetImpl::revertFileTriggered()
 {
-	QModelIndexList rows = _parent->_directory_view->selectionModel()->selectedRows();
+	QModelIndexList rows = _ui->_directory_view->selectionModel()->selectedRows();
 	if (rows.size() < 1) return;
 
 	XinxProject::ProjectPtr project = _model->fileProject(rows.at(0));
@@ -488,7 +491,7 @@ void PrivateProjectDirectoryWidgetImpl::revertFileTriggered()
 
 void PrivateProjectDirectoryWidgetImpl::blameFileTriggered()
 {
-	QModelIndexList rows = _parent->_directory_view->selectionModel()->selectedRows();
+	QModelIndexList rows = _ui->_directory_view->selectionModel()->selectedRows();
 	if (rows.size() != 1) return;
 
 	XinxProject::ProjectPtr project = _model->fileProject(rows.at(0));
@@ -499,7 +502,7 @@ void PrivateProjectDirectoryWidgetImpl::blameFileTriggered()
 
 void PrivateProjectDirectoryWidgetImpl::showLogTriggered()
 {
-	QModelIndexList rows = _parent->_directory_view->selectionModel()->selectedRows();
+	QModelIndexList rows = _ui->_directory_view->selectionModel()->selectedRows();
 	if (rows.size() != 1) return;
 
 	XinxProject::ProjectPtr project = _model->fileProject(rows.at(0));
@@ -517,7 +520,7 @@ void PrivateProjectDirectoryWidgetImpl::updateFilter()
 {
 	_refresh_model_timer->stop();
 
-	switch (_parent->_filter_type->currentIndex())
+	switch (_ui->_filter_type->currentIndex())
 	{
 	case 0:
 		_filter_type = XinxProject::ProjectListModel::FILTER_FILENAME;
@@ -539,9 +542,9 @@ void PrivateProjectDirectoryWidgetImpl::updateFilter()
 		break;
 	}
 
-	_filter_filename = _parent->_filter_filename_edit->text();
+	_filter_filename = _ui->_filter_filename_edit->text();
 
-	switch (_parent->_filter_operator->currentIndex())
+	switch (_ui->_filter_operator->currentIndex())
 	{
 	case 0:
 		_filter_operator = XinxProject::ProjectListModel::FILTER_GT;
@@ -563,11 +566,11 @@ void PrivateProjectDirectoryWidgetImpl::updateFilter()
 		break;
 	}
 
-	_filter_size = _parent->_filter_size->value();
-	_filter_date = _parent->_filter_date->date();
-	_filter_contains = _parent->_filter_contains->text();
+	_filter_size = _ui->_filter_size->value();
+	_filter_date = _ui->_filter_date->date();
+	_filter_contains = _ui->_filter_contains->text();
 
-	switch (_parent->_filter_state->currentIndex())
+	switch (_ui->_filter_state->currentIndex())
 	{
 	case 0:
 		_filter_state = RCS::LocallyModified;
@@ -648,18 +651,18 @@ void PrivateProjectDirectoryWidgetImpl::toggledFlatView(bool flat)
 	if (flat)
 	{
 		_model->setLongDirectoryName(true);
-		_parent->_directory_view->setIndentation(0);
-		_parent->_directory_view->setRootIsDecorated(false);
-		_parent->_directory_view->setItemsExpandable(false);
-		_parent->_directory_view->expandAll();
+		_ui->_directory_view->setIndentation(0);
+		_ui->_directory_view->setRootIsDecorated(false);
+		_ui->_directory_view->setItemsExpandable(false);
+		_ui->_directory_view->expandAll();
 	}
 	else
 	{
 		_model->setLongDirectoryName(false);
-		_parent->_directory_view->collapseAll();
-		_parent->_directory_view->setIndentation(20);
-		_parent->_directory_view->setRootIsDecorated(true);
-		_parent->_directory_view->setItemsExpandable(true);
+		_ui->_directory_view->collapseAll();
+		_ui->_directory_view->setIndentation(20);
+		_ui->_directory_view->setRootIsDecorated(true);
+		_ui->_directory_view->setItemsExpandable(true);
 	}
 
 	qDebug() << tr("Expand/Collapse tree in %1 ms").arg(t.elapsed());
@@ -667,9 +670,9 @@ void PrivateProjectDirectoryWidgetImpl::toggledFlatView(bool flat)
 
 bool PrivateProjectDirectoryWidgetImpl::eventFilter(QObject *obj, QEvent *event)
 {
-	if ((obj == _parent->_directory_view) && (event->type() == QEvent::ContextMenu))
+	if ((obj == _ui->_directory_view) && (event->type() == QEvent::ContextMenu))
 	{
-		QModelIndexList selectedRows = _parent->_directory_view->selectionModel()->selectedRows();
+		QModelIndexList selectedRows = _ui->_directory_view->selectionModel()->selectedRows();
 		int nbSelected = selectedRows.size();
 		if (nbSelected == 0) return QObject::eventFilter(obj, event);
 
@@ -681,15 +684,11 @@ bool PrivateProjectDirectoryWidgetImpl::eventFilter(QObject *obj, QEvent *event)
 
 /* ProjectDirectoryWidgetImpl */
 
-ProjectDirectoryWidgetImpl::ProjectDirectoryWidgetImpl(QWidget* parent): QWidget(parent)
+ProjectDirectoryWidgetImpl::ProjectDirectoryWidgetImpl(QWidget* parent): QWidget(parent), d(new PrivateProjectDirectoryWidgetImpl(this))
 {
-	setupUi(this);
+	d->_ui->_directory_view->installEventFilter(d.data());
 
-	d = new PrivateProjectDirectoryWidgetImpl(this);
-
-	_directory_view->installEventFilter(d);
-
-	_filter_date->setDate(QDate::currentDate());
+	d->_ui->_filter_date->setDate(QDate::currentDate());
 
 	setWindowTitle(tr("Project Directory"));
 	setWindowIcon(QIcon(":/images/project_open.png"));
@@ -697,59 +696,60 @@ ProjectDirectoryWidgetImpl::ProjectDirectoryWidgetImpl(QWidget* parent): QWidget
 	d->_toggled_view_action = new QAction(QIcon(":/images/flatlist.png"), tr("Toggled Flat View"), this);
 	d->_toggled_view_action->setWhatsThis(tr("If checked the list is showed as flat instead of tree. Each list of file is preceded of a directory header."));
 	d->_toggled_view_action->setCheckable(true);
-	connect(d->_toggled_view_action, SIGNAL(toggled(bool)), d, SLOT(toggledFlatView(bool)));
+	connect(d->_toggled_view_action, SIGNAL(toggled(bool)), d.data(), SLOT(toggledFlatView(bool)));
 
-	_flat_view_button->setDefaultAction(d->_toggled_view_action);
+	d->_ui->_flat_view_button->setDefaultAction(d->_toggled_view_action);
 
-	_new_project_button->setDefaultAction(XinxProject::Manager::self()->newProjectAction());
-	_open_project_button->setDefaultAction(XinxProject::Manager::self()->openProjectAction());
-	_close_selected_project_button->setDefaultAction(XinxProject::Manager::self()->closeProjectAction());
+	d->_ui->_new_project_button->setDefaultAction(XinxProject::Manager::self()->newProjectAction());
+	d->_ui->_open_project_button->setDefaultAction(XinxProject::Manager::self()->openProjectAction());
+	d->_ui->_close_selected_project_button->setDefaultAction(XinxProject::Manager::self()->closeProjectAction());
 
-	_update_selected_project_button->setDefaultAction(VersionControl::Manager::self()->updateAllAction());
-	_commit_selected_project_button->setDefaultAction(VersionControl::Manager::self()->commitAllAction());
+	d->_ui->_update_selected_project_button->setDefaultAction(VersionControl::Manager::self()->updateAllAction());
+	d->_ui->_commit_selected_project_button->setDefaultAction(VersionControl::Manager::self()->commitAllAction());
 
 	d->_provider = new IconProjectProvider();
-	d->_model = new XinxProject::ProjectListModel(_directory_view);
+	d->_model = new XinxProject::ProjectListModel(d->_ui->_directory_view);
 	d->_model->setFileIconProvider(d->_provider);
-	_directory_view->setModel(d->_model);
-	_directory_view->header()->setResizeMode(QHeaderView::Fixed);
-	_directory_view->header()->resizeSection(0, 1024);
+	d->_ui->_directory_view->setModel(d->_model);
+	d->_ui->_directory_view->header()->setResizeMode(QHeaderView::Fixed);
+	d->_ui->_directory_view->header()->resizeSection(0, 1024);
 
-	connect(_directory_view, SIGNAL(doubleClicked(QModelIndex)), d, SLOT(doubleClicked(QModelIndex)));
+	setFocusProxy(d->_ui->_filter_filename_edit);
 
-	connect(_filter_contains, SIGNAL(textChanged(QString)), d, SLOT(updateFilter()));
-	connect(_filter_contains, SIGNAL(returnPressed()), d, SLOT(returnPressed()));
+	connect(d->_ui->_directory_view, SIGNAL(doubleClicked(QModelIndex)), d.data(), SLOT(doubleClicked(QModelIndex)));
 
-	connect(_filter_date, SIGNAL(dateChanged(QDate)), d, SLOT(updateFilter()));
-	connect(_filter_date, SIGNAL(editingFinished()), d, SLOT(returnPressed()));
+	connect(d->_ui->_filter_contains, SIGNAL(textChanged(QString)), d.data(), SLOT(updateFilter()));
+	connect(d->_ui->_filter_contains, SIGNAL(returnPressed()), d.data(), SLOT(returnPressed()));
 
-	connect(_filter_filename_edit, SIGNAL(textChanged(QString)), d, SLOT(updateFilter()));
-	connect(_filter_filename_edit, SIGNAL(returnPressed()), d, SLOT(returnPressed()));
+	connect(d->_ui->_filter_date, SIGNAL(dateChanged(QDate)), d.data(), SLOT(updateFilter()));
+	connect(d->_ui->_filter_date, SIGNAL(editingFinished()), d.data(), SLOT(returnPressed()));
 
-	connect(_filter_operator, SIGNAL(currentIndexChanged(int)), d, SLOT(updateFilter()));
-	connect(_filter_operator, SIGNAL(currentIndexChanged(int)), d, SLOT(filterTimeout()));
+	connect(d->_ui->_filter_filename_edit, SIGNAL(textChanged(QString)), d.data(), SLOT(updateFilter()));
+	connect(d->_ui->_filter_filename_edit, SIGNAL(returnPressed()), d.data(), SLOT(returnPressed()));
 
-	connect(_filter_size, SIGNAL(valueChanged(double)), d, SLOT(updateFilter()));
-	connect(_filter_size, SIGNAL(editingFinished()), d, SLOT(returnPressed()));
+	connect(d->_ui->_filter_operator, SIGNAL(currentIndexChanged(int)), d.data(), SLOT(updateFilter()));
+	connect(d->_ui->_filter_operator, SIGNAL(currentIndexChanged(int)), d.data(), SLOT(filterTimeout()));
 
-	connect(_filter_state, SIGNAL(currentIndexChanged(int)), d, SLOT(updateFilter()));
-	connect(_filter_state, SIGNAL(currentIndexChanged(int)), d, SLOT(filterTimeout()));
+	connect(d->_ui->_filter_size, SIGNAL(valueChanged(double)), d.data(), SLOT(updateFilter()));
+	connect(d->_ui->_filter_size, SIGNAL(editingFinished()), d.data(), SLOT(returnPressed()));
 
-	connect(_filter_type, SIGNAL(currentIndexChanged(int)), d, SLOT(updateFilter()));
-	connect(_filter_type, SIGNAL(currentIndexChanged(int)), d, SLOT(filterTimeout()));
+	connect(d->_ui->_filter_state, SIGNAL(currentIndexChanged(int)), d.data(), SLOT(updateFilter()));
+	connect(d->_ui->_filter_state, SIGNAL(currentIndexChanged(int)), d.data(), SLOT(filterTimeout()));
+
+	connect(d->_ui->_filter_type, SIGNAL(currentIndexChanged(int)), d.data(), SLOT(updateFilter()));
+	connect(d->_ui->_filter_type, SIGNAL(currentIndexChanged(int)), d.data(), SLOT(filterTimeout()));
 }
 
 ProjectDirectoryWidgetImpl::~ProjectDirectoryWidgetImpl()
 {
 	d->_model->setFileIconProvider(NULL);
 	delete d->_provider;
-	delete d;
 }
 
 QStringList ProjectDirectoryWidgetImpl::selectedFiles() const
 {
 	QStringList paths;
-	QModelIndexList list = _directory_view->selectionModel()->selectedRows();
+	QModelIndexList list = d->_ui->_directory_view->selectionModel()->selectedRows();
 	foreach(const QModelIndex & index, list)
 		paths << d->_model->filePath(index);
 
@@ -759,9 +759,4 @@ QStringList ProjectDirectoryWidgetImpl::selectedFiles() const
 QAction* ProjectDirectoryWidgetImpl::toggledViewAction() const
 {
 	return d->_toggled_view_action;
-}
-
-void ProjectDirectoryWidgetImpl::setDock(QDockWidget* dock)
-{
-	d->_dock_widget = dock;
 }

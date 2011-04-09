@@ -30,6 +30,8 @@ DictionaryDockWidgetImpl::DictionaryDockWidgetImpl(QWidget * parent) : QWidget(p
 	setWindowTitle(tr("Dictionary"));
 	setWindowIcon(QIcon(":/generix/images/dictionary16.png"));
 
+	setFocusProxy(m_filterLine);
+
 	connect(m_dictionaryTreeWidget, SIGNAL(changed()), this, SLOT(dictionariesLoaded()));
 }
 

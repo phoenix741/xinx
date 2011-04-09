@@ -34,6 +34,8 @@ XmlPresentationDockWidget::XmlPresentationDockWidget(QWidget * parent) : QWidget
 	d = new XmlPresentationDockThread(this);
 	setWindowTitle(tr("Xml Presentation"));
 	setWindowIcon(QIcon(":/images/preferences-xmlpres.png"));
+
+	setFocusProxy(d->m_xmlPresentationWidget->m_filtreLineEdit);
 }
 
 XmlPresentationDockWidget::~XmlPresentationDockWidget()
