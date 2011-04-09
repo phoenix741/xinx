@@ -513,17 +513,6 @@ void PrivateProjectDirectoryWidgetImpl::doubleClicked(const QModelIndex & index)
 	openFile(index);
 }
 
-void PrivateProjectDirectoryWidgetImpl::rowsInserted(const QModelIndex & index, int start, int end)
-{
-	if (_toggled_view_action->isChecked())
-	{
-		for (int i = start; i <= end; i++)
-		{
-			_parent->_directory_view->expand(_model->index(i, 0, index));
-		}
-	}
-}
-
 void PrivateProjectDirectoryWidgetImpl::updateFilter()
 {
 	_refresh_model_timer->stop();
@@ -627,11 +616,8 @@ void PrivateProjectDirectoryWidgetImpl::filterTimeout()
 {
 	_refresh_model_timer->stop();
 
-	// We unapply the flat view before unapply filter, or apply flat view after apply filter
-	if (_filter_type == XinxProject::ProjectListModel::FILTER_NONE)
-	{
-		_toggled_view_action->setChecked(false);
-	}
+	// We always unapply the flat view to have better performance
+	_toggled_view_action->setChecked(false);
 
 	_model->setFilterType(_filter_type);
 	_model->setFilterFileName(_filter_filename);
@@ -640,7 +626,13 @@ void PrivateProjectDirectoryWidgetImpl::filterTimeout()
 	_model->setFilterContains(_filter_contains);
 	_model->setFilterState(_filter_state);
 	//FIXME:_model->setFilterEmptyDirectory(_filter_type != XinxProject::ProjectListModel::FILTER_NONE);
+
+	QTime t;
+	t.start();
+
 	_model->applyFilter();
+
+	qDebug() << tr("Filter apply in %1 ms").arg(t.elapsed());
 
 	if (_filter_type != XinxProject::ProjectListModel::FILTER_NONE)
 	{
@@ -650,6 +642,9 @@ void PrivateProjectDirectoryWidgetImpl::filterTimeout()
 
 void PrivateProjectDirectoryWidgetImpl::toggledFlatView(bool flat)
 {
+	QTime t;
+	t.start();
+
 	if (flat)
 	{
 		_model->setLongDirectoryName(true);
@@ -665,8 +660,9 @@ void PrivateProjectDirectoryWidgetImpl::toggledFlatView(bool flat)
 		_parent->_directory_view->setIndentation(20);
 		_parent->_directory_view->setRootIsDecorated(true);
 		_parent->_directory_view->setItemsExpandable(true);
-		_parent->_directory_view->collapseAll();
 	}
+
+	qDebug() << tr("Expand/Collapse tree in %1 ms").arg(t.elapsed());
 }
 
 bool PrivateProjectDirectoryWidgetImpl::eventFilter(QObject *obj, QEvent *event)
@@ -720,7 +716,6 @@ ProjectDirectoryWidgetImpl::ProjectDirectoryWidgetImpl(QWidget* parent): QWidget
 	_directory_view->header()->resizeSection(0, 1024);
 
 	connect(_directory_view, SIGNAL(doubleClicked(QModelIndex)), d, SLOT(doubleClicked(QModelIndex)));
-	connect(d->_model, SIGNAL(rowsInserted(QModelIndex, int, int)), d, SLOT(rowsInserted(QModelIndex, int, int)));
 
 	connect(_filter_contains, SIGNAL(textChanged(QString)), d, SLOT(updateFilter()));
 	connect(_filter_contains, SIGNAL(returnPressed()), d, SLOT(returnPressed()));

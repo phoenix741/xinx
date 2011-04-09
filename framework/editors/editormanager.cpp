@@ -271,12 +271,12 @@ void PrivateEditorManager::createActions()
 	_close_action->setShortcut(QKeySequence::Close);
 	connect(_close_action, SIGNAL(triggered()), _manager, SLOT(closeFile()));
 
-	_close_all_action = new QAction(tr("&Close All"), this);
+	_close_all_action = new QAction(QIcon(":/images/fileclose.png"), tr("&Close All"), this);
 	_close_all_action->setToolTip(tr("Close All document"));
 	_close_all_action->setStatusTip(tr("Close All document"));
 	connect(_close_all_action, SIGNAL(triggered()), _manager, SLOT(closeAllFile()));
 
-	_close_all_except_action = new QAction(tr("C&lose All except current"), this);
+	_close_all_except_action = new QAction(QIcon(":/images/fileclose.png"), tr("C&lose All except current"), this);
 	_close_all_except_action->setToolTip(tr("Close all document except the current"));
 	_close_all_except_action->setStatusTip(tr("Close all document except the current"));
 	connect(_close_all_except_action, SIGNAL(triggered()), this, SLOT(closeAllExcpet()));

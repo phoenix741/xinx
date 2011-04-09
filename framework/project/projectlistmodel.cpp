@@ -627,6 +627,12 @@ void PrivateProjectListModel::selectionChange(ProjectPtr project)
 void PrivateProjectListModel::_updateFiles(const QString & directory, QList<RCS::struct_rcs_infos> files)
 {
 	ModelFileNode * node_path = node(_root_node, directory);
+	if (! node_path)
+	{
+		// We can ignore the result, the project has been deleted.
+		qDebug() << tr("Node for directory %1 not found").arg(directory);
+		return;
+	}
 
 	foreach(const RCS::struct_rcs_infos & info, files)
 	{
@@ -695,7 +701,8 @@ void PrivateProjectListModel::_progressFetchedInformations(const QString & direc
 
 	if (! node_path)
 	{
-		qWarning() << tr("Node for directory %1 not found").arg(directory);
+		// We can ignore the result, the project has been deleted.
+		qDebug() << tr("Node for directory %1 not found").arg(directory);
 		return;
 	}
 
@@ -720,7 +727,11 @@ void PrivateProjectListModel::_allFetchedFiles(const QString & directory, QStrin
 	ModelFileNode * node_path = node(_root_node, directory);
 
 	// In this case the project have been deleted while thread is running.
-	if (! node_path) return;
+	if (! node_path)
+	{
+		qDebug() << tr("Node for directory %1 not found").arg(directory);
+		return;
+	}
 
 	// If after all adds, there is no more files, we remove the directory
 	if (node_path->_parent && !isNodeMustBeShow(node_path))

@@ -89,7 +89,6 @@ public slots:
 
 	void toggledFlatView(bool flat);
 	void doubleClicked(const QModelIndex & index);
-	void rowsInserted(const QModelIndex & index, int start, int end);
 	void updateFilter();
 	void filterTimeout();
 	void returnPressed();
