@@ -236,6 +236,8 @@ void Manager::stopOperations()
 		userInterface()->stopVersionControlOperations();
 	}
 	_current_rcs = 0;
+
+	emit finished();
 }
 
 /* Method executed by thread */

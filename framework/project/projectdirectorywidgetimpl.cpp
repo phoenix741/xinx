@@ -228,7 +228,7 @@ void PrivateProjectDirectoryWidgetImpl::rcsLogTerminated()
 {
 	if (sender())
 	{
-		sender()->disconnect(this, SLOT(rcsLogTerminated));
+		sender()->disconnect(this, SLOT(rcsLogTerminated()));
 	}
 
 	if (! _head_content.isEmpty())
