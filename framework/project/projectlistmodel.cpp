@@ -268,6 +268,12 @@ void ModelFileNode::add(ModelFileNode * node)
 		node->_project  = _project;
 	}
 	_children.insert(node->_key, node);
+
+	if (node->_info.isDir())
+	{
+		_private_model->fetchNode(node);
+		qDebug() << "Must fetch " << node->_filename;
+	}
 }
 
 ModelFileNode * ModelFileNode::remove(ProjectPtr project)
@@ -330,7 +336,6 @@ PrivateProjectListModel::PrivateProjectListModel(ProjectListModel* parent): QObj
 	_changePathTimer->setInterval(1000);
 	_changePathTimer->setSingleShot(true);
 	_watcher = new QFileSystemWatcher(this);
-	_fetcher = new DirectoryFetcher;
 
 	_filter_type = ProjectListModel::FILTER_NONE;
 
@@ -346,7 +351,6 @@ PrivateProjectListModel::PrivateProjectListModel(ProjectListModel* parent): QObj
 PrivateProjectListModel::~PrivateProjectListModel()
 {
 	delete _root_node;
-	delete _fetcher;
 }
 
 ModelFileNode * PrivateProjectListModel::node(ModelFileNode* currentNode, const QString& path)
@@ -778,6 +782,8 @@ void PrivateProjectListModel::fetchNode(ModelFileNode * node)
 	connect(fetcher, SIGNAL(updateFiles(QString,QList<RCS::struct_rcs_infos>)), this, SLOT(_updateFiles(QString,QList<RCS::struct_rcs_infos>)));
 
 	XinxJobManager::self()->addJob(fetcher);
+
+	node->_is_children_populated = true;
 }
 
 void PrivateProjectListModel::fetchPathTimeout()
@@ -1182,6 +1188,8 @@ bool ProjectListModel::canFetchMore(const QModelIndex& parent) const
 
 void ProjectListModel::fetchMore(const QModelIndex& parent)
 {
+	Q_UNUSED(parent);
+	/*
 	ModelFileNode * node = d->_root_node;
 	if (parent.isValid())
 	{
@@ -1189,8 +1197,7 @@ void ProjectListModel::fetchMore(const QModelIndex& parent)
 	}
 
 	d->fetchNode(node);
-
-	node->_is_children_populated = true;
+	*/
 }
 
 

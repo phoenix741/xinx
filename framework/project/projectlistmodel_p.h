@@ -136,7 +136,6 @@ public:
 
 	QMultiHash<QString,QString> _watcherDirectory;
 	QFileSystemWatcher * _watcher;
-	DirectoryFetcher * _fetcher;
 
 	QScopedPointer<QTimer> _changePathTimer;
 	QStack<QString> _changedPath;
