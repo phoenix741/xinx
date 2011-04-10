@@ -41,7 +41,6 @@ public:
 	virtual bool cancelSettingsDialog();
 	virtual bool isSettingsValid(QString & message);
 	virtual bool isVisible();
-private slots:
 };
 
 #endif /* CUSTOMGENERALIMPL_H */

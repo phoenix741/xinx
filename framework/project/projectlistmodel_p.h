@@ -55,6 +55,9 @@ public:
 	void setProject(ProjectPtr project);
 	ProjectPtr project() const;
 
+	void setRetrieveRcsInfos(bool value);
+	bool isRetrieveRcsInfos() const;
+
 	virtual QString description() const;
 signals:
 	void progressFetchedInformations(const QString & directory, QFileInfoList filenames);
@@ -63,6 +66,7 @@ signals:
 protected:
 	virtual void startJob();
 private:
+	bool _retrieveRcsInfos;
 	QString _listingDirectory, _modelDirectory;
 	QStringList _matchedFileList;
 	XinxProject::ProjectPtr _project;

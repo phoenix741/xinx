@@ -23,6 +23,7 @@
 #include <QThreadPool>
 #include <QDebug>
 #include <QStringList>
+#include <QTime>
 
 class PrivateXinxJobManager
 {
@@ -99,6 +100,9 @@ void XinxJobManager::addJob(XinxJob* job)
 
 void XinxJobManager::slotJobStarting()
 {
+	QTime t;
+	t.start();
+
 	XinxJob * job = qobject_cast<XinxJob*> (sender());
 
 	{
@@ -110,12 +114,15 @@ void XinxJobManager::slotJobStarting()
 		d->_waiting_job_list.removeAll(job);
 	}
 
-	qDebug() << "Starting job (" << countRunningJob() << "/" << countTotalJob() << ")";
+	qDebug() << "Starting job (" << countRunningJob() << "/" << countTotalJob() << ") in " << t.elapsed() << " ms";
 	emit jobStarted(job);
 }
 
 void XinxJobManager::slotJobEnding()
 {
+	QTime t;
+	t.start();
+
 	XinxJob * job = qobject_cast<XinxJob*>(sender());
 
 	{
@@ -132,7 +139,7 @@ void XinxJobManager::slotJobEnding()
 		emit allJobEnded();
 	}
 
-	qDebug() << "Remove job (" << countRunningJob() << "/" << countTotalJob() << ")";
+	qDebug() << "Remove job (" << countRunningJob() << "/" << countTotalJob() << ") in " << t.elapsed() << " ms";
 
 	if (job->isManagerDelete())
 	{

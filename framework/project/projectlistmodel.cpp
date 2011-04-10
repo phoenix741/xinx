@@ -38,7 +38,7 @@ bool caseInsensitiveLessThan(const QString &s1, const QString &s2)
 
 /* DirectoryFetcher */
 
-DirectoryFetcher::DirectoryFetcher()
+DirectoryFetcher::DirectoryFetcher() : _retrieveRcsInfos(true)
 {
 	setPriority(-100);
 	_matchedFileList = XinxPluginsLoader::self()->managedFilters();
@@ -87,6 +87,16 @@ void DirectoryFetcher::setProject(ProjectPtr project)
 ProjectPtr DirectoryFetcher::project() const
 {
 	return _project;
+}
+
+void DirectoryFetcher::setRetrieveRcsInfos(bool value)
+{
+	_retrieveRcsInfos = value;
+}
+
+bool DirectoryFetcher::isRetrieveRcsInfos() const
+{
+	return _retrieveRcsInfos;
 }
 
 QString DirectoryFetcher::description() const
@@ -138,7 +148,7 @@ void DirectoryFetcher::startJob()
 	emit allFetchedFiles(_modelDirectory, filenames);
 
 	// Step 2 : Loading the RCS files
-	if (_project && _project->rcsProxy() && _project->rcsProxy()->currentRCSInterface())
+	if (_retrieveRcsInfos && _project && _project->rcsProxy() && _project->rcsProxy()->currentRCSInterface())
 	{
 		QList<RCS::struct_rcs_infos> infos = _project->rcsProxy()->currentRCSInterface()->infos(_listingDirectory);
 		emit updateFiles(_modelDirectory, infos);
@@ -787,6 +797,7 @@ void PrivateProjectListModel::fetchNode(ModelFileNode * node)
 	fetcher->setListingDirectory(info.canonicalFilePath());
 	fetcher->setModelDirectory(node->modelDirectory());
 	fetcher->setProject(node->_project);
+	fetcher->setRetrieveRcsInfos((node->_rcs_info.state != RCS::Unknown) || (node->isProject()));
 
 	connect(fetcher, SIGNAL(allFetchedFiles(QString,QStringList)), this, SLOT(_allFetchedFiles(QString,QStringList)));
 	connect(fetcher, SIGNAL(progressFetchedInformations(QString,QFileInfoList)), this, SLOT(_progressFetchedInformations(QString,QFileInfoList)));

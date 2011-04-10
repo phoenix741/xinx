@@ -22,6 +22,7 @@
 
 // Qt header
 #include <QDebug>
+#include <QTime>
 
 /* Static member */
 
@@ -141,6 +142,9 @@ void XinxJob::run()
 	_count_job.ref();
 	setState(JOB_RUNNING);
 
+	QTime t;
+	t.start();
+
 	try
 	{
 		startJob();
@@ -153,6 +157,9 @@ void XinxJob::run()
 	{
 		qCritical () << tr("Unknown exception");
 	}
+
+	qDebug() << tr("The job \"%1\" take %2 ms.").arg(description()).arg(t.elapsed());
+
 	_count_job.deref();
 	setState(JOB_ENDING);
 

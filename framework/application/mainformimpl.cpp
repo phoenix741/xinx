@@ -303,7 +303,7 @@ void MainformImpl::createActions()
 	connect(m_replaceAct, SIGNAL(triggered()), this, SLOT(replace()));
 
 	/* PROJECT */
-
+	connect(EditorManager::self(), SIGNAL(currentChanged(int)), this, SLOT(updateTitle()));
 	connect(XinxProject::Manager::self(), SIGNAL(changed()), this, SLOT(updateTitle()));
 
 	/* TOOLS */
