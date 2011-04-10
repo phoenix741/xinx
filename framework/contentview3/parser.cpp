@@ -293,6 +293,8 @@ void Parser::startJob()
 		QMetaObject::invokeMethod(ErrorManager::self(), "clearMessages", Qt::QueuedConnection,
 								  Q_ARG(QString, d->_file ? d->_file->filename() : "XINX"));
 
+		// Open the file to read it
+		qDebug() << tr("The file %1 will be locked");
 		if (d->_device && !d->_device->open(QIODevice::ReadOnly))
 		{
 			throw ParserException(tr("Can't open \"%1\" : %2").arg(description()).arg(d->_device->errorString()), -1);
@@ -301,6 +303,13 @@ void Parser::startJob()
 		parse();
 
 		d->_file->setRootNode(d->_fileRootNode);
+
+		// Close the file to not lock the file.
+		if (d->_device)
+		{
+			d->_device->close();
+		}
+		qDebug() << tr("The file %1 is unlocked");
 	}
 	catch (const ParserException & e)
 	{
