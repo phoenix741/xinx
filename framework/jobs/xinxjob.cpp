@@ -32,13 +32,14 @@ QAtomicInt XinxJob::_count_job;
 
 XinxJob::XinxJob() : _state(JOB_WAIT), _manager_delete(true)
 {
+	qDebug() << tr("A Job is created : %1").arg(metaObject()->className());
 	setAutoDelete(false);
 	setPriority(0);
 }
 
 XinxJob::~XinxJob()
 {
-
+	qDebug() << tr("A job is destroyed : %1").arg(metaObject()->className());
 }
 
 bool XinxJob::isUnique() const
