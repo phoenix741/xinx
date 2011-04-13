@@ -63,7 +63,8 @@ public:
 		NeedPatch,
 		UnresolvedConflict,
 		FileHadConflictsOnMerge,
-		Unknown
+		Unknown,
+		NotManaged
 	};
 
 	struct struct_rcs_infos

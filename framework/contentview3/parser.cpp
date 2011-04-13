@@ -172,7 +172,9 @@ ContentView3::FilePtr Parser::file() const
 /*!
  * \brief Set the device used to read the content of the file.
  *
- * The path can be a content of a file or the content of the memory.
+ * The device can be the content of a file or the content of the memory.
+ * Parser take ownerhip of the device. Let the parser destroy the device. If you want
+ * keep ownership, call setDevice(0) before destroying the parser.
  */
 void Parser::setDevice(QIODevice* device)
 {

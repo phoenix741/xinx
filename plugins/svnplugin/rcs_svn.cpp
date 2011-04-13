@@ -434,7 +434,7 @@ RCS::rcsState RCS_SVN::svnStateToRcsState(svn_wc_status_kind textState, svn_wc_s
 
 RCS::struct_rcs_infos RCS_SVN::svnInfoToRcsInfos(svn::Status infos)
 {
-	RCS::struct_rcs_infos rcsInfos = { QDir::fromNativeSeparators(infos.path()), RCS::Unknown, "0", QDateTime() };
+	RCS::struct_rcs_infos rcsInfos = { QDir::fromNativeSeparators(infos.path()), RCS::NotManaged, "0", QDateTime() };
 	if (infos.isVersioned())
 	{
 		rcsInfos.version = QString("%1").arg(infos.entry().revision());
@@ -452,7 +452,7 @@ RCS::struct_rcs_infos RCS_SVN::info(const QString & path)
 {
 	_listener->_cancel = false;
 
-	RCS::struct_rcs_infos result = { QDir::fromNativeSeparators(path), RCS::Unknown, "0", QDateTime() };
+	RCS::struct_rcs_infos result = { QDir::fromNativeSeparators(path), RCS::NotManaged, "0", QDateTime() };
 	svn::StatusEntries entries;
 	try
 	{

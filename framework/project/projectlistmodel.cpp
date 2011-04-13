@@ -597,6 +597,7 @@ void PrivateProjectListModel::updateLinkedDirectories(XinxProject::ProjectPtr pr
 	foreach(const QString & path, linkedPath)
 	{
 		ModelFileNode* linkedPath = projectNode->add(path);
+		linkedPath->_rcs_info.state = RCS::NotManaged;
 		linkedPath->_is_linked_path = true;
 		if (! _watcher->directories().contains(path))
 		{
@@ -797,7 +798,7 @@ void PrivateProjectListModel::fetchNode(ModelFileNode * node)
 	fetcher->setListingDirectory(info.canonicalFilePath());
 	fetcher->setModelDirectory(node->modelDirectory());
 	fetcher->setProject(node->_project);
-	fetcher->setRetrieveRcsInfos((node->_rcs_info.state != RCS::Unknown) || (node->isProject()));
+	fetcher->setRetrieveRcsInfos((node->_rcs_info.state != RCS::NotManaged) || (node->isProject()));
 
 	connect(fetcher, SIGNAL(allFetchedFiles(QString,QStringList)), this, SLOT(_allFetchedFiles(QString,QStringList)));
 	connect(fetcher, SIGNAL(progressFetchedInformations(QString,QFileInfoList)), this, SLOT(_progressFetchedInformations(QString,QFileInfoList)));
@@ -842,6 +843,8 @@ void PrivateProjectListModel::fetchPath(const QString & pathToFetch)
 
 QString PrivateProjectListModel::rcsStateToString(RCS::rcsState state)
 {
+	if (state == RCS::NotManaged)
+		return tr("Not in Revision");
 	if (state == RCS::Unknown)
 		return tr("Unknown");
 	if (state == RCS::LocallyModified)
@@ -1172,6 +1175,7 @@ QVariant ProjectListModel::data(const QModelIndex & index, int role) const
 		case RCS::FileHadConflictsOnMerge:
 			return QBrush(Qt::red);
 			break;
+		case RCS::NotManaged:
 		case RCS::Updated:
 			return QVariant();
 		}
