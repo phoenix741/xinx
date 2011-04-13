@@ -57,7 +57,11 @@ bool NewGenerixInformationPageImpl::pageIsVisible() const
 
 bool NewGenerixInformationPageImpl::saveSettingsDialog(XinxProject::ProjectPtr project)
 {
-	project->setLinkedPath(project->linkedPath() << m_dataStreamEdit->lineEdit()->text());
+	if (! m_dataStreamEdit->lineEdit()->text().isEmpty())
+	{
+		project->setLinkedPath(project->linkedPath() << QDir::fromNativeSeparators(m_dataStreamEdit->lineEdit()->text()));
+	}
+
 	project->writeProperty("moduleInternetAdresse", m_urlLocationEdit->lineEdit()->text());
 
 	return true;
@@ -87,10 +91,6 @@ void NewGenerixInformationPageImpl::updateInformations(const QString & path)
 	if (moduleInternetAdresse.isEmpty() || !QDir(moduleInternetAdresse).exists())
 	{
 		moduleInternetAdresse = webModuleLocation;
-	}
-	if (dataStreamLocation.isEmpty())
-	{
-		dataStreamLocation = XINXConfig::self()->config().project.defaultPath;
 	}
 
 	setField("generix.adresse", moduleInternetAdresse);

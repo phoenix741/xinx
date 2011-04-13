@@ -220,23 +220,23 @@ QString ModelFileNode::displayText() const
 	}
 }
 
-ModelFileNode * ModelFileNode::add(ProjectPtr project)
+ModelFileNode * ModelFileNode::add(ProjectPtr project, bool rcsManaged)
 {
 	ModelFileNode * node = new ModelFileNode(_private_model);
 	node->_is_project = true;
 	node->_project    = project.toWeakRef();
 	node->_info       = QFileInfo(project->projectPath());
 	node->_key        = node->_info.canonicalFilePath();
-	add(node);
+	add(node, rcsManaged);
 
 	return node;
 }
 
-ModelFileNode * ModelFileNode::add(const QFileInfo & information)
+ModelFileNode * ModelFileNode::add(const QFileInfo & information, bool rcsManaged)
 {
 	ModelFileNode * node = new ModelFileNode(_private_model);
 	node->_info			 = information;
-	add(node);
+	add(node, rcsManaged);
 
 	return node;
 }
@@ -246,22 +246,28 @@ ModelFileNode * ModelFileNode::add(const RCS::struct_rcs_infos & information)
 	ModelFileNode * node = new ModelFileNode(_private_model);
 	node->_info     = QFileInfo(information.filename);
 	node->_rcs_info = information;
-	add(node);
+	add(node, information.state != RCS::NotManaged);
 
 	return node;
 }
 
-ModelFileNode * ModelFileNode::add(const QString & filename)
+ModelFileNode * ModelFileNode::add(const QString & filename, bool rcsManaged)
 {
 	ModelFileNode * node = new ModelFileNode(_private_model);
 	node->_info			 = QFileInfo(filename);
-	add(node);
+	add(node, rcsManaged);
 
 	return node;
 }
 
-void ModelFileNode::add(ModelFileNode * node)
+void ModelFileNode::add(ModelFileNode * node, bool rcsManaged)
 {
+	if (_rcs_info.state == RCS::NotManaged)
+	{
+		node->_rcs_info.state = RCS::NotManaged;
+		// If parent directory is not managed we force child to be not managed.
+		rcsManaged = false;
+	}
 	if (node->_key.isEmpty())
 	{
 		node->_key      = node->_info.fileName();
@@ -281,7 +287,7 @@ void ModelFileNode::add(ModelFileNode * node)
 
 	if (node->_info.isDir())
 	{
-		_private_model->fetchNode(node);
+		_private_model->fetchNode(node, rcsManaged);
 		qDebug() << "Must fetch " << node->_filename;
 	}
 }
@@ -596,7 +602,7 @@ void PrivateProjectListModel::updateLinkedDirectories(XinxProject::ProjectPtr pr
 
 	foreach(const QString & path, linkedPath)
 	{
-		ModelFileNode* linkedPath = projectNode->add(path);
+		ModelFileNode* linkedPath = projectNode->add(path, false);
 		linkedPath->_rcs_info.state = RCS::NotManaged;
 		linkedPath->_is_linked_path = true;
 		if (! _watcher->directories().contains(path))
@@ -784,7 +790,7 @@ void PrivateProjectListModel::_updateState(const QString & path, RCS::struct_rcs
 	}
 }
 
-void PrivateProjectListModel::fetchNode(ModelFileNode * node)
+void PrivateProjectListModel::fetchNode(ModelFileNode * node, bool rcsManaged)
 {
 	QFileInfo & info = node->_info;
 	if (! info.isDir()) return;
@@ -798,7 +804,7 @@ void PrivateProjectListModel::fetchNode(ModelFileNode * node)
 	fetcher->setListingDirectory(info.canonicalFilePath());
 	fetcher->setModelDirectory(node->modelDirectory());
 	fetcher->setProject(node->_project);
-	fetcher->setRetrieveRcsInfos((node->_rcs_info.state != RCS::NotManaged) || (node->isProject()));
+	fetcher->setRetrieveRcsInfos(rcsManaged);
 
 	connect(fetcher, SIGNAL(allFetchedFiles(QString,QStringList)), this, SLOT(_allFetchedFiles(QString,QStringList)));
 	connect(fetcher, SIGNAL(progressFetchedInformations(QString,QFileInfoList)), this, SLOT(_progressFetchedInformations(QString,QFileInfoList)));
@@ -835,7 +841,7 @@ void PrivateProjectListModel::fetchPath(const QString & pathToFetch)
 		ModelFileNode * node_path = node(_root_node, path);
 		if (node_path)
 		{
-			fetchNode(node_path);
+			fetchNode(node_path, node_path->_rcs_info.state != RCS::NotManaged);
 		}
 	}
 }
@@ -1215,15 +1221,6 @@ bool ProjectListModel::canFetchMore(const QModelIndex& parent) const
 void ProjectListModel::fetchMore(const QModelIndex& parent)
 {
 	Q_UNUSED(parent);
-	/*
-	ModelFileNode * node = d->_root_node;
-	if (parent.isValid())
-	{
-		node = static_cast<ModelFileNode*>(parent.internalPointer());
-	}
-
-	d->fetchNode(node);
-	*/
 }
 
 

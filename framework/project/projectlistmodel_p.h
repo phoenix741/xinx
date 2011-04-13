@@ -86,11 +86,11 @@ public:
 	inline QIcon icon() const;
 	inline QString displayText() const;
 
-	inline ModelFileNode * add(XinxProject::ProjectPtr project);
-	inline ModelFileNode * add(const QFileInfo & information);
+	inline ModelFileNode * add(XinxProject::ProjectPtr project, bool rcsManaged = true);
+	inline ModelFileNode * add(const QFileInfo & information, bool rcsManaged = true);
 	inline ModelFileNode * add(const RCS::struct_rcs_infos & information);
-	inline ModelFileNode * add(const QString & filename);
-	inline void add(ModelFileNode * node);
+	inline ModelFileNode * add(const QString & filename, bool rcsManaged = true);
+	inline void add(ModelFileNode * node, bool rcsManaged = true);
 
 	inline ModelFileNode * remove(XinxProject::ProjectPtr project);
 	inline ModelFileNode * remove(const QString & key);
@@ -163,7 +163,7 @@ public slots:
 	void _updateFiles(const QString & directory, QList<RCS::struct_rcs_infos> files);
 	void _updateState(const QString & path, RCS::struct_rcs_infos info);
 
-	void fetchNode(ModelFileNode * node);
+	void fetchNode(ModelFileNode * node, bool rcsManaged);
 	void fetchPath(const QString & path);
 	void wantFetchPath(const QString & path);
 
