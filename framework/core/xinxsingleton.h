@@ -25,6 +25,10 @@
 #include <QMutexLocker>
 #include <QDebug>
 
+// Std header
+#include <iostream>
+#include <typeinfo>
+
 // Xinx header
 #include "xinxcore.h"
 
@@ -40,11 +44,15 @@ public:
 	{
 		if (_self == NULL)
 		{
+			std::cerr << "Lock singleton of type " << typeid(T).name() << std::endl;
 			QMutexLocker locker(&_self_mutex);
 			if (_self == NULL)
 			{
+				std::cerr << "Pre-create singleton of type " << typeid(T).name() << std::endl;
 				_self = new T;
+				std::cerr << "Post-create singleton of type " << typeid(T).name() << std::endl;
 				_self->initialisation();
+				std::cerr << "Post-init singleton of type " << typeid(T).name() << std::endl;
 			}
 		}
 
@@ -86,11 +94,15 @@ public:
 	{
 		if (_self == NULL)
 		{
+			std::cerr << "Lock singleton of type " << typeid(T).name() << std::endl;
 			QMutexLocker locker(&_self_mutex);
 			if (_self == NULL)
 			{
+				std::cerr << "Pre-create singleton of type " << typeid(T).name() << std::endl;
 				_self = new T;
+				std::cerr << "Post-create singleton of type " << typeid(T).name() << std::endl;
 				_self->initialisation();
+				std::cerr << "Post-init singleton of type " << typeid(T).name() << std::endl;
 			}
 		}
 

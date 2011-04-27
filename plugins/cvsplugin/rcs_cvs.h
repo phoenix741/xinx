@@ -30,6 +30,7 @@
 // Qt header
 #include <QPointer>
 #include <QProcess>
+#include <QMutex>
 
 class PluginSettings;
 
@@ -77,6 +78,8 @@ private:
 
 	EntriesList * m_entriesList;
 	FilesWatcher * m_watcher;
+
+	QMutex _mutex;
 
 	QString m_cvs;
 	PluginSettings * m_settings;

@@ -352,6 +352,8 @@ void RCS_CVS::entriesStateChanged(const QString & path)
 
 void RCS_CVS::updateEntries()
 {
+	QMutexLocker locker(&_mutex);
+
 	if (m_watcher->files().size())
 		m_watcher->removePaths(m_watcher->files());
 
