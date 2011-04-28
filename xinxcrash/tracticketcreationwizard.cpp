@@ -26,7 +26,7 @@
 #include <QFile>
 #include <QFileInfo>
 
-TracTicketCreationWizard::TracTicketCreationWizard(QWidget *parent) : QWizard(parent), _ui(new Ui::TracTicketCreationWizard)
+TracTicketCreationWizard::TracTicketCreationWizard(QWidget *parent) : QWizard(parent), _ui(new Ui::TracTicketCreationWizard), _connecting(false)
 {
 	_ui->setupUi(this);
 
@@ -42,6 +42,8 @@ TracTicketCreationWizard::TracTicketCreationWizard(QWidget *parent) : QWizard(pa
 
 	connect(_ui->loginEdit, SIGNAL(textChanged(QString)), this, SLOT(setLogin(QString)));
 	connect(_ui->passwordEdit, SIGNAL(textChanged(QString)), this, SLOT(setPassword(QString)));
+	connect(_ui->createAccountRadio, SIGNAL(toggled(bool)), this, SLOT(slotCreateAccountToggled(bool)));
+	slotCreateAccountToggled(_ui->createAccountRadio->isChecked());
 
 	_xmlrpc = new TracXmlRpcProxy(this);
 
@@ -68,7 +70,7 @@ TracTicketCreationWizard::~TracTicketCreationWizard()
 
 void TracTicketCreationWizard::setVisible(bool visible)
 {
-    QWizard::setVisible(visible);
+	QWizard::setVisible(visible);
 
 	if (visible && !_connected && !_login.isEmpty() && !_password.isEmpty())
 	{
@@ -281,6 +283,7 @@ void TracTicketCreationWizard::connected()
 	_ui->connectionProgressBar->setValue(1);
 	_ui->connectionProgressBar->setVisible(false);
 
+	_connecting = false;
 	_connected = true;
 
 	_xmlrpc->getComponents();
@@ -302,6 +305,7 @@ void TracTicketCreationWizard::connected()
 
 void TracTicketCreationWizard::connectionError(const QString& text)
 {
+	_connecting = false;
 	_ui->createUserProgressBar->setVisible(false);
 	_ui->connectionProgressBar->setVisible(false);
 	QMessageBox::critical(this, tr("Connection error"), tr("Can't connect to the ticket system : \"%1\".").arg(text));
@@ -351,6 +355,12 @@ void TracTicketCreationWizard::fileAttachError(const QString& error)
 	ticketCreated(_ticket_id);
 }
 
+void TracTicketCreationWizard::slotCreateAccountToggled(bool value)
+{
+	_ui->connectionPage->setCommitPage(!value);
+	_ui->createLoginPage->setCommitPage(value);
+}
+
 void TracTicketCreationWizard::slotCurrentIdChanged(int ticketId)
 {
 	if (ticketId == PROGRESS_PAGE)
@@ -370,6 +380,12 @@ void TracTicketCreationWizard::slotAddAttachement()
 
 bool TracTicketCreationWizard::validateCurrentPage()
 {
+	// If connecting the user is blocked.
+	if (_connecting)
+	{
+		return false;
+	}
+
 	qDebug() << "TracTicketCreationWizard::validateCurrentPage";
 	if ((currentPage() == _ui->connectionPage) && !_connected && _ui->loginRadio->isChecked())
 	{
@@ -378,6 +394,7 @@ bool TracTicketCreationWizard::validateCurrentPage()
 		_ui->connectionProgressBar->setMaximum(0);
 
 		_next_page = true;
+		_connecting = true;
 		_xmlrpc->connection(_login, _password);
 
 		return false;
@@ -418,6 +435,9 @@ bool TracTicketCreationWizard::validateCurrentPage()
 			_ui->createUserProgressBar->setVisible(true);
 			_ui->createUserProgressBar->setMaximum(0);
 			_ui->createUserProgressBar->setValue(0);
+
+			_connecting = true;
+			_next_page = true;
 
 			_xmlrpc->registerUser(_ui->newLoginEdit->text(), _ui->newPasswordEdit->text(), _ui->newNameEdit->text(), _ui->newEmailEdit->text());
 		}

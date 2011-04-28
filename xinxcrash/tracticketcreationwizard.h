@@ -77,6 +77,7 @@ private slots:
 
 	void slotCurrentIdChanged(int);
 	void slotAddAttachement();
+	void slotCreateAccountToggled(bool);
 
 	void ticketCreated(int id);
 	void ticketCreationError(const QString & error);
@@ -91,7 +92,7 @@ private:
 
 	QString _message;
 	QStringList _stack_trace;
-	bool _connected, _next_page;
+	bool _connected, _connecting, _next_page;
     QString _version, _string_version, _login, _password;
 	QSettings _settings;
     TracXmlRpcProxy* _xmlrpc;
