@@ -42,7 +42,7 @@ public:
 signals:
 	void fileChanged();
 protected:
-	PrivateFileWatcher * d;
+	QScopedPointer<PrivateFileWatcher> d;
 	friend class PrivateFileWatcher;
 };
 
@@ -60,7 +60,7 @@ public:
 signals:
 	void fileChanged(const QString & path);
 private:
-	PrivateFilesWatcher * d;
+	QScopedPointer<PrivateFilesWatcher> d;
 	friend class PrivateFilesWatcher;
 };
 

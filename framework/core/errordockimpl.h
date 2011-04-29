@@ -43,7 +43,7 @@ public slots:
 protected slots:
 	void doubleClicked(const QModelIndex & index);;
 private:
-	Ui::ErrorDockWidget * _widget;
+	QScopedPointer<Ui::ErrorDockWidget> _widget;
 };
 #endif /* ERRORDOCKWIDGETIMPL_H */
 

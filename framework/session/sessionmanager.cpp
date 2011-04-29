@@ -21,6 +21,7 @@
 #include "sessionmanager_p.h"
 #include "session.h"
 #include <project/xinxprojectmanager.h>
+#include <project/xinxprojectprojectexception.h>
 #include <editors/editormanager.h>
 #include <QInputDialog>
 #include <QMessageBox>
@@ -226,7 +227,14 @@ void SessionManager::restoreSession(const QString & sessionName)
 	const QString currentProjectPath = d->_current_session->currentProjectPath();
 	foreach(const QString & projectPath, d->_current_session->openedProject())
 	{
-		XinxProject::Manager::self()->openProject(projectPath);
+		try
+		{
+			XinxProject::Manager::self()->openProject(projectPath);
+		}
+		catch (XinxProject::ProjectException e)
+		{
+			qWarning() << e.getMessage() << " : " << projectPath;
+		}
 	}
 
 	if (! currentProjectPath.isEmpty())

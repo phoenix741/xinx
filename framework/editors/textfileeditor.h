@@ -154,7 +154,7 @@ private slots:
 private:
 	void initObjects();
 
-	QTimer * _modification_timer, * _move_timer;
+	QScopedPointer<QTimer> _modification_timer, _move_timer;
 	QString m_codec;
 
 	XinxCodeEdit * m_view;

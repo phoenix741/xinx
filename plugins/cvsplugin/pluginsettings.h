@@ -47,7 +47,7 @@ protected:
 	virtual void setSettingsGlobals(PluginSettingsSettings * settings, const QString & path, PluginSettings::struct_globals value);
 
 private:
-	PrivatePluginSettings * d;
+	QScopedPointer<PrivatePluginSettings> d;
 	friend class PrivatePluginSettings;
 };
 #endif // _PLUGINSETTINGS_H_

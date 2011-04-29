@@ -139,15 +139,15 @@ TextFileEditor::~TextFileEditor()
 
 void TextFileEditor::initObjects()
 {
-	_modification_timer = new QTimer();
+	_modification_timer.reset(new QTimer);
 	_modification_timer->setSingleShot(true);
 	_modification_timer->setInterval(XINXConfig::self()->config().editor.automaticModelRefreshTimeout);
-	connect(_modification_timer, SIGNAL(timeout()), this, SLOT(updateModel()));
+	connect(_modification_timer.data(), SIGNAL(timeout()), this, SLOT(updateModel()));
 
-	_move_timer = new QTimer();
+	_move_timer.reset(new QTimer);
 	_move_timer->setSingleShot(true);
 	_move_timer->setInterval(100);
-	connect(_move_timer, SIGNAL(timeout()), this, SLOT(updateContext()));
+	connect(_move_timer.data(), SIGNAL(timeout()), this, SLOT(updateContext()));
 
 	// Set the internal editor used by textfileeditor
 	if (! m_view)

@@ -80,12 +80,11 @@ void SearchLogWidgetDelegate::paint(QPainter * painter, const QStyleOptionViewIt
 
 /* SearchDockWidgetImpl */
 
-SearchDockWidgetImpl::SearchDockWidgetImpl(QWidget * parent) : AbstractMessageDockWidget(parent)
+SearchDockWidgetImpl::SearchDockWidgetImpl(QWidget * parent) : AbstractMessageDockWidget(parent), _widget(new Ui::SearchDockWidget)
 {
 	setWindowTitle(tr("Search Result"));
 	setWindowIcon(QIcon(":/images/find.png"));
 
-	_widget = new Ui::SearchDockWidget();
 	_widget->setupUi(this);
 
 	_widget->m_searchTreeWidget->setItemDelegate(new SearchLogWidgetDelegate);

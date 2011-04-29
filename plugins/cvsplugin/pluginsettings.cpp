@@ -58,20 +58,19 @@ void PrivatePluginSettings::deleteSettings()
 
 /* PluginSettings */
 
-PluginSettings::PluginSettings(const PluginSettings & origine)
+PluginSettings::PluginSettings(const PluginSettings & origine) : d(new PrivatePluginSettings(this))
 {
-	d = new PrivatePluginSettings(this);
 	d->m_globals = origine.d->m_globals;
 }
 
-PluginSettings::PluginSettings()
+PluginSettings::PluginSettings() : d(new PrivatePluginSettings(this))
 {
-	d = new PrivatePluginSettings(this);
+
 }
 
 PluginSettings::~PluginSettings()
 {
-	delete d;
+
 }
 
 PluginSettings&PluginSettings::operator=(const PluginSettings& p)

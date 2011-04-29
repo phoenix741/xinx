@@ -30,12 +30,11 @@
 
 /* RCSLogDockWidgetImpl */
 
-RCSLogDockWidgetImpl::RCSLogDockWidgetImpl(QWidget * parent) : AbstractMessageDockWidget(parent)
+RCSLogDockWidgetImpl::RCSLogDockWidgetImpl(QWidget * parent) : AbstractMessageDockWidget(parent), _widget(new Ui::RCSDockWidget)
 {
 	setWindowTitle(tr("Version Control Logs"));
 	setWindowIcon(QIcon(":/images/ecmascript.png"));
 
-	_widget = new Ui::RCSDockWidget();
 	_widget->setupUi(this);
 	_widget->m_progressBar->hide();
 

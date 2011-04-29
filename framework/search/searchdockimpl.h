@@ -47,7 +47,7 @@ public slots:
 protected slots:
 	void doubleClicked(const QModelIndex & index);;
 private:
-	Ui::SearchDockWidget * _widget;
+	QScopedPointer<Ui::SearchDockWidget> _widget;
 };
 
 #endif /* SEARCHDOCKIMPL_H */

@@ -32,12 +32,11 @@
 
 /* ErrorDockWidgetImpl */
 
-ErrorDockWidgetImpl::ErrorDockWidgetImpl(QWidget * parent) : AbstractMessageDockWidget(parent)
+ErrorDockWidgetImpl::ErrorDockWidgetImpl(QWidget * parent) : AbstractMessageDockWidget(parent), _widget(new Ui::ErrorDockWidget)
 {
 	setWindowTitle(tr("Warnings/Errors"));
 	setWindowIcon(QIcon(":/images/warning.png"));
 
-	_widget = new Ui::ErrorDockWidget();
 	_widget->setupUi(this);
 
 	QAction * clearAction = new QAction(tr("Clear the errors"), this);

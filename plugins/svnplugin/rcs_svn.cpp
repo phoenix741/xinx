@@ -383,8 +383,8 @@ RCS_SVN::RCS_SVN(const QString & basePath) : RCS(basePath)
 
 RCS_SVN::~RCS_SVN()
 {
-	delete m_context;
 	delete m_client;
+	delete m_context;
 }
 
 RCS::rcsFeatures RCS_SVN::features() const

@@ -165,6 +165,7 @@ void XinxCodeEdit::init(bool action)
 //! Destroy the object
 XinxCodeEdit::~XinxCodeEdit()
 {
+	delete m_matchingText;
 	m_editor->editor()->setInputBinding(0);
 	m_editor->editor()->removeInputBinding(this);
 	delete m_editor;

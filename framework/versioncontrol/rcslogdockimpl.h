@@ -49,7 +49,7 @@ public:
 private slots:
 	void timeout();
 private:
-	Ui::RCSDockWidget * _widget;
+	QScopedPointer<Ui::RCSDockWidget> _widget;
 	bool _rcsVisible;
 	QTimer * _timer;
 };

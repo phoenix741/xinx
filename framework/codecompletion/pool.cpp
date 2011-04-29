@@ -55,7 +55,8 @@ Pool::Pool() : d(new PrivatePool)
 
 Pool::~Pool()
 {
-
+	qDeleteAll(d->_factories.values());
+	qDeleteAll(d->_parsers.values());
 }
 
 void Pool::updateParsers()

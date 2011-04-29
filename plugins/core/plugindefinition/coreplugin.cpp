@@ -79,6 +79,7 @@ CorePlugin::CorePlugin() : m_dock(0)
 
 CorePlugin::~CorePlugin()
 {
+	qDebug() << "Destroy plugin CorePlugin";
 	qDeleteAll(m_fileTypes);
 	delete SelfWebPluginSettings::self();
 }

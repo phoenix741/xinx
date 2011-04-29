@@ -219,19 +219,18 @@ void PrivateFilesWatcher::removePaths(const QStringList & paths)
  * Create a FileWatcher with a file name
  * \param filename The file name to watch.
  */
-FileWatcher::FileWatcher(const QString & filename)
+FileWatcher::FileWatcher(const QString & filename) : d(new PrivateFileWatcher(this))
 {
-	d = new PrivateFileWatcher(this);
 	d->m_filename = filename;
 
-	connect(FileWatcherManager::instance(), SIGNAL(fileChanged(QString)), d, SLOT(fileChanged(QString)), Qt::QueuedConnection);
+	connect(FileWatcherManager::instance(), SIGNAL(fileChanged(QString)), d.data(), SLOT(fileChanged(QString)), Qt::QueuedConnection);
 	FileWatcherManager::instance()->addFile(filename);
 }
 
 /*! Destroy the FileWatcher */
 FileWatcher::~FileWatcher()
 {
-	delete d;
+
 }
 
 /*!
@@ -274,17 +273,15 @@ void FileWatcher::activate()
 /*!
  * Create a FilesWatcher with a file name
  */
-FilesWatcher::FilesWatcher(QObject* parent) : QObject(parent)
+FilesWatcher::FilesWatcher(QObject* parent) : QObject(parent), d(new PrivateFilesWatcher(this))
 {
-	d = new PrivateFilesWatcher(this);
-
-	connect(FileWatcherManager::instance(), SIGNAL(fileChanged(QString)), d, SLOT(fileChanged(QString)), Qt::QueuedConnection);
+	connect(FileWatcherManager::instance(), SIGNAL(fileChanged(QString)), d.data(), SLOT(fileChanged(QString)), Qt::QueuedConnection);
 }
 
 /*! Destroy the FilesWatcher */
 FilesWatcher::~FilesWatcher()
 {
-	delete d;
+
 }
 
 void FilesWatcher::addPath(const QString& path)

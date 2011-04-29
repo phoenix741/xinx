@@ -38,15 +38,17 @@ public:
 	virtual QString description()
 	{
 		return tr("Web Services Stream");
-	};
+	}
+
 	virtual QString match()
 	{
 		return "*.fws";
-	};
+	}
+
 	virtual QString icon()
 	{
 		return ":/services/images/typefws.png";
-	};
+	}
 
 	virtual AbstractEditor * createEditor()
 	{

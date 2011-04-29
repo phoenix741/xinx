@@ -93,6 +93,8 @@ GenerixPlugin::GenerixPlugin() : m_dock(0)
 
 GenerixPlugin::~GenerixPlugin()
 {
+	qDebug() << "Destroy the plugin GenerixPlugin";
+	qDeleteAll(m_fileTypes);
 }
 
 bool GenerixPlugin::initializePlugin(const QString & lang)
