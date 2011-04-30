@@ -64,12 +64,12 @@
     <message>
         <location filename="../actions/commentactions.cpp" line="39"/>
         <source>Comment the selected text</source>
-        <translation>Commenter le texte selectionné</translation>
+        <translation type="unfinished">Commenter le texte sélectionné</translation>
     </message>
     <message>
         <location filename="../actions/commentactions.cpp" line="40"/>
         <source>Comment the selected text by using the language syntax. &lt;ul&gt;&lt;li&gt;In &lt;b&gt;XML&lt;/b&gt; like format &lt;i&gt;&amp;lt;!-- comment --&amp;gt;&lt;/i&gt;&lt;/li&gt; &lt;li&gt;In &lt;b&gt;Javascript&lt;/b&gt; : &lt;i&gt;/* comment */&lt;/i&gt; &lt;/li&gt;&lt;/ul&gt;</source>
-        <translation>Commente le texte selectionné en utilisant la syntaxe du language. &lt;ul&gt;&lt;li&gt;Dans un format comme &lt;b&gt;XML&lt;/b&gt; se sera &lt;i&gt;&amp;lt;!-- comment --&amp;gt;&lt;/i&gt;&lt;/li&gt; &lt;li&gt;En &lt;b&gt;Javascript&lt;/b&gt; : &lt;i&gt;/* comment */&lt;/i&gt; &lt;/li&gt;&lt;/ul&gt;</translation>
+        <translation type="unfinished">Commente le texte sélectionné en utilisant la syntaxe du langage. &lt;ul&gt;&lt;li&gt;Dans un format comme &lt;b&gt;XML&lt;/b&gt; ce sera &lt;i&gt;&amp;lt;!-- comment --&amp;gt;&lt;/i&gt;&lt;/li&gt; &lt;li&gt;En &lt;b&gt;Javascript&lt;/b&gt; : &lt;i&gt;/* comment */&lt;/i&gt; &lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
 </context>
 <context>
@@ -90,7 +90,7 @@
     <message>
         <location filename="../actions/clipboardactions.cpp" line="49"/>
         <source>Copy the selection to the clipboard</source>
-        <translation>Copie la selection dans le presse-papier</translation>
+        <translation type="unfinished">Copie la sélection dans le presse-papier</translation>
     </message>
 </context>
 <context>
@@ -98,7 +98,7 @@
     <message>
         <location filename="../editors/models/html_xsl_base/xmlcompletionparser.cpp" line="72"/>
         <source>The file is can&apos;t be used to do completion.</source>
-        <translation>Le fichier ne peux être utiliser pour faire de la complétion.</translation>
+        <translation type="unfinished">Le fichier ne peut être utiliser pour faire de la complétion.</translation>
     </message>
     <message>
         <location filename="../editors/models/html_xsl_base/xmlcompletionparser.cpp" line="96"/>
@@ -126,7 +126,7 @@
     <message>
         <location filename="../editors/models/xsl/stylesheet_parser.cpp" line="261"/>
         <source>Element at line : %1</source>
-        <translation>Element à la ligne : %1</translation>
+        <translation type="unfinished">Elément à la ligne : %1</translation>
     </message>
 </context>
 <context>
@@ -139,7 +139,7 @@
     <message>
         <location filename="../plugindefinition/coreplugin.cpp" line="100"/>
         <source>Minimum editors, completer, docks for XINX.</source>
-        <translation>Editeur, completer, et docks minimal pour faire tourner XINX.</translation>
+        <translation type="unfinished">Editeur, compléter, et docks minimal pour faire tourner XINX.</translation>
     </message>
     <message>
         <location filename="../plugindefinition/coreplugin.cpp" line="168"/>
@@ -154,7 +154,7 @@
     <message>
         <location filename="../plugindefinition/coreplugin.cpp" line="170"/>
         <source>&amp;Execute</source>
-        <translation>&amp;Executer</translation>
+        <translation type="unfinished">&amp;Exécuter</translation>
     </message>
 </context>
 <context>
@@ -167,7 +167,7 @@
     <message>
         <location filename="../actions/clipboardactions.cpp" line="29"/>
         <source>Cut the selection to the clipboard</source>
-        <translation>Couper la selection vers le presse-papier</translation>
+        <translation type="unfinished">Couper la sélection vers le presse-papier</translation>
     </message>
 </context>
 <context>
@@ -216,7 +216,7 @@
     <message>
         <location filename="../config/editorsconfigform.ui" line="49"/>
         <source>&amp;Add closing balise automatically (for the corresponding opening balise)</source>
-        <translation>&amp;Ajouter les balise fermante automatiquement (pour la balise ouvrante correspondante)</translation>
+        <translation type="unfinished">&amp;Ajouter les balises fermantes automatiquement (pour la balise ouvrante correspondante)</translation>
     </message>
     <message>
         <location filename="../config/editorsconfigform.ui" line="59"/>
@@ -247,7 +247,7 @@
     <message>
         <location filename="../actions/texteditoractions.cpp" line="35"/>
         <source>Move the cursor to line, choose by user</source>
-        <translation>Déplacer le curseur à la ligne, choisis par l&apos;utilisateur</translation>
+        <translation type="unfinished">Déplacer le curseur à la ligne, choisi par l&apos;utilisateur</translation>
     </message>
     <message>
         <location filename="../actions/texteditoractions.cpp" line="36"/>
@@ -386,7 +386,7 @@
     <message>
         <location filename="../actions/texteditoractions.cpp" line="157"/>
         <source>Make the selected character lower case</source>
-        <translation>Passe les caractères selectionnés en minuscule</translation>
+        <translation type="unfinished">Passe les caractères sélectionnés en minuscule</translation>
     </message>
 </context>
 <context>
@@ -394,7 +394,7 @@
     <message>
         <location filename="../pluginresolver/manualfileresolver.cpp" line="49"/>
         <source>Manual Resolver</source>
-        <translation>Resolver manuel</translation>
+        <translation type="unfinished">Résolveur manuel</translation>
     </message>
 </context>
 <context>
@@ -459,7 +459,7 @@
     <message>
         <location filename="../editors/models/js/jscontentviewparser.cpp" line="80"/>
         <source>Can&apos;t attach variable to function ?</source>
-        <translation>Ne peux attacher une variable à la fonction ?</translation>
+        <translation type="unfinished">Ne peut attacher une variable à la fonction ?</translation>
     </message>
     <message>
         <location filename="../editors/models/js/jscontentviewparser.cpp" line="92"/>
@@ -484,17 +484,17 @@
         <location filename="../editors/models/js/jscontentviewparser.cpp" line="328"/>
         <location filename="../editors/models/js/jscontentviewparser.cpp" line="350"/>
         <source>I wait an identifier</source>
-        <translation>J&apos;attend un identificateur</translation>
+        <translation type="unfinished">J&apos;attends un identificateur</translation>
     </message>
     <message>
         <location filename="../editors/models/js/jscontentviewparser.cpp" line="373"/>
         <source>I wait an identifier.</source>
-        <translation>J&apos;attend un identificateur.</translation>
+        <translation type="unfinished">J&apos;attends un identificateur.</translation>
     </message>
     <message>
         <location filename="../editors/models/js/jscontentviewparser.cpp" line="380"/>
         <source>I wait a &apos;(&apos;</source>
-        <translation>J&apos;attend un &apos;(&apos;</translation>
+        <translation type="unfinished">J&apos;attends un &apos;(&apos;</translation>
     </message>
 </context>
 <context>
@@ -560,7 +560,7 @@ Valeur = %2</translation>
     <message>
         <location filename="../actions/stylesheetaction.cpp" line="92"/>
         <source>Execute X-Query on the path</source>
-        <translation>Executer la requête X-Query sur le chemin</translation>
+        <translation type="unfinished">Exécuter la requête X-Query sur le chemin</translation>
     </message>
 </context>
 <context>
@@ -568,7 +568,7 @@ Valeur = %2</translation>
     <message>
         <location filename="../pluginproperty/searchpathlistprjpageform.ui" line="14"/>
         <source>Search Path List Resolver</source>
-        <translation>Resolver de recherche de chemin</translation>
+        <translation type="unfinished">Résolveur de recherche de chemin</translation>
     </message>
 </context>
 <context>
@@ -581,7 +581,7 @@ Valeur = %2</translation>
     <message>
         <location filename="../actions/editoractions.cpp" line="71"/>
         <source>Select all the text of the current editor</source>
-        <translation>Selectionner tout le texte de l&apos;éditeur courant</translation>
+        <translation type="unfinished">Sélectionner tout le texte de l&apos;éditeur courant</translation>
     </message>
 </context>
 <context>
@@ -589,7 +589,7 @@ Valeur = %2</translation>
     <message>
         <location filename="../actions/texteditoractions.cpp" line="186"/>
         <source>Show space and &amp;Tabulation</source>
-        <translation>Afficher les espaces et les &amp;tabulation</translation>
+        <translation type="unfinished">Afficher les espaces et les &amp;tabulations</translation>
     </message>
 </context>
 <context>
@@ -663,7 +663,7 @@ Valeur = %2</translation>
     <message>
         <location filename="../actions/commentactions.cpp" line="71"/>
         <source>Uncomment the selected text if commented</source>
-        <translation>Décommente le texte selectionné si commenté</translation>
+        <translation type="unfinished">Décommente le texte sélectionné si commenté</translation>
     </message>
     <message>
         <location filename="../actions/commentactions.cpp" line="72"/>
@@ -702,7 +702,7 @@ Valeur = %2</translation>
     <message>
         <location filename="../actions/texteditoractions.cpp" line="126"/>
         <source>Make the selected character upper case</source>
-        <translation>Passe le texte selectionné en majuscule</translation>
+        <translation type="unfinished">Passe le texte sélectionné en majuscule</translation>
     </message>
 </context>
 <context>
@@ -726,7 +726,7 @@ Valeur = %2</translation>
     <message>
         <location filename="../actions/validationaction.cpp" line="92"/>
         <source>File validate with success</source>
-        <translation>Fichier validé avec succé</translation>
+        <translation type="unfinished">Fichier validé avec succés</translation>
     </message>
 </context>
 <context>
@@ -758,12 +758,12 @@ Valeur = %2</translation>
     <message>
         <location filename="../pluginproperty/parserprojectpropertyimpl.cpp" line="97"/>
         <source>Web Module Property Page</source>
-        <translation>Page des propriété du web module</translation>
+        <translation type="unfinished">Page des propriétés du web module</translation>
     </message>
     <message>
         <location filename="../pluginproperty/parserprojectpropertyimpl.cpp" line="98"/>
         <source>Define information about the web module, like the directory where find JS, Image and CSS.</source>
-        <translation>Définit les informations à propos du web module, comme le dossier où on peux trouver les JS, images et CSS.</translation>
+        <translation type="unfinished">Définit les informations à propos du web module, comme le dossier où on peut trouver les JS, images et CSS.</translation>
     </message>
     <message>
         <location filename="../pluginproperty/parserprojectpropertyimpl.cpp" line="102"/>
@@ -812,7 +812,7 @@ Valeur = %2</translation>
     <message>
         <location filename="../docks/datastream/xquery.ui" line="26"/>
         <source>&amp;Current X-PATH :</source>
-        <translation>X-PATH &amp;Courrant :</translation>
+        <translation type="unfinished">X-PATH &amp;Courant :</translation>
     </message>
     <message>
         <location filename="../docks/datastream/xquery.ui" line="85"/>
@@ -822,7 +822,7 @@ Valeur = %2</translation>
     <message>
         <location filename="../docks/datastream/xquery.ui" line="101"/>
         <source>&amp;Result (encapsulated in the Result balise)</source>
-        <translation>R&amp;esultat (encapsulé dans une balise Result)</translation>
+        <translation type="unfinished">R&amp;ésultat (encapsulé dans une balise Result)</translation>
     </message>
 </context>
 <context>
@@ -894,7 +894,7 @@ Valeur = %2</translation>
     <message>
         <location filename="../config/xmlpresconfigform.ui" line="38"/>
         <source>&amp;Element to hide :</source>
-        <translation>&amp;Element à cacher :</translation>
+        <translation type="unfinished">&amp;Elément à cacher :</translation>
     </message>
     <message>
         <location filename="../config/xmlpresconfigform.ui" line="57"/>
@@ -952,7 +952,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../config/xmlpresconfigform.ui" line="120"/>
         <source>Color of the node of view type (Generally begins by &lt;i&gt;Vue...&lt;/i&gt;)</source>
-        <translation>Couleur du noeud de type vue (Commençant générallement par &lt;i&gt;Vue...&lt;/i&gt;)</translation>
+        <translation type="unfinished">Couleur du noeud de type vue (Commençant généralement par &lt;i&gt;Vue...&lt;/i&gt;)</translation>
     </message>
     <message>
         <location filename="../config/xmlpresconfigform.ui" line="127"/>
@@ -962,7 +962,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../config/xmlpresconfigform.ui" line="137"/>
         <source>Color of a node with a sub-element of name error.</source>
-        <translation>Couleur des noeud avec un sous-élément portant le nom error.</translation>
+        <translation type="unfinished">Couleur des noeuds avec un sous-élément portant le nom error.</translation>
     </message>
     <message>
         <location filename="../config/xmlpresconfigform.ui" line="144"/>
@@ -980,7 +980,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../config/xmlpresconfigformimpl.cpp" line="45"/>
         <source>XML Pres.</source>
-        <translation>Flux de donnée</translation>
+        <translation type="unfinished">Flux de données</translation>
     </message>
 </context>
 <context>
@@ -988,7 +988,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../docks/datastream/xmlpresentationdockthread.cpp" line="176"/>
         <source>Can&apos;t read file %1 because of error &quot;%2&quot;.</source>
-        <translation>Ne peux lire le fichier %1 à cause de l&apos;erreur &quot;%2&quot;.</translation>
+        <translation type="unfinished">Ne peut lire le fichier %1 à cause de l&apos;erreur &quot;%2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -996,7 +996,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../docks/datastream/xmlpresentationdockwidget.cpp" line="35"/>
         <source>Xml Presentation</source>
-        <translation>Flux de donnée</translation>
+        <translation type="unfinished">Flux de données</translation>
     </message>
 </context>
 <context>
@@ -1022,14 +1022,14 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../docks/datastream/xmlpresentationwidget.ui" line="59"/>
         <source>Filter to use in the view. &lt;b&gt;XINX&lt;/b&gt; searches the node where the name matches the filter (literal or regular expression).</source>
-        <translation>Filtre à utiliser ans la vue. &lt;b&gt;XINX&lt;/b&gt; recherche les noeud dont le nom correspond au filtre (literallement ou suivant une expression rationnelle).</translation>
+        <translation type="unfinished">Filtre à utiliser dans la vue. &lt;b&gt;XINX&lt;/b&gt; recherche les noeuds dont le nom correspond au filtre (littéralement ou suivant une expression rationnelle).</translation>
     </message>
     <message>
         <location filename="../docks/datastream/xmlpresentationwidget.ui" line="66"/>
         <source>If &lt;i&gt;Sub-element&lt;/i&gt; is selected when an element is found, all sub-elements are showed. &lt;br/&gt;
 If &lt;i&gt;None&lt;/i&gt; is selected only matched elements is showed.</source>
-        <translation>Si  &lt;i&gt;Sous-élément&lt;/i&gt; est selectionné, quand un noeud est trouvé, tous les sous-éléments sont affiché.&lt;/br&gt;
-Si &lt;i&gt;Aucun&lt;/i&gt; est selectionné, seul les noeuds trouvé sont affiché.</translation>
+        <translation type="unfinished">Si  &lt;i&gt;Sous-élément&lt;/i&gt; est sélectionné, quand un noeud est trouvé, tous les sous-éléments sont affichés.&lt;/br&gt;
+Si &lt;i&gt;Aucun&lt;/i&gt; est sélectionné, seuls les noeuds trouvés sont affichés.</translation>
     </message>
     <message>
         <location filename="../docks/datastream/xmlpresentationwidget.ui" line="71"/>
@@ -1047,7 +1047,7 @@ Si &lt;i&gt;Aucun&lt;/i&gt; est selectionné, seul les noeuds trouvé sont affic
     <message>
         <location filename="../editors/widgeteditor/xml/xmltexteditor.cpp" line="253"/>
         <source>No XML context type found. It&apos;s a problem</source>
-        <translation>Pas de contenue de type XML trouvé. C&apos;est un problème</translation>
+        <translation type="unfinished">Pas de contenu de type XML trouvé. C&apos;est un problème</translation>
     </message>
 </context>
 <context>
@@ -1055,7 +1055,7 @@ Si &lt;i&gt;Aucun&lt;/i&gt; est selectionné, seul les noeuds trouvé sont affic
     <message>
         <location filename="../editors/widgeteditor/xsl/xsltexteditor.cpp" line="84"/>
         <source>No XML context type found. It&apos;s a problem</source>
-        <translation>Pas de contenue de type XML trouvé. C&apos;est un problème</translation>
+        <translation type="unfinished">Pas de contenu de type XML trouvé. C&apos;est un problème</translation>
     </message>
 </context>
 </TS>

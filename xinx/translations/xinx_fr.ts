@@ -21,7 +21,7 @@
     <message>
         <location filename="../main.cpp" line="174"/>
         <source>Load translations ...</source>
-        <translation>Lecture de la traductions ...</translation>
+        <translation type="unfinished">Lecture de la traduction ...</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="183"/>
@@ -31,12 +31,12 @@
     <message>
         <location filename="../main.cpp" line="183"/>
         <source>There&apos;s an existing recover session. Do you wan try to recover ?</source>
-        <translation>Il y existe une session de récupéréation. Voulez-vous essayé de récupérer votre environnement ?</translation>
+        <translation type="unfinished">Il existe une session de récupération. Voulez-vous essayer de récupérer votre environnement ?</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="201"/>
         <source>Load available marks ...</source>
-        <translation>Lecture des marques disponible ...</translation>
+        <translation type="unfinished">Lecture des marques disponibles ...</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="206"/>

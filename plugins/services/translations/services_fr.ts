@@ -26,12 +26,12 @@
     <message>
         <location filename="../ui/servicesbatch.ui" line="20"/>
         <source>This list contains all web services files. This can be used to launch WebServices in parallele way.</source>
-        <translation>Cette liste contient tous les fichiers de type Service Internet. Cet écran peux être utilisé pour lancer les Services Internet en parrallèle.</translation>
+        <translation type="unfinished">Cette liste contient tous les fichiers de type Service Internet. Cet écran peut être utilisé pour lancer les Services Internet en parallèle.</translation>
     </message>
     <message>
         <location filename="../ui/servicesbatch.ui" line="40"/>
         <source>Execution time</source>
-        <translation>Temps d&apos;éxecution</translation>
+        <translation type="unfinished">Temps d&apos;exécution</translation>
     </message>
     <message>
         <location filename="../ui/servicesbatch.ui" line="45"/>
