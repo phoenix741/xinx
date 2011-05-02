@@ -73,11 +73,13 @@ public:
 	void addOpenedProject(const QString & projectPath);
 	void deleteOpenedProject(const QString & projectPath);
 
-	static QStringList sessionsNames();
 	const QString & sessionName() const;
+
+	static QStringList sessionsNames();
+	static void removeSession(const QString & sessionName);
+
 	void loadSession(const QString & sessionName = QString());
 	void saveSession(const QString & sessionName = QString());
-	void removeSession();
 
 	void setSessionUpdatable(bool value);
 	bool isSessionUpdatable() const;

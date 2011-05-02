@@ -51,7 +51,6 @@ public:
 	ActionGroup * sessionActions() const;
 
 	bool isApplicationStopping() const;
-
 public slots:
 	void setApplicationStopping(bool value);
 

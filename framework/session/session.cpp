@@ -318,18 +318,19 @@ void Session::saveSession(const QString& sessionName)
 {
 	if (! sessionName.isEmpty() && (sessionName != RECOVER_SESSION))
 	{
-		removeSession();
+		removeSession(d->_current_session_name);
 		d->_current_session_name = sessionName;
 	}
 	d->save(sessionName.isEmpty() ? d->_current_session_name : sessionName);
 	emit changed();
 }
 
-void Session::removeSession()
+void Session::removeSession(const QString & sessionName)
 {
+	Q_ASSERT_X(!sessionName.isEmpty(), "Session::removeSession", "Session name can't be empty");
 	QSettings settings;
 	settings.beginGroup("sessions");
-	settings.remove(d->_current_session_name);
+	settings.remove(sessionName);
 	settings.endGroup();
 }
 

@@ -18,9 +18,9 @@ add_subdirectory(plugins/generix)
 add_subdirectory(xinx)
 add_subdirectory(xinxcrash)
 
-file(COPY templates DESTINATION ./)
-file(COPY datas DESTINATION ./)
-file(COPY scripts DESTINATION ./)
+file(COPY templates DESTINATION ./ PATTERN .svn EXCLUDE)
+file(COPY datas DESTINATION ./ PATTERN .svn EXCLUDE)
+file(COPY scripts DESTINATION ./ PATTERN .svn EXCLUDE)
 
 find_package(Doxygen)
 if (DOXYGEN_FOUND)

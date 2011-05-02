@@ -260,7 +260,7 @@ void SessionManager::renameSession(const QString & sessionName)
 
 void SessionManager::deleteSession()
 {
-	d->_current_session->removeSession();
+	Session::removeSession(d->_current_session->sessionName());
 	restoreSession(DEFAULT_SESSION);
 	d->updateSessions();
 }
@@ -268,13 +268,13 @@ void SessionManager::deleteSession()
 void SessionManager::createRecoverSession()
 {
 	saveSession(RECOVER_SESSION, true);
+	d->updateSessions();
 }
 
 void SessionManager::deleteRecoverSession()
 {
-	Session * session = new Session(this, RECOVER_SESSION);
-	session->removeSession();
-	delete session;
+	Session::removeSession(RECOVER_SESSION);
+	d->updateSessions();
 }
 
 } // namespace XinxSession
