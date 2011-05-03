@@ -5,6 +5,7 @@
     <qresource prefix="/">
         <file alias="qcodeedit/marks.qxm">../framework/editors/marks.qxm</file>
         <file alias="qcodeedit/lan/none.qnfa">../framework/editors/none.qnfa</file>
+		<file>images/list-remove.png</file>
         <file>images/error16.png</file>
         <file>images/france.png</file>
         <file>images/usa.png</file>

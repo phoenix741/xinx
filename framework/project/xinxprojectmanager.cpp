@@ -404,6 +404,12 @@ void Manager::openProject(ProjectPtr project)
 	}
 }
 
+void Manager::removeProject(const QString& directory)
+{
+	XINXConfig::self()->config().project.recentProjectFiles.removeAll(directory);
+	d->updateRecentProjects();
+}
+
 void Manager::customizeProject(XinxProject::ProjectPtr project)
 {
 	ProjectPropertyImpl property(qApp->activeWindow());
@@ -538,7 +544,9 @@ void Manager::openWelcomDialog()
 	connect(&dlg, SIGNAL(createNewProject()), SLOT(newProject()));
 	connect(&dlg, SIGNAL(openExistingProject()), d, SLOT(openProjectTriggered()));
 	connect(&dlg, SIGNAL(requestProject(QString)), SLOT(openProject(QString)));
+	connect(&dlg, SIGNAL(removeProject(QString)), SLOT(removeProject(QString)));
 	connect(&dlg, SIGNAL(requestSession(QString)), XinxSession::SessionManager::self(), SLOT(restoreSession(QString)));
+	connect(&dlg, SIGNAL(removeSession(QString)), XinxSession::SessionManager::self(), SLOT(deleteSession(QString)));
 
 	dlg.exec();
 }

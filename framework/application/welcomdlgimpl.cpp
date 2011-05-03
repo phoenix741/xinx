@@ -22,6 +22,7 @@
 #include "welcomdlgimpl_p.h"
 #include <core/xinxconfig.h>
 #include <project/xinxprojectproject.h>
+#include <project/xinxprojectprojectexception.h>
 
 // Qt header
 #include <QFileInfo>
@@ -29,10 +30,11 @@
 #include <QTextStream>
 #include <QDesktopServices>
 #include <QDir>
+#include <QMessageBox>
+#include <QPushButton>
 
 /* WelcomDialogImpl */
-#include <project/xinxprojectprojectexception.h>
-#include <QMessageBox>
+
 
 WelcomDialogImpl::WelcomDialogImpl(QWidget * parent, Qt::WindowFlags f) : QDialog(parent, f)
 {
@@ -41,7 +43,9 @@ WelcomDialogImpl::WelcomDialogImpl(QWidget * parent, Qt::WindowFlags f) : QDialo
 	updateTipOfTheDay();
 
 	connect(m_sessionsWidget, SIGNAL(activated(QString)), SLOT(slotSessionClicked(QString)));
+	connect(m_sessionsWidget, SIGNAL(deleted(QString)), SLOT(slotSessionRemovedClicked(QString)));
 	connect(m_projectWidget, SIGNAL(activated(QString)), SLOT(slotProjectClicked(QString)));
+	connect(m_projectWidget, SIGNAL(deleted(QString)), SLOT(slotProjectRemovedClicked(QString)));
 //	connect(m_sitesWidget, SIGNAL(activated(QString)), SLOT(slotUrlClicked(QString)));
 	connect(m_createNewProjectBtn, SIGNAL(clicked()), SLOT(accept()));
 	connect(m_createNewProjectBtn, SIGNAL(clicked()), SIGNAL(createNewProject()));
@@ -117,10 +121,38 @@ void WelcomDialogImpl::slotProjectClicked(const QString &data)
 	emit requestProject(data);
 }
 
+void WelcomDialogImpl::slotProjectRemovedClicked(const QString& data)
+{
+	for(int i = 0; i < m_projectWidget->count(); i++)
+	{
+		if (data == m_projectWidget->item(i)->data(Qt::UserRole))
+		{
+			QListWidgetItem* item = m_projectWidget->takeItem(i);
+			delete item;
+			break;
+		}
+	}
+	emit removeProject(data);
+}
+
 void WelcomDialogImpl::slotSessionClicked(const QString &data)
 {
 	accept();
 	emit requestSession(data);
+}
+
+void WelcomDialogImpl::slotSessionRemovedClicked(const QString& data)
+{
+	for(int i = 0; i < m_sessionsWidget->count(); i++)
+	{
+		if (data == m_sessionsWidget->item(i)->data(Qt::UserRole))
+		{
+			QListWidgetItem* item = m_sessionsWidget->takeItem(i);
+			delete item;
+			break;
+		}
+	}
+	emit removeSession(data);
 }
 
 void WelcomDialogImpl::slotUrlClicked(const QString &data)
@@ -133,6 +165,8 @@ void WelcomDialogImpl::slotUrlClicked(const QString &data)
 
 WelcomTreeWidget::WelcomTreeWidget(QWidget *parent) : QListWidget(parent), m_bullet(QLatin1String(":/images/bullet_arrow.png"))
 {
+	m_signalMapper = new QSignalMapper(this);
+	connect(m_signalMapper, SIGNAL(mapped(QString)), this, SIGNAL(deleted(QString)));
 	connect(this, SIGNAL(itemClicked(QListWidgetItem *)), SLOT(slotItemClicked(QListWidgetItem *)));
 }
 
@@ -155,9 +189,17 @@ QListWidgetItem *WelcomTreeWidget::addItem(const QString &label, const QString &
 	QLabel * lbl = new QLabel(label);
 	lbl->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-	QBoxLayout *lay = new QVBoxLayout;
+	QPushButton * closeBtn = new QPushButton(this);
+	closeBtn->setIcon(QIcon(":/images/list-remove.png"));
+	closeBtn->setFlat(true);
+	m_signalMapper->setMapping(closeBtn, data);
+	connect(closeBtn, SIGNAL(clicked()), m_signalMapper, SLOT(map()));
+
+	QBoxLayout *lay = new QHBoxLayout;
 	lay->setContentsMargins(3, 2, 0, 0);
 	lay->addWidget(lbl);
+	lay->addStretch();
+	lay->addWidget(closeBtn);
 
 	QWidget *wdg = new QWidget;
 	wdg->setLayout(lay);

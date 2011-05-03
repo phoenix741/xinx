@@ -40,10 +40,14 @@ public:
 public slots:
 	void slotUrlClicked(const QString &data);
 	void slotProjectClicked(const QString &data);
+	void slotProjectRemovedClicked(const QString &data);
 	void slotSessionClicked(const QString &data);
+	void slotSessionRemovedClicked(const QString &data);
 signals:
 	void requestProject(const QString & data);
+	void removeProject(const QString & data);
 	void requestSession(const QString & data);
+	void removeSession(const QString & data);
 	void createNewProject();
 	void openExistingProject();
 private:

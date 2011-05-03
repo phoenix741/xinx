@@ -22,6 +22,7 @@
 
 // Qt header
 #include <QListWidget>
+#include <QSignalMapper>
 
 //! \private
 class WelcomTreeWidget : public QListWidget
@@ -34,6 +35,7 @@ public:
 
 signals:
 	void activated(const QString &data);
+	void deleted(const QString & data);
 
 protected:
 	virtual QSize minimumSizeHint() const;
@@ -44,6 +46,7 @@ private slots:
 
 private:
 	QIcon m_bullet;
+	QSignalMapper * m_signalMapper;
 };
 
 #endif // WELCOMDLGIMPL_P_H

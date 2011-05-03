@@ -258,11 +258,30 @@ void SessionManager::renameSession(const QString & sessionName)
 	d->updateSessions();
 }
 
+void SessionManager::deleteSession(QString sessionName)
+{
+	// If we are on default session, we must remove before
+	if (sessionName == DEFAULT_SESSION)
+	{
+		Session::removeSession(sessionName);
+	}
+
+	if (sessionName == d->_current_session->sessionName())
+	{
+		restoreSession(DEFAULT_SESSION);
+	}
+
+	// Else we remove the session after change it.
+	if (sessionName != DEFAULT_SESSION)
+	{
+		Session::removeSession(sessionName);
+	}
+	d->updateSessions();
+}
+
 void SessionManager::deleteSession()
 {
-	Session::removeSession(d->_current_session->sessionName());
-	restoreSession(DEFAULT_SESSION);
-	d->updateSessions();
+	deleteSession(d->_current_session->sessionName());
 }
 
 void SessionManager::createRecoverSession()

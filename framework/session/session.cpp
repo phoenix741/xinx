@@ -325,12 +325,12 @@ void Session::saveSession(const QString& sessionName)
 	emit changed();
 }
 
-void Session::removeSession(const QString & sessionName)
+void Session::removeSession(const QString & name)
 {
-	Q_ASSERT_X(!sessionName.isEmpty(), "Session::removeSession", "Session name can't be empty");
+	Q_ASSERT_X(!name.isEmpty(), "Session::removeSession", "Session name can't be empty");
 	QSettings settings;
 	settings.beginGroup("sessions");
-	settings.remove(sessionName);
+	settings.remove(name);
 	settings.endGroup();
 }
 

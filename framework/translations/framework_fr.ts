@@ -455,9 +455,19 @@ Seuls les fichiers cochés seront validés.</translation>
         <translation>Traitement du fichier %1</translation>
     </message>
     <message>
-        <location filename="../contentview3/parser.cpp" line="298"/>
+        <location filename="../contentview3/parser.cpp" line="299"/>
+        <source>The file %1 will be locked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../contentview3/parser.cpp" line="302"/>
         <source>Can&apos;t open &quot;%1&quot; : %2</source>
         <translation type="unfinished">Ne peut ouvrir &quot;%1&quot; : %2</translation>
+    </message>
+    <message>
+        <location filename="../contentview3/parser.cpp" line="314"/>
+        <source>The file %1 is unlocked</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1302,7 +1312,7 @@ Voulez-vous réellement actualiser ce fichier ?</translation>
         <translation>Avertissement/Erreurs</translation>
     </message>
     <message>
-        <location filename="../core/errordockimpl.cpp" line="43"/>
+        <location filename="../core/errordockimpl.cpp" line="42"/>
         <source>Clear the errors</source>
         <translation>Effacer les erreurs</translation>
     </message>
@@ -1676,96 +1686,96 @@ Voulez-vous réellement actualiser ce fichier ?</translation>
         <translation>Toujours afficher la fenêtre d&apos;exécution des modèles</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="485"/>
-        <location filename="../application/mainformimpl.cpp" line="486"/>
-        <location filename="../application/mainformimpl.cpp" line="582"/>
+        <location filename="../application/mainformimpl.cpp" line="487"/>
+        <location filename="../application/mainformimpl.cpp" line="488"/>
+        <location filename="../application/mainformimpl.cpp" line="584"/>
         <source>Unknown</source>
         <translation>Inconnu</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="492"/>
+        <location filename="../application/mainformimpl.cpp" line="494"/>
         <source>Ready</source>
         <translation>Prêt</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="518"/>
+        <location filename="../application/mainformimpl.cpp" line="520"/>
         <source>Snipet is not supported in this kind of editor.</source>
         <translation type="unfinished">Les modèles ne sont pas supportés par ce type d&apos;éditeur.</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="581"/>
+        <location filename="../application/mainformimpl.cpp" line="583"/>
         <source>No codec</source>
         <translation>Pas d&apos;encodage</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="640"/>
+        <location filename="../application/mainformimpl.cpp" line="642"/>
         <source>Printed</source>
         <translation>Imprimé</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="658"/>
+        <location filename="../application/mainformimpl.cpp" line="660"/>
         <source>Replace text</source>
         <translation>Remplacer le text</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="658"/>
+        <location filename="../application/mainformimpl.cpp" line="660"/>
         <source>Replace this occurence</source>
         <translation>Remplacer cette occurence</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="710"/>
-        <location filename="../application/mainformimpl.cpp" line="714"/>
+        <location filename="../application/mainformimpl.cpp" line="712"/>
+        <location filename="../application/mainformimpl.cpp" line="716"/>
         <source>Search End</source>
         <translation type="unfinished">Recherche terminée</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="710"/>
+        <location filename="../application/mainformimpl.cpp" line="712"/>
         <source>Search have been aborted</source>
         <translation type="unfinished">La recherche a été annulée</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="714"/>
+        <location filename="../application/mainformimpl.cpp" line="716"/>
         <source>All string are finded</source>
         <translation>Toutes les chaines ont été trouvées</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="777"/>
-        <location filename="../application/mainformimpl.cpp" line="784"/>
+        <location filename="../application/mainformimpl.cpp" line="779"/>
+        <location filename="../application/mainformimpl.cpp" line="786"/>
         <source>Search/Replace</source>
         <translation>Rechercher/Remplacer</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="778"/>
+        <location filename="../application/mainformimpl.cpp" line="780"/>
         <source>%1 occurences of &apos;%2&apos; replaced.</source>
         <translation type="unfinished">%1 occurences de &apos;%2&apos; remplacées.</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="785"/>
+        <location filename="../application/mainformimpl.cpp" line="787"/>
         <source>%1 occurences of &apos;%2&apos; %3. Return to the beginning of the document ?</source>
         <translation>%1 occurences de &apos;%2&apos; %3. Retourner au début du document ?</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="785"/>
+        <location filename="../application/mainformimpl.cpp" line="787"/>
         <source>replaced</source>
         <translation>remplacées</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="785"/>
+        <location filename="../application/mainformimpl.cpp" line="787"/>
         <source>finded</source>
         <translation>trouvées</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="896"/>
+        <location filename="../application/mainformimpl.cpp" line="898"/>
         <source>File loaded</source>
         <translation>Fichier chargé</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="903"/>
+        <location filename="../application/mainformimpl.cpp" line="905"/>
         <source>File saved</source>
         <translation>Fichier sauvé</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="910"/>
+        <location filename="../application/mainformimpl.cpp" line="912"/>
         <source>File closed</source>
         <translation>Fichier fermé</translation>
     </message>
@@ -2312,117 +2322,117 @@ Voulez-vous réellement actualiser ce fichier ?</translation>
 <context>
     <name>PrivateProjectDirectoryWidgetImpl</name>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="44"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="47"/>
         <source>C&amp;reate directory</source>
         <translation>Cré&amp;er un dossier</translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="46"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="49"/>
         <source>&amp;Create file ...</source>
         <translation>&amp;Créer un fichier ...</translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="48"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="51"/>
         <source>&amp;Open</source>
         <translation>&amp;Ouvrir</translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="50"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="53"/>
         <source>Remo&amp;ve</source>
         <translation>Sup&amp;primer</translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="52"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="55"/>
         <source>Rename</source>
         <translation type="unfinished">Renommer</translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="55"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="58"/>
         <source>&amp;Copy filename to Clipboard</source>
         <translation type="unfinished">C&amp;opie le nom du fichier vers le presse papier</translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="57"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="60"/>
         <source>Co&amp;py path to clipboard</source>
         <translation type="unfinished">Cop&amp;ie le chemin dans le presse papier</translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="60"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="63"/>
         <source>Set the project as &amp;default</source>
         <translation>Définir comme projet par &amp;défaut</translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="62"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="65"/>
         <source>Pro&amp;ject Property</source>
         <translation>Propriété du pro&amp;jet</translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="64"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="67"/>
         <source>C&amp;lose project</source>
         <translation>F&amp;ermer le projet</translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="67"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="70"/>
         <source>Compare with the version management</source>
         <translation>Comparer avec le gestionnaire de version</translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="69"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="72"/>
         <source>Co&amp;mpare files</source>
         <translation>Co&amp;mparer les fichiers</translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="72"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="75"/>
         <source>Update project</source>
         <translation>Mise à jour du projet</translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="74"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="77"/>
         <source>Commit project</source>
         <translation>Valide le projet</translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="76"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="79"/>
         <source>Add file(s) to project</source>
         <translation>Ajouter le(s) fichier(s) aux projets</translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="78"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="81"/>
         <source>Delete file(s) from project</source>
         <translation>Supprimer le(s) fichier(s) aux projets</translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="80"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="83"/>
         <source>Revert file</source>
         <translation>Annuler les modifications</translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="82"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="85"/>
         <source>Blame file</source>
         <translation type="unfinished">Dénoncer</translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="84"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="87"/>
         <source>Show log</source>
         <translation>Afficher le journal</translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="256"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="259"/>
         <source>Create a new directory</source>
         <translation>Créer un nouveau dossier</translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="256"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="259"/>
         <source>Enter the name of the new directory</source>
         <translation>Entrer le nom du nouveau dossier</translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="308"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="311"/>
         <source>Delete file(s)</source>
         <translation>Supprimer le(s) fichier(s)</translation>
     </message>
     <message numerus="yes">
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="308"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="311"/>
         <source>Can you confirm that you want remove %Ln file(s)</source>
         <translation>
             <numerusform>Pouvez-vous confirmer que vous voulez supprimer %n fichiers</numerusform>
@@ -2430,14 +2440,24 @@ Voulez-vous réellement actualiser ce fichier ?</translation>
         </translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="328"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="331"/>
         <source>Rename a file</source>
         <translation>Renommer le fichier</translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="328"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="331"/>
         <source>Enter the name of the new file name</source>
         <translation type="unfinished">Entrer le nom du nouveau fichier</translation>
+    </message>
+    <message>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="638"/>
+        <source>Filter apply in %1 ms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="668"/>
+        <source>Expand/Collapse tree in %1 ms</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2663,17 +2683,17 @@ Voulez-vous réellement actualiser ce fichier ?</translation>
 <context>
     <name>ProjectDirectoryWidgetImpl</name>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="698"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="693"/>
         <source>Project Directory</source>
         <translation>Dossier projet</translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="701"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="696"/>
         <source>Toggled Flat View</source>
         <translation type="unfinished">Basculer vers la vue plane</translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="702"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="697"/>
         <source>If checked the list is showed as flat instead of tree. Each list of file is preceded of a directory header.</source>
         <translation type="unfinished">Si coché la liste est affichée à plat au lieu d&apos;être affichée sous forme d&apos;arbre. Chaque liste de fichier est précédée d&apos;un entête avec le nom du dossier.</translation>
     </message>
@@ -3175,9 +3195,16 @@ Un projet peut également être connecté à des services Internet.</translation
 <context>
     <name>SnipetDockWidget</name>
     <message>
-        <location filename="../snipets/snipetdockwidget.cpp" line="53"/>
         <source>Snipets</source>
-        <translation>Modèles</translation>
+        <translation type="obsolete">Modèles</translation>
+    </message>
+</context>
+<context>
+    <name>SnipetDockWidgetPrivate</name>
+    <message>
+        <location filename="../snipets/snipetdockwidget.cpp" line="52"/>
+        <source>Snipets</source>
+        <translation type="unfinished">Modèles</translation>
     </message>
 </context>
 <context>
@@ -3731,7 +3758,7 @@ Cet assistant va convertir le projet à la dernière version de de XINX. L&apos;
 <context>
     <name>XinxCodeEdit</name>
     <message>
-        <location filename="../editors/xinxcodeedit.cpp" line="923"/>
+        <location filename="../editors/xinxcodeedit.cpp" line="924"/>
         <source>Can&apos;t comment this type of document</source>
         <translation>Ne peut commenter ce type de document</translation>
     </message>
@@ -3739,29 +3766,44 @@ Cet assistant va convertir le projet à la dernière version de de XINX. L&apos;
 <context>
     <name>XinxJob</name>
     <message>
-        <location filename="../jobs/xinxjob.cpp" line="67"/>
+        <location filename="../jobs/xinxjob.cpp" line="35"/>
+        <source>A Job is created : %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../jobs/xinxjob.cpp" line="42"/>
+        <source>A job is destroyed : %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../jobs/xinxjob.cpp" line="80"/>
         <source>Waiting ...</source>
         <translation>En attente ...</translation>
     </message>
     <message>
-        <location filename="../jobs/xinxjob.cpp" line="69"/>
+        <location filename="../jobs/xinxjob.cpp" line="82"/>
         <source>Running ...</source>
         <translation>En cours ...</translation>
     </message>
     <message>
-        <location filename="../jobs/xinxjob.cpp" line="71"/>
+        <location filename="../jobs/xinxjob.cpp" line="84"/>
         <source>Cleaning ...</source>
         <translation>Nettoyage ...</translation>
     </message>
     <message>
-        <location filename="../jobs/xinxjob.cpp" line="73"/>
+        <location filename="../jobs/xinxjob.cpp" line="86"/>
         <source>Unknown</source>
         <translation>Inconnu</translation>
     </message>
     <message>
-        <location filename="../jobs/xinxjob.cpp" line="143"/>
+        <location filename="../jobs/xinxjob.cpp" line="159"/>
         <source>Unknown exception</source>
         <translation>Exception inconnue</translation>
+    </message>
+    <message>
+        <location filename="../jobs/xinxjob.cpp" line="162"/>
+        <source>The job &quot;%1&quot; take %2 ms.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3783,12 +3825,12 @@ Cet assistant va convertir le projet à la dernière version de de XINX. L&apos;
 <context>
     <name>XinxPluginsLoader</name>
     <message>
-        <location filename="../plugins/xinxpluginsloader.cpp" line="471"/>
+        <location filename="../plugins/xinxpluginsloader.cpp" line="473"/>
         <source>All managed files (%1)</source>
         <translation>Tous les fichiers gérés (%1)</translation>
     </message>
     <message>
-        <location filename="../plugins/xinxpluginsloader.cpp" line="476"/>
+        <location filename="../plugins/xinxpluginsloader.cpp" line="478"/>
         <source>All %1 (%2)</source>
         <translation>Tous les %1 (%2)</translation>
     </message>
@@ -3833,7 +3875,7 @@ Cet assistant va convertir le projet à la dernière version de de XINX. L&apos;
 <context>
     <name>XinxProject::DirectoryFetcher</name>
     <message>
-        <location filename="../project/projectlistmodel.cpp" line="93"/>
+        <location filename="../project/projectlistmodel.cpp" line="104"/>
         <source>Fetch files of %1</source>
         <translation>Récupére les fichiers de %1</translation>
     </message>
@@ -3937,43 +3979,50 @@ Cet assistant va convertir le projet à la dernière version de de XINX. L&apos;
 <context>
     <name>XinxProject::PrivateProjectListModel</name>
     <message>
-        <location filename="../project/projectlistmodel.cpp" line="693"/>
+        <location filename="../project/projectlistmodel.cpp" line="650"/>
+        <location filename="../project/projectlistmodel.cpp" line="722"/>
+        <location filename="../project/projectlistmodel.cpp" line="749"/>
         <source>Node for directory %1 not found</source>
         <translation>Le noeud pour le dossier %1 n&apos;a pas été trouvé</translation>
     </message>
     <message>
-        <location filename="../project/projectlistmodel.cpp" line="817"/>
+        <location filename="../project/projectlistmodel.cpp" line="853"/>
+        <source>Not in Revision</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../project/projectlistmodel.cpp" line="855"/>
         <source>Unknown</source>
         <translation>Inconnu</translation>
     </message>
     <message>
-        <location filename="../project/projectlistmodel.cpp" line="819"/>
+        <location filename="../project/projectlistmodel.cpp" line="857"/>
         <source>Locally modified</source>
         <translation>Modifié localement</translation>
     </message>
     <message>
-        <location filename="../project/projectlistmodel.cpp" line="821"/>
+        <location filename="../project/projectlistmodel.cpp" line="859"/>
         <source>Locally added</source>
         <translation>Ajouté localement</translation>
     </message>
     <message>
-        <location filename="../project/projectlistmodel.cpp" line="823"/>
+        <location filename="../project/projectlistmodel.cpp" line="861"/>
         <source>Locally removed</source>
         <translation>Supprimé localement</translation>
     </message>
     <message>
-        <location filename="../project/projectlistmodel.cpp" line="825"/>
+        <location filename="../project/projectlistmodel.cpp" line="863"/>
         <source>Has conflict</source>
         <translation>En conflit</translation>
     </message>
     <message>
-        <location filename="../project/projectlistmodel.cpp" line="827"/>
-        <location filename="../project/projectlistmodel.cpp" line="828"/>
+        <location filename="../project/projectlistmodel.cpp" line="865"/>
+        <location filename="../project/projectlistmodel.cpp" line="866"/>
         <source>No modified</source>
         <translation>Non modifié</translation>
     </message>
     <message>
-        <location filename="../project/projectlistmodel.cpp" line="827"/>
+        <location filename="../project/projectlistmodel.cpp" line="865"/>
         <source>Need checkout</source>
         <translation>Nécessite une mise à jour</translation>
     </message>
@@ -4022,7 +4071,7 @@ Cet assistant va convertir le projet à la dernière version de de XINX. L&apos;
 <context>
     <name>XinxProject::ProjectListModel</name>
     <message>
-        <location filename="../project/projectlistmodel.cpp" line="1115"/>
+        <location filename="../project/projectlistmodel.cpp" line="1153"/>
         <source>
 Date in Version Control : %1
 Status : %2
@@ -4033,7 +4082,7 @@ Status : %2
 Version : %3</translation>
     </message>
     <message>
-        <location filename="../project/projectlistmodel.cpp" line="1116"/>
+        <location filename="../project/projectlistmodel.cpp" line="1154"/>
         <source>Filename : %1
 Date of file : %2%3</source>
         <translation>Nom du fichier : %1
@@ -4066,40 +4115,40 @@ Date du fichier : %2%3</translation>
 <context>
     <name>XinxSession::PrivateSessionManager</name>
     <message>
-        <location filename="../session/sessionmanager.cpp" line="69"/>
-        <location filename="../session/sessionmanager.cpp" line="74"/>
+        <location filename="../session/sessionmanager.cpp" line="70"/>
+        <location filename="../session/sessionmanager.cpp" line="75"/>
         <source>Create a new session</source>
         <translation>Création d&apos;une nouvelle session</translation>
     </message>
     <message>
-        <location filename="../session/sessionmanager.cpp" line="69"/>
+        <location filename="../session/sessionmanager.cpp" line="70"/>
         <source>Name of the new session</source>
         <translation>Nom de la nouvelle session</translation>
     </message>
     <message>
-        <location filename="../session/sessionmanager.cpp" line="74"/>
-        <location filename="../session/sessionmanager.cpp" line="90"/>
+        <location filename="../session/sessionmanager.cpp" line="75"/>
+        <location filename="../session/sessionmanager.cpp" line="91"/>
         <source>The name %1 is already used by another session</source>
         <translation>Le nom %1 est déjà utilisé par une autre session</translation>
     </message>
     <message>
-        <location filename="../session/sessionmanager.cpp" line="85"/>
-        <location filename="../session/sessionmanager.cpp" line="90"/>
+        <location filename="../session/sessionmanager.cpp" line="86"/>
+        <location filename="../session/sessionmanager.cpp" line="91"/>
         <source>Rename session</source>
         <translation>Renomme la session</translation>
     </message>
     <message>
-        <location filename="../session/sessionmanager.cpp" line="85"/>
+        <location filename="../session/sessionmanager.cpp" line="86"/>
         <source>New name of the session</source>
         <translation>Nouveau nom de la session</translation>
     </message>
     <message>
-        <location filename="../session/sessionmanager.cpp" line="101"/>
+        <location filename="../session/sessionmanager.cpp" line="102"/>
         <source>Delete a session</source>
         <translation>Supprime une session</translation>
     </message>
     <message>
-        <location filename="../session/sessionmanager.cpp" line="101"/>
+        <location filename="../session/sessionmanager.cpp" line="102"/>
         <source>Are you sure to delete the session %1 ?</source>
         <translation type="unfinished">Êtes-vous sûr de supprimer la session %1 ?</translation>
     </message>
@@ -4107,32 +4156,32 @@ Date du fichier : %2%3</translation>
 <context>
     <name>XinxSession::SessionManager</name>
     <message>
-        <location filename="../session/sessionmanager.cpp" line="148"/>
+        <location filename="../session/sessionmanager.cpp" line="149"/>
         <source>&amp;New session ...</source>
         <translation>&amp;Nouvelle session ...</translation>
     </message>
     <message>
-        <location filename="../session/sessionmanager.cpp" line="149"/>
+        <location filename="../session/sessionmanager.cpp" line="150"/>
         <source>Create a new session (list of project)</source>
         <translation>Créer une nouvelle session (liste des projets)</translation>
     </message>
     <message>
-        <location filename="../session/sessionmanager.cpp" line="153"/>
+        <location filename="../session/sessionmanager.cpp" line="154"/>
         <source>&amp;Remove session ...</source>
         <translation type="unfinished">&amp;Supprimer la session ...</translation>
     </message>
     <message>
-        <location filename="../session/sessionmanager.cpp" line="154"/>
+        <location filename="../session/sessionmanager.cpp" line="155"/>
         <source>Remove the current session</source>
         <translation>Supprimer la session courante</translation>
     </message>
     <message>
-        <location filename="../session/sessionmanager.cpp" line="158"/>
+        <location filename="../session/sessionmanager.cpp" line="159"/>
         <source>Rename session ...</source>
         <translation>Renommer la session ...</translation>
     </message>
     <message>
-        <location filename="../session/sessionmanager.cpp" line="159"/>
+        <location filename="../session/sessionmanager.cpp" line="160"/>
         <source>Change the name of the current session</source>
         <translation>Changer le nom de la session courante</translation>
     </message>

@@ -62,6 +62,7 @@ public slots:
 	void customizeProject(ProjectPtr project);
 	bool closeProject(ProjectPtr project, bool showWelcome = true);
 	bool closeAllProject();
+	void removeProject(const QString & directory);
 
 	void openWelcomDialog();
 signals:
