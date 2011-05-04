@@ -80,20 +80,20 @@ Source: {#QTDIR}\bin\QtSql4.dll; DestDir: {app}\bin; Components: application; Fl
 
 Source: {#LIBSVN}\bin\*.*; DestDir: {app}\bin; Components: svnplugin
 
-DestDir: {app}\scripts; Source: ..\scripts\*.xq; Components: application
-DestDir: {app}\datas; Source: ..\datas\*.xml; Components: application
-DestDir: {app}\templates; Source: ..\templates\*.xml; Components: application
+DestDir: {app}\scripts; Source: install\scripts\*.xq; Components: application
+DestDir: {app}\scripts; Source: install\scripts\*.js; Components: scripts
+DestDir: {app}\datas; Source: install\datas\*.xml; Components: application
+DestDir: {app}\templates; Source: install\templates\*.xml; Components: application
+DestDir: {app}\i18n; Source: install\i18n\*.qm; Components: application
 
 Source: ..\src.7z; DestDir: {app}; Components: source; Flags: replacesameversion
-;Source: ..\doc\html\*.*; DestDir: {app}\doc\api; Components: documentation; Flags: replacesameversion
+Source: ..\doc\framework.chm; DestDir: {app}\doc; Components: documentation; Flags: replacesameversion
 
 DestDir: {app}\plugins; Source: install\plugins\libservices.dll; Components: services; Flags: replacesameversion
 DestDir: {app}\plugins; Source: install\plugins\libcvsplugin.dll; Components: cvsplugin; Flags: replacesameversion
 DestDir: {app}\plugins; Source: install\plugins\libsvnplugin.dll; Components: svnplugin; Flags: replacesameversion
 DestDir: {app}\plugins; Source: install\plugins\libsvnpluginwrapper.dll; Components: svnpluginwrapper; Flags: replacesameversion
 DestDir: {app}\plugins; Source: install\plugins\libgenerix.dll; Components: generixplugin; Flags: replacesameversion
-
-DestDir: {app}\scripts; Source: ..\scripts\*.js; Components: scripts
 
 DestDir: {app}\plugins\styles; Source: {#QTDIR}\plugins\styles\explorerstyle.dll; Components: styles; MinVersion: 0,6.0.6000; Tasks: ; Languages: 
 DestDir: {app}\plugins\styles; Source: {#QTDIR}\plugins\styles\floatstyle0.dll; Components: styles; Tasks: ; Languages: 
@@ -111,7 +111,7 @@ Name: {group}\style\{#AppName} (Float); Filename: {app}\bin\xinx.exe; Components
 Name: {group}\style\{#AppName} (Explorer); Filename: {app}\bin\xinx.exe; Components: application; Tasks: ; Parameters: -style Explorer; IconIndex: 0
 Name: {group}\{cm:UninstallProgram,XINX}; Filename: {uninstallexe}
 Name: {userdesktop}\{#AppName}; Filename: {app}\bin\xinx.exe; Tasks: desktopicon; Components: application
-Name: {group}\Documentation (API); Filename: {app}\doc\api\index.html; Comment: Documentation API de XINX; Components: documentation
+Name: {group}\Documentation (API); Filename: {app}\doc\framework.chm; Comment: Documentation API de XINX; Components: documentation
 
 [Registry]
 

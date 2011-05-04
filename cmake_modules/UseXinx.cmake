@@ -168,6 +168,7 @@ macro(add_xinx_plugins cible is_shared librairies version)
 
 	if(${IS_SHARED})
 		add_library(${cible} MODULE ${moc_headers} ${sources} ${winresources} ${generated_forms} ${generated_resources} )
+		install(TARGETS ${cible} DESTINATION plugins)
 	else()
 		if(CMAKE_SIZEOF_VOID_P MATCHES 8)
 			add_definitions(-fPIC)
@@ -182,5 +183,4 @@ macro(add_xinx_plugins cible is_shared librairies version)
 		set_target_properties(${cible} PROPERTIES LINK_FLAGS "-rdynamic")
 	endif(UNIX)
 
-	install(TARGETS ${cible} DESTINATION plugins)
 endmacro(add_xinx_plugins)
