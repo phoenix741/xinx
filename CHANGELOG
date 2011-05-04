@@ -1,4 +1,4 @@
-xinx (0.10.0.0) unstable; urgency=low
+xinx (0.10.1.2531) unstable; urgency=low
 
   [ Ulrich Van Den Hekke ]
   * 410 : Crash lors création du projet
@@ -41,8 +41,22 @@ xinx (0.10.0.0) unstable; urgency=low
   * 376 : Pretty print avec xinx
   * Some bug fix on the project property page and on the wizard
   * Some buf fix on the new version wizard
+  * 428 : Removing a session doesn't work
+  * 414 : Système de ticket
+  * 420 : Some files are locked
+  * 422 : Can't compare with version management
+  * 423 : Add a file to the RCS doesn't work when create a new file
+  * 424 : Alt+1 should focus on the search field
+  * 309 : Vue dossier
+  * 199 : Cablage CVS
+  * 416 : Amélioration des options projets
+  * 152 : Drag & Drop de X-Path dans une balise value
+  * 236 : Filtre sur la langue des feuilles de style
+  * 412 : Crash after open Preference
+  * 370 : Projet par defaut
+  * 408 : Avoir des informations sur la sortie d'une nouvelle version
 
- -- Ulrich Van Den Hekke <xinx@shadoware.org>  Sat, 12 Mar 2011 17:01:37 +0100
+ -- Ulrich Van Den Hekke <xinx@shadoware.org>  Wed, 04 May 2011 13:00:00 +0100
 
 xinx (0.9.0.0) unstable; urgency=low
 
