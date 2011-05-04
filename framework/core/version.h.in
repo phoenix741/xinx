@@ -24,7 +24,7 @@
 #define VERSION_MAJOR     0
 #define VERSION_MINOR     10
 #define VERSION_RELEASE   1
-#define VERSION_BUILD     ${XINX_FRAMEWORK_WC_REVISION}
+#define VERSION_BUILD     ${XINX_FRAMEWORK_WC_LAST_CHANGED_REV}
 
 #define str(s) #s
 #define xstr(s) str(s)
