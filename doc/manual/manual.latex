@@ -1,0 +1,91 @@
+\documentclass[a4paper,10pt,twoside,titlepage,onecolumn]{book}
+
+\usepackage{ucs}
+\usepackage[utf8x]{inputenc}
+\usepackage[francais]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[pdftex]{graphicx}
+
+\usepackage[pdftex]{hyperref}
+\hypersetup{%
+   pdfauthor=Ulrich Van Den Hekke%
+}
+
+\author{Ulrich Van Den Hekke}
+\date{05/05/2011}
+\title{Manuel de l'utilisateur}
+
+\begin{document}
+  
+\maketitle
+
+\tableofcontents \addcontentsline{toc}{chapter}{Table des matières}
+
+\chapter{Introduction}
+
+\chapter{Installation de XINX}
+
+\section{Télécharger XINX}
+
+Vous pouvez récupérer XINX à partir des sources sur la page de téléchargement ou aussi à l'aide de  SubVersion. SubVersion est un gestionnaire de version, sous Windows il est livré avec TortoiseSVN par exemple.
+
+Pour récupérer les sources de la version de développement de XINX, il est possible d'utiliser la ligne de commande suivante :
+
+\begin{verbatim} 
+svn co http://svn.shadoware.org/xinx/trunk
+\end{verbatim}
+
+Les versions stables sont dans le dossiers tags et branches. La sortie de chaque nouvelle version engendre la création d'une branche (v suivis du numéro de version). Les corrections de bugs propre à la version sont effectué dans cette branche. La sortie d'une nouvelle release (mise à jours de la version), engendre la création d'un tag (r suivis du numéro de release). Si on considère qu'une version est écrite ainsi : v0.7.0 (avec 3 nombres qui se suivent), et une release est écrite ainsi : r0.7.0.1 (le quatrième indiquant le numéro de la correction). 
+
+\section{Compilation de XINX}
+
+\subsection{Gnu/Linux}
+
+\subsection{Ms/Windows}
+
+\section{Installation de XINX}
+
+\subsection{Gnu/Debian}
+
+\subsection{Les autres distributions Linux}
+
+\subsection{Ms/Windows}
+
+\chapter{Interface principale de XINX}
+
+\section{Configuration de XINX}
+
+\section{Les projets}
+
+\subsection{Création d'un projet}
+
+\subsection{Utilisation des projets}
+
+Gestionnaire de version
+
+\section{Mode édition}
+
+\subsection{Edition}
+
+\subsection{Test}
+
+Flux de donnée / présentation
+
+\section{Les onglets}
+
+\chapter{Les modèles}
+
+\chapter{Les scriptes}
+
+\chapter{Les extentions}
+
+\section{Services}
+
+\section{Generix}
+
+\appendix
+\chapter{Les raccourcis}
+
+\chapter{Interface ECMAScript de XINX}
+
+\end{document}
