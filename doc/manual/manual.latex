@@ -1,4 +1,5 @@
 \documentclass[a4paper,10pt,twoside,titlepage,onecolumn]{book}
+\pdfcompresslevel 9
 
 \usepackage{ucs}
 \usepackage[utf8x]{inputenc}
@@ -8,7 +9,13 @@
 
 \usepackage[pdftex]{hyperref}
 \hypersetup{%
-   pdfauthor=Ulrich Van Den Hekke%
+   unicode=true,
+   colorlinks=true,
+   linkcolor=black,
+   urlcolor=blue,
+   pdftitle={Manuel de l'utilisateur},
+   pdfsubject={Manuel d'utilisation du logiciel XINX, editeur de feuille de style},
+   pdfauthor={Ulrich Van Den Hekke}
 }
 
 \author{Ulrich Van Den Hekke}
@@ -23,11 +30,29 @@
 
 \chapter{Introduction}
 
+XINX est un logiciel de développement essentielement tournée vers l'édition de feuille de style XSL utilisé pour générer des fichiers HTML. 
+Une feuille de style XSL est un fichier qui décrit une liste de transformation à appliquer à un fichier XML pour le transformer en un autre fichier text (Text plat, HTML, ou un autre fichier XML).
+\\
+
+Le logiciel a été écris au début pour le développement des feuilles de styles de la société Generix Group et été fortement tournée vers cette technologie. Maintenant XINX se concentre sur le développement de feuille de style,
+et tout spécificité lié à la société Generix Group a été déporté dans un plugins.
+\\
+
+Le logiciel XINX peut voir ses fonctionnalité étendue à l'aide de modèle (parfois aussi appelé snipet, template), à l'aide de script (au format ECMAScript, proche de qu'est la JavaScript), ou à l'aide de plugins (écrit en C++
+et en utilisant le framework Qt).
+\\
+
+XINX utilise le framework Qt comme base.
+\\
+
+Ce manuel à pour but de vous aider à utiliser le logiciel XINX au mieux. 
+\\
+
 \chapter{Installation de XINX}
 
 \section{Télécharger XINX}
 
-Vous pouvez récupérer XINX à partir des sources sur la page de téléchargement ou aussi à l'aide de  SubVersion. SubVersion est un gestionnaire de version, sous Windows il est livré avec TortoiseSVN par exemple.
+Vous pouvez récupérer XINX à partir des sources sur la page de téléchargement ou aussi à l'aide de  \href{http://subversion.tigris.org/}{SubVersion}. SubVersion est un gestionnaire de version, sous Windows il est livré avec TortoiseSVN par exemple.
 
 Pour récupérer les sources de la version de développement de XINX, il est possible d'utiliser la ligne de commande suivante :
 
