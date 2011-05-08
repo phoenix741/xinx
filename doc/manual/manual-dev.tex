@@ -10,7 +10,7 @@
 \usepackage[pdftex]{hyperref}
 \hypersetup{%
    unicode=true,
-   colorlinks=true,
+   colorlinks=true, 
    linkcolor=black,
    urlcolor=blue,
    pdftitle={Manuel de l'utilisateur},
@@ -44,14 +44,26 @@ XINX utilise le framework \href{http://qt.nokia.com}{Qt} comme base. Ce même fr
 \\
 
 Ce manuel à pour but de vous aider à utiliser le logiciel XINX au mieux. 
-\\
 
 \chapter{Installation de XINX}
 
-\section{Télécharger XINX}
+\section{MS/Windows}
 
-Vous pouvez récupérer XINX à partir des sources sur la page de téléchargement ou aussi à l'aide de  \href{http://subversion.tigris.org/}{SubVersion}. SubVersion est un gestionnaire de version, sous Windows il est livré avec TortoiseSVN par exemple.
-\\
+\subsection{Télécharger XINX}
+
+\subsubsection{Version binaire}
+
+Vous pouvez obtenir la version binaire de XINX pour les systèmes d'exploitations Ms/Windows.
+
+\subsubsection{Version source}
+
+Vous pouvez récupérer les sources de XINX sur la page de téléchargement à l'adresse \url{http://xinx.shadoware.org/wiki/Download}. Le fichier se présentera sous forme d'une archive \emph{.tar.gz} ou d'une archive \emph{.7z}. Vouz pourrez décompresser l'archive à l'aide de la commande :
+
+\begin{verbatim}
+7z x xinx-0.10.1.2581.7z
+\end{verbatim}
+
+Vous pouvez également télécharger les sources de XINX à l'aide de \href{http://subversion.tigris.org/}{SubVersion}\footnote{SubVersion est un gestionnaire de version, sous Windows il est possible d'utiliser TortoiseSVN. Sous Gnu/Linux, vous pouvez utiliser kdesvn par exemple}.
 
 Pour récupérer les sources de la version de développement de XINX, il est possible d'utiliser la ligne de commande suivante :
 
@@ -60,25 +72,57 @@ svn co http://svn.shadoware.org/xinx/trunk
 \end{verbatim}
 
 Les versions stables sont dans le dossiers tags et branches. La sortie de chaque nouvelle version engendre la création d'une branche (v suivis du numéro de version). Les corrections de bugs propre à la version sont effectué dans cette branche. La sortie d'une nouvelle release (mise à jours de la version), engendre la création d'un tag (r suivis du numéro de release). On considère qu'une version est écrite ainsi : v0.10 (avec 3 nombres qui se suivent), et une release est écrite ainsi : r0.10.1 (le troisième indiquant le numéro de la correction).
-\\
 
-\section{Compilation de XINX}
+\section{Gnu/Linux}
 
-\subsection{Gnu/Linux}
+\subsection{Télécharger XINX}
 
-Sous Gnu/Linux la compilation necessite l'installation des paquets suivante :
-* libsvncpp-dev (et ses dépendances)
-* libqt..-dev
+\subsubsection{Version binaire pour Gnu/Debian}
 
-\subsection{Ms/Windows}
+Une version binaire de XINX est disponible pour la distribution Gnu/Debian. Vous pouvez la télécharger en ajoutant le dépôt suivant à votre fichier \emph{/etc/apt/sources.list} :
 
-\section{Installation de XINX}
+\begin{verbatim}
+deb http://apt.shadoware.org/ squeeze main
+\end{verbatim}
 
-\subsection{Gnu/Debian}
+et en executant la commande :
 
-\subsection{Les autres distributions Linux}
+\begin{verbatim}
+aptitude install xinx
+\end{verbatim}
 
-\subsection{Ms/Windows}
+Vous pouvez alors démarrer XINX depuis le menu ou 
+
+\subsubsection{Version source}
+
+Vous pouvez récupérer les sources de XINX sur la page de téléchargement à l'adresse \url{http://xinx.shadoware.org/wiki/Download}. Le fichier se présentera sous forme d'une archive \emph{.tar.gz} ou d'une archive \emph{.7z}. Vouz pourrez décompresser l'archive à l'aide de la commande :
+
+\begin{verbatim}
+7z x xinx-0.10.1.2581.7z
+\end{verbatim}
+
+Vous pouvez également télécharger les sources de XINX à l'aide de \href{http://subversion.tigris.org/}{SubVersion}\footnote{SubVersion est un gestionnaire de version, sous Windows il est possible d'utiliser TortoiseSVN. Sous Gnu/Linux, vous pouvez utiliser kdesvn par exemple}.
+
+Pour récupérer les sources de la version de développement de XINX, il est possible d'utiliser la ligne de commande suivante :
+
+\begin{verbatim} 
+svn co http://svn.shadoware.org/xinx/trunk
+\end{verbatim}
+
+Les versions stables sont dans le dossiers tags et branches. La sortie de chaque nouvelle version engendre la création d'une branche (v suivis du numéro de version). Les corrections de bugs propre à la version sont effectué dans cette branche. La sortie d'une nouvelle release (mise à jours de la version), engendre la création d'un tag (r suivis du numéro de release). On considère qu'une version est écrite ainsi : v0.10 (avec 3 nombres qui se suivent), et une release est écrite ainsi : r0.10.1 (le troisième indiquant le numéro de la correction).
+
+
+\subsubsection{Compilation de XINX à partir des sources}
+
+Sous Gnu/Linux la compilation necessite l'installation des paquets suivante\footnote{les paquets sont ceux définit dans Gnu/Debian Squeeze, si votre distribution est différente, il vous faudra adapter la selection des paquets} :
+\begin{itemize}
+ \item libxml2-dev
+ \item libxslt1-dev
+ \item cmake
+ \item libqt4-dev
+ \item libsvncpp-dev 
+\end{itemize}
+
 
 \chapter{Interface principale de XINX}
 
