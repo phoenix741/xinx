@@ -48,6 +48,9 @@ public:
 	bool isDefault() const;
 	void setDefault(bool value);
 
+	void setOrd(int value);
+	int ord() const;
+
 	QList< QSharedPointer<ValueNode> > defaultValues() const;
 	QList< QSharedPointer<ValueNode> > values() const;
 	void addValue(QSharedPointer<ValueNode> value);
@@ -57,6 +60,7 @@ public:
 protected:
 	AttributeNode(const QString& name);
 private:
+	int  _ord;
 	bool _is_default;
 	QHash< QString, QSharedPointer<ValueNode> > _values;
 };

@@ -868,7 +868,7 @@
 		<attribute name="onselect" />
 		<attribute name="tabindex" />
 		<attribute name="title" />
-		<attribute name="id" />
+		<attribute name="id" default="true" />
 		<attribute name="style" />
 		<attribute name="onclick" />
 		<attribute name="name" default="true" />

@@ -29,6 +29,11 @@ namespace Core
 namespace BaliseDefinition
 {
 
+template<class T> static bool nodeOrdLessThan(const QSharedPointer<T> & v1, const QSharedPointer<T> & v2)
+{
+	return v1->ord() < v2->ord();
+}
+
 QSharedPointer<BaliseNode> BaliseNode::create(const QString & name, ContentView3::NodePtr parent)
 {
 	QSharedPointer<BaliseNode> ptr(new BaliseNode(name));
@@ -47,7 +52,7 @@ QSharedPointer<BaliseNode> BaliseNode::create(const QString & name, ContentView3
 	return ptr;
 }
 
-BaliseNode::BaliseNode(const QString& name): ContentView3::Node(name.trimmed())
+BaliseNode::BaliseNode(const QString& name): ContentView3::Node(name.trimmed()), _ord(0)
 {
 	setIcon(":/images/template.png");
 	setType(tr("Balise"));
@@ -56,6 +61,16 @@ BaliseNode::BaliseNode(const QString& name): ContentView3::Node(name.trimmed())
 BaliseNode::~BaliseNode()
 {
 
+}
+
+int BaliseNode::ord() const
+{
+	return _ord;
+}
+
+void BaliseNode::setOrd(int value)
+{
+	_ord = value;
 }
 
 bool BaliseNode::isDefault() const
@@ -80,6 +95,8 @@ QList< QSharedPointer<BaliseNode> > BaliseNode::defaultBalises() const
 		}
 	}
 
+	qSort(result.begin(), result.end(), nodeOrdLessThan<BaliseNode>);
+
 	return result;
 }
 
@@ -90,6 +107,7 @@ QList< QSharedPointer<BaliseNode> > BaliseNode::balises() const
 
 void BaliseNode::addBalise(QSharedPointer<BaliseNode> node)
 {
+	node->setOrd(_balises.size());
 	_balises.insert(node->name(), node);
 	addChild(node);
 
@@ -112,6 +130,8 @@ QList< QSharedPointer<AttributeNode> > BaliseNode::defaultAttributes() const
 		}
 	}
 
+	qSort(result.begin(), result.end(), nodeOrdLessThan<AttributeNode>);
+
 	return result;
 }
 
@@ -122,6 +142,7 @@ QList< QSharedPointer<AttributeNode> > BaliseNode::attributes() const
 
 void BaliseNode::addAttribute(QSharedPointer<AttributeNode> node)
 {
+	node->setOrd(_attributes.size());
 	_attributes.insert(node->name(), node);
 	addChild(node);
 }

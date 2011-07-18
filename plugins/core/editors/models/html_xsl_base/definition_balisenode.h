@@ -48,6 +48,9 @@ public:
 	bool isDefault() const;
 	void setDefault(bool value);
 
+	int ord() const;
+	void setOrd(int value);
+
 	QList< QSharedPointer<BaliseNode> > defaultBalises() const;
 	QList< QSharedPointer<BaliseNode> > balises() const;
 	void addBalise(QSharedPointer<BaliseNode> node);
@@ -64,6 +67,7 @@ protected:
 
 private:
 	QWeakPointer<RootNode> _rootNode;
+	int  _ord;
 	bool _is_default;
 	QHash<QString,QSharedPointer<AttributeNode> > _attributes;
 	QHash<QString,QSharedPointer<BaliseNode> > _balises;

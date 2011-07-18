@@ -39,7 +39,7 @@ QSharedPointer<AttributeNode> AttributeNode::create(const QString & name, QShare
 	return ptr;
 }
 
-AttributeNode::AttributeNode(const QString& name): ContentView3::Node(name.trimmed())
+AttributeNode::AttributeNode(const QString& name): ContentView3::Node(name.trimmed()), _ord(0)
 {
 	setIcon(":/images/noeud.png");
 	setType(tr("Attribute"));
@@ -58,6 +58,16 @@ bool AttributeNode::isDefault() const
 void AttributeNode::setDefault(bool value)
 {
 	_is_default = value;
+}
+
+void AttributeNode::setOrd(int value)
+{
+	_ord = value;
+}
+
+int AttributeNode::ord() const
+{
+	return _ord;
 }
 
 QList< QSharedPointer<ValueNode> > AttributeNode::defaultValues() const
