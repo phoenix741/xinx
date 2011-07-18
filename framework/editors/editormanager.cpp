@@ -375,7 +375,8 @@ void PrivateEditorManager::addTab(AbstractEditor * editor)
 
 	connectEditor(editor);
 
-	int index = tabWidget()->addTab(editor, QString());
+	int currentIndex = tabWidget()->currentIndex();
+	int index = tabWidget()->insertTab(currentIndex + 1, editor, QString());
 	updateTabWidget(editor);
 
 	_manager->setCurrentEditor(index);

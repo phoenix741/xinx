@@ -2285,12 +2285,12 @@ Voulez-vous réellement actualiser ce fichier ?</translation>
     <message>
         <location filename="../editors/editormanager.cpp" line="284"/>
         <source>&amp;Copy filename to Clipboard</source>
-        <translation>C&amp;opy le nom du fichier vers le presse papier</translation>
+        <translation>C&amp;opie le nom du fichier vers le presse papier</translation>
     </message>
     <message>
         <location filename="../editors/editormanager.cpp" line="287"/>
         <source>C&amp;opy path to clipboard</source>
-        <translation>Cop&amp;y le chemin dans le presse papier</translation>
+        <translation>Cop&amp;ie le chemin dans le presse papier</translation>
     </message>
     <message>
         <location filename="../editors/editormanager.cpp" line="290"/>
