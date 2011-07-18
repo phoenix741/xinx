@@ -34,17 +34,14 @@ StyleSheetAction::StyleSheetAction() : XinxAction::Action(QIcon(":/images/run.pn
 {
 }
 
-void StyleSheetAction::setXmlPresentationDockWidget(XmlPresentationDockWidget * value) const
+XmlPresentationDockWidget * StyleSheetAction::getXmlPresentationDockWidget() const
 {
-	// FIXME:  N'est peut-être plus util
-	if (m_dock != value)
+	if (! m_dock && StyleSheetEditor::xmlPresentationDockWidget())
 	{
-		if (m_dock != 0)
-			m_dock->disconnect(this);
-		if (value  != 0)
-			connect(value, SIGNAL(filenameChanged(QString)), this, SLOT(updateActionState()));
-		m_dock = value;
+		m_dock = StyleSheetEditor::xmlPresentationDockWidget();
+		connect(m_dock, SIGNAL(filenameChanged(QString)), this, SLOT(updateActionState()));
 	}
+	return m_dock;
 }
 
 bool StyleSheetAction::isVisible() const
@@ -56,11 +53,7 @@ bool StyleSheetAction::isEnabled() const
 {
 	if (qobject_cast<StyleSheetEditor*>(EditorManager::self()->currentEditor()))
 	{
-		if (! m_dock)
-		{
-			setXmlPresentationDockWidget(StyleSheetEditor::xmlPresentationDockWidget());
-		}
-		return m_dock && !m_dock->filename().isEmpty();
+		return getXmlPresentationDockWidget() && !getXmlPresentationDockWidget()->filename().isEmpty();
 	}
 	else if (qobject_cast<HtmlFileEditor*>(EditorManager::self()->currentEditor()))
 	{
@@ -89,9 +82,18 @@ void StyleSheetAction::actionTriggered()
 
 /* RunXQueryAction */
 
-RunXQueryAction::RunXQueryAction() : XinxAction::Action(tr("Execute X-Query on the path"))
+RunXQueryAction::RunXQueryAction() : XinxAction::Action(tr("Execute X-Query on the path")), m_dock(0)
 {
+}
 
+XmlPresentationDockWidget * RunXQueryAction::getXmlPresentationDockWidget() const
+{
+	if (! m_dock && StyleSheetEditor::xmlPresentationDockWidget())
+	{
+		m_dock = StyleSheetEditor::xmlPresentationDockWidget();
+		connect(m_dock, SIGNAL(filenameChanged(QString)), this, SLOT(updateActionState()));
+	}
+	return m_dock;
 }
 
 bool RunXQueryAction::isVisible() const
@@ -101,7 +103,7 @@ bool RunXQueryAction::isVisible() const
 
 bool RunXQueryAction::isEnabled() const
 {
-	return StyleSheetEditor::xmlPresentationDockWidget() && ! StyleSheetEditor::xmlPresentationDockWidget()->filename().isEmpty();
+	return getXmlPresentationDockWidget() && ! getXmlPresentationDockWidget()->filename().isEmpty();
 }
 
 void RunXQueryAction::actionTriggered()

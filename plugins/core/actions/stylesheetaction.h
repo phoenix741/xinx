@@ -37,7 +37,7 @@ public:
 protected slots:
 	virtual void actionTriggered();
 private:
-	void setXmlPresentationDockWidget(XmlPresentationDockWidget * value) const;
+	XmlPresentationDockWidget * getXmlPresentationDockWidget() const;
 
 	mutable XmlPresentationDockWidget * m_dock;
 };
@@ -53,6 +53,9 @@ public:
 protected slots:
 	virtual void actionTriggered();
 private:
+	XmlPresentationDockWidget * getXmlPresentationDockWidget() const;
+
+	mutable XmlPresentationDockWidget * m_dock;
 };
 
 class DataStreamAction : public XinxAction::ProjectAction
