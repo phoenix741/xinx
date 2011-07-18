@@ -93,8 +93,9 @@ void processFilesArguments(const QStringList & args)
 		it++;
 		while (it != args.constEnd())
 		{
-			if (QFile(*it).exists())
-				EditorManager::self()->openFile(*it);
+			const QString filename = QDir::fromNativeSeparators(*it);
+			if (QFile(filename).exists())
+				EditorManager::self()->openFile(filename);
 			it++;
 		}
 	}
@@ -266,7 +267,8 @@ int main(int argc, char *argv[])
 				it++;
 				while (it != args.end())
 				{
-					if (QFile(*it).exists()) app.sendMessage(*it);
+					const QString filename = QDir::fromNativeSeparators(*it);
+					if (QFile(filename).exists()) app.sendMessage(filename);
 					it++;
 				}
 			}

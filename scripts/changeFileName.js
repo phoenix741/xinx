@@ -13,7 +13,13 @@ obj.run = function()
 {
 	var search = new DocumentSearch( textEdit );
 	var filename;
-	filename = editor.filename.substring( editor.filename.lastIndexOf('/') + 1 );
+	var index = editor.filename.lastIndexOf('/');
+	if (index == -1)
+	{
+		index = editor.filename.lastIndexOf('\\');
+	}
+	
+	filename = editor.filename.substring( index + 1 );
 
 	search.options.regExp = true;
 	search.searchText = "(\\$RCSfile:\\s+).*(,v\\s+\\$)";

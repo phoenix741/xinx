@@ -401,7 +401,7 @@ AbstractEditor::~AbstractEditor()
 QString AbstractEditor::getTitle() const
 {
 	if (! m_lastFileName.isEmpty())
-		return QFileInfo(m_lastFileName).fileName();
+		return QDir::toNativeSeparators(QFileInfo(m_lastFileName).fileName());
 	else
 		return defaultFileName();
 }
@@ -418,7 +418,7 @@ QString AbstractEditor::getTitle() const
 QString AbstractEditor::getLongTitle() const
 {
 	if (! m_lastFileName.isEmpty())
-		return m_lastFileName;
+		return QDir::toNativeSeparators(m_lastFileName);
 	else
 		return defaultFileName();
 }

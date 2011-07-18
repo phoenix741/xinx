@@ -852,9 +852,9 @@ void MainformImpl::updateTitle()
 {
 	QString title = "XINX";
 
-	if (EditorManager::self()->currentEditor() && !EditorManager::self()->currentEditor()->lastFileName().isEmpty())
+	if (EditorManager::self()->currentEditor() && !EditorManager::self()->currentEditor()->getLongTitle().isEmpty())
 	{
-		title = "[" + EditorManager::self()->currentEditor()->lastFileName() + "] - " + title;
+		title = "[" + EditorManager::self()->currentEditor()->getLongTitle() + "] - " + title;
 	}
 
 	XinxProject::ProjectPtr selectedProject = XinxProject::Manager::self()->selectedProject().toStrongRef();
