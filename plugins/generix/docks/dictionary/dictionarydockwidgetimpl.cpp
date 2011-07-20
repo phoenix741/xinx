@@ -24,7 +24,7 @@
 
 /* DictionaryDockWidgetImpl */
 
-DictionaryDockWidgetImpl::DictionaryDockWidgetImpl(QWidget * parent) : QWidget(parent), m_timerId(0)
+DictionaryDockWidgetImpl::DictionaryDockWidgetImpl(QWidget * parent) : XinxDockWidget(parent), m_timerId(0)
 {
 	setupUi(this);
 	setWindowTitle(tr("Dictionary"));

@@ -21,12 +21,13 @@
 #define PROJECTDIRECTORYWIDGETIMPL_H
 
 #include "xinxprojectproject.h"
+#include <application/xinxdockwidget.h>
 
 class IFileTypePlugin;
 class QDockWidget;
 class PrivateProjectDirectoryWidgetImpl;
 
-class ProjectDirectoryWidgetImpl : public QWidget
+class ProjectDirectoryWidgetImpl : public XinxDockWidget
 {
 	Q_OBJECT
 public:

@@ -34,6 +34,11 @@ public:
 class LIBEXPORT AppSettings
 {
 public:
+	struct struct_docks
+	{
+		bool showShortcut;
+	};
+
 	struct struct_snipets
 	{
 		bool alwaysShowDialog;
@@ -97,6 +102,7 @@ public:
 		QString xinxTrace;
 		QString style;
 		QHash<QString,bool> plugins;
+		struct_docks dock;
 		struct_project project;
 		struct_rcs rcs;
 		struct_editor editor;
@@ -120,6 +126,10 @@ public:
 
 	AppSettings& operator=(const AppSettings& p);
 protected:
+	virtual struct_docks getDefaultDocks();
+	virtual AppSettings::struct_docks getSettingsDocks(AppSettingsSettings * settings, const QString & path, const AppSettings::struct_docks & defaultValue);
+	virtual void setSettingsDocks(AppSettingsSettings * settings, const QString & path, const AppSettings::struct_docks & value);
+
 	virtual struct_snipets getDefaultSnipets();
 	virtual AppSettings::struct_snipets getSettingsSnipets(AppSettingsSettings * settings, const QString & path, const AppSettings::struct_snipets & defaultValue);
 	virtual void setSettingsSnipets(AppSettingsSettings * settings, const QString & path, const AppSettings::struct_snipets & value);

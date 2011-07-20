@@ -17,37 +17,36 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef __SNIPETDOCKWIDGET_H__
-#define __SNIPETDOCKWIDGET_H__
-#pragma once
+#ifndef XINXDOCKWIDGET_H
+#define XINXDOCKWIDGET_H
 
-// Xinx header
-#include <application/xinxdockwidget.h>
-#include <snipets/snipetdockitemmodel.h>
+#include <core/lib-config.h>
 #include <QWidget>
 
-class QDockWidget;
-class AbstractEditor;
-class RecursiveSortFilterProxyModel;
-class SnipetDockItemModel;
-class SnipetDockWidgetPrivate;
+class DToolView;
 
-/*!
- * This dock represent a Snipet Dock Widget to search and place snipet
- * in XINX.
- */
-class SnipetDockWidget : public XinxDockWidget
+class LIBEXPORT XinxDockWidget : public QWidget
 {
 	Q_OBJECT
 public:
-	SnipetDockWidget(QWidget * parent = 0);
-	virtual ~SnipetDockWidget();
+	explicit XinxDockWidget(QWidget* parent = 0, Qt::WindowFlags f = 0);
+	virtual ~XinxDockWidget();
 
-public slots:
-	void setEditor(AbstractEditor * ed);
+	void setShortcut(const QKeySequence & shortcut);
+	const QKeySequence & getShortcut() const;
 
+	void setDock(DToolView * dock);
+	DToolView * dock();
+
+	virtual QString windowTitle() const;
+signals:
+	void dockChanged();
+	void windowChanged();
+private slots:
+	void updateDockTitle();
 private:
-	QScopedPointer<SnipetDockWidgetPrivate> d;
+	DToolView * _dock;
+	QKeySequence _shortcut;
 };
 
-#endif /*__SNIPETDOCKWIDGET_H__*/
+#endif // XINXDOCKWIDGET_H

@@ -27,7 +27,7 @@ XmlPresentationDockWidget * XmlPresentationDockWidget::s_self = 0;
 
 /* XmlPresentationDockWidget */
 
-XmlPresentationDockWidget::XmlPresentationDockWidget(QWidget * parent) : QWidget(parent)
+XmlPresentationDockWidget::XmlPresentationDockWidget(QWidget * parent) : XinxDockWidget(parent)
 {
 	if (! s_self) s_self = this;
 

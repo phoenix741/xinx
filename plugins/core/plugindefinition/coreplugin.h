@@ -63,7 +63,7 @@ public:
 
 	virtual QList<IXinxPluginNewProjectConfigurationPage*> createNewProjectSettingsPages();
 
-	virtual QList<QWidget*> createDocksWidget(QWidget * parent);
+	virtual QList<XinxDockWidget*> createDocksWidget(QWidget * parent);
 
 	virtual QList<IFileResolverPlugin*> fileResolvers();
 

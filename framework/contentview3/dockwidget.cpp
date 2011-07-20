@@ -27,7 +27,7 @@
 namespace ContentView3
 {
 
-DockWidget::DockWidget(QWidget* parent, Qt::WindowFlags f): QWidget(parent, f)
+DockWidget::DockWidget(QWidget* parent, Qt::WindowFlags f): XinxDockWidget(parent, f)
 {
 	setWindowTitle(tr("File Content"));
 	setWindowIcon(QIcon(":/images/listbox.png"));

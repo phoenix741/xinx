@@ -684,7 +684,7 @@ bool PrivateProjectDirectoryWidgetImpl::eventFilter(QObject *obj, QEvent *event)
 
 /* ProjectDirectoryWidgetImpl */
 
-ProjectDirectoryWidgetImpl::ProjectDirectoryWidgetImpl(QWidget* parent): QWidget(parent), d(new PrivateProjectDirectoryWidgetImpl(this))
+ProjectDirectoryWidgetImpl::ProjectDirectoryWidgetImpl(QWidget* parent): XinxDockWidget(parent), d(new PrivateProjectDirectoryWidgetImpl(this))
 {
 	d->_ui->_directory_view->installEventFilter(d.data());
 

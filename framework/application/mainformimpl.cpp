@@ -393,32 +393,38 @@ void MainformImpl::createDockWidget()
 {
 	/* Project */
 	m_projectDock = new ProjectDirectoryWidgetImpl(this);
+	m_projectDock->setShortcut(QKeySequence("Alt+1"));
 	DToolView * view = addToolView(m_projectDock, Qt::LeftDockWidgetArea);
 	view->setObjectName(QString::fromUtf8("m_projectDock"));
 	connect(view, SIGNAL(visibilityChanged(bool)), m_projectDock, SLOT(setFocus()));
+	m_projectDock->setDock(view);
 
 	QAction * action = view->toggleViewAction();
-	action->setShortcut(QKeySequence("Alt+1"));
+	action->setShortcut(m_projectDock->getShortcut());
 	m_menus["windows"]->addAction(action);
 	connect(m_projectDock, SIGNAL(open(QString,IFileTypePlugin*,XinxProject::ProjectPtr)), EditorManager::self(), SLOT(openFile(QString,IFileTypePlugin*,XinxProject::ProjectPtr)));
 
 	/* Content */
 	m_contentDock = new ContentView3::DockWidget(this);
+	m_contentDock->setShortcut(QKeySequence("Alt+2"));
 	view = addToolView(m_contentDock, Qt::LeftDockWidgetArea);
 	view->setObjectName(QString::fromUtf8("m_contentDock"));
 	action = view->toggleViewAction();
-	action->setShortcut(QKeySequence("Alt+2"));
+	action->setShortcut(m_contentDock->getShortcut());
 	m_menus["windows"]->addAction(action);
 	connect(m_contentDock, SIGNAL(open(QString,int,IFileTypePlugin*,XinxProject::ProjectPtr)), EditorManager::self(), SLOT(openFile(QString,int,IFileTypePlugin*,XinxProject::ProjectPtr)));
+	m_contentDock->setDock(view);
 
 	/* Snipets */
 	m_snipetsDock = new SnipetDockWidget(this);
+	m_snipetsDock->setShortcut(QKeySequence("Alt+3"));
 	view = addToolView(m_snipetsDock, Qt::RightDockWidgetArea);
 	view->setObjectName(QString::fromUtf8("m_snipetsDock"));
 	action = view->toggleViewAction();
-	action->setShortcut(QKeySequence("Alt+3"));
+	action->setShortcut(m_snipetsDock->getShortcut());
 	m_menus["windows"]->addAction(action);
 	connect(view, SIGNAL(visibilityChanged(bool)), m_snipetsDock, SLOT(setFocus()));
+	m_snipetsDock->setDock(view);
 
 	/* Error */
 	m_errorDock = new ErrorDockWidgetImpl(this);
@@ -426,10 +432,10 @@ void MainformImpl::createDockWidget()
 	connect(ErrorManager::self(), SIGNAL(changed()), m_errorDock, SLOT(updateErrors()));
 	view = addToolView(m_errorDock, Qt::BottomDockWidgetArea);
 	view->setObjectName(QString::fromUtf8("m_errorDock"));
+	m_errorDock->setDock(view);
 
 	action = view->toggleViewAction();
 	m_menus["windows"]->addAction(action);
-	m_errorDock->setDock(view);
 
 	/* RCS */
 	m_rcsLogDock = new RCSLogDockWidgetImpl(this);
@@ -462,12 +468,14 @@ void MainformImpl::createDockWidget()
 		IDockPlugin * dockPlugin = qobject_cast<IDockPlugin*>(pluginElement->plugin());
 		if (pluginElement->isActivated() && dockPlugin)
 		{
-			QList<QWidget*> docks = dockPlugin->createDocksWidget(this);
-			foreach(QWidget * dock, docks)
+			QList<XinxDockWidget*> docks = dockPlugin->createDocksWidget(this);
+			foreach(XinxDockWidget * dock, docks)
 			{
+				dock->setShortcut(QString("Alt+%1").arg(dockShortcut++));
 				view = addToolView(dock, Qt::RightDockWidgetArea);
+				dock->setDock(view);
 				action = view->toggleViewAction();
-				action->setShortcut(QString("Alt+%1").arg(dockShortcut++));
+				action->setShortcut(dock->getShortcut());
 				m_menus["windows"]->addAction(action);
 				connect(view, SIGNAL(visibilityChanged(bool)), dock, SLOT(setFocus()));
 			}

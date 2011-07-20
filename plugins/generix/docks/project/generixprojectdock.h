@@ -24,6 +24,7 @@
 // Xinx header
 #include <ui_gnxprojectdock.h>
 #include <project/xinxprojectproject.h>
+#include <application/xinxdockwidget.h>
 
 // Qt header
 #include <QWidget>
@@ -43,7 +44,7 @@ public:
 	QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
 };
 
-class GenerixProjectDockImpl : public QWidget, public Ui::GenerixProjectDockWidget
+class GenerixProjectDockImpl : public XinxDockWidget, public Ui::GenerixProjectDockWidget
 {
 	Q_OBJECT
 public:

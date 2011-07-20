@@ -20,17 +20,17 @@
 #ifndef XINXJOBPROGRESSDOCK_H
 #define XINXJOBPROGRESSDOCK_H
 
-#include <QWidget>
+#include <application/xinxdockwidget.h>
 
 class XinxJob;
 class PrivateXinxJobProgressDock;
 
-class XinxJobProgressDock : public QWidget
+class XinxJobProgressDock : public XinxDockWidget
 {
 	Q_OBJECT
 public:
-    XinxJobProgressDock(QWidget* parent = 0, Qt::WindowFlags f = 0);
-    virtual ~XinxJobProgressDock();
+	XinxJobProgressDock(QWidget* parent = 0, Qt::WindowFlags f = 0);
+	virtual ~XinxJobProgressDock();
 
 private slots:
 	void slotJobAdded(XinxJob * job);

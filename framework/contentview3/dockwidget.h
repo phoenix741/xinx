@@ -23,6 +23,7 @@
 #include <QWidget>
 #include <QModelIndex>
 #include <project/xinxprojectproject.h>
+#include <application/xinxdockwidget.h>
 
 class QAbstractItemModel;
 class QTreeView;
@@ -31,7 +32,7 @@ class IFileTypePlugin;
 namespace ContentView3
 {
 
-class DockWidget : public QWidget
+class DockWidget : public XinxDockWidget
 {
 	Q_OBJECT
 public:

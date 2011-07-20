@@ -89,6 +89,9 @@ bool CustomGeneralImpl::loadSettingsDialog()
 	int currentStyle = m_styleComboBox->findText(XINXConfig::self()->config().style, Qt::MatchFixedString);
 	m_styleComboBox->setCurrentIndex(currentStyle);
 
+	// Show Shortcut near dock title
+	m_shortcutDockTitle->setChecked(XINXConfig::self()->config().dock.showShortcut);
+
 	return true;
 }
 
@@ -102,6 +105,9 @@ bool CustomGeneralImpl::saveSettingsDialog()
 
 	// Style
 	XINXConfig::self()->config().style = m_styleComboBox->currentText();
+
+	// Show Shortcut near dock title
+	XINXConfig::self()->config().dock.showShortcut = m_shortcutDockTitle->isChecked();
 
 	return true;
 }

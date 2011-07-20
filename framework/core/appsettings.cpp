@@ -107,6 +107,36 @@ void AppSettings::load()
 	d->deleteSettings();
 }
 
+AppSettings::struct_docks AppSettings::getDefaultDocks()
+{
+	struct_docks value;
+
+	value.showShortcut = true;
+
+	return value;
+}
+
+AppSettings::struct_docks AppSettings::getSettingsDocks(AppSettingsSettings * settings, const QString & path, const AppSettings::struct_docks & defaultValue)
+{
+	struct_docks value;
+	settings->beginGroup(path);
+
+	value.showShortcut = settings->value("Show Shortcut", defaultValue.showShortcut).toBool();
+
+	settings->endGroup();
+	return value;
+}
+
+void AppSettings::setSettingsDocks(AppSettingsSettings * settings, const QString & path, const AppSettings::struct_docks & value)
+{
+	struct_docks defaultValue = getDefaultDocks();
+	settings->beginGroup(path);
+
+	settings->setValue("Show Shortcut", value.showShortcut, defaultValue.showShortcut);
+
+	settings->endGroup();
+}
+
 AppSettings::struct_snipets AppSettings::getDefaultSnipets()
 {
 	struct_snipets value;
@@ -366,6 +396,7 @@ AppSettings::struct_globals AppSettings::getSettingsGlobals(AppSettingsSettings 
 	value.xinxTrace = settings->value("XINX Trace", defaultValue.xinxTrace).toString();
 	value.style = settings->value("Style", defaultValue.style).toString();
 	value.plugins = getSettingsHash_bool(settings, "Plugins", defaultValue.plugins);
+	value.dock =  getSettingsDocks(settings, "Dock", defaultValue.dock);
 	value.project = getSettingsProject(settings, "Project", defaultValue.project);
 	value.rcs = getSettingsRcs(settings, "RCS", defaultValue.rcs);
 	value.editor = getSettingsEditor(settings, "Editor", defaultValue.editor);
@@ -373,7 +404,7 @@ AppSettings::struct_globals AppSettings::getSettingsGlobals(AppSettingsSettings 
 	value.tools = getSettingsHash_QString(settings, "Tools", defaultValue.tools);
 	value.formats = getSettingsHash_struct_qformat(settings, "Formats", defaultValue.formats);
 	value.version = settings->value("Version", defaultValue.version).toString();
-	value.lastUpdate = settings->value("LastUpdate", defaultValue.lastUpdate).toString();
+	value.lastUpdate = settings->value("Last Update", defaultValue.lastUpdate).toString();
 
 	settings->endGroup();
 	return value;
@@ -392,6 +423,7 @@ void AppSettings::setSettingsGlobals(AppSettingsSettings * settings, const QStri
 	settings->setValue("XINX Trace", value.xinxTrace, defaultValue.xinxTrace);
 	settings->setValue("Style", value.style, defaultValue.style);
 	setSettingsHash_bool(settings, "Plugins", value.plugins);
+	setSettingsDocks(settings, "Dock", value.dock);
 	setSettingsProject(settings, "Project", value.project);
 	setSettingsRcs(settings, "RCS", value.rcs);
 	setSettingsEditor(settings, "Editor", value.editor);
@@ -399,7 +431,7 @@ void AppSettings::setSettingsGlobals(AppSettingsSettings * settings, const QStri
 	setSettingsHash_QString(settings, "Tools", value.tools);
 	setSettingsHash_struct_qformat(settings, "Formats", value.formats);
 	settings->setValue("Version", value.version, defaultValue.version);
-	settings->setValue("LastUpdate", value.lastUpdate, defaultValue.lastUpdate);
+	settings->setValue("Last Update", value.lastUpdate, defaultValue.lastUpdate);
 
 	settings->endGroup();
 }

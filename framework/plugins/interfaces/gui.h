@@ -32,6 +32,8 @@ class Project;
 typedef QSharedPointer<Project> ProjectPtr;
 }
 
+class XinxDockWidget;
+
 /*!
  * This interface is used to propose one page of configuration. For each page, the program
  * can modify settings and save or restore value.
@@ -133,7 +135,7 @@ public:
 	 * This method is call when the main form is created to create new
 	 * dock widget. A number (for quick access) is associate if free.
 	 */
-	virtual QList<QWidget*> createDocksWidget(QWidget * parent) = 0;
+	virtual QList<XinxDockWidget*> createDocksWidget(QWidget * parent) = 0;
 };
 
 Q_DECLARE_INTERFACE(IXinxPluginConfiguration, "org.shadoware.xinx.IXinxPluginConfiguration/1.0");

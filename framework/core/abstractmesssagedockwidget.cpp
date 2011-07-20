@@ -20,10 +20,8 @@
 #include "abstractmesssagedockwidget.h"
 #include <QDockWidget>
 #include "xinxconfig.h"
-#include <dtoolview.h>
-#include <dviewbutton.h>
 
-AbstractMessageDockWidget::AbstractMessageDockWidget(QWidget* parent): QWidget(parent), _dock(0), _notification(0)
+AbstractMessageDockWidget::AbstractMessageDockWidget(QWidget* parent): XinxDockWidget(parent), _notification(0)
 {
 }
 
@@ -32,20 +30,13 @@ AbstractMessageDockWidget::~AbstractMessageDockWidget()
 
 }
 
-void AbstractMessageDockWidget::setDock(DToolView* dock)
+QString AbstractMessageDockWidget::windowTitle() const
 {
-	if (_dock != dock)
+	if (_notification == 0)
 	{
-		int nc = notifyCount();
-		setNotifyCount(0);
-		_dock = dock;
-		setNotifyCount(nc);
+		return XinxDockWidget::windowTitle();
 	}
-}
-
-DToolView* AbstractMessageDockWidget::dock()
-{
-	return _dock;
+	return XinxDockWidget::windowTitle() + QString(" - %1").arg(_notification);
 }
 
 void AbstractMessageDockWidget::setNotifyCount(int notification)
@@ -53,14 +44,8 @@ void AbstractMessageDockWidget::setNotifyCount(int notification)
 	if (_notification != notification)
 	{
 		_notification = notification;
-		if (_dock && _notification == 0)
-		{
-			_dock->button()->setText(windowTitle());
-		}
-		else
-		{
-			_dock->button()->setText(windowTitle() + QString("(%1)").arg(_notification));
-		}
+
+		emit windowChanged();
 	}
 }
 

@@ -21,6 +21,7 @@
 #define __XMLPRESENTATIONDOCKWIDGET_H__
 #pragma once
 
+#include <application/xinxdockwidget.h>
 #include <QDockWidget>
 #include <QString>
 
@@ -31,7 +32,7 @@ class XmlPresentationDockThread;
  * The log directory can be modified, and the presentation file can be choosen.
  * Some feature as drag & drop must be added in future.
  */
-class XmlPresentationDockWidget : public QWidget
+class XmlPresentationDockWidget : public XinxDockWidget
 {
 	Q_OBJECT
 public:

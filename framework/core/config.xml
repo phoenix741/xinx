@@ -45,6 +45,9 @@
 	<type name="Snipets">
 		<value name="Always Show Dialog" type="bool" default="false"/>
 	</type>
+	<type name="Dock">
+		<value name="Show Shortcut" type="bool" default="true"/>
+	</type>
 
 	<value name="Language" type="string" defaultInstruction="QLocale::system().name()"/>
 
@@ -56,6 +59,7 @@
 	<value name="Style" type="string"/>
 	<value name="Plugins" type="hash:bool" default="true"/>
 
+	<value name="Dock" type="Dock"/>
 	<value name="Project" type="Project"/>
 	<value name="RCS" type="RCS"/>
 	<value name="Editor" type="Editor"/>
@@ -65,5 +69,5 @@
 	<value name="Formats" type="hash:QFormat"/>
 
 	<value name="Version" type="string"/>
-	<value name="LastUpdate" type="string"/>
+	<value name="Last Update" type="string"/>
 </config>

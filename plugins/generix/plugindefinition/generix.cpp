@@ -251,9 +251,9 @@ QString GenerixPlugin::getFilename(AbstractEditor* editor, const QString& filena
 	return filename;
 }
 
-QList<QWidget*> GenerixPlugin::createDocksWidget(QWidget * parent)
+QList<XinxDockWidget*> GenerixPlugin::createDocksWidget(QWidget * parent)
 {
-	QList<QWidget*> docks;
+	QList<XinxDockWidget*> docks;
 	if (! m_dock)
 	{
 		m_dock = new DictionaryDockWidgetImpl(parent);

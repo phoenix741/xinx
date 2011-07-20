@@ -38,7 +38,7 @@ public:
 
 /* XinxJobProgressDock */
 
-XinxJobProgressDock::XinxJobProgressDock(QWidget* parent, Qt::WindowFlags f): QWidget(parent, f), d(new PrivateXinxJobProgressDock)
+XinxJobProgressDock::XinxJobProgressDock(QWidget* parent, Qt::WindowFlags f): XinxDockWidget(parent, f), d(new PrivateXinxJobProgressDock)
 {
 	setLayout(new QHBoxLayout);
 	setWindowIcon(QIcon(":/images/run.png"));

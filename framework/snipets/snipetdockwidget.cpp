@@ -124,7 +124,7 @@ void SnipetDockWidgetPrivate::filterChanged(const QString & filterText)
 
 /* SnipetDockWidget */
 
-SnipetDockWidget::SnipetDockWidget(QWidget * parent) : QWidget(parent), d(new SnipetDockWidgetPrivate(this))
+SnipetDockWidget::SnipetDockWidget(QWidget * parent) : XinxDockWidget(parent), d(new SnipetDockWidgetPrivate(this))
 {
 	d->init();
 	setFocusProxy(d->_ui->m_snipetFilter);

@@ -133,7 +133,7 @@ QSize BusinessViewListDelegate::sizeHint(const QStyleOptionViewItem &option, con
 
 /* GenerixProjectDockImpl */
 
-GenerixProjectDockImpl::GenerixProjectDockImpl(QWidget * parent) : QWidget(parent), m_editorIndex(-1)
+GenerixProjectDockImpl::GenerixProjectDockImpl(QWidget * parent) : XinxDockWidget(parent), m_editorIndex(-1)
 {
 	setupUi(this);
 	setWindowTitle(tr("Generix Business View"));

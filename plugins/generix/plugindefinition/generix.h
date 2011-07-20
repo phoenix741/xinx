@@ -70,7 +70,7 @@ public:
 	virtual QIODevice * saveFile(AbstractEditor * editor, const QString & filename, const QString & oldfilename);
 	virtual QString getFilename(AbstractEditor * editor, const QString & filename, const QString & defaultFilename, const QString & filter, bool saveAs, bool & accept, QWidget * widget = 0);
 
-	virtual QList<QWidget*> createDocksWidget(QWidget * parent);
+	virtual QList<XinxDockWidget*> createDocksWidget(QWidget * parent);
 
 	virtual QList<IFileResolverPlugin*> fileResolvers();
 

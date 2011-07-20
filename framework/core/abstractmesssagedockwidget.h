@@ -22,11 +22,9 @@
 #define ABSTRACTMESSSAGEDOCKWIDGET_H
 
 #include <core/lib-config.h>
-#include <QWidget>
+#include <application/xinxdockwidget.h>
 
-class DToolView;
-
-class LIBEXPORT AbstractMessageDockWidget : public QWidget
+class LIBEXPORT AbstractMessageDockWidget : public XinxDockWidget
 {
 	Q_OBJECT
 public:
@@ -39,13 +37,11 @@ public:
 	void setNotifyCount(int notification);
 	int notifyCount() const;
 
-	void setDock(DToolView * dock);
-	DToolView * dock();
+	virtual QString windowTitle() const;
 signals:
 	void open(const QString & filename, int line);
 
 private:
-	DToolView * _dock;
 	int _notification;
 };
 

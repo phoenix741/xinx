@@ -23,13 +23,14 @@
 
 // Xinx header
 #include <ui_dictionarydockwidget.h>
+#include <application/xinxdockwidget.h>
 
 // Qt header
 #include <QWidget>
 
 class DictionaryModel;
 
-class DictionaryDockWidgetImpl : public QWidget, private Ui::DictionaryDockWidget
+class DictionaryDockWidgetImpl : public XinxDockWidget, private Ui::DictionaryDockWidget
 {
 	Q_OBJECT
 public:
