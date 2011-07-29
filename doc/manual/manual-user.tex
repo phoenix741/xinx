@@ -63,6 +63,16 @@ Ce manuel à pour but de vous aider à utiliser le logiciel XINX au mieux. Il vo
 
 \section{Utilisation des feuilles de style}
 
+XSL signifie \emph{eXtensive Stylesheet Langage}, ou langage extensible de feuille de style. Quand on utilise des feuilles de styles, on utilise généralement deux technologies : 
+
+\begin{itemize}
+ \item \verb+XSLT+ est le language qui permet de transformer une arborescence de noeud d'un fichier XML donnée en un autre fichier de type texte (HTML, XML, texte, \dots.).
+ \item \verb+XPath+ est la technologie utilisé pour accéder à n'importe quel noeud du fichier XML à l'aide d'un simple chemin. Les chemins sont écrit de la même manière que les chemins écrit pour accéder à un chemin sur le disque. Utilisation de \verb+/+ pour séparer les différents niveau. Différentes méthodes permette de compter un nombre de noeud.
+\end{itemize}
+
+Une feuille de style XSLT peut être utilisé pour filtrer un fichier XML, transformer le fichier en un autre fichier XML, générer une page HTML à partir d'un flux de donnée en XML. Un fichier de transformation XSL est lui même un fichier XML et doit donc respecter la norme XML elle même. Un éditeur de
+feuille de style XSL permet de faciliter l'édition des fichiers XML.
+
 \section{Terminologie}
 
 \section{Les fonctionnalités}
@@ -176,30 +186,37 @@ Cette fenêtre vous permettra de configurer les principales fonctionnalités de 
 
 Sur l'écran suivant vous allez trouver différentes options lié à l'édition du texte. Si vous êtes familier avec d'autres IDE, vous reconnaitrez des options. 
 
-\paragraph{Afficher une alerte à la modification d'un fichier} Lorsqu'un programme externe modifie un fichier ouvert dans XINX, ce dernier vous demandera alors automatiquement de recharger le fichier. 
+\paragraph{Afficher une alerte à la modification d'un fichier} Lorsqu'un programme externe modifie un fichier ouvert dans XINX, ce dernier vous demandera alors automatiquement de recharger le fichier. Vous pourrez choisir de rafraichir ou non le document.
 
-\paragraph{Créer une copie pendant la sauvegarde (.bak)}
+\paragraph{Créer une copie pendant la sauvegarde (.bak)} Lors de la sauvegarde, XINX peut créer pour vous un fichier \verb+.bak+ contenant la dernière version du fichier (avant sauvegarde). Vous pouvez ainsi retrouver une sauvegarde ancienne si nécessaire.
 
-\paragraph{Afficher les tabulations et les espaces dans l'éditeur}
+\paragraph{Afficher les tabulations et les espaces dans l'éditeur} Afficher les tabulations et les espaces dans l'éditeur de texte à l'aide d'un symbole pour mieux différencier les espaces et les tabulations.
 
-\paragraph{Surligner automatiquement les mots identiques}
+\paragraph{Surligner automatiquement les mots identiques} Lorsque vous vous déplacer dans l'éditeur de texte, XINX surlignera tous les mots identiques au mot sous le curseur. A chaque déplacement, le surlignement sera mis à jours. Ceci peut avoir un impact sur les performances de XINX.
 
-\paragraph{Indentation automatique à la sauvegarde}
+\paragraph{Indentation automatique à la sauvegarde} Lors de la sauvegarde, XINX réindentera automatiquement le document, si XINX est capable de gérer l'indentation de ce document. Actuellement seul les documents XML, XSLT, \dots et dérivés peuvent être indenté.
 
 \begin{center}
  \includegraphics[width=0.60\textwidth]{./firstinstall4.png}
 \end{center}
 
-\section{Configuration de XINX}
+Enfin XINX vous demandera de définir l'emplacement d'une liste d'outil qu'il pourrait potentiellement avoir besoin. Si les outils ne sont pas installé, ou tout simplement, si vous ne souhaiter renseigner tout de suite ces outils, vous pouvez continuer. XINX vous re-demandera automatiquement l'outil lorsqu'il en aura besoin.
+
+\section{L'interface principale}
+
+L'interface principale de XINX est celle qui permet l'édition des fichiers. Elle propose différentes boîtes à outils offrant de l'aide à l'édition de XINX. Au centre de l'interface, se trouve la zone d'édition. Des onglets permette de choisir parmis les différents fichiers ouvert, celui que l'on souhaiter éditer.
+
+
 
 \section{Les projets}
+
+\section{Configuration de XINX}
 
 \subsection{Création d'un projet}
 
 \subsection{Utilisation des projets}
 \label{sec:RCS}
 Gestionnaire de version
-
 
 \section{Mode édition}
 
