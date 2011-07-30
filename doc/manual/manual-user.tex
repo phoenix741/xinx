@@ -188,8 +188,8 @@ Si tout les paquets sont disponible la compilation et l'installation se passeron
 
 Après l'installation, vous pouvez démarrer XINX comme suite :
 \begin{itemize}
- \item Sous Windows, dans le menu << Démarrer >>, cliquez sur le programme dans le groupe XINX. Sous Vista et supérieur, vous pouvez aussi écrire directement <<XINX>> dans la boite de recherche du menu << Démarer >>
- \item Sous Linux, selon votre bureau, vous retrouver le programme XINX dans le groupe <<Developpement>> de votre menu d'application. Vous pouvez également tapper XINX dans le lanceur rapide ou dans une console Linux. 
+ \item Sous Windows, dans le menu << Démarrer >>, cliquez sur le programme dans le groupe XINX. Sous Vista et supérieur, vous pouvez aussi écrire directement << XINX >> dans la boite de recherche du menu << Démarer >>
+ \item Sous Linux, selon votre bureau, vous retrouver le programme XINX dans le groupe << Developpement >> de votre menu d'application. Vous pouvez également tapper XINX dans le lanceur rapide ou dans une console Linux. 
 \end{itemize}
 
 Quand vous démarrez XINX pour la première fois, une fenêtre de configuration devrait s'ouvrir :
@@ -204,15 +204,15 @@ Cette fenêtre vous permettra de configurer les principales fonctionnalités de 
  \includegraphics[width=0.60\textwidth]{./firstinstall2.png}
 \end{center}
 
-\paragraph{Langue} Sur la première page vous allez pouvoir choisir la langue d'affichage de XINX. 
+\paragraph{Langue} Sur la première page vous allez pouvoir choisir la langue d'affichage de XINX. Actuellement XINX est écrit en anglais et traduit en français. 
 
-\paragraph{Rafraichir automatiquement le dock dossier} Si vous décochez cette case, lorsque vous rechercherez un fichier dans un projet, il vous faudra frapper la touche <<Entrer>> pour lancer la recherche, sinon elle se lancera automatiquement à la fin de la frappe.
+\paragraph{Rafraichir automatiquement le dock dossier} Si vous décochez cette case, lorsque vous rechercherez un fichier dans un projet (voir \ref{sec:Projets}), il vous faudra frapper la touche << Entrer >> pour lancer la recherche, sinon elle se lancera automatiquement à la fin de la frappe.
 
-\paragraph{Ouvrir la dernière session au démarrage} Vous pouvez également indiquer que XINX doit ouvrir la dernière session au démarrage, avec les derniers projets ouvert. Si vous ne souhaiter pas ouvrir la dernière session au démarrage, XINX vous proposera dans une boîte de dialogue la liste des sessions disponible ainsi que la liste des projets possible.
+\paragraph{Ouvrir la dernière session au démarrage} Vous pouvez également indiquer que XINX doit ouvrir la dernière session au démarrage, avec les derniers projets ouvert. Si vous ne souhaiter pas ouvrir la dernière session au démarrage, XINX vous proposera dans une boîte de dialogue la liste des sessions disponible ainsi que la liste des projets possible. Une session contient une sauvegarde de votre environnement de travail (fichiers ouvert, projets ouvert, signets, ...).
 
-\paragraph{Dossier projet à ouvrir par défaut} Le <<Dossier projet à ouvrir par défaut>> est le dossier qui vous sera proposé lorsque que vous allez créer un nouveau projet. C'est généralement le dossier qui se trouve au dessus de tous les dossiers sur lesquels vous allez travailler.
+\paragraph{Dossier projet à ouvrir par défaut} Le << Dossier projet à ouvrir par défaut >> est le dossier qui vous sera proposé lorsque que vous allez créer un nouveau projet. C'est généralement le dossier qui vous sert à stocker tout vos développement. Ou toute autre dossier qui vous arrange.
 
-\paragraph{Encodage du texte par défaut} est l'encodage par défaut à utiliser pour les fichier dont XINX ne peux déterminer l'encodage (fichier texte, fichier JavaScript, \dots). Cette option n'a aucune effet sur les fichiers XML définissant au début du fichier l'encodage à utiliser.
+\paragraph{Encodage du texte par défaut} est l'encodage par défaut à utiliser pour les fichiers dont XINX ne peux déterminer l'encodage (fichier texte, fichier JavaScript, \dots). Cette option n'a aucune effet sur les fichiers XML et XSL définissant au début du fichier l'encodage à utiliser.
 
 \begin{center}
  \includegraphics[width=0.60\textwidth]{./firstinstall3.png}
@@ -220,31 +220,62 @@ Cette fenêtre vous permettra de configurer les principales fonctionnalités de 
 
 Sur l'écran suivant vous allez trouver différentes options lié à l'édition du texte. Si vous êtes familier avec d'autres IDE, vous reconnaitrez des options. 
 
-\paragraph{Afficher une alerte à la modification d'un fichier} Lorsqu'un programme externe modifie un fichier ouvert dans XINX, ce dernier vous demandera alors automatiquement de recharger le fichier. Vous pourrez choisir de rafraichir ou non le document.
+\paragraph{Afficher une alerte à la modification d'un fichier} Lorsqu'un programme externe modifie un fichier ouvert dans XINX, ce dernier vous demandera alors automatiquement de recharger le fichier. Vous pourrez choisir de rafraichir ou non le document. Si vous décider de ne pas rafraichir le document, ce dernier sera noté comme modifié.
 
-\paragraph{Créer une copie pendant la sauvegarde (.bak)} Lors de la sauvegarde, XINX peut créer pour vous un fichier \verb+.bak+ contenant la dernière version du fichier (avant sauvegarde). Vous pouvez ainsi retrouver une sauvegarde ancienne si nécessaire.
+\paragraph{Créer une copie pendant la sauvegarde (.bak)} Lors de la sauvegarde, XINX peut créer pour vous un fichier \verb+.bak+ contenant la dernière version du fichier (avant sauvegarde). Vous pouvez ainsi retrouver une sauvegarde ancienne si nécessaire. 
 
 \paragraph{Afficher les tabulations et les espaces dans l'éditeur} Afficher les tabulations et les espaces dans l'éditeur de texte à l'aide d'un symbole pour mieux différencier les espaces et les tabulations.
 
-\paragraph{Surligner automatiquement les mots identiques} Lorsque vous vous déplacer dans l'éditeur de texte, XINX surlignera tous les mots identiques au mot sous le curseur. A chaque déplacement, le surlignement sera mis à jours. Ceci peut avoir un impact sur les performances de XINX.
+\paragraph{Surligner automatiquement les mots identiques} Lorsque vous vous déplacer dans l'éditeur de texte, XINX surlignera tous les mots identiques au mot sous le curseur. A chaque déplacement, le surlignement sera mis à jours. Ceci peut avoir un impact négatif sur les performances de XINX.
 
-\paragraph{Indentation automatique à la sauvegarde} Lors de la sauvegarde, XINX réindentera automatiquement le document, si XINX est capable de gérer l'indentation de ce document. Actuellement seul les documents XML, XSLT, \dots et dérivés peuvent être indenté.
+\paragraph{Indentation automatique à la sauvegarde} Lors de la sauvegarde, XINX ré-indentera automatiquement le document, si XINX est capable de gérer l'indentation de ce document. Actuellement seul les documents XML, XSLT, \dots et dérivés peuvent être indenté. Dans les options de personalisation, une autre option permet de ré-indenter les fichiers lors de la fermeture du fichier et non à sa sauvegarde.
 
 \begin{center}
  \includegraphics[width=0.60\textwidth]{./firstinstall4.png}
 \end{center}
 
-Enfin XINX vous demandera de définir l'emplacement d'une liste d'outil qu'il pourrait potentiellement avoir besoin. Si les outils ne sont pas installé, ou tout simplement, si vous ne souhaiter renseigner tout de suite ces outils, vous pouvez continuer. XINX vous re-demandera automatiquement l'outil lorsqu'il en aura besoin.
+Enfin XINX vous demandera de définir l'emplacement d'une liste d'outil qu'il pourrait potentiellement avoir besoin. Si les outils ne sont pas installé, ou tout simplement, si vous ne souhaiter pas les renseigner tout de suite, vous pouvez continuer. XINX vous re-demandera automatiquement l'outil lorsqu'il en aura besoin.
+
+Si vous utilisez un gestionnaire de version comme CVS et SubVersion, XINX vous demandera l'emplacement des commande à lancer.
 
 \section{L'interface principale}
 
-L'interface principale de XINX est celle qui permet l'édition des fichiers. Elle propose différentes boîtes à outils offrant de l'aide à l'édition de XINX. Au centre de l'interface, se trouve la zone d'édition. Des onglets permette de choisir parmis les différents fichiers ouvert, celui que l'on souhaiter éditer.
+L'interface principale de XINX est celle qui permet l'édition des fichiers. Elle propose différentes boîtes à outils offrant de l'aide à l'édition de XINX. Au centre de l'interface, se trouve la zone d'édition. Des onglets permettent de choisir parmis les différents fichiers ouvert, celui que l'on souhaiter éditer.
 
+Nous allons faire un tour de l'interface pour retrouver les différentes parties.
 
+\subsection{Les menus}
 
-\section{Les projets}
+\begin{itemsize}
+  \item Session 
+  \item Projets
+  \item Fichier
+  \item Edition
+  \item Recherche
+  \item Signets
+  \item Execution
+  \item Outils
+  \item Fenêtre
+  \item Aide
+\end{itemsize}
+
+\subsection{Les onglets}
+
+\begin{itemsize}
+  \item Dossier projet
+  \item Contenue du document
+  \item Modèles
+  \item Flux de données
+  \item Avertissements/Erreurs
+  \item Gestionnaire de version
+  \item Résultat de recherche
+  \item Progression
+\end{itemsize}
 
 \section{Configuration de XINX}
+
+\section{Les projets}
+\label{sec:Projets}
 
 \subsection{Création d'un projet}
 
