@@ -113,7 +113,7 @@ Une vue spéciale permet de visualiser les fichiers de données au format XML so
 
 \chapter{Installation de XINX}
 
-XINX possède différents paquets pour installer suivant l'environnement. Si vous avez déjà installé un logiciel auparavent sur votre système d'exploitation, l'installation vous sera facile. Comme l'installation du logiciel peut varier suivant la platforme, les instructions seront séparés dans plusieurs chapitre.
+XINX possède différents paquets d'installation dépendant de votre système d'exploitation. Si vous avez déjà installé un logiciel auparavent sur votre système d'exploitation, l'installation vous sera facile. Comme l'installation du logiciel peut varier suivant la platforme, les instructions seront séparés dans plusieurs chapitre.
 
 \section{MS/Windows}
 
@@ -141,14 +141,14 @@ Le programme d'installation créera un group XINX dans le menu <<Démaré>> de W
 
 Une version binaire de XINX est disponible pour la distribution Gnu/Debian. Vous pouvez la télécharger en ajoutant le dépôt \verb+http://apt.shadoware.org/+ à votre fichier \verb+/etc/apt/sources.list+ puis executant la commande d'installation de XINX. Votre gestionnaire de paquet s'occupera alors d'installer automatiquement les paquets manquants. 
 
-XINX pour fonctionner necessite Qt, et les librairies libxml2 et libxslt1 de gestion des fichiers XML.
+XINX pour fonctionner necessite Qt, et les librairies libxml2 et libxslt1 de gestion des fichiers XML. Votre gestionnaire de paquet s'occupera de les installer pour vous.
 
 \begin{verbatim}
 # echo "deb http://apt.shadoware.org/ squeeze main" >> /etc/apt/sources.list
 # aptitude install xinx
 \end{verbatim}
 
-Vous pouvez alors démarrer XINX depuis le menu ou en le lancement depuis la ligne de commande. 
+Vous pouvez alors démarrer XINX depuis le menu ou en le lancement depuis la ligne de commande à l'aide de la commande \verb+xinx+. 
 
 \subsection{Version source pour les autres distribution}
 
@@ -164,7 +164,7 @@ Pour les autres distribution Gnu/Linux, il n'y a pas de paquet de disponible act
 
 \paragraph{Compilation :}
 
-Sous Gnu/Linux la compilation necessite l'installation des paquets suivants\footnote{les paquets sont à titre d'exemple, il faudra adapter la liste des paquets enfonction de votre distribution.} :
+Sous Gnu/Linux la compilation necessite l'installation des paquets suivants\footnote{le nom des paquets est donné à titre d'exemple, il faudra adapter la liste des paquets en fonction de votre distribution.} :
 \begin{itemize}
  \item libxml2-dev
  \item libxslt1-dev
@@ -182,7 +182,7 @@ Placer vous ensuite dans le dossier parent au dossier xinx et lancer la compilat
 # sudo make install
 \end{verbatim}
 
-Si tout les paquets sont disponible la compilation et l'installation se passeront sans problème. En cas d'erreur, corrigé les paquets manquant et recommncer depuis le début.
+Si tout les paquets sont disponible la compilation et l'installation se passeront sans problème. En cas d'erreur, corrigé les paquets manquant et recommencer depuis le début.
 
 \chapter{Interface principale de XINX}
 
