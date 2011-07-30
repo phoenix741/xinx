@@ -53,15 +53,19 @@ Bref XINX est fait pour vous aider à développer votre site internet à base de
  \includegraphics[width=\textwidth]{./mainform.png}
 \end{center}
 
-Le logiciel a été écris au début pour le développement des feuilles de styles de la société \href{http://www.generixgroup.com/}{Generix Group} et été fortement tournée vers cette technologie. Maintenant XINX se concentre sur le développement de feuille de style, et tout spécificité lié à la société Generix Group a été déporté dans un plugins.
+Le logiciel a été écris au début pour le développement des feuilles de styles de la société \href{http://www.generixgroup.com/}{Generix Group} et été fortement tournée vers cette technologie. Maintenant XINX se concentre sur le développement de feuille de style, et tout spécificité lié à la société Generix Group a été déporté dans un plugins. Vous pouvez donc maintenant utiliser XINX pour tout développement de feuille de style XSL.
 
-Le logiciel XINX peut voir ses fonctionnalité étendue à l'aide de modèle (parfois aussi appelé snipet ou template), à l'aide de script (au format ECMAScript, proche de qu'est la JavaScript), ou à l'aide de plugins (écrit en C++ et en utilisant le framework Qt).
+Le logiciel XINX peut voir ses fonctionnalité étendue à l'aide de modèle (parfois aussi appelé snipet ou template), à l'aide de script (au format ECMAScript, proche de ce qu'est le JavaScript), ou à l'aide de plugins (écrit en C++ et en utilisant le framework Qt). Sinon XINX étant un logiciel libre il vous est toujours possible de faire évoluer le logiciel dans son intégralité, voir même de proposer un patch si c'est un besoin qui manque au logiciel.
 
 XINX utilise le framework \href{http://qt.nokia.com}{Qt} comme base. Ce même framework est utilisé pour développé l'environnement de bureau \href{htpp://ww.kde.org}{KDE}, mais aussi des logiciels connues comme Skype, \ldots. Qt est n'est pas seulement un framework graphique mais propose quelques extentions au langauge C++ à l'aide des signaux, des slots, des pointeurs partagées, des listes, des boucles foreach, \ldots.
 
 Ce manuel à pour but de vous aider à utiliser le logiciel XINX au mieux. Il vous expliquera comment installer le logiciel sur votre ordinateur, comment le paramètrer, puis comme l'utiliser pour développer vos feuilles de style.
 
 \section{Utilisation des feuilles de style}
+
+Les feuilles de styles XSL sont utilisé pour transformer un fichier XML en n'importe quel fichier text (plat, XML, HTML, ...). Vous pouvez ainsi transformer un même fichier XML en HTML, en tableau Excel, et en un fichier de donnée pour un WebServices à l'aide de plusieurs feuille de style.
+
+Vous pouvez donc utiliser les feuilles XSL pour des transformation ponctuelles ou aussi pour des applications qui se base entièrement sur des feuilles XSL pour l'a présentation des données à l'utilisateur.
 
 \section{Terminologie}
 
