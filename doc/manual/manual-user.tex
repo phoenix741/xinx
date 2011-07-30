@@ -80,6 +80,25 @@ Une feuille de style XSLT peut être utilisé pour filtrer un fichier XML, trans
 
 \section{Les fonctionnalités}
 
+\subsection{Les types de fichiers}
+
+XINX est un logiciel fort complet qui permet d'éditer principalement les feuilles de style mais permet également d'éditer d'autres type de fichiers.
+
+XINX permet d'éditer les types de fichiers suivants:
+\begin{itemsize}
+  \item \verb+XSL Stylesheet+ : Le type de fichier que XINX sait le mieux éditer. Il propose une coloration syntaxique sur ce type de fichier, de l'autocompletion sur les balises, les attributs et sur les variables du fichier et sur les variables des fichiers d'import.
+  \item \verb+XML File+ : La completion sur les fichiers XML n'existe pas, les balises des fichiers XML ne pouvant pas être déterminé à l'avance (sauf à part par un schema ou une DTD, mais XINX n'est pas encore capable de les utiliser). 
+  \item \verb+HTML File+ : XINX est capable de compléter sur les fichiers HTML. Il propose les différentes balises HTML disponibles et les attributs associés. Pour certain attribut (comme l'attribut \verb+type+ de la balise \verb+input+), XINX propose aussi des valeurs.
+  \item \verb+JavaScript+ : La coloration syntaxique est active sur ces fichiers. XINX est capable de faire de la completion basique sur les fichiers JavaScript. Certain fichiers JavaScript (utilisant la notion de prototype) ne sont pour l'instant pas lisible.
+  \item \verb+Cascading Style Sheet+ : Seul la coloration syntaxique existe sur ce type de fichier. XINX est capable de vous présenter le contennu dans une boite à outil.
+  \item \verb+XQuery+ : XINX est capable de proposer de la coloration syntaxique, ainsi que la completion sur quelques fonctions (count, \dots)
+  \item \verb+Text file+ : Sur les fichiers textes, il n'y a pas de coloration syntaxique, ni de completion.
+\end{itemsize}
+
+Vous allez donc pouvoir développer dans un seul éditeur l'ensemble de vos feuilles de styles XSL ainsi que tous les autres fichiers associés à vos feuilles de styles\footnote{Si le besoin se fait sentir, vous pouvez développer un plugin pour gérer les autres types de fichiers associés à vos projets}.
+
+
+
 \chapter{Installation de XINX}
 
 XINX possède différents paquets pour installer suivant l'environnement. Si vous avez déjà installé un logiciel auparavent sur votre système d'exploitation, l'installation vous sera facile. Comme l'installation du logiciel peut varier suivant la platforme, les instructions seront séparés dans plusieurs chapitre.
@@ -241,8 +260,14 @@ Flux de donnée / présentation
 \section{Services}
 \label{sec:Services}
 
+
+Type de fichier : Web Service Stream
+
+
 \section{Generix}
 \label{sec:Generix}
+
+Type de fichier : Generix Maquette File.
 
 \appendix
 \chapter{Les raccourcis}
