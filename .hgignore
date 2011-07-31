@@ -2,3 +2,11 @@ syntax: glob
 build/
 CMakeLists.txt.user
 *.kdev4
+doc/manual/*.aux
+doc/manual/*.log
+doc/manual/*.out
+doc/manual/*.pdf
+*.orig
+*~
+doc/manual/*.toc
+.directory
