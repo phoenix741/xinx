@@ -466,7 +466,7 @@ RCS::struct_rcs_infos RCS_SVN::info(const QString & path)
 			entries = m_client->status(qPrintable(path), /* descend */ false, /* get_all */ true, /* update */ false, /* no_ignore */ false, /* ignore_externals */ false);
 		}
 
-		if (! entries.size())
+		if (entries.size())
 		{
 			result = svnInfoToRcsInfos(entries.at(0));
 		}

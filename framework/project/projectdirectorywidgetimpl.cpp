@@ -147,6 +147,7 @@ void PrivateProjectDirectoryWidgetImpl::updateActions(QModelIndexList selectedRo
 	bool is_rcs_modified = true;
 	bool is_rcs_unknown  = true;
 	bool is_rcs_removed  = true;
+	bool is_rcs_missing  = true;
 	RCS::rcsFeatures features = is_rcs_actived ? project->rcsProxy()->currentRCSInterface()->features() : RCS::rcsFeatures();
 
 	foreach(QModelIndex index, selectedRows)
@@ -170,22 +171,28 @@ void PrivateProjectDirectoryWidgetImpl::updateActions(QModelIndexList selectedRo
 		switch (_model->fileState(index))
 		{
 		case RCS::Unknown:
+			is_rcs_missing  = false;
 			is_rcs_modified = false;
-			is_rcs_removed = false;
+			is_rcs_removed  = false;
 			break;
 		case RCS::LocallyAdded:
 		case RCS::LocallyModified:
+			is_rcs_missing  = false;
 			is_rcs_unknown    = false;
 			is_rcs_removed    = false;
 			break;
 		case RCS::LocallyRemoved:
+			is_rcs_missing  = false;
 			is_rcs_unknown = false;
 			is_rcs_modified = false;
 			break;
 		case RCS::NeedsCheckout:
+			is_rcs_missing  = ! QFile::exists(ri.path);
 			is_rcs_modified = false;
 			is_rcs_unknown  = false;
+			break;
 		default:
+			is_rcs_missing  = false;
 			is_rcs_modified = false;
 			is_rcs_unknown  = false;
 			is_rcs_removed  = false;
@@ -208,7 +215,7 @@ void PrivateProjectDirectoryWidgetImpl::updateActions(QModelIndexList selectedRo
 	_commit_action->setVisible(is_rcs_actived && ! is_mutli_project && features.testFlag(RCS::RcsFeatureUpdateAndCommit));
 	_log_action->setVisible(is_rcs_actived && (nb_selected == 1) && features.testFlag(RCS::RcsFeatureLog));
 	_add_action->setVisible(is_rcs_actived && ! is_mutli_project && ! is_project && is_rcs_unknown && features.testFlag(RCS::RcsFeatureAdd));
-	_remove_action->setVisible(is_rcs_actived && ! is_mutli_project && ! is_project && is_rcs_modified && features.testFlag(RCS::RcsFeatureRemove));
+	_remove_action->setVisible(is_rcs_actived && ! is_mutli_project && ! is_project && (is_rcs_modified || is_rcs_missing) && features.testFlag(RCS::RcsFeatureRemove));
 	_revert_action->setVisible(is_rcs_actived && ! is_mutli_project && ! is_project && is_file && (is_rcs_removed || is_rcs_modified) && features.testFlag(RCS::RcsFeatureRevert));
 	_blame_action->setVisible(is_rcs_actived && (nb_selected == 1) && ! is_mutli_project && ! is_project && is_file && features.testFlag(RCS::RcsFeatureBlame));
 
@@ -311,9 +318,12 @@ void PrivateProjectDirectoryWidgetImpl::removeFiles()
 	QMessageBox::StandardButton result = QMessageBox::question(qApp->activeWindow(), tr("Delete file(s)"), tr("Can you confirm that you want remove %Ln file(s)", "", list.size()), QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
 	if (result == QMessageBox::Yes)
 	{
-		foreach(const QString & file, list)
+		foreach(const QString & filename, list)
 		{
-			QFile::remove(file);
+			QFile file(filename);
+
+			if (file.exists())
+				file.remove();
 		}
 
 		if (! project->projectRCS().isEmpty() && project->rcsProxy())

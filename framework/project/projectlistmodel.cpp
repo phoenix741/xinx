@@ -1005,7 +1005,10 @@ QString ProjectListModel::filePath(const QModelIndex& index) const
 	if (! index.isValid()) return QString();
 	ModelFileNode* node = static_cast<ModelFileNode*>(index.internalPointer());
 	if (!node) return QString();
-	return node->_info.canonicalFilePath();
+	if (node->_info.exists())
+		return node->_info.canonicalFilePath();
+
+	return node->_filename;
 }
 
 ProjectPtr ProjectListModel::fileProject(const QModelIndex& index) const
