@@ -253,8 +253,11 @@ Au centre vous avez les différents fichiers que vous avez ouvert et que vous so
 
 Nous allons maintenant voir le contenu des différents menu.
 
+
 \subsection{Les menus}
 \label{sub:menu}
+
+\paragraph{Session} : Dans le menu session, XINX vous propose de gérer vos sessions. Vous allez pouvoir retrouver plus d'information sur les sessions dans la section \ref{sec:Sessions}
 
 \begin{itemize}
   \item Session 
@@ -269,6 +272,10 @@ Nous allons maintenant voir le contenu des différents menu.
   \item Aide
 \end{itemize}
 
+\subsection{Bienvenue}
+\label{sub:bienvenue}
+
+La page de bienvenue
 
 \section{Les projets}
 \label{sec:Projets}
@@ -280,6 +287,26 @@ Nous allons maintenant voir le contenu des différents menu.
 Gestionnaire de version
 
 \section{Les sessions}
+\label{sec:Sessions}
+
+XINX vous proposes un système de session pour facilement retrouver XINX dans l'état dans lequel vous l'aviez laissé. XINX sauvegarde les sessions au même endroit que la configuration de l'application (soit un fichier INI sous Gnu/Linux dans le dossier \verb+.config+ et la base de registre sous MS/Windows). XINX sauvegarde pour vois :
+\begin{itemize}
+ \item \emph{Le nom des différents projets ouvert} : Ce qui permet à XINX lors d'une ré-ouverture de session de ré-ouvrir l'enssemble des projets ouvert précédement. Si entre temps les fichiers ont été déplacé ou que les fichiers n'existe plus, il ne sera plus possible pour XINX d'ouvrir ces fichiers.
+ \item \emph{Le projet par défaut} (voir la section \ref{sec:Projets}).
+ \item \emph{La liste des fichiers ouverts} : Ainsi lors de la ré-ouveture d'une session, XINX vous restaure l'ensemble des fichiers ouverts et ré-associe chaque fichier aux différents projets ouverts.
+ \item \emph{Les signets} : Vous pouvez aussi retrouver l'ensemble de vos signets sur chaque document ouvert.
+\end{itemize}
+
+////////////// Ici copie d'écran du menu Session ///////////////////////
+
+Par défaut XINX vous créé automatiquement la session \emph{default}. Cette session est automatiquement écrasé si lors de l'ouveture de XINX, vous n'ouvrez aucune session.  Si vous voulez par contre retrouve l'état de XINX lors du dernier arrêt, vous pouvez par contre choisir la session \emph{default}.
+
+Si vous travaillez sur plusieurs sujets différents, impactant des projets identique ou des projets différents, ils vous est possible de renommer la session courante (\emph{Menu Session/Renomme session \dots}) avec un nom qui aura une signification pour vous. XINX continura donc à sauvegarder les différentes opérations (ouverture de fichier, ajout de signet, changement de projet, ...) dans cette nouvelle session. La session \emph{default} sera alors remise à vide.
+Vous pouvez alors aller de nouveau sur la session default, et reproduire les mêmes étapes pour créer une nouvelle session avec d'autres projets, d'autres documents ouvert et un nouveau nom.
+
+Lors de la prochaine ouveture de XINX vous allez ainsi pouvoir retrouver l'ensemble des sessions que vous avez créez.
+
+Une fois que vous aurez terminé avec une session vous pourrez la supprimer soit dans le menu Session, en selectionnant votre session et cliquant sur \emph{Session/Supprimer la session}, soit sur la page de Bienvenue (voir section \ref{sub:bienvenue}) en cliquant sur la croix à coté de votre session.
 
 \section{Mode édition}
 
