@@ -850,7 +850,6 @@ void MainformImpl::replace()
 
 void MainformImpl::updateActions()
 {
-	m_searchAct->setEnabled(EditorManager::self()->editorsCount());
 	m_searchNextAct->setEnabled(EditorManager::self()->editorsCount());
 	m_replaceAct->setEnabled(EditorManager::self()->editorsCount());
 	m_searchPreviousAct->setEnabled(EditorManager::self()->editorsCount());
