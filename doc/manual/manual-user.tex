@@ -244,8 +244,9 @@ L'interface principale de XINX est celle qui permet l'édition des fichiers. Ell
 
 Nous allons faire un tour de l'interface pour retrouver les différentes parties.
 
-////////////////////// Ici une image de l'interface numéroté ////////////////////
-
+\begin{center}
+ \includegraphics[width=0.60\textwidth]{./xinxmainform.png}
+\end{center}
 
 En haut vous aller retrouver la barre de menu avec les différentes commandes que vous allez pouvoir executer, ainsi que la barre d'icône avec les commandes les plus souvent lancé. Vous allez puvoir retrouver une description des différents menu dans la section \ref{sub:Menu}. Sur les cotés gauche et droit vous allez retrouvers différents boites à outils qui vous donnerons différentes sorte d'information utils au développement et à l'écriture de vos feuilles de style. Vous allez pouvoir retrouver la description des ces onglets/vues dans la section \ref{sec:dock}. Vous trouverez dans la partie basse de XINX, d'autres boites à outils regroupant les erreurs, les journaux, et la progression des différentes tâches.
 
@@ -268,7 +269,10 @@ Dans le menu projet vous allez pouvoir aussi indiquer que vous souheter mettre �
 
 \paragraph{Recherche} : Dans le menu recherche vous allez pouvoir trouver les options Rechercher et Remplacer qui vous permettrons de rechercher et remplacer dans le document courant les différents éléments. Vous allez pouvoir également à l'aide de ce menu pouvoir rechercher dans un dossier donnée ou dans les différents dossier d'un projet.
 
-/// Afficher une capture de la page de recherche /////
+\begin{center}
+ \includegraphics[width=0.60\textwidth]{./xinxsearch.png}
+\end{center}
+
 
 Dans cette boite de dialogue vous allez pouvoir définir soit une recherche pour un dossier personnalisé (Etendu = Personalisé) ou sur l'enssemble des dossiers des projets ouverts (sous condition qu'au moins un projet exist). Vous pouvez également effectuer votre recherche sur le document courant.
 
@@ -276,19 +280,22 @@ En cas de recherche sur les fichiers du projets ou d'un dossier donné, il est p
 
 Pour la recherche vous pouvez utiliser des expressions régulières\footnote{Vous pouvez retrouver une documentation des expressions régulières pouvant être utilisé à l'adresse suivante : \hyperref{http://doc.qt.nokia.com/4.7/qregexp.html}{introduction}{}{\nolinkurl{http://doc.qt.nokia.com/4.7/qregexp.html}}.} ou un recherche texte simple.
 
+En cas de recherche d'un texte dans un ou plusieurs dossiers, XINX affichera le résultat dans la boite à outils de résultat de la recherche. Celle-ci sera automatiquement affiché avec pour chaque fichier l'emplacement dans le fichier du texte rechercher (si le texte est retrouvé plusieurs fois dans le fichier, on retrouvera les emplacements), ainsi que le contenu de la ligne correspondante.
 
-\begin{itemize}
-  \item Session 
-  \item Projets
-  \item Fichier
-  \item Edition
-  \item Recherche
-  \item Signets
-  \item Execution
-  \item Outils
-  \item Fenêtre
-  \item Aide
-\end{itemize}
+\begin{center}
+ \includegraphics[width=0.60\textwidth]{./xinxsearchresult.png}
+\end{center}
+
+\paragraph{Signets} : Ils est possible de positionner les signets dans le code pour retrouver facilement des emplacements de votre choix. Il est possible de parcourir les signets posé à travers chaques fichiers ou également d'effacer tous les signets. Ces signets sont enregistré dans la session. Si vous effacer la session, ces signets sont également éffacé. Si vous fermer un fichier ces signets sont égalements fermé.
+
+\paragraph{Executer} : Dans le menu Executer, vous allez pouvoir trouver des options uniquement disponible pour certaine type de fichiers. Par exemples pour les fichiers HTMl, vous allez à partir de ce menu pouvoir prévisualiser le résultat de votre page HTML à l'aide du navigateur Webkit. Pour les feuilles de styles XSL, vous allez pouvoir parser un document XML (que vous allez pouvoir renseigner dans la boite à outil << Flux de présentation >>) et ainsi pré-visualiser le résultat. Si vous avez renseigner un flux de présentation vous allez pouvoir également tester des requêtes X-Query (ou X-Path) pour verifier la validé de ces requêtes.
+
+\paragraph{Outils} : Dans le menu outils vous allez pouvoir retrouver les modèles et les scriptes dont vous pouvez avoir plus d'information dans les sections \ref{sec:Snipets} et \ref{sec:Scripts}, ainsi que le menu qui vous permettra de personnaliser totalement XINX. Les options de personnalisations de XINX peuvent être retrouver dans la section \ref{sec:Custom}.
+
+\paragraph{Fenêtre} : Dans ce menu vous allez trouvez les options qui vont vous permettre de parcourir tous les onglets (onglet précédent et onglet suivant). Vous allez également retrouvez l'ensemble des boites à outils que vous allez pouvoir afficher et cacher depuis le menu.
+
+\paragraph{Aide} : Dans le menu d'aide vous allez pouvoir trouver la version du logiciel ainsi qu'une action << Qu'est que c'est ? >> qui vous permet d'avoir l'aide sur n'importe quel champ de l'application. Vous trouverez également dans ce menu une option qui vous permez de créer un ticket sur le système de suivi de XINX. En cas d'annomalie ou si vous souhaiter effectuer une demande d'évolution, cet assistant vous aidera à complèter les informations necessaire pour faire le ticket.
+
 
 \subsection{Bienvenue}
 \label{sub:bienvenue}
@@ -315,7 +322,9 @@ XINX vous proposes un système de session pour facilement retrouver XINX dans l'
  \item \emph{Les signets} : Vous pouvez aussi retrouver l'ensemble de vos signets sur chaque document ouvert.
 \end{itemize}
 
-////////////// Ici copie d'écran du menu Session ///////////////////////
+\begin{center}
+ \includegraphics[width=0.30\textwidth]{./xinxsessionmenu.png}
+\end{center}
 
 Par défaut XINX vous créé automatiquement la session \emph{default}. Cette session est automatiquement écrasé si lors de l'ouveture de XINX, vous n'ouvrez aucune session.  Si vous voulez par contre retrouve l'état de XINX lors du dernier arrêt, vous pouvez par contre choisir la session \emph{default}.
 
@@ -349,8 +358,10 @@ Flux de donnée / présentation
 \end{itemize}
 
 \section{Configuration de XINX}
+\label{sec:Custom}
 
 \chapter{Les modèles}
+\label{sec:Snipets}
 
 \chapter{Les scriptes}
 \label{sec:Scripts}
@@ -362,6 +373,8 @@ Flux de donnée / présentation
 
 
 Type de fichier : Web Service Stream
+
+Le menu Execute pour executer en masse.
 
 
 \section{Generix}
