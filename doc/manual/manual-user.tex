@@ -273,7 +273,6 @@ Dans le menu projet vous allez pouvoir aussi indiquer que vous souheter mettre �
  \includegraphics[width=0.60\textwidth]{./xinxsearch.png}
 \end{center}
 
-
 Dans cette boite de dialogue vous allez pouvoir définir soit une recherche pour un dossier personnalisé (Etendu = Personalisé) ou sur l'enssemble des dossiers des projets ouverts (sous condition qu'au moins un projet exist). Vous pouvez également effectuer votre recherche sur le document courant.
 
 En cas de recherche sur les fichiers du projets ou d'un dossier donné, il est possible de définir une liste d'extention à utiliser. XINX propose par défaut toutes les extentions qu'il est capable de gérer. 
@@ -300,10 +299,29 @@ En cas de recherche d'un texte dans un ou plusieurs dossiers, XINX affichera le 
 \subsection{Bienvenue}
 \label{sub:bienvenue}
 
-La page de bienvenue
+La page de bienvenue vous est présenté si aucun projet n'est ouvert et si vous n'avez pas demandé d'ouvrir automatiquement la dernière session au démarage (vous pouvez changer ce fonctionnement dans les options de xinx que vous pouvez trouvez dans la section \ref{sec:Custom}). Dans cette boite de dialogue, XINX vous propose la liste des projets déjà ouvert. 
+
+Lors que vous choisissez d'ouvrir un nouveau projet, ce dernier sera ouvert dans la session default qui sera alors écrasé. C'est pour cela que si vous souhetez garder des informations importantes dans votre session (comme des bookmark), il est préférable de renommer la session.
+
+Les sessions se trouve à gauche dans la boite de dialogue de << Bienvenu >>. L'ouverture d'une session, ouvre alors tous les projets et feuilles de styles associés, avec les informations qui ont été associé à la session. 
+
+Si vous décidez d'ouvrir la dernière session automatiquement au démarrage, XINX n'ouvrira pas la boite de dialogue de bienvenue. Elle vous sera alors proposé au momen ou vous fermer tout les fichiers de votre session manuellement.
+
+Si vous ouvrez XINX en passant des paramètres (par exemple des feuilles de style à ouvrir), XINX continuera à ouvrir la boite de dialogue de bienvenue. Cela vous permettra de selectionner le projet ou la session à ouvrir. XINX s'il le peut associera automatiquement le fichier à l'un des projets ouvert. Vous aurez alors tous les avantages du mode projet sur votre fichier ainsi ouvert.
 
 \section{Les projets}
 \label{sec:Projets}
+
+Vous pouvez utiliser XINX comme n'importe quel éditeur de texte sans jamais vous soucier de créer un projet, mais XINX vous aidera à développer plus vos feuilles XSL si vous créé un projet. La création d'un projet vous permet entre autre : 
+
+\begin{itemize}
+ \item Recherche un fichier donné par son nom, sa date, sa taille, son contenu, ou son statut dans le référenciel, rapidement dans l'ensemble du projet.
+ \item De facilement associé un flux de présentation à votre feuille de style pour facilement la tester.
+ \item De tester des requêtes X-PATH sur votre flux de présentation
+ \item De faire appel à un gestionnaire de version (actuellement SubVersion ou Cvs)
+ \item D'utiliser des options spécifiques lié à un plugin sur le mode projet (voir \ref{sec:Generix} et \ref{sec:Services} par exemple)
+\end{itemize}
+
 
 \subsection{Création d'un projet}
 
@@ -329,7 +347,8 @@ XINX vous proposes un système de session pour facilement retrouver XINX dans l'
 Par défaut XINX vous créé automatiquement la session \emph{default}. Cette session est automatiquement écrasé si lors de l'ouveture de XINX, vous n'ouvrez aucune session.  Si vous voulez par contre retrouve l'état de XINX lors du dernier arrêt, vous pouvez par contre choisir la session \emph{default}.
 
 Si vous travaillez sur plusieurs sujets différents, impactant des projets identique ou des projets différents, ils vous est possible de renommer la session courante (\emph{Menu Session/Renomme session \dots}) avec un nom qui aura une signification pour vous. XINX continura donc à sauvegarder les différentes opérations (ouverture de fichier, ajout de signet, changement de projet, ...) dans cette nouvelle session. La session \emph{default} sera alors remise à vide.
-Vous pouvez alors aller de nouveau sur la session default, et reproduire les mêmes étapes pour créer une nouvelle session avec d'autres projets, d'autres documents ouvert et un nouveau nom.
+
+Vous pouvez alors aller de nouveau sur la session default, et reproduire les mêmes étapes pour créer une nouvelle session avec d'autres projets, d'autres documents ouvert et un nouveau nom. Le basculement d'une session à l'autre ferme automatiquement la session précédente et tous le projets associés et sauvegarde le contenu de la session.
 
 Lors de la prochaine ouveture de XINX vous allez ainsi pouvoir retrouver l'ensemble des sessions que vous avez créez.
 
