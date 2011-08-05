@@ -91,7 +91,7 @@ PrivateEditorManager::PrivateEditorManager(EditorManager * manager) : _manager(m
 	connect(_tab_widget, SIGNAL(tabCloseRequested(int)), this, SLOT(tabCloseRequested(int)));
 
 	connect(_manager, SIGNAL(fileOpened(QString)), this, SLOT(updateRecentFiles()));
-	connect(_manager, SIGNAL(fileSaved(QString)), this, SLOT(updateRecentFiles()));
+	connect(_manager, SIGNAL(fileSaved(QString,QString)), this, SLOT(updateRecentFiles()));
 
 	connect(XINXConfig::self(), SIGNAL(changed()), this, SLOT(updateConfigElement()));
 
@@ -721,7 +721,7 @@ void EditorManager::saveFile(AbstractEditor* editor, bool saveAs)
 
 	serializeEditors();
 
-	emit fileSaved(QFileInfo(newFilename).absoluteFilePath());
+	emit fileSaved(QFileInfo(newFilename).absoluteFilePath(), filename);
 }
 
 void EditorManager::saveAsFile()
@@ -833,11 +833,12 @@ void EditorManager::closeFile(AbstractEditor* editor, bool confirm)
 
 		d->tabWidget()->removeTab(index);
 		d->updateActions();
-		delete editor;
 
 		serializeEditors();
 
 		emit fileClosed(editor->lastFileName());
+
+		delete editor;
 	}
 }
 
@@ -918,7 +919,9 @@ void EditorManager::deserializeEditors(QList<XinxSession::SessionEditor*> sessio
 
 	foreach(XinxSession::SessionEditor* editor, session_editors)
 	{
-		d->addTab(EditorFactory::self()->createEditor(editor));
+		AbstractEditor * abstractEditor = EditorFactory::self()->createEditor(editor);
+		d->addTab(abstractEditor);
+		emit fileOpened(abstractEditor->lastFileName());
 	}
 
 	if (editorsCount() > 0) setCurrentEditor(0);

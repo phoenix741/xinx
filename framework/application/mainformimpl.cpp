@@ -21,6 +21,7 @@
 #include "mainformimpl.h"
 #include <contentview3/dockwidget.h>
 #include <project/projectdirectorywidgetimpl.h>
+#include <editors/editortabdockwidget.h>
 #include <search/replacedialogimpl.h>
 #include <core/errordockimpl.h>
 #include <versioncontrol/rcslogdockimpl.h>
@@ -349,7 +350,7 @@ void MainformImpl::connectSignals()
 {
 	connect(EditorManager::self(), SIGNAL(fileOpened(QString)), this, SLOT(sOpenedFile(QString)));
 	connect(EditorManager::self(), SIGNAL(filePrinted(QString)), this, SLOT(sPrintedFile(QString)));
-	connect(EditorManager::self(), SIGNAL(fileSaved(QString)), this, SLOT(sSavedFile(QString)));
+	connect(EditorManager::self(), SIGNAL(fileSaved(QString,QString)), this, SLOT(sSavedFile(QString)));
 	connect(EditorManager::self(), SIGNAL(fileClosed(QString)), this, SLOT(sClosedFile(QString)));
 	connect(EditorManager::self(), SIGNAL(positionChanged(QString)), this, SLOT(setEditorPosition(QString)));
 }
@@ -414,6 +415,15 @@ void MainformImpl::createDockWidget()
 	m_menus["windows"]->addAction(action);
 	connect(m_contentDock, SIGNAL(open(QString,int,IFileTypePlugin*,XinxProject::ProjectPtr)), EditorManager::self(), SLOT(openFile(QString,int,IFileTypePlugin*,XinxProject::ProjectPtr)));
 	m_contentDock->setDock(view);
+
+	/* List of opened files */
+	m_editorTabDock = new EditorTabDockWidget(this);
+	view = addToolView(m_editorTabDock, Qt::LeftDockWidgetArea);
+	view->setObjectName(QString::fromUtf8("m_editorTabDock"));
+	action = view->toggleViewAction();
+	m_menus["windows"]->addAction(action);
+	connect(m_editorTabDock, SIGNAL(open(QString)), EditorManager::self(), SLOT(openFile(QString)));
+	m_editorTabDock->setDock(view);
 
 	/* Snipets */
 	m_snipetsDock = new SnipetDockWidget(this);

@@ -49,6 +49,7 @@ class ErrorDockWidgetImpl;
 class SearchDockWidgetImpl;
 class RCSLogDockWidgetImpl;
 class XmlPresentationDockWidget;
+class EditorTabDockWidget;
 class SnipetDockWidget;
 class ReplaceDialogImpl;
 class XinxJobProgressBar;
@@ -88,6 +89,7 @@ private:
 	// Dock
 	ContentView3::DockWidget * m_contentDock;
 	ProjectDirectoryWidgetImpl * m_projectDock;
+	EditorTabDockWidget * m_editorTabDock;
 	ErrorDockWidgetImpl * m_errorDock;
 	RCSLogDockWidgetImpl * m_rcsLogDock;
 	SearchDockWidgetImpl * m_searchDock;

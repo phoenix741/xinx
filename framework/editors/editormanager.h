@@ -116,7 +116,7 @@ public slots:
 	void deserializeEditors(QList<XinxSession::SessionEditor*> session_editors);
 signals:
 	void fileOpened(const QString & filename);
-	void fileSaved(const QString & filename);
+	void fileSaved(const QString & filename, const QString & oldFilename);
 	void filePrinted(const QString & filename);
 	void fileClosing(const QString & filename);
 	void fileClosed(const QString & filename);
