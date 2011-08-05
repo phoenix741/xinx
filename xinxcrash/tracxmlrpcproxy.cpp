@@ -45,7 +45,7 @@ QNetworkRequest TracXmlRpcProxy::getRpcRequest()
 	url.setUserName(_username);
 	url.setPassword(_password);
 	url.setHost(trac_serveur);
-	url.setPath("/login/rpc");
+	url.setPath("/login/xmlrpc");
 
 	QNetworkRequest request(url);
 	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/xml");
@@ -90,7 +90,7 @@ void TracXmlRpcProxy::connectFinished()
 
 			qDebug() << major << minor << build;
 
-			if (!((major == 1) && (minor == 1) && (build == 0)))
+			if (!((major == 1) && (minor == 0) && (build == 6)))
 			{
 				emit connectionError(tr("Wrong version of XML RPC"));
 			}
