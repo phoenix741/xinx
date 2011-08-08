@@ -156,7 +156,7 @@
         <translation>Dictionnaire</translation>
     </message>
     <message numerus="yes">
-        <location filename="../docks/dictionary/dictionarydockwidgetimpl.cpp" line="43"/>
+        <location filename="../docks/dictionary/dictionarydockwidgetimpl.cpp" line="45"/>
         <source>%n label(s) loaded.</source>
         <translation>
             <numerusform>%n libellé chargé.</numerusform>
@@ -349,12 +349,12 @@
         <translation type="obsolete">Lire les dictionnaires ...</translation>
     </message>
     <message>
-        <location filename="../plugindefinition/generix.cpp" line="110"/>
+        <location filename="../plugindefinition/generix.cpp" line="112"/>
         <source>Plugin for Generix</source>
         <translation>Plugin pour Générix</translation>
     </message>
     <message>
-        <location filename="../plugindefinition/generix.cpp" line="112"/>
+        <location filename="../plugindefinition/generix.cpp" line="114"/>
         <source>This plugin add some fonctionnality usefull for Generix Group&apos;s XINX users</source>
         <translation>Ce plugin ajoute plusieurs fonctionnalités utiles pour les utilisateurs de XINX à Generix Group</translation>
     </message>

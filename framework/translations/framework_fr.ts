@@ -892,6 +892,11 @@ Seuls les fichiers cochés seront validés.</translation>
 &lt;p&gt;&lt;i&gt;Modification take effect at restart.&lt;/i&gt;&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../application/customdialog/ui/customgeneral.ui" line="98"/>
+        <source>Show shortcut near the dock title</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CustomModules</name>
@@ -1282,26 +1287,34 @@ Taille du cache : %6/%7</translation>
 <context>
     <name>EditorManager</name>
     <message>
-        <location filename="../editors/editormanager.cpp" line="584"/>
+        <location filename="../editors/editormanager.cpp" line="585"/>
         <source>Open text file</source>
         <translation>Ouvrir un fichier text</translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="701"/>
+        <location filename="../editors/editormanager.cpp" line="702"/>
         <source>Save text file</source>
         <translation>Sauver un fichier text</translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="757"/>
+        <location filename="../editors/editormanager.cpp" line="758"/>
         <source>Application</source>
         <translation>Application</translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="757"/>
+        <location filename="../editors/editormanager.cpp" line="758"/>
         <source>The document %1 has been modified.
 Do you really want refresh this?</source>
         <translation type="unfinished">Le document %1 a été modifié.
 Voulez-vous réellement actualiser ce fichier ?</translation>
+    </message>
+</context>
+<context>
+    <name>EditorTabDockWidget</name>
+    <message>
+        <location filename="../editors/editortabdockwidget.cpp" line="27"/>
+        <source>Open Documents</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1528,254 +1541,254 @@ Voulez-vous réellement actualiser ce fichier ?</translation>
 <context>
     <name>MainformImpl</name>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="100"/>
+        <location filename="../application/mainformimpl.cpp" line="101"/>
         <source>No position</source>
         <translation>Aucune position</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="138"/>
+        <location filename="../application/mainformimpl.cpp" line="139"/>
         <source>Sess&amp;ion</source>
         <translation>Sess&amp;ion</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="139"/>
-        <location filename="../application/mainformimpl.cpp" line="156"/>
+        <location filename="../application/mainformimpl.cpp" line="140"/>
+        <location filename="../application/mainformimpl.cpp" line="157"/>
         <source>&amp;Project</source>
         <translation>&amp;Projet</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="140"/>
-        <location filename="../application/mainformimpl.cpp" line="157"/>
+        <location filename="../application/mainformimpl.cpp" line="141"/>
+        <location filename="../application/mainformimpl.cpp" line="158"/>
         <source>&amp;File</source>
         <translation>&amp;Fichier</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="141"/>
-        <location filename="../application/mainformimpl.cpp" line="158"/>
+        <location filename="../application/mainformimpl.cpp" line="142"/>
+        <location filename="../application/mainformimpl.cpp" line="159"/>
         <source>&amp;Edit</source>
         <translation>&amp;Edition</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="142"/>
-        <location filename="../application/mainformimpl.cpp" line="159"/>
+        <location filename="../application/mainformimpl.cpp" line="143"/>
+        <location filename="../application/mainformimpl.cpp" line="160"/>
         <source>&amp;Search</source>
         <translation>&amp;Recherche</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="143"/>
+        <location filename="../application/mainformimpl.cpp" line="144"/>
         <source>&amp;Bookmark</source>
         <translation>&amp;Signet</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="144"/>
+        <location filename="../application/mainformimpl.cpp" line="145"/>
         <source>&amp;Windows</source>
         <translation>&amp;Fenêtre</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="145"/>
+        <location filename="../application/mainformimpl.cpp" line="146"/>
         <source>&amp;Tools</source>
         <translation>&amp;Outils</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="146"/>
+        <location filename="../application/mainformimpl.cpp" line="147"/>
         <source>&amp;Help</source>
         <translation>&amp;Aide</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="147"/>
+        <location filename="../application/mainformimpl.cpp" line="148"/>
         <source>&amp;Script</source>
         <translation>&amp;Script</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="148"/>
+        <location filename="../application/mainformimpl.cpp" line="149"/>
         <source>&amp;Snipet</source>
         <translation>&amp;Modèle</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="268"/>
+        <location filename="../application/mainformimpl.cpp" line="269"/>
         <source>E&amp;xit</source>
         <translation>&amp;Quitter</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="269"/>
+        <location filename="../application/mainformimpl.cpp" line="270"/>
         <source>Quit XINX</source>
         <translation>Quitter XINX</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="276"/>
+        <location filename="../application/mainformimpl.cpp" line="277"/>
         <source>&amp;Search ...</source>
         <translation>&amp;Rechercher ...</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="277"/>
+        <location filename="../application/mainformimpl.cpp" line="278"/>
         <source>Search a text in the current editor</source>
         <translation>Recherche un texte dans l&apos;éditeur courant</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="282"/>
         <location filename="../application/mainformimpl.cpp" line="283"/>
         <location filename="../application/mainformimpl.cpp" line="284"/>
+        <location filename="../application/mainformimpl.cpp" line="285"/>
         <source>Search previous</source>
         <translation>Recherche précédente</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="290"/>
         <location filename="../application/mainformimpl.cpp" line="291"/>
         <location filename="../application/mainformimpl.cpp" line="292"/>
+        <location filename="../application/mainformimpl.cpp" line="293"/>
         <source>Search next</source>
         <translation>Recherche suivante</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="293"/>
+        <location filename="../application/mainformimpl.cpp" line="294"/>
         <source>Search the next element in the current editor</source>
         <translation>Rechercher l&apos;élément suivant dans l&apos;éditeur courant</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="299"/>
+        <location filename="../application/mainformimpl.cpp" line="300"/>
         <source>&amp;Replace ...</source>
         <translation>&amp;Remplacer ...</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="300"/>
+        <location filename="../application/mainformimpl.cpp" line="301"/>
         <source>Replace a text in the current editor</source>
         <translation>Remplace un texte dans l&apos;éditeur courant</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="312"/>
+        <location filename="../application/mainformimpl.cpp" line="313"/>
         <source>Customize ...</source>
         <translation>Personnaliser ...</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="316"/>
+        <location filename="../application/mainformimpl.cpp" line="317"/>
         <source>&amp;Refresh Scripts</source>
         <translation type="unfinished">&amp;Rafraîchir les scripts</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="322"/>
+        <location filename="../application/mainformimpl.cpp" line="323"/>
         <source>&amp;Create a ticket ...</source>
         <translation>&amp;Créer un ticket ...</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="323"/>
+        <location filename="../application/mainformimpl.cpp" line="324"/>
         <source>Create a new ticket (bug or evolution) on the site.</source>
         <translation>Créer un nouveau ticket (bug ou évolution) sur le site.</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="327"/>
+        <location filename="../application/mainformimpl.cpp" line="328"/>
         <source>About &amp;Qt</source>
         <translation>A propos de &amp;Qt</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="328"/>
+        <location filename="../application/mainformimpl.cpp" line="329"/>
         <source>Show the Qt library&apos;s About box</source>
         <translation>Afficher les informations sur la librairie Qt</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="332"/>
+        <location filename="../application/mainformimpl.cpp" line="333"/>
         <source>&amp;About</source>
         <translation>&amp;A propos de</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="333"/>
+        <location filename="../application/mainformimpl.cpp" line="334"/>
         <source>Show the application&apos;s About box</source>
         <translation>Affiche les informations à propos de l&apos;application</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="342"/>
+        <location filename="../application/mainformimpl.cpp" line="343"/>
         <source>Always show run snipet dialog</source>
         <translation>Toujours afficher la fenêtre d&apos;exécution des modèles</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="487"/>
-        <location filename="../application/mainformimpl.cpp" line="488"/>
-        <location filename="../application/mainformimpl.cpp" line="584"/>
+        <location filename="../application/mainformimpl.cpp" line="505"/>
+        <location filename="../application/mainformimpl.cpp" line="506"/>
+        <location filename="../application/mainformimpl.cpp" line="602"/>
         <source>Unknown</source>
         <translation>Inconnu</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="494"/>
+        <location filename="../application/mainformimpl.cpp" line="512"/>
         <source>Ready</source>
         <translation>Prêt</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="520"/>
+        <location filename="../application/mainformimpl.cpp" line="538"/>
         <source>Snipet is not supported in this kind of editor.</source>
         <translation type="unfinished">Les modèles ne sont pas supportés par ce type d&apos;éditeur.</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="583"/>
+        <location filename="../application/mainformimpl.cpp" line="601"/>
         <source>No codec</source>
         <translation>Pas d&apos;encodage</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="642"/>
+        <location filename="../application/mainformimpl.cpp" line="660"/>
         <source>Printed</source>
         <translation>Imprimé</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="660"/>
+        <location filename="../application/mainformimpl.cpp" line="678"/>
         <source>Replace text</source>
         <translation>Remplacer le text</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="660"/>
+        <location filename="../application/mainformimpl.cpp" line="678"/>
         <source>Replace this occurence</source>
         <translation>Remplacer cette occurence</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="712"/>
-        <location filename="../application/mainformimpl.cpp" line="716"/>
+        <location filename="../application/mainformimpl.cpp" line="730"/>
+        <location filename="../application/mainformimpl.cpp" line="734"/>
         <source>Search End</source>
         <translation type="unfinished">Recherche terminée</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="712"/>
+        <location filename="../application/mainformimpl.cpp" line="730"/>
         <source>Search have been aborted</source>
         <translation type="unfinished">La recherche a été annulée</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="716"/>
+        <location filename="../application/mainformimpl.cpp" line="734"/>
         <source>All string are finded</source>
         <translation>Toutes les chaines ont été trouvées</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="779"/>
-        <location filename="../application/mainformimpl.cpp" line="786"/>
+        <location filename="../application/mainformimpl.cpp" line="797"/>
+        <location filename="../application/mainformimpl.cpp" line="804"/>
         <source>Search/Replace</source>
         <translation>Rechercher/Remplacer</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="780"/>
+        <location filename="../application/mainformimpl.cpp" line="798"/>
         <source>%1 occurences of &apos;%2&apos; replaced.</source>
         <translation type="unfinished">%1 occurences de &apos;%2&apos; remplacées.</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="787"/>
+        <location filename="../application/mainformimpl.cpp" line="805"/>
         <source>%1 occurences of &apos;%2&apos; %3. Return to the beginning of the document ?</source>
         <translation>%1 occurences de &apos;%2&apos; %3. Retourner au début du document ?</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="787"/>
+        <location filename="../application/mainformimpl.cpp" line="805"/>
         <source>replaced</source>
         <translation>remplacées</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="787"/>
+        <location filename="../application/mainformimpl.cpp" line="805"/>
         <source>finded</source>
         <translation>trouvées</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="898"/>
+        <location filename="../application/mainformimpl.cpp" line="915"/>
         <source>File loaded</source>
         <translation>Fichier chargé</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="905"/>
+        <location filename="../application/mainformimpl.cpp" line="922"/>
         <source>File saved</source>
         <translation>Fichier sauvé</translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="912"/>
+        <location filename="../application/mainformimpl.cpp" line="929"/>
         <source>File closed</source>
         <translation>Fichier fermé</translation>
     </message>
@@ -2417,22 +2430,22 @@ Voulez-vous réellement actualiser ce fichier ?</translation>
         <translation>Afficher le journal</translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="259"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="266"/>
         <source>Create a new directory</source>
         <translation>Créer un nouveau dossier</translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="259"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="266"/>
         <source>Enter the name of the new directory</source>
         <translation>Entrer le nom du nouveau dossier</translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="311"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="318"/>
         <source>Delete file(s)</source>
         <translation>Supprimer le(s) fichier(s)</translation>
     </message>
     <message numerus="yes">
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="311"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="318"/>
         <source>Can you confirm that you want remove %Ln file(s)</source>
         <translation>
             <numerusform>Pouvez-vous confirmer que vous voulez supprimer %n fichiers</numerusform>
@@ -2440,22 +2453,22 @@ Voulez-vous réellement actualiser ce fichier ?</translation>
         </translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="331"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="341"/>
         <source>Rename a file</source>
         <translation>Renommer le fichier</translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="331"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="341"/>
         <source>Enter the name of the new file name</source>
         <translation type="unfinished">Entrer le nom du nouveau fichier</translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="638"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="648"/>
         <source>Filter apply in %1 ms</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="668"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="678"/>
         <source>Expand/Collapse tree in %1 ms</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2683,17 +2696,17 @@ Voulez-vous réellement actualiser ce fichier ?</translation>
 <context>
     <name>ProjectDirectoryWidgetImpl</name>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="693"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="703"/>
         <source>Project Directory</source>
         <translation>Dossier projet</translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="696"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="706"/>
         <source>Toggled Flat View</source>
         <translation type="unfinished">Basculer vers la vue plane</translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="697"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="707"/>
         <source>If checked the list is showed as flat instead of tree. Each list of file is preceded of a directory header.</source>
         <translation type="unfinished">Si coché la liste est affichée à plat au lieu d&apos;être affichée sous forme d&apos;arbre. Chaque liste de fichier est précédée d&apos;un entête avec le nom du dossier.</translation>
     </message>
@@ -4071,7 +4084,7 @@ Cet assistant va convertir le projet à la dernière version de de XINX. L&apos;
 <context>
     <name>XinxProject::ProjectListModel</name>
     <message>
-        <location filename="../project/projectlistmodel.cpp" line="1153"/>
+        <location filename="../project/projectlistmodel.cpp" line="1156"/>
         <source>
 Date in Version Control : %1
 Status : %2
@@ -4082,7 +4095,7 @@ Status : %2
 Version : %3</translation>
     </message>
     <message>
-        <location filename="../project/projectlistmodel.cpp" line="1154"/>
+        <location filename="../project/projectlistmodel.cpp" line="1157"/>
         <source>Filename : %1
 Date of file : %2%3</source>
         <translation>Nom du fichier : %1

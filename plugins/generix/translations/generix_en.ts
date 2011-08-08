@@ -141,7 +141,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../docks/dictionary/dictionarydockwidgetimpl.cpp" line="43"/>
+        <location filename="../docks/dictionary/dictionarydockwidgetimpl.cpp" line="45"/>
         <source>%n label(s) loaded.</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -285,12 +285,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../plugindefinition/generix.cpp" line="110"/>
+        <location filename="../plugindefinition/generix.cpp" line="112"/>
         <source>Plugin for Generix</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../plugindefinition/generix.cpp" line="112"/>
+        <location filename="../plugindefinition/generix.cpp" line="114"/>
         <source>This plugin add some fonctionnality usefull for Generix Group&apos;s XINX users</source>
         <translation type="unfinished"></translation>
     </message>

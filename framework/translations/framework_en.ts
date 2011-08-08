@@ -719,6 +719,11 @@ Only checked files are commited.</source>
 &lt;p&gt;&lt;i&gt;Modification take effect at restart.&lt;/i&gt;&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../application/customdialog/ui/customgeneral.ui" line="98"/>
+        <source>Show shortcut near the dock title</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CustomModules</name>
@@ -1021,24 +1026,32 @@ Only checked files are commited.</source>
 <context>
     <name>EditorManager</name>
     <message>
-        <location filename="../editors/editormanager.cpp" line="584"/>
+        <location filename="../editors/editormanager.cpp" line="585"/>
         <source>Open text file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="701"/>
+        <location filename="../editors/editormanager.cpp" line="702"/>
         <source>Save text file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="757"/>
+        <location filename="../editors/editormanager.cpp" line="758"/>
         <source>Application</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="757"/>
+        <location filename="../editors/editormanager.cpp" line="758"/>
         <source>The document %1 has been modified.
 Do you really want refresh this?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>EditorTabDockWidget</name>
+    <message>
+        <location filename="../editors/editortabdockwidget.cpp" line="27"/>
+        <source>Open Documents</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1243,254 +1256,254 @@ Do you really want refresh this?</source>
 <context>
     <name>MainformImpl</name>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="100"/>
+        <location filename="../application/mainformimpl.cpp" line="101"/>
         <source>No position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="138"/>
-        <source>Sess&amp;ion</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../application/mainformimpl.cpp" line="139"/>
-        <location filename="../application/mainformimpl.cpp" line="156"/>
-        <source>&amp;Project</source>
+        <source>Sess&amp;ion</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../application/mainformimpl.cpp" line="140"/>
         <location filename="../application/mainformimpl.cpp" line="157"/>
-        <source>&amp;File</source>
+        <source>&amp;Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../application/mainformimpl.cpp" line="141"/>
         <location filename="../application/mainformimpl.cpp" line="158"/>
-        <source>&amp;Edit</source>
+        <source>&amp;File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../application/mainformimpl.cpp" line="142"/>
         <location filename="../application/mainformimpl.cpp" line="159"/>
-        <source>&amp;Search</source>
+        <source>&amp;Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../application/mainformimpl.cpp" line="143"/>
-        <source>&amp;Bookmark</source>
+        <location filename="../application/mainformimpl.cpp" line="160"/>
+        <source>&amp;Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../application/mainformimpl.cpp" line="144"/>
-        <source>&amp;Windows</source>
+        <source>&amp;Bookmark</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../application/mainformimpl.cpp" line="145"/>
-        <source>&amp;Tools</source>
+        <source>&amp;Windows</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../application/mainformimpl.cpp" line="146"/>
-        <source>&amp;Help</source>
+        <source>&amp;Tools</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../application/mainformimpl.cpp" line="147"/>
-        <source>&amp;Script</source>
+        <source>&amp;Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../application/mainformimpl.cpp" line="148"/>
+        <source>&amp;Script</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="149"/>
         <source>&amp;Snipet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="268"/>
+        <location filename="../application/mainformimpl.cpp" line="269"/>
         <source>E&amp;xit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="269"/>
+        <location filename="../application/mainformimpl.cpp" line="270"/>
         <source>Quit XINX</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="276"/>
+        <location filename="../application/mainformimpl.cpp" line="277"/>
         <source>&amp;Search ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="277"/>
+        <location filename="../application/mainformimpl.cpp" line="278"/>
         <source>Search a text in the current editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="282"/>
         <location filename="../application/mainformimpl.cpp" line="283"/>
         <location filename="../application/mainformimpl.cpp" line="284"/>
+        <location filename="../application/mainformimpl.cpp" line="285"/>
         <source>Search previous</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="290"/>
         <location filename="../application/mainformimpl.cpp" line="291"/>
         <location filename="../application/mainformimpl.cpp" line="292"/>
+        <location filename="../application/mainformimpl.cpp" line="293"/>
         <source>Search next</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="293"/>
+        <location filename="../application/mainformimpl.cpp" line="294"/>
         <source>Search the next element in the current editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="299"/>
+        <location filename="../application/mainformimpl.cpp" line="300"/>
         <source>&amp;Replace ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="300"/>
+        <location filename="../application/mainformimpl.cpp" line="301"/>
         <source>Replace a text in the current editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="312"/>
+        <location filename="../application/mainformimpl.cpp" line="313"/>
         <source>Customize ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="316"/>
+        <location filename="../application/mainformimpl.cpp" line="317"/>
         <source>&amp;Refresh Scripts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="322"/>
+        <location filename="../application/mainformimpl.cpp" line="323"/>
         <source>&amp;Create a ticket ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="323"/>
+        <location filename="../application/mainformimpl.cpp" line="324"/>
         <source>Create a new ticket (bug or evolution) on the site.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="327"/>
+        <location filename="../application/mainformimpl.cpp" line="328"/>
         <source>About &amp;Qt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="328"/>
+        <location filename="../application/mainformimpl.cpp" line="329"/>
         <source>Show the Qt library&apos;s About box</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="332"/>
+        <location filename="../application/mainformimpl.cpp" line="333"/>
         <source>&amp;About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="333"/>
+        <location filename="../application/mainformimpl.cpp" line="334"/>
         <source>Show the application&apos;s About box</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="342"/>
+        <location filename="../application/mainformimpl.cpp" line="343"/>
         <source>Always show run snipet dialog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="487"/>
-        <location filename="../application/mainformimpl.cpp" line="488"/>
-        <location filename="../application/mainformimpl.cpp" line="584"/>
+        <location filename="../application/mainformimpl.cpp" line="505"/>
+        <location filename="../application/mainformimpl.cpp" line="506"/>
+        <location filename="../application/mainformimpl.cpp" line="602"/>
         <source>Unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="494"/>
+        <location filename="../application/mainformimpl.cpp" line="512"/>
         <source>Ready</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="520"/>
+        <location filename="../application/mainformimpl.cpp" line="538"/>
         <source>Snipet is not supported in this kind of editor.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="583"/>
+        <location filename="../application/mainformimpl.cpp" line="601"/>
         <source>No codec</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="642"/>
+        <location filename="../application/mainformimpl.cpp" line="660"/>
         <source>Printed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="660"/>
+        <location filename="../application/mainformimpl.cpp" line="678"/>
         <source>Replace text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="660"/>
+        <location filename="../application/mainformimpl.cpp" line="678"/>
         <source>Replace this occurence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="712"/>
-        <location filename="../application/mainformimpl.cpp" line="716"/>
+        <location filename="../application/mainformimpl.cpp" line="730"/>
+        <location filename="../application/mainformimpl.cpp" line="734"/>
         <source>Search End</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="712"/>
+        <location filename="../application/mainformimpl.cpp" line="730"/>
         <source>Search have been aborted</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="716"/>
+        <location filename="../application/mainformimpl.cpp" line="734"/>
         <source>All string are finded</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="779"/>
-        <location filename="../application/mainformimpl.cpp" line="786"/>
+        <location filename="../application/mainformimpl.cpp" line="797"/>
+        <location filename="../application/mainformimpl.cpp" line="804"/>
         <source>Search/Replace</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="780"/>
+        <location filename="../application/mainformimpl.cpp" line="798"/>
         <source>%1 occurences of &apos;%2&apos; replaced.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="787"/>
+        <location filename="../application/mainformimpl.cpp" line="805"/>
         <source>%1 occurences of &apos;%2&apos; %3. Return to the beginning of the document ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="787"/>
+        <location filename="../application/mainformimpl.cpp" line="805"/>
         <source>replaced</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="787"/>
+        <location filename="../application/mainformimpl.cpp" line="805"/>
         <source>finded</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="898"/>
+        <location filename="../application/mainformimpl.cpp" line="915"/>
         <source>File loaded</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="905"/>
+        <location filename="../application/mainformimpl.cpp" line="922"/>
         <source>File saved</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="912"/>
+        <location filename="../application/mainformimpl.cpp" line="929"/>
         <source>File closed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2097,22 +2110,22 @@ Do you really want refresh this?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="259"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="266"/>
         <source>Create a new directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="259"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="266"/>
         <source>Enter the name of the new directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="311"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="318"/>
         <source>Delete file(s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="311"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="318"/>
         <source>Can you confirm that you want remove %Ln file(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -2120,22 +2133,22 @@ Do you really want refresh this?</source>
         </translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="331"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="341"/>
         <source>Rename a file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="331"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="341"/>
         <source>Enter the name of the new file name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="638"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="648"/>
         <source>Filter apply in %1 ms</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="668"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="678"/>
         <source>Expand/Collapse tree in %1 ms</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2340,17 +2353,17 @@ Do you really want refresh this?</source>
 <context>
     <name>ProjectDirectoryWidgetImpl</name>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="693"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="703"/>
         <source>Project Directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="696"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="706"/>
         <source>Toggled Flat View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="697"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="707"/>
         <source>If checked the list is showed as flat instead of tree. Each list of file is preceded of a directory header.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3541,7 +3554,7 @@ This wizard will convert the project to the last version of XINX. Wizard must co
 <context>
     <name>XinxProject::ProjectListModel</name>
     <message>
-        <location filename="../project/projectlistmodel.cpp" line="1153"/>
+        <location filename="../project/projectlistmodel.cpp" line="1156"/>
         <source>
 Date in Version Control : %1
 Status : %2
@@ -3549,7 +3562,7 @@ Version : %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectlistmodel.cpp" line="1154"/>
+        <location filename="../project/projectlistmodel.cpp" line="1157"/>
         <source>Filename : %1
 Date of file : %2%3</source>
         <translation type="unfinished"></translation>

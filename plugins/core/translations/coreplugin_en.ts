@@ -20,7 +20,7 @@
 <context>
     <name>BaliseNode</name>
     <message>
-        <location filename="../editors/models/html_xsl_base/definition_balisenode.cpp" line="53"/>
+        <location filename="../editors/models/html_xsl_base/definition_balisenode.cpp" line="58"/>
         <source>Balise</source>
         <translation type="unfinished"></translation>
     </message>
@@ -132,27 +132,27 @@
 <context>
     <name>CorePlugin</name>
     <message>
-        <location filename="../plugindefinition/coreplugin.cpp" line="98"/>
+        <location filename="../plugindefinition/coreplugin.cpp" line="99"/>
         <source>Core Plugin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../plugindefinition/coreplugin.cpp" line="100"/>
+        <location filename="../plugindefinition/coreplugin.cpp" line="101"/>
         <source>Minimum editors, completer, docks for XINX.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../plugindefinition/coreplugin.cpp" line="168"/>
+        <location filename="../plugindefinition/coreplugin.cpp" line="169"/>
         <source>&amp;Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../plugindefinition/coreplugin.cpp" line="169"/>
+        <location filename="../plugindefinition/coreplugin.cpp" line="170"/>
         <source>&amp;Bookmark</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../plugindefinition/coreplugin.cpp" line="170"/>
+        <location filename="../plugindefinition/coreplugin.cpp" line="171"/>
         <source>&amp;Execute</source>
         <translation type="unfinished"></translation>
     </message>
@@ -173,7 +173,7 @@
 <context>
     <name>DataStreamAction</name>
     <message>
-        <location filename="../actions/stylesheetaction.cpp" line="115"/>
+        <location filename="../actions/stylesheetaction.cpp" line="117"/>
         <source>Open in data stream dock</source>
         <translation type="unfinished"></translation>
     </message>
@@ -557,7 +557,7 @@ Value = %2</source>
 <context>
     <name>RunXQueryAction</name>
     <message>
-        <location filename="../actions/stylesheetaction.cpp" line="92"/>
+        <location filename="../actions/stylesheetaction.cpp" line="85"/>
         <source>Execute X-Query on the path</source>
         <translation type="unfinished"></translation>
     </message>

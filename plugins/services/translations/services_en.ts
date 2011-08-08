@@ -180,7 +180,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../webservicesfiletype.h" line="64"/>
+        <location filename="../webservicesfiletype.h" line="66"/>
         <source>noname</source>
         <translation type="unfinished"></translation>
     </message>
