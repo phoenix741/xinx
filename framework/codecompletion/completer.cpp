@@ -207,7 +207,7 @@ void Completer::complete(const QModelIndex& index)
 	}
 }
 
-void Completer::complete(Item* item)
+void Completer::complete(CodeCompletion::Item* item)
 {
 	if (item)
 	{

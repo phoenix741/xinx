@@ -184,7 +184,7 @@ void Cache::addFileToCache(ContentView3::Parser* parser, bool force, ContentView
 	XinxJobManager::self()->addJob(parser);
 }
 
-void Cache::parsed(FilePtr file)
+void Cache::parsed(ContentView3::FilePtr file)
 {
 	emit updated(file);
 }

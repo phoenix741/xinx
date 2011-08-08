@@ -52,7 +52,7 @@ public:
 public slots:
 	void complete(bool automaticCall = true, const QString & prefix = QString());
 	void complete(int row);
-	void complete(Item * item);
+	void complete(CodeCompletion::Item * item);
 	void complete(const QModelIndex & index);
 protected:
 	bool eventFilter(QObject *o, QEvent *e);

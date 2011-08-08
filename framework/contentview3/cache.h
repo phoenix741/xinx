@@ -70,11 +70,11 @@ public:
 	QList<FilePtr> importOf(ContentView3::FilePtr file) const;
 	FilePtr cachedFile(const QString & filename);
 signals:
-	void updated(FilePtr file);
+	void updated(ContentView3::FilePtr file);
 public slots:
 	void refreshCache(const QString & filename);
 private slots:
-	void parsed(FilePtr file);
+	void parsed(ContentView3::FilePtr file);
 private:
 	PrivateCache * d;
 	friend class ContentView3::Parser;

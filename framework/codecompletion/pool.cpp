@@ -86,7 +86,7 @@ void Pool::updateParsers()
 	}
 }
 
-void Pool::generate(ItemInterface * interface, Context context)
+void Pool::generate(ItemInterface * interface, CodeCompletion::Context context)
 {
 	Q_ASSERT_X(interface, "Pool::generate", "ItemInterface to populate model must not be null");
 	if (d->_factories.isEmpty())
@@ -119,7 +119,7 @@ void Pool::generate(ItemInterface * interface, Context context)
 	}
 }
 
-void Pool::updateContext(TextFileEditor * editor, Context context)
+void Pool::updateContext(TextFileEditor * editor, CodeCompletion::Context context)
 {
 	if (d->_parsers.isEmpty())
 	{

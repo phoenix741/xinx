@@ -41,8 +41,8 @@ public:
 
 public slots:
 	void updateParsers();
-	void updateContext(TextFileEditor * editor, Context context);
-	void generate(ItemInterface * interface, Context context);
+	void updateContext(TextFileEditor * editor, CodeCompletion::Context context);
+	void generate(ItemInterface * interface, CodeCompletion::Context context);
 private:
 	Q_DISABLE_COPY(Pool)
 
