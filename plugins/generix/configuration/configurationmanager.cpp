@@ -49,6 +49,7 @@ ConfigurationManager* ConfigurationManager::manager(XinxProject::ProjectPtr proj
 {
 	if (! project) return NULL;
 	QObject * object = project->getObject("generix");
+	Q_ASSERT_X(object, "ConfigurationManager::manager", "We should have an object of type Generix");
 	return qobject_cast<ConfigurationManager*>(object);
 }
 

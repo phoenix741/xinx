@@ -115,6 +115,8 @@ PrivateProjectDirectoryWidgetImpl::PrivateProjectDirectoryWidgetImpl(ProjectDire
 	_popup_menu->addAction(_copy_filename_action);
 	_popup_menu->addAction(_copy_pathname_action);
 
+	_popup_menu->setDefaultAction(_open_files_action);
+
 	createPluginsActions();
 	connect(XinxAction::ActionManager::self(), SIGNAL(changed()), this, SLOT(createPluginsActions()));
 }
@@ -207,7 +209,7 @@ void PrivateProjectDirectoryWidgetImpl::updateActions(QModelIndexList selectedRo
 	_new_file_action->setVisible((nb_selected == 1) && is_directory);
 	_rename_file_action->setVisible((nb_selected == 1) && is_file);
 	_remove_files_action->setVisible(is_file);
-	_open_files_action->setVisible(is_file);
+	_open_files_action->setVisible(is_file && !is_rcs_missing && !is_rcs_removed);
 
 	_compare_action->setVisible(nb_selected == 2 && is_file);
 	_compare_with_workingcopy_action->setVisible(is_rcs_actived && (nb_selected == 1) && is_file && features.testFlag(RCS::RcsFeatureUpdateAndCommit));
@@ -523,7 +525,11 @@ void PrivateProjectDirectoryWidgetImpl::showLogTriggered()
 
 void PrivateProjectDirectoryWidgetImpl::doubleClicked(const QModelIndex & index)
 {
-	openFile(index);
+	updateActions(QModelIndexList() << index);
+	if (_popup_menu->defaultAction()->isEnabled() && _popup_menu->defaultAction()->isVisible())
+	{
+		openFile(index);
+	}
 }
 
 void PrivateProjectDirectoryWidgetImpl::updateFilter()
