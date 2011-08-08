@@ -3,8 +3,16 @@ find_package(QCodeEdit REQUIRED)
 find_package(Ideality REQUIRED)
 find_package(LibXml2 REQUIRED)
 find_package(LibXslt REQUIRED)
+find_package(Mercurial)
 
-set(XINX_FRAMEWORK_WC_LAST_CHANGED_REV 0)
+if(MERCURIAL_FOUND)
+    MERCURIAL_HG_INFO(${PROJECT_SOURCE_DIR} XINX_FRAMEWORK)
+endif(MERCURIAL_FOUND)
+
+if(NOT ${XINX_FRAMEWORK_HG_CHANGESET} STREQUAL "")
+	set(XINX_FRAMEWORK_HG_CHANGESET_STR "-${XINX_FRAMEWORK_HG_CHANGESET}")
+endif()
+
 configure_file(core/version.h.in core/version.h)
 
 set(USE_COMPONENTS True)

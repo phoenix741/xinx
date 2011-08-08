@@ -22,11 +22,11 @@
 
 /* VersionData */
 
-void VersionData::updateFromString(const QString & version, const QLatin1Char & separator)
+void VersionData::updateFromString(const QString & version, const QString & separator)
 {
 	int indice = 1;
 	bool ok;
-	QStringList versionNumberStr = version.split(separator);
+	QStringList versionNumberStr = version.split(QRegExp("[" + separator + "]"));
 	foreach(const QString & numberStr, versionNumberStr)
 	{
 		int number = numberStr.toInt(&ok);
@@ -71,7 +71,7 @@ Version::Version(const Version& version) : d(version.d)
 
 }
 
-Version::Version(const QString& version, const QLatin1Char& separator)
+Version::Version(const QString& version, const QString& separator)
 {
 	d->updateFromString(version, separator);
 }
@@ -86,7 +86,7 @@ bool Version::isValid() const
 	return Version().operator!=(*this);
 }
 
-Version Version::fromString(const QString& version, const QLatin1Char& separator)
+Version Version::fromString(const QString& version, const QString& separator)
 {
 	return Version(version, separator);
 }
@@ -94,19 +94,19 @@ Version Version::fromString(const QString& version, const QLatin1Char& separator
 QString Version::toString(const Version::VersionNumberFlags& flags, const QLatin1Char& separator)
 {
 	QStringList versionStr;
-	if (flags.testFlag(Version::MAJOR_NUMBER))
+	if (flags.testFlag(Version::MAJOR_NUMBER) && (d->_major != -1))
 	{
 		versionStr << QString::number(d->_major);
 	}
-	if (flags.testFlag(Version::MINOR_NUMBER))
+	if (flags.testFlag(Version::MINOR_NUMBER) && (d->_minor != -1))
 	{
 		versionStr << QString::number(d->_minor);
 	}
-	if (flags.testFlag(Version::MICRO_NUMBER))
+	if (flags.testFlag(Version::MICRO_NUMBER) && (d->_micro != -1))
 	{
 		versionStr << QString::number(d->_micro);
 	}
-	if (flags.testFlag(Version::BUILD_NUMBER))
+	if (flags.testFlag(Version::BUILD_NUMBER) && (d->_build != -1))
 	{
 		versionStr << QString::number(d->_build);
 	}

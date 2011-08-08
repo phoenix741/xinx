@@ -26,7 +26,7 @@ public:
 	VersionData(const VersionData &other) : QSharedData(other), _major(other._major), _minor(other._minor), _micro(other._micro), _build(other._build) { }
 	~VersionData() { }
 
-	void updateFromString(const QString & version, const QLatin1Char & separator = QLatin1Char('.'));
+	void updateFromString(const QString & version, const QString & separator = QString(".-,"));
 
 	int _major, _minor, _micro, _build;
 };

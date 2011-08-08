@@ -41,12 +41,12 @@ public:
 	Version();
 	Version(int major, int minor, int micro, int build);
 	Version(const Version & version);
-	Version(const QString & version, const QLatin1Char & separator = QLatin1Char('.'));
+	Version(const QString & version, const QString & separator = QString(".-,"));
 	~Version();
 
 	bool isValid() const;
 
-	static Version fromString(const QString & version, const QLatin1Char & separator = QLatin1Char('.'));
+	static Version fromString(const QString & version, const QString & separator = QString(".-,"));
 	QString toString(const Version::VersionNumberFlags & flags = Version::ALL_NUMBER, const QLatin1Char & separator = QLatin1Char('.'));
 
 	Version & operator=(const QString & version);
