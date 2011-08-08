@@ -85,12 +85,12 @@
     <message>
         <location filename="../actions/clipboardactions.cpp" line="47"/>
         <source>&amp;Copy</source>
-        <translation>&amp;Copie</translation>
+        <translation>&amp;Copier</translation>
     </message>
     <message>
         <location filename="../actions/clipboardactions.cpp" line="49"/>
         <source>Copy the selection to the clipboard</source>
-        <translation type="unfinished">Copie la sélection dans le presse-papier</translation>
+        <translation>Copier la sélection dans le presse-papier</translation>
     </message>
 </context>
 <context>
@@ -98,7 +98,7 @@
     <message>
         <location filename="../editors/models/html_xsl_base/xmlcompletionparser.cpp" line="72"/>
         <source>The file is can&apos;t be used to do completion.</source>
-        <translation type="unfinished">Le fichier ne peut être utiliser pour faire de la complétion.</translation>
+        <translation>Le fichier ne peut être utiliser pour faire de la complétion.</translation>
     </message>
     <message>
         <location filename="../editors/models/html_xsl_base/xmlcompletionparser.cpp" line="96"/>
