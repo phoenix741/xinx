@@ -731,7 +731,7 @@ void MainformImpl::findEnd(bool abort)
 	}
 	else
 	{
-		QMessageBox::information(this, tr("Search End"), tr("All string are finded"));
+		QMessageBox::information(this, tr("Search End"), tr("All string are found"));
 	}
 }
 
@@ -795,15 +795,16 @@ void MainformImpl::findNext()
 			{
 				QMessageBox::information(this,
 										 tr("Search/Replace"),
-										 tr("%1 occurences of '%2' replaced.").arg(m_nbFindedText).arg(m_findExpression),
+										 tr("%Ln occurence(s) of '%1' replaced.", "", m_nbFindedText).arg(m_findExpression),
 										 QMessageBox::Ok);
 			}
 			else
 			{
-				QMessageBox::StandardButton ret = QMessageBox::warning(this,
-												  tr("Search/Replace"),
-												  tr("%1 occurences of '%2' %3. Return to the beginning of the document ?").arg(m_nbFindedText).arg(m_findExpression).arg(! m_replaceExpression.isNull() ? tr("replaced") : tr("finded")),
-												  QMessageBox::Yes | QMessageBox::No);
+				const QString warningString = m_replaceExpression.isNull() ?
+					tr("%Ln occurence(s) of '%1' found. Return to the beginning of the document ?", "", m_nbFindedText) :
+					tr("%Ln occurence(s) of '%1' replaced. Return to the beginning of the document ?", "", m_nbFindedText);
+
+				QMessageBox::StandardButton ret = QMessageBox::warning(this, tr("Search/Replace"), warningString.arg(m_findExpression), QMessageBox::Yes | QMessageBox::No);
 
 				if (ret == QMessageBox::Yes)
 				{

@@ -1463,47 +1463,51 @@ Do you really want refresh this?</source>
     </message>
     <message>
         <location filename="../application/mainformimpl.cpp" line="734"/>
-        <source>All string are finded</source>
+        <source>All string are found</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../application/mainformimpl.cpp" line="798"/>
+        <source>%Ln occurence(s) of &apos;%1&apos; replaced.</source>
+        <translation type="unfinished">
+            <numerusform>%n occurence of &apos;%1&apos; replaced.</numerusform>
+            <numerusform>%n occurences of &apos;%1&apos; replaced.</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../application/mainformimpl.cpp" line="804"/>
+        <source>%Ln occurence(s) of &apos;%1&apos; found. Return to the beginning of the document ?</source>
+        <translation>
+            <numerusform>%n occurence of &apos;%1&apos; found. Return to the beginning of the document ?</numerusform>
+            <numerusform>%n occurences of &apos;%1&apos; found. Return to the beginning of the document ?</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../application/mainformimpl.cpp" line="805"/>
+        <source>%Ln occurence(s) of &apos;%1&apos; replaced. Return to the beginning of the document ?</source>
+        <translation>
+            <numerusform>%L occurence of &apos;%1&apos; replaced. Return to the beginning of the document ?</numerusform>
+            <numerusform>%n occurences of &apos;%1&apos; replaced. Return to the beginning of the document ?</numerusform>
+        </translation>
     </message>
     <message>
         <location filename="../application/mainformimpl.cpp" line="797"/>
-        <location filename="../application/mainformimpl.cpp" line="804"/>
+        <location filename="../application/mainformimpl.cpp" line="807"/>
         <source>Search/Replace</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="798"/>
-        <source>%1 occurences of &apos;%2&apos; replaced.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="805"/>
-        <source>%1 occurences of &apos;%2&apos; %3. Return to the beginning of the document ?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="805"/>
-        <source>replaced</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="805"/>
-        <source>finded</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="915"/>
+        <location filename="../application/mainformimpl.cpp" line="916"/>
         <source>File loaded</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="922"/>
+        <location filename="../application/mainformimpl.cpp" line="923"/>
         <source>File saved</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="929"/>
+        <location filename="../application/mainformimpl.cpp" line="930"/>
         <source>File closed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2127,9 +2131,9 @@ Do you really want refresh this?</source>
     <message numerus="yes">
         <location filename="../project/projectdirectorywidgetimpl.cpp" line="318"/>
         <source>Can you confirm that you want remove %Ln file(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Can you confirm that you want remove %n file</numerusform>
+            <numerusform>Can you confirm that you want remove %n files</numerusform>
         </translation>
     </message>
     <message>
