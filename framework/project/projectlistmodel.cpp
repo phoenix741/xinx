@@ -112,7 +112,7 @@ void DirectoryFetcher::startJob()
 	benchmark_time.start();
 
 	// Step 1 : Re-loading the directory.
-	QDirIterator directory_information(QFileInfo(_listingDirectory).canonicalFilePath(), _matchedFileList, QDir::AllDirs | QDir::Files | QDir::NoDotAndDotDot);
+	QDirIterator directory_information(QDir::cleanPath(_listingDirectory), _matchedFileList, QDir::AllDirs | QDir::Files | QDir::NoDotAndDotDot);
 
 	QFileInfoList infos;
 	QStringList filenames;
@@ -129,7 +129,7 @@ void DirectoryFetcher::startJob()
 		const QFileInfo info   = directory_information.fileInfo();
 
 		infos.append(info);
-		filenames.append(info.canonicalFilePath());
+		filenames.append(QDir::cleanPath(info.absoluteFilePath()));
 
 		if (((i > 100) && first_time) || (_timer.elapsed() > 200))
 		{
@@ -226,7 +226,7 @@ ModelFileNode * ModelFileNode::add(ProjectPtr project, bool rcsManaged)
 	node->_is_project = true;
 	node->_project    = project.toWeakRef();
 	node->_info       = QFileInfo(project->projectPath());
-	node->_key        = node->_info.canonicalFilePath();
+	node->_key        = QDir::cleanPath(node->_info.absoluteFilePath());
 	add(node, rcsManaged);
 
 	return node;
@@ -272,11 +272,11 @@ void ModelFileNode::add(ModelFileNode * node, bool rcsManaged)
 	{
 		node->_key      = node->_info.fileName();
 	}
-	node->_filename = node->_info.canonicalFilePath();
+	node->_filename = QDir::cleanPath(node->_info.absoluteFilePath());
 	if (node->_filename.isEmpty())
 	{
 		// Case of file doesn't exist.
-		node->_filename = node->_rcs_info.filename;
+		node->_filename = QDir::cleanPath(node->_rcs_info.filename);
 	}
 	node->_parent   = this;
 	if (_project)
@@ -579,7 +579,7 @@ void PrivateProjectListModel::updateLinkedDirectories(XinxProject::ProjectPtr pr
 	{
 		if (node->_is_linked_path)
 		{
-			const QString path = QFileInfo(node->_filename).canonicalFilePath();
+			const QString path = QDir::cleanPath(node->_filename);
 
 			if (linkedPath.contains(path))
 			{
@@ -795,13 +795,14 @@ void PrivateProjectListModel::fetchNode(ModelFileNode * node, bool rcsManaged)
 	QFileInfo & info = node->_info;
 	if (! info.isDir()) return;
 
-	if (! _watcher->directories().contains(info.canonicalFilePath()))
+	QString cleanPath = QDir::cleanPath(info.absoluteFilePath());
+	if (! _watcher->directories().contains(cleanPath))
 	{
-		_watcher->addPath(info.canonicalFilePath());
+		_watcher->addPath(cleanPath);
 	}
 
 	DirectoryFetcher * fetcher = new DirectoryFetcher;
-	fetcher->setListingDirectory(info.canonicalFilePath());
+	fetcher->setListingDirectory(cleanPath);
 	fetcher->setModelDirectory(node->modelDirectory());
 	fetcher->setProject(node->_project);
 	fetcher->setRetrieveRcsInfos(rcsManaged);
@@ -827,7 +828,7 @@ void PrivateProjectListModel::fetchPathTimeout()
 void PrivateProjectListModel::wantFetchPath(const QString & path)
 {
 	_changePathTimer->stop();
-	_changedPath.push(QFileInfo(path).canonicalFilePath());
+	_changedPath.push(QDir::cleanPath(path));
 	_changePathTimer->start();
 }
 
@@ -1006,7 +1007,7 @@ QString ProjectListModel::filePath(const QModelIndex& index) const
 	ModelFileNode* node = static_cast<ModelFileNode*>(index.internalPointer());
 	if (!node) return QString();
 	if (node->_info.exists())
-		return node->_info.canonicalFilePath();
+		return QDir::cleanPath(node->_info.absoluteFilePath());
 
 	return node->_filename;
 }
@@ -1057,7 +1058,7 @@ QModelIndex ProjectListModel::index(const QString& path, int column) const
 {
 	if (column > 0) return QModelIndex();
 
-	return (d->index(d->node(d->_root_node, QFileInfo(path).canonicalFilePath())));
+	return (d->index(d->node(d->_root_node, QDir::cleanPath(path))));
 }
 
 QModelIndex ProjectListModel::index(XinxProject::ProjectPtr project) const
