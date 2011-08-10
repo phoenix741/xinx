@@ -183,6 +183,7 @@ void VersionAvailableDialog::done(int code)
 	if (clickedButton() == button(QMessageBox::Ignore))
 	{
 		XINXConfig::self()->config().lastUpdate = d->_update_version.toString();
+		XINXConfig::self()->save();
 	}
 
     QDialog::done(code);
