@@ -116,16 +116,13 @@ bool DerivationDialogImpl::isDerivableFile(XinxProject::ProjectPtr p, const QStr
 	QList<GenerixProject::DerivationPath> derivationPaths = project->derivationsPath();
 	foreach(GenerixProject::DerivationPath dp, derivationPaths)
 	{
-		if (! dp.derivation)
+		QString path = QDir::cleanPath(QDir(project->projectPath()).absoluteFilePath(dp.path));
+		if (absoluteFilename.contains(path))
 		{
-			QString path = QDir::cleanPath(QDir(project->projectPath()).absoluteFilePath(dp.path));
-			if (absoluteFilename.contains(path))
-			{
-				return false;
-			}
+			return dp.derivation;
 		}
 	}
-	return true;
+	return false;
 }
 
 void DerivationDialogImpl::changePath()
