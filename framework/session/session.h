@@ -53,13 +53,13 @@ class PrivateSession;
 class LIBEXPORT Session : public QObject
 {
 	Q_OBJECT
-	Q_PROPERTY(QStringList lastOpenedFile READ lastOpenedFile)
+	Q_PROPERTY(QStringList lastClosedFile READ lastClosedFile)
 public:
 	Session(SessionManager * manager, const QString & sessionName = DEFAULT_SESSION);
 	~Session();
 
-	const QStringList & lastOpenedFile() const;
-	void addOpenedFile(const QString & filename);
+	const QStringList & lastClosedFile() const;
+	void addClosedFile(const QString & filename);
 
 	void setCurrentProjectPath(const QString & path);
 	const QString & currentProjectPath() const;

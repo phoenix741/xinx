@@ -62,10 +62,10 @@ void PrivateSession::save(const QString & saveName)
 	settings.endArray();
 
 	settings.beginWriteArray("files");
-	for (int i = 0; i < _last_opened_file.size(); i++)
+	for (int i = 0; i < _last_closed_file.size(); i++)
 	{
 		settings.setArrayIndex(i);
-		const QString & filename = _last_opened_file.at(i);
+		const QString & filename = _last_closed_file.at(i);
 		settings.setValue("filename", filename);
 	}
 	settings.endArray();
@@ -94,7 +94,7 @@ void PrivateSession::load()
 
 	qDeleteAll(_opened_editor);
 	_opened_editor.clear();
-	_last_opened_file.clear();
+	_last_closed_file.clear();
 	_project_path_opened.clear();
 
 	QSettings settings;
@@ -124,7 +124,7 @@ void PrivateSession::load()
 	{
 		settings.setArrayIndex(i);
 		const QString & filename = settings.value("filename").toString();
-		_last_opened_file.append(filename);
+		_last_closed_file.append(filename);
 	}
 	settings.endArray();
 
@@ -211,9 +211,9 @@ void Session::deleteOpenedProject(const QString & projectPath)
  * \brief List all the last opend files in the project.
  * \return the list of the last opend file.
  */
-const QStringList & Session::lastOpenedFile() const
+const QStringList & Session::lastClosedFile() const
 {
-	return d->_last_opened_file;
+	return d->_last_closed_file;
 }
 
 /*!
@@ -223,16 +223,16 @@ const QStringList & Session::lastOpenedFile() const
  * This methode keep the last MAX_RECENT_FILES element. If a new element is added
  * and the list have already MAX_RECENT_FILES elements, the last element will be deleted.
  */
-void Session::addOpenedFile(const QString & filename)
+void Session::addClosedFile(const QString & filename)
 {
 	if (!d->_is_session_updatable) return;
 
-	d->_last_opened_file.removeAll(filename);
-	d->_last_opened_file.prepend(filename);
+	d->_last_closed_file.removeAll(filename);
+	d->_last_closed_file.prepend(filename);
 
-	while (d->_last_opened_file.size() > MAXRECENTFILES)
+	while (d->_last_closed_file.size() > MAXRECENTFILES)
 	{
-		d->_last_opened_file.removeLast();
+		d->_last_closed_file.removeLast();
 	}
 	d->save(d->_current_session_name);
 	emit changed();

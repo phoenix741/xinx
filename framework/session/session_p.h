@@ -36,7 +36,7 @@ public:
 	Session * _session;
 	QString _current_project_path;
 	QString _current_session_name;
-	QStringList _last_opened_file;
+	QStringList _last_closed_file;
 	QStringList _project_path_opened;
 	QList<SessionEditor*> _opened_editor;
 

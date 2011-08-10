@@ -90,8 +90,7 @@ PrivateEditorManager::PrivateEditorManager(EditorManager * manager) : _manager(m
 	connect(_tab_widget, SIGNAL(currentChanged(int)), _manager, SIGNAL(currentChanged(int)));
 	connect(_tab_widget, SIGNAL(tabCloseRequested(int)), this, SLOT(tabCloseRequested(int)));
 
-	connect(_manager, SIGNAL(fileOpened(QString)), this, SLOT(updateRecentFiles()));
-	connect(_manager, SIGNAL(fileSaved(QString,QString)), this, SLOT(updateRecentFiles()));
+	connect(_manager, SIGNAL(fileClosed(QString)), this, SLOT(updateRecentFiles()));
 
 	connect(XINXConfig::self(), SIGNAL(changed()), this, SLOT(updateConfigElement()));
 
@@ -212,15 +211,15 @@ void PrivateEditorManager::createOpenSubMenu()
 
 void PrivateEditorManager::updateRecentFiles()
 {
-	int numRecentFiles = qMin(XinxSession::SessionManager::self()->currentSession()->lastOpenedFile().size(), MAXRECENTFILES);
+	int numRecentFiles = qMin(XinxSession::SessionManager::self()->currentSession()->lastClosedFile().size(), MAXRECENTFILES);
 
 	for (int i = 0; i < numRecentFiles; i++)
 	{
-		QString text = QString("&%1 %2").arg(i + 1).arg(QFileInfo(XinxSession::SessionManager::self()->currentSession()->lastOpenedFile()[i]).fileName());
+		QString text = QString("&%1 %2").arg(i + 1).arg(QFileInfo(XinxSession::SessionManager::self()->currentSession()->lastClosedFile()[i]).fileName());
 		if (XinxPluginsLoader::self()->matchedFileType(QFileInfo(text).fileName()).size())
 			_recent_actions[i]->setIcon(QIcon(XinxPluginsLoader::self()->matchedFileType(QFileInfo(text).fileName()).at(0)->icon()));
 		_recent_actions[i]->setText(text);
-		_recent_actions[i]->setData(XinxSession::SessionManager::self()->currentSession()->lastOpenedFile()[i]);
+		_recent_actions[i]->setData(XinxSession::SessionManager::self()->currentSession()->lastClosedFile()[i]);
 		_recent_actions[i]->setVisible(true);
 	}
 
@@ -609,9 +608,6 @@ void EditorManager::openFile(const QString& filename, IFileTypePlugin* interface
 
 		ScriptManager::self()->callScriptsAfterLoad(openingEditor);
 
-		// Add recent action
-		XinxSession::SessionManager::self()->currentSession()->addOpenedFile(filename);
-
 		serializeEditors();
 
 		emit fileOpened(filename);
@@ -833,6 +829,9 @@ void EditorManager::closeFile(AbstractEditor* editor, bool confirm)
 
 		d->tabWidget()->removeTab(index);
 		d->updateActions();
+
+		// Add recent action
+		XinxSession::SessionManager::self()->currentSession()->addClosedFile(editor->lastFileName());
 
 		serializeEditors();
 
