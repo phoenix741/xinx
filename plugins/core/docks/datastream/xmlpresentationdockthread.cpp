@@ -122,10 +122,15 @@ void XmlPresentationDockThread::open()
 
 void XmlPresentationDockThread::disabledInterface(bool value)
 {
+	if (value)
+	{
+		_is_focused = (qApp->focusWidget() == m_xmlPresentationWidget->m_filtreLineEdit);
+	}
+
 	m_xmlPresentationWidget->m_presentationProgressBar->setVisible(value);
 	m_xmlPresentationWidget->m_filtreLineEdit->setEnabled(!value);
 	m_xmlPresentationWidget->m_filterComboBox->setEnabled(!value);
-	if (!value)
+	if (!value && _is_focused)
 	{
 		m_xmlPresentationWidget->m_filtreLineEdit->setFocus();
 	}
@@ -268,8 +273,6 @@ void XmlPresentationDockThread::filterTextChangedTimer()
 
 	if (m_sortFilterModel)
 	{
-		// TODO: Delete this line in 4.4
-		m_xmlPresentationWidget->m_filtreLineEdit->clearFocus();
 		disabledInterface(true);
 
 		if (SelfWebPluginSettings::self()->config().xmlPres.showFilteredSubTree != (m_xmlPresentationWidget->m_filterComboBox->currentIndex() == 0))

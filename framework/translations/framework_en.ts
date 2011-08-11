@@ -1026,22 +1026,22 @@ Only checked files are commited.</source>
 <context>
     <name>EditorManager</name>
     <message>
-        <location filename="../editors/editormanager.cpp" line="585"/>
+        <location filename="../editors/editormanager.cpp" line="584"/>
         <source>Open text file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="702"/>
+        <location filename="../editors/editormanager.cpp" line="698"/>
         <source>Save text file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="758"/>
+        <location filename="../editors/editormanager.cpp" line="754"/>
         <source>Application</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="758"/>
+        <location filename="../editors/editormanager.cpp" line="754"/>
         <source>The document %1 has been modified.
 Do you really want refresh this?</source>
         <translation type="unfinished"></translation>
@@ -1843,175 +1843,175 @@ Do you really want refresh this?</source>
 <context>
     <name>PrivateEditorManager</name>
     <message>
-        <location filename="../editors/editormanager.cpp" line="188"/>
+        <location filename="../editors/editormanager.cpp" line="187"/>
         <source>&amp;Open ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="190"/>
+        <location filename="../editors/editormanager.cpp" line="189"/>
         <source>Open a file on the disk</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="191"/>
+        <location filename="../editors/editormanager.cpp" line="190"/>
         <source>Open an existing file on the disk</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="197"/>
+        <location filename="../editors/editormanager.cpp" line="196"/>
         <source>&amp;Recent file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="235"/>
+        <location filename="../editors/editormanager.cpp" line="234"/>
         <source>&amp;New</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="236"/>
+        <location filename="../editors/editormanager.cpp" line="235"/>
         <source>New document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="237"/>
+        <location filename="../editors/editormanager.cpp" line="236"/>
         <source>Create a new document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="243"/>
+        <location filename="../editors/editormanager.cpp" line="242"/>
         <source>&amp;Refresh</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="246"/>
+        <location filename="../editors/editormanager.cpp" line="245"/>
         <source>&amp;Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="247"/>
+        <location filename="../editors/editormanager.cpp" line="246"/>
         <source>Save the document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="248"/>
+        <location filename="../editors/editormanager.cpp" line="247"/>
         <source>Save the document to disk</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="252"/>
+        <location filename="../editors/editormanager.cpp" line="251"/>
         <source>Save &amp;As...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="253"/>
+        <location filename="../editors/editormanager.cpp" line="252"/>
         <source>Save the document As</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="254"/>
+        <location filename="../editors/editormanager.cpp" line="253"/>
         <source>Save the document with a new name to the disk</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="257"/>
+        <location filename="../editors/editormanager.cpp" line="256"/>
         <source>Save A&amp;ll...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="258"/>
+        <location filename="../editors/editormanager.cpp" line="257"/>
         <source>Save all documents</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="259"/>
+        <location filename="../editors/editormanager.cpp" line="258"/>
         <source>Save all documents to disk</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="262"/>
+        <location filename="../editors/editormanager.cpp" line="261"/>
         <source>&amp;Print ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="263"/>
+        <location filename="../editors/editormanager.cpp" line="262"/>
         <source>Print the document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="264"/>
+        <location filename="../editors/editormanager.cpp" line="263"/>
         <source>Print the current document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="268"/>
+        <location filename="../editors/editormanager.cpp" line="267"/>
         <source>&amp;Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="269"/>
+        <location filename="../editors/editormanager.cpp" line="268"/>
         <source>Close document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="270"/>
+        <location filename="../editors/editormanager.cpp" line="269"/>
         <source>Close the current document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="274"/>
+        <location filename="../editors/editormanager.cpp" line="273"/>
         <source>&amp;Close All</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../editors/editormanager.cpp" line="274"/>
         <location filename="../editors/editormanager.cpp" line="275"/>
-        <location filename="../editors/editormanager.cpp" line="276"/>
         <source>Close All document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="279"/>
+        <location filename="../editors/editormanager.cpp" line="278"/>
         <source>C&amp;lose All except current</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../editors/editormanager.cpp" line="279"/>
         <location filename="../editors/editormanager.cpp" line="280"/>
-        <location filename="../editors/editormanager.cpp" line="281"/>
         <source>Close all document except the current</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="284"/>
+        <location filename="../editors/editormanager.cpp" line="283"/>
         <source>&amp;Copy filename to Clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="287"/>
+        <location filename="../editors/editormanager.cpp" line="286"/>
         <source>C&amp;opy path to clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../editors/editormanager.cpp" line="289"/>
         <location filename="../editors/editormanager.cpp" line="290"/>
-        <location filename="../editors/editormanager.cpp" line="291"/>
         <source>Next tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="295"/>
+        <location filename="../editors/editormanager.cpp" line="294"/>
         <source>Previous Tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="354"/>
+        <location filename="../editors/editormanager.cpp" line="353"/>
         <source>The project isn&apos;t correctly defined. It&apos;s a possible bug</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="358"/>
+        <location filename="../editors/editormanager.cpp" line="357"/>
         <source>The file isn&apos;t a part of a project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="362"/>
+        <location filename="../editors/editormanager.cpp" line="361"/>
         <source>The project name is &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2114,22 +2114,22 @@ Do you really want refresh this?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="266"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="268"/>
         <source>Create a new directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="266"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="268"/>
         <source>Enter the name of the new directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="318"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="320"/>
         <source>Delete file(s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="318"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="320"/>
         <source>Can you confirm that you want remove %Ln file(s)</source>
         <translation>
             <numerusform>Can you confirm that you want remove %n file</numerusform>
@@ -2137,22 +2137,22 @@ Do you really want refresh this?</source>
         </translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="341"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="343"/>
         <source>Rename a file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="341"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="343"/>
         <source>Enter the name of the new file name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="648"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="654"/>
         <source>Filter apply in %1 ms</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="678"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="684"/>
         <source>Expand/Collapse tree in %1 ms</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2357,17 +2357,17 @@ Do you really want refresh this?</source>
 <context>
     <name>ProjectDirectoryWidgetImpl</name>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="703"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="709"/>
         <source>Project Directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="706"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="712"/>
         <source>Toggled Flat View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="707"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="713"/>
         <source>If checked the list is showed as flat instead of tree. Each list of file is preceded of a directory header.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3506,43 +3506,43 @@ This wizard will convert the project to the last version of XINX. Wizard must co
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectlistmodel.cpp" line="853"/>
+        <location filename="../project/projectlistmodel.cpp" line="854"/>
         <source>Not in Revision</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectlistmodel.cpp" line="855"/>
+        <location filename="../project/projectlistmodel.cpp" line="856"/>
         <source>Unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectlistmodel.cpp" line="857"/>
+        <location filename="../project/projectlistmodel.cpp" line="858"/>
         <source>Locally modified</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectlistmodel.cpp" line="859"/>
+        <location filename="../project/projectlistmodel.cpp" line="860"/>
         <source>Locally added</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectlistmodel.cpp" line="861"/>
+        <location filename="../project/projectlistmodel.cpp" line="862"/>
         <source>Locally removed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectlistmodel.cpp" line="863"/>
+        <location filename="../project/projectlistmodel.cpp" line="864"/>
         <source>Has conflict</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectlistmodel.cpp" line="865"/>
         <location filename="../project/projectlistmodel.cpp" line="866"/>
+        <location filename="../project/projectlistmodel.cpp" line="867"/>
         <source>No modified</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectlistmodel.cpp" line="865"/>
+        <location filename="../project/projectlistmodel.cpp" line="866"/>
         <source>Need checkout</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3558,7 +3558,7 @@ This wizard will convert the project to the last version of XINX. Wizard must co
 <context>
     <name>XinxProject::ProjectListModel</name>
     <message>
-        <location filename="../project/projectlistmodel.cpp" line="1156"/>
+        <location filename="../project/projectlistmodel.cpp" line="1157"/>
         <source>
 Date in Version Control : %1
 Status : %2
@@ -3566,7 +3566,7 @@ Version : %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectlistmodel.cpp" line="1157"/>
+        <location filename="../project/projectlistmodel.cpp" line="1158"/>
         <source>Filename : %1
 Date of file : %2%3</source>
         <translation type="unfinished"></translation>

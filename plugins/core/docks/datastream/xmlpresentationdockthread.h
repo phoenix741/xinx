@@ -77,6 +77,7 @@ protected:
 	virtual void threadrun();
 private:
 	XmlPresentationDockWidget * m_parent;
+	bool _is_focused;
 };
 
 #endif // __P_XMLPRESENTATIONDOCKWIDGET_H__
