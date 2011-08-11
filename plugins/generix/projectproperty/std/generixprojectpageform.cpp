@@ -87,6 +87,7 @@ bool GenerixProjectPageFormImpl::isVisible()
 
 void GenerixProjectPageFormImpl::updateInformations()
 {
+	if (! ConfigurationManager::manager(m_project)) return;
 	QSharedPointer<GceConfiguration> interface = ConfigurationManager::manager(m_project)->getInterface();
 	if (interface)
 	{

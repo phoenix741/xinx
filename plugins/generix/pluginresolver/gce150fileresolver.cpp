@@ -54,7 +54,7 @@ QStringList Gce150FileResolver::resolvePath(const QString& path, const QString& 
 {
 	Q_UNUSED(currentPath);
 
-	if (project && project.staticCast<GenerixProject>()->isGenerixActivated())
+	if (project && project.staticCast<GenerixProject>()->isGenerixActivated() && ConfigurationManager::manager(project))
 	{
 		QSharedPointer<GceConfiguration> interface = ConfigurationManager::manager(project)->getInterface();
 		if (interface)
