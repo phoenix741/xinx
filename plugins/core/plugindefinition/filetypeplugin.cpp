@@ -24,6 +24,16 @@
 
 /* TextFileType */
 
+TextFileType::TextFileType()
+{
+
+}
+
+TextFileType::~TextFileType()
+{
+
+}
+
 QString TextFileType::name()
 {
 	return "TextFileEditor";
@@ -87,6 +97,16 @@ QString TextFileType::defaultFileName()
 }
 
 /* XMLFileType */
+
+XMLFileType::XMLFileType()
+{
+
+}
+
+XMLFileType::~XMLFileType()
+{
+
+}
 
 QString XMLFileType::name()
 {
@@ -169,6 +189,16 @@ QString XMLFileType::defaultFileName()
 
 /* XSLStyleSheetFileType */
 
+XSLStyleSheetFileType::XSLStyleSheetFileType()
+{
+
+}
+
+XSLStyleSheetFileType::~XSLStyleSheetFileType()
+{
+
+}
+
 QString XSLStyleSheetFileType::name()
 {
 	return "StyleSheetEditor";
@@ -206,6 +236,16 @@ QString XSLStyleSheetFileType::defaultFileName()
 
 /* HTMLFileType */
 
+HTMLFileType::HTMLFileType()
+{
+
+}
+
+HTMLFileType::~HTMLFileType()
+{
+
+}
+
 QString HTMLFileType::name()
 {
 	return "HtmlFileEditor";
@@ -237,6 +277,16 @@ QString HTMLFileType::defaultFileName()
 }
 
 /* JSFileType */
+
+JSFileType::JSFileType()
+{
+
+}
+
+JSFileType::~JSFileType()
+{
+
+}
 
 QString JSFileType::name()
 {
@@ -311,6 +361,15 @@ QString JSFileType::defaultFileName()
 
 /* CSSFileType */
 
+CSSFileType::CSSFileType()
+{
+
+}
+
+CSSFileType::~CSSFileType()
+{
+
+}
 
 QString CSSFileType::name()
 {

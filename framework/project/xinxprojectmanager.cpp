@@ -60,6 +60,7 @@ PrivateManager::PrivateManager(Manager* parent) : QObject(parent), _new_project_
 
 PrivateManager::~PrivateManager()
 {
+	delete _recent_project_menu;
 }
 
 void PrivateManager::updateRecentProjects()
@@ -142,17 +143,17 @@ void PrivateManager::createOpentRecentAction()
 	connect(openProjectAct, SIGNAL(triggered()), this, SLOT(openProjectTriggered()));
 
 	// Recent Project
-	QMenu * recentProjectMenu = new QMenu;
-	recentProjectMenu->addAction(openProjectAct);
-	_recent_project_action->setMenu(recentProjectMenu);
+	_recent_project_menu = new QMenu;
+	_recent_project_menu->addAction(openProjectAct);
+	_recent_project_action->setMenu(_recent_project_menu);
 
-	_recent_separator = recentProjectMenu->addSeparator();
+	_recent_separator = _recent_project_menu->addSeparator();
 	_recent_separator->setVisible(false);
 	for (int i = 0; i < MAXRECENTFILES; i++)
 	{
 		_recent_actions[i] = new QAction(this);
 		_recent_actions[i]->setVisible(false);
-		recentProjectMenu->addAction(_recent_actions[i]);
+		_recent_project_menu->addAction(_recent_actions[i]);
 		connect(_recent_actions[i], SIGNAL(triggered()), this, SLOT(openRecentProject()));
 	}
 }

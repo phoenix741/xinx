@@ -87,7 +87,7 @@ SearchDockWidgetImpl::SearchDockWidgetImpl(QWidget * parent) : AbstractMessageDo
 
 	_widget->setupUi(this);
 
-	_widget->m_searchTreeWidget->setItemDelegate(new SearchLogWidgetDelegate);
+	_widget->m_searchTreeWidget->setItemDelegate(new SearchLogWidgetDelegate(_widget->m_searchTreeWidget));
 	connect(_widget->m_searchTreeWidget, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(doubleClicked(QModelIndex)));
 
 	connect(_widget->_search_button, SIGNAL(clicked()), this, SIGNAL(abort()));

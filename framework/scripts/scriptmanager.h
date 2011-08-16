@@ -43,7 +43,7 @@ class LIBEXPORT ScriptManager : public XinxLibSingleton<ScriptManager>
 {
 	Q_OBJECT
 public:
-	~ScriptManager();
+	virtual ~ScriptManager();
 
 	const QList<ScriptValue> & objects() const;
 	QScriptEngine & engine();

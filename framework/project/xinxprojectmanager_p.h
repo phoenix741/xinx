@@ -25,6 +25,8 @@
 #include <QAction>
 #include <project/xinxprojectproject.h>
 
+class QMenu;
+
 namespace XinxProject
 {
 
@@ -44,7 +46,8 @@ public:
 	ProjectPtr m_defaultProject;
 	XinxProject::Manager* _manager;
 	QAction * _recent_separator;
-	QAction* _recent_actions[ MAXRECENTFILES ];
+	QAction* _recent_actions[MAXRECENTFILES];
+	QMenu * _recent_project_menu;
 
 	void initialisation();
 	void createOpentRecentAction();

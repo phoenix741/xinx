@@ -55,7 +55,7 @@ class LIBEXPORT EditorManager : public XinxLibSingleton<EditorManager>
 {
 	Q_OBJECT
 public:
-	~EditorManager();
+	virtual ~EditorManager();
 
 	int currentIndex() const;
 	AbstractEditor * currentEditor() const;

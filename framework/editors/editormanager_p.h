@@ -69,7 +69,7 @@ class PrivateEditorManager : public QObject
 	Q_OBJECT
 public:
 	PrivateEditorManager(EditorManager * manager);
-	~PrivateEditorManager();
+	virtual ~PrivateEditorManager();
 
 	void addTab(AbstractEditor * editor);
 	void updateTabWidget(AbstractEditor * editor);

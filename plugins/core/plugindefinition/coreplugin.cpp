@@ -68,6 +68,7 @@ CorePlugin::CorePlugin() : m_dock(0)
 {
 	Q_INIT_RESOURCE(coreplugin);
 
+	// FIXME: (MemoryLeaks) This file type must be destroyed when core plugin is destroyed ~CorePlugin is never called.
 	m_fileTypes << new XSLStyleSheetFileType;
 	m_fileTypes << new XMLFileType;
 	m_fileTypes << new HTMLFileType;

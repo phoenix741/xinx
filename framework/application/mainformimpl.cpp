@@ -221,7 +221,7 @@ void MainformImpl::createMenus()
 	helpMenu->addSeparator();
 	helpMenu->addAction(m_aboutAct);
 	helpMenu->addAction(m_aboutQtAct);
-	helpMenu->addAction(QWhatsThis::createAction());
+	helpMenu->addAction(QWhatsThis::createAction(this));
 
 	searchMenu->addAction(m_searchAct);
 	searchMenu->addAction(m_searchNextAct);
