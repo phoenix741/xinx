@@ -44,7 +44,7 @@ public:
 	{
 		if (_self == NULL)
 		{
-			std::cerr << "Lock singleton of type " << typeid(T).name() << std::endl;
+			std::cout << "Lock singleton of type " << typeid(T).name() << std::endl;
 			QMutexLocker locker(&_self_mutex);
 			if (_self == NULL)
 			{
