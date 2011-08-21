@@ -1,5 +1,4 @@
 set(LANGUAGES fr en)
-set(GENERATE_TRANSLATION False CACHE BOOL "Generate the translation files")
 
 set(CMAKE_C_FLAGS "-frtti -fexceptions -Wall")
 set(CMAKE_CXX_FLAGS "-frtti -fexceptions -Wall") # -Wold-style-cast") # -Woverloaded-virtual")
