@@ -82,8 +82,8 @@ void PrivateTabWidget::dropEvent(QDropEvent *event)
 
 PrivateEditorManager::PrivateEditorManager(EditorManager * manager) : _manager(manager), _clicked_item(-1)
 {
-	// Création de l'objet tabWidget
-	tabWidget();
+	_tab_widget = new PrivateTabWidget(_manager);
+	_tab_widget->tabBar()->installEventFilter(this);
 
 	createActions();
 	createCloseButton();
@@ -101,15 +101,11 @@ PrivateEditorManager::PrivateEditorManager(EditorManager * manager) : _manager(m
 
 PrivateEditorManager::~PrivateEditorManager()
 {
+	delete _recentFileMenu;
 }
 
 PrivateTabWidget * PrivateEditorManager::tabWidget()
 {
-	if (! _tab_widget)
-	{
-		_tab_widget = new PrivateTabWidget(_manager);
-		_tab_widget->tabBar()->installEventFilter(this);
-	}
 	return _tab_widget;
 }
 
@@ -191,21 +187,21 @@ void PrivateEditorManager::createOpenSubMenu()
 	openAction->setStatusTip(tr("Open an existing file on the disk"));
 	connect(openAction, SIGNAL(triggered()), _manager, SLOT(openFile()));
 
-	QMenu * recentFileMenu = new QMenu;
-	recentFileMenu->addAction(openAction);
+	_recentFileMenu = new QMenu;
+	_recentFileMenu->addAction(openAction);
 
 	_recent_action = new QAction(QIcon(":/images/fileopen.png"), tr("&Recent file"), this);
-	_recent_action->setMenu(recentFileMenu);
+	_recent_action->setMenu(_recentFileMenu);
 	connect(_recent_action, SIGNAL(triggered()), _manager, SLOT(openFile()));
 
-	_recent_separator = recentFileMenu->addSeparator();
+	_recent_separator = _recentFileMenu->addSeparator();
 	_recent_separator->setVisible(false);
 
 	for (int i = 0; i < MAXRECENTFILES; i++)
 	{
 		_recent_actions[i] = new QAction(this);
 		_recent_actions[i]->setVisible(false);
-		recentFileMenu->addAction(_recent_actions[i]);
+		_recentFileMenu->addAction(_recent_actions[i]);
 		connect(_recent_actions[i], SIGNAL(triggered()), this, SLOT(openRecentFile()));
 	}
 }
@@ -526,7 +522,7 @@ int EditorManager::currentIndex() const
 //! Return the current editor
 AbstractEditor * EditorManager::currentEditor() const
 {
-	return dynamic_cast<AbstractEditor*>(d->tabWidget()->currentWidget());
+	return d->tabWidget() ? dynamic_cast<AbstractEditor*>(d->tabWidget()->currentWidget()) : 0;
 }
 
 //! Return the editor at index \e index

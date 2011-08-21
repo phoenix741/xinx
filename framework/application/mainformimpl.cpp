@@ -125,7 +125,9 @@ void MainformImpl::createMainForm()
 
 	setDockOptions(AnimatedDocks | AllowTabbedDocks | VerticalTabs);
 
-	setCentralWidget(EditorManager::self()->editorsWidget());
+	QWidget * widget = EditorManager::self()->editorsWidget();
+	widget->setParent(this);
+	setCentralWidget(widget);
 
 	QMetaObject::connectSlotsByName(this);
 }

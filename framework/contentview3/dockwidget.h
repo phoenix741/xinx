@@ -24,10 +24,10 @@
 #include <QModelIndex>
 #include <project/xinxprojectproject.h>
 #include <application/xinxdockwidget.h>
+#include <plugins/interfaces/files.h>
 
 class QAbstractItemModel;
 class QTreeView;
-class IFileTypePlugin;
 
 typedef QSharedPointer<IFileTypePlugin> IFileTypePluginPtr;
 

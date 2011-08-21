@@ -98,6 +98,8 @@ public:
 
 	QToolButton * _close_tab_button;
 
+	QMenu * _recentFileMenu;
+
 	QAction * _recent_actions[ MAXRECENTFILES ];
 	QAction * _recent_separator;
 
