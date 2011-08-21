@@ -22,8 +22,8 @@
 
 #include "xinxprojectproject.h"
 #include <application/xinxdockwidget.h>
+#include <plugins/interfaces/files.h>
 
-class IFileTypePlugin;
 class QDockWidget;
 class PrivateProjectDirectoryWidgetImpl;
 
@@ -38,7 +38,7 @@ public:
 
 	QStringList selectedFiles() const;
 signals:
-	void open(const QString & filename, IFileTypePlugin* interface, XinxProject::ProjectPtr project);
+	void open(const QString & filename, IFileTypePluginPtr interface, XinxProject::ProjectPtr project);
 private:
 	QScopedPointer<PrivateProjectDirectoryWidgetImpl> d;
 	friend class PrivateProjectDirectoryWidgetImpl;

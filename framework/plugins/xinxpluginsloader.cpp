@@ -314,7 +314,8 @@ static bool pluginsLessThan(XinxPluginElement * s1, XinxPluginElement * s2)
 
 XinxPluginsLoader::XinxPluginsLoader()
 {
-
+	connect(XINXConfig::self(), SIGNAL(pluginActivated(QString)), this, SIGNAL(pluginActivated(QString)));
+	connect(XINXConfig::self(), SIGNAL(pluginDesactivated(QString)), this, SIGNAL(pluginDesactivated(QString)));
 }
 
 XinxPluginsLoader::~XinxPluginsLoader()
@@ -361,37 +362,6 @@ void XinxPluginsLoader::addPlugin(QObject * plugin, bool staticLoaded)
 	QPair<QString,QString> tools;
 	foreach(tools, iXinxPlugin->pluginTools())
 	XINXConfig::self()->addDefaultTool(tools.first, tools.second);
-
-	// Create possible extention definition
-	IFilePlugin * interface = qobject_cast<IFilePlugin*>(plugin);
-	if (interface)
-	{
-		foreach(IFileTypePlugin * t, interface->fileTypes())
-		{
-			// If the plugin contains format and language description, we loaded it.
-			IFileTextPlugin * textPlugin = dynamic_cast<IFileTextPlugin*>(t);
-			if (textPlugin)
-			{
-				// Format
-				QFormatScheme * scheme = textPlugin->createFormatScheme(XINXConfig::self());
-				if (! scheme)
-				{
-					scheme = XINXConfig::self()->languageFactory()->defaultFormatScheme();
-				}
-				else
-				{
-					XINXConfig::self()->addFormatScheme(textPlugin->highlighterId(), qobject_cast<XinxFormatScheme*>(scheme));
-				}
-
-				// Language
-				QDomDocument doc;
-				QLanguageFactory::LangData data;
-				doc.setContent(textPlugin->createLanguageDescription());
-				QNFADefinition::load(doc, &data, scheme);
-				XINXConfig::self()->languageFactory()->addLanguage(data);
-			}
-		}
-	}
 }
 
 void XinxPluginsLoader::loadPlugins()
@@ -417,125 +387,4 @@ void XinxPluginsLoader::loadPlugins()
 	}
 }
 
-QList<IFileTypePlugin*> XinxPluginsLoader::fileTypes() const
-{
-	QList<IFileTypePlugin*> result;
 
-	foreach(XinxPluginElement * element, plugins())
-	{
-		IFilePlugin * interface = qobject_cast<IFilePlugin*>(element->plugin());
-		if (element->isActivated() && interface)
-		{
-			result += interface->fileTypes();
-		}
-	}
-
-	return result;
-}
-
-IFileTypePlugin* XinxPluginsLoader::fileType(const QString & name) const
-{
-	QList<IFileTypePlugin*> list = fileTypes();
-	foreach(IFileTypePlugin * type, list)
-	{
-		if (type->name() == name)
-		{
-			return type;
-		}
-	}
-	return NULL;
-}
-
-QList<IFileTypePlugin*> XinxPluginsLoader::matchedFileType(const QString & filename) const
-{
-	QList<IFileTypePlugin*> types = fileTypes(), result;
-	foreach(IFileTypePlugin* plugin, types)
-	{
-		QStringList patterns = plugin->match().split(" ");
-		foreach(const QString & match, patterns)
-		{
-			QRegExp pattern(match, Qt::CaseInsensitive, QRegExp::Wildcard);
-			if (pattern.exactMatch(filename))
-				result << plugin;
-		}
-	}
-	return result;
-}
-
-QString XinxPluginsLoader::allManagedFileFilter() const
-{
-	QStringList result;
-	QList<IFileTypePlugin*> types = fileTypes();
-	foreach(IFileTypePlugin* plugin, types)
-	{
-		result += plugin->match();
-	}
-	return tr("All managed files (%1)").arg(result.join(" "));
-}
-
-QString XinxPluginsLoader::fileTypeFilter(IFileTypePlugin * fileType)
-{
-	return tr("All %1 (%2)").arg(fileType->description()).arg(fileType->match());
-}
-
-QString XinxPluginsLoader::exampleOfHighlighter(const QString & name) const
-{
-	foreach(XinxPluginElement * element, plugins())
-	{
-		IFilePlugin * interface = qobject_cast<IFilePlugin*>(element->plugin());
-		if (element->isActivated() && interface)
-		{
-			foreach(IFileTypePlugin * p, interface->fileTypes())
-			{
-				IFileTextPlugin * textFileType = dynamic_cast<IFileTextPlugin*>(p);
-				if (textFileType && textFileType->highlighterId().toLower() == name.toLower())
-				{
-					return textFileType->fileExample();
-				}
-			}
-		}
-	}
-	return QString();
-}
-
-XinxFormatScheme * XinxPluginsLoader::scheme(const QString & highlighter, XINXConfig * config)
-{
-	foreach(XinxPluginElement * element, plugins())
-	{
-		IFilePlugin * interface = qobject_cast<IFilePlugin*>(element->plugin());
-		if (element->isActivated() && interface)
-		{
-			foreach(IFileTypePlugin * p, interface->fileTypes())
-			{
-				IFileTextPlugin * textFileType = dynamic_cast<IFileTextPlugin*>(p);
-				if (textFileType && textFileType->highlighterId().toLower() == highlighter.toLower())
-				{
-					return textFileType->createFormatScheme(config);
-				}
-			}
-		}
-	}
-	return 0;
-}
-
-QStringList XinxPluginsLoader::openDialogBoxFilters() const
-{
-	QStringList result;
-	QList<IFileTypePlugin*> types = fileTypes();
-	result += allManagedFileFilter();
-	foreach(IFileTypePlugin* plugin, types)
-	{
-		result += fileTypeFilter(plugin);
-	}
-	return result;
-}
-
-QStringList XinxPluginsLoader::managedFilters() const
-{
-	QStringList result;
-	foreach(IFileTypePlugin* plugin, fileTypes())
-	{
-		result += plugin->match().split(" ");
-	}
-	return result;
-}

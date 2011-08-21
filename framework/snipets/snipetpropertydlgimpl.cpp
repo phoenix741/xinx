@@ -22,6 +22,7 @@
 #include "snipets/snipetpropertydlgimpl.h"
 #include <plugins/xinxpluginsloader.h>
 #include <plugins/interfaces/files.h>
+#include <editors/filetypepool.h>
 
 // Qt header
 #include <QRegExp>
@@ -189,9 +190,9 @@ void SnipetPropertyDlgImpl::setupUi()
 	}
 
 	// Extentions
-	foreach(IFileTypePlugin * fileType, XinxPluginsLoader::self()->fileTypes())
+	foreach(IFileTypePluginPtr fileType, FileTypePool::self()->fileTypes())
 	{
-		QListWidgetItem * item = new QListWidgetItem(XinxPluginsLoader::self()->fileTypeFilter(fileType), m_extentionListWidget);
+		QListWidgetItem * item = new QListWidgetItem(FileTypePool::self()->fileTypeFilter(fileType), m_extentionListWidget);
 		item->setData(Qt::UserRole, fileType->match());
 	}
 

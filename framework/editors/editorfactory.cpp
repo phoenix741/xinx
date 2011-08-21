@@ -25,6 +25,7 @@
 #include "editors/xinxcodeedit.h"
 #include "editors/editorchoicedlg.h"
 #include "project/xinxprojectmanager.h"
+#include <editors/filetypepool.h>
 
 // Qt header
 #include <QApplication>
@@ -41,20 +42,20 @@ EditorFactory::~EditorFactory()
 
 }
 
-IFileTypePlugin * EditorFactory::interfaceOfName(const QString & name)
+IFileTypePluginPtr EditorFactory::interfaceOfName(const QString & name)
 {
-	QList<IFileTypePlugin*> interfaces = XinxPluginsLoader::self()->fileTypes();
-	foreach(IFileTypePlugin* interface, interfaces)
+	QList<IFileTypePluginPtr> interfaces = FileTypePool::self()->fileTypes();
+	foreach(const IFileTypePluginPtr & interface, interfaces)
 	{
 		if (interface->name() == name)
 		{
 			return interface;
 		}
 	}
-	return 0;
+	return IFileTypePluginPtr();
 }
 
-AbstractEditor * EditorFactory::createEditor(IFileTypePlugin * interface)
+AbstractEditor * EditorFactory::createEditor(IFileTypePluginPtr interface)
 {
 	Q_ASSERT_X(interface, "EditorFactory::createEditor", "Interface not defined");
 
@@ -69,12 +70,14 @@ AbstractEditor * EditorFactory::createEditor(IFileTypePlugin * interface)
 	return editor;
 }
 
-AbstractEditor * EditorFactory::createEditor(const QString& filename, IFileTypePlugin* interface, XinxProject::ProjectPtr project)
+AbstractEditor * EditorFactory::createEditor(const QString& filename, IFileTypePluginPtr interface, XinxProject::ProjectPtr project)
 {
 	Q_ASSERT(! filename.isEmpty());
 
+	IFileTypePluginPtr editorInterface = interface;
+
 	/* If no interface defined, we must ask for one */
-	if (!interface)
+	if (!editorInterface)
 	{
 		EditorChoiceDlg dlg(qApp->activeWindow());
 		dlg.setFileName(filename);
@@ -84,8 +87,8 @@ AbstractEditor * EditorFactory::createEditor(const QString& filename, IFileTypeP
 			return NULL;
 		}
 
-		interface = dlg.selectedType();
-		Q_ASSERT_X(interface, "EditorFactory::createEditor", "No editor selected");
+		editorInterface = dlg.selectedType();
+		Q_ASSERT_X(editorInterface, "EditorFactory::createEditor", "No editor selected");
 	}
 
 	/* If no project is defined we must find one */
@@ -94,7 +97,7 @@ AbstractEditor * EditorFactory::createEditor(const QString& filename, IFileTypeP
 		project = XinxProject::Manager::self()->projectOfFile(filename);
 	}
 
-	AbstractEditor * editor = createEditor(interface);
+	AbstractEditor * editor = createEditor(editorInterface);
 	editor->setProject(project);
 	editor->loadFromFile(filename);
 

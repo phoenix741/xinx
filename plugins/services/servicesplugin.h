@@ -40,7 +40,7 @@ public:
 
 	virtual void generateActionMenu();
 
-	virtual QList<IFileTypePlugin*> fileTypes();
+	virtual QList<IFileTypePlugin*> createFileTypes();
 	virtual QList<IXinxPluginProjectConfigurationPage*> createProjectSettingsPage(QWidget * parent);
 	virtual QList<IXinxPluginNewProjectConfigurationPage*> createNewProjectSettingsPages();
 
@@ -50,7 +50,6 @@ public:
 	virtual QIODevice* loadFile(AbstractEditor* editor, const QString& filename);
 	virtual QIODevice* saveFile(AbstractEditor* editor, const QString& filename, const QString& oldfilename);
 private:
-	QList<IFileTypePlugin*> m_fileTypes;
 };
 
 #endif /* SERVICESPLUGIN_H_*/

@@ -37,6 +37,7 @@
 #include <plugins/xinxpluginsloader.h>
 #include <project/iconprojectprovider.h>
 #include <project/externalfileresolver.h>
+#include <editors/filetypepool.h>
 
 namespace Core
 {
@@ -66,7 +67,7 @@ void ImportItemModelFactory::addNode(const QString & path)
 	qDebug() << pathPart;
 	qDebug() << filePart;
 
-	QDirIterator iterator(pathPart, XinxPluginsLoader::self()->managedFilters(), QDir::AllDirs | QDir::NoDotAndDotDot | QDir::Files);
+	QDirIterator iterator(pathPart, FileTypePool::self()->managedFilters(), QDir::AllDirs | QDir::NoDotAndDotDot | QDir::Files);
 	while (iterator.hasNext())
 	{
 		iterator.next();

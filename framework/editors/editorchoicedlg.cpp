@@ -46,7 +46,7 @@ void EditorChoiceDlg::setFileName(const QString & value)
 	_selector->setFileName(value);
 }
 
-IFileTypePlugin * EditorChoiceDlg::selectedType() const
+IFileTypePluginPtr EditorChoiceDlg::selectedType() const
 {
 	return _selector->selectedType();
 }

@@ -403,7 +403,7 @@ void MainformImpl::createDockWidget()
 	QAction * action = view->toggleViewAction();
 	action->setShortcut(m_projectDock->getShortcut());
 	m_menus["windows"]->addAction(action);
-	connect(m_projectDock, SIGNAL(open(QString,IFileTypePlugin*,XinxProject::ProjectPtr)), EditorManager::self(), SLOT(openFile(QString,IFileTypePlugin*,XinxProject::ProjectPtr)));
+	connect(m_projectDock, SIGNAL(open(QString,IFileTypePluginPtr,XinxProject::ProjectPtr)), EditorManager::self(), SLOT(openFile(QString,IFileTypePluginPtr,XinxProject::ProjectPtr)));
 
 	/* Content */
 	m_contentDock = new ContentView3::DockWidget(this);
@@ -413,7 +413,7 @@ void MainformImpl::createDockWidget()
 	action = view->toggleViewAction();
 	action->setShortcut(m_contentDock->getShortcut());
 	m_menus["windows"]->addAction(action);
-	connect(m_contentDock, SIGNAL(open(QString,int,IFileTypePlugin*,XinxProject::ProjectPtr)), EditorManager::self(), SLOT(openFile(QString,int,IFileTypePlugin*,XinxProject::ProjectPtr)));
+	connect(m_contentDock, SIGNAL(open(QString,int,IFileTypePluginPtr,XinxProject::ProjectPtr)), EditorManager::self(), SLOT(openFile(QString,int,IFileTypePluginPtr,XinxProject::ProjectPtr)));
 	m_contentDock->setDock(view);
 
 	/* List of opened files */

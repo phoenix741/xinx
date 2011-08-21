@@ -39,6 +39,9 @@ class QCodeEdit;
 class QCompleter;
 class QModelIndex;
 class XINXConfig;
+class XinxFormatScheme;
+
+typedef QSharedPointer<XinxFormatScheme> XinxFormatSchemePtr;
 
 namespace CodeCompletion
 {
@@ -169,6 +172,7 @@ private:
 	void key_home(bool);
 	bool isModified();
 
+	XinxFormatSchemePtr _scheme;
 	TextFileEditor * _text_file_editor;
 	QCodeEdit * m_editor;
 	QDocumentSearch * m_matchingText;

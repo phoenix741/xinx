@@ -21,6 +21,7 @@
 #include <QVBoxLayout>
 #include <QFileInfo>
 #include <plugins/xinxpluginsloader.h>
+#include <editors/filetypepool.h>
 
 FileTypeSelector::FileTypeSelector(QWidget *parent) : QWidget(parent)
 {
@@ -62,12 +63,12 @@ bool FileTypeSelector::isShowFileName() const
 void FileTypeSelector::setFileName(const QString & filename)
 {
 	_file_name_label->setText(QFileInfo(filename).fileName());
-	QList<IFileTypePlugin *> interfaces = XinxPluginsLoader::self()->matchedFileType(filename);
+	QList<IFileTypePluginPtr> interfaces = FileTypePool::self()->matchedFileType(filename);
 
 	_show_all->setVisible(interfaces.size());
 	if (! interfaces.size() || _show_all->isChecked())
 	{
-		setFileTypes(XinxPluginsLoader::self()->fileTypes());
+		setFileTypes(FileTypePool::self()->fileTypes());
 	}
 	else
 	{
@@ -86,25 +87,26 @@ int FileTypeSelector::count() const
 	return _file_type_list->count();
 }
 
-void FileTypeSelector::setFileTypes(const QList<IFileTypePlugin *> & types)
+void FileTypeSelector::setFileTypes(const QList<IFileTypePluginPtr> & types)
 {
 	_file_type_list->clear();
-	foreach(IFileTypePlugin* plugin, types)
+	foreach(IFileTypePluginPtr plugin, types)
 	{
+		// FIXME: Le fait de ne pas utiliser QSharedPointer peut poser problème, mais ne devrait pas :D pour autant.
 		QListWidgetItem * item = new QListWidgetItem(QIcon(plugin->icon()), plugin->description(), _file_type_list);
-		item->setData(Qt::UserRole, QVariant::fromValue<IFileTypePlugin*>(plugin));
+		item->setData(Qt::UserRole, QVariant::fromValue<IFileTypePluginPtr>(plugin));
 	}
 	_file_type_list->setCurrentRow(0);
 }
 
-IFileTypePlugin * FileTypeSelector::selectedType() const
+IFileTypePluginPtr FileTypeSelector::selectedType() const
 {
 	QListWidgetItem * item = _file_type_list->currentItem();
 	if (item)
 	{
-		return item->data(Qt::UserRole).value<IFileTypePlugin*>();
+		return item->data(Qt::UserRole).value<IFileTypePluginPtr>();
 	}
-	return 0;
+	return IFileTypePluginPtr();
 }
 
 void FileTypeSelector::toggledShowAll()

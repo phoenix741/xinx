@@ -63,13 +63,10 @@ public:
 ServicesPlugin::ServicesPlugin()
 {
 	Q_INIT_RESOURCE(servicesplugin);
-
-	m_fileTypes << new WebServicesFileType;
 }
 
 ServicesPlugin::~ServicesPlugin()
 {
-	qDeleteAll(m_fileTypes);
 }
 
 bool ServicesPlugin::initializePlugin(const QString & lang)
@@ -101,9 +98,11 @@ QVariant ServicesPlugin::getPluginAttribute(const enum IXinxPlugin::PluginAttrib
 	return QVariant();
 }
 
-QList<IFileTypePlugin*> ServicesPlugin::fileTypes()
+QList<IFileTypePlugin*> ServicesPlugin::createFileTypes()
 {
-	return m_fileTypes;
+	QList<IFileTypePlugin*> fileTypes;
+	fileTypes << new WebServicesFileType;
+	return fileTypes;
 }
 
 void ServicesPlugin::generateActionMenu()

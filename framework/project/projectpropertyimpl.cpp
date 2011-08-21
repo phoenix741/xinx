@@ -27,6 +27,8 @@
 #include <plugins/interfaces/files.h>
 #include <contentview3/cache.h>
 #include <plugins/xinxpluginelement.h>
+#include <versioncontrol/versioncontrolmanager.h>
+#include <editors/filetypepool.h>
 
 // Qt header
 #include <QDir>
@@ -35,7 +37,6 @@
 #include <QTimer>
 
 /* ProjectPropertyImpl */
-#include <versioncontrol/versioncontrolmanager.h>
 
 ProjectPropertyImpl::ProjectPropertyImpl(QWidget * parent, Qt::WFlags f) : QDialog(parent, f)
 {
@@ -129,7 +130,7 @@ void ProjectPropertyImpl::loadFromProject(XinxProject::ProjectPtr project)
 
 	foreach(QString filename, project->cache()->cachedFiles())
 	{
-		QList<IFileTypePlugin *> fileTypes = XinxPluginsLoader::self()->matchedFileType(filename);
+		QList<IFileTypePluginPtr> fileTypes = FileTypePool::self()->matchedFileType(filename);
 		QString fn = QDir(project->projectPath()).relativeFilePath(filename);
 		if (fileTypes.size())
 			new QListWidgetItem(QIcon(fileTypes.at(0)->icon()), fn, m_preloadedFiles);

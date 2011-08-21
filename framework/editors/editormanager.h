@@ -30,14 +30,13 @@
 #include <core/lib-config.h>
 #include <core/xinxsingleton.h>
 #include <project/xinxprojectproject.h>
+#include <plugins/interfaces/files.h>
 
 // Qt header
 #include <QObject>
 #include <QString>
 #include <QAction>
 
-
-class IFileTypePlugin;
 class AbstractEditor;
 class PrivateEditorManager;
 class PrivateTabWidget;
@@ -89,8 +88,8 @@ public slots:
 	void changeToPreviousEditor();
 
 	void openFile();
-	void openFile(const QString & filename, IFileTypePlugin * interface = 0, XinxProject::ProjectPtr project = XinxProject::ProjectPtr());
-	void openFile(const QString & filename, int line, IFileTypePlugin * interface = 0, XinxProject::ProjectPtr project = XinxProject::ProjectPtr());
+	void openFile(const QString & filename, IFileTypePluginPtr interface = IFileTypePluginPtr(), XinxProject::ProjectPtr project = XinxProject::ProjectPtr());
+	void openFile(const QString & filename, int line, IFileTypePluginPtr interface = IFileTypePluginPtr(), XinxProject::ProjectPtr project = XinxProject::ProjectPtr());
 	void saveFile(bool saveAs = false);
 	void saveFile(int index, bool saveAs = false);
 	void saveFile(AbstractEditor * editor, bool saveAs = false);

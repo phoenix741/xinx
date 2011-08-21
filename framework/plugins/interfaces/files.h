@@ -129,7 +129,7 @@ public:
 	virtual ~IFilePlugin() {}
 
 	//! List of file type knew by the plugins.
-	virtual QList<IFileTypePlugin*> fileTypes() = 0;
+	virtual QList<IFileTypePlugin*> createFileTypes() = 0;
 };
 
 /*!
@@ -158,7 +158,9 @@ public:
 	virtual QIODevice * saveFile(AbstractEditor * editor, const QString & filename, const QString & oldfilename) = 0;
 };
 
-Q_DECLARE_METATYPE(IFileTypePlugin*);
+typedef QSharedPointer<IFileTypePlugin> IFileTypePluginPtr;
+
+Q_DECLARE_METATYPE(IFileTypePluginPtr);
 
 Q_DECLARE_INTERFACE(IXinxInputOutputPlugin, "org.shadoware.xinx.IXinxInputOutputPlugin/1.0");
 Q_DECLARE_INTERFACE(IContentViewParserPlugin, "org.shadoware.xinx.IContentViewParserPlugin/1.0")

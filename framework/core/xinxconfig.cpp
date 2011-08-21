@@ -29,6 +29,7 @@
 #include "plugins/xinxpluginsloader.h"
 #include "editors/xinxformatscheme.h"
 #include "editors/xinxlanguagefactory.h"
+#include "editors/filetypepool.h"
 
 /* ToolsNotDefinedException */
 
@@ -63,6 +64,7 @@ XINXConfig& XINXConfig::operator=(const XINXConfig& p)
 void XINXConfig::load()
 {
 	AppSettings::load();
+	updateActivatedPlugin();
 	updateFormatsSchemeFromConfig();
 }
 
@@ -70,8 +72,32 @@ void XINXConfig::save()
 {
 	putFormatsSchemeToConfig();
 	AppSettings::save();
-
+	updateActivatedPlugin();
 	emit changed();
+}
+
+void XINXConfig::updateActivatedPlugin()
+{
+	/* Update activated list of plugin */
+	_activatedPlugin.clear();
+	QHashIterator<QString,bool> it(config().plugins);
+	while (it.hasNext())
+	{
+		it.next();
+		const QString key = it.key();
+		const bool activated = it.value();
+
+		if (activated && ! _activatedPlugin.contains(key))
+		{
+			_activatedPlugin.append(key);
+			emit pluginActivated(key);
+		}
+		else if (! activated && _activatedPlugin.contains(key))
+		{
+			_activatedPlugin.removeAll(key);
+			emit pluginDesactivated(key);
+		}
+	}
 }
 
 XinxLanguageFactory * XINXConfig::languageFactory()
@@ -83,33 +109,29 @@ XinxLanguageFactory * XINXConfig::languageFactory()
 	return m_languages;
 }
 
-void XINXConfig::addFormatScheme(const QString & id, XinxFormatScheme * scheme)
+void XINXConfig::addFormatScheme(const QString & id, XinxFormatSchemePtr scheme)
 {
-	if (m_formatScheme.contains(id))
-	{
-		delete m_formatScheme[ id ];
-	}
 	scheme->updateFormatsFromConfig();
-	m_formatScheme[ id ] = scheme;
+	m_formatScheme[id] = scheme;
 }
 
-XinxFormatScheme * XINXConfig::scheme(const QString & highlighter)
+XinxFormatSchemePtr XINXConfig::scheme(const QString & highlighter)
 {
 	if (! m_formatScheme.contains(highlighter))
 	{
-		XinxFormatScheme * scheme = XinxPluginsLoader::self()->scheme(highlighter, this);
+		XinxFormatSchemePtr scheme = FileTypePool::self()->scheme(highlighter);
 		if (scheme)
 		{
 			scheme->updateFormatsFromConfig();
-			m_formatScheme[ highlighter ] = scheme;
+			m_formatScheme[highlighter] = scheme;
 		}
 	}
-	return m_formatScheme.value(highlighter, qobject_cast<XinxFormatScheme*>(languageFactory()->defaultFormatScheme()));
+	return m_formatScheme.value(highlighter, XinxFormatSchemePtr());
 }
 
 void XINXConfig::updateFormatsSchemeFromConfig()
 {
-	foreach(XinxFormatScheme * scheme, m_formatScheme.values())
+	foreach(XinxFormatSchemePtr scheme, m_formatScheme.values())
 	{
 		scheme->updateFormatsFromConfig();
 	}
@@ -117,7 +139,7 @@ void XINXConfig::updateFormatsSchemeFromConfig()
 
 void XINXConfig::putFormatsSchemeToConfig()
 {
-	foreach(XinxFormatScheme * scheme, m_formatScheme.values())
+	foreach(XinxFormatSchemePtr scheme, m_formatScheme.values())
 	{
 		scheme->putFormatsToConfig();
 	}

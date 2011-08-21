@@ -297,7 +297,7 @@ void PrivateProjectDirectoryWidgetImpl::openFile(const QModelIndex & index)
 
 	if (! file_info.isDir())
 	{
-		emit _parent->open(file_path, 0, project);
+		emit _parent->open(file_path, IFileTypePluginPtr(), project);
 	}
 }
 

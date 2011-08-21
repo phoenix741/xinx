@@ -22,6 +22,7 @@
 #include <core/xinxconfig.h>
 #include <plugins/xinxpluginsloader.h>
 #include "pluginsettings.h"
+#include <editors/filetypepool.h>
 
 // Qt header
 #include <QDir>
@@ -134,7 +135,7 @@ RCS::FilesOperation RCS_CVS::operationOf(const QString & path)
 {
 	RCS::FilesOperation operations;
 
-	QStringList files = QDir(path).entryList(XinxPluginsLoader::self()->managedFilters(), QDir::Files);
+	QStringList files = QDir(path).entryList(FileTypePool::self()->managedFilters(), QDir::Files);
 	foreach(const QString & filename, files)
 	{
 		QString filepath = QDir(path).absoluteFilePath(filename);

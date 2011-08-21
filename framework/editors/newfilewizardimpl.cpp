@@ -109,12 +109,12 @@ QString NewFileWizardImpl::path() const
 	return QDir::fromNativeSeparators(_directory_base->text());
 }
 
-void NewFileWizardImpl::setSelectedType(IFileTypePlugin * plugin)
+void NewFileWizardImpl::setSelectedType(IFileTypePluginPtr plugin)
 {
 	_interface = plugin;
 }
 
-IFileTypePlugin * NewFileWizardImpl::selectedType() const
+IFileTypePluginPtr NewFileWizardImpl::selectedType() const
 {
 	return _interface ? _interface : _file_type_selector->selectedType();
 }

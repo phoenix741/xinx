@@ -37,7 +37,7 @@ class Pool : public XinxLibSingleton<Pool>
 {
 	Q_OBJECT
 public:
-	~Pool();
+	virtual ~Pool();
 
 public slots:
 	void updateParsers();

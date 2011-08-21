@@ -24,13 +24,15 @@
 #include <core/lib-config.h>
 #include <core/xinxsingleton.h>
 #include <project/xinxprojectproject.h>
+#include <plugins/interfaces/files.h>
 
 // Qt header
 #include <QObject>
 #include <QSharedPointer>
 
 class AbstractEditor;
-class IFileTypePlugin;
+
+typedef QSharedPointer<IFileTypePlugin> IFileTypePluginPtr;
 
 namespace XinxSession
 {
@@ -43,13 +45,13 @@ class LIBEXPORT EditorFactory : public XinxLibSingleton<EditorFactory>
 public:
 	virtual ~EditorFactory();
 
-	IFileTypePlugin * interfaceOfName(const QString & name);
-	AbstractEditor * createEditor(const QString & filename, IFileTypePlugin * interface = 0, XinxProject::ProjectPtr project = XinxProject::ProjectPtr());
+	IFileTypePluginPtr interfaceOfName(const QString & name);
+	AbstractEditor * createEditor(const QString & filename, IFileTypePluginPtr interface = IFileTypePluginPtr(), XinxProject::ProjectPtr project = XinxProject::ProjectPtr());
 	AbstractEditor * createEditor(XinxSession::SessionEditor * session = 0);
 private:
 	EditorFactory();
 
-	AbstractEditor * createEditor(IFileTypePlugin * interface);
+	AbstractEditor * createEditor(IFileTypePluginPtr interface);
 
 	friend class XinxLibSingleton<EditorFactory>;
 };

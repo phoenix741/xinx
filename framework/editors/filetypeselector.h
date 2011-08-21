@@ -27,6 +27,8 @@
 #include <QLabel>
 #include <plugins/interfaces/files.h>
 
+typedef QSharedPointer<IFileTypePlugin> IFileTypePluginPtr;
+
 class LIBEXPORT FileTypeSelector : public QWidget
 {
 	Q_OBJECT
@@ -40,12 +42,12 @@ public:
 	void setFileName(const QString & filename);
 	const QString & filename() const;
 
-	IFileTypePlugin * selectedType() const;
+	IFileTypePluginPtr selectedType() const;
 	int count() const;
 signals:
 	void doubleClicked();
 private slots:
-	void setFileTypes(const QList<IFileTypePlugin *> & types);
+	void setFileTypes(const QList<IFileTypePluginPtr> & types);
 	void toggledShowAll();
 private:
 	QString _file_name;

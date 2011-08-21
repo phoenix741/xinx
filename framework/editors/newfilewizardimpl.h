@@ -43,8 +43,8 @@ public:
 	void setProject(XinxProject::ProjectPtr project);
 	XinxProject::ProjectPtr project() const;
 
-	void setSelectedType(IFileTypePlugin * plugin);
-	IFileTypePlugin * selectedType() const;
+	void setSelectedType(IFileTypePluginPtr plugin);
+	IFileTypePluginPtr selectedType() const;
 protected:
 	virtual void initializePage(int id);
 	virtual void done(int result);
@@ -52,7 +52,7 @@ private slots:
 	void slotTextChanged(const QString & text);
 private:
 	XinxProject::ProjectPtr _project;
-	IFileTypePlugin * _interface;
+	IFileTypePluginPtr _interface;
 };
 
 #endif // NEWFILEWIZARDIMPL_H

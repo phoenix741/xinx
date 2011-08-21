@@ -26,6 +26,7 @@
 #include <project/xinxprojectmanager.h>
 #include <plugins/xinxpluginsloader.h>
 #include <directoryedit.h>
+#include <editors/filetypepool.h>
 
 ReplaceDialogImpl::ReplaceDialogImpl(QWidget * parent, Qt::WFlags f) : QDialog(parent, f)
 {
@@ -71,7 +72,7 @@ void ReplaceDialogImpl::initialize(bool hasEditor)
 		m_directoryWidget->lineEdit()->setText(QString());
 	}
 
-	QStringList filters = XinxPluginsLoader::self()->managedFilters();
+	QStringList filters = FileTypePool::self()->managedFilters();
 	filters.removeDuplicates ();
 	m_comboExt->clear ();
 	m_comboExt->addItems(filters);

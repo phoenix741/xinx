@@ -23,6 +23,7 @@
 #include <plugins/xinxpluginsloader.h>
 #include <contentview3/file.h>
 #include <project/xinxprojectproject.h>
+#include <editors/filetypepool.h>
 
 // Qt header
 #include <QFileInfo>
@@ -55,7 +56,7 @@ void ImportNode::setName(const QString& name)
 {
 	ContentView3::Node::setName(name);
 
-	QList<IFileTypePlugin*> fileTypes = XinxPluginsLoader::self()->matchedFileType(name);
+	QList<IFileTypePluginPtr> fileTypes = FileTypePool::self()->matchedFileType(name);
 	if (fileTypes.size() > 0)
 	{
 		setIcon(fileTypes.at(0)->icon());

@@ -54,29 +54,13 @@ public:
 	QList<XinxPluginElement*> plugins() const;
 	/*! Plugin of name \e name. */
 	XinxPluginElement * plugin(const QString & name);
-
-	/*! Return all the file type knew by XINX. */
-	QList<IFileTypePlugin*> fileTypes() const;
-	/*! Return the file type with the name \p name */
-	IFileTypePlugin * fileType(const QString & name) const;
-	/*! Search the file type for the corresponding filename  */
-	QList<IFileTypePlugin*> matchedFileType(const QString & filename) const;
-	/*! Return the filter for a given file type */
-	static QString fileTypeFilter(IFileTypePlugin * fileType);
-	//! Return a list of filter that can be used open dialog box
-	QStringList openDialogBoxFilters() const;
-	//! Return a list of filter
-	QStringList managedFilters() const;
-
-	//! Return the exemple of an highlighter
-	QString exampleOfHighlighter(const QString & name) const;
-	//! Create a format scheme for the given highlighter
-	XinxFormatScheme * scheme(const QString & highlighter, XINXConfig * config);
+signals:
+	void pluginActivated(const QString & name);
+	void pluginDesactivated(const QString & name);
 private:
 	XinxPluginsLoader();
 
 	void addPlugin(QObject * plugin, bool staticLoaded = false);
-	QString allManagedFileFilter() const;
 
 	QMap<QString, XinxPluginElement*> m_plugins;
 	friend class XinxLibSingleton<XinxPluginsLoader>;

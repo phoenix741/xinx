@@ -52,7 +52,7 @@ public:
 	virtual bool initializePlugin(const QString & lang);
 	virtual QVariant getPluginAttribute(const enum IXinxPlugin::PluginAttribute & attr);
 
-	virtual QList<IFileTypePlugin*> fileTypes();
+	virtual QList<IFileTypePlugin*> createFileTypes();
 
 	virtual void generateActionMenu();
 
@@ -73,8 +73,6 @@ public:
 
 	XmlPresentationDockWidget * dock();
 private:
-	QList<IFileTypePlugin*> m_fileTypes;
-
 	ManualFileResolver * m_resolver;
 	XmlPresentationDockWidget * m_dock;
 };

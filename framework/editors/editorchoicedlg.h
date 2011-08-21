@@ -37,7 +37,7 @@ public:
 
 	void setFileName(const QString & value);
 
-	IFileTypePlugin * selectedType() const;
+	IFileTypePluginPtr selectedType() const;
 	int count() const;
 private:
 	FileTypeSelector * _selector;

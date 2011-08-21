@@ -35,6 +35,8 @@ class XinxLanguageFactory;
 class XinxFormatScheme;
 class QWidget;
 
+typedef QSharedPointer<XinxFormatScheme> XinxFormatSchemePtr;
+
 class LIBEXPORT ToolsNotDefinedException : public XinxException
 {
 public:
@@ -57,14 +59,14 @@ public:
 	virtual ~XINXConfig();
 
 	//! Get a created format scheme
-	XinxFormatScheme * scheme(const QString & highlighter);
+	XinxFormatSchemePtr scheme(const QString & highlighter);
 
 	/*!
 	 * Add a new format scheme to XINX
 	 * \param id the id to use for the scheme
 	 * \param scheme the added scheme
 	 */
-	void addFormatScheme(const QString & id, XinxFormatScheme * scheme);
+	void addFormatScheme(const QString & id, XinxFormatSchemePtr scheme);
 
 	/*! Return the language factory (from QCodeEdit library) for the definition in config */
 	XinxLanguageFactory * languageFactory();
@@ -95,18 +97,25 @@ public:
 signals:
 	/*! Signal emited when the configuration is changed */
 	void changed();
+	/*! Signal emited when a plugin is activated */
+	void pluginActivated(const QString & name);
+	/*! Signal emited when a plugin is desactivated */
+	void pluginDesactivated(const QString & name);
 public slots:
 	//! Update the list of format (can't delete existing format)
 	void updateFormatsSchemeFromConfig();
 	//! Put format to config
 	void putFormatsSchemeToConfig();
+	//! Update activated plugin
+	void updateActivatedPlugin();
 
 protected:
 	virtual struct_globals getDefaultGlobals();
 	virtual struct_editor getDefaultEditor();
 private:
+	QStringList _activatedPlugin;
 	QPointer<XinxLanguageFactory> m_languages;
-	QHash<QString,XinxFormatScheme*> m_formatScheme;
+	QHash<QString,XinxFormatSchemePtr> m_formatScheme;
 };
 
 #endif

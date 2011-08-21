@@ -37,6 +37,8 @@ class QAction;
 class QAbstractItemModel;
 class IFileTypePlugin;
 
+typedef QSharedPointer<IFileTypePlugin> IFileTypePluginPtr;
+
 class LIBEXPORT AbstractEditor : public QFrame
 {
 	Q_OBJECT
@@ -90,8 +92,8 @@ public:
 
 	virtual BookmarkEditorInterface * bookmarkInterface() = 0;
 
-	virtual void setFileTypePluginInterface(IFileTypePlugin * value);
-	virtual IFileTypePlugin * fileTypePluginInterface() const;
+	virtual void setFileTypePluginInterface(IFileTypePluginPtr value);
+	virtual IFileTypePluginPtr fileTypePluginInterface() const;
 
 	virtual void setProject(XinxProject::ProjectPtr project);
 	virtual XinxProject::ProjectPtr project() const;
@@ -135,7 +137,7 @@ private:
 	void setWatcher(const QString & path);
 
 	XinxProject::ProjectPtrWeak _project;
-	IFileTypePlugin * m_fileTypePlugin;
+	IFileTypePluginPtr m_fileTypePlugin;
 	bool m_isSaving, m_modified, m_neverModified;
 	QPointer<FileWatcher> m_watcher;
 	QString m_lastFileName;

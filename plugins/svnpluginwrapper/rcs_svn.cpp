@@ -21,6 +21,7 @@
 #include "rcs_svn.h"
 #include <core/xinxconfig.h>
 #include <plugins/xinxpluginsloader.h>
+#include <editors/filetypepool.h>
 
 // Qt header
 #include <QTextStream>
@@ -181,7 +182,7 @@ RCS::FilesOperation RCS_SVN::operations(const QString & path)
 		if (pr.isEmpty()) continue;
 		QString filename = QDir(path).absoluteFilePath(pr.mid(7).trimmed());
 		bool hasWilcard = false;
-		foreach(const QString & wilcard, XinxPluginsLoader::self()->managedFilters())
+		foreach(const QString & wilcard, FileTypePool::self()->managedFilters())
 		{
 			QRegExp projectWilcard(wilcard, Qt::CaseInsensitive, QRegExp::Wildcard);
 			if (projectWilcard.exactMatch(filename))

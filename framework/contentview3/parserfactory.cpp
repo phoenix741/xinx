@@ -22,6 +22,7 @@
 #include <plugins/xinxpluginsloader.h>
 #include <plugins/xinxpluginelement.h>
 #include <plugins/interfaces/files.h>
+#include <editors/filetypepool.h>
 
 // Qt header
 #include <QDebug>
@@ -51,8 +52,8 @@ QString ParserFactory::getParserTypeByFilename(const QString & filename)
 	if (! QFileInfo(filename).exists()) return QString();
 
 	QStringList parserTypes;
-	QList<IFileTypePlugin*> fileTypes = XinxPluginsLoader::self()->matchedFileType(filename);
-	foreach(IFileTypePlugin* fileType, fileTypes)
+	QList<IFileTypePluginPtr> fileTypes = FileTypePool::self()->matchedFileType(filename);
+	foreach(IFileTypePluginPtr fileType, fileTypes)
 	{
 		QString parserType = fileType->parserType();
 		if (! parserType.isEmpty())

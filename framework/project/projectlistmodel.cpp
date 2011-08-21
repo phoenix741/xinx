@@ -22,6 +22,7 @@
 #include "xinxprojectproject.h"
 #include <plugins/xinxpluginsloader.h>
 #include <jobs/xinxjobmanager.h>
+#include <editors/filetypepool.h>
 
 // Qt header
 #include <QDir>
@@ -41,7 +42,7 @@ bool caseInsensitiveLessThan(const QString &s1, const QString &s2)
 DirectoryFetcher::DirectoryFetcher() : _retrieveRcsInfos(true)
 {
 	setPriority(-100);
-	_matchedFileList = XinxPluginsLoader::self()->managedFilters();
+	_matchedFileList = FileTypePool::self()->managedFilters();
 }
 
 DirectoryFetcher::~DirectoryFetcher()
@@ -663,7 +664,7 @@ void PrivateProjectListModel::_updateFiles(const QString & directory, QList<RCS:
 			// In this case the file exist in Version Control but not in the project list.
 			// We add it if the file match managed file;
 
-			QStringList managed_files = XinxPluginsLoader::self()->managedFilters();
+			QStringList managed_files = FileTypePool::self()->managedFilters();
 			foreach(const QString & filetype, managed_files)
 			{
 				QRegExp expr(filetype, Qt::CaseSensitive, QRegExp::WildcardUnix);

@@ -24,6 +24,7 @@
 #include <core/xinxconfig.h>
 #include <plugins/interfaces/files.h>
 #include <dtoolview.h>
+#include <editors/filetypepool.h>
 
 // Qt header
 #include <QFileInfo>
@@ -83,7 +84,7 @@ void ErrorDockWidgetImpl::updateErrors()
 	{
 		QTreeWidgetItem * fileItem = new QTreeWidgetItem(_widget->m_messagesWidget);
 		fileItem->setText(0, context);
-		QList<IFileTypePlugin *> fileTypes = XinxPluginsLoader::self()->matchedFileType(context);
+		QList<IFileTypePluginPtr> fileTypes = FileTypePool::self()->matchedFileType(context);
 		if (fileTypes.size())
 		{
 			fileItem->setIcon(0, QIcon(fileTypes.at(0)->icon()));

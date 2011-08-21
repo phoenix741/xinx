@@ -87,14 +87,10 @@ GenerixPlugin::GenerixPlugin() : m_dock(0)
 	Q_INIT_RESOURCE(generix);
 
 	xmlInitParser();
-
-	m_fileTypes << new MaquetteFileType;
 }
 
 GenerixPlugin::~GenerixPlugin()
 {
-	qDebug() << "Destroy the plugin GenerixPlugin";
-	qDeleteAll(m_fileTypes);
 }
 
 bool GenerixPlugin::initializePlugin(const QString & lang)
@@ -176,9 +172,11 @@ QList<IProjectInitialisationStep*> GenerixPlugin::closeProjectStep(XinxProject::
 	return QList<IProjectInitialisationStep*>();
 }
 
-QList<IFileTypePlugin*> GenerixPlugin::fileTypes()
+QList<IFileTypePlugin*> GenerixPlugin::createFileTypes()
 {
-	return m_fileTypes;
+	QList<IFileTypePlugin*> fileTypes;
+	fileTypes << new MaquetteFileType;
+	return fileTypes;
 }
 
 QIODevice * GenerixPlugin::loadFile(AbstractEditor * editor, const QString & filename)

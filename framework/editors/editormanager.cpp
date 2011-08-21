@@ -28,6 +28,7 @@
 #include <project/xinxprojectmanager.h>
 #include <core/xinxcore.h>
 #include <session/sessioneditor.h>
+#include <editors/filetypepool.h>
 
 /* PrivateTabWidget */
 
@@ -216,8 +217,8 @@ void PrivateEditorManager::updateRecentFiles()
 	for (int i = 0; i < numRecentFiles; i++)
 	{
 		QString text = QString("&%1 %2").arg(i + 1).arg(QFileInfo(XinxSession::SessionManager::self()->currentSession()->lastClosedFile()[i]).fileName());
-		if (XinxPluginsLoader::self()->matchedFileType(QFileInfo(text).fileName()).size())
-			_recent_actions[i]->setIcon(QIcon(XinxPluginsLoader::self()->matchedFileType(QFileInfo(text).fileName()).at(0)->icon()));
+		if (FileTypePool::self()->matchedFileType(QFileInfo(text).fileName()).size())
+			_recent_actions[i]->setIcon(QIcon(FileTypePool::self()->matchedFileType(QFileInfo(text).fileName()).at(0)->icon()));
 		_recent_actions[i]->setText(text);
 		_recent_actions[i]->setData(XinxSession::SessionManager::self()->currentSession()->lastClosedFile()[i]);
 		_recent_actions[i]->setVisible(true);
@@ -581,7 +582,7 @@ void EditorManager::changeToPreviousEditor()
 
 void EditorManager::openFile()
 {
-	QStringList selectedFiles = QFileDialog::getOpenFileNames(qApp->activeWindow(), tr("Open text file"), d->m_lastOpenedFileName, XinxPluginsLoader::self()->openDialogBoxFilters().join(";;"));
+	QStringList selectedFiles = QFileDialog::getOpenFileNames(qApp->activeWindow(), tr("Open text file"), d->m_lastOpenedFileName, FileTypePool::self()->openDialogBoxFilters().join(";;"));
 
 	d->tabWidget()->setUpdatesEnabled(false);
 	foreach(const QString & filename, selectedFiles)
@@ -592,7 +593,7 @@ void EditorManager::openFile()
 	d->tabWidget()->setUpdatesEnabled(true);
 }
 
-void EditorManager::openFile(const QString& filename, IFileTypePlugin* interface, XinxProject::ProjectPtr project)
+void EditorManager::openFile(const QString& filename, IFileTypePluginPtr interface, XinxProject::ProjectPtr project)
 {
 	Q_ASSERT(! filename.isEmpty());
 
@@ -616,7 +617,7 @@ void EditorManager::openFile(const QString& filename, IFileTypePlugin* interface
 	setCurrentEditor(openingEditor);
 }
 
-void EditorManager::openFile(const QString& filename, int line, IFileTypePlugin* interface, XinxProject::ProjectPtr project)
+void EditorManager::openFile(const QString& filename, int line, IFileTypePluginPtr interface, XinxProject::ProjectPtr project)
 {
 	if (! filename.isEmpty())
 	{
@@ -670,7 +671,7 @@ void EditorManager::saveFile(AbstractEditor* editor, bool saveAs)
 
 	const QString filename     = editor->lastFileName();
 	const QString deffilename  = editor->defaultFileName();
-	const QString filter       = XinxPluginsLoader::self()->matchedFileType(filename.isEmpty() ? deffilename : filename).size() ? XinxPluginsLoader::self()->fileTypeFilter(XinxPluginsLoader::self()->matchedFileType(filename.isEmpty() ? deffilename : filename).at(0)) : "";
+	const QString filter       = FileTypePool::self()->matchedFileType(filename.isEmpty() ? deffilename : filename).size() ? FileTypePool::self()->fileTypeFilter(FileTypePool::self()->matchedFileType(filename.isEmpty() ? deffilename : filename).at(0)) : "";
 	const bool    emptyname    = filename.isEmpty();
 
 	bool    accept      = false;

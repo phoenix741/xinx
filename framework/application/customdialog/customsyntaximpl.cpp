@@ -23,6 +23,7 @@
 #include <editors/xinxformatscheme.h>
 #include <editors/xinxlanguagefactory.h>
 #include <plugins/xinxpluginsloader.h>
+#include <editors/filetypepool.h>
 
 /* CustomSyntaxImpl */
 
@@ -98,7 +99,7 @@ void CustomSyntaxImpl::on_m_highlighterComboBox_activated(QString text)
 	m_customScheme->setFormatScheme(m_formatScheme.value(text));
 	m_customScheme->setLanguageFactory(XINXConfig::self()->languageFactory());
 	m_customScheme->setLanguageDefinition(text);
-	m_customScheme->setExample(XinxPluginsLoader::self()->exampleOfHighlighter(text));
+	m_customScheme->setExample(FileTypePool::self()->exampleOfHighlighter(text));
 }
 
 bool CustomSyntaxImpl::cancelSettingsDialog()

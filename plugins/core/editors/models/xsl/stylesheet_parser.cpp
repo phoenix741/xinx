@@ -28,6 +28,8 @@
 #include <plugins/xinxpluginsloader.h>
 #include <plugins/interfaces/files.h>
 #include <contentview3/parserfactory.h>
+#include <editors/filetypepool.h>
+
 
 // Qt header
 #include <QTextCodec>
@@ -260,7 +262,7 @@ void Parser::readTemplate(ContentView3::NodePtr & n)
 			import->setType("internal");
 			import->setTips(tr("Element at line : %1").arg(line));
 
-			QList<IFileTypePlugin *> ft = XinxPluginsLoader::self()->matchedFileType(s.src);
+			QList<IFileTypePluginPtr> ft = FileTypePool::self()->matchedFileType(s.src);
 			QScopedPointer<ContentView3::Parser> parser(ContentView3::ParserFactory::getParserByFilename(s.src));
 			if (ft.size() && parser)
 			{

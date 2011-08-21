@@ -28,6 +28,7 @@
 #include <session/sessioneditor.h>
 #include <project/xinxprojectmanager.h>
 #include <editors/editorfactory.h>
+#include <editors/filetypepool.h>
 
 // Qt header
 #include <QLabel>
@@ -677,7 +678,7 @@ void AbstractEditor::deserialize(XinxSession::SessionEditor * data)
 AbstractEditor * AbstractEditor::deserializeEditor(XinxSession::SessionEditor * data)
 {
 	QString name = data->readProperty("ClassName").toString();
-	IFileTypePlugin * plugin = XinxPluginsLoader::self()->fileType(name);
+	IFileTypePluginPtr plugin = FileTypePool::self()->fileType(name);
 	if (plugin)
 	{
 		AbstractEditor * editor = plugin->createEditor();
@@ -698,7 +699,7 @@ AbstractEditor * AbstractEditor::deserializeEditor(XinxSession::SessionEditor * 
  * \param value The new IFileTypePlugin
  * \sa fileTypePluginInterface()
  */
-void AbstractEditor::setFileTypePluginInterface(IFileTypePlugin * value)
+void AbstractEditor::setFileTypePluginInterface(IFileTypePluginPtr value)
 {
 	m_fileTypePlugin = value;
 }
@@ -708,7 +709,7 @@ void AbstractEditor::setFileTypePluginInterface(IFileTypePlugin * value)
  * \return The current IFileTypePlugin
  * \sa  setFileTypePluginInterface()
  */
-IFileTypePlugin * AbstractEditor::fileTypePluginInterface() const
+IFileTypePluginPtr AbstractEditor::fileTypePluginInterface() const
 {
 	return m_fileTypePlugin;
 }

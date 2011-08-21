@@ -64,7 +64,7 @@ public:
 	virtual QList<IProjectInitialisationStep*> loadProjectStep(XinxProject::ProjectPtr project);
 	virtual QList<IProjectInitialisationStep*> closeProjectStep(XinxProject::ProjectPtr project);
 
-	virtual QList<IFileTypePlugin*> fileTypes();
+	virtual QList<IFileTypePlugin*> createFileTypes();
 
 	virtual QIODevice * loadFile(AbstractEditor * editor, const QString & filename);
 	virtual QIODevice * saveFile(AbstractEditor * editor, const QString & filename, const QString & oldfilename);
@@ -78,7 +78,6 @@ public:
 	virtual QList<IXinxPluginProjectConfigurationPage*> createProjectSettingsPage(QWidget * parent);
 	virtual QList<IXinxPluginNewProjectConfigurationPage*> createNewProjectSettingsPages();
 private:
-	QList<IFileTypePlugin*> m_fileTypes;
 	GenerixProjectDockImpl * m_gnxDock;
 	DictionaryDockWidgetImpl * m_dock;
 	Gce150FileResolver * m_resolver;
