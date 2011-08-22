@@ -109,29 +109,29 @@ XinxLanguageFactory * XINXConfig::languageFactory()
 	return m_languages;
 }
 
-void XINXConfig::addFormatScheme(const QString & id, XinxFormatSchemePtr scheme)
+void XINXConfig::addFormatScheme(const QString & id, XinxFormatScheme* scheme)
 {
 	scheme->updateFormatsFromConfig();
 	m_formatScheme[id] = scheme;
 }
 
-XinxFormatSchemePtr XINXConfig::scheme(const QString & highlighter)
+XinxFormatScheme* XINXConfig::scheme(const QString & highlighter)
 {
 	if (! m_formatScheme.contains(highlighter))
 	{
-		XinxFormatSchemePtr scheme = FileTypePool::self()->scheme(highlighter);
+		XinxFormatScheme* scheme = FileTypePool::self()->scheme(highlighter);
 		if (scheme)
 		{
 			scheme->updateFormatsFromConfig();
 			m_formatScheme[highlighter] = scheme;
 		}
 	}
-	return m_formatScheme.value(highlighter, XinxFormatSchemePtr());
+	return m_formatScheme.value(highlighter, qobject_cast<XinxFormatScheme*>(languageFactory()->defaultFormatScheme()));
 }
 
 void XINXConfig::updateFormatsSchemeFromConfig()
 {
-	foreach(XinxFormatSchemePtr scheme, m_formatScheme.values())
+	foreach(XinxFormatScheme* scheme, m_formatScheme.values())
 	{
 		scheme->updateFormatsFromConfig();
 	}
@@ -139,7 +139,7 @@ void XINXConfig::updateFormatsSchemeFromConfig()
 
 void XINXConfig::putFormatsSchemeToConfig()
 {
-	foreach(XinxFormatSchemePtr scheme, m_formatScheme.values())
+	foreach(XinxFormatScheme* scheme, m_formatScheme.values())
 	{
 		scheme->putFormatsToConfig();
 	}

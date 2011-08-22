@@ -35,8 +35,6 @@ class XinxLanguageFactory;
 class XinxFormatScheme;
 class QWidget;
 
-typedef QSharedPointer<XinxFormatScheme> XinxFormatSchemePtr;
-
 class LIBEXPORT ToolsNotDefinedException : public XinxException
 {
 public:
@@ -59,14 +57,14 @@ public:
 	virtual ~XINXConfig();
 
 	//! Get a created format scheme
-	XinxFormatSchemePtr scheme(const QString & highlighter);
+	XinxFormatScheme* scheme(const QString & highlighter);
 
 	/*!
 	 * Add a new format scheme to XINX
 	 * \param id the id to use for the scheme
 	 * \param scheme the added scheme
 	 */
-	void addFormatScheme(const QString & id, XinxFormatSchemePtr scheme);
+	void addFormatScheme(const QString & id, XinxFormatScheme* scheme);
 
 	/*! Return the language factory (from QCodeEdit library) for the definition in config */
 	XinxLanguageFactory * languageFactory();
@@ -115,7 +113,7 @@ protected:
 private:
 	QStringList _activatedPlugin;
 	QPointer<XinxLanguageFactory> m_languages;
-	QHash<QString,XinxFormatSchemePtr> m_formatScheme;
+	QHash<QString,XinxFormatScheme*> m_formatScheme;
 };
 
 #endif

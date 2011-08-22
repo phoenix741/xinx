@@ -34,7 +34,7 @@ class PrivateFileTypePool
 public:
 	QMultiHash<QString,IFileTypePluginPtr> _filetypes;
 	QMultiHash<QString,QString> _highlighter;
-	QHash<QString,XinxFormatSchemePtr> _formatschemes;
+	QHash<QString,XinxFormatScheme*> _formatschemes;
 };
 
 /* FileTypePool */
@@ -151,7 +151,7 @@ QString FileTypePool::exampleOfHighlighter(const QString & name) const
 	return QString();
 }
 
-XinxFormatSchemePtr FileTypePool::scheme(const QString & highlighter) const
+XinxFormatScheme* FileTypePool::scheme(const QString & highlighter) const
 {
 	return d->_formatschemes.value(highlighter);
 }
@@ -173,7 +173,7 @@ void FileTypePool::activatePlugin(const QString& name)
 			if (textPlugin)
 			{
 				// Format
-				XinxFormatSchemePtr scheme(textPlugin->createFormatScheme(XINXConfig::self()));
+				XinxFormatScheme* scheme(textPlugin->createFormatScheme(XINXConfig::self()));
 				if (scheme)
 				{
 					XINXConfig::self()->addFormatScheme(textPlugin->highlighterId(), scheme);
@@ -186,7 +186,7 @@ void FileTypePool::activatePlugin(const QString& name)
 					QLanguageFactory::LangData data;
 					doc.setContent(textPlugin->createLanguageDescription());
 					// Can't unload is it a problem ?
-					QNFADefinition::load(doc, &data, scheme.data());
+					QNFADefinition::load(doc, &data, scheme);
 					XINXConfig::self()->languageFactory()->addLanguage(data);
 				}
 			}

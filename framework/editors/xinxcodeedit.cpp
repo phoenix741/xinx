@@ -648,8 +648,7 @@ void XinxCodeEdit::setHighlighter(const QString & highlighter, XINXConfig * conf
 	}
 
 	// To keep data available we store in members
-	_scheme = config->scheme(highlighter);
-	QFormatScheme * scheme = _scheme.data();
+	QFormatScheme * scheme = config->scheme(highlighter);
 	if (! scheme)
 	{
 		scheme = config->languageFactory()->defaultFormatScheme();

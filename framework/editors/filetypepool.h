@@ -36,7 +36,6 @@ class XinxFormatScheme;
 
 typedef QSharedPointer<IFileTypePlugin> IFileTypePluginPtr;
 typedef QSharedPointer<IFileTextPlugin> IFileTextPluginPtr;
-typedef QSharedPointer<XinxFormatScheme> XinxFormatSchemePtr;
 
 class LIBEXPORT FileTypePool : public XinxLibSingleton<FileTypePool>
 {
@@ -62,7 +61,7 @@ public:
 	//! Return the exemple of an highlighter
 	QString exampleOfHighlighter(const QString & name) const;
 	//! Create a format scheme for the given highlighter
-	XinxFormatSchemePtr scheme(const QString & highlighter) const;
+	XinxFormatScheme* scheme(const QString & highlighter) const;
 public slots:
 	void updateFileTypes();
 private slots:
