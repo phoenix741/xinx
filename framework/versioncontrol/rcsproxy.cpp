@@ -71,7 +71,7 @@ namespace VersionControl
  * \param project The project used to create the project
  *
  */
-RCSProxy::RCSProxy(XinxProject::ProjectPtrWeak project) : m_rcs(0), m_project(project)
+RCSProxy::RCSProxy(XinxProject::ProjectPtrWeak project) : m_project(project)
 {
 
 }
@@ -94,8 +94,7 @@ bool RCSProxy::setCurrentRCS(const QString & rcs)
 		{
 			VersionControl::Manager::self()->waitForFinished();
 
-			delete m_rcs;
-			m_rcs     = 0;
+			m_rcs.reset();
 			m_rcsName = QString();
 		}
 
@@ -103,17 +102,17 @@ bool RCSProxy::setCurrentRCS(const QString & rcs)
 		{
 			try
 			{
-				m_rcs     = Manager::self()->createRevisionControl(rcs, m_rootPath);
+				m_rcs.reset(Manager::self()->createRevisionControl(rcs, m_rootPath));
 				m_rcsName = m_rcs ? rcs : QString();
-				if (! m_rcs)
+				if (m_rcs.isNull())
 				{
 					return false;
 				}
-				connect(m_rcs, SIGNAL(stateChanged(QString, RCS::struct_rcs_infos)), this, SIGNAL(stateChange(QString, RCS::struct_rcs_infos)));
+				connect(m_rcs.data(), SIGNAL(stateChanged(QString, RCS::struct_rcs_infos)), this, SIGNAL(stateChange(QString, RCS::struct_rcs_infos)));
 			}
 			catch (ToolsNotDefinedException e)
 			{
-				m_rcs     = 0;
+				m_rcs.reset();
 				m_rcsName = QString();
 				VersionControl::Manager::self()->logOperation(RCS::LogApplication, tr("No tools defined"));
 				return false;
@@ -138,7 +137,7 @@ QString RCSProxy::description() const
 //! RCS Object
 RCS * RCSProxy::currentRCSInterface() const
 {
-	return m_rcs;
+	return m_rcs.data();
 }
 
 //! Set the current root path
@@ -147,7 +146,9 @@ void RCSProxy::setCurrentRootPath(const QString & rootPath)
 	if (m_rootPath != rootPath)
 	{
 		if (m_rcs)
+		{
 			m_rcs->setWorkingDirectory(rootPath);
+		}
 		m_rootPath = rootPath;
 	}
 }
@@ -202,7 +203,7 @@ void RCSProxy::validFileOperations()
 			}
 		}
 
-		VersionControl::Manager::self()->addRemoveFiles(m_rcs, fileToAdd, fileToRemove);
+		VersionControl::Manager::self()->addRemoveFiles(m_rcs.data(), fileToAdd, fileToRemove);
 
 	}
 	else
@@ -272,7 +273,7 @@ void RCSProxy::validWorkingCopy(QStringList files, QWidget * parent)
 			}
 		}
 
-		VersionControl::Manager::self()->validWorkingCopy(m_rcs, dlg.filesOperation(), message);
+		VersionControl::Manager::self()->validWorkingCopy(m_rcs.data(), dlg.filesOperation(), message);
 	}
 	else
 	{
@@ -290,7 +291,7 @@ void RCSProxy::updateWorkingCopy(QStringList list)
 	if (list.count() == 0)
 		list << m_project.toStrongRef()->projectPath();
 
-	VersionControl::Manager::self()->updateWorkingCopy(m_rcs, list);
+	VersionControl::Manager::self()->updateWorkingCopy(m_rcs.data(), list);
 }
 
 //! Update one file to the given revision
@@ -299,7 +300,7 @@ void RCSProxy::updateToRevision(const QString & path, const QString & revision, 
 	Q_ASSERT(m_rcs);
 
 	VersionControl::Manager::self()->waitForFinished();
-	VersionControl::Manager::self()->updateRevision(m_rcs, path, revision, content);
+	VersionControl::Manager::self()->updateRevision(m_rcs.data(), path, revision, content);
 }
 
 //! Get the log of a path

@@ -78,7 +78,7 @@ public slots:
 signals:
 	void stateChange(const QString & filename, RCS::struct_rcs_infos informations);
 private:
-	RCS * m_rcs;
+	QScopedPointer<RCS> m_rcs;
 
 	QString m_rcsName, m_rootPath;
 	QQueue< QPair<rcsAddRemoveOperation,QStringList> > m_operations;
