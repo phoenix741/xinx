@@ -1,5 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file alias="images/folder.png">../xinx/images/folder.png</file>
+		<file alias="images/folder.png">../framework/images/folder.png</file>
     </qresource>
 </RCC>

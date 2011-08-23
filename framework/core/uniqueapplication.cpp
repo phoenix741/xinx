@@ -39,6 +39,7 @@
 
 UniqueApplication::UniqueApplication(int & argc, char ** argv) : QtSingleApplication(QString("XINX"), argc, argv), m_mainform(0)
 {
+	Q_INIT_RESOURCE(application);
 
 }
 

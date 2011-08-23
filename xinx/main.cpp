@@ -105,7 +105,6 @@ class WorkaroundClassToFixBugInMinGW {};
 
 int main(int argc, char *argv[])
 {
-	Q_INIT_RESOURCE(application);
 	qsrand(time(NULL));
 
 	// Workaround to fix bug with MinGW
@@ -143,96 +142,99 @@ int main(int argc, char *argv[])
 		// .. If application is not started
 		if (! app.isRunning())
 		{
-			// Create the splash screen
-			QPixmap pixmap(":/images/splash.png");
-			QSplashScreen splash(pixmap);
-			splash.setMask(pixmap.mask());
-			splash.show();
-			app.processEvents();
-
-			// Load the exception manager
-			splash.showMessage(QApplication::translate("SplashScreen", "Install exception handler ..."));
-			app.processEvents();
-			ExceptionManager::installExceptionHandler();
-
-			// Initialize search path for datas ...
-			splash.showMessage(QApplication::translate("SplashScreen", "Initialize search path ..."));
-			app.processEvents();
-			initSearchPath(&app);
-
-			// To have the lang and style loaded earlier in the process, we load configuration of XINX
-			// XINX Config doens't have call to another Big instance (has XinxPluginsLoader)
-			splash.showMessage(QApplication::translate("SplashScreen", "Load configuration ..."));
-			app.processEvents();
-
-			XINXConfig::self()->load();
-			if (! XINXConfig::self()->config().style.isEmpty())
-			{
-				QApplication::setStyle(XINXConfig::self()->config().style);
-			}
-
-			// Now we know which lang use, we can load translations. We are not lost in translation ...
-			splash.showMessage(QApplication::translate("SplashScreen", "Load translations ..."));
-			app.processEvents();
-
-			// ... load qt translation ...
-			startTranslation();
-
 			bool recovering = false;
-			if (XinxSession::Session::sessionsNames().contains(RECOVER_SESSION))
+
+			// Splash screen must be delete when main is shown
 			{
-				QMessageBox::StandardButton result = QMessageBox::question(&splash, QApplication::translate("SplashScreen", "Recover"), QApplication::translate("SplashScreen", "There's an existing recover session. Do you wan try to recover ?"), QMessageBox::Yes | QMessageBox::Discard | QMessageBox::Reset);
-				switch (result)
+				QPixmap pixmap(":/images/splash.png");
+				QSplashScreen splash(pixmap);
+				splash.setMask(pixmap.mask());
+				splash.show();
+				app.processEvents();
+
+				// Load the exception manager
+				splash.showMessage(QApplication::translate("SplashScreen", "Install exception handler ..."));
+				app.processEvents();
+				ExceptionManager::installExceptionHandler();
+
+				// Initialize search path for datas ...
+				splash.showMessage(QApplication::translate("SplashScreen", "Initialize search path ..."));
+				app.processEvents();
+				initSearchPath(&app);
+
+				// To have the lang and style loaded earlier in the process, we load configuration of XINX
+				// XINX Config doens't have call to another Big instance (has XinxPluginsLoader)
+				splash.showMessage(QApplication::translate("SplashScreen", "Load configuration ..."));
+				app.processEvents();
+
+				XINXConfig::self()->load();
+				if (! XINXConfig::self()->config().style.isEmpty())
 				{
-					case QMessageBox::Yes:
-						recovering = true;
-						break;
-					case QMessageBox::Discard:
-						XinxSession::SessionManager::self()->deleteRecoverSession();
-						break;
-					case QMessageBox::Reset:
-						XINXConfig::self()->setDefault();
-						break;
-					default:
-						qDebug() << "Not managed";
+					QApplication::setStyle(XINXConfig::self()->config().style);
 				}
-			}
 
-			// Load available marks (for QCodeEdit use)
-			splash.showMessage(QApplication::translate("SplashScreen", "Load available marks ..."));
-			app.processEvents();
-			QLineMarksInfoCenter::instance()->loadMarkTypes(":/qcodeedit/marks.qxm");
-
-			// Loads plugins
-			splash.showMessage(QApplication::translate("SplashScreen", "Load plugins ..."));
-			app.processEvents();
-			XinxPluginsLoader::self()->loadPlugins();
-
-			splash.showMessage(QApplication::translate("SplashScreen", "Load main window ..."));
-			app.processEvents();
-			app.attachMainWindow(mainWin = new MainformImpl());
-
-			if (recovering)
-			{
-				splash.showMessage(QApplication::translate("SplashScreen", "Recovering ..."));
+				// Now we know which lang use, we can load translations. We are not lost in translation ...
+				splash.showMessage(QApplication::translate("SplashScreen", "Load translations ..."));
 				app.processEvents();
-				XinxSession::SessionManager::self()->restoreSession(RECOVER_SESSION);
-				XinxSession::SessionManager::self()->deleteRecoverSession();
 
-				processFilesArguments(args);
-			}
-			// No matter how many parameters are passed we open the last session.
-			else if ((XINXConfig::self()->config().project.openTheLastSessionAtStart) && (! XINXConfig::self()->config().project.lastOpenedSession.isEmpty()))
-			{
-				splash.showMessage(QApplication::translate("SplashScreen", "Load last session ..."));
+				// ... load qt translation ...
+				startTranslation();
+
+				if (XinxSession::Session::sessionsNames().contains(RECOVER_SESSION))
+				{
+					QMessageBox::StandardButton result = QMessageBox::question(&splash, QApplication::translate("SplashScreen", "Recover"), QApplication::translate("SplashScreen", "There's an existing recover session. Do you wan try to recover ?"), QMessageBox::Yes | QMessageBox::Discard | QMessageBox::Reset);
+					switch (result)
+					{
+						case QMessageBox::Yes:
+							recovering = true;
+							break;
+						case QMessageBox::Discard:
+							XinxSession::SessionManager::self()->deleteRecoverSession();
+							break;
+						case QMessageBox::Reset:
+							XINXConfig::self()->setDefault();
+							break;
+						default:
+							qDebug() << "Not managed";
+					}
+				}
+
+				// Load available marks (for QCodeEdit use)
+				splash.showMessage(QApplication::translate("SplashScreen", "Load available marks ..."));
 				app.processEvents();
-				XinxSession::SessionManager::self()->restoreSession(XINXConfig::self()->config().project.lastOpenedSession);
+				QLineMarksInfoCenter::instance()->loadMarkTypes(":/qcodeedit/marks.qxm");
 
-				processFilesArguments(args);
+				// Loads plugins
+				splash.showMessage(QApplication::translate("SplashScreen", "Load plugins ..."));
+				app.processEvents();
+				XinxPluginsLoader::self()->loadPlugins();
+
+				splash.showMessage(QApplication::translate("SplashScreen", "Load main window ..."));
+				app.processEvents();
+				app.attachMainWindow(mainWin = new MainformImpl());
+
+				if (recovering)
+				{
+					splash.showMessage(QApplication::translate("SplashScreen", "Recovering ..."));
+					app.processEvents();
+					XinxSession::SessionManager::self()->restoreSession(RECOVER_SESSION);
+					XinxSession::SessionManager::self()->deleteRecoverSession();
+
+					processFilesArguments(args);
+				}
+				// No matter how many parameters are passed we open the last session.
+				else if ((XINXConfig::self()->config().project.openTheLastSessionAtStart) && (! XINXConfig::self()->config().project.lastOpenedSession.isEmpty()))
+				{
+					splash.showMessage(QApplication::translate("SplashScreen", "Load last session ..."));
+					app.processEvents();
+					XinxSession::SessionManager::self()->restoreSession(XINXConfig::self()->config().project.lastOpenedSession);
+
+					processFilesArguments(args);
+				}
+
+				mainWin->show();
+				splash.finish(mainWin);
 			}
-
-			mainWin->show();
-			splash.finish(mainWin);
 
 			if ((XINXConfig::self()->config().version != VERSION_STRING) || (args.contains("--newversion")))
 			{
