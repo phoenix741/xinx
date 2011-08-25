@@ -385,9 +385,7 @@ void PrivateEditorManager::tabCloseRequested(int index)
 
 int PrivateEditorManager::getClickedTab()
 {
-	int item = _clicked_item;
-	_clicked_item = -1;
-	return item;
+	return _clicked_item;
 }
 
 bool PrivateEditorManager::editorMayBeSave(QList<AbstractEditor*> editors)
@@ -473,6 +471,9 @@ bool PrivateEditorManager::eventFilter(QObject* obj, QEvent* event)
 			{
 				_close_action->trigger();
 			}
+
+			// On restaure _clicked_item à -1. Cela ne devrait pas poser de problème car les actions ci-dessus sont bloquante.
+			_clicked_item = -1;
 			return true;
 		}
 	}
