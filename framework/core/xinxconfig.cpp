@@ -64,7 +64,6 @@ XINXConfig& XINXConfig::operator=(const XINXConfig& p)
 void XINXConfig::load()
 {
 	AppSettings::load();
-	updateActivatedPlugin();
 	updateFormatsSchemeFromConfig();
 }
 
@@ -72,39 +71,16 @@ void XINXConfig::save()
 {
 	putFormatsSchemeToConfig();
 	AppSettings::save();
-	updateActivatedPlugin();
 	emit changed();
-}
-
-void XINXConfig::updateActivatedPlugin()
-{
-	/* Update activated list of plugin */
-	_activatedPlugin.clear();
-	QHashIterator<QString,bool> it(config().plugins);
-	while (it.hasNext())
-	{
-		it.next();
-		const QString key = it.key();
-		const bool activated = it.value();
-
-		if (activated && ! _activatedPlugin.contains(key))
-		{
-			_activatedPlugin.append(key);
-			emit pluginActivated(key);
-		}
-		else if (! activated && _activatedPlugin.contains(key))
-		{
-			_activatedPlugin.removeAll(key);
-			emit pluginDesactivated(key);
-		}
-	}
 }
 
 XinxLanguageFactory * XINXConfig::languageFactory()
 {
 	if (! m_languages)
 	{
-		m_languages = new XinxLanguageFactory(new XinxFormatScheme(this), this);
+		XinxFormatScheme * scheme = new XinxFormatScheme(this);
+		scheme->setObjectName("default");
+		m_languages = new XinxLanguageFactory(scheme, this);
 	}
 	return m_languages;
 }
@@ -119,7 +95,7 @@ XinxFormatScheme* XINXConfig::scheme(const QString & highlighter)
 {
 	if (! m_formatScheme.contains(highlighter))
 	{
-		XinxFormatScheme* scheme = FileTypePool::self()->scheme(highlighter);
+		XinxFormatScheme* scheme = XinxPluginsLoader::self()->fileTypePool()->scheme(highlighter);
 		if (scheme)
 		{
 			scheme->updateFormatsFromConfig();

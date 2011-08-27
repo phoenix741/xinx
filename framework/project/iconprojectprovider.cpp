@@ -35,7 +35,7 @@ IconProjectProvider::~IconProjectProvider()
 
 QIcon IconProjectProvider::icon(const QFileInfo & info) const
 {
-	QList<IFileTypePluginPtr> plugin = FileTypePool::self()->matchedFileType(info.fileName());
+	QList<IFileTypePluginPtr> plugin = XinxPluginsLoader::self()->fileTypePool()->matchedFileType(info.fileName());
 	if (plugin.size() > 0)
 	{
 		QIcon icon = QIcon(plugin.at(0)->icon());

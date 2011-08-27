@@ -314,13 +314,25 @@ static bool pluginsLessThan(XinxPluginElement * s1, XinxPluginElement * s2)
 
 XinxPluginsLoader::XinxPluginsLoader()
 {
-	connect(XINXConfig::self(), SIGNAL(pluginActivated(QString)), this, SIGNAL(pluginActivated(QString)));
-	connect(XINXConfig::self(), SIGNAL(pluginDesactivated(QString)), this, SIGNAL(pluginDesactivated(QString)));
+	_codeCompletionPool.reset(new CodeCompletion::Pool(this));
+	_fileTypePool.reset(new FileTypePool(this));
+
+	connect(XINXConfig::self(), SIGNAL(changed()), this, SLOT(updateActivatedPlugin()));
 }
 
 XinxPluginsLoader::~XinxPluginsLoader()
 {
 	qDeleteAll(plugins());
+}
+
+CodeCompletion::Pool * XinxPluginsLoader::codeCompletionPool() const
+{
+	return _codeCompletionPool.data();
+}
+
+FileTypePool * XinxPluginsLoader::fileTypePool() const
+{
+	return _fileTypePool.data();
 }
 
 QList<XinxPluginElement*> XinxPluginsLoader::plugins() const
@@ -364,6 +376,30 @@ void XinxPluginsLoader::addPlugin(QObject * plugin, bool staticLoaded)
 	XINXConfig::self()->addDefaultTool(tools.first, tools.second);
 }
 
+
+void XinxPluginsLoader::updateActivatedPlugin()
+{
+	/* Update activated list of plugin */
+	QListIterator<XinxPluginElement*> it(plugins());
+	while (it.hasNext())
+	{
+		XinxPluginElement * element = it.next();
+		const QString key = element->plugin()->metaObject()->className();
+		const bool activated = element->isActivated();
+
+		if (activated && ! _activatedPlugin.contains(key))
+		{
+			_activatedPlugin.append(key);
+			emit pluginActivated(key);
+		}
+		else if (! activated && _activatedPlugin.contains(key))
+		{
+			_activatedPlugin.removeAll(key);
+			emit pluginDesactivated(key);
+		}
+	}
+}
+
 void XinxPluginsLoader::loadPlugins()
 {
 	foreach(QObject * plugin, QPluginLoader::staticInstances())
@@ -385,6 +421,12 @@ void XinxPluginsLoader::loadPlugins()
 				qDebug() << loader.errorString();
 		}
 	}
+
+	updateActivatedPlugin();
+/*
+	_fileTypePool->updateFileTypes();
+	_codeCompletionPool->updateParsers();
+*/
 }
 
 

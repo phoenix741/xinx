@@ -23,7 +23,7 @@
 #include "itemmodelfactory.h"
 #include <editors/textfileeditor.h>
 #include <editors/xinxcodeedit.h>
-#include <codecompletion/pool.h>
+#include <plugins/xinxpluginsloader.h>
 
 namespace CodeCompletion
 {
@@ -387,7 +387,7 @@ Context Model::context() const
 
 void Model::updateModel()
 {
-	Pool::self()->generate(d.data(), d->_context);
+	XinxPluginsLoader::self()->codeCompletionPool()->generate(d.data(), d->_context);
 }
 
 }

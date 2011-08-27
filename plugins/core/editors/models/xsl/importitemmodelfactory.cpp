@@ -67,7 +67,7 @@ void ImportItemModelFactory::addNode(const QString & path)
 	qDebug() << pathPart;
 	qDebug() << filePart;
 
-	QDirIterator iterator(pathPart, FileTypePool::self()->managedFilters(), QDir::AllDirs | QDir::NoDotAndDotDot | QDir::Files);
+	QDirIterator iterator(pathPart, XinxPluginsLoader::self()->fileTypePool()->managedFilters(), QDir::AllDirs | QDir::NoDotAndDotDot | QDir::Files);
 	while (iterator.hasNext())
 	{
 		iterator.next();

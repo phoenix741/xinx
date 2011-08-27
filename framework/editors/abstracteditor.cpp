@@ -678,7 +678,7 @@ void AbstractEditor::deserialize(XinxSession::SessionEditor * data)
 AbstractEditor * AbstractEditor::deserializeEditor(XinxSession::SessionEditor * data)
 {
 	QString name = data->readProperty("ClassName").toString();
-	IFileTypePluginPtr plugin = FileTypePool::self()->fileType(name);
+	IFileTypePluginPtr plugin = XinxPluginsLoader::self()->fileTypePool()->fileType(name);
 	if (plugin)
 	{
 		AbstractEditor * editor = plugin->createEditor();

@@ -66,6 +66,7 @@ public:
 protected:
 	XinxLibSingleton()
 	{
+		setObjectName(typeid(T).name());
 		XINXStaticDeleter::self()->addObject(this);
 	}
 
@@ -116,6 +117,7 @@ public:
 protected:
 	XinxSingleton()
 	{
+		setObjectName(typeid(T).name());
 		XINXStaticDeleter::self()->addObject(this);
 	}
 

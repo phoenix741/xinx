@@ -25,6 +25,8 @@
 #include <core/lib-config.h>
 #include <core/xinxcore.h>
 #include <core/xinxsingleton.h>
+#include <editors/filetypepool.h>
+#include <codecompletion/pool.h>
 
 // Qt header
 #include <QHash>
@@ -54,14 +56,25 @@ public:
 	QList<XinxPluginElement*> plugins() const;
 	/*! Plugin of name \e name. */
 	XinxPluginElement * plugin(const QString & name);
+
+	/// Pool de code completion
+	CodeCompletion::Pool * codeCompletionPool() const;
+	/// Pool de file type
+	FileTypePool * fileTypePool() const;
 signals:
 	void pluginActivated(const QString & name);
 	void pluginDesactivated(const QString & name);
+private slots:
+	//! Update activated plugin
+	void updateActivatedPlugin();
 private:
 	XinxPluginsLoader();
 
 	void addPlugin(QObject * plugin, bool staticLoaded = false);
 
+	QStringList _activatedPlugin;
+	QScopedPointer<CodeCompletion::Pool> _codeCompletionPool;
+	QScopedPointer<FileTypePool> _fileTypePool;
 	QMap<QString, XinxPluginElement*> m_plugins;
 	friend class XinxLibSingleton<XinxPluginsLoader>;
 };

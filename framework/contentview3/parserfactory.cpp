@@ -52,7 +52,7 @@ QString ParserFactory::getParserTypeByFilename(const QString & filename)
 	if (! QFileInfo(filename).exists()) return QString();
 
 	QStringList parserTypes;
-	QList<IFileTypePluginPtr> fileTypes = FileTypePool::self()->matchedFileType(filename);
+	QList<IFileTypePluginPtr> fileTypes = XinxPluginsLoader::self()->fileTypePool()->matchedFileType(filename);
 	foreach(IFileTypePluginPtr fileType, fileTypes)
 	{
 		QString parserType = fileType->parserType();

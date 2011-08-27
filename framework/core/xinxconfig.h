@@ -95,23 +95,16 @@ public:
 signals:
 	/*! Signal emited when the configuration is changed */
 	void changed();
-	/*! Signal emited when a plugin is activated */
-	void pluginActivated(const QString & name);
-	/*! Signal emited when a plugin is desactivated */
-	void pluginDesactivated(const QString & name);
 public slots:
 	//! Update the list of format (can't delete existing format)
 	void updateFormatsSchemeFromConfig();
 	//! Put format to config
 	void putFormatsSchemeToConfig();
-	//! Update activated plugin
-	void updateActivatedPlugin();
 
 protected:
 	virtual struct_globals getDefaultGlobals();
 	virtual struct_editor getDefaultEditor();
 private:
-	QStringList _activatedPlugin;
 	QPointer<XinxLanguageFactory> m_languages;
 	QHash<QString,XinxFormatScheme*> m_formatScheme;
 };

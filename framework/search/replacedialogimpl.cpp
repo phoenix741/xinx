@@ -72,7 +72,7 @@ void ReplaceDialogImpl::initialize(bool hasEditor)
 		m_directoryWidget->lineEdit()->setText(QString());
 	}
 
-	QStringList filters = FileTypePool::self()->managedFilters();
+	QStringList filters = XinxPluginsLoader::self()->fileTypePool()->managedFilters();
 	filters.removeDuplicates ();
 	m_comboExt->clear ();
 	m_comboExt->addItems(filters);

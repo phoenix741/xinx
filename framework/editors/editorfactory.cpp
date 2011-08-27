@@ -44,7 +44,7 @@ EditorFactory::~EditorFactory()
 
 IFileTypePluginPtr EditorFactory::interfaceOfName(const QString & name)
 {
-	QList<IFileTypePluginPtr> interfaces = FileTypePool::self()->fileTypes();
+	QList<IFileTypePluginPtr> interfaces = XinxPluginsLoader::self()->fileTypePool()->fileTypes();
 	foreach(const IFileTypePluginPtr & interface, interfaces)
 	{
 		if (interface->name() == name)

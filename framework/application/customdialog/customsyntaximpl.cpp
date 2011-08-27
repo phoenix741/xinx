@@ -64,7 +64,9 @@ bool CustomSyntaxImpl::loadSettingsDialog()
 		m_highlighterComboBox->addItem(lang);
 		XinxFormatScheme * scheme;
 		if (m_formatScheme.value(lang))
+		{
 			scheme = m_formatScheme.value(lang);
+		}
 		else
 		{
 			scheme = new XinxFormatScheme();
@@ -99,7 +101,7 @@ void CustomSyntaxImpl::on_m_highlighterComboBox_activated(QString text)
 	m_customScheme->setFormatScheme(m_formatScheme.value(text));
 	m_customScheme->setLanguageFactory(XINXConfig::self()->languageFactory());
 	m_customScheme->setLanguageDefinition(text);
-	m_customScheme->setExample(FileTypePool::self()->exampleOfHighlighter(text));
+	m_customScheme->setExample(XinxPluginsLoader::self()->fileTypePool()->exampleOfHighlighter(text));
 }
 
 bool CustomSyntaxImpl::cancelSettingsDialog()

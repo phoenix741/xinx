@@ -130,7 +130,7 @@ void ProjectPropertyImpl::loadFromProject(XinxProject::ProjectPtr project)
 
 	foreach(QString filename, project->cache()->cachedFiles())
 	{
-		QList<IFileTypePluginPtr> fileTypes = FileTypePool::self()->matchedFileType(filename);
+		QList<IFileTypePluginPtr> fileTypes = XinxPluginsLoader::self()->fileTypePool()->matchedFileType(filename);
 		QString fn = QDir(project->projectPath()).relativeFilePath(filename);
 		if (fileTypes.size())
 			new QListWidgetItem(QIcon(fileTypes.at(0)->icon()), fn, m_preloadedFiles);

@@ -593,7 +593,7 @@ void TextFileEditor::updateContext()
 {
 	_move_timer->stop();
 	_context.setFilename(lastFileName());
-	CodeCompletion::Pool::self()->updateContext(this, _context);
+	XinxPluginsLoader::self()->codeCompletionPool()->updateContext(this, _context);
 }
 
 /*!

@@ -20,6 +20,7 @@
 #include "xinxdockwidget.h"
 #include <dtoolview.h>
 #include <dviewbutton.h>
+#include <core/xinxconfig.h>
 
 XinxDockWidget::XinxDockWidget(QWidget *parent, Qt::WindowFlags f) : QWidget(parent, f), _dock(0)
 {
@@ -34,7 +35,7 @@ XinxDockWidget::~XinxDockWidget()
 
 QString XinxDockWidget::windowTitle() const
 {
-	if (!_shortcut.isEmpty())
+	if (!_shortcut.isEmpty() && XINXConfig::self()->config().dock.showShortcut)
 	{
 		return QWidget::windowTitle() + QString(" (%1)").arg(_shortcut.toString());
 	}

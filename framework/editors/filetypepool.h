@@ -33,14 +33,16 @@ class XINXConfig;
 class PrivateFileTypePool;
 class IFileTypePlugin;
 class XinxFormatScheme;
+class XinxPluginsLoader;
 
 typedef QSharedPointer<IFileTypePlugin> IFileTypePluginPtr;
 typedef QSharedPointer<IFileTextPlugin> IFileTextPluginPtr;
 
-class LIBEXPORT FileTypePool : public XinxLibSingleton<FileTypePool>
+class LIBEXPORT FileTypePool : public QObject
 {
 	Q_OBJECT
 public:
+	FileTypePool(XinxPluginsLoader * loader);
 	virtual ~FileTypePool();
 
 	/*! Return all the file type knew by XINX. */
@@ -68,12 +70,7 @@ private slots:
 	void activatePlugin(const QString & name);
 	void desactivatePlugin(const QString & name);
 private:
-	Q_DISABLE_COPY(FileTypePool)
-
-	FileTypePool();
 	QString allManagedFileFilter() const;
-
-	friend class XinxLibSingleton<FileTypePool>;
 	QScopedPointer<PrivateFileTypePool> d;
 };
 

@@ -262,7 +262,7 @@ void Parser::readTemplate(ContentView3::NodePtr & n)
 			import->setType("internal");
 			import->setTips(tr("Element at line : %1").arg(line));
 
-			QList<IFileTypePluginPtr> ft = FileTypePool::self()->matchedFileType(s.src);
+			QList<IFileTypePluginPtr> ft = XinxPluginsLoader::self()->fileTypePool()->matchedFileType(s.src);
 			QScopedPointer<ContentView3::Parser> parser(ContentView3::ParserFactory::getParserByFilename(s.src));
 			if (ft.size() && parser)
 			{

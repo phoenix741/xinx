@@ -32,19 +32,22 @@
 class PrivateFileTypePool
 {
 public:
+	XinxPluginsLoader * _loader;
 	QMultiHash<QString,IFileTypePluginPtr> _filetypes;
 	QMultiHash<QString,QString> _highlighter;
 	QHash<QString,XinxFormatScheme*> _formatschemes;
+
+	QStringList _documents_schemes;
 };
 
 /* FileTypePool */
 
-FileTypePool::FileTypePool() : d(new PrivateFileTypePool)
+FileTypePool::FileTypePool(XinxPluginsLoader * loader) : d(new PrivateFileTypePool)
 {
-	updateFileTypes();
+	d->_loader = loader;
 
-	connect(XinxPluginsLoader::self(), SIGNAL(pluginActivated(QString)), this, SLOT(activatePlugin(QString)));
-	connect(XinxPluginsLoader::self(), SIGNAL(pluginDesactivated(QString)), this, SLOT(desactivatePlugin(QString)));
+	connect(d->_loader, SIGNAL(pluginActivated(QString)), this, SLOT(activatePlugin(QString)));
+	connect(d->_loader, SIGNAL(pluginDesactivated(QString)), this, SLOT(desactivatePlugin(QString)));
 }
 
 FileTypePool::~FileTypePool()
@@ -56,7 +59,7 @@ void FileTypePool::updateFileTypes()
 {
 	d->_filetypes.clear();
 
-	foreach(XinxPluginElement * element, XinxPluginsLoader::self()->plugins())
+	foreach(XinxPluginElement * element, d->_loader->plugins())
 	{
 		activatePlugin(element->plugin()->metaObject()->className());
 	}
@@ -158,7 +161,8 @@ XinxFormatScheme* FileTypePool::scheme(const QString & highlighter) const
 
 void FileTypePool::activatePlugin(const QString& name)
 {
-	XinxPluginElement* element = XinxPluginsLoader::self()->plugin(name);
+	XinxPluginElement* element = d->_loader->plugin(name);
+	Q_ASSERT_X(element, "FileTypePool::activatePlugin", qPrintable(QString("The plugin %1 doesn't exist.").arg(name)));
 
 	IFilePlugin * interface = qobject_cast<IFilePlugin*>(element->plugin());
 	if (element->isActivated() && interface)
@@ -173,7 +177,7 @@ void FileTypePool::activatePlugin(const QString& name)
 			if (textPlugin)
 			{
 				// Format
-				XinxFormatScheme* scheme(textPlugin->createFormatScheme(XINXConfig::self()));
+				XinxFormatScheme* scheme = textPlugin->createFormatScheme(XINXConfig::self());
 				if (scheme)
 				{
 					XINXConfig::self()->addFormatScheme(textPlugin->highlighterId(), scheme);
@@ -181,13 +185,18 @@ void FileTypePool::activatePlugin(const QString& name)
 					d->_highlighter.insert(textPlugin->name(), textPlugin->highlighterId());
 					d->_formatschemes.insert(textPlugin->highlighterId(), scheme);
 
-					// Language
-					QDomDocument doc;
-					QLanguageFactory::LangData data;
-					doc.setContent(textPlugin->createLanguageDescription());
-					// Can't unload is it a problem ?
-					QNFADefinition::load(doc, &data, scheme);
-					XINXConfig::self()->languageFactory()->addLanguage(data);
+					if (! d->_documents_schemes.contains(textPlugin->highlighterId()))
+					{
+						d->_documents_schemes.append(textPlugin->highlighterId());
+
+						// Language
+						QDomDocument doc;
+						QLanguageFactory::LangData data;
+						doc.setContent(textPlugin->createLanguageDescription());
+						// Can't unload is it a problem ?
+						QNFADefinition::load(doc, &data, scheme);
+						XINXConfig::self()->languageFactory()->addLanguage(data);
+					}
 				}
 			}
 		}

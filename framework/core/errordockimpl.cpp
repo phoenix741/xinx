@@ -84,7 +84,7 @@ void ErrorDockWidgetImpl::updateErrors()
 	{
 		QTreeWidgetItem * fileItem = new QTreeWidgetItem(_widget->m_messagesWidget);
 		fileItem->setText(0, context);
-		QList<IFileTypePluginPtr> fileTypes = FileTypePool::self()->matchedFileType(context);
+		QList<IFileTypePluginPtr> fileTypes = XinxPluginsLoader::self()->fileTypePool()->matchedFileType(context);
 		if (fileTypes.size())
 		{
 			fileItem->setIcon(0, QIcon(fileTypes.at(0)->icon()));

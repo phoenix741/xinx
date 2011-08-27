@@ -56,7 +56,7 @@ void ImportNode::setName(const QString& name)
 {
 	ContentView3::Node::setName(name);
 
-	QList<IFileTypePluginPtr> fileTypes = FileTypePool::self()->matchedFileType(name);
+	QList<IFileTypePluginPtr> fileTypes = XinxPluginsLoader::self()->fileTypePool()->matchedFileType(name);
 	if (fileTypes.size() > 0)
 	{
 		setIcon(fileTypes.at(0)->icon());

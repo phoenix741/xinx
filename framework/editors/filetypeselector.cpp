@@ -63,12 +63,12 @@ bool FileTypeSelector::isShowFileName() const
 void FileTypeSelector::setFileName(const QString & filename)
 {
 	_file_name_label->setText(QFileInfo(filename).fileName());
-	QList<IFileTypePluginPtr> interfaces = FileTypePool::self()->matchedFileType(filename);
+	QList<IFileTypePluginPtr> interfaces = XinxPluginsLoader::self()->fileTypePool()->matchedFileType(filename);
 
 	_show_all->setVisible(interfaces.size());
 	if (! interfaces.size() || _show_all->isChecked())
 	{
-		setFileTypes(FileTypePool::self()->fileTypes());
+		setFileTypes(XinxPluginsLoader::self()->fileTypePool()->fileTypes());
 	}
 	else
 	{

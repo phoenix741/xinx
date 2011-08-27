@@ -190,9 +190,9 @@ void SnipetPropertyDlgImpl::setupUi()
 	}
 
 	// Extentions
-	foreach(IFileTypePluginPtr fileType, FileTypePool::self()->fileTypes())
+	foreach(IFileTypePluginPtr fileType, XinxPluginsLoader::self()->fileTypePool()->fileTypes())
 	{
-		QListWidgetItem * item = new QListWidgetItem(FileTypePool::self()->fileTypeFilter(fileType), m_extentionListWidget);
+		QListWidgetItem * item = new QListWidgetItem(XinxPluginsLoader::self()->fileTypePool()->fileTypeFilter(fileType), m_extentionListWidget);
 		item->setData(Qt::UserRole, fileType->match());
 	}
 

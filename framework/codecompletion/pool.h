@@ -26,6 +26,7 @@
 #include <codecompletion/context.h>
 
 class TextFileEditor;
+class XinxPluginsLoader;
 
 namespace CodeCompletion
 {
@@ -33,10 +34,11 @@ namespace CodeCompletion
 class PrivatePool;
 class ItemInterface;
 
-class Pool : public XinxLibSingleton<Pool>
+class Pool : public QObject
 {
 	Q_OBJECT
 public:
+	Pool(XinxPluginsLoader * loader);
 	virtual ~Pool();
 
 public slots:
@@ -45,9 +47,6 @@ public slots:
 	void generate(ItemInterface * interface, CodeCompletion::Context context);
 private:
 	Q_DISABLE_COPY(Pool)
-
-	Pool();
-	friend class XinxLibSingleton<Pool>;
 
 	QScopedPointer<PrivatePool> d;
 };

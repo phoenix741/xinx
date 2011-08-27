@@ -26,7 +26,7 @@
 
 /* XinxFormatScheme */
 
-XinxFormatScheme::XinxFormatScheme(XINXConfig * parent) : QFormatScheme(parent), m_config(parent)
+XinxFormatScheme::XinxFormatScheme(XINXConfig * parent) : m_config(parent)
 {
 	createStandardFormat();
 }
@@ -122,6 +122,7 @@ void XinxFormatScheme::putFormatsToConfig()
 
 void XinxFormatScheme::setNameSpace(const QString & value)
 {
+	setObjectName(value);
 	m_nameSpace = value;
 }
 
@@ -132,7 +133,8 @@ const QString & XinxFormatScheme::nameSpace() const
 
 XinxFormatScheme& XinxFormatScheme::operator=(const XinxFormatScheme& p)
 {
-	this->m_nameSpace = m_nameSpace;
+	setObjectName(p.m_nameSpace);
+	this->m_nameSpace = p.m_nameSpace;
 	foreach(const QString & f, p.formats())
 	{
 		this->setFormat(f, p.format(f));

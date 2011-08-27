@@ -209,6 +209,7 @@ int main(int argc, char *argv[])
 				app.processEvents();
 				XinxPluginsLoader::self()->loadPlugins();
 
+				// Load main window
 				splash.showMessage(QApplication::translate("SplashScreen", "Load main window ..."));
 				app.processEvents();
 				app.attachMainWindow(mainWin = new MainformImpl());

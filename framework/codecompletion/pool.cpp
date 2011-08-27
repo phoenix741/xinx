@@ -38,6 +38,7 @@ namespace CodeCompletion
 class PrivatePool
 {
 public:
+	XinxPluginsLoader * _loader;
 	QMultiHash<QString,ContextParser*> _parsers;
 	QMultiHash<QString,ItemModelFactory*> _factories;
 };
@@ -48,8 +49,9 @@ public:
  * \note This class doesn't use lock on resource, for performance reason. Methods are normally called once at once. If this is bug generator, we add lock in this class.
  */
 
-Pool::Pool() : d(new PrivatePool)
+Pool::Pool(XinxPluginsLoader * loader) : d(new PrivatePool)
 {
+	d->_loader = loader;
 	connect(XINXConfig::self(), SIGNAL(changed()), this, SLOT(updateParsers()));
 }
 
@@ -66,7 +68,7 @@ void Pool::updateParsers()
 	qDeleteAll(d->_parsers.values());
 	d->_parsers.clear();
 
-	foreach(XinxPluginElement * element, XinxPluginsLoader::self()->plugins())
+	foreach(XinxPluginElement * element, d->_loader->plugins())
 	{
 		ICodeCompletionPlugin * interface = qobject_cast<ICodeCompletionPlugin*> (element->plugin());
 		if (element->isActivated() && interface)
@@ -89,10 +91,6 @@ void Pool::updateParsers()
 void Pool::generate(ItemInterface * interface, CodeCompletion::Context context)
 {
 	Q_ASSERT_X(interface, "Pool::generate", "ItemInterface to populate model must not be null");
-	if (d->_factories.isEmpty())
-	{
-		updateParsers();
-	}
 
 	QStringList contextsType = interface->contextsType();
 	foreach(const QString & contextType, contextsType)
@@ -121,11 +119,6 @@ void Pool::generate(ItemInterface * interface, CodeCompletion::Context context)
 
 void Pool::updateContext(TextFileEditor * editor, CodeCompletion::Context context)
 {
-	if (d->_parsers.isEmpty())
-	{
-		updateParsers();
-	}
-
 	context.setPrefix(editor->textEdit()->textUnderCursor(editor->textEdit()->textCursor()));
 
 	QHashIterator<QString, ContextParser*> i(d->_parsers);
