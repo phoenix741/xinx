@@ -20,7 +20,7 @@ BEGIN
 		VALUE "CompanyName", "Ulrich Van Den Hekke"
 		VALUE "FileDescription", "XINX Shared Library"
         VALUE "InternalName", "libframework"
-        VALUE "LegalCopyright", "Copyleft (C) U. Van Den Hekke 2010"
+        VALUE "LegalCopyright", "Copyleft 2007-2011 (C) by Ulrich Van Den Hekke"
 		VALUE "LegalTrademarks", "\0"
         VALUE "OriginalFilename", "framework.dll"
 		VALUE "PrivateBuild", "\0"

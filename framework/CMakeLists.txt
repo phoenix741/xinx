@@ -6,11 +6,14 @@ find_package(LibXslt REQUIRED)
 find_package(Mercurial)
 
 if(MERCURIAL_FOUND)
-    MERCURIAL_HG_INFO(${PROJECT_SOURCE_DIR} XINX_FRAMEWORK)
+	MERCURIAL_HG_INFO(${PROJECT_SOURCE_DIR} XINX_FRAMEWORK)
 endif(MERCURIAL_FOUND)
 
 if(NOT ${XINX_FRAMEWORK_HG_CHANGESET} STREQUAL "")
-	set(XINX_FRAMEWORK_HG_CHANGESET_STR "-${XINX_FRAMEWORK_HG_CHANGESET}")
+	string(REPLACE "-" "" XINX_FRAMEWORK_HG_DATE_ISO ${XINX_FRAMEWORK_HG_DATE})
+#	La date est positonné sur 5 caractère pour être inférieur à 65536 (on aura un problème en 2017,
+#	65526 est la limite max, pour les fichiers de type .rc sous windows pour un numéro de version (w.x.y.z)
+	string(SUBSTRING ${XINX_FRAMEWORK_HG_DATE_ISO} 3 5 XINX_FRAMEWORK_HG_DATE_STR)
 endif()
 
 configure_file(core/version.h.in core/version.h)

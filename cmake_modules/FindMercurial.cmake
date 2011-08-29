@@ -91,7 +91,7 @@ IF(MERCURIAL_EXECUTABLE)
 	STRING(REGEX REPLACE "^([0-9a-f]+).*"
 	  "\\1" ${prefix}_HG_CHANGESET "${MERCURIAL_id_OUTPUT}")
 
-	MERCURIAL_COMMAND(${dir} log -r ${${prefix}_HG_CHANGESET})
+	MERCURIAL_COMMAND(${dir} log -r ${${prefix}_HG_CHANGESET} --style ${CMAKE_MODULE_PATH}/map-cmdline.cmake)
 
 	STRING(REGEX REPLACE ";" "\\\\;"
 	  MERCURIAL_log_OUTPUT "${MERCURIAL_log_OUTPUT}")

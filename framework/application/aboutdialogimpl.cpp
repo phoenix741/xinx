@@ -49,7 +49,17 @@ AboutDialogImpl::AboutDialogImpl(QWidget * parent, Qt::WFlags f) : QDialog(paren
 {
 	setupUi(this);
 
-	m_labelVersion->setText(tr("<b>XINX %1 (use Qt %2)</b>").arg(LONG_VERSION_STRING).arg(qVersion()));
+	QString versionString;
+	if(!QString(VERSION_CHANGESET).isEmpty())
+	{
+		versionString = tr("<b>XINX %1 (Changeset %2 using Qt %3)</b>").arg(VERSION).arg(VERSION_CHANGESET).arg(qVersion());
+	}
+	else
+	{
+		versionString = tr("<b>XINX %1 (using Qt %2)</b>").arg(VERSION).arg(qVersion());
+	}
+
+	m_labelVersion->setText(versionString);
 
 	m_aboutLabel->setText("<b>XINX</b> Is Not only XML<br/>"
 						  "(c) 2006-2011, Ulrich Van Den Hekke<br/>"

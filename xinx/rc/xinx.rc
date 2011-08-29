@@ -21,7 +21,7 @@ BEGIN
 			VALUE "CompanyName", "Ulrich Van Den Hekke"
 			VALUE "FileDescription", "XINX Application"
 			VALUE "InternalName", "xinx"
-			VALUE "LegalCopyright", "Copyleft (C) U. Van Den Hekke 2010"
+			VALUE "LegalCopyright", "Copyleft 2007-2011 (C) by Ulrich Van Den Hekke"
 			VALUE "LegalTrademarks", "\0"
 			VALUE "OriginalFilename", "xinx.exe"
 			VALUE "PrivateBuild", "\0"

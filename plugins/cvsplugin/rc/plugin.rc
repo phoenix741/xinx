@@ -21,7 +21,7 @@ BEGIN
 		VALUE "CompanyName", "Ulrich Van Den Hekke"
 		VALUE "FileDescription", "Wrapper of CVS"
         VALUE "InternalName", "cvsplugin"
-        VALUE "LegalCopyright", "Copyleft (C) U. Van Den Hekke 2010"
+        VALUE "LegalCopyright", "Copyleft 2007-2011 (C) by Ulrich Van Den Hekke"
 		VALUE "LegalTrademarks", "\0"
         VALUE "OriginalFilename", "cvsplugin.dll"
 		VALUE "PrivateBuild", "\0"
