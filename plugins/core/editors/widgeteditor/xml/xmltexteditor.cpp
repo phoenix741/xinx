@@ -29,6 +29,7 @@
 #include <editors/models/html_xsl_base/definition_valuenode.h>
 #include <editors/models/html_xsl_base/xmlcontexttype.h>
 #include <editors/models/html_xsl_base/xmldefinitionmanager.h>
+#include <editors/models/html_xsl_base/xmlcontextparser.h>
 
 #include <codecompletion/completer.h>
 
@@ -170,15 +171,18 @@ void XmlTextEditor::commentSelectedText(bool uncomment)
 {
 	QString nodeName, paramName;
 
+	QScopedPointer<Core::BaliseDefinition::XmlContextParser> parser(new Core::BaliseDefinition::XmlContextParser());
+	parser->setEditor(textFileEditor());
+
 	QDocumentCursor cursor(textCursor());
 
 	QDocumentCursor cursorStart(document());
 	cursorStart.moveTo(cursor.selectionStart());
-	bool isStartCommented = false; // FIXME: editPosition(cursorStart, nodeName, paramName) == cpEditComment;
+	bool isStartCommented = parser->editPosition(cursorStart, nodeName, paramName) == Core::BaliseDefinition::XmlContextType::COMMENT;
 
 	QDocumentCursor cursorEnd(textCursor());
 	cursorEnd.moveTo(cursor.selectionEnd());
-	bool isEndCommented =  false; // FIXME: editPosition(cursorEnd, nodeName, paramName) == cpEditComment;
+	bool isEndCommented =  parser->editPosition(cursorEnd, nodeName, paramName) == Core::BaliseDefinition::XmlContextType::COMMENT;
 
 	QString text = cursor.selectedText();
 	text = text.replace("<!--", "");
