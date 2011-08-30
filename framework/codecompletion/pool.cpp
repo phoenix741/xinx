@@ -52,7 +52,8 @@ public:
 Pool::Pool(XinxPluginsLoader * loader) : d(new PrivatePool)
 {
 	d->_loader = loader;
-	connect(XINXConfig::self(), SIGNAL(changed()), this, SLOT(updateParsers()));
+	connect(loader, SIGNAL(pluginActivated(QString)), this, SLOT(updateParsers()));
+	connect(loader, SIGNAL(pluginDesactivated(QString)), this, SLOT(updateParsers()));
 }
 
 Pool::~Pool()
