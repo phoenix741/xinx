@@ -32,6 +32,12 @@ ReplaceDialogImpl::ReplaceDialogImpl(QWidget * parent, Qt::WFlags f) : QDialog(p
 {
 	setupUi(this);
 
+	QStringList filters = XinxPluginsLoader::self()->fileTypePool()->managedFilters();
+	filters.removeDuplicates ();
+	m_comboExt->clear ();
+	m_comboExt->addItems(filters);
+	m_comboExt->setCheckedItems(filters);
+
 	m_findButton = m_buttonBox->button(QDialogButtonBox::Ok);
 	m_findButton->setText(tr("Find"));
 	m_findButton->setIcon(QIcon(":/images/find.png"));
@@ -40,25 +46,94 @@ ReplaceDialogImpl::ReplaceDialogImpl(QWidget * parent, Qt::WFlags f) : QDialog(p
 }
 //
 
-void ReplaceDialogImpl::on_m_replaceCheckBox_toggled(bool checked)
+void ReplaceDialogImpl::setText(const QString & value)
 {
-	if (checked)
-		m_findButton->setText(tr("Replace"));
-	else
-		m_findButton->setText(tr("Find"));
+	if (value != m_comboFind->currentText())
+	{
+		m_comboFind->setEditText(value);
+		m_comboFind->completer()->setCompletionPrefix(value);
+	}
 }
 
-void ReplaceDialogImpl::initialize(bool hasEditor)
+QString ReplaceDialogImpl::text() const
 {
-	m_searchAllRadioButton->setEnabled(hasEditor);
-	m_searchSelectionRadioButton->setEnabled(hasEditor);
-	m_searchAllRadioButton->setChecked(hasEditor);
-	m_projectFilesRadioButton->setChecked((! hasEditor) && (XinxProject::Manager::self()->projects().count() > 0));
-	m_customFilesRadioButton->setChecked((! hasEditor) && (XinxProject::Manager::self()->projects().count() == 0));
-	on_m_extendButtonGroup_buttonClicked(m_extendButtonGroup->checkedButton());
+	return m_comboFind->currentText();
+}
+
+void ReplaceDialogImpl::setReplace(bool value)
+{
+	m_replaceCheckBox->setChecked(value) ;
+}
+
+bool ReplaceDialogImpl::isReplace() const
+{
+	return m_replaceCheckBox->isChecked();
+}
+
+void ReplaceDialogImpl::setEditorSearch(bool value)
+{
+	if (_editor_search != value)
+	{
+		_editor_search = value;
+		updateDialog();
+	}
+}
+
+bool ReplaceDialogImpl::isEditorSearch() const
+{
+	return _editor_search;
+}
+
+void ReplaceDialogImpl::setSelection(ReplaceDialogImpl::SearchSelection value)
+{
+	if (selection() != value)
+	{
+		_search_selection = value;
+		updateDialog();
+	}
+}
+
+ReplaceDialogImpl::SearchSelection ReplaceDialogImpl::selection()
+{
+	if (m_searchAllRadioButton->isChecked() || m_searchSelectionRadioButton->isChecked())
+	{
+		return ReplaceDialogImpl::SELECT_SEARCH_EDITOR;
+	}
+	else if (m_projectFilesRadioButton->isChecked() || m_customFilesRadioButton->isChecked())
+	{
+		return ReplaceDialogImpl::SELECT_SEARCH_FILES;
+	}
+
+	return ReplaceDialogImpl::SELECT_SEARCH_NONE;
+}
+
+void ReplaceDialogImpl::setSelectedExtention(const QStringList& values)
+{
+	if (m_comboExt->checkedItems() != values)
+	{
+		if (values.isEmpty())
+		{
+			m_comboExt->setCheckedItems(m_comboExt->items());
+		}
+		else
+		{
+			m_comboExt->setCheckedItems(values);
+		}
+	}
+}
+
+QStringList ReplaceDialogImpl::selectedExtention() const
+{
+	return m_comboExt->checkedItems();
+}
+
+void ReplaceDialogImpl::showEvent(QShowEvent* event)
+{
+    QDialog::showEvent(event);
 
 	m_comboFind->lineEdit()->selectAll();
 	m_comboFind->lineEdit()->setFocus(Qt::ActiveWindowFocusReason);
+
 
 	XinxProject::ProjectPtr selectedProject = XinxProject::Manager::self()->selectedProject().toStrongRef();
 	if (selectedProject)
@@ -72,24 +147,35 @@ void ReplaceDialogImpl::initialize(bool hasEditor)
 		m_directoryWidget->lineEdit()->setText(QString());
 	}
 
-	QStringList filters = XinxPluginsLoader::self()->fileTypePool()->managedFilters();
-	filters.removeDuplicates ();
-	m_comboExt->clear ();
-	m_comboExt->addItems(filters);
-	m_comboExt->setCheckedItems(filters);
-
 	m_findButton->setDefault(true);
 }
 
-void ReplaceDialogImpl::setText(const QString & str)
+void ReplaceDialogImpl::updateDialog()
 {
-	m_comboFind->setEditText(str);
-	m_comboFind->completer()->setCompletionPrefix(str);
+	m_searchAllRadioButton->setEnabled(_editor_search);
+	m_searchSelectionRadioButton->setEnabled(_editor_search);
+
+	bool selectionSearchEditor = (_search_selection == ReplaceDialogImpl::SELECT_SEARCH_EDITOR) && _editor_search;
+
+	if (selectionSearchEditor && selection() != ReplaceDialogImpl::SELECT_SEARCH_EDITOR)
+	{
+		m_searchAllRadioButton->setChecked(true);
+	}
+	else if (selection() != ReplaceDialogImpl::SELECT_SEARCH_FILES)
+	{
+		m_projectFilesRadioButton->setChecked(XinxProject::Manager::self()->projects().count() > 0);
+		m_customFilesRadioButton->setChecked(XinxProject::Manager::self()->projects().count() == 0);
+	}
+
+	on_m_extendButtonGroup_buttonClicked(m_extendButtonGroup->checkedButton());
 }
 
-void ReplaceDialogImpl::setReplace(bool value)
+void ReplaceDialogImpl::on_m_replaceCheckBox_toggled(bool checked)
 {
-	m_replaceCheckBox->setChecked(value) ;
+	if (checked)
+		m_findButton->setText(tr("Replace"));
+	else
+		m_findButton->setText(tr("Find"));
 }
 
 void ReplaceDialogImpl::on_m_extendButtonGroup_buttonClicked(QAbstractButton* button)

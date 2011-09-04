@@ -28,26 +28,49 @@
 // Qt header
 #include <QPushButton>
 
+class QShowEvent;
+
 class ReplaceDialogImpl : public QDialog, public Ui::ReplaceDialog
 {
 	Q_OBJECT
 public:
 	ReplaceDialogImpl(QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint);
 
-	void initialize(bool hasEditor = true);
-	void setText(const QString &);
-	void setReplace(bool);
+	enum SearchSelection {
+		SELECT_SEARCH_NONE,
+		SELECT_SEARCH_EDITOR,
+		SELECT_SEARCH_FILES
+	};
 
+	void setEditorSearch(bool value);
+	bool isEditorSearch() const;
+
+	void setSelectedExtention(const QStringList& values);
+	QStringList selectedExtention() const;
+
+	void setSelection(SearchSelection value);
+	SearchSelection selection();
+
+	void setText(const QString & value);
+	QString text() const;
+
+	void setReplace(bool value);
+	bool isReplace() const;
 signals:
 	void find(const QString & from, const QString & to, const AbstractEditor::SearchOptions & options);
 	void findInFiles(const QStringList & directories, const QStringList & filter, const QString & from, const QString & to, const AbstractEditor::SearchOptions & options);
-
+protected:
+    virtual void showEvent(QShowEvent* event);
 private slots:
 	void m_findButton_clicked();
 	void on_m_replaceCheckBox_toggled(bool checked);
 
 	void on_m_extendButtonGroup_buttonClicked(QAbstractButton * button);
 private:
+	void updateDialog();
+
+	bool _editor_search;
+	SearchSelection _search_selection;
 
 	QPushButton * m_findButton;
 };

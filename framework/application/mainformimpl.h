@@ -127,7 +127,7 @@ private:
 
 	// Actions
 	QAction *m_exitAct;
-	QAction *m_searchAct, *m_searchNextAct, *m_replaceAct, *m_searchPreviousAct;
+	QAction *m_searchAct, *m_searchNextAct, *m_replaceAct, *m_searchPreviousAct, *m_searchProjectFileAct;
 	QAction *m_aboutAct, *m_aboutQtAct, *m_createTicketAct;
 	QAction *m_customApplicationAct, *m_refreshScripts, *m_alwaysShowRunDialog;
 signals:
@@ -153,7 +153,9 @@ private slots:
 	void findFirst(const QString & chaine, const QString & dest, const AbstractEditor::SearchOptions & options);
 	void findNext();
 	void findPrevious();
+	void findDialog(bool replace, bool files);
 	void find();
+	void findFiles();
 	void replace();
 
 	// Windows

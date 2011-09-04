@@ -54,7 +54,7 @@ public:
 	virtual QString name() = 0;
 	//! A description of a file type
 	virtual QString description() = 0;
-	//! Used to choose a file in a dialog box
+	//! List of wilcard separate by space. It's used to choose a file in a dialog box
 	virtual QString match() = 0;
 	//! Return the icon for the filte type.
 	virtual QString icon() = 0;

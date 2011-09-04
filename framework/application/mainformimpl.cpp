@@ -85,14 +85,13 @@
 
 /* MainformImpl */
 
-MainformImpl::MainformImpl(QWidget * parent) : DMainWindow(parent)
+MainformImpl::MainformImpl(QWidget * parent) : DMainWindow(parent), m_findDialog(0), m_replaceNextDlg(0)
 {
 	createMainForm();
 	createMenus();
 
 	createStatusBar();
 	createDockWidget();
-	createFindReplace();
 	createTools();
 
 	connectSignals();
@@ -226,6 +225,7 @@ void MainformImpl::createMenus()
 	helpMenu->addAction(QWhatsThis::createAction(this));
 
 	searchMenu->addAction(m_searchAct);
+	searchMenu->addAction(m_searchProjectFileAct);
 	searchMenu->addAction(m_searchNextAct);
 	searchMenu->addAction(m_searchPreviousAct);
 	searchMenu->addSeparator();
@@ -279,10 +279,11 @@ void MainformImpl::createActions()
 	m_searchAct = new QAction(QIcon(":/images/find.png"), tr("&Search ..."), this);
 	m_searchAct->setStatusTip(tr("Search a text in the current editor"));
 	m_searchAct->setShortcut(QKeySequence::Find);
+	m_searchAct->setEnabled(false);
 	connect(m_searchAct, SIGNAL(triggered()), this, SLOT(find()));
 
 	// Search Previous
-	m_searchPreviousAct = new QAction(tr("Search previous"), this);
+	m_searchPreviousAct = new QAction(tr("Search &previous"), this);
 	m_searchPreviousAct->setIconText(tr("Search previous"));
 	m_searchPreviousAct->setToolTip(tr("Search previous"));
 	m_searchPreviousAct->setShortcut(QKeySequence::FindPrevious);
@@ -290,13 +291,21 @@ void MainformImpl::createActions()
 	connect(m_searchPreviousAct, SIGNAL(triggered()), this, SLOT(findPrevious()));
 
 	// Search Next
-	m_searchNextAct = new QAction(tr("Search next"), this);
+	m_searchNextAct = new QAction(tr("Search &next"), this);
 	m_searchNextAct->setIconText(tr("Search next"));
 	m_searchNextAct->setToolTip(tr("Search next"));
 	m_searchNextAct->setStatusTip(tr("Search the next element in the current editor"));
 	m_searchNextAct->setShortcut(QKeySequence::FindNext);
 	m_searchNextAct->setEnabled(false);
 	connect(m_searchNextAct, SIGNAL(triggered()), this, SLOT(findNext()));
+
+	// Search files
+	m_searchProjectFileAct = new QAction(tr("Search &files ..."), this);
+	m_searchProjectFileAct->setIconText(tr("Search files"));
+	m_searchProjectFileAct->setToolTip(tr("Search files"));
+	m_searchProjectFileAct->setStatusTip(tr("Search a text or a regular expression into selected files"));
+	m_searchProjectFileAct->setShortcut(QKeySequence("Ctrl+Shift+F"));
+	connect(m_searchProjectFileAct, SIGNAL(triggered(bool)), this, SLOT(findFiles()));
 
 	// Replace
 	m_replaceAct = new QAction(tr("&Replace ..."), this);
@@ -704,6 +713,7 @@ void MainformImpl::findInFiles(const QStringList& directories, const QStringList
 	m_searchNextAct->setEnabled(false);
 	m_searchPreviousAct->setEnabled(false);
 	m_replaceAct->setEnabled(false);
+	m_searchProjectFileAct->setEnabled(false);
 	m_searchDock->init();
 	m_searchDock->dock()->setVisible(true);
 
@@ -720,10 +730,7 @@ void MainformImpl::findInFiles(const QStringList& directories, const QStringList
 
 void MainformImpl::findEnd(bool abort)
 {
-	m_searchAct->setEnabled(true);
-	m_searchNextAct->setEnabled(true);
-	m_searchPreviousAct->setEnabled(true);
-	m_replaceAct->setEnabled(true);
+	updateActions();
 
 	m_searchDock->end();
 
@@ -763,6 +770,11 @@ void MainformImpl::findNext()
 
 				if (! m_yesToAllReplace)
 				{
+					if (m_replaceNextDlg == 0)
+					{
+						createFindReplace();
+					}
+
 					if (m_nbFindedText == 1)
 						m_replaceNextDlg->setAttribute(Qt::WA_Moved, false);
 					m_replaceNextDlg->show();
@@ -831,19 +843,64 @@ void MainformImpl::findPrevious()
 	m_searchInverse = false;
 }
 
-void MainformImpl::find()
+void MainformImpl::findDialog(bool replace, bool files)
 {
-	if (qobject_cast<TextFileEditor*>(EditorManager::self()->currentEditor()))
+	if (m_findDialog == 0)
+	{
+		createFindReplace();
+	}
+
+	if (EditorManager::self()->currentEditor())
 	{
 		XinxCodeEdit * textEdit = qobject_cast<TextFileEditor*>(EditorManager::self()->currentEditor())->textEdit();
 		if (! textEdit->textCursor().selectedText().isEmpty())
 		{
 			m_findDialog->setText(textEdit->textCursor().selectedText());
 		}
+		QString matchProperty = EditorManager::self()->currentEditor()->property("ReplaceDialogImpl_selectedExtention").toString();
+		if (matchProperty.isEmpty())
+		{
+			matchProperty = EditorManager::self()->currentEditor()->fileTypePluginInterface()->match();
+		}
+
+		m_findDialog->setSelectedExtention(matchProperty.split(" ", QString::SkipEmptyParts));
 	}
-	m_findDialog->initialize(EditorManager::self()->editorsCount() > 0);
-	m_findDialog->setReplace(false);
+	else
+	{
+		m_findDialog->setSelectedExtention(QStringList());
+	}
+
+	m_findDialog->setReplace(replace);
+	m_findDialog->setEditorSearch(EditorManager::self()->currentEditor() != NULL);
+	if (files)
+	{
+		m_findDialog->setSelection(ReplaceDialogImpl::SELECT_SEARCH_FILES);
+	}
+	else
+	{
+		m_findDialog->setSelection(ReplaceDialogImpl::SELECT_SEARCH_EDITOR);
+	}
+
 	m_findDialog->exec();
+
+	if (EditorManager::self()->currentEditor())
+	{
+		QString matchProperty = m_findDialog->selectedExtention().join(" ");
+		EditorManager::self()->currentEditor()->setProperty("ReplaceDialogImpl_selectedExtention", matchProperty);
+	}
+}
+
+void MainformImpl::find()
+{
+	Q_ASSERT(EditorManager::self()->currentEditor());
+	Q_ASSERT(qobject_cast<TextFileEditor*>(EditorManager::self()->currentEditor()));
+
+	findDialog(false, false);
+}
+
+void MainformImpl::findFiles()
+{
+	findDialog(false, true);
 }
 
 void MainformImpl::replace()
@@ -851,21 +908,16 @@ void MainformImpl::replace()
 	Q_ASSERT(EditorManager::self()->currentEditor());
 	Q_ASSERT(qobject_cast<TextFileEditor*>(EditorManager::self()->currentEditor()));
 
-	XinxCodeEdit * textEdit = static_cast<TextFileEditor*>(EditorManager::self()->currentEditor())->textEdit();
-	if (! textEdit->textCursor().selectedText().isEmpty())
-	{
-		m_findDialog->setText(textEdit->textCursor().selectedText());
-	}
-	m_findDialog->initialize();
-	m_findDialog->setReplace(true);
-	m_findDialog->exec();
+	findDialog(true, false);
 }
 
 void MainformImpl::updateActions()
 {
+	m_searchAct->setEnabled(EditorManager::self()->editorsCount());
 	m_searchNextAct->setEnabled(EditorManager::self()->editorsCount());
 	m_replaceAct->setEnabled(EditorManager::self()->editorsCount());
 	m_searchPreviousAct->setEnabled(EditorManager::self()->editorsCount());
+	m_searchProjectFileAct->setEnabled(true);
 }
 
 void MainformImpl::updateTitle()

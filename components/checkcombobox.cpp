@@ -247,6 +247,24 @@ QStringList CheckComboBox::checkedItems() const
 }
 
 /*!
+ * \brief Return the list of items in the dropdown.
+ * \sa addItems()
+ */
+QStringList CheckComboBox::items() const
+{
+	QStringList items;
+	if (model())
+	{
+		for (int i = 0; i < model()->rowCount(); i++)
+		{
+			QModelIndex idx = model()->index(i, modelColumn());
+			items += idx.data().toString();
+		}
+	}
+	return items;
+}
+
+/*!
  * \brief Set the checked items list.
  * \sa checkedItems()
  */
