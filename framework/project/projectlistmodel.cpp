@@ -574,6 +574,8 @@ void PrivateProjectListModel::removeProject(ProjectPtr project)
 void PrivateProjectListModel::updateLinkedDirectories(XinxProject::ProjectPtr project)
 {
 	ModelFileNode * projectNode = node(_root_node, project->projectPath());
+	Q_ASSERT_X(projectNode, "PrivateProjectListModel::updateLinkedDirectories", "project can't be null");
+
 	QStringList linkedPath = project->linkedPath();
 
 	foreach(ModelFileNode * node, projectNode->_children)

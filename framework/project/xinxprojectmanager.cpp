@@ -100,11 +100,11 @@ void PrivateManager::openProjectTriggered()
 	{
 		try
 		{
-			_manager->openProject(directory);
+			_manager->openProject(QDir::fromNativeSeparators(directory));
 		}
 		catch (XinxProject::ProjectException e)
 		{
-			_manager->newProject(directory);
+			_manager->newProject(QDir::fromNativeSeparators(directory));
 		}
 	}
 }
