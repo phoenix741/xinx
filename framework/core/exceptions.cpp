@@ -217,15 +217,18 @@ void ExceptionManager::notifyError(QString error, QtMsgType t, bool showMessage)
 	}
 
 	// Create a file where write error
-	QFile file(XINXConfig::self()->config().xinxTrace);
-	if (file.open(QIODevice::Append))
+	if (! XINXConfig::self()->config().xinxTrace.isEmpty())
 	{
-		QTextStream text(&file);
-		text << QDateTime::currentDateTime().toString();
-		text << " : ";
-		text << error;
-		text << "\n";
-		file.close();
+		QFile file(XINXConfig::self()->config().xinxTrace);
+		if (file.open(QIODevice::Append))
+		{
+			QTextStream text(&file);
+			text << QDateTime::currentDateTime().toString();
+			text << " : ";
+			text << error;
+			text << "\n";
+			file.close();
+		}
 	}
 
 	logError(error);
