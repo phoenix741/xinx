@@ -58,6 +58,7 @@
 #include <QAbstractItemView>
 #include <QTextCodec>
 #include <QBuffer>
+#include <QClipboard>
 
 /* TextFileEditor */
 
@@ -163,6 +164,7 @@ void TextFileEditor::initObjects()
 	m_bookmarkInterface = new BookmarkTextEditorInterface(this);
 	m_bookmarkInterface->setTextEditor(m_view);
 
+	connect(QApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(clipboardChanged()));
 	connect(m_view, SIGNAL(copyAvailable(bool)), this, SIGNAL(copyAvailable(bool)));
 	connect(m_view, SIGNAL(copyAvailable(bool)), this, SIGNAL(selectionAvailable(bool)));
 	connect(m_view, SIGNAL(undoAvailable(bool)), this, SIGNAL(undoAvailable(bool)));
@@ -526,6 +528,11 @@ void TextFileEditor::errorChanged()
 			lines << err.line - 1;
 	}
 	m_view->setErrors(lines);
+}
+
+void TextFileEditor::clipboardChanged()
+{
+	emit pasteAvailable(canPaste());
 }
 
 void TextFileEditor::setFile(ContentView3::FilePtr file)

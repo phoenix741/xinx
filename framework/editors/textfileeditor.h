@@ -151,6 +151,7 @@ protected slots:
 private slots:
 	void textChanged();
 	void errorChanged();
+	void clipboardChanged();
 private:
 	void initObjects();
 
