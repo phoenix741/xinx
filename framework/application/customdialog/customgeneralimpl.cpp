@@ -90,7 +90,7 @@ bool CustomGeneralImpl::loadSettingsDialog()
 	m_styleComboBox->setCurrentIndex(currentStyle);
 
 	// Show Shortcut near dock title
-	m_shortcutDockTitle->setChecked(XINXConfig::self()->config().dock.showShortcut);
+	m_shortcutDockTitle->setCheckState(XINXConfig::self()->config().dock.showShortcut ? Qt::Checked : Qt::Unchecked);
 
 	return true;
 }
