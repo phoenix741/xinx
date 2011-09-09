@@ -116,6 +116,7 @@ void XmlPresentationDockThread::open()
 	// reopen current filename
 	if (! m_filename.isEmpty())
 	{
+		wait();
 		open(m_filename);
 	}
 }
