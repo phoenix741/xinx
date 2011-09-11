@@ -26,7 +26,7 @@
         <string>...</string>
        </property>
        <property name="icon">
-        <iconset resource="../../xinx/application.qrc">
+        <iconset>
          <normaloff>:/images/stop_search.png</normaloff>:/images/stop_search.png</iconset>
        </property>
       </widget>
@@ -34,28 +34,13 @@
     </layout>
    </item>
    <item>
-    <widget class="QTreeWidget" name="m_searchTreeWidget">
-     <property name="rootIsDecorated">
+    <widget class="QTreeView" name="m_searchTreeView">
+     <attribute name="headerVisible">
       <bool>false</bool>
-     </property>
-     <property name="sortingEnabled">
-      <bool>true</bool>
-     </property>
-     <column>
-      <property name="text">
-       <string>Directory</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Filename</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Text</string>
-      </property>
-     </column>
+     </attribute>
+     <attribute name="headerVisible">
+      <bool>false</bool>
+     </attribute>
     </widget>
    </item>
   </layout>

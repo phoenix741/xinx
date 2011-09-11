@@ -683,9 +683,6 @@ void MainformImpl::changeShowSnipetDialogAction()
 void MainformImpl::createFindReplace()
 {
 	m_findDialog       = new ReplaceDialogImpl(this);
-	connect(m_findDialog, SIGNAL(find(QString, QString, AbstractEditor::SearchOptions)), this, SLOT(findFirst(QString, QString, AbstractEditor::SearchOptions)));
-	connect(m_findDialog, SIGNAL(findInFiles(QStringList, QStringList, QString, QString, AbstractEditor::SearchOptions)), this, SLOT(findInFiles(QStringList, QStringList, QString, QString, AbstractEditor::SearchOptions)));
-
 	m_replaceNextDlg   = new QMessageBox(QMessageBox::Question, tr("Replace text"), tr("Replace this occurence"), QMessageBox::Yes | QMessageBox::YesToAll | QMessageBox::No | QMessageBox::Cancel, this, Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
 	m_replaceNextDlg->setWindowModality(Qt::NonModal);
 }
@@ -881,7 +878,28 @@ void MainformImpl::findDialog(bool replace, bool files)
 		m_findDialog->setSelection(ReplaceDialogImpl::SELECT_SEARCH_EDITOR);
 	}
 
-	m_findDialog->exec();
+	if (m_findDialog->exec())
+	{
+
+		AbstractEditor::SearchOptions options = m_findDialog->getOptions();
+
+		if (m_findDialog->selection() == ReplaceDialogImpl::SELECT_SEARCH_EDITOR)
+		{
+			if (m_findDialog->isReplace())
+				findFirst(m_findDialog->text(), m_findDialog->textReplace(), options);
+			else
+				findFirst(m_findDialog->text(), QString(), options);
+		}
+		else
+		{
+			QStringList directories = m_findDialog->getDirectories();
+
+			if (m_findDialog->isReplace())
+				findInFiles(directories, m_findDialog->selectedExtention(), m_findDialog->text(), m_findDialog->textReplace(), options);
+			else
+				findInFiles(directories, m_findDialog->selectedExtention(), m_findDialog->text(), QString(), options);
+		}
+	}
 
 	if (EditorManager::self()->currentEditor())
 	{

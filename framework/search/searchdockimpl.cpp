@@ -21,6 +21,7 @@
 #include "searchdockimpl.h"
 #include <core/exceptions.h>
 #include <plugins/xinxpluginsloader.h>
+#include <core/xinxconfig.h>
 
 // Qt header
 #include <QFileInfo>
@@ -29,11 +30,13 @@
 
 /* SearchLogWidget */
 
+/*
 class SearchLogWidget : public QTreeWidget
 {
 public:
 	friend class SearchDockWidgetImpl;
 };
+*/
 
 /* SearchLogWidgetDelegate */
 
@@ -54,21 +57,23 @@ SearchLogWidgetDelegate::SearchLogWidgetDelegate(QObject * parent) : QItemDelega
 
 void SearchLogWidgetDelegate::paint(QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index) const
 {
-	QString text = index.data().toString();
-	QStyleOptionViewItem myOpt = option;
-	if (index.column() == 1)    // Filename
+	if ((index.column() == 0) && (qobject_cast<const FindedModel*>(index.model())->isIndexLine(index)))
 	{
+		int line = index.data(FindedModel::LineRole).toInt();
+		QString content = index.data(FindedModel::ContentRole).toString();
+
+		QStyleOptionViewItem myOpt = option;
+
 		drawBackground(painter, option, index);
 
 		QRectF boundingRect;
-		painter->setPen(Qt::magenta);
-		painter->drawText(myOpt.rect, Qt::AlignLeft, text.left(text.indexOf(':')), &boundingRect);
+		painter->setFont(index.data(Qt::FontRole).value<QFont>());
+		painter->setBackground(Qt::lightGray);
+		painter->setBackgroundMode(Qt::OpaqueMode);
+		painter->drawText(myOpt.rect, Qt::AlignLeft, QString("%1:").arg(line, 5), &boundingRect);
 		myOpt.rect.setLeft((int)(myOpt.rect.left() + boundingRect.width()));
-		painter->setPen(Qt::black);
-		painter->drawText(myOpt.rect, Qt::AlignLeft, ":", &boundingRect);
-		myOpt.rect.setLeft((int)(myOpt.rect.left() + boundingRect.width()));
-		painter->setPen(Qt::blue);
-		painter->drawText(myOpt.rect, Qt::AlignLeft, text.mid(text.indexOf(':') + 1), &boundingRect);
+		painter->setBackgroundMode(Qt::TransparentMode);
+		painter->drawText(myOpt.rect, Qt::AlignLeft, content, &boundingRect);
 
 		drawFocus(painter, option, option.rect);
 
@@ -87,8 +92,11 @@ SearchDockWidgetImpl::SearchDockWidgetImpl(QWidget * parent) : AbstractMessageDo
 
 	_widget->setupUi(this);
 
-	_widget->m_searchTreeWidget->setItemDelegate(new SearchLogWidgetDelegate(_widget->m_searchTreeWidget));
-	connect(_widget->m_searchTreeWidget, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(doubleClicked(QModelIndex)));
+	_model = new FindedModel(this);
+	_widget->m_searchTreeView->setModel(_model);
+
+	_widget->m_searchTreeView->setItemDelegate(new SearchLogWidgetDelegate(_widget->m_searchTreeView));
+	connect(_widget->m_searchTreeView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(doubleClicked(QModelIndex)));
 
 	connect(_widget->_search_button, SIGNAL(clicked()), this, SIGNAL(abort()));
 	_widget->_search_button->hide();
@@ -113,8 +121,7 @@ bool SearchDockWidgetImpl::automaticallyClose() const
 void SearchDockWidgetImpl::init()
 {
 	setNotifyCount(0);
-	_widget->m_searchTreeWidget->clear();
-	_widget->m_searchTreeWidget->setSortingEnabled(false);
+	_model->clear();
 	_widget->_search_button->show();
 	_widget->m_progressBar->show();
 }
@@ -123,29 +130,18 @@ void SearchDockWidgetImpl::end()
 {
 	_widget->_search_button->hide();
 	_widget->m_progressBar->hide();
-	_widget->m_searchTreeWidget->setSortingEnabled(true);
 }
 
 void SearchDockWidgetImpl::find(const QString & filename, const QString & text, int line)
 {
-	QString path        = QDir::toNativeSeparators(QFileInfo(filename).absolutePath());
-	QString emplacement = QFileInfo(filename).fileName() + ":" + QString::number(line);
-	QTreeWidgetItem * item = new QTreeWidgetItem(QStringList() << path << emplacement << text);
-	item->setData(0, Qt::UserRole, filename);
-	item->setData(0, Qt::UserRole + 1, line);
-	item->setData(1, Qt::UserRole, filename);
-	item->setData(1, Qt::UserRole + 1, line);
-	item->setData(2, Qt::UserRole, filename);
-	item->setData(2, Qt::UserRole + 1, line);
-	_widget->m_searchTreeWidget->addTopLevelItem(item);
-	_widget->m_searchTreeWidget->scrollToItem(item);
-	setNotifyCount(_widget->m_searchTreeWidget->invisibleRootItem()->childCount());
+	_model->append(filename, line, text);
+	setNotifyCount(notifyCount() + 1);
 }
 
 void SearchDockWidgetImpl::doubleClicked(const QModelIndex & index)
 {
-	QString filename = index.data(Qt::UserRole).toString();
-	int line         = index.data(Qt::UserRole + 1).toInt();
+	QString filename = index.data(FindedModel::FilenameRole).toString();
+	int line         = index.data(FindedModel::LineRole).toInt();
 
 	if (!filename.isEmpty())
 	{

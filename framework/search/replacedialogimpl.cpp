@@ -60,6 +60,20 @@ QString ReplaceDialogImpl::text() const
 	return m_comboFind->currentText();
 }
 
+void ReplaceDialogImpl::setTextReplace(const QString & value)
+{
+	if (value != m_comboReplace->currentText())
+	{
+		m_comboReplace->setEditText(value);
+		m_comboReplace->completer()->setCompletionPrefix(value);
+	}
+}
+
+QString ReplaceDialogImpl::textReplace() const
+{
+	return m_comboReplace->currentText();
+}
+
 void ReplaceDialogImpl::setReplace(bool value)
 {
 	m_replaceCheckBox->setChecked(value) ;
@@ -218,13 +232,8 @@ void ReplaceDialogImpl::on_m_extendButtonGroup_buttonClicked(QAbstractButton* bu
 	}
 }
 
-void ReplaceDialogImpl::m_findButton_clicked()
+AbstractEditor::SearchOptions ReplaceDialogImpl::getOptions() const
 {
-	if (! m_comboFind->lineEdit()->text().isEmpty() && (m_comboFind->findText(m_comboFind->lineEdit()->text()) == -1))
-		m_comboFind->addItem(m_comboFind->lineEdit()->text());
-	if (! m_comboReplace->lineEdit()->text().isEmpty() && (m_comboReplace->findText(m_comboFind->lineEdit()->text()) == -1))
-		m_comboReplace->addItem(m_comboReplace->lineEdit()->text());
-
 	AbstractEditor::SearchOptions options;
 	if (m_searchSelectionRadioButton->isChecked())                  options |= AbstractEditor::ONLY_SELECTION;
 	if (m_UpRadioButton->isChecked())                               options |= AbstractEditor::BACKWARD;
@@ -232,33 +241,31 @@ void ReplaceDialogImpl::m_findButton_clicked()
 	if (m_fromStartCheckBox->checkState() == Qt::Checked)           options |= AbstractEditor::SEARCH_FROM_START;
 	if (m_wholeWordsCheckBox->checkState() == Qt::Checked)          options |= AbstractEditor::WHOLE_WORDS;
 	if (m_regularExpressionCheckBox->checkState() == Qt::Checked)   options |= AbstractEditor::REGULAR_EXPRESSION;
+	return options;
+}
 
-	if (!(m_projectFilesRadioButton->isChecked() || m_customFilesRadioButton->isChecked()))
+QStringList ReplaceDialogImpl::getDirectories() const
+{
+	QStringList directories;
+	if (m_customFilesRadioButton->isChecked())
 	{
-		if (m_replaceCheckBox->checkState() == Qt::Checked)
-			emit find(m_comboFind->lineEdit()->text(), m_comboReplace->lineEdit()->text(), options);
-		else
-			emit find(m_comboFind->lineEdit()->text(), QString(), options);
+		directories << QDir::fromNativeSeparators(m_directoryWidget->lineEdit()->text());
 	}
 	else
 	{
-		QStringList directories;
-		if (m_customFilesRadioButton->isChecked())
+		foreach(XinxProject::ProjectPtr project, XinxProject::Manager::self()->projects())
 		{
-			directories << QDir::fromNativeSeparators(m_directoryWidget->lineEdit()->text());
+			directories << project->projectPath();
 		}
-		else
-		{
-			foreach(XinxProject::ProjectPtr project, XinxProject::Manager::self()->projects())
-			{
-				directories << project->projectPath();
-			}
-		}
-
-		if (m_replaceCheckBox->checkState() == Qt::Checked)
-			emit findInFiles(directories, m_comboExt->checkedItems (), m_comboFind->lineEdit()->text(), m_comboReplace->lineEdit()->text(), options);
-		else
-			emit findInFiles(directories, m_comboExt->checkedItems (), m_comboFind->lineEdit()->text(), QString(), options);
 	}
+	return directories;
+}
+
+void ReplaceDialogImpl::m_findButton_clicked()
+{
+	if (! m_comboFind->lineEdit()->text().isEmpty() && (m_comboFind->findText(m_comboFind->lineEdit()->text()) == -1))
+		m_comboFind->addItem(m_comboFind->lineEdit()->text());
+	if (! m_comboReplace->lineEdit()->text().isEmpty() && (m_comboReplace->findText(m_comboFind->lineEdit()->text()) == -1))
+		m_comboReplace->addItem(m_comboReplace->lineEdit()->text());
 }
 

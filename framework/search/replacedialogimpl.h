@@ -54,11 +54,14 @@ public:
 	void setText(const QString & value);
 	QString text() const;
 
+	void setTextReplace(const QString & value);
+	QString textReplace() const;
+
 	void setReplace(bool value);
 	bool isReplace() const;
-signals:
-	void find(const QString & from, const QString & to, const AbstractEditor::SearchOptions & options);
-	void findInFiles(const QStringList & directories, const QStringList & filter, const QString & from, const QString & to, const AbstractEditor::SearchOptions & options);
+
+	AbstractEditor::SearchOptions getOptions() const;
+	QStringList getDirectories() const;
 protected:
     virtual void showEvent(QShowEvent* event);
 private slots:

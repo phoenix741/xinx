@@ -24,6 +24,7 @@
 // Xinx header
 #include "ui_searchdock.h"
 #include <core/abstractmesssagedockwidget.h>
+#include "findedmodel.h"
 
 // Qt header
 #include <QDockWidget>
@@ -48,6 +49,7 @@ protected slots:
 	void doubleClicked(const QModelIndex & index);;
 private:
 	QScopedPointer<Ui::SearchDockWidget> _widget;
+	FindedModel* _model;
 };
 
 #endif /* SEARCHDOCKIMPL_H */
