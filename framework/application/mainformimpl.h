@@ -124,6 +124,7 @@ private:
 	int m_nbFindedText;
 	QString m_findExpression, m_replaceExpression;
 	AbstractEditor::SearchOptions m_findOptions;
+	bool _file_search;
 
 	// Actions
 	QAction *m_exitAct;

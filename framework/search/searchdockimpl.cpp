@@ -96,7 +96,7 @@ SearchDockWidgetImpl::SearchDockWidgetImpl(QWidget * parent) : AbstractMessageDo
 	_widget->m_searchTreeView->setModel(_model);
 
 	_widget->m_searchTreeView->setItemDelegate(new SearchLogWidgetDelegate(_widget->m_searchTreeView));
-	connect(_widget->m_searchTreeView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(doubleClicked(QModelIndex)));
+	connect(_widget->m_searchTreeView, SIGNAL(activated(QModelIndex)), this, SLOT(activated(QModelIndex)));
 
 	connect(_widget->_search_button, SIGNAL(clicked()), this, SIGNAL(abort()));
 	_widget->_search_button->hide();
@@ -132,19 +132,88 @@ void SearchDockWidgetImpl::end()
 	_widget->m_progressBar->hide();
 }
 
+QModelIndex SearchDockWidgetImpl::selectedIndex() const
+{
+	return _widget->m_searchTreeView->currentIndex();
+}
+
+QModelIndex SearchDockWidgetImpl::selectNextFinded()
+{
+	QModelIndex idx = selectedIndex();
+	QModelIndex nextIndex;
+
+	if (! idx.isValid())
+	{
+		nextIndex = _model->index(0, 0, _model->index(0, 0));
+	}
+	else if (_model->isIndexFile(idx))
+	{
+		nextIndex = idx.child(0, 0);
+	}
+	else if (_model->isIndexLine(idx) && (idx.row() + 1 < _model->rowCount(idx.parent())))
+	{
+		nextIndex = _model->index(idx.row() + 1, idx.column(), idx.parent());
+	}
+	else if (_model->isIndexLine(idx) && (idx.row() + 1 >= _model->rowCount(idx.parent())))
+	{
+		QModelIndex parentIndex = idx.parent();
+		nextIndex = _model->index(parentIndex.row() + 1, parentIndex.column(), parentIndex.parent());
+		nextIndex = nextIndex.child(0, 0);
+	}
+
+	_widget->m_searchTreeView->setCurrentIndex(nextIndex);
+	activated(nextIndex);
+	return nextIndex;
+}
+
+QModelIndex SearchDockWidgetImpl::selectPreviousFinded()
+{
+	QModelIndex idx = selectedIndex();
+	QModelIndex previousIndex;
+
+	if (! idx.isValid())
+	{
+		QModelIndex parentIndex = _model->index(_model->rowCount() - 1, 0);
+		previousIndex = _model->index(_model->rowCount(parentIndex) - 1, 0, parentIndex);
+	}
+	else if (_model->isIndexFile(idx))
+	{
+		QModelIndex parentIndex = idx;
+		previousIndex = _model->index(parentIndex.row() - 1, parentIndex.column(), parentIndex.parent());
+		previousIndex = previousIndex.child(_model->rowCount(previousIndex) - 1, 0);
+	}
+	else if (_model->isIndexLine(idx) && (idx.row() > 0))
+	{
+		previousIndex = _model->index(idx.row() - 1, idx.column(), idx.parent());
+	}
+	else if (_model->isIndexLine(idx) && (idx.row() == 0))
+	{
+		QModelIndex parentIndex = idx.parent();
+		previousIndex = _model->index(parentIndex.row() - 1, parentIndex.column(), parentIndex.parent());
+		previousIndex = previousIndex.child(_model->rowCount(previousIndex) - 1, 0);
+	}
+
+	_widget->m_searchTreeView->setCurrentIndex(previousIndex);
+	activated(previousIndex);
+	return previousIndex;
+}
+
 void SearchDockWidgetImpl::find(const QString & filename, const QString & text, int line)
 {
 	_model->append(filename, line, text);
 	setNotifyCount(notifyCount() + 1);
 }
 
-void SearchDockWidgetImpl::doubleClicked(const QModelIndex & index)
+void SearchDockWidgetImpl::activated(const QModelIndex & index)
 {
-	QString filename = index.data(FindedModel::FilenameRole).toString();
-	int line         = index.data(FindedModel::LineRole).toInt();
-
-	if (!filename.isEmpty())
+	if (index.isValid())
 	{
-		emit open(filename, line);
+		QString filename = index.data(FindedModel::FilenameRole).toString();
+		int line         = index.data(FindedModel::LineRole).toInt();
+
+		if (!filename.isEmpty())
+		{
+			emit open(filename, line);
+		}
 	}
 }

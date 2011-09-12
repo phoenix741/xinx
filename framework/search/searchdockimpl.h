@@ -41,12 +41,16 @@ public:
 
 	void init();
 	void end();
+
+	QModelIndex selectedIndex() const;
+	QModelIndex selectNextFinded();
+	QModelIndex selectPreviousFinded();
 signals:
 	void abort();
 public slots:
 	void find(const QString & filename, const QString & text, int line);
 protected slots:
-	void doubleClicked(const QModelIndex & index);;
+	void activated(const QModelIndex & index);;
 private:
 	QScopedPointer<Ui::SearchDockWidget> _widget;
 	FindedModel* _model;

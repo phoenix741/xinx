@@ -714,6 +714,13 @@ void MainformImpl::findInFiles(const QStringList& directories, const QStringList
 	m_searchDock->init();
 	m_searchDock->dock()->setVisible(true);
 
+	m_findExpression    = from;
+	m_replaceExpression = to;
+	m_findOptions       = options;
+	m_yesToAllReplace   = false;
+	m_nbFindedText      = 0;
+	m_searchInverse     = false;
+
 	SearchFileThread * threadSearch = new SearchFileThread();
 	connect(m_searchDock, SIGNAL(abort()), threadSearch, SLOT(abort()), Qt::DirectConnection);
 	connect(threadSearch, SIGNAL(find(QString,QString,int)), m_searchDock, SLOT(find(QString,QString,int)), Qt::BlockingQueuedConnection);
@@ -743,6 +750,29 @@ void MainformImpl::findEnd(bool abort)
 
 void MainformImpl::findNext()
 {
+	if (_file_search)
+	{
+		QModelIndex idx;
+		if (! m_searchInverse)
+		{
+			idx = m_searchDock->selectNextFinded();
+		}
+		else
+		{
+			idx = m_searchDock->selectPreviousFinded();
+		}
+
+		if (! idx.isValid())
+		{
+			const QString warningString = m_replaceExpression.isNull() ?
+				tr("%Ln occurence(s) of '%1' found.", "", m_searchDock->notifyCount()) :
+				tr("%Ln occurence(s) of '%1' replaced.", "", m_searchDock->notifyCount());
+
+			QMessageBox::information(this, tr("Search/Replace"), warningString.arg(m_findExpression), QMessageBox::Ok);
+		}
+		return;
+	}
+
 	Q_ASSERT(EditorManager::self()->currentEditor());
 
 	AbstractEditor * editor = EditorManager::self()->currentEditor();
@@ -885,6 +915,8 @@ void MainformImpl::findDialog(bool replace, bool files)
 
 		if (m_findDialog->selection() == ReplaceDialogImpl::SELECT_SEARCH_EDITOR)
 		{
+			_file_search = false;
+
 			if (m_findDialog->isReplace())
 				findFirst(m_findDialog->text(), m_findDialog->textReplace(), options);
 			else
@@ -892,6 +924,8 @@ void MainformImpl::findDialog(bool replace, bool files)
 		}
 		else
 		{
+			_file_search = true;
+
 			QStringList directories = m_findDialog->getDirectories();
 
 			if (m_findDialog->isReplace())
