@@ -467,6 +467,34 @@ QModelIndex TreeProxyItemModel::parent(const QModelIndex & index) const
 }
 
 /*!
+ * Subclassing rowCount() is not suffisent on Qt 4.8 because he calling hasChildren
+ * of the source model and not the rowCount of the proxy model.
+ *
+ * On Qt 4.7.4, this method made :
+ * \code
+ * bool QAbstractItemModel::hasChildren(const QModelIndex &parent) const
+ * {
+ *     return (rowCount(parent) > 0) && (columnCount(parent) > 0);
+ * }
+ * \endcode
+ *
+ * On Qt 4.8.0+, we have :
+ * \code
+ * bool QAbstractProxyModel::hasChildren(const QModelIndex &parent) const
+ * {
+ *     Q_D(const QAbstractProxyModel);
+ *     return d->model->hasChildren(mapToSource(parent));
+ * }
+ * \endcode
+ *
+ * This method call hasChildre from QAbstractItemModel directly.
+ */
+bool TreeProxyItemModel::hasChildren(const QModelIndex &parent) const
+{
+	return QAbstractItemModel::hasChildren(parent);
+}
+
+/*!
  * \brief Return the number of row of the index \p index
  * \sa QAbstractItemModel::rowCount()
  */

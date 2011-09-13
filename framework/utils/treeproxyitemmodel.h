@@ -47,6 +47,7 @@ public:
 	virtual QVariant data(const QModelIndex &proxyIndex, int role) const;
 	virtual Qt::ItemFlags flags(const QModelIndex &index) const;
 
+	virtual bool hasChildren(const QModelIndex &parent) const;
 	virtual int rowCount(const QModelIndex & parent = QModelIndex()) const;
 	virtual int columnCount(const QModelIndex & parent = QModelIndex()) const;
 

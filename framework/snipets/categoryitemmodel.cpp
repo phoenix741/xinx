@@ -138,7 +138,7 @@ int CategoryItemModel::getParentUniqueIdentifier(const QModelIndex & sourceIndex
 
 QModelIndex CategoryItemModel::mapFromSource(const QModelIndex & sourceIndex) const
 {
-	QModelIndex index = mapFromSource(sourceIndex);
+	QModelIndex index = TreeProxyItemModel::mapFromSource(sourceIndex);
 	int column = sourceColumnToProxy(index.column());
 	if (column == -1) return QModelIndex();
 

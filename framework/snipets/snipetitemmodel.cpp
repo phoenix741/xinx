@@ -77,7 +77,7 @@ int SnipetItemModel::sourceColumnToProxy(int sourceColumn) const
 /// For the given source index, this method return the corresponding index in the proxy
 QModelIndex SnipetItemModel::mapFromSource(const QModelIndex & sourceIndex) const
 {
-	QModelIndex index = mapFromSource(sourceIndex);
+	QModelIndex index = BaseSnipetItemModel::mapFromSource(sourceIndex);
 	int column = sourceColumnToProxy(index.column());
 	if (column == -1) return QModelIndex();
 
