@@ -86,41 +86,32 @@ void SearchFileThread::testFile(const QString & path)
 			from = "\\b" + m_from + "\\b";
 
 		QRegExp fromRegExp;
-		bool contains;
 		if (m_options.testFlag(AbstractEditor::WHOLE_WORDS) || m_options.testFlag(AbstractEditor::REGULAR_EXPRESSION))
 		{
 			fromRegExp = QRegExp(from);
-			contains = text.contains(fromRegExp);
-		}
-		else
-		{
-			contains = text.contains(from, cs);
 		}
 
-		if (contains)
+		int posStart = -1;
+		int posEnd;
+		do
 		{
-			int posStart = -1;
-			int posEnd;
-
-			do
+			if (m_options.testFlag(AbstractEditor::WHOLE_WORDS) || m_options.testFlag(AbstractEditor::REGULAR_EXPRESSION))
 			{
-				if (m_options.testFlag(AbstractEditor::WHOLE_WORDS) || m_options.testFlag(AbstractEditor::REGULAR_EXPRESSION))
-				{
-					posStart = fromRegExp.indexIn(text, posStart + 1);
-					posEnd   = posStart + fromRegExp.matchedLength();
-				}
-				else
-				{
-					posStart = text.indexOf(from, posStart + 1, cs);
-					posEnd   = posStart + from.length();
-				}
-				if (posStart != -1)
-				{
-					emit find(path, text, line, posStart, posEnd);
-				}
+				posStart = fromRegExp.indexIn(text, posStart + 1);
+				posEnd   = posStart + fromRegExp.matchedLength();
 			}
-			while(posStart != -1);
+			else
+			{
+				posStart = text.indexOf(from, posStart + 1, cs);
+				posEnd   = posStart + from.length();
+			}
+
+			if (posStart != -1)
+			{
+				emit find(path, text, line, posStart, posEnd);
+			}
 		}
+		while(posStart != -1);
 
 		if (_abort) return;
 	}
