@@ -22,6 +22,9 @@
 #include <core/exceptions.h>
 #include <plugins/xinxpluginsloader.h>
 #include <core/xinxconfig.h>
+#include <editors/editormanager.h>
+#include <editors/textfileeditor.h>
+#include <editors/xinxcodeedit.h>
 
 // Qt header
 #include <QFileInfo>
@@ -61,19 +64,46 @@ void SearchLogWidgetDelegate::paint(QPainter * painter, const QStyleOptionViewIt
 	{
 		int line = index.data(FindedModel::LineRole).toInt();
 		QString content = index.data(FindedModel::ContentRole).toString();
+		int posStart = index.data(FindedModel::PosStartRole).toInt();
+		int posEnd   = index.data(FindedModel::PosEndRole).toInt();
+
+		QString cBefore, cMiddle, cAfter;
+		if (posStart != -1)
+		{
+			cBefore = content.left(posStart);
+			cMiddle = content.mid(posStart, posEnd - posStart);
+			cAfter  = content.right(content.length() - posEnd);
+		}
+		else
+		{
+			cBefore = content;
+		}
 
 		QStyleOptionViewItem myOpt = option;
 
 		drawBackground(painter, option, index);
 
 		QRectF boundingRect;
-		painter->setFont(index.data(Qt::FontRole).value<QFont>());
+		QFont font = index.data(Qt::FontRole).value<QFont>();
+
+		painter->setFont(font);
 		painter->setBackground(Qt::lightGray);
 		painter->setBackgroundMode(Qt::OpaqueMode);
 		painter->drawText(myOpt.rect, Qt::AlignLeft, QString("%1:").arg(line, 5), &boundingRect);
 		myOpt.rect.setLeft((int)(myOpt.rect.left() + boundingRect.width()));
+
 		painter->setBackgroundMode(Qt::TransparentMode);
-		painter->drawText(myOpt.rect, Qt::AlignLeft, content, &boundingRect);
+		painter->drawText(myOpt.rect, Qt::AlignLeft, cBefore, &boundingRect);
+		myOpt.rect.setLeft((int)(myOpt.rect.left() + boundingRect.width()));
+
+		font.setBold(true);
+		painter->setFont(font);
+		painter->drawText(myOpt.rect, Qt::AlignLeft, cMiddle, &boundingRect);
+		myOpt.rect.setLeft((int)(myOpt.rect.left() + boundingRect.width()));
+
+		font.setBold(false);
+		painter->setFont(font);
+		painter->drawText(myOpt.rect, Qt::AlignLeft, cAfter, &boundingRect);
 
 		drawFocus(painter, option, option.rect);
 
@@ -198,9 +228,9 @@ QModelIndex SearchDockWidgetImpl::selectPreviousFinded()
 	return previousIndex;
 }
 
-void SearchDockWidgetImpl::find(const QString & filename, const QString & text, int line)
+void SearchDockWidgetImpl::find(const QString & filename, const QString & text, int line, int posStart, int posEnd)
 {
-	_model->append(filename, line, text);
+	_model->append(filename, line, text, posStart, posEnd);
 	setNotifyCount(notifyCount() + 1);
 }
 
@@ -210,10 +240,20 @@ void SearchDockWidgetImpl::activated(const QModelIndex & index)
 	{
 		QString filename = index.data(FindedModel::FilenameRole).toString();
 		int line         = index.data(FindedModel::LineRole).toInt();
+		int selStart     = index.data(FindedModel::PosStartRole).toInt();
+		int selEnd       = index.data(FindedModel::PosEndRole).toInt();
 
 		if (!filename.isEmpty())
 		{
 			emit open(filename, line);
+			if (EditorManager::self()->currentEditor() && qobject_cast<TextFileEditor*>(EditorManager::self()->currentEditor()))
+			{
+				TextFileEditor * textFileEditor = qobject_cast<TextFileEditor*>(EditorManager::self()->currentEditor());
+				QDocumentCursor cursor = textFileEditor->textEdit()->textCursor();
+				cursor.moveTo(line - 1, selStart);
+				cursor.movePosition(selEnd - selStart, QDocumentCursor::NextCharacter, QDocumentCursor::KeepAnchor);
+				textFileEditor->textEdit()->setTextCursor(cursor);
+			}
 		}
 	}
 }

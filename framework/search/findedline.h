@@ -25,16 +25,22 @@
 class FindedLine
 {
 public:
-	FindedLine(int line, const QString & content);
+	FindedLine(int line, const QString& content, int posStart, int posEnd);
 	~FindedLine();
 
 	void setLine(int value);
 	int line() const;
 
+	void setPosStart(int value);
+	int posStart() const;
+
+	void setPosEnd(int value);
+	int posEnd() const;
+
 	void setContent(const QString & value);
 	const QString & content() const;
 private:
-	int _line;
+	int _line, _posStart, _posEnd;
 	QString _content;
 };
 

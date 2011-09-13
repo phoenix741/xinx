@@ -55,7 +55,7 @@ FindedFile * FindedModel::filesValue(const QString & filename) const
 	return NULL;
 }
 
-void FindedModel::append(const QString& filename, int line, const QString& content)
+void FindedModel::append(const QString& filename, int line, const QString& content, int posStart, int posEnd)
 {
 	FindedFile * file = filesValue(filename);
 	if (! file)
@@ -74,7 +74,7 @@ void FindedModel::append(const QString& filename, int line, const QString& conte
 	}
 
 	beginInsertRows(index(file), file->findedLineSize(), file->findedLineSize());
-	file->addFindedLine(new FindedLine(line, content));
+	file->addFindedLine(new FindedLine(line, content, posStart, posEnd));
 	endInsertRows();
 }
 
@@ -235,6 +235,10 @@ QVariant FindedModel::data(const QModelIndex& index, int role) const
 				return file->filename();
 			case LineRole:
 				return QVariant::fromValue(1);
+			case PosStartRole:
+				return QVariant::fromValue(-1);
+			case PosEndRole:
+				return QVariant::fromValue(-1);
 			}
 		}
 		else /* FindedLine */
@@ -252,6 +256,10 @@ QVariant FindedModel::data(const QModelIndex& index, int role) const
 				return line->line();
 			case ContentRole:
 				return line->content();
+			case PosStartRole:
+				return line->posStart();
+			case PosEndRole:
+				return line->posEnd();
 			}
 		}
 	}

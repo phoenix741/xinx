@@ -73,6 +73,8 @@ void SearchFileThread::testFile(const QString & path)
 	while (!file.atEnd())
 	{
 		text = file.readLine();
+		text.chop(1);
+
 		line ++;
 
 		Qt::CaseSensitivity cs = Qt::CaseInsensitive;
@@ -83,14 +85,42 @@ void SearchFileThread::testFile(const QString & path)
 		if (m_options.testFlag(AbstractEditor::WHOLE_WORDS) && ! m_options.testFlag(AbstractEditor::REGULAR_EXPRESSION))
 			from = "\\b" + m_from + "\\b";
 
+		QRegExp fromRegExp;
 		bool contains;
 		if (m_options.testFlag(AbstractEditor::WHOLE_WORDS) || m_options.testFlag(AbstractEditor::REGULAR_EXPRESSION))
-			contains = text.contains(QRegExp(from));
+		{
+			fromRegExp = QRegExp(from);
+			contains = text.contains(fromRegExp);
+		}
 		else
+		{
 			contains = text.contains(from, cs);
+		}
 
 		if (contains)
-			emit find(path, text.trimmed(), line);
+		{
+			int posStart = -1;
+			int posEnd;
+
+			do
+			{
+				if (m_options.testFlag(AbstractEditor::WHOLE_WORDS) || m_options.testFlag(AbstractEditor::REGULAR_EXPRESSION))
+				{
+					posStart = fromRegExp.indexIn(text, posStart + 1);
+					posEnd   = posStart + fromRegExp.matchedLength();
+				}
+				else
+				{
+					posStart = text.indexOf(from, posStart + 1, cs);
+					posEnd   = posStart + from.length();
+				}
+				if (posStart != -1)
+				{
+					emit find(path, text, line, posStart, posEnd);
+				}
+			}
+			while(posStart != -1);
+		}
 
 		if (_abort) return;
 	}

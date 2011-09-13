@@ -34,7 +34,9 @@ public:
 	{
 		FilenameRole = Qt::UserRole,
 		LineRole     = Qt::UserRole + 1,
-		ContentRole  = Qt::UserRole + 2
+		ContentRole  = Qt::UserRole + 2,
+		PosStartRole = Qt::UserRole + 3,
+		PosEndRole   = Qt::UserRole + 4
 	};
 
 	/**
@@ -51,7 +53,7 @@ public:
 	 * @param line Line number of the finded text.
 	 * @param content Content of the line where we can find text.
 	 */
-	void append(const QString & filename, int line, const QString & content);
+	void append(const QString & filename, int line, const QString & content, int posStart, int posEnd);
 	/*!
 	 * Add a new line for the text file. This incremente all line after the line number for the
 	 * given file.

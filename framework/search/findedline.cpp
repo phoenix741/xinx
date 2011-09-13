@@ -19,7 +19,7 @@
 
 #include "findedline.h"
 
-FindedLine::FindedLine(int line, const QString& content) : _line(line), _content(content)
+FindedLine::FindedLine(int line, const QString& content, int posStart, int posEnd) : _line(line), _posStart(posStart), _posEnd(posEnd), _content(content)
 {
 
 }
@@ -37,6 +37,26 @@ void FindedLine::setLine(int value)
 int FindedLine::line() const
 {
 	return _line;
+}
+
+void FindedLine::setPosStart(int value)
+{
+	_posStart = value;
+}
+
+int FindedLine::posStart() const
+{
+	return _posStart;
+}
+
+void FindedLine::setPosEnd(int value)
+{
+	_posEnd = value;
+}
+
+int FindedLine::posEnd() const
+{
+	return _posEnd;
 }
 
 void FindedLine::setContent(const QString& value)

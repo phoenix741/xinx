@@ -43,7 +43,7 @@ public:
 
 	void search();
 signals:
-	void find(const QString & filename, const QString & lineText, int lineNumber);
+	void find(const QString & filename, const QString & lineText, int lineNumber, int posStart, int posEnd);
 	void test(const QString & filename);
 	void end(bool abort);
 public slots:

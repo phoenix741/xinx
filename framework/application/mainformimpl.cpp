@@ -723,7 +723,7 @@ void MainformImpl::findInFiles(const QStringList& directories, const QStringList
 
 	SearchFileThread * threadSearch = new SearchFileThread();
 	connect(m_searchDock, SIGNAL(abort()), threadSearch, SLOT(abort()), Qt::DirectConnection);
-	connect(threadSearch, SIGNAL(find(QString,QString,int)), m_searchDock, SLOT(find(QString,QString,int)), Qt::BlockingQueuedConnection);
+	connect(threadSearch, SIGNAL(find(QString,QString,int,int,int)), m_searchDock, SLOT(find(QString,QString,int,int,int)), Qt::BlockingQueuedConnection);
 	connect(threadSearch, SIGNAL(end(bool)), this, SLOT(findEnd(bool)));
 
 	threadSearch->setFilter(filter);

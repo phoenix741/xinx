@@ -48,7 +48,7 @@ public:
 signals:
 	void abort();
 public slots:
-	void find(const QString & filename, const QString & text, int line);
+	void find(const QString & filename, const QString & text, int line, int posStart, int posEnd);
 protected slots:
 	void activated(const QModelIndex & index);;
 private:
