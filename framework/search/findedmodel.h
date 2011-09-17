@@ -75,8 +75,8 @@ public:
 	bool isIndexFile(const QModelIndex & index) const;
 	bool isIndexLine(const QModelIndex & index) const;
 
-	QModelIndex index(FindedFile* file) const;
-	QModelIndex index(FindedFile* file, FindedLine * line) const;
+	QModelIndex index(const FindedFile & file) const;
+	QModelIndex index(const FindedFile & file, const FindedLine & line) const;
     virtual QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const;
     virtual QModelIndex parent(const QModelIndex& child) const;
 
@@ -85,9 +85,9 @@ public:
 	virtual int columnCount(const QModelIndex& parent = QModelIndex()) const;
 	virtual int rowCount(const QModelIndex& parent = QModelIndex()) const;
 private:
-	FindedFile * filesValue(const QString & filename) const;
+	FindedFile filesValue(const QString & filename);
 
-	QList<FindedFile*> _files;
+	QList<FindedFile> _files;
 	QMap<QString,int> _filesIndex;
 };
 

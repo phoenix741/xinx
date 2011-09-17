@@ -18,8 +18,38 @@
 */
 
 #include "findedline.h"
+#include <QSharedData>
 
-FindedLine::FindedLine(int line, const QString& content, int posStart, int posEnd) : _line(line), _posStart(posStart), _posEnd(posEnd), _content(content)
+/* FindedLineData */
+
+FindedLineData::FindedLineData() : _line(-1), _posStart(-1), _posEnd(-1)
+{
+}
+
+FindedLineData::FindedLineData(const FindedLineData &other) : QSharedData(other), _line(other._line), _posStart(other._posStart), _posEnd(other._posEnd), _content(other._content)
+{
+}
+
+FindedLineData::~FindedLineData()
+{
+}
+
+/* FindedLine */
+
+FindedLine::FindedLine()
+{
+
+}
+
+FindedLine::FindedLine(int line, const QString& content, int posStart, int posEnd) : d(new FindedLineData)
+{
+	d->_line = line;
+	d->_posStart =posStart;
+	d->_posEnd = posEnd;
+	d->_content = content;
+}
+
+FindedLine::FindedLine(const FindedLine & other) : d(other.d)
 {
 
 }
@@ -31,40 +61,50 @@ FindedLine::~FindedLine()
 
 void FindedLine::setLine(int value)
 {
-	_line = value;
+	d->_line = value;
 }
 
 int FindedLine::line() const
 {
-	return _line;
+	return d->_line;
 }
 
 void FindedLine::setPosStart(int value)
 {
-	_posStart = value;
+	d->_posStart = value;
 }
 
 int FindedLine::posStart() const
 {
-	return _posStart;
+	return d->_posStart;
 }
 
 void FindedLine::setPosEnd(int value)
 {
-	_posEnd = value;
+	d->_posEnd = value;
 }
 
 int FindedLine::posEnd() const
 {
-	return _posEnd;
+	return d->_posEnd;
 }
 
 void FindedLine::setContent(const QString& value)
 {
-	_content = value;
+	d->_content = value;
 }
 
 const QString& FindedLine::content() const
 {
-	return _content;
+	return d->_content;
+}
+
+bool FindedLine::isValid() const
+{
+	return (!d->_content.isEmpty()) || (d->_line != -1) || (d->_posStart != -1) || (d->_posEnd != -1);
+}
+
+bool FindedLine::operator==(const FindedLine & other) const
+{
+	return (d->_content == other.d->_content) || (d->_line == other.d->_line) || (d->_posStart != other.d->_posStart) || (d->_posEnd != other.d->_posEnd);
 }

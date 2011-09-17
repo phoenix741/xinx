@@ -56,9 +56,6 @@ void SearchFileThread::abort()
 
 void SearchFileThread::search()
 {
-	if (! m_to.isNull())
-		QMessageBox::information(qApp->activeWindow(), tr("Not supported"), tr("Replacement on multiple file is not yet supported"));
-
 	XinxJobManager::self ()->addJob(this);
 }
 
@@ -72,7 +69,7 @@ void SearchFileThread::testFile(const QString & path)
 	QString text;
 	while (!file.atEnd())
 	{
-		text = file.readLine();
+		text = QString::fromLocal8Bit(file.readLine());
 		text.chop(1);
 
 		line ++;

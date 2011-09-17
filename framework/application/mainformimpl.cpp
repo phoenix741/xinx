@@ -711,7 +711,7 @@ void MainformImpl::findInFiles(const QStringList& directories, const QStringList
 	m_searchPreviousAct->setEnabled(false);
 	m_replaceAct->setEnabled(false);
 	m_searchProjectFileAct->setEnabled(false);
-	m_searchDock->init();
+	m_searchDock->init(from, to, options);
 	m_searchDock->dock()->setVisible(true);
 
 	m_findExpression    = from;

@@ -25,6 +25,8 @@
 #include <editors/editormanager.h>
 #include <editors/textfileeditor.h>
 #include <editors/xinxcodeedit.h>
+#include "replacefilethread.h"
+#include "findedfile.h"
 
 // Qt header
 #include <QFileInfo>
@@ -127,8 +129,10 @@ SearchDockWidgetImpl::SearchDockWidgetImpl(QWidget * parent) : AbstractMessageDo
 
 	_widget->m_searchTreeView->setItemDelegate(new SearchLogWidgetDelegate(_widget->m_searchTreeView));
 	connect(_widget->m_searchTreeView, SIGNAL(activated(QModelIndex)), this, SLOT(activated(QModelIndex)));
+	connect(_widget->_replace_button, SIGNAL(clicked()), this, SLOT(replace()));
 
 	connect(_widget->_search_button, SIGNAL(clicked()), this, SIGNAL(abort()));
+	_widget->_replace_button->hide();
 	_widget->_search_button->hide();
 	_widget->m_progressBar->hide();
 }
@@ -148,10 +152,15 @@ bool SearchDockWidgetImpl::automaticallyClose() const
 	return false;
 }
 
-void SearchDockWidgetImpl::init()
+void SearchDockWidgetImpl::init(const QString& from, const QString& to, const AbstractEditor::SearchOptions& options)
 {
+	m_from    = from;
+	m_to      = to;
+	m_options = options;
+
 	setNotifyCount(0);
 	_model->clear();
+	_widget->_replace_button->hide();
 	_widget->_search_button->show();
 	_widget->m_progressBar->show();
 }
@@ -160,6 +169,43 @@ void SearchDockWidgetImpl::end()
 {
 	_widget->_search_button->hide();
 	_widget->m_progressBar->hide();
+	if (! m_to.isEmpty())
+	{
+		_widget->_replace_button->show();
+	}
+}
+
+void SearchDockWidgetImpl::endOfReplace()
+{
+	_widget->_replace_button->hide();
+}
+
+void SearchDockWidgetImpl::replace()
+{
+	ReplaceFileThread * replaceFileThread = new ReplaceFileThread();
+	replaceFileThread->setSearchString(m_from, m_to, m_options);
+	connect(replaceFileThread, SIGNAL(processEnded()), this, SLOT(endOfReplace()));
+	connect(replaceFileThread, SIGNAL(lineModified(QString,int)), this, SLOT(slotLineModified(QString,int)));
+
+	for(int i = 0; i < _model->rowCount(); i++)
+	{
+		QModelIndex fileIndex = _model->index(i, 0);
+		const QString filename = fileIndex.data(FindedModel::FilenameRole).toString();
+		const int lineCount = _model->rowCount(fileIndex);
+
+		for(int j = 0; j < lineCount; j++)
+		{
+			QModelIndex lineIndex = _model->index(j, 0, fileIndex);
+			const int line = lineIndex.data(FindedModel::LineRole).toInt();
+			const QString content = lineIndex.data(FindedModel::ContentRole).toString();
+			const int posStart = lineIndex.data(FindedModel::PosStartRole).toInt();
+			const int posEnd = lineIndex.data(FindedModel::PosEndRole).toInt();
+
+			replaceFileThread->addReplacement(filename, line, content, posStart, posEnd);
+		}
+	}
+
+	replaceFileThread->replace();
 }
 
 QModelIndex SearchDockWidgetImpl::selectedIndex() const
@@ -256,4 +302,9 @@ void SearchDockWidgetImpl::activated(const QModelIndex & index)
 			}
 		}
 	}
+}
+
+void SearchDockWidgetImpl::slotLineModified(const QString & filename, int line)
+{
+	ErrorManager::self()->addMessage(filename, line, QtWarningMsg, tr("The content of the line have been changed."));
 }

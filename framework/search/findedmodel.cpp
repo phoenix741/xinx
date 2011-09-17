@@ -24,12 +24,12 @@
 
 /* Comparator */
 
-bool fileFindedLessThan(FindedFile * file1, FindedFile * file2)
+bool fileFindedLessThan(const FindedFile& file1, const FindedFile& file2)
 {
-	Q_ASSERT_X(file1, "fileFindedLessThan", "File file1 can't be null");
-	Q_ASSERT_X(file2, "fileFindedLessThan", "File file2 can't be null");
+	Q_ASSERT_X(file1.isValid(), "fileFindedLessThan", "File file1 can't be null");
+	Q_ASSERT_X(file2.isValid(), "fileFindedLessThan", "File file2 can't be null");
 
-	return file1->filename() < file2->filename();
+	return file1.filename() < file2.filename();
 }
 
 /* FindedModel */
@@ -41,10 +41,10 @@ FindedModel::FindedModel(QObject* parent): QAbstractItemModel(parent)
 
 FindedModel::~FindedModel()
 {
-
+	clear();
 }
 
-FindedFile * FindedModel::filesValue(const QString & filename) const
+FindedFile FindedModel::filesValue(const QString & filename)
 {
 	int index = _filesIndex.value(filename, -1);
 	if (index >= 0)
@@ -52,17 +52,17 @@ FindedFile * FindedModel::filesValue(const QString & filename) const
 		return _files.value(index);
 	}
 
-	return NULL;
+	return FindedFile(QString());
 }
 
 void FindedModel::append(const QString& filename, int line, const QString& content, int posStart, int posEnd)
 {
-	FindedFile * file = filesValue(filename);
-	if (! file)
+	FindedFile file = filesValue(filename);
+	if (! file.isValid())
 	{
-		file = new FindedFile(filename);
+		file = FindedFile(filename);
 
-		QList<FindedFile*>::iterator i = qBinaryFind(_files.begin(), _files.end(), file, fileFindedLessThan);
+		QList<FindedFile>::iterator i = qBinaryFind(_files.begin(), _files.end(), file, fileFindedLessThan);
 		int index = i - _files.begin();
 
 		beginInsertRows(QModelIndex(), index, index);
@@ -73,25 +73,25 @@ void FindedModel::append(const QString& filename, int line, const QString& conte
 		endInsertRows();
 	}
 
-	beginInsertRows(index(file), file->findedLineSize(), file->findedLineSize());
-	file->addFindedLine(new FindedLine(line, content, posStart, posEnd));
+	beginInsertRows(index(file), file.findedLineSize(), file.findedLineSize());
+	file.addFindedLine(FindedLine(line, content, posStart, posEnd));
 	endInsertRows();
 }
 
 void FindedModel::addLine(const QString& filename, int ln)
 {
-	FindedFile * file = filesValue(filename);
+	FindedFile file = filesValue(filename);
 	QModelIndex index1, index2;
 
-	if (file)
+	if (!file.isValid())
 	{
-		foreach (FindedLine * line, *file)
+		foreach (FindedLine findedLine, file)
 		{
-			if (line->line() >= ln)
+			if (findedLine.line() >= ln)
 			{
-				line->setLine(line->line() + 1);
+				findedLine.setLine(findedLine.line() + 1);
 
-				index2 = index(file, line);
+				index2 = index(file, findedLine);
 				if (!index1.isValid())
 				{
 					index2 = index1;
@@ -105,18 +105,18 @@ void FindedModel::addLine(const QString& filename, int ln)
 
 void FindedModel::removeLine(const QString& filename, int ln)
 {
-	FindedFile * file = filesValue(filename);
+	FindedFile file = filesValue(filename);
 	QModelIndex index1, index2;
 
-	if (file)
+	if (!file.isValid())
 	{
-		foreach (FindedLine * line, *file)
+		foreach (FindedLine findedLine, file)
 		{
-			if (line->line() >= ln)
+			if (findedLine.line() >= ln)
 			{
-				line->setLine(line->line() - 1);
+				findedLine.setLine(findedLine.line() - 1);
 
-				index2 = index(file, line);
+				index2 = index(file, findedLine);
 				if (!index1.isValid())
 				{
 					index2 = index1;
@@ -131,7 +131,6 @@ void FindedModel::removeLine(const QString& filename, int ln)
 void FindedModel::clear()
 {
 	beginRemoveRows(QModelIndex(), 0, _files.size());
-	qDeleteAll(_files);
 	_files.clear();
 	_filesIndex.clear();
 	endRemoveRows();
@@ -163,21 +162,20 @@ int FindedModel::rowCount(const QModelIndex& parent) const
 
 	if (parent.internalId() == -1)
 	{
-		FindedFile * file = _files.at(parent.row());
-		return file->findedLineSize();
+		return _files.at(parent.row()).findedLineSize();
 	}
 
 	return 0;
 }
 
-QModelIndex FindedModel::index(FindedFile* file) const
+QModelIndex FindedModel::index(const FindedFile & file) const
 {
 	return createIndex(_files.indexOf(file), 0, -1);
 }
 
-QModelIndex FindedModel::index(FindedFile* file, FindedLine* line) const
+QModelIndex FindedModel::index(const FindedFile & file, const FindedLine & line) const
 {
-	return createIndex(file->indexOfFindedLine(line), 0, _files.indexOf(file));
+	return createIndex(file.indexOfFindedLine(line), 0, _files.indexOf(file));
 }
 
 QModelIndex FindedModel::index(int row, int column, const QModelIndex& parent) const
@@ -189,12 +187,12 @@ QModelIndex FindedModel::index(int row, int column, const QModelIndex& parent) c
 		return createIndex(row, column, -1);
 	}
 
-	FindedFile * file;
+	FindedFile file;
 	if (parent.internalId() == -1)
 	{
 		file = _files.at(parent.row());
 
-		if ((row < 0) || (row >= file->findedLineSize())) return QModelIndex();
+		if ((row < 0) || (row >= file.findedLineSize())) return QModelIndex();
 
 		return createIndex(row, column, parent.row());
 	}
@@ -223,16 +221,16 @@ QVariant FindedModel::data(const QModelIndex& index, int role) const
 	{
 		if (index.internalId() == -1) /* FindedFile */
 		{
-			FindedFile * file = _files.at(index.row());
+			const FindedFile & file = _files.at(index.row());
 			switch(role)
 			{
 			case Qt::DisplayRole:
-				return file->filename();
+				return file.filename();
 				break;
 			case Qt::ForegroundRole:
 				return Qt::blue;
 			case FilenameRole:
-				return file->filename();
+				return file.filename();
 			case LineRole:
 				return QVariant::fromValue(1);
 			case PosStartRole:
@@ -243,23 +241,23 @@ QVariant FindedModel::data(const QModelIndex& index, int role) const
 		}
 		else /* FindedLine */
 		{
-			FindedLine * line = _files.at(index.internalId())->findedLineAt(index.row());
+			const FindedLine & line = _files.at(index.internalId()).findedLineAt(index.row());
 			switch(role)
 			{
 			case Qt::DisplayRole:
-				return QString("%1: %2").arg(line->line(), 5).arg(line->content());
+				return QString("%1: %2").arg(line.line(), 5).arg(line.content());
 			case Qt::FontRole:
 				return XINXConfig::self()->config().editor.defaultFormat;
 			case FilenameRole:
-				return _files.at(index.internalId())->filename();
+				return _files.at(index.internalId()).filename();
 			case LineRole:
-				return line->line();
+				return line.line();
 			case ContentRole:
-				return line->content();
+				return line.content();
 			case PosStartRole:
-				return line->posStart();
+				return line.posStart();
 			case PosEndRole:
-				return line->posEnd();
+				return line.posEnd();
 			}
 		}
 	}

@@ -21,10 +21,24 @@
 #define FINDEDLINE_H
 
 #include <QString>
+#include <QSharedData>
+
+class FindedLineData : public QSharedData
+{
+public:
+	FindedLineData();
+	FindedLineData(const FindedLineData &other);
+	~FindedLineData();
+
+	int _line, _posStart, _posEnd;
+	QString _content;
+};
 
 class FindedLine
 {
 public:
+	FindedLine();
+	FindedLine(const FindedLine & other);
 	FindedLine(int line, const QString& content, int posStart, int posEnd);
 	~FindedLine();
 
@@ -39,9 +53,12 @@ public:
 
 	void setContent(const QString & value);
 	const QString & content() const;
+
+	bool isValid() const;
+
+	bool operator==(const FindedLine & other) const;
 private:
-	int _line, _posStart, _posEnd;
-	QString _content;
+	QExplicitlySharedDataPointer<FindedLineData> d;
 };
 
 #endif // FINDEDLINE_H

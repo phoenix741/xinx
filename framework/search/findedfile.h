@@ -22,31 +22,48 @@
 
 #include <QString>
 #include <QList>
+#include <search/findedline.h>
 
-class FindedLine;
+class FindedFileData : public QSharedData
+{
+public:
+	FindedFileData();
+	FindedFileData(const FindedFileData &other);
+	~FindedFileData();
+
+	QString _filename;
+	QList<FindedLine> _lines;
+};
 
 class FindedFile
 {
 public:
+	FindedFile();
+	FindedFile(const FindedFile & other);
 	FindedFile(const QString & filename);
 	~FindedFile();
 
 	const QString & filename() const;
 	void setFilename(const QString & value);
 
-	void addFindedLine(FindedLine * line);
+	void addFindedLine(const FindedLine & line);
 	void removeFindedLine(int index);
 	void clearFindedLine();
-	FindedLine * findedLineAt(int index) const;
-	int indexOfFindedLine(FindedLine * line) const;
+	const FindedLine & findedLineAt(int index) const;
+	FindedLine findedLineAtLine(int line) const;
+	int indexOfFindedLine(const FindedLine & line) const;
 	int findedLineSize() const;
+
+	bool isValid() const;
+
+	bool operator==(const FindedFile & other) const;
 
 	class const_iterator
 	{
 	public:
 		enum etype { START, END };
-		const_iterator(const FindedFile * list, etype t);
-		FindedLine* operator*();
+		const_iterator(const FindedFile* list, etype t);
+		const FindedLine & operator*();
 		bool operator!=(const const_iterator& it);
 		const_iterator & operator++();
 	private:
@@ -57,8 +74,7 @@ public:
 	const_iterator begin() const;
 	const_iterator end() const;
 private:
-	QString _filename;
-	QList<FindedLine*> _lines;
+	QExplicitlySharedDataPointer<FindedFileData> d;
 };
 
 #endif // FINDEDFILE_H

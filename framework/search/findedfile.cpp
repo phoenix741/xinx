@@ -20,58 +20,101 @@
 #include "findedfile.h"
 #include "findedline.h"
 
+/* FindedFileData */
+
+FindedFileData::FindedFileData()
+{
+}
+
+FindedFileData::FindedFileData(const FindedFileData &other) : QSharedData(other), _filename(other._filename), _lines(other._lines)
+{
+}
+
+FindedFileData::~FindedFileData()
+{
+}
+
 /* FindedFile */
 
-FindedFile::FindedFile(const QString& filename) : _filename(filename)
+FindedFile::FindedFile() : d(new FindedFileData)
 {
 
+}
+
+FindedFile::FindedFile(const FindedFile & other) : d(other.d)
+{
+
+}
+
+FindedFile::FindedFile(const QString& filename) : d(new FindedFileData)
+{
+	d->_filename = filename;
 }
 
 FindedFile::~FindedFile()
 {
-	clearFindedLine();
+
 }
 
 void FindedFile::setFilename(const QString& value)
 {
-	_filename = value;
+	d->_filename = value;
 }
 
 const QString& FindedFile::filename() const
 {
-	return _filename;
+	return d->_filename;
 }
 
-void FindedFile::addFindedLine(FindedLine* line)
+void FindedFile::addFindedLine(const FindedLine & line)
 {
-	_lines.append(line);
+	d->_lines.append(line);
 }
 
 void FindedFile::removeFindedLine(int index)
 {
-	delete _lines.at(index);
-	_lines.removeAt(index);
+	d->_lines.removeAt(index);
 }
 
 void FindedFile::clearFindedLine()
 {
-	qDeleteAll(_lines);
-	_lines.clear();
+	d->_lines.clear();
 }
 
-FindedLine* FindedFile::findedLineAt(int index) const
+const FindedLine & FindedFile::findedLineAt(int index) const
 {
-	return _lines.at(index);
+	return d->_lines.at(index);
 }
 
-int FindedFile::indexOfFindedLine(FindedLine* line) const
+FindedLine FindedFile::findedLineAtLine(int line) const
 {
-	return _lines.indexOf(line);
+	foreach(const FindedLine & l, d->_lines)
+	{
+		if (l.line() == line)
+			return l;
+	}
+
+	return FindedLine();
+}
+
+int FindedFile::indexOfFindedLine(const FindedLine & line) const
+{
+	return d->_lines.indexOf(line);
 }
 
 int FindedFile::findedLineSize() const
 {
-	return _lines.size();
+	return d->_lines.size();
+}
+
+bool FindedFile::isValid() const
+{
+	return (!d->_filename.isEmpty()) || (!d->_lines.isEmpty());
+}
+
+bool FindedFile::operator==(const FindedFile & other) const
+{
+	return (d->_filename == other.d->_filename) && (d->_lines == other.d->_lines);
 }
 
 FindedFile::const_iterator FindedFile::begin() const
@@ -98,7 +141,7 @@ FindedFile::const_iterator::const_iterator(const FindedFile * list, etype t) : _
 	}
 }
 
-FindedLine* FindedFile::const_iterator::operator*()
+const FindedLine & FindedFile::const_iterator::operator*()
 {
 	return _list->findedLineAt(_cur);
 }
