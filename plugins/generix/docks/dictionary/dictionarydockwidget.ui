@@ -17,37 +17,19 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QComboBox" name="m_dictionaryList">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-      </widget>
+      <widget class="QComboBox" name="m_dictionaryList"/>
      </item>
      <item>
       <widget class="QToolButton" name="m_addToDico">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="text">
-        <string>...</string>
+        <string>Add a new label</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../components/xinxpluginselector.qrc">
+        <iconset resource="../../../../components/xinxpluginselector.qrc">
          <normaloff>:/images/add.png</normaloff>:/images/add.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QToolButton" name="m_updateBase">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="text">
-        <string>...</string>
-       </property>
-       <property name="icon">
-        <iconset resource="../../../components/xinxpluginselector.qrc">
-         <normaloff>:/images/up.png</normaloff>:/images/up.png</iconset>
        </property>
       </widget>
      </item>
@@ -58,9 +40,9 @@
    </item>
    <item>
     <widget class="DictionaryWidget" name="m_dictionaryTreeWidget">
-     <attribute name="headerVisible">
-      <bool>false</bool>
-     </attribute>
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
      <attribute name="headerVisible">
       <bool>false</bool>
      </attribute>
@@ -88,7 +70,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../../components/xinxpluginselector.qrc"/>
+  <include location="../../../../components/xinxpluginselector.qrc"/>
  </resources>
  <connections/>
 </ui>

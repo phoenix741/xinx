@@ -36,14 +36,24 @@ class DictionaryDockWidgetImpl : public XinxDockWidget, private Ui::DictionaryDo
 public:
 	DictionaryDockWidgetImpl(QWidget * parent = 0);
 	virtual ~DictionaryDockWidgetImpl();
+
+	void setPrefix(const QString & prefix);
+	const QString & prefix();
+signals:
+	void changed();
+
 private slots:
+	void on_m_addToDico_clicked();
 	void on_m_filterLine_textChanged(QString filter);
 	void dictionariesLoaded();
+	void on_m_dictionaryTreeWidget_doubleClicked(const QModelIndex &index);
+
 private:
 	virtual void timerEvent(QTimerEvent * event);
 
+	QString _prefix;
+	QScopedPointer<DictionaryModel> _model;
 	int m_timerId;
-
 };
 
 #endif // DICTIONARYDOCKWIDGET_H

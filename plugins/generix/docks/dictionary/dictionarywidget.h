@@ -22,11 +22,6 @@
 
 #include <QTreeView>
 
-class DictionaryModel;
-namespace XinxProject
-{
-class Project;
-}
 
 class DictionaryWidget : public QTreeView
 {
@@ -34,14 +29,6 @@ class DictionaryWidget : public QTreeView
 public:
 	DictionaryWidget(QWidget * parent = 0);
 	virtual ~DictionaryWidget();
-
-	void setPrefix(const QString & prefix);
-	const QString & prefix();
-signals:
-	void changed();
-private:
-	QString _prefix;
-	QScopedPointer<DictionaryModel> _model;
 };
 
 #endif // DICTIONARYWIDGET_H

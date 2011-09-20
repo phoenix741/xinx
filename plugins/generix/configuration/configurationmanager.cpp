@@ -24,8 +24,11 @@
 #include "configuration/gceconfigurationparserfactory.h"
 #include "projectproperty/generixproject.h"
 #include "docks/dictionary/dictionary_parser.h"
+#include <contentview3/file.h>
+#include <contentview3/cache.h>
 #include <jobs/xinxjobmanager.h>
 #include <QTimer>
+#include <QMetaMethod>
 
 /* ConfigurationManager */
 
@@ -36,6 +39,7 @@ ConfigurationManager::ConfigurationManager(XinxProject::ProjectPtr project) : QO
 
 	connect(_watcher.data(), SIGNAL(fileChanged(QString)), _updateCacheTimer.data(), SLOT(start()));
 	connect(_updateCacheTimer.data(), SIGNAL(timeout()), this, SLOT(updateCache()));
+	connect(project->cache(), SIGNAL(updated(ContentView3::FilePtr)), this, SLOT(cacheUpdated(ContentView3::FilePtr)));
 
 	updateCache();
 }
@@ -43,6 +47,11 @@ ConfigurationManager::ConfigurationManager(XinxProject::ProjectPtr project) : QO
 ConfigurationManager::~ConfigurationManager()
 {
 
+}
+
+void ConfigurationManager::refresh()
+{
+	_updateCacheTimer->start();
 }
 
 ConfigurationManager* ConfigurationManager::manager(XinxProject::ProjectPtr project)
@@ -64,6 +73,7 @@ void ConfigurationManager::addDictionary(const QString & filename)
 		Generix::Dictionary::Parser * dictionaryParser = new Generix::Dictionary::Parser();
 		dictionaryParser->setFile(file);
 		dictionaryParser->setDevice(new QFile(filename));
+		connect(dictionaryParser, SIGNAL(jobEnding()), this, SIGNAL(dictionaryChanged()));
 
 		project->cache()->addFileToCache(dictionaryParser, false, ContentView3::Cache::PROJECT);
 	}
@@ -74,8 +84,17 @@ void ConfigurationManager::addConfiguration(const QString & filename)
 	if (!_watcher->files().contains(filename))
 	{
 		_watcher->addPath(filename);
+		emit configurationChanged();
 	}
-	emit changed();
+}
+
+void ConfigurationManager::cacheUpdated(ContentView3::FilePtr file)
+{
+	QSharedPointer<GceConfiguration> interface = getInterface();
+	if (interface && interface->dictionnaries().contains(file->filename()))
+	{
+		emit dictionaryChanged();
+	}
 }
 
 void ConfigurationManager::updateCache()
@@ -95,7 +114,6 @@ void ConfigurationManager::updateCache()
 
 		connect(parser, SIGNAL(addConfiguration(QString)), this, SLOT(addConfiguration(QString)), Qt::QueuedConnection);
 		connect(parser, SIGNAL(addDictionary(QString)), this, SLOT(addDictionary(QString)), Qt::QueuedConnection);
-		connect(parser, SIGNAL(jobEnding()), this, SIGNAL(changed()));
 
 		XinxJobManager::self()->addJob(parser);
 	}

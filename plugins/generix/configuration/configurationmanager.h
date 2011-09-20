@@ -41,9 +41,12 @@ public:
 
 	QSharedPointer<GceConfiguration> getInterface();
 
+	void refresh();
 signals:
-	void changed();
+	void configurationChanged();
+	void dictionaryChanged();
 private slots:
+	void cacheUpdated(ContentView3::FilePtr file);
 	void updateCache();
 	void addDictionary(const QString & filename);
 	void addConfiguration(const QString & filename);

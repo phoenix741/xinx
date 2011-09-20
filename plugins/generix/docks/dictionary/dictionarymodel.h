@@ -21,6 +21,7 @@
 #define DICTIONARYMODEL_H
 
 #include <QStandardItemModel>
+#include <QPointer>
 
 namespace XinxProject
 {
@@ -28,22 +29,40 @@ class Project;
 typedef QSharedPointer<Project> ProjectPtr;
 typedef QWeakPointer<Project> ProjectPtrWeak;
 }
+class ConfigurationManager;
 
 class DictionaryModel : public QStandardItemModel
 {
 	Q_OBJECT
 public:
+	enum
+	{
+		ITEM_CODE  = Qt::UserRole,
+		ITEM_LANG  = Qt::UserRole + 1,
+		ITEM_CTX   = Qt::UserRole + 2,
+		ITEM_DICO  = Qt::UserRole + 3
+	};
 	DictionaryModel(QObject* parent = 0);
 	virtual ~DictionaryModel();
 
 	void loadDictionaries(const QString & prefix);
+	const QStringList & dictionaries() const;
+
+	XinxProject::ProjectPtr getProject() const;
+
+	bool changeLabel(const QString & dictionary, const QString & label, const QString & lang, const QString & context, const QString & content);
 signals:
 	void changed();
 private slots:
 	void textEditorChanged(int index);
+	void reload();
 private:
+	void setConfigurationManager(ConfigurationManager* m);
+
 	XinxProject::ProjectPtrWeak  _project;
+	QPointer<ConfigurationManager> _currentConfigurationManager;
 	QString _prefix;
+	QStringList _dictionaries;
 };
 
 #endif // DICTIONARYMODEL_H

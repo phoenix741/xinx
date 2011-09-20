@@ -22,9 +22,13 @@
 #include <editors/abstracteditor.h>
 #include <configuration/configurationmanager.h>
 #include <contentview3/filenode.h>
+#include "dictionary_labelnode.h"
+#include <QXmlStreamReader>
+#include <QXmlStreamWriter>
+#include <QFile>
 
 /* DictionaryModel */
-#include "dictionary_labelnode.h"
+
 
 DictionaryModel::DictionaryModel(QObject* parent): QStandardItemModel(parent)
 {
@@ -34,6 +38,11 @@ DictionaryModel::DictionaryModel(QObject* parent): QStandardItemModel(parent)
 DictionaryModel::~DictionaryModel()
 {
 
+}
+
+XinxProject::ProjectPtr DictionaryModel::getProject() const
+{
+	return _project.toStrongRef();
 }
 
 void DictionaryModel::textEditorChanged(int index)
@@ -47,24 +56,182 @@ void DictionaryModel::textEditorChanged(int index)
 	if (project.data() != _project.data())
 	{
 		_project = project.toWeakRef();
-		loadDictionaries(_prefix);
+		setConfigurationManager(0);
+		reload();
 	}
+}
+
+void DictionaryModel::setConfigurationManager(ConfigurationManager* m)
+{
+	if (_currentConfigurationManager.data() != m)
+	{
+		if (! _currentConfigurationManager.isNull())
+		{
+			disconnect(_currentConfigurationManager, SIGNAL(dictionaryChanged()), this, SLOT(reload()));
+		}
+
+		_currentConfigurationManager = m;
+
+		if (! _currentConfigurationManager.isNull())
+		{
+			connect(_currentConfigurationManager, SIGNAL(dictionaryChanged()), this, SLOT(reload()));
+		}
+	}
+}
+
+
+void DictionaryModel::reload()
+{
+	loadDictionaries(_prefix);
+}
+
+
+const QStringList & DictionaryModel::dictionaries() const
+{
+	return _dictionaries;
+}
+
+/**
+ * Add the given label at the end of the file. For this the file is opened as a DomDocument and next appended, and finally saved.
+ */
+bool DictionaryModel::changeLabel(const QString & dictionary, const QString & label, const QString & lang, const QString & context, const QString & content)
+{
+	/* Open the file */
+	QFile dictionaryFile(dictionary);
+	if (! dictionaryFile.open(QIODevice::ReadWrite | QIODevice::Text))
+	{
+		ErrorManager::self()->addMessage(dictionary, -1, QtCriticalMsg, tr("Can't open the dictionary for write : %1").arg(dictionaryFile.errorString()));
+		return false;
+	}
+
+	QByteArray dictionaryByteArray;
+	QXmlStreamReader reader(&dictionaryFile);
+	QXmlStreamWriter writer(&dictionaryByteArray);
+	writer.setAutoFormatting(true);
+	writer.setAutoFormattingIndent(-1); /* One tab */
+
+	bool updated = false;
+	QString currentLabelsCode;
+	while(! reader.atEnd())
+	{
+		QXmlStreamReader::TokenType token = reader.readNext();
+		switch(token)
+		{
+		case QXmlStreamReader::Characters:
+			/* Ignore characters, Writer made indentation */
+			break;
+		case QXmlStreamReader::StartElement:
+			if (!updated)
+			{
+				const QStringRef baliseName = reader.qualifiedName();
+				if (baliseName == "labels") /* On recherche un labels */
+				{
+					currentLabelsCode = reader.attributes().value("code").toString();
+					writer.writeCurrentToken(reader);
+				}
+				else if ((baliseName == "label") && (currentLabelsCode == label)) /* On recherche un label */
+				{
+					const QStringRef currentContext = reader.attributes().value("ctx");
+					const QStringRef currentLang = reader.attributes().value("lang");
+
+					if ((currentContext == context) && (currentLang == lang))
+					{
+						writer.writeStartElement("label");
+						writer.writeAttribute("lang", lang);
+						writer.writeAttribute("ctx", context);
+						writer.writeAttribute("value", content);
+						updated = true;
+					}
+					else
+					{
+						writer.writeCurrentToken(reader);
+					}
+				}
+				else
+				{
+					writer.writeCurrentToken(reader);
+				}
+			}
+			else
+			{
+				writer.writeCurrentToken(reader);
+			}
+			break;
+		case QXmlStreamReader::EndElement:
+			if (! updated)
+			{
+				const QStringRef baliseName = reader.qualifiedName();
+				if ((baliseName == "labels") && (currentLabelsCode == label))
+				{
+					writer.writeStartElement("label");
+					writer.writeAttribute("lang", lang);
+					writer.writeAttribute("ctx", context);
+					writer.writeAttribute("value", content);
+					writer.writeEndElement();
+					updated = true;
+				}
+				else if (baliseName == "root")
+				{
+					writer.writeStartElement("labels");
+					writer.writeAttribute("code", label);
+					writer.writeStartElement("label");
+					writer.writeAttribute("lang", lang);
+					writer.writeAttribute("ctx", context);
+					writer.writeAttribute("value", content);
+					writer.writeEndElement();
+					writer.writeEndElement();
+				}
+			}
+			writer.writeCurrentToken(reader);
+			break;
+		case QXmlStreamReader::StartDocument:
+			writer.setCodec(reader.documentEncoding().toLocal8Bit());
+			writer.writeDefaultNamespace("http://www.generix.fr/technicalframework/trad");
+			writer.writeCurrentToken(reader);
+			break;
+		default:
+			writer.writeCurrentToken(reader);
+		}
+	}
+	if (reader.hasError())
+	{
+		ErrorManager::self()->addMessage(dictionary, -1, QtCriticalMsg, tr("Can't parse the dictionary for write : %1").arg(reader.errorString()));
+		return false;
+	}
+
+	dictionaryFile.resize(dictionaryByteArray.size());
+	dictionaryFile.seek(0);
+	dictionaryFile.write(dictionaryByteArray);
+
+	return true;
 }
 
 void DictionaryModel::loadDictionaries(const QString & prefix)
 {
+	_prefix = prefix;
+
 	XinxProject::ProjectPtr project = _project.toStrongRef();
 
 	clear();
+	_dictionaries.clear();
 
 	emit changed();
 
 	if (! project) return;
-	if (! ConfigurationManager::manager(project)) return;
-	if (! ConfigurationManager::manager(project)->getInterface()) return;
+
+	setConfigurationManager(ConfigurationManager::manager(project));
+	if (_currentConfigurationManager.isNull()) return;
+	if (! _currentConfigurationManager->getInterface()) return;
+
+	/* We load dictionary even if we don't show labels */
+	_dictionaries = _currentConfigurationManager->getInterface()->dictionnaries();
+
+	/* If there is no prefix defined, we don't show any labels (for performance reason */
 	if (prefix.isEmpty())
 	{
 		appendRow(new QStandardItem(tr("Please type a prefix to list labels.")));
+
+		emit changed();
 		return;
 	}
 
@@ -72,9 +239,7 @@ void DictionaryModel::loadDictionaries(const QString & prefix)
 	regExpPrefix.setCaseSensitivity(Qt::CaseInsensitive);
 
 	QHash<QString,QStandardItem*> _items;
-
-	QStringList dictionaries = ConfigurationManager::manager(project)->getInterface()->dictionnaries();
-	foreach(const QString & dictionary, dictionaries)
+	foreach(const QString & dictionary, _dictionaries)
 	{
 		ContentView3::NodePtr nodePtr = project->cache()->cachedFile(dictionary)->rootNode();
 
@@ -185,6 +350,10 @@ void DictionaryModel::loadDictionaries(const QString & prefix)
 				QStandardItem * item = new QStandardItem;
 				item->setText(labelPtr->name());
 				item->setIcon(QIcon(labelPtr->icon()));
+				item->setData(labelPtr->code(), ITEM_CODE);
+				item->setData(labelPtr->lang(), ITEM_LANG);
+				item->setData(labelPtr->context(), ITEM_CTX);
+				item->setData(dictionary, ITEM_DICO);
 				context->appendRow(item);
 			}
 		}

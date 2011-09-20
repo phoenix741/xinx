@@ -212,7 +212,7 @@ void GenerixProjectDockImpl::setProject(XinxProject::ProjectPtr project)
 				m_prefixCombo->setCurrentIndex(m_prefixCombo->findText(newGnxProject->defaultPrefix()));
 			}
 
-			connect(ConfigurationManager::manager(newGnxProject), SIGNAL(changed()), this, SLOT(updateList()));
+			connect(ConfigurationManager::manager(newGnxProject), SIGNAL(configurationChanged()), this, SLOT(updateList()));
 		}
 		m_prefixCombo->setVisible(newGnxProject && (newGnxProject->prefixes().size() > 0));
 		m_prefixLabel->setVisible(newGnxProject && (newGnxProject->prefixes().size() > 0));

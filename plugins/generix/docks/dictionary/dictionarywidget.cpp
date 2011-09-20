@@ -19,34 +19,15 @@
 
 // Xinx header
 #include "dictionarywidget.h"
-#include "dictionarymodel.h"
 
 /* DictionaryWidget */
 
-DictionaryWidget::DictionaryWidget(QWidget * parent) : QTreeView(parent), _model(new DictionaryModel(this))
+DictionaryWidget::DictionaryWidget(QWidget * parent) : QTreeView(parent)
 {
-	connect(_model.data(), SIGNAL(changed()), this, SIGNAL(changed()));
 	setSortingEnabled(true);
-	_model->loadDictionaries(QString());
-	setModel(_model.data());
 }
 
 DictionaryWidget::~DictionaryWidget()
 {
 
 }
-
-void DictionaryWidget::setPrefix(const QString& prefix)
-{
-	if (_prefix != prefix)
-	{
-		_prefix = prefix;
-		_model->loadDictionaries(prefix);
-	}
-}
-
-const QString& DictionaryWidget::prefix()
-{
-	return _prefix;
-}
-
