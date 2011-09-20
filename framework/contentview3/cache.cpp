@@ -126,12 +126,12 @@ QStringList Cache::cachedFiles() const
 	return result;
 }
 
-void Cache::addFileToCache(const QString& filename, bool force, ContentView3::Cache::CacheVisibility visibility)
+ContentView3::Parser* Cache::addFileToCache(const QString& filename, bool force, ContentView3::Cache::CacheVisibility visibility)
 {
 	const QString absoluteFilename = QFileInfo(filename).absoluteFilePath();
 
 	// If the file is already in the cache, don't reload it.
-	if (! force && d->_files.contains(absoluteFilename)) return;
+	if (! force && d->_files.contains(absoluteFilename)) return 0;
 
 	if (QFile::exists(absoluteFilename))
 	{
@@ -152,7 +152,11 @@ void Cache::addFileToCache(const QString& filename, bool force, ContentView3::Ca
 		parser->setDevice(new QFile(absoluteFilename));
 
 		addFileToCache(parser, force, visibility);
+
+		return parser;
 	}
+
+	return 0;
 }
 
 void Cache::addFileToCache(ContentView3::Parser* parser, bool force, ContentView3::Cache::CacheVisibility visibility)

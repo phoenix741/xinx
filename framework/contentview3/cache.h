@@ -64,7 +64,7 @@ public:
 	~Cache();
 
 	QStringList cachedFiles() const;
-	void addFileToCache(const QString & filename, bool force = false, CacheVisibility visibility = Cache::IMPORT);
+	ContentView3::Parser* addFileToCache(const QString & filename, bool force = false, CacheVisibility visibility = Cache::IMPORT);
 	void addFileToCache(ContentView3::Parser * parser, bool force = false, CacheVisibility visibility = Cache::IMPORT);
 
 	QList<FilePtr> importOf(ContentView3::FilePtr file) const;

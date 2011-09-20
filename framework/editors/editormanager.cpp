@@ -600,6 +600,10 @@ void EditorManager::openFile(const QString& filename, IFileTypePluginPtr interfa
 		ScriptManager::self()->callScriptsBeforeLoad(currentEditor());
 
 		openingEditor = EditorFactory::self()->createEditor(filename, interface, project);
+		if (! openingEditor) /* Cancel case */
+		{
+			return;
+		}
 		d->addTab(openingEditor);
 		d->updateActions();
 		emit codecChanged();
