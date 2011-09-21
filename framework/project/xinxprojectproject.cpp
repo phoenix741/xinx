@@ -64,6 +64,11 @@ public:
 	static QStringList loadList(QDomDocument document, const QString & list, const QString & element);
 	static void saveList(QDomDocument & document, const QString & list, const QString & element, const QStringList & slist);
 
+	void readPropertyValue(const QString & key, QDomElement node);
+	void writePropertyValue(const QString & key, QDomDocument & document, QDomElement & propertiesElement);
+	QDomElement createNode(const QString & key, QDomDocument & document, QDomElement & propertiesElement);
+	void readNode(const QString & key, QDomElement node);
+
 	void loadFromFile();
 	void saveToFile();
 
@@ -173,6 +178,83 @@ void PrivateXinxProject::saveList(QDomDocument & document, const QString & list,
 	}
 }
 
+void PrivateXinxProject::readPropertyValue(const QString & key, QDomElement node)
+{
+	QString type  = node.attribute("type", "QString");
+	QString name  = key;
+	QString value = node.text();
+
+	if ((type == "QStringList") && (! value.isEmpty()))
+	{
+		m_properties[name] = QVariant::fromValue(value.split(";;;"));
+	}
+	else if (! value.isEmpty())
+	{
+		QVariant::Type variantType = QVariant::nameToType(qPrintable(type));
+		QVariant p(variantType);
+		p.setValue(value);
+		m_properties[ name ] = p;
+	}
+}
+
+void PrivateXinxProject::readNode(const QString & key, QDomElement node)
+{
+	QDomElement subnode = node.firstChildElement();
+	bool hasChild = ! subnode.isNull();
+	while (! subnode.isNull())
+	{
+		const QString nodeName = subnode.tagName().remove("number.");
+		const QString subkey = key.isEmpty() ? nodeName : key + "." + nodeName;
+		readNode(subkey, subnode);
+		subnode = subnode.nextSiblingElement();
+	}
+
+	if (! hasChild)
+	{
+		readPropertyValue(key, node);
+	}
+}
+
+QDomElement PrivateXinxProject::createNode(const QString & key, QDomDocument & document, QDomElement & propertiesElement)
+{
+	QDomElement result = propertiesElement;
+	QStringList nodesStr = key.split(".");
+	foreach(const QString & nodeStr, nodesStr)
+	{
+		QString nodeName = nodeStr;
+
+		/* Rustine car un noeud XML ne peux commencer par des chiffres */
+		bool toIntOk;
+		nodeStr.toInt(&toIntOk);
+		if (toIntOk)
+		{
+			nodeName = "number." + nodeStr;
+		}
+
+		QDomElement newElement = result.firstChildElement(nodeName);
+		if (newElement.isNull())
+		{
+			newElement = document.createElement(nodeName);
+			result.appendChild(newElement);
+		}
+
+		result = newElement;
+	}
+
+	return result;
+}
+
+void PrivateXinxProject::writePropertyValue(const QString & key, QDomDocument & document, QDomElement & propertiesElement)
+{
+	const QString typeName = m_properties[ key ].typeName();
+	const QString value = typeName == "QStringList" ? m_properties[ key ].toStringList().join(";;;") : m_properties[ key ].toString();
+
+	QDomElement propertyElement = createNode(key, document, propertiesElement);
+	QDomText text = document.createTextNode(value);
+	propertyElement.appendChild(text);
+	propertyElement.setAttribute("type", typeName);
+}
+
 void PrivateXinxProject::loadFromFile()
 {
 	QFile file(m_fileName);
@@ -212,27 +294,7 @@ void PrivateXinxProject::loadFromFile()
 	QDomElement propertiesElement = root.firstChildElement("properties");
 
 	m_properties.clear();
-	QDomElement node = propertiesElement.firstChildElement();
-	while (! node.isNull())
-	{
-		QString type  = node.attribute("type", "QString"),
-						name  = node.tagName(),
-								value = node.text();
-
-		if ((type == "QStringList") && (! value.isEmpty()))
-		{
-			m_properties[name] = QVariant::fromValue(value.split(";;;"));
-		}
-		else if (! value.isEmpty())
-		{
-			QVariant::Type variantType = QVariant::nameToType(qPrintable(type));
-			QVariant p(variantType);
-			p.setValue(value);
-			m_properties[ name ] = p;
-		}
-
-		node = node.nextSiblingElement();
-	}
+	readNode("", propertiesElement);
 
 	load_rcsproxy_settings();
 }
@@ -256,14 +318,7 @@ void PrivateXinxProject::saveToFile()
 
 	foreach(const QString & key, m_properties.keys())
 	{
-		const QString typeName = m_properties[ key ].typeName();
-		const QString value = typeName == "QStringList" ? m_properties[ key ].toStringList().join(";;;") : m_properties[ key ].toString();
-
-		QDomElement propertyElement = document.createElement(key);
-		QDomText text = document.createTextNode(value);
-		propertyElement.appendChild(text);
-		propertyElement.setAttribute("type", typeName);
-		propertiesElement.appendChild(propertyElement);
+		writePropertyValue(key, document, propertiesElement);
 	}
 
 	// Open the file
