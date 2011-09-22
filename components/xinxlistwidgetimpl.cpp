@@ -93,6 +93,8 @@ void XinxListWidgetImplPrivate::on_m_btnAdd_clicked()
 		_ui->m_btnDef->setEnabled(_ui->m_list->count() > 0);
 		_ui->m_btnUp->setEnabled(_ui->m_list->currentRow() > 0);
 		_ui->m_btnDown->setEnabled((_ui->m_list->currentRow() >= 0) && (_ui->m_list->currentRow() < _ui->m_list->count() - 1));
+
+		emit _parent->itemAdded(item->text());
 	}
 }
 
@@ -100,12 +102,15 @@ void XinxListWidgetImplPrivate::on_m_btnDel_clicked()
 {
 	Q_ASSERT(_ui->m_list->currentRow() >= 0);
 
+	QString value = _ui->m_list->currentItem()->text();
 	delete _ui->m_list->currentItem();
 
 	_ui->m_btnDel->setEnabled(_ui->m_list->count() > 0);
 	_ui->m_btnDef->setEnabled(_ui->m_list->count() > 0);
 	_ui->m_btnUp->setEnabled(_ui->m_list->currentRow() > 0);
 	_ui->m_btnDown->setEnabled((_ui->m_list->currentRow() >= 0) && (_ui->m_list->currentRow() < _ui->m_list->count() - 1));
+
+	emit _parent->itemRemoved(value);
 }
 
 void XinxListWidgetImplPrivate::on_m_btnUp_clicked()
@@ -116,6 +121,8 @@ void XinxListWidgetImplPrivate::on_m_btnUp_clicked()
 	QListWidgetItem * item = _ui->m_list->takeItem(_ui->m_list->currentRow());
 	_ui->m_list->insertItem(row - 1, item);
 	_ui->m_list->setCurrentItem(item);
+
+	emit _parent->itemMoved(row, row - 1);
 }
 
 void XinxListWidgetImplPrivate::on_m_btnDown_clicked()
@@ -126,6 +133,8 @@ void XinxListWidgetImplPrivate::on_m_btnDown_clicked()
 	QListWidgetItem * item = _ui->m_list->takeItem(_ui->m_list->currentRow());
 	_ui->m_list->insertItem(row + 1, item);
 	_ui->m_list->setCurrentItem(item);
+
+	emit _parent->itemMoved(row, row + 1);
 }
 
 void XinxListWidgetImplPrivate::on_m_list_currentRowChanged(int row)
@@ -302,6 +311,13 @@ void XinxListWidgetImpl::setValues(const QStringList & values)
 	d->_ui->m_btnDown->setEnabled((d->_ui->m_list->currentRow() >= 0) && (d->_ui->m_list->currentRow() < d->_ui->m_list->count() - 1));
 
 	d->updateDefault(def);
+}
+
+//! Remove all element of the list. Update the default value to blank too.
+void XinxListWidgetImpl::clear()
+{
+	d->_ui->m_list->clear();
+	d->m_defaultValue = -1;
 }
 
 //! Add a value in the list

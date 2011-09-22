@@ -53,15 +53,20 @@ public:
 	QStringList values() const;
 	void setValues(const QStringList & values);
 
+	void add(const QString & value);
+	void clear();
+
 	QString defaultProposedValue() const;
 	void setDefaultProposedValue(const QString & value);
-	void add(const QString & value);
 
 	QString currentItem() const;
 signals:
 	void defaultValueChanged(QString value);
 	void currentRowChanged(int value);
 	void itemChanged(const QString & text);
+	void itemAdded(const QString & value);
+	void itemRemoved(const QString & value);
+	void itemMoved(int orig, int dest);
 protected:
 	virtual QString addNewValue();
 private:
