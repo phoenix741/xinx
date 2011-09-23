@@ -22,6 +22,7 @@
 #define CORE_CASCADINGSTYLESHEET_CONTEXT_H
 
 #include <codecompletion/context.h>
+#include <codecompletion/contexttype.h>
 #include <QHash>
 #include <QStack>
 

@@ -26,6 +26,7 @@
 #include "editors/models/html_xsl_base/definition_rootnode.h"
 #include <codecompletion/model.h>
 #include <qdocumentcursor.h>
+#include <codecompletion/contentviewnodeitem.h>
 
 namespace Core
 {

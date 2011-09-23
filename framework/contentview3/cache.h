@@ -22,7 +22,6 @@
 
 // Xinx header
 #include <contentview3/file.h>
-#include <core/exceptions.h>
 
 // Qt header
 #include <QString>
@@ -40,14 +39,6 @@ namespace ContentView3
 
 class Parser;
 class PrivateCache;
-
-
-class LIBEXPORT CacheParserNotFoundException : public XinxException
-{
-public:
-	CacheParserNotFoundException(const QString& assertion, const QString& locationFile, int locationLine, const QString& locationMethod, const QString& message, const QString& filename);
-	virtual ~CacheParserNotFoundException() throw();
-};
 
 class LIBEXPORT Cache : public QObject
 {

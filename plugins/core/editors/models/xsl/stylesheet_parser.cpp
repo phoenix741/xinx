@@ -29,6 +29,7 @@
 #include <plugins/interfaces/files.h>
 #include <contentview3/parserfactory.h>
 #include <editors/filetypepool.h>
+#include <contentview3/parserexception.h>
 
 
 // Qt header

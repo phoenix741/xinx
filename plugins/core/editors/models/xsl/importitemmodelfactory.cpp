@@ -38,6 +38,8 @@
 #include <project/iconprojectprovider.h>
 #include <project/externalfileresolver.h>
 #include <editors/filetypepool.h>
+#include <codecompletion/item.h>
+#include <codecompletion/iteminterface.h>
 
 namespace Core
 {

@@ -28,6 +28,7 @@
 #include "config/selfwebpluginsettings.h"
 #include <core/xinxconfig.h>
 #include <project/xinxprojectproject.h>
+#include <core/errormanager.h>
 
 // Qt header
 #include <QXmlStreamReader>

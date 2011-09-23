@@ -60,7 +60,6 @@ public:
 
 	QStringList checkedItems() const;
 	QStringList items() const;
-
 public slots:
 	void setCheckedItems(const QStringList& items);
 

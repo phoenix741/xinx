@@ -40,15 +40,6 @@ class PrivateContentViewNodeItem;
 class ItemModelFactory;
 class Item;
 
-class ItemInterface
-{
-public:
-	virtual void addItem(Item * item) = 0;
-	virtual QStringList contextsType() const = 0;
-	virtual void prepareRemovingOldItems(const QString & type) = 0;
-	virtual void removeOldItems(const QString & type) = 0;
-};
-
 class LIBEXPORT Model : public QStandardItemModel
 {
 	Q_OBJECT
@@ -64,56 +55,6 @@ private:
 
 	QScopedPointer<PrivateModel> d;
 	friend class Item;
-};
-
-/*
- * FIXME: Documentation
- */
-class LIBEXPORT Item : public QStandardItem
-{
-public:
-	Item();
-	virtual ~Item();
-
-	void setCompletionText(const QString & value);
-	QString completionText() const;
-
-	void setCompletionType(const QString & value);
-	QString completionType();
-
-	void setCompletionHelper(const QString & value);
-	QString completionHelper() const;
-
-	const QString & contextType() const;
-	void setContextType(const QString & value);
-
-	const QString & keyString() const;
-	void setKeyString(const QString & value);
-
-	virtual void insertCompletionStart(Context context, TextFileEditor* editor, QDocumentCursor & cursor);
-	virtual void insertCompletionEnd(Context context, TextFileEditor* editor, QDocumentCursor & cursor);
-	virtual void execute(Context context, TextFileEditor* editor);
-private:
-	QScopedPointer<PrivateItem> d;
-};
-
-class LIBEXPORT ContentViewNodeItem : public Item
-{
-public:
-	ContentViewNodeItem(const ContentView3::NodePtr & node);
-	virtual ~ContentViewNodeItem();
-
-	const ContentView3::NodePtr & node() const;
-private:
-	QScopedPointer<PrivateContentViewNodeItem> d;
-};
-
-class LIBEXPORT ActionItem : public Item
-{
-	Q_DECLARE_TR_FUNCTIONS(ActionItem)
-public:
-	explicit ActionItem(const QString & libelle, const QString & code);
-	virtual ~ActionItem();
 };
 
 }

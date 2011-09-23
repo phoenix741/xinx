@@ -24,6 +24,8 @@
 #include <editors/textfileeditor.h>
 #include <editors/xinxcodeedit.h>
 #include <plugins/xinxpluginsloader.h>
+#include <codecompletion/iteminterface.h>
+#include <codecompletion/item.h>
 
 namespace CodeCompletion
 {
@@ -80,159 +82,6 @@ public:
 	friend class PrivateItem;
 };
 
-/* PrivateItem */
-
-class PrivateItem
-{
-public:
-	QString _contextType, _keyString;
-};
-
-/* Item */
-
-Item::Item() : d(new PrivateItem)
-{
-}
-
-Item::~Item()
-{
-
-}
-
-void Item::setCompletionText(const QString & value)
-{
-	setData(value, Qt::UserRole + 1);
-	if (text().isEmpty())
-	{
-		setText(value);
-	}
-}
-
-QString Item::completionText() const
-{
-	return data(Qt::UserRole + 1).toString();
-}
-
-void Item::setCompletionType(const QString & value)
-{
-	setData(value, Qt::UserRole + 2);
-}
-
-QString Item::completionType()
-{
-	return data(Qt::UserRole + 2).toString();
-}
-
-void Item::setCompletionHelper(const QString & value)
-{
-	setData(value, Qt::UserRole + 3);
-}
-
-QString Item::completionHelper() const
-{
-	return data(Qt::UserRole + 3).toString();
-}
-
-void Item::setContextType(const QString& value)
-{
-	d->_contextType = value;
-}
-
-const QString& Item::contextType() const
-{
-	return d->_contextType;
-}
-
-const QString & Item::keyString() const
-{
-	return d->_keyString;
-}
-
-void Item::setKeyString(const QString & value)
-{
-	d->_keyString = value;
-}
-
-void Item::insertCompletionStart(Context context, TextFileEditor* editor, QDocumentCursor & cursor)
-{
-	Q_UNUSED(cursor);
-	// The default implementation do nothing
-}
-
-void Item::insertCompletionEnd(Context context, TextFileEditor* editor, QDocumentCursor & cursor)
-{
-	Q_UNUSED(cursor);
-	// The default implementation do nothing
-}
-
-void Item::execute(Context context, TextFileEditor* editor)
-{
-	const QString completionForm		= completionHelper();
-	const QString completionFormStart	= completionForm.section("%1",0, 0);
-	const QString completionFormEnd		= completionForm.section("%1",1, 1);
-	const QString value					= completionText();
-
-	QDocumentCursor tc = editor->textEdit()->textCursor();
-	tc.setAutoUpdated(true);
-
-	bool insertCompletion = true;
-	QDocumentCursor completionStartCursor(tc);
-	completionStartCursor.movePosition(completionFormStart.length(), QDocumentCursor::PreviousCharacter, QDocumentCursor::KeepAnchor);
-	if (completionStartCursor.selectedText() == completionFormStart)
-	{
-		QDocumentCursor tc2(tc);
-		tc2.movePosition(completionFormStart.length(), QDocumentCursor::PreviousCharacter);
-		insertCompletionStart(context, editor, tc2);
-		insertCompletion = false;
-	}
-	else
-	{
-		insertCompletionStart(context, editor, tc);
-		tc.insertText(completionFormStart);
-	}
-
-	tc.insertText(value);
-
-	if (insertCompletion)
-	{
-		tc.insertText(completionFormEnd);
-		insertCompletionEnd(context, editor, tc);
-	}
-
-	editor->textEdit()->setTextCursor(tc);
-}
-
-/* PrivateContentViewNodeItem */
-
-class PrivateContentViewNodeItem
-{
-public:
-	ContentView3::NodePtr _node;
-};
-
-/* ContentViewNodeItem */
-
-ContentViewNodeItem::ContentViewNodeItem(const ContentView3::NodePtr & node) : d(new PrivateContentViewNodeItem)
-{
-	d->_node = node;
-
-	setIcon(QIcon(node->icon()));
-	setText(node->displayName());
-	setCompletionText(node->name());
-	setCompletionHelper(node->completionString());
-	setCompletionType(node->type());
-	setKeyString(node->keyString());
-}
-
-ContentViewNodeItem::~ContentViewNodeItem()
-{
-
-}
-
-const ContentView3::NodePtr & ContentViewNodeItem::node() const
-{
-	return d->_node;
-}
 
 /* PrivateModel */
 
@@ -334,22 +183,6 @@ void PrivateModel::removeOldItems(const QString & type)
 			_model->removeRow(ci->row());
 		}
 	}
-}
-
-/* ActionItem */
-
-ActionItem::ActionItem(const QString& libelle, const QString & code)
-{
-	setCompletionText(code);
-	setText(libelle);
-	setForeground(Qt::gray);
-	setKeyString(code);
-	setCompletionType(tr("Action"));
-}
-
-ActionItem::~ActionItem()
-{
-
 }
 
 /* Model */

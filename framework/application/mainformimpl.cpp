@@ -32,6 +32,8 @@
 #include <core/uniqueapplication.h>
 #include <search/searchfilethread.h>
 #include <core/exceptions.h>
+#include <core/exceptionmanager.h>
+#include <core/errormanager.h>
 #include <scripts/scriptmanager.h>
 #include <snipets/snipetmanager.h>
 #include <snipets/snipetmenu.h>

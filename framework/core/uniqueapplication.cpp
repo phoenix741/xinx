@@ -21,6 +21,7 @@
 #include "uniqueapplication.h"
 #include <application/mainformimpl.h>
 #include <core/exceptions.h>
+#include <core/exceptionmanager.h>
 #include <editors/editormanager.h>
 
 // Qt header

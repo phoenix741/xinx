@@ -38,6 +38,18 @@ public:
 
 /* XinxJobProgressDock */
 
+/*!
+ * \ingroup job
+ * \class XinxJobProgressDock
+ * \since 0.10.1
+ *
+ * \brief Dock used to show the progress of each job.
+ *
+ * When a new job is created a new line is added to the dock, when the job is removed a new line is removed.
+ * This can be used by the user to have some information on job in progression.
+ */
+
+//! Create a new progress job dock
 XinxJobProgressDock::XinxJobProgressDock(QWidget* parent, Qt::WindowFlags f): XinxDockWidget(parent, f), d(new PrivateXinxJobProgressDock)
 {
 	setLayout(new QHBoxLayout);
@@ -51,6 +63,7 @@ XinxJobProgressDock::XinxJobProgressDock(QWidget* parent, Qt::WindowFlags f): Xi
 	connect(XinxJobManager::self(), SIGNAL(jobEnded(XinxJob*)), this, SLOT(slotJobEnded(XinxJob*)));
 }
 
+//! Destroy the progress job dock
 XinxJobProgressDock::~XinxJobProgressDock()
 {
 

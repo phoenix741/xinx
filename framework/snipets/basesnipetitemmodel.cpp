@@ -114,8 +114,8 @@
 /*!
  * \brief Create a BaseSnipetItemModel
  *
- * Create a BaseSnipetItemModel, and load categories and snipets from the \e db base. For
- * this purpose, BaseSnipetItemModel create a QSqlQueryModel used as source model of a TreeProxyItemModel.
+ * Load categories and snipets from the \e db base. For this purpose, BaseSnipetItemModel
+ * create a QSqlQueryModel used as source model of a TreeProxyItemModel.
  * \param db Base where BaseSnipetItemModel must load the content of it's structure.
  * \param parent Parent object of the new instance of BaseSnipetItemModel.
  */

@@ -124,17 +124,35 @@ void SnipetDockWidgetPrivate::filterChanged(const QString & filterText)
 
 /* SnipetDockWidget */
 
+/*!
+ * \ingroup Snipets
+ * \class SnipetDockWidget
+ * \since 0.9.0.0
+ *
+ * \brief Dock to show snipets as treeview.
+ *
+ * This class show all snipets in a dock divised in category and sub-category.
+ */
+
+//! Create the snipets dock
 SnipetDockWidget::SnipetDockWidget(QWidget * parent) : XinxDockWidget(parent), d(new SnipetDockWidgetPrivate(this))
 {
 	d->init();
 	setFocusProxy(d->_ui->m_snipetFilter);
 }
 
+//! Destroy the snipets dock
 SnipetDockWidget::~SnipetDockWidget()
 {
 
 }
 
+/*!
+ * \brief Change the editor to \p ed where to write snipet
+ *
+ * The editor where to write the content of the snipet. The snipet is executed
+ * when the used double click on a item.
+ */
 void SnipetDockWidget::setEditor(AbstractEditor * ed)
 {
 	if ((!ed) || (d->m_editor != ed))

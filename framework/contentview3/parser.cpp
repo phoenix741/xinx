@@ -17,59 +17,20 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+// Xinx header
 #include "parser.h"
 #include "file.h"
 #include "filenode.h"
+#include <project/externalfileresolver.h>
+#include <project/xinxprojectproject.h>
+#include <core/errormanager.h>
+#include <contentview3/parserexception.h>
 
 // Qt header
 #include <QDebug>
-#include <project/externalfileresolver.h>
-#include <project/xinxprojectproject.h>
 
 namespace ContentView3
 {
-
-/* ParserException */
-
-/*!
- * \ingroup ContentView3
- * \class ParserException
- * \brief Exception throw when the model can't be updated.
- */
-
-/*!
- * \brief Create the exception with a message and a line.
- * \param message Error of the exception.
- * \param line Line where the error is.
- * \param column Column where the error is.
- */
-ParserException::ParserException(QString message, int line, int column) : XinxException(message), m_line(line), m_column(column)
-{
-
-}
-
-ParserException::ParserException(const QString & assertion, const QString & locationFile, int locationLine, const QString & locationMethod, QString message, int line, int column) : XinxException(assertion, locationFile, locationLine, locationMethod, message), m_line(line), m_column(column)
-{
-
-}
-
-/*!
- * \brief Return the line where the error is.
- * \return The line of the error.
- */
-int ParserException::getLine() const
-{
-	return m_line;
-}
-
-/*!
- * \brief Return the column where the error is.
- * \return the column of the error.
- */
-int ParserException::getColumn() const
-{
-	return m_column;
-}
 
 /* PrivateParser */
 

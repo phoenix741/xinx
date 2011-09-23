@@ -82,8 +82,10 @@ BookmarkEditorInterface::BookmarkEditorInterface(QObject * parent) : QObject(par
 
 /*!
  * \fn void BookmarkEditorInterface::bookmarkModified(int minValue, int maxValue)
- * Signal emited when the list of bookmark is updated. When the signal is emited
- * a range is gived to tell which row is modified.
+ * \brief Signal emited when the list of bookmark is updated.
+ *
+ * When the signal is emited a range is gived to tell which row is modified.
+ *
  * \param minValue The first bound
  * \param maxValue The second bound
  */

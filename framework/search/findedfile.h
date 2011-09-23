@@ -24,16 +24,7 @@
 #include <QList>
 #include <search/findedline.h>
 
-class FindedFileData : public QSharedData
-{
-public:
-	FindedFileData();
-	FindedFileData(const FindedFileData &other);
-	~FindedFileData();
-
-	QString _filename;
-	QList<FindedLine> _lines;
-};
+class FindedFileData;
 
 class FindedFile
 {
@@ -56,6 +47,7 @@ public:
 
 	bool isValid() const;
 
+	FindedFile & operator=(const FindedFile & other);
 	bool operator==(const FindedFile & other) const;
 
 	class const_iterator

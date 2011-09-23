@@ -22,6 +22,23 @@
 #include <editors/abstracteditor.h>
 #include <QVBoxLayout>
 
+/*!
+ * \class EditorTabDockWidget
+ * \ingroup editor
+ * \since 0.10.2
+ *
+ * \brief This dock show all opened editor in a sorted list.
+ *
+ * This dock can be used by the user to show all the opened editor in a sorted list. The user can find
+ * more easily the editor to show.
+ */
+
+/*!
+ * \fn void EditorTabDockWidget::open(const QString & filename)
+ * \brief This signal is emited when the user select an editor to show.
+ */
+
+//! Create the editor tab dock
 EditorTabDockWidget::EditorTabDockWidget(QWidget *parent) : XinxDockWidget(parent)
 {
 	setWindowTitle(tr("Open Documents"));

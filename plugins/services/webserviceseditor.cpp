@@ -26,6 +26,7 @@
 #include <editors/widgeteditor/xml/xmltexteditor.h>
 #include <editors/bookmarktexteditorinterface.h>
 #include <session/sessioneditor.h>
+#include <core/errormanager.h>
 
 // Qt header
 #include <QToolButton>

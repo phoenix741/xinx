@@ -19,10 +19,15 @@
 
 #include "xinxjob.h"
 #include <core/exceptions.h>
+#include <core/exceptionmanager.h>
 
 // Qt header
 #include <QDebug>
 #include <QTime>
+
+/*!
+ * \defgroup job Job
+ */
 
 /* Static member */
 

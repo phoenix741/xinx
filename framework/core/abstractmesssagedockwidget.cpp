@@ -21,15 +21,54 @@
 #include <QDockWidget>
 #include "xinxconfig.h"
 
+/*!
+ * \ingroup gui
+ * \class AbstractMessageDockWidget
+ * \since 0.10.2
+ *
+ * \brief Abstract class to use to make a dock widget.
+ *
+ * You must subclass this class when you want to make a new dock for XINX that implement << notifications >> like the error dock or
+ * search dock. This class contains method to show notification and method to show title.
+ */
+
+/*!
+* \fn void AbstractMessageDockWidget::open(const QString & filename, int line)
+* \brief Signal emited when the dock want to open a file (like content view, project view, ...)
+*/
+
+/*!
+ * \fn virtual bool AbstractMessageDockWidget::automatcallyShow() const = 0
+ * \brief Indicator that tell to show the dock when notification changed
+ *
+ * This method is used to tell to XINX if the dock must be automatically show when the notification changed.
+ * @return true if the dock is automatically show or false is if the dock must be keep hidden.
+ */
+
+/*!
+ * \fn virtual bool AbstractMessageDockWidget::automaticallyClose() const = 0
+ * \brief Indicator that tell to close the dock when notification changed
+ *
+ * This method is used to tell to XINX if the dock must be automatically closed when the notification is set to 0.
+ * @return true if the dock is automatically closed or else false.
+ */
+
+//! Create a new dock with the parent \p parent.
 AbstractMessageDockWidget::AbstractMessageDockWidget(QWidget* parent): XinxDockWidget(parent), _notification(0)
 {
 }
 
+//! Destroy the object
 AbstractMessageDockWidget::~AbstractMessageDockWidget()
 {
 
 }
 
+/*!
+ * \brief Show the window title in the button.
+ *
+ * This method is subclassed to show the number of notification in the title.
+ */
 QString AbstractMessageDockWidget::windowTitle() const
 {
 	if (_notification == 0)
@@ -39,6 +78,14 @@ QString AbstractMessageDockWidget::windowTitle() const
 	return XinxDockWidget::windowTitle() + QString(" - %1").arg(_notification);
 }
 
+/*!
+ * \brief Change the number of notification to show.
+ *
+ * Set the number of notification to \p notification. When a notification is changed,
+ * the signal windowChanged() is emited.
+ *
+ * \sa notifyCount(), windowChanged()
+ */
 void AbstractMessageDockWidget::setNotifyCount(int notification)
 {
 	if (_notification != notification)
@@ -49,6 +96,14 @@ void AbstractMessageDockWidget::setNotifyCount(int notification)
 	}
 }
 
+/*!
+ * \brief Return the number of notification.
+ *
+ * Return the number of notification of the dock (the number show in the title). The notification is used
+ * by search dock, and by error dock.
+ *
+ * \sa setNotifyCount()
+ */
 int AbstractMessageDockWidget::notifyCount() const
 {
 	return _notification;

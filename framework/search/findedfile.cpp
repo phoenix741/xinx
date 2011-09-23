@@ -22,6 +22,17 @@
 
 /* FindedFileData */
 
+class FindedFileData : public QSharedData
+{
+public:
+	FindedFileData();
+	FindedFileData(const FindedFileData &other);
+	~FindedFileData();
+
+	QString _filename;
+	QList<FindedLine> _lines;
+};
+
 FindedFileData::FindedFileData()
 {
 }
@@ -110,6 +121,12 @@ int FindedFile::findedLineSize() const
 bool FindedFile::isValid() const
 {
 	return (!d->_filename.isEmpty()) || (!d->_lines.isEmpty());
+}
+
+FindedFile & FindedFile::operator=(const FindedFile& other)
+{
+	d = other.d;
+	return *this;
 }
 
 bool FindedFile::operator==(const FindedFile & other) const

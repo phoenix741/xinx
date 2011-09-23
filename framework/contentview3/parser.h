@@ -39,18 +39,6 @@ namespace ContentView3
 class Node;
 class PrivateParser;
 
-class LIBEXPORT ParserException : public XinxException
-{
-public:
-	ParserException(QString message, int line, int column = 0);
-	ParserException(const QString & assertion, const QString & locationFile, int locationLine, const QString & locationMethod, QString message, int line, int column = 0);
-
-	int getLine() const;
-	int getColumn() const;
-private:
-	int m_line, m_column;
-};
-
 class LIBEXPORT Parser : public XinxJob
 {
 	Q_OBJECT

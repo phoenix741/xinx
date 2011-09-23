@@ -20,6 +20,7 @@
 // Xinx header
 #include "core/xinxthread.h"
 #include "core/exceptions.h"
+#include "core/exceptionmanager.h"
 #include "core/xinxcore.h"
 
 /* XinxThreadManager */

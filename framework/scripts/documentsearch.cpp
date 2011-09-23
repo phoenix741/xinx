@@ -19,49 +19,7 @@
 
 // Xinx header
 #include "documentsearch.h"
-
-/* DocumentSearchOption */
-
-DocumentSearchOption::DocumentSearchOption(QDocumentSearch * search, QObject * parent) : QObject(parent), m_search(search)
-{
-}
-
-DocumentSearchOption::~DocumentSearchOption()
-{
-}
-
-void DocumentSearchOption::setWholeWords(bool value)
-{
-	m_wholeWords = value;
-	m_search->setOption(QDocumentSearch::WholeWords, value);
-}
-
-bool DocumentSearchOption::isWholeWords() const
-{
-	return m_wholeWords;
-}
-
-void DocumentSearchOption::setCaseSensitive(bool value)
-{
-	m_caseSensitive = value;
-	m_search->setOption(QDocumentSearch::CaseSensitive, value);
-}
-
-bool DocumentSearchOption::isCaseSensitive() const
-{
-	return m_caseSensitive;
-}
-
-void DocumentSearchOption::setRegExp(bool value)
-{
-	m_regexp = value;
-	m_search->setOption(QDocumentSearch::RegExp, value);
-}
-
-bool DocumentSearchOption::isRegExp() const
-{
-	return m_regexp;
-}
+#include "documentsearchoption.h"
 
 /* DocumentSearch */
 

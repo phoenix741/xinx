@@ -25,7 +25,7 @@
 #include <QActionGroup>
 #include <QScopedPointer>
 
-class PrivateActionGroup;
+class ActionGroupPrivate;
 
 class LIBEXPORT ActionGroup : public QActionGroup
 {
@@ -48,7 +48,7 @@ signals:
 	void actionAdded(QAction * action);
 	void actionRemoved(QAction * action);
 private:
-	QScopedPointer<PrivateActionGroup> d;
+	QScopedPointer<ActionGroupPrivate> d;
 };
 
 #endif // ACTIONGROUP_H

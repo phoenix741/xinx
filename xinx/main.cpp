@@ -24,6 +24,7 @@
 #include <snipets/snipetlist.h>
 #include <core/xinxconfig.h>
 #include <core/exceptions.h>
+#include <core/exceptionmanager.h>
 #include <plugins/xinxpluginsloader.h>
 #include <application/newversionwizardimpl.h>
 #include <editors/editormanager.h>

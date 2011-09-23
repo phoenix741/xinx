@@ -33,6 +33,7 @@
 #include <editors/xinxcodeedit.h>
 #include <editors/widgeteditor/xml/xmltexteditor.h>
 #include "xmldefinitionmanager.h"
+#include <codecompletion/iteminterface.h>
 
 namespace Core
 {

@@ -28,30 +28,7 @@
 // QCodeEdit header
 #include <qdocumentsearch.h>
 
-/* DocumentSearchOption */
-
-class LIBEXPORT DocumentSearchOption : public QObject
-{
-	Q_OBJECT
-	Q_PROPERTY(bool wholeWords READ isWholeWords WRITE setWholeWords)
-	Q_PROPERTY(bool caseSensitive READ isCaseSensitive WRITE setCaseSensitive)
-	Q_PROPERTY(bool regExp READ isRegExp WRITE setRegExp)
-public:
-	DocumentSearchOption(QDocumentSearch * search, QObject * parent = 0);
-	virtual ~DocumentSearchOption();
-public slots:
-	void setWholeWords(bool value);
-	bool isWholeWords() const;
-
-	void setCaseSensitive(bool value);
-	bool isCaseSensitive() const;
-
-	void setRegExp(bool value);
-	bool isRegExp() const;
-private:
-	bool m_wholeWords, m_caseSensitive, m_regexp;
-	QDocumentSearch * m_search;
-};
+class DocumentSearchOption;
 
 /* DocumentSearch */
 

@@ -133,7 +133,17 @@
  * \brief The search is case sensitive
  */
 
+/*!
+ * \property AbstractEditor::title
+ * \brief Return the title of the editor
+ * \sa getTitle()
+ */
 
+/*!
+* \property AbstractEditor::filename
+* \brief Return the last filename of the editor
+* \sa lastFileName()
+*/
 
 /*!
  * \brief Create an objects of type AbstractEditor.
@@ -381,6 +391,15 @@ AbstractEditor::~AbstractEditor()
 /*!
  * \fn void AbstractEditor::contentChanged()
  * \brief Signal emited when the content of the editor change.
+ */
+
+/*!
+ * \fn void AbstractEditor::positionChanged(const QString & textPosition)
+ * \brief Signal emited when the position of the cursor in the editor is changed.
+ *
+ * For the text editor, the position is like 000x000.
+ *
+ * \param textPosition position of the text to show in the status bar.
  */
 
 /*!
@@ -714,11 +733,24 @@ IFileTypePluginPtr AbstractEditor::fileTypePluginInterface() const
 	return m_fileTypePlugin;
 }
 
+/*!
+ * \brief Set the project \p project to the editor.
+ *
+ * The project is used for some operation (import, completion, ...). The pointer used in the editor is
+ * a weak reference to the project editor. If the project is removed, the link is removed too.
+ *
+ * \sa project()
+ */
 void AbstractEditor::setProject(XinxProject::ProjectPtr project)
 {
 	_project = project.toWeakRef();
 }
 
+/*!
+ * \brief Return the project used with this editor.
+ *
+ * Return a strong reference to the project.
+ */
 XinxProject::ProjectPtr AbstractEditor::project() const
 {
 	return _project.toStrongRef();

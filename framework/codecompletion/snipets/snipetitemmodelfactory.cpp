@@ -23,6 +23,7 @@
 #include <codecompletion/model.h>
 #include "snipetitem.h"
 #include "snipetcontexttype.h"
+#include <codecompletion/iteminterface.h>
 
 // Qt header
 #include <QSqlQuery>

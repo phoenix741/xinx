@@ -202,6 +202,7 @@ CheckComboBox::~CheckComboBox()
 }
 
 /*!
+ * \brief Hides the list of items in the combobox if it is currently visible.
  * \reimp for internal use
  */
 void CheckComboBox::hidePopup()

@@ -23,16 +23,7 @@
 #include <QString>
 #include <QSharedData>
 
-class FindedLineData : public QSharedData
-{
-public:
-	FindedLineData();
-	FindedLineData(const FindedLineData &other);
-	~FindedLineData();
-
-	int _line, _posStart, _posEnd;
-	QString _content;
-};
+class FindedLineData;
 
 class FindedLine
 {
@@ -56,6 +47,7 @@ public:
 
 	bool isValid() const;
 
+	FindedLine & operator=(const FindedLine & other);
 	bool operator==(const FindedLine & other) const;
 private:
 	QExplicitlySharedDataPointer<FindedLineData> d;

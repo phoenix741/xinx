@@ -19,33 +19,14 @@
 
 // Xinx header
 #include "context.h"
+#include <codecompletion/contexttype.h>
 #include <contentview3/file.h>
 
 // Qt header
 #include <QHash>
 
-// Std header
-#include <typeinfo>
-
 namespace CodeCompletion
 {
-
-/* ContextType */
-
-ContextType::ContextType()
-{
-
-}
-
-ContextType::~ContextType()
-{
-
-}
-
-bool ContextType::operator==(const CodeCompletion::ContextType& other) const
-{
-	return typeid(*this) == typeid(other);
-}
 
 /* PrivateContext */
 

@@ -23,6 +23,7 @@
 #include "definition_balisenode.h"
 #include "definition_attributenode.h"
 #include "definition_valuenode.h"
+#include <contentview3/parserexception.h>
 
 namespace Core
 {

@@ -24,19 +24,6 @@
 // Xinx header
 #include <core/lib-config.h>
 #include <qmenuview.h>
-#include <snipets/snipetitemmodel.h>
-
-class LIBEXPORT SnipetMenuModel : public SnipetItemModel
-{
-	Q_OBJECT
-public:
-	virtual Qt::ItemFlags flags(const QModelIndex & index) const;
-protected:
-	friend class SnipetManager;
-
-	explicit SnipetMenuModel(QSqlDatabase db, QObject * parent = 0);
-private:
-};
 
 /* SnipetMenu */
 

@@ -24,6 +24,7 @@
 #include "editors/textfileeditor.h"
 #include "editors/xinxcodeedit.h"
 #include "scripts/documentsearch.h"
+#include "scripts/documentsearchoption.h"
 
 // Qt header
 #include <QApplication>

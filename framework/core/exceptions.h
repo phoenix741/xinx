@@ -23,8 +23,6 @@
 
 // Xinx header
 #include <core/lib-config.h>
-#include <core/xinxcore.h>
-#include <core/xinxsingleton.h>
 
 // Qt header
 #include <QStringList>
@@ -63,68 +61,5 @@ private:
 
 #define EXCEPT_ELSE(assertion, Exception, method, ...) \
 	(assertion ? qt_noop() : throw Exception(#assertion, __FILE__,__LINE__, method, __VA_ARGS__));
-
-class LIBEXPORT ExceptionManager : public QObject /* This can't be an official singleton, because it's the logger */
-{
-	Q_OBJECT
-public:
-	virtual ~ExceptionManager();
-	static ExceptionManager * self();
-
-	QStringList stackTrace() const;
-
-	static void installExceptionHandler();
-	static void installSignalHandler();
-public slots:
-	void openTicketDialog(const QString& message = QString(), const QStringList & stack = QStringList()) const;
-	void notifyError(QString error, QtMsgType t = QtWarningMsg, bool showMessage = true);
-signals:
-	void errorTriggered(const QString & message);
-private:
-	ExceptionManager();
-
-	QHash<unsigned long,QStringList> m_stackTrace;
-	QStringList m_exceptionFilter;
-
-	static ExceptionManager * s_self;
-};
-
-class LIBEXPORT ErrorManager : public XinxLibSingleton<ErrorManager>
-{
-	Q_OBJECT
-public:
-	struct Error
-	{
-		int line;
-		QtMsgType type;
-		QString message;
-		QStringList parameters;
-
-		bool operator==(const Error & e) const
-		{
-			return (line == e.line) && (type == e.type) && (message == e.message) && (parameters == e.parameters);
-		}
-	};
-
-	virtual ~ErrorManager();
-
-	const QMap<QString, QList<Error> > & errors() const;
-public slots:
-	void addContextTranslation(const QString & context, const QString & translation);
-	void removeContextTranslation(const QString & context);
-
-	void clearMessages(const QString & context);
-	void addMessage(const QString & context, int line, QtMsgType t, const QString & message, const QStringList & parameters = QStringList());
-	void addMessage(const QString & context, int line, QtMsgType t, const XinxException & exception);
-signals:
-	void changed();
-private:
-	ErrorManager();
-
-	QHash<QString,QString> m_contextTranslation;
-	QMap<QString, QList<Error> > m_errors;
-	QTimer m_timer;
-	friend class XinxLibSingleton<ErrorManager>;
-};
 
 #endif /* __EXCEPTIONS_H__ */

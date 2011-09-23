@@ -34,18 +34,7 @@ namespace CodeCompletion
 {
 
 class PrivateContext;
-
-class LIBEXPORT ContextType
-{
-public:
-	ContextType();
-	virtual ~ContextType();
-
-	virtual QString type() const = 0;
-	virtual bool operator==(const ContextType & other) const;
-private:
-	Q_DISABLE_COPY(ContextType)
-};
+class ContextType;
 
 class LIBEXPORT Context
 {

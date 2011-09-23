@@ -21,6 +21,7 @@
 #define CODECOMPLETION_ITEMMODELFACTORY_H
 
 #include <codecompletion/context.h>
+#include <codecompletion/iteminterface.h>
 
 namespace CodeCompletion
 {

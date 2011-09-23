@@ -23,27 +23,11 @@
 
 // Xinx header
 #include <core/lib-config.h>
-#include <core/exceptions.h>
 #include <snipets/snipet.h>
 
 // Qt header
 #include <QObject>
 #include <QString>
-
-/*!
- * \class SnipetListException
- * The snipet list exception, is throw when Snipet list load or save file.
- */
-class LIBEXPORT SnipetListException : public XinxException
-{
-public:
-	/*!
-	 * Exception throw by the Snipet list.
-	 * \param message Message of the error.
-	 */
-	SnipetListException(const QString & message);
-};
-
 
 /*!
  * The snipet list contains all snipet defined in XINX. This snipet is stored in a

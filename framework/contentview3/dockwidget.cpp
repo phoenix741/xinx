@@ -27,6 +27,26 @@
 namespace ContentView3
 {
 
+/*!
+ * \class DockWidget
+ * \ingroup contentview
+ * \since 0.10.1
+ *
+ * \brief This class is used to show the content of a file in a dock.
+ *
+ * The content view can be used to show import too.
+ */
+
+/*!
+ * \fn void DockWidget::open(const QString & filename, int line, IFileTypePluginPtr interface, XinxProject::ProjectPtr project)
+ * \brief The signal is emited when a user click on an element.
+ * \param filename The file to open
+ * \param line The line in the file where move the cursor
+ * \param interface The interface used to open the file (with the type of file), actually, the interface is not filled.
+ * \param project The project to used when opening the file. The project must be the same that the current project.
+ */
+
+//! Create the dock that show the content view
 DockWidget::DockWidget(QWidget* parent, Qt::WindowFlags f): XinxDockWidget(parent, f)
 {
 	setWindowTitle(tr("File Content"));
@@ -46,6 +66,7 @@ DockWidget::DockWidget(QWidget* parent, Qt::WindowFlags f): XinxDockWidget(paren
 	connect(_contents_tree_view, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(doubleClicked(QModelIndex)));
 }
 
+//! Destroy the dock that show content view.
 DockWidget::~DockWidget()
 {
 

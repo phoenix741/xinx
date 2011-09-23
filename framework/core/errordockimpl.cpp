@@ -25,6 +25,7 @@
 #include <plugins/interfaces/files.h>
 #include <dtoolview.h>
 #include <editors/filetypepool.h>
+#include <core/errormanager.h>
 
 // Qt header
 #include <QFileInfo>

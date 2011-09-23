@@ -28,6 +28,7 @@
 #include <QStyledItemDelegate>
 #include <QTreeView>
 #include <QHeaderView>
+#include <codecompletion/item.h>
 
 namespace CodeCompletion
 {
@@ -94,6 +95,23 @@ QModelIndex PrivateCompleter::findNextSelectableIndex(QModelIndex index, bool up
 
 /* Completer */
 
+/*!
+ * \class Completer
+ * \ingroup codecompletion
+ * \since 0.10.1
+ *
+ * \brief This class is used to make code completion in TextFileEditor
+ *
+ * This class is used to provide a completer to complete in the TextFileEditor. This class is based on the new
+ * framework CodeCompletion.
+ *
+ * This class re-implemente the QTreeView and eventFilter() to provide usability to the user.
+ */
+
+/*!
+ * \brief Create a new completer.
+ * \param parent The text file editor where to attach the completer
+ */
 Completer::Completer(TextFileEditor* parent): QCompleter(parent), d(new PrivateCompleter)
 {
 	d->_completer = this;
@@ -118,11 +136,13 @@ Completer::Completer(TextFileEditor* parent): QCompleter(parent), d(new PrivateC
 	setCompletionColumn(1);
 }
 
+//! Destroy the completer
 Completer::~Completer()
 {
 
 }
 
+//! Method to resize the last column when the number of column change.
 void Completer::resizeColumns(int oldSize, int newSize)
 {
 	if (newSize == 2)
@@ -133,6 +153,18 @@ void Completer::resizeColumns(int oldSize, int newSize)
 	}
 }
 
+/*!
+ * \brief Method to call to launch the completion
+ *
+ * This method show the completion widget at the position of the cursor in the editor. In some case, instead of showing the completion
+ * widget, we call directly the completion (if the completion is asked by the user with Ctrl+SPACE).
+ *
+ * The completion update the model (with method CodeCompletion::Model::updateModel()) to refresh the list with the new prefix (set in
+ * the context). This can be slow if there are many item, so updateModel() must be coding with attention.
+ *
+ * \param automaticCall Set this param to true if the completion is asked by the program or false if the completion is asked by the user
+ * \param prefix Prefix to use for the selection of Item to propose to user.
+ */
 void Completer::complete(bool automaticCall, const QString & prefix)
 {
 	QTime _complete_timer;
@@ -177,6 +209,9 @@ void Completer::complete(bool automaticCall, const QString & prefix)
 	qDebug() << "Complete in " << _complete_timer.elapsed() << " ms";
 }
 
+/*!
+ * \brief Replace the text in the editor by the completion of the \p row-nth item of the list.
+ */
 void Completer::complete(int row)
 {
 	if (d->_model)
@@ -192,6 +227,9 @@ void Completer::complete(int row)
 	}
 }
 
+/*!
+ * \brief Replace the text in the editor by the completion of the given \p index.
+ */
 void Completer::complete(const QModelIndex& index)
 {
 	if (index.isValid())
@@ -207,6 +245,9 @@ void Completer::complete(const QModelIndex& index)
 	}
 }
 
+/*!
+ * \brief Replace the text in the editor with the completion of the given \p item.
+ */
 void Completer::complete(CodeCompletion::Item* item)
 {
 	if (item)
@@ -220,17 +261,29 @@ void Completer::complete(CodeCompletion::Item* item)
 	}
 }
 
+/*!
+ * \brief Set the current context to \p context.
+ *
+ * This method set the \p context for this and for the current model. So the model
+ * must be set before (else we can have Segfault).
+ */
 void Completer::setContext(Context context)
 {
 	d->_context = context;
 	d->_model->setContext(context);
 }
 
+//! Return the current context
 Context Completer::context() const
 {
 	return d->_context;
 }
 
+/*!
+ * \brief Set the \p editor of the completer.
+ *
+ * This normally already be made in the constructor.
+ */
 void Completer::setEditor(TextFileEditor* editor)
 {
 	if (d->_editor != editor)
@@ -244,22 +297,26 @@ void Completer::setEditor(TextFileEditor* editor)
 	}
 }
 
+//! Return the current editor of the completer.
 TextFileEditor* Completer::editor() const
 {
 	return d->_editor;
 }
 
+//! Set the model used for completion. The model must be of type CodeCompletion::Model.
 void Completer::setModel(Model* model)
 {
 	d->_model = model;
 	QCompleter::setModel(model);
 }
 
+//! Return the model used for completion
 Model* Completer::model() const
 {
 	return d->_model;
 }
 
+//! Redefine some event (key press) to made this completer more usable for user.
 bool Completer::eventFilter(QObject *o, QEvent *e)
 {
 	if ((e->type() == QEvent::KeyPress) && popup()->isVisible())

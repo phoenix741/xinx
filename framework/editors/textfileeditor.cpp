@@ -30,6 +30,7 @@
 #include <plugins/xinxpluginelement.h>
 #include <actions/actionmanager.h>
 #include <plugins/interfaces/codecompletion.h>
+#include <core/errormanager.h>
 
 #include <contentview3/parserfactory.h>
 #include <contentview3/parser.h>

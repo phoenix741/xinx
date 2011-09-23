@@ -21,6 +21,7 @@
 #include "file.h"
 #include "filenode.h"
 #include <project/xinxprojectproject.h>
+#include <contentview3/cacheexception.h>
 
 // Qt header
 #include <QStringList>

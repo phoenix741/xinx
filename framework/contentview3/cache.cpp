@@ -18,6 +18,7 @@
 */
 
 #include "cache.h"
+#include "cacheexception.h"
 #include "parser.h"
 #include "parserfactory.h"
 #include <jobs/xinxjobmanager.h>
@@ -30,20 +31,19 @@
 #include <QMutex>
 #include <QMetaType>
 
+/*!
+ * \defgroup contentview Content View
+ */
+
+/*!
+ * \brief This namespace contains all class used for content view.
+ * \since 0.10.1
+ *
+ * This namespace contains all class and method used to generate a contentview. The contentview
+ * can be used for the completion too.
+ */
 namespace ContentView3
 {
-
-/* CacheParserNotFoundException */
-
-CacheParserNotFoundException::CacheParserNotFoundException(const QString& assertion, const QString& locationFile, int locationLine, const QString& locationMethod, const QString& message, const QString & filename) : XinxException(assertion, locationFile, locationLine, locationMethod, message.arg(filename))
-{
-
-}
-
-CacheParserNotFoundException::~CacheParserNotFoundException() throw()
-{
-
-}
 
 /* PrivateCache */
 

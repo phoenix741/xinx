@@ -27,6 +27,7 @@
 #include "snipets/snipetitemmodel.h"
 #include "snipets/snipetdockitemmodel.h"
 #include "snipets/categoryitemmodel.h"
+#include "snipets/snipetmenumodel.h"
 #include "snipets/snipetmenu.h"
 #include "snipets/snipet.h"
 

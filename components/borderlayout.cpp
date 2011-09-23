@@ -47,7 +47,6 @@
 // Components header
 #include "borderlayout_p.h"
 
-
 /* BorderLayoutPrivate */
 
 QSize BorderLayoutPrivate::calculateSize(SizeType sizeType) const

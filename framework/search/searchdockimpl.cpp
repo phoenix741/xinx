@@ -27,6 +27,7 @@
 #include <editors/xinxcodeedit.h>
 #include "replacefilethread.h"
 #include "findedfile.h"
+#include <core/errormanager.h>
 
 // Qt header
 #include <QFileInfo>

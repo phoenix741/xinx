@@ -25,6 +25,7 @@
 #include <QApplication>
 #include <contentview3/definitions.h>
 #include <codecompletion/model.h>
+#include <codecompletion/contentviewnodeitem.h>
 
 namespace Core
 {

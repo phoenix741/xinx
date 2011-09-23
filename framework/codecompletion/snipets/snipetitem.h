@@ -22,6 +22,7 @@
 
 // Xinx header
 #include <codecompletion/model.h>
+#include <codecompletion/actionitem.h>
 
 // Qt header
 #include <QApplication>

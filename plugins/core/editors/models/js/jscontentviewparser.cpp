@@ -22,6 +22,7 @@
 #include "js_paramnode.h"
 #include "js_variablenode.h"
 #include "js_functionnode.h"
+#include <contentview3/parserexception.h>
 
 // Qt header
 #include <QIODevice>

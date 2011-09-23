@@ -27,6 +27,7 @@
 #include <editors/textfileeditor.h>
 #include <editors/xinxcodeedit.h>
 #include <codecompletion/model.h>
+#include <codecompletion/iteminterface.h>
 
 #include <QMultiHash>
 #include <QStringList>

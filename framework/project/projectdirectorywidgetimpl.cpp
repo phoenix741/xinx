@@ -700,6 +700,25 @@ bool PrivateProjectDirectoryWidgetImpl::eventFilter(QObject *obj, QEvent *event)
 
 /* ProjectDirectoryWidgetImpl */
 
+/*!
+ * \class ProjectDirectoryWidgetImpl
+ * \ingroup XinxProject
+ * \since 0.10.1
+ *
+ * \brief This dock is used to show each project in a tree view, and for each project the files and directories.
+ *
+ * This dock have buttons, to show update, commit, open, and close project. There is popup menu too, made some operations.
+ */
+
+/*!
+ * \fn void ProjectDirectoryWidgetImpl::open(const QString & filename, IFileTypePluginPtr interface, XinxProject::ProjectPtr project);
+ * \brief The signal is emited when a user click on an element.
+ * \param filename The file to open
+ * \param interface The interface used to open the file (with the type of file), actually, the interface is not filled.
+ * \param project The project to used when opening the file. The project must be the same that the current project.
+ */
+
+//! Create the project directory dock
 ProjectDirectoryWidgetImpl::ProjectDirectoryWidgetImpl(QWidget* parent): XinxDockWidget(parent), d(new PrivateProjectDirectoryWidgetImpl(this))
 {
 	d->_ui->_directory_view->installEventFilter(d.data());
@@ -756,12 +775,18 @@ ProjectDirectoryWidgetImpl::ProjectDirectoryWidgetImpl(QWidget* parent): XinxDoc
 	connect(d->_ui->_filter_type, SIGNAL(currentIndexChanged(int)), d.data(), SLOT(filterTimeout()));
 }
 
+//! Destroy the dock
 ProjectDirectoryWidgetImpl::~ProjectDirectoryWidgetImpl()
 {
 	d->_model->setFileIconProvider(NULL);
 	delete d->_provider;
 }
 
+/*!
+ * \brief Return the list of selected files.
+ *
+ * This method return all files (filePath) selected by the user as a QStringList.
+ */
 QStringList ProjectDirectoryWidgetImpl::selectedFiles() const
 {
 	QStringList paths;
@@ -772,6 +797,7 @@ QStringList ProjectDirectoryWidgetImpl::selectedFiles() const
 	return paths;
 }
 
+//! Return the action that can be used to toogle view between flat view and tree view.
 QAction* ProjectDirectoryWidgetImpl::toggledViewAction() const
 {
 	return d->_toggled_view_action;

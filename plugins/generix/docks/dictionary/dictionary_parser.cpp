@@ -23,6 +23,7 @@
 #include "dictionary_labelnode.h"
 #include "dictionary_labelsnode.h"
 #include <contentview3/filenode.h>
+#include <contentview3/parserexception.h>
 
 namespace Generix
 {

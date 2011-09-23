@@ -22,6 +22,17 @@
 
 /* FindedLineData */
 
+class FindedLineData : public QSharedData
+{
+public:
+	FindedLineData();
+	FindedLineData(const FindedLineData &other);
+	~FindedLineData();
+
+	int _line, _posStart, _posEnd;
+	QString _content;
+};
+
 FindedLineData::FindedLineData() : _line(-1), _posStart(-1), _posEnd(-1)
 {
 }
@@ -102,6 +113,12 @@ const QString& FindedLine::content() const
 bool FindedLine::isValid() const
 {
 	return (!d->_content.isEmpty()) || (d->_line != -1) || (d->_posStart != -1) || (d->_posEnd != -1);
+}
+
+FindedLine& FindedLine::operator=(const FindedLine& other)
+{
+	d = other.d;
+	return *this;
 }
 
 bool FindedLine::operator==(const FindedLine & other) const

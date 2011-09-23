@@ -32,6 +32,7 @@
 #include <plugins/xinxpluginsloader.h>
 #include <plugins/xinxpluginelement.h>
 #include <plugins/interfaces/xsltparser.h>
+#include <core/errormanager.h>
 
 // Qt header
 #include <QXmlStreamReader>

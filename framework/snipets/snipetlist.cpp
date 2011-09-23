@@ -19,6 +19,7 @@
 
 // Xinx header
 #include "snipetlist.h"
+#include "snipetlistexception.h"
 
 // Qt header
 #include <QDomDocument>
@@ -26,12 +27,6 @@
 #include <QFile>
 #include <QTextStream>
 #include <QApplication>
-
-/* SnipetListException */
-
-SnipetListException::SnipetListException(const QString & message) : XinxException(message)
-{
-}
 
 /* SnipetList */
 

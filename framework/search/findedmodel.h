@@ -52,6 +52,8 @@ public:
 	 * @param filename Name of the file where the text is finded.
 	 * @param line Line number of the finded text.
 	 * @param content Content of the line where we can find text.
+	 * @param posStart The start position on the line of the finded element.
+	 * @param posEnd The end position on the line of the finded element.
 	 */
 	void append(const QString & filename, int line, const QString & content, int posStart, int posEnd);
 	/*!

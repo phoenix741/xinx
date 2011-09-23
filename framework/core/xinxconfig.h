@@ -26,6 +26,7 @@
 #include <core/xinxcore.h>
 #include <core/appsettings.h>
 #include <core/exceptions.h>
+#include <core/xinxsingleton.h>
 
 // Qt header
 #include <QPointer>

@@ -21,6 +21,7 @@
 #define CODECOMPLETION_SNIPETCONTEXTTYPE_H
 
 #include <codecompletion/context.h>
+#include <codecompletion/contexttype.h>
 
 #define SNIPET_CONTEXT_TYPE "SNIPET"
 
