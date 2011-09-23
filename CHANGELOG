@@ -1,3 +1,82 @@
+xinx (0.10.2.10921) unstable; urgency=low
+
+  * fixes #429 : For the next release
+  * fixes #505
+  * fixes #515
+  * fixes #512
+  * fixes #517
+  * update tags
+  * [DOC] Manuel
+  * No more SubVersion
+  * [DOC] Manuel
+  * Merge
+  * [DOC] Manuel : Les types de fichiers
+  * [DOC] Manuel : Le mode projet
+  * [DOC] Manuel : Les modèles
+  * [DOC] Manuel : Les fichiers de données
+  * [DOC] Manuel : Installation de XINX
+  * [DOC] Manuel : D2but de description de l'interface + Correction
+  * [COR] Modification du hgignore
+  * [DOC] Manuel : Correction du manuel
+  * [COR] Modification du hgignore
+  * [DOC] Manuel : Présentation de l'interface
+  * [DOC] Manuel : Menu session
+  * No longueur supported
+  * No longer supported
+  * [COR] fixes #519 : The enable state of search action musn't be updated when editor change. (The action could be always enable)
+  * [COR] The last number is now 0. What we should made of this number ?
+  * [COR] fixes #507 : Correction on the version control part
+  * fixes #506
+  * Correction of the version number to use Mercurial Changeset instead of Subversion
+  * [COR] Ajout des dernières traductions dans les fichiers .ts
+  * [COR] Correction to compile and work with Qt 4.8
+  * [DOC] Manual : Amélioration de la doc du menu
+  * [DOC] Manual
+  * [DOC]: Manuel
+  * [COR] Nouvelle version du xmlrpc
+  * [COR] fixes #526
+  * Correction of the title of the "Copy" action
+  * fixes #522
+  * fixes #534 : Use symlink on windows
+  * fixes #533 : Use symlink on windows for the gce plugin.
+  * fixes #392 : Show last closed instead of last opened files
+  * fixes : Save the config just after the user click on ignore button on version dialog box.
+  * [BUG] When the text is refreshed and open in XmlPres two, we focus only in the dock if we have focused previously.
+  * fixes : Some problem with symlink
+  * fixes : If the manager doesn't exist, XINX crash (only if the file is a file of the project). Should not arrive unless symlinks problem.
+  * fixes some memory leaks
+  * fixes some memory leaks on IFileTypePlugin
+  * fixes out on singleton
+  * fixes CMakeLists.txt to remove GEN_TRANSLATION
+  * fixes some memory leaks
+  * move images to framework
+  * fixes #516
+  * fixes some memory leaks
+  * fixes crash on saving customdialog relatif on dev [1846:0e89aa6ff169]
+  * fixes #525 for XSL comment work as before
+  * fixes a little bug relative on dev [6363bb8d3164ce55793e7636415ad93edf7f97c1]
+  * fixes number version by included date
+  * fixes bug on windows if the path is in native form (win32 with anti-slash and not slash)
+  * fixes #528
+  * fixes bug when config is empty
+  * fixes #524
+  * fixes bug on custom dialog (checkbox is not checked even if showShortcut is true in config)
+  * fixes #520 : Keep search option
+  * refs #527 : Change of the tree presentation
+  * fixes #527
+  * fixes bugs on snipet link to modification made for Qt 4.8.X on QAbstractProxyModel.
+  * show in bold in the search screen the text finded.
+  * simplify the code
+  * Moved tag r0.10.1 to changeset a8ae0b80cbbf (from changeset ac307fddbf2e)
+  * Add the replacing feature when searching on a directory.
+  * fixes #310 : adding labels in dictionary feature.
+  * fixes some modification on cache and editormanager
+  * save properties as dom
+  * add some methode on xinxlistwidgetimpl
+  * fixes #395 : Split files if it's usefull. Removing wrong header will be made with time.
+
+ -- Ulrich Van Den Hekke <xinx@shadoware.org>  Fri, 23 Sep 2011 08:01:33 +0200
+
 xinx (0.10.1.2531) unstable; urgency=low
 
   [ Ulrich Van Den Hekke ]
@@ -116,7 +195,7 @@ xinx (0.8.1.1) unstable; urgency=low
   * 295 : Ouverture d'un fichier XSL
 
  -- Ulrich Van Den Hekke <xinx@shadoware.org>  Thu, 26 May 2009 19:00:00 +0100
- 
+
 xinx (0.8.1.0) unstable; urgency=low
 
   [ Ulrich Van Den Hekke ]
@@ -227,5 +306,5 @@ xinx (0.7.2.0) unstable; urgency=low
   * 218 : Réindentation
   * 208 : paramétrer le temps d'attente pour le recherche de feuille XSL
   * 214 : Copie du nom de fichier complet
- 
+
  -- Ulrich Van Den Hekke <xinx@shadoware.org>  Sun, 02 Mar 2008 20:22:19 +0100
