@@ -18,6 +18,7 @@
 */
 
 #include "dictionarymodel.h"
+#include <core/errormanager.h>
 #include <editors/editormanager.h>
 #include <editors/abstracteditor.h>
 #include <configuration/configurationmanager.h>
