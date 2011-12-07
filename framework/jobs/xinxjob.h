@@ -52,8 +52,13 @@ public:
 
 	void setPriority(int value);
 	int priority() const;
+
+	bool isDelayed();
 public slots:
 	virtual void abort();
+
+protected slots:
+	void reportExecution();
 
 signals:
 	void setDescription(const QString & value);
@@ -62,7 +67,7 @@ signals:
 	void jobStarting();
 	void jobEnding();
 protected:
-	enum JOB_STATE { JOB_WAIT = 0, JOB_RUNNING = 1, JOB_ABORTING = 2, JOB_ENDING = 127 };
+	enum JOB_STATE { JOB_WAIT = 0, JOB_RUNNING = 1, JOB_ABORTING = 2, JOB_DELAYING = 3, JOB_ENDING = 127 };
 	void setState(int state);
 
 	virtual void startJob() = 0;
@@ -70,7 +75,7 @@ protected:
 
 	static QAtomicInt _count_job;
 	QAtomicInt _state;
-	bool _manager_delete;
+	bool _manager_delete, _is_delayed;
 	int _priority;
 };
 

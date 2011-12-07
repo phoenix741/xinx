@@ -130,20 +130,34 @@ void XinxJobManager::slotJobEnding()
 		d->_descriptions_list.remove(job);
 	}
 
-	d->_count.deref();
-	d->_progress_value.ref();
-	emit progressValueChanged(d->_progress_value);
-	emit jobEnded(job);
-	if (d->_count == 0)
+	if (! job->isDelayed())
 	{
-		emit allJobEnded();
+		d->_count.deref();
+		d->_progress_value.ref();
+		emit progressValueChanged(d->_progress_value);
+		emit jobEnded(job);
+		if (d->_count == 0)
+		{
+			emit allJobEnded();
+		}
+
+		qDebug() << "Remove job (" << countRunningJob() << "/" << countTotalJob() << ") in " << t.elapsed() << " ms";
+
+		if (job->isManagerDelete())
+		{
+			job->deleteLater();
+		}
 	}
-
-	qDebug() << "Remove job (" << countRunningJob() << "/" << countTotalJob() << ") in " << t.elapsed() << " ms";
-
-	if (job->isManagerDelete())
+	else
 	{
-		job->deleteLater();
+		// Job is delayed we put it again in the pool
+		{
+			QMutexLocker locker(d->_waiting_job_mutex.data());
+			d->_waiting_job_list.append(job);
+		}
+
+		emit jobDelayed(job);
+		d->_pool->start(job, job->priority());
 	}
 }
 

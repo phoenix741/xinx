@@ -20,6 +20,7 @@
 #include "xinxjob.h"
 #include <core/exceptions.h>
 #include <core/exceptionmanager.h>
+#include <jobs/xinxjobdelayedexception.h>
 
 // Qt header
 #include <QDebug>
@@ -35,7 +36,7 @@ QAtomicInt XinxJob::_count_job;
 
 /* XinxJob */
 
-XinxJob::XinxJob() : _state(JOB_WAIT), _manager_delete(true)
+XinxJob::XinxJob() : _state(JOB_WAIT), _manager_delete(true), _is_delayed(false)
 {
 	qDebug() << tr("A Job is created : %1").arg(metaObject()->className());
 	setAutoDelete(false);
@@ -87,6 +88,8 @@ QString XinxJob::status() const
 		return tr("Running ...");
 	case JOB_ENDING:
 		return tr("Cleaning ...");
+	case JOB_DELAYING:
+		return tr("Delaying ...");
 	default:
 		return tr("Unknown");
 	}
@@ -96,6 +99,7 @@ int XinxJob::maximum() const
 {
 	switch (_state)
 	{
+	case JOB_DELAYING:
 	case JOB_WAIT:
 	case JOB_ENDING:
 		return 100;
@@ -108,6 +112,7 @@ int XinxJob::progress() const
 {
 	switch (_state)
 	{
+		case JOB_DELAYING:
 		case JOB_WAIT:
 			return 0;
 		case JOB_ENDING:
@@ -139,14 +144,21 @@ void XinxJob::setState(int state)
 	emit setProgress(progress(), maximum());
 }
 
+bool XinxJob::isDelayed()
+{
+	return _is_delayed;
+}
+
 void XinxJob::run()
 {
 	ExceptionManager::installSignalHandler ();
 
 	emit jobStarting();
+	_is_delayed = false;
 
 	_count_job.ref();
 	setState(JOB_RUNNING);
+	enum JOB_STATE endingJobState = JOB_ENDING;
 
 	QTime t;
 	t.start();
@@ -154,6 +166,12 @@ void XinxJob::run()
 	try
 	{
 		startJob();
+	}
+	catch (const XinxJobDelayedException & e)
+	{
+		// In this special case the job is not really ended, just reported for later.
+		_is_delayed = true;
+		endingJobState = JOB_DELAYING;
 	}
 	catch (const std::exception & e)
 	{
@@ -167,7 +185,7 @@ void XinxJob::run()
 	qDebug() << tr("The job \"%1\" take %2 ms.").arg(description()).arg(t.elapsed());
 
 	_count_job.deref();
-	setState(JOB_ENDING);
+	setState(endingJobState);
 
 	emit jobEnding();
 }
@@ -175,4 +193,9 @@ void XinxJob::run()
 void XinxJob::abort()
 {
 	setState(JOB_ABORTING);
+}
+
+void XinxJob::reportExecution()
+{
+	throw XinxJobDelayedException();
 }

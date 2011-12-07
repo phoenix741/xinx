@@ -35,6 +35,7 @@ public:
 private slots:
 	void slotJobAdded(XinxJob * job);
 	void slotJobEnded(XinxJob * job);
+	void slotJobDelayed(XinxJob * job);
 private:
 	QScopedPointer<PrivateXinxJobProgressDock> d;
 	friend class PrivateXinxJobProgressDock;

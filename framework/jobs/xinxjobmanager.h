@@ -45,6 +45,7 @@ signals:
 	void jobAdded(XinxJob * job);
 	void jobStarted(XinxJob * job);
 	void jobEnded(XinxJob * job);
+	void jobDelayed(XinxJob * job);
 	void allJobEnded();
 private slots:
 	void slotJobStarting();

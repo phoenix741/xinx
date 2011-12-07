@@ -61,6 +61,7 @@ XinxJobProgressDock::XinxJobProgressDock(QWidget* parent, Qt::WindowFlags f): Xi
 
 	connect(XinxJobManager::self(), SIGNAL(jobAdded(XinxJob*)), this, SLOT(slotJobAdded(XinxJob*)));
 	connect(XinxJobManager::self(), SIGNAL(jobEnded(XinxJob*)), this, SLOT(slotJobEnded(XinxJob*)));
+	connect(XinxJobManager::self(), SIGNAL(jobDelayed(XinxJob*)), this, SLOT(slotJobDelayed(XinxJob*)));
 }
 
 //! Destroy the progress job dock
@@ -87,5 +88,10 @@ void XinxJobProgressDock::slotJobEnded(XinxJob* job)
 
 		QTimer::singleShot(3000, ji, SLOT(deleteLater()));
 	}
+}
+
+void XinxJobProgressDock::slotJobDelayed(XinxJob * job)
+{
+	// Don't remove the line
 }
 
