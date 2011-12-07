@@ -22,7 +22,7 @@
 
 GceParser::GceParser() : _interface(0)
 {
-
+	setPriority(-100);
 }
 
 GceParser::GceParser(const QString & filename) : _interface(0), _filename(filename)

@@ -41,6 +41,7 @@
 
 GcePropertiesParser::GcePropertiesParser(const QString & filename) : GceConfigurationDefParser()
 {
+	setPriority(-100);
 	_filename = filename;
 	_directory_path = QFileInfo(_filename).absolutePath();
 }
