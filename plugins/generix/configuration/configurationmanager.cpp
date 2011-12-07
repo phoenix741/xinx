@@ -32,14 +32,14 @@
 
 /* ConfigurationManager */
 
-ConfigurationManager::ConfigurationManager(XinxProject::ProjectPtr project) : QObject(project.data()), _updateCacheTimer(new QTimer), _watcher(new FilesWatcher), _interface(new GceConfiguration), _project(project.toWeakRef())
+ConfigurationManager::ConfigurationManager(XinxProject::ProjectPtr project) : QObject(project.data()), _updateCacheTimer(new QTimer), _watcher(new FilesWatcher), _interface(new GceConfiguration), _project(project.toWeakRef()), _is_ready(false)
 {
 	_updateCacheTimer->setSingleShot(true);
 	_updateCacheTimer->setInterval(5000);
 
 	connect(_watcher.data(), SIGNAL(fileChanged(QString)), _updateCacheTimer.data(), SLOT(start()));
 	connect(_updateCacheTimer.data(), SIGNAL(timeout()), this, SLOT(updateCache()));
-	connect(project->cache(), SIGNAL(updated(ContentView3::FilePtr)), this, SLOT(cacheUpdated(ContentView3::FilePtr)));
+	connect(project->cache(), SIGNAL(updated(ContentView3::FilePtr)), this, SLOT(dictionaryUpdated(ContentView3::FilePtr)));
 
 	updateCache();
 }
@@ -52,6 +52,11 @@ ConfigurationManager::~ConfigurationManager()
 void ConfigurationManager::refresh()
 {
 	_updateCacheTimer->start();
+}
+
+bool ConfigurationManager::isReady() const
+{
+	return _is_ready;
 }
 
 ConfigurationManager* ConfigurationManager::manager(XinxProject::ProjectPtr project)
@@ -88,7 +93,7 @@ void ConfigurationManager::addConfiguration(const QString & filename)
 	}
 }
 
-void ConfigurationManager::cacheUpdated(ContentView3::FilePtr file)
+void ConfigurationManager::dictionaryUpdated(ContentView3::FilePtr file)
 {
 	QSharedPointer<GceConfiguration> interface = getInterface();
 	if (interface && interface->dictionnaries().contains(file->filename()))
@@ -97,11 +102,17 @@ void ConfigurationManager::cacheUpdated(ContentView3::FilePtr file)
 	}
 }
 
+void ConfigurationManager::cacheUpdated()
+{
+	_is_ready = true;
+}
+
 void ConfigurationManager::updateCache()
 {
 	XinxProject::ProjectPtr project = _project.toStrongRef();
 	if (! project) return;
 
+	_is_ready = false;
 	_interface->clearAliasPolicy();
 	_interface->clearBusinessView();
 	_interface->clearDictionaries();
@@ -114,6 +125,7 @@ void ConfigurationManager::updateCache()
 
 		connect(parser, SIGNAL(addConfiguration(QString)), this, SLOT(addConfiguration(QString)), Qt::QueuedConnection);
 		connect(parser, SIGNAL(addDictionary(QString)), this, SLOT(addDictionary(QString)), Qt::QueuedConnection);
+		connect(parser, SIGNAL(jobEnding()), this, SLOT(cacheUpdated()));
 
 		XinxJobManager::self()->addJob(parser);
 	}

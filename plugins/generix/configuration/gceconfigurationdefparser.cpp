@@ -76,7 +76,7 @@ void GceConfigurationDefParser::readConfigurationDef(const QString & configurati
 		while (! conffile.isNull())
 		{
 			const QString conf_filename = QDir(_directory_path).absoluteFilePath(conffile.attribute("name"));
-			readConfigurationFile(configurationNumber++, conf_filename);
+                        readConfigurationFile(configurationNumber++, conffile.attribute("module"), conf_filename);
 
 			emit addConfiguration(conf_filename);
 
@@ -99,7 +99,7 @@ void GceConfigurationDefParser::readConfigurationDef(const QString & configurati
 	}
 }
 
-void GceConfigurationDefParser::readConfigurationFile(int configurationIndex, const QString & configurationFileName)
+void GceConfigurationDefParser::readConfigurationFile(int configurationIndex, const QString & module, const QString & configurationFileName)
 {
 	GceConfigurationXmlParser2 parser;
 	parser.m_quick = ! SelfGceSettings::self()->config().readConfigurations;
@@ -107,9 +107,20 @@ void GceConfigurationDefParser::readConfigurationFile(int configurationIndex, co
 	parser.m_configurationNumber = configurationIndex;
 	parser.loadFromFile(configurationFileName);
 
-	interface()->addFilename(configurationFileName);
+        // Post traitement, on vient mettre à jour le module dans la liste des BusinessView.
+        QMultiHash<QString,BusinessViewInformation> businessviews = parser.m_fileRefToInformation;
+        if (! module.isEmpty())
+        {
+            QMutableHashIterator<QString,BusinessViewInformation> it(businessviews);
+            while (it.hasNext())
+            {
+                it.next();
+                it.value().setModuleName(module);
+            }
+        }
 
-	interface()->addBusinessView(parser.m_fileRefToInformation);
+	interface()->addFilename(configurationFileName);
+        interface()->addBusinessView(businessviews);
 	if (!parser.m_version.isEmpty())
 	{
 		interface()->setVersion(ConfigurationVersion(parser.m_version, parser.m_edition));

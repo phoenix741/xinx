@@ -42,11 +42,13 @@ public:
 	QSharedPointer<GceConfiguration> getInterface();
 
 	void refresh();
+	bool isReady() const;
 signals:
 	void configurationChanged();
 	void dictionaryChanged();
 private slots:
-	void cacheUpdated(ContentView3::FilePtr file);
+	void dictionaryUpdated(ContentView3::FilePtr file);
+	void cacheUpdated();
 	void updateCache();
 	void addDictionary(const QString & filename);
 	void addConfiguration(const QString & filename);
@@ -55,6 +57,7 @@ private:
 	QScopedPointer<FilesWatcher> _watcher;
 	QSharedPointer<GceConfiguration> _interface;
 	XinxProject::ProjectPtrWeak _project;
+	bool _is_ready;
 };
 
 #endif // CONFIGURATIONMANAGER_H

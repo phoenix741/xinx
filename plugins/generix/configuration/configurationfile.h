@@ -176,9 +176,12 @@ public:
 
 	const QString & viewstructName() const;
 	void setViewstructName(const QString & value);
+
+        const QString & moduleName() const;
+        void setModuleName(const QString & value);
 private:
 	int m_configurationNumber;
-	QString m_configurationFilename, m_businessViewName, m_targetName, m_viewStructName;
+        QString m_configurationFilename, m_businessViewName, m_targetName, m_viewStructName, m_moduleName;
 };
 
 Q_DECLARE_METATYPE(ConfigurationVersion);

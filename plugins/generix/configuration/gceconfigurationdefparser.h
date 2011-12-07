@@ -41,7 +41,7 @@ public:
 	virtual void startJob();
 protected:
 	virtual void readConfigurationDef(const QString & configurationdefFileName);
-	virtual void readConfigurationFile(int configurationIndex, const QString & configurationFileName);
+        virtual void readConfigurationFile(int configurationIndex, const QString & module, const QString & configurationFileName);
 
 	friend class GceConfigurationXmlParser2;
 protected:

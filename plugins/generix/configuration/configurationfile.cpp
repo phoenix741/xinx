@@ -250,3 +250,13 @@ void BusinessViewInformation::setViewstructName(const QString & value)
 {
 	m_viewStructName = value;
 }
+
+const QString & BusinessViewInformation::moduleName() const
+{
+    return m_moduleName;
+}
+
+void BusinessViewInformation::setModuleName(const QString & value)
+{
+    m_moduleName = value;
+}

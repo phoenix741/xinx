@@ -28,6 +28,7 @@
 #include <QFileInfo>
 #include <QDir>
 #include <QPainter>
+#include <QStringBuilder>
 
 /* Constante */
 
@@ -79,20 +80,28 @@ void BusinessViewListDelegate::paint(QPainter *painter, const QStyleOptionViewIt
 	// Draw text
 	int maxTextLength = myOption.rect.width();
 
-	QString filename = index.model()->data(index, Qt::UserRole + 1).toString();
-	int configurationIndex = index.model()->data(index, Qt::UserRole + 0).toInt();
+        QString module = index.model()->data(index, Qt::UserRole + 4).toString();
+        QString filename = index.model()->data(index, Qt::UserRole + 1).toString();
+        int configurationIndex = index.model()->data(index, Qt::UserRole + 0).toInt();
 	QString projectPath = index.model()->data(index, Qt::UserRole + 3).toString();
 
 	QString display = QString("%1 (%2)").arg(index.model()->data(index).toString()).arg(index.model()->data(index, Qt::UserRole + 2).toString());
-	QString description = (configurationIndex >= 0 ? QString("%1 - ").arg(configurationIndex) : QString()) + QDir(projectPath).relativeFilePath(filename);
+        QString description;
+        if (! module.isEmpty())
+        {
+            description = module % " - ";
+        }
+        if (configurationIndex >= 0)
+        {
+            description = description % QString::number(configurationIndex) % " - ";
+        }
+        description = description % QDir(projectPath).relativeFilePath(filename);
 
 	if (myOption.state & QStyle::State_Selected)
 		painter->setPen(myOption.palette.color(QPalette::HighlightedText));
 
 	painter->setFont(titleFont);
 	display = titleOpt.fontMetrics.elidedText(display, Qt::ElideRight, maxTextLength);
-
-
 
 	painter->drawText(
 		SEPARATOR_SIZE,
@@ -174,6 +183,7 @@ void GenerixProjectDockImpl::updateList()
 				item->setData(Qt::UserRole + 1, information.configurationFileName());
 				item->setData(Qt::UserRole + 2, information.targetName());
 				item->setData(Qt::UserRole + 3, gnxProject->projectPath());
+                                item->setData(Qt::UserRole + 4, information.moduleName());
 				m_businessViewList->addItem(item);
 				m_businessViewList->setEnabled(true);
 			}
