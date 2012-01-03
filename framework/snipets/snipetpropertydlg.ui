@@ -30,7 +30,7 @@
       <attribute name="title">
        <string>&amp;Description</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout">
+      <layout class="QGridLayout" name="gridLayout_1">
        <item row="0" column="1">
         <widget class="QGroupBox" name="groupBox">
          <property name="title">
@@ -319,15 +319,15 @@
  </widget>
  <customwidgets>
   <customwidget>
+   <class>CategoryTreeView</class>
+   <extends>QTreeView</extends>
+   <header>snipets/categorytreeview.h</header>
+  </customwidget>
+  <customwidget>
    <class>XinxCodeEditAction</class>
    <extends>QWidget</extends>
    <header location="global">editors/xinxcodeedit.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>CategoryTreeView</class>
-   <extends>QTreeView</extends>
-   <header>snipets/categorytreeview.h</header>
   </customwidget>
   <customwidget>
    <class>StringComboBox</class>
