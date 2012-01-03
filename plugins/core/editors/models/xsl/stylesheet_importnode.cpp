@@ -70,16 +70,7 @@ void ImportNode::setName(const QString& name)
 
 QString ImportNode::displayName() const
 {
-	ContentView3::FilePtr filePtr = file().toStrongRef();
-
-	if (filePtr && filePtr->project() && name().contains(filePtr->project()->projectPath()))
-	{
-		return QDir(filePtr->project()->projectPath()).relativeFilePath(name());
-	}
-	else
-	{
-		return QFileInfo(name()).fileName();
-	}
+	return name();
 }
 
 }

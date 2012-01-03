@@ -129,13 +129,14 @@ void GcePropertiesParser::readGceProperties(const QString & propertiesFileName)
 
 			xmlNodePtr policy = policies->nodeTab[i];
 			QString policyName = QLatin1String((char*)xmlGetProp(policy, (xmlChar*)"name"));
+			QString moduleName = QLatin1String((char*)xmlGetProp(policy, (xmlChar*)"module"));
 			xmlNodePtr mappings = policies->nodeTab[i]->children;
 			for (xmlNodePtr mapping = mappings; mapping != NULL; mapping = mapping->next)
 			{
 				if (mapping->type == XML_ELEMENT_NODE)
 				{
 					QString mappingValue = QLatin1String((char*)xmlGetProp(mapping, (xmlChar*)"value"));
-					interface()->addAliasPolicy(policyName, mappingValue);
+					interface()->addAliasPolicy(policyName, mappingValue, moduleName);
 				}
 			}
 		}

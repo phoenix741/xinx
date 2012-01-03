@@ -61,16 +61,16 @@ QStringList ManualFileResolver::searchPathList(XinxProject::ProjectPtr project) 
 	return searchList;
 }
 
-QStringList ManualFileResolver::resolvePath(const QString& path, const QString& currentPath, XinxProject::ProjectPtr project)
+QStringList ManualFileResolver::resolvePath(const QString& path, const ResolverContextInformation & ctxt)
 {
 	QStringList searchList;
 
-	if (! currentPath.isEmpty())
-		searchList << currentPath;
+	if (! ctxt.currentPath().isEmpty())
+		searchList << ctxt.currentPath();
 
-	if (project)
+	if (ctxt.project())
 	{
-		searchList += searchPathList(project);
+		searchList += searchPathList(ctxt.project());
 	}
 
 	QStringList absPaths;
@@ -83,16 +83,16 @@ QStringList ManualFileResolver::resolvePath(const QString& path, const QString& 
 	return absPaths;
 }
 
-bool ManualFileResolver::resolveFileName(const QString& nameToResolve, QString& resolvedName, const QString& currentPath, XinxProject::ProjectPtr project)
+bool ManualFileResolver::resolveFileName(const QString& nameToResolve, QString& resolvedName, const ResolverContextInformation & ctxt)
 {
 	QStringList searchList;
 
-	if (! currentPath.isEmpty())
-		searchList << currentPath;
+	if (! ctxt.currentPath().isEmpty())
+		searchList << ctxt.currentPath();
 
-	if (project)
+	if (ctxt.project())
 	{
-		searchList += searchPathList(project);
+		searchList += searchPathList(ctxt.project());
 	}
 
 	QString absPath = QString();
@@ -113,4 +113,11 @@ bool ManualFileResolver::resolveFileName(const QString& nameToResolve, QString& 
 	}
 
 	return true;
+}
+
+ResolverContextInformation ManualFileResolver::createContextInformation(const QString & filename, const ResolverContextInformation & ctxt)
+{
+	Q_UNUSED(filename);
+
+	return ctxt;
 }

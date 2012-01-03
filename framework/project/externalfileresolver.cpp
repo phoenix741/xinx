@@ -91,11 +91,11 @@ IFileResolverPlugin * ExternalFileResolver::externalFileResover(const QString & 
 	return 0;
 }
 
-QString ExternalFileResolver::resolveFileName(const QString & nameToResolve, const QString & currentPath)
+QString ExternalFileResolver::resolveFileName(const QString & nameToResolve, const ResolverContextInformation & ctxt)
 {
 	XinxProject::ProjectPtr project = _project.toStrongRef();
 
-	QString resolvedName = m_externalFileResolverCache.value(qMakePair(nameToResolve,currentPath));
+	QString resolvedName = m_externalFileResolverCache.value(qMakePair(nameToResolve, ctxt));
 	if (! resolvedName.isEmpty() && QFile::exists(resolvedName))
 		return resolvedName;
 
@@ -107,17 +107,17 @@ QString ExternalFileResolver::resolveFileName(const QString & nameToResolve, con
 		foreach(IFileResolverPlugin * resolver, resolverPlugin->fileResolvers())
 		{
 			resolvedName = nameToResolve;
-			bool hasResolve = resolver->resolveFileName(nameToResolve, resolvedName, currentPath, project);
+			bool hasResolve = resolver->resolveFileName(nameToResolve, resolvedName, ctxt);
 			if (hasResolve && QFile::exists(resolvedName))
 			{
-				m_externalFileResolverCache.insert(qMakePair(nameToResolve, currentPath), resolvedName);
+				m_externalFileResolverCache.insert(qMakePair(nameToResolve, ctxt), resolvedName);
 				return QDir::cleanPath(resolvedName);
 			}
 		}
 	}
 
 	/* Failed to find the rigth file with resolver */
-	resolvedName = QDir(currentPath).absoluteFilePath(nameToResolve);
+	resolvedName = QDir(ctxt.currentPath()).absoluteFilePath(nameToResolve);
 	if (QFile::exists(resolvedName))
 	{
 		return QDir::cleanPath(resolvedName);
@@ -129,7 +129,7 @@ QString ExternalFileResolver::resolveFileName(const QString & nameToResolve, con
 	}
 }
 
-QStringList ExternalFileResolver::resolvePath(const QString& nameToResolve, const QString& currentPath)
+QStringList ExternalFileResolver::resolvePath(const QString& nameToResolve, const ResolverContextInformation &ctxt)
 {
 	XinxProject::ProjectPtr project = _project.toStrongRef();
 	QStringList result;
@@ -141,14 +141,39 @@ QStringList ExternalFileResolver::resolvePath(const QString& nameToResolve, cons
 
 		foreach(IFileResolverPlugin * resolver, resolverPlugin->fileResolvers())
 		{
-			result << resolver->resolvePath(nameToResolve, currentPath, project);
+			result << resolver->resolvePath(nameToResolve, ctxt);
 		}
 	}
 
-	QString resolvedName = QDir(currentPath).absoluteFilePath(nameToResolve);
+	QString resolvedName = QDir(ctxt.currentPath()).absoluteFilePath(nameToResolve);
 	if (QFile::exists(resolvedName))
 	{
 		result << resolvedName;
+	}
+
+	return result;
+}
+
+ResolverContextInformation ExternalFileResolver::createContextInformation(const QString & filename, const ResolverContextInformation & ctxt)
+{
+	XinxProject::ProjectPtr project = _project.toStrongRef();
+	ResolverContextInformation result = ctxt;
+	if (result.isEmpty())
+	{
+		result.setOriginalFileName(filename);
+		result.setProject(project);
+		result.setCurrentPath(project->projectPath());
+	}
+
+	foreach(XinxPluginElement * plugin, XinxPluginsLoader::self()->plugins())
+	{
+		IResolverPlugin * resolverPlugin = qobject_cast<IResolverPlugin*>(plugin->plugin());
+		if (! resolverPlugin)  continue;
+
+		foreach(IFileResolverPlugin * resolver, resolverPlugin->fileResolvers())
+		{
+			result = resolver->createContextInformation(filename, result);
+		}
 	}
 
 	return result;

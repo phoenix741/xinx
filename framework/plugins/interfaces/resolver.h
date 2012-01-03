@@ -23,6 +23,7 @@
 
 // Xinx header
 #include <project/xinxprojectproject.h>
+#include <project/resolvercontext.h>
 
 // Qt Plugin
 #include <QtPlugin>
@@ -41,9 +42,11 @@ public:
 	//! Resolver id
 	virtual QString id() = 0;
 	//! Resolve the path \e path and return all possible path that can be used.
-	virtual QStringList resolvePath(const QString& path, const QString& currentPath, XinxProject::ProjectPtr project) = 0;
+	virtual QStringList resolvePath(const QString& path, const ResolverContextInformation & ctxt) = 0;
 	//! Resolve the file \e nameToResolve. The \e currentPath, can be used to find the file relatively of the current open editor.
-	virtual bool resolveFileName(const QString & nameToResolve, QString & resolvedName, const QString & currentPath = QString(), XinxProject::ProjectPtr project = XinxProject::ProjectPtr()) = 0;
+	virtual bool resolveFileName(const QString & nameToResolve, QString & resolvedName, const ResolverContextInformation & ctxt) = 0;
+	//! Create context information for the filename given, and context information we already have
+	virtual ResolverContextInformation createContextInformation(const QString & filename, const ResolverContextInformation & ctxt) = 0;
 };
 
 /*!

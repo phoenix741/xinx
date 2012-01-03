@@ -51,27 +51,27 @@ public:
 	void addDictionnary(const QString & dictionnary);
 	void clearDictionaries();
 
-	QList<BusinessViewInformation> businessView(const QString & filename) const;
+	QList<BusinessViewInformation> businessView(const QString & name) const;
 	QList<BusinessViewInformation> businessViews() const;
 	void addBusinessView(const QMultiHash<QString,BusinessViewInformation> & businessview);
 	void addBusinessView(const QString & path, const BusinessViewInformation & information);
 	void clearBusinessView();
 
-	const QHash<QString,QStringList> & aliasPolicy() const;
-	void addAliasPolicy(const QString & alias, const QString & value);
+	const QHash<QPair<QString,QString>,QStringList> & aliasPolicy() const;
+	void addAliasPolicy(const QString & alias, const QString & value, const QString &module = QString());
 	void clearAliasPolicy();
 
-	QString resolveFileName(const QString & filename) const;
-	QStringList resolvePath(const QString & filename) const;
+	QString resolveFileName(const QString & filename, const QString & module = QString()) const;
+	QStringList resolvePath(const QString & filename, const QString & module = QString()) const;
 private:
-	QStringList generateFileName(const QString & filename) const;
+	QStringList generateFileName(const QString & filename, const QString & module = QString()) const;
 
 	QString _filename;
 	QStringList _filenames;
 	ConfigurationVersion _version;
 	QStringList _dictionnaries;
 	QMultiHash<QString,BusinessViewInformation> _informations;
-	QHash<QString,QStringList> _alias_policies;
+	QHash<QPair<QString,QString>,QStringList> _alias_policies;
 };
 
 #endif // GCEINTERFACE_H

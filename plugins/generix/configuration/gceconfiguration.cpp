@@ -19,7 +19,9 @@
 
 #include "gceconfiguration.h"
 #include <QStack>
+#include <QDir>
 #include <QFile>
+#include <QFileInfo>
 
 GceConfiguration::GceConfiguration()
 {
@@ -84,9 +86,18 @@ void GceConfiguration::addBusinessView(const QString& path, const BusinessViewIn
 	_informations.insert(path, information);
 }
 
-QList< BusinessViewInformation > GceConfiguration::businessView(const QString& filename) const
+QList< BusinessViewInformation > GceConfiguration::businessView(const QString& name) const
 {
-	return _informations.values(filename);
+	QString relFilename;
+	if (QFileInfo(name).isAbsolute())
+	{
+		relFilename = QDir(QFileInfo(filename()).absolutePath()).relativeFilePath(name);
+	}
+	else
+	{
+		relFilename = name;
+	}
+	return _informations.values(relFilename);
 }
 
 QList< BusinessViewInformation > GceConfiguration::businessViews() const
@@ -104,12 +115,12 @@ void GceConfiguration::addBusinessView(const QMultiHash< QString, BusinessViewIn
 	_informations += businessview;
 }
 
-void GceConfiguration::addAliasPolicy(const QString& alias, const QString& value)
+void GceConfiguration::addAliasPolicy(const QString& alias, const QString& value, const QString & module)
 {
-	_alias_policies[alias].append(value);
+	_alias_policies[qMakePair(module, alias)].append(value);
 }
 
-const QHash< QString, QStringList >& GceConfiguration::aliasPolicy() const
+const QHash<QPair<QString, QString>, QStringList> &GceConfiguration::aliasPolicy() const
 {
 	return _alias_policies;
 }
@@ -119,7 +130,7 @@ void GceConfiguration::clearAliasPolicy()
 	_alias_policies.clear();
 }
 
-QStringList GceConfiguration::generateFileName(const QString& filename) const
+QStringList GceConfiguration::generateFileName(const QString& filename, const QString & module) const
 {
 	QStack<QString> nameToResolve;
 	QStringList resolvedName;
@@ -134,7 +145,11 @@ QStringList GceConfiguration::generateFileName(const QString& filename) const
 		if (regexp.indexIn(name) != -1)
 		{
 			QString key        = regexp.cap(2);
-			QStringList values = _alias_policies.value(key);
+			QStringList values = _alias_policies.value(qMakePair(module, key));
+			if (values.isEmpty())
+			{
+				values = _alias_policies.value(qMakePair(QString(), key));
+			}
 
 			QStringListIterator value(values);
 			value.toBack();
@@ -154,11 +169,11 @@ QStringList GceConfiguration::generateFileName(const QString& filename) const
 	return resolvedName;
 }
 
-QString GceConfiguration::resolveFileName(const QString& filename) const
+QString GceConfiguration::resolveFileName(const QString& filename, const QString & module) const
 {
 	if (_alias_policies.size())
 	{
-		QStringList names = generateFileName(filename);
+		QStringList names = generateFileName(filename, module);
 		foreach(QString name, names)
 		{
 			if (QFile::exists(name))
@@ -168,7 +183,7 @@ QString GceConfiguration::resolveFileName(const QString& filename) const
 	return filename;
 }
 
-QStringList GceConfiguration::resolvePath(const QString& filename) const
+QStringList GceConfiguration::resolvePath(const QString& filename, const QString & module) const
 {
 	if (_alias_policies.size())
 	{

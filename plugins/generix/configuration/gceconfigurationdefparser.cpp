@@ -105,22 +105,10 @@ void GceConfigurationDefParser::readConfigurationFile(int configurationIndex, co
 	parser.m_quick = ! SelfGceSettings::self()->config().readConfigurations;
 	parser._gce_configuration = interface();
 	parser.m_configurationNumber = configurationIndex;
-	parser.loadFromFile(configurationFileName);
-
-        // Post traitement, on vient mettre à jour le module dans la liste des BusinessView.
-        QMultiHash<QString,BusinessViewInformation> businessviews = parser.m_fileRefToInformation;
-        if (! module.isEmpty())
-        {
-            QMutableHashIterator<QString,BusinessViewInformation> it(businessviews);
-            while (it.hasNext())
-            {
-                it.next();
-                it.value().setModuleName(module);
-            }
-        }
+	parser.loadFromFile(configurationFileName, module);
 
 	interface()->addFilename(configurationFileName);
-        interface()->addBusinessView(businessviews);
+	interface()->addBusinessView(parser.m_fileRefToInformation);
 	if (!parser.m_version.isEmpty())
 	{
 		interface()->setVersion(ConfigurationVersion(parser.m_version, parser.m_edition));

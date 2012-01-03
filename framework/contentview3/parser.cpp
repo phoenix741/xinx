@@ -25,6 +25,7 @@
 #include <project/xinxprojectproject.h>
 #include <core/errormanager.h>
 #include <contentview3/parserexception.h>
+#include <contentview3/cacheexception.h>
 
 // Qt header
 #include <QDebug>
@@ -40,14 +41,13 @@ public:
 	PrivateParser();
 	~PrivateParser();
 
-	QString locationOf(const QString & relativeFilename);
-
 	FilePtr _file;
 	QIODevice * _device;
 	QString _workingPath;
 	int _decalageLine;
 	NodePtr _rootNode;
 	FileNodePtr _fileRootNode;
+	ResolverContextInformation _ctxt;
 };
 
 PrivateParser::PrivateParser() : _device(0), _decalageLine(0)
@@ -58,18 +58,6 @@ PrivateParser::PrivateParser() : _device(0), _decalageLine(0)
 PrivateParser::~PrivateParser()
 {
 	delete _device;
-}
-
-QString PrivateParser::locationOf(const QString& relativeFilename)
-{
-	if (_file && _file->project())
-	{
-		return _file->project()->resolver()->resolveFileName(relativeFilename, _workingPath);
-	}
-	else
-	{
-		return relativeFilename;
-	}
 }
 
 /* Parser */
@@ -193,42 +181,50 @@ int Parser::decalage() const
 	return d->_decalageLine;
 }
 
-/*!
- * \brief Set the working path (where the parser must run and find import)
- */
-void Parser::setWorkingPath(const QString& path)
+void Parser::setContext(ResolverContextInformation ctxt)
 {
-	d->_workingPath = path;
+	d->_ctxt = ctxt;
 }
 
-/*!
- * \brief Get the working path (where the parser must run and find import)
- */
-const QString& Parser::workingPath() const
+const ResolverContextInformation & Parser::context()
 {
-	if (d->_workingPath.isEmpty() && d->_file && d->_file->project())
+	if (d->_ctxt.isEmpty() && d->_file)
 	{
-		return d->_file->project()->projectPath();
+		XinxProject::ProjectPtr projectPtr = d->_file->project();
+		if (projectPtr)
+		{
+			d->_ctxt = projectPtr->resolver()->createContextInformation(d->_file->filename());
+		}
 	}
-	else
-	{
-		return d->_workingPath;
-	}
+	return d->_ctxt;
 }
-
-
 
 /*!
  * \brief Add the import to the list
+ *
+ * The name of the import is not resolved here. This method do nothing if no ContentView3::File is
+ * attached to the parser.
+ *
+ * If possible, we try to pre-load the cache.
  */
 QString Parser::addImport(const QString& import)
 {
-	QString calculateImport = d->locationOf(import);
 	if (d->_file)
 	{
-		d->_file->addImport(calculateImport);
+		d->_file->addImport(import);
+
+		/* After adding the import, we pre-load the cache */
+		XinxProject::ProjectPtr projectPtr = d->_file->project();
+		try
+		{
+			projectPtr->cache()->addFileToCache(import, context());
+		}
+		catch (CacheParserNotFoundException e)
+		{
+			addWarning(-1, e.getMessage());
+		}
 	}
-	return calculateImport;
+	return import;
 }
 
 void Parser::addWarning(int line, const QString& message)

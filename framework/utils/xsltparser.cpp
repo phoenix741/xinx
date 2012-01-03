@@ -65,7 +65,11 @@ void* xsltParserInputOpenCallback(const char* filename)
 		while ((position = importRegExp.indexIn(bufferString, position)) >= 0)
 		{
 			QString href = importRegExp.cap(2);
-			QString resolvedRef = project->resolver()->resolveFileName(href, QFileInfo(filename).absolutePath());
+			// FIXME : Must use _ctxt
+			ResolverContextInformation ctxt;
+			ctxt.setProject(project);
+			ctxt.setCurrentPath(QFileInfo(filename).absolutePath());
+			QString resolvedRef = project->resolver()->resolveFileName(href, ctxt);
 
 			bufferString.replace(importRegExp.pos(2), href.length(), resolvedRef);
 
@@ -102,7 +106,8 @@ static int xsltParserInputCloseCallback(void * context)
 class PrivateXsltParser
 {
 public:
-	XinxProject::Project * _project;
+	XinxProject::ProjectPtrWeak _project;
+	ResolverContextInformation _resolverCtxt;
 
 	xsltStylesheetPtr m_stylesheet;
 	xmlDocPtr m_xmlDoc, m_res;
@@ -158,7 +163,6 @@ XsltParser::XsltParser()
 {
 	d = new PrivateXsltParser;
 
-	d->_project      = NULL;
 	d->m_stylesheet  = NULL;
 	d->m_xmlDoc      = NULL;
 	d->m_res         = NULL;
@@ -184,14 +188,16 @@ XsltParser::~XsltParser()
 	delete d;
 }
 
-void XsltParser::setProject(XinxProject::Project * project)
+void XsltParser::setProject(XinxProject::ProjectPtr project)
 {
-	d->_project = project;
+	d->_project = project.toWeakRef();
+	d->_resolverCtxt.setProject(project);
+	d->_resolverCtxt.setCurrentPath(project->projectPath());
 }
 
-XinxProject::Project * XsltParser::project()
+XinxProject::ProjectPtr XsltParser::project()
 {
-	return d->_project;
+	return d->_project.toStrongRef();
 }
 
 const QList<XsltParser::ErrorMessage> & XsltParser::errors() const
@@ -201,6 +207,8 @@ const QList<XsltParser::ErrorMessage> & XsltParser::errors() const
 
 bool XsltParser::loadStylesheet(const QString & filename)
 {
+	d->_resolverCtxt = d->_project.toStrongRef()->resolver()->createContextInformation(filename);
+
 	d->m_errors.clear();
 	xmlSetStructuredErrorFunc(d, xsltParserErrorFunc);
 	xmlSetGenericErrorFunc(d, xsltParserGenericErrorFunc);

@@ -41,8 +41,9 @@ public:
 	static QString staticId();
 	virtual QString id();
 	virtual QString name();
-    virtual QStringList resolvePath(const QString& path, const QString& currentPath, XinxProject::ProjectPtr project);
-	virtual bool resolveFileName(const QString& nameToResolve, QString& resolvedName, const QString& currentPath, XinxProject::ProjectPtr project);
+	virtual QStringList resolvePath(const QString& path, const ResolverContextInformation & ctxt);
+	virtual bool resolveFileName(const QString& nameToResolve, QString& resolvedName, const ResolverContextInformation & ctxt);
+	virtual ResolverContextInformation createContextInformation(const QString & filename, const ResolverContextInformation & ctxt);
 };
 
 #endif // MANUALFILERESOLVER_H

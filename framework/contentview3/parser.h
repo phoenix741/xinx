@@ -61,13 +61,12 @@ public:
 	void setDecalage(int line);
 	int decalage() const;
 
-	void setWorkingPath(const QString & path);
-	const QString & workingPath() const;
+	void setContext(ResolverContextInformation ctxt);
+	const ResolverContextInformation & context();
 
 	virtual void startJob();
 protected:
 	virtual void parse() = 0;
-//	void loadExternalContent(Node * parent, const QString & content, const QString & parserType);
 	QString addImport(const QString & import);
 
 	void addWarning(int line, const QString & message);

@@ -65,7 +65,8 @@ public:
 	XinxProject::ProjectPtrWeak _project;
 	QMutex _cache_mutex;
 
-	void importOf(QList< FilePtr > & result, FilePtr file);
+	void importOf(QList< FilePtr > & result, FilePtr file, const ResolverContextInformation & ctxt) const;
+	QString locationOf(const QString& relativeFilename, const ResolverContextInformation & ctxt) const;
 };
 
 PrivateCache::PrivateCache() : _cache_mutex(QMutex::NonRecursive)
@@ -73,11 +74,17 @@ PrivateCache::PrivateCache() : _cache_mutex(QMutex::NonRecursive)
 
 }
 
-void PrivateCache::importOf(QList< ContentView3::FilePtr >& result, ContentView3::FilePtr file)
+void PrivateCache::importOf(QList< ContentView3::FilePtr >& result, ContentView3::FilePtr file, const ResolverContextInformation & ctxt) const
 {
+	ResolverContextInformation ctxtChild = ctxt;
+	if (! ctxtChild.isEmpty())
+	{
+		ctxtChild.setCurrentPath(QDir(file->filename()).absolutePath());
+	}
+
 	foreach(const QString & import, file->imports())
 	{
-		const QString absoluteImport = QFileInfo(import).absoluteFilePath();
+		const QString absoluteImport = QFileInfo(locationOf(import, ctxt)).absoluteFilePath();
 
 		if (_files.contains(absoluteImport))
 		{
@@ -86,9 +93,22 @@ void PrivateCache::importOf(QList< ContentView3::FilePtr >& result, ContentView3
 			{
 				result += information._file;
 
-				importOf(result, information._file);
+				importOf(result, information._file, ctxtChild);
 			}
 		}
+	}
+}
+
+QString PrivateCache::locationOf(const QString& relativeFilename, const ResolverContextInformation & ctxt) const
+{
+	XinxProject::ProjectPtr project = _project.toStrongRef();
+	if (project)
+	{
+		return project->resolver()->resolveFileName(relativeFilename, ctxt);
+	}
+	else
+	{
+		return relativeFilename;
 	}
 }
 
@@ -126,9 +146,10 @@ QStringList Cache::cachedFiles() const
 	return result;
 }
 
-ContentView3::Parser* Cache::addFileToCache(const QString& filename, bool force, ContentView3::Cache::CacheVisibility visibility)
+ContentView3::Parser* Cache::addFileToCache(const QString& filename, const ResolverContextInformation & information, bool force, ContentView3::Cache::CacheVisibility visibility)
 {
-	const QString absoluteFilename = QFileInfo(filename).absoluteFilePath();
+	Q_ASSERT_X(information.isEmpty() || (information.project()->projectPath() == d->_project.toStrongRef()->projectPath()), "Cache::addFileToCache", "Context must be in the same project that the cache");
+	const QString absoluteFilename = QFileInfo(d->locationOf(filename, information)).absoluteFilePath();
 
 	// If the file is already in the cache, don't reload it.
 	if (! force && d->_files.contains(absoluteFilename)) return 0;
@@ -150,6 +171,10 @@ ContentView3::Parser* Cache::addFileToCache(const QString& filename, bool force,
 
 		parser->setFile(file);
 		parser->setDevice(new QFile(absoluteFilename));
+
+		ResolverContextInformation ctx = information;
+		ctx.setCurrentPath(QFileInfo(absoluteFilename).absolutePath());
+		parser->setContext(ctx);
 
 		addFileToCache(parser, force, visibility);
 
@@ -197,7 +222,7 @@ void Cache::refreshCache(const QString& filename)
 {
 	if (QFileInfo(filename).exists())
 	{
-		addFileToCache(filename, true, d->_files.value(filename)._visibility);
+		addFileToCache(filename, ResolverContextInformation(), true, d->_files.value(filename)._visibility);
 	}
 	else
 	{
@@ -207,10 +232,20 @@ void Cache::refreshCache(const QString& filename)
 	}
 }
 
-QList< FilePtr > Cache::importOf(ContentView3::FilePtr file) const
+QList< FilePtr > Cache::importOf(ContentView3::FilePtr file, const ResolverContextInformation & information) const
 {
-	QMutexLocker locker(&d->_cache_mutex);
+	Q_ASSERT_X(information.isEmpty() || (information.project()->projectPath() == d->_project.toStrongRef()->projectPath()), "Cache::addFileToCache", "Context must be in the same project that the cache");
+	ResolverContextInformation ctx = information;
+	if (information.isEmpty())
+	{
+		XinxProject::ProjectPtr project = d->_project.toStrongRef();
+		if (project)
+		{
+			ctx = project->resolver()->createContextInformation(file->filename());
+		}
+	}
 
+	QMutexLocker locker(&d->_cache_mutex);
 	QList< FilePtr > result;
 
 	foreach(PrivateCache::CacheInformation information, d->_files)
@@ -221,14 +256,15 @@ QList< FilePtr > Cache::importOf(ContentView3::FilePtr file) const
 		}
 	}
 
-	d->importOf(result, file);
+	d->importOf(result, file, ctx);
 
 	return result;
 }
 
-FilePtr Cache::cachedFile(const QString & filename)
+FilePtr Cache::cachedFile(const QString & filename, const ResolverContextInformation & information)
 {
-	const QString absoluteFilename = QFileInfo(filename).absoluteFilePath();
+	Q_ASSERT_X(information.isEmpty() || (information.project()->projectPath() == d->_project.toStrongRef()->projectPath()), "Cache::addFileToCache", "Context must be in the same project that the cache");
+	const QString absoluteFilename = QFileInfo(d->locationOf(filename, information)).absoluteFilePath();
 
 	FilePtr file;
 
@@ -240,6 +276,7 @@ FilePtr Cache::cachedFile(const QString & filename)
 	}
 	else
 	{
+		// Doesn't come from the cache.
 		file = File::create(absoluteFilename, d->_project.toStrongRef());
 	}
 

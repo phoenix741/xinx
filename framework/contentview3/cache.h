@@ -22,6 +22,7 @@
 
 // Xinx header
 #include <contentview3/file.h>
+#include <project/resolvercontext.h>
 
 // Qt header
 #include <QString>
@@ -55,11 +56,11 @@ public:
 	~Cache();
 
 	QStringList cachedFiles() const;
-	ContentView3::Parser* addFileToCache(const QString & filename, bool force = false, CacheVisibility visibility = Cache::IMPORT);
+	ContentView3::Parser* addFileToCache(const QString & filename, const ResolverContextInformation & information = ResolverContextInformation(), bool force = false, CacheVisibility visibility = Cache::IMPORT);
 	void addFileToCache(ContentView3::Parser * parser, bool force = false, CacheVisibility visibility = Cache::IMPORT);
 
-	QList<FilePtr> importOf(ContentView3::FilePtr file) const;
-	FilePtr cachedFile(const QString & filename);
+	QList<FilePtr> importOf(ContentView3::FilePtr file, const ResolverContextInformation & information = ResolverContextInformation()) const;
+	FilePtr cachedFile(const QString & filename, const ResolverContextInformation & information = ResolverContextInformation());
 signals:
 	void updated(ContentView3::FilePtr file);
 public slots:

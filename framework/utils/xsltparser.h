@@ -28,10 +28,13 @@
 #include <QCoreApplication>
 #include <QByteArray>
 #include <QString>
+#include <QSharedPointer>
 
 namespace XinxProject
 {
-class Project;
+	class Project;
+	typedef QSharedPointer<Project> ProjectPtr;
+	typedef QWeakPointer<Project> ProjectPtrWeak;
 }
 
 class PrivateXsltParser;
@@ -51,8 +54,8 @@ public:
 	XsltParser();
 	virtual ~XsltParser();
 
-	void setProject(XinxProject::Project * project);
-	XinxProject::Project * project();
+	void setProject(XinxProject::ProjectPtr project);
+	XinxProject::ProjectPtr project();
 
 	bool loadStylesheet(const QString & filename);
 

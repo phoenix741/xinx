@@ -101,7 +101,6 @@ void ImportItemModelFactory::addNode(const QString & path)
 
 void ImportItemModelFactory::generate()
 {
-
 	Core::BaliseDefinition::XmlContextType * c = dynamic_cast<Core::BaliseDefinition::XmlContextType*>(context().context(XML_CONTEXT_TYPE));
 	if (c && c->position() == Core::BaliseDefinition::XmlContextType::ATTRIBUTE_CONTENT)
 	{
@@ -114,7 +113,7 @@ void ImportItemModelFactory::generate()
 
 			if (project)
 			{
-				QStringList pathList = project->resolver()->resolvePath(prefix, QFileInfo(file->filename()).absolutePath());
+				QStringList pathList = project->resolver()->resolvePath(prefix, project->resolver()->createContextInformation(file->filename()));
 				foreach(QString path, pathList)
 				{
 					addNode(path);

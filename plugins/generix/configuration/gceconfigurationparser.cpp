@@ -44,7 +44,7 @@ void GceConfigurationParser::startJob()
 		parser.m_quick = ! SelfGceSettings::self()->config().readConfigurations;
 		parser.m_configurationNumber = -1;
 		parser._gce_configuration = interface();
-		parser.loadFromFile(_filename);
+		parser.loadFromFile(_filename, QString());
 
 		interface()->addBusinessView(parser.m_fileRefToInformation);
 		interface()->setVersion(ConfigurationVersion(parser.m_version, parser.m_edition));

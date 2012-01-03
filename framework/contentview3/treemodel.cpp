@@ -38,16 +38,20 @@ void TreeNode::updateFromNode(NodePtr node)
 	_key = node->keyString();
 	_project = file->project().toWeakRef();
 
+	/*
 	if (node->type() != "IMPORT")
 	{
+	*/
 		_filename = node->filename();
 		_line = node->line();
+		/*
 	}
 	else
 	{
 		_filename = node->name();
 		_line = 0;
 	}
+	*/
 }
 
 QVariant TreeNode::data(int role) const
@@ -187,7 +191,13 @@ void TreeModel::fetchMore(const QModelIndex & parent)
 		TreeNode* node = static_cast<TreeNode*>(itemFromIndex(parent));
 		if (! node->_is_children_populate)
 		{
-			FilePtr imported_file = d->_file->project()->cache()->cachedFile(node->_name);
+			ResolverContextInformation ctx = d->_file->project()->resolver()->createContextInformation(d->_file->filename());
+			if (! node->_filename.isEmpty())
+			{
+				ctx.setCurrentPath(QFileInfo(node->_filename).absolutePath());
+			}
+
+			FilePtr imported_file = d->_file->project()->cache()->cachedFile(node->_name, ctx);
 
 			if (imported_file)
 			{

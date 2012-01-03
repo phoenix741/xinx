@@ -42,8 +42,9 @@ GceConfigurationXmlParser2::~GceConfigurationXmlParser2()
 	//xmlCleanupParser();
 }
 
-bool GceConfigurationXmlParser2::loadFromFile(const QString & filename)
+bool GceConfigurationXmlParser2::loadFromFile(const QString & filename, const QString & module)
 {
+	_module = module;
 	m_fileRefToName.clear();
 	m_nameToInformation.clear();
 	m_configurationFileName = filename;
@@ -300,6 +301,7 @@ void GceConfigurationXmlParser2::readBusinessViewDefElement(xmlTextReader * read
 	information.setBusinessViewName(QString::fromUtf8((char*)name));
 	information.setTargetName(QString::fromUtf8((char*)target));
 	information.setViewstructName(QString::fromUtf8((char*)viewstruct));
+	information.setModuleName(_module);
 
 	information.setConfigurationFileName(m_configurationFileName);
 	information.setConfigurationNumber(m_configurationNumber);
@@ -343,7 +345,7 @@ void GceConfigurationXmlParser2::readPresentationElement(xmlTextReader * reader,
 
 	if (_gce_configuration)
 	{
-		fileRef = _gce_configuration->resolveFileName(fileRef);
+		fileRef = _gce_configuration->resolveFileName(fileRef, information.moduleName());
 		if (QDir(fileRef).isAbsolute())
 		{
 			fileRef = QDir(QFileInfo(_gce_configuration->filename()).absolutePath()).relativeFilePath(fileRef);

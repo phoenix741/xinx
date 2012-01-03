@@ -496,11 +496,6 @@ void TextFileEditor::updateModel()
 		}
 
 		parser->setFile(_file);
-		if (project())
-		{
-			parser->setWorkingPath(project()->projectPath());
-		}
-
 		parser->setDevice(buffer);
 		project()->cache()->addFileToCache(parser, true, ContentView3::Cache::NONE);
 	}

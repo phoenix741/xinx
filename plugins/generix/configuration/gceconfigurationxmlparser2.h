@@ -34,7 +34,7 @@ public:
 	GceConfigurationXmlParser2();
 	~GceConfigurationXmlParser2();
 
-	bool loadFromFile(const QString & filename);
+	bool loadFromFile(const QString & filename, const QString & module);
 
 	/* INPUT */
 	QSharedPointer<GceConfiguration> _gce_configuration;
@@ -59,6 +59,7 @@ private:
 	void readPresentationElement(xmlTextReader * reader);
 
 	QString m_configurationFileName;
+	QString _module;
 
 	QHash<QString,BusinessViewInformation> m_nameToInformation;
 	QMultiHash<QString,QString> m_fileRefToName;

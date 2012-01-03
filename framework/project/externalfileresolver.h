@@ -23,6 +23,7 @@
 
 // Xinx header
 #include <core/lib-config.h>
+#include <project/resolvercontext.h>
 
 // Qt header
 #include <QObject>
@@ -51,12 +52,13 @@ public:
 	QStringList externalFileResoverNames() const;
 	IFileResolverPlugin * externalFileResover(const QString & id) const;
 
-	QString resolveFileName(const QString & nameToResolve, const QString & currentPath = QString());
-	QStringList resolvePath(const QString & nameToResolve, const QString & currentPath = QString());
+	QString resolveFileName(const QString & nameToResolve, const ResolverContextInformation & ctxt = ResolverContextInformation());
+	QStringList resolvePath(const QString & nameToResolve, const ResolverContextInformation & ctxt = ResolverContextInformation());
+	ResolverContextInformation createContextInformation(const QString & filename, const ResolverContextInformation & ctxt = ResolverContextInformation());
 public slots:
 	void clearCache();
 private:
-	QHash< QPair<QString,QString> ,QString> m_externalFileResolverCache;
+	QHash< QPair<QString,ResolverContextInformation> ,QString> m_externalFileResolverCache;
 
 	XinxProject::ProjectPtrWeak _project;
 };

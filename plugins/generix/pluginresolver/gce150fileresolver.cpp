@@ -21,6 +21,7 @@
 #include "gce150fileresolver.h"
 #include "projectproperty/generixproject.h"
 #include "configuration/configurationmanager.h"
+#include <jobs/xinxjobdelayedexception.h>
 
 // Qt header
 #include <QDir>
@@ -50,16 +51,15 @@ QString Gce150FileResolver::name()
 	return tr("GCE150 File Resolver");
 }
 
-QStringList Gce150FileResolver::resolvePath(const QString& path, const QString& currentPath, XinxProject::ProjectPtr project)
+QStringList Gce150FileResolver::resolvePath(const QString& path, const ResolverContextInformation &ctxt)
 {
-	Q_UNUSED(currentPath);
-
+	XinxProject::ProjectPtr project = ctxt.project();
 	if (project && project.staticCast<GenerixProject>()->isGenerixActivated() && ConfigurationManager::manager(project))
 	{
 		QSharedPointer<GceConfiguration> interface = ConfigurationManager::manager(project)->getInterface();
 		if (interface)
 		{
-			return interface->resolvePath(path);
+			return interface->resolvePath(path, ctxt.getProperty("module").toString());
 		}
 
 		return QStringList();
@@ -70,16 +70,22 @@ QStringList Gce150FileResolver::resolvePath(const QString& path, const QString& 
 	}
 }
 
-bool Gce150FileResolver::resolveFileName(const QString& nameToResolve, QString& resolvedName, const QString& currentPath, XinxProject::ProjectPtr project)
+bool Gce150FileResolver::resolveFileName(const QString& nameToResolve, QString& resolvedName, const ResolverContextInformation &ctxt)
 {
-	Q_UNUSED(currentPath);
-
+	XinxProject::ProjectPtr project = ctxt.project();
 	if (project && project.staticCast<GenerixProject>()->isGenerixActivated())
 	{
+		// Si la conf n'est pas encore chargé, on génère une exception il n'est pas possible de résoudre l'alias
+		/* L'exception a normallement déjà été levé lors de la création du context */
+		if (! ConfigurationManager::manager(project)->isReady())
+		{
+			throw XinxJobDelayedException();
+		}
+
 		QSharedPointer<GceConfiguration> interface = ConfigurationManager::manager(project)->getInterface();
 		if (interface)
 		{
-			resolvedName = interface->resolveFileName(nameToResolve);
+			resolvedName = interface->resolveFileName(nameToResolve, ctxt.getProperty("module").toString());
 		}
 
 		return true;
@@ -88,5 +94,40 @@ bool Gce150FileResolver::resolveFileName(const QString& nameToResolve, QString& 
 	{
 		return false;
 	}
-
 }
+
+ResolverContextInformation Gce150FileResolver::createContextInformation(const QString & filename, const ResolverContextInformation & ctxt)
+{
+	ResolverContextInformation result = ctxt;
+
+	XinxProject::ProjectPtr project = ctxt.project();
+	if (project && project.staticCast<GenerixProject>()->isGenerixActivated())
+	{
+		// Si la conf n'est pas encore chargé, on génère une exception il n'est pas possible de résoudre l'alias
+		if (! ConfigurationManager::manager(project)->isReady())
+		{
+			throw XinxJobDelayedException();
+		}
+
+		QSharedPointer<GceConfiguration> interface = ConfigurationManager::manager(project)->getInterface();
+		if (interface)
+		{
+			QString module;
+			foreach(const BusinessViewInformation information, interface->businessView(filename))
+			{
+				if (! information.moduleName().isEmpty())
+				{
+					module = information.moduleName();
+				}
+			}
+
+			if (! module.isEmpty())
+			{
+				result.setProperty("module", module);
+			}
+		}
+	}
+
+	return result;
+}
+

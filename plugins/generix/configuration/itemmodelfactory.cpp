@@ -76,13 +76,14 @@ void ItemModelFactory::generate()
 				QSharedPointer<GceConfiguration> configurationFile = ConfigurationManager::manager(project)->getInterface();
 				if (configurationFile)
 				{
-					QStringList aliases =  configurationFile->aliasPolicy().keys();
+					QList<QPair<QString,QString> > aliases =  configurationFile->aliasPolicy().keys();
+					QPair<QString,QString> alias;
 
-					foreach(const QString & alias, aliases)
+					foreach(alias, aliases)
 					{
-						if (alias.startsWith(context().prefix(), Qt::CaseInsensitive))
+						if (alias.second.startsWith(context().prefix(), Qt::CaseInsensitive))
 						{
-							AliasItem * item = new AliasItem(alias);
+							AliasItem * item = new AliasItem(alias.second);
 							item->setContextType(tr("Aliases"));
 							itemInterface()->addItem(item);
 						}
