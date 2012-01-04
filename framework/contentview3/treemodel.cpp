@@ -22,7 +22,7 @@
 namespace ContentView3
 {
 
-TreeNode::TreeNode(NodePtr node) : QStandardItem(QIcon(node->icon()), node->displayName())
+TreeNode::TreeNode(PrivateTreeModel * treemodel, NodePtr node) : QStandardItem(QIcon(node->icon()), node->displayName()), d(treemodel)
 {
 	_is_children_populate = node->type() != "IMPORT";
 	setEditable(false);
@@ -38,20 +38,38 @@ void TreeNode::updateFromNode(NodePtr node)
 	_key = node->keyString();
 	_project = file->project().toWeakRef();
 
-	/*
 	if (node->type() != "IMPORT")
 	{
-	*/
 		_filename = node->filename();
 		_line = node->line();
-		/*
 	}
 	else
 	{
-		_filename = node->name();
-		_line = 0;
+		/* Special process for IMPORT */
+		XinxProject::ProjectPtr project = d->_file->project();
+		if (project)
+		{
+			ResolverContextInformation ctx = project->resolver()->createContextInformation(d->_file->filename());
+			if (! node->name().isEmpty())
+			{
+				ctx.setCurrentPath(QFileInfo(node->name()).absolutePath());
+			}
+
+			_filename = project->resolver()->resolveFileName(node->name(), ctx);
+			_line = 0;
+
+			if (_filename.contains(project->projectPath()))
+			{
+				setToolTip(node->name());
+				setText(QDir(project->projectPath()).relativeFilePath(_filename));
+			}
+		}
+		else
+		{
+			_filename = node->name();
+			_line = 0;
+		}
 	}
-	*/
 }
 
 QVariant TreeNode::data(int role) const
@@ -77,7 +95,7 @@ QVariant TreeNode::data(int role) const
 QStandardItem * PrivateTreeModel::appendRow(QStandardItem * item, NodePtr child_node)
 {
 	TreeNode* child_item = 0;
-	child_item = new TreeNode(child_node);
+	child_item = new TreeNode(this, child_node);
 	item->appendRow(child_item);
 	return child_item;
 }

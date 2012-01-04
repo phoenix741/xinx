@@ -33,7 +33,7 @@ namespace ContentView3
 class TreeNode : public QStandardItem
 {
 public:
-	TreeNode(NodePtr node);
+	TreeNode(PrivateTreeModel * treemodel, NodePtr node);
 
 	void updateFromNode(NodePtr node);
 	virtual QVariant data(int role = Qt::UserRole + 1) const;
@@ -43,6 +43,7 @@ public:
 	QString _key;
 	QString _filename, _name;
 	int _line;
+	PrivateTreeModel * d;
 };
 
 
