@@ -1,3 +1,16 @@
+xinx (0.10.3.20104) unstable; urgency=low
+
+  * remove the generix plugin from the repository (doesn't compile)
+  * add generix as a subrepos
+  * add a method used to delaye job in the application
+  * delay the parsing of stylesheet to the load of the configuration in generix plugin
+  * In some case (Generix plugin), we need some special information for the resolution of the name. We store this information in a new structure that can be used for the resolution.
+  * correction of some warning
+  * fixe the xsltparser to use the right project and the real context
+  * restore the showing information in the contentview dock (for IMPORTNODE some information will be fixed)
+
+ -- Ulrich VANDENHEKKE <phoenix@server.eden.lan>  Wed, 04 Jan 2012 18:13:55 +0100
+
 xinx (0.10.2.10921) unstable; urgency=low
 
   * fixes #429 : For the next release
