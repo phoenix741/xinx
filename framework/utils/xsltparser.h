@@ -70,7 +70,7 @@ public:
 protected:
 	virtual void registerPlugin(void* ctxt);
 private:
-	PrivateXsltParser * d;
+	QScopedPointer<PrivateXsltParser> d;
 	friend class PrivateXsltParser;
 };
 

@@ -214,6 +214,8 @@ void StyleSheetEditor::launchStylesheetParsing(const QString & xmlfile)
 	ErrorManager::self()->clearMessages(textEdit()->filename());
 	QList<XsltParser::ErrorMessage> errors;
 
+	xsltParser->setProject(project());
+
 	if (! xsltParser->loadStylesheet(textEdit()->filename()))	goto error;
 	errors += xsltParser->errors();
 

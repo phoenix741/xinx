@@ -36,6 +36,23 @@
 #include <libxslt/transform.h>
 #include <libxslt/xsltutils.h>
 
+/* PrivateXsltParser */
+
+class PrivateXsltParser
+{
+public:
+	XinxProject::ProjectPtrWeak _project;
+	ResolverContextInformation _resolverCtxt;
+
+	xsltStylesheetPtr m_stylesheet;
+	xmlDocPtr m_xmlDoc, m_res;
+	QList<XsltParser::ErrorMessage> m_errors;
+
+	friend void xsltParserErrorFunc(void * parser, xmlErrorPtr error);
+};
+
+/* Static Variable */
+
 static bool initialized = false;
 
 /* Static Callback */
@@ -48,32 +65,50 @@ static int xsltParserInputMatchCallback(char const * filename)
 
 void* xsltParserInputOpenCallback(const char* filename)
 {
-	QFile f(filename);
+	QString strFilename = QString::fromAscii(filename);
+	QString prefix;
+	PrivateXsltParser * parser = 0;
+	if (strFilename.startsWith("xinx:"))
+	{
+		int arobas = strFilename.indexOf("@");
+		prefix = strFilename.left(arobas + 1);
+
+		QString ptrAdress = prefix.mid(5);
+		ptrAdress.chop(1);
+		parser = reinterpret_cast<PrivateXsltParser*>(ptrAdress.toInt());
+		strFilename.remove(0, arobas + 1);
+	}
+
+
+	QFile f(strFilename);
 	if (! f.open(QIODevice::ReadOnly))
 	{
 		return 0;
 	}
 
 	QString bufferString(QString::fromLatin1(f.readAll()));
-
-	XinxProject::ProjectPtr project = XinxProject::Manager::self()->projectOfFile(filename);
-	if (project)
+	if (parser)
 	{
-		QRegExp importRegExp("(<xsl:import[^>]+href\\s*=\\s*\")(.*)(\".*>)");
-		importRegExp.setMinimal(true);
-		int position = 0;
-		while ((position = importRegExp.indexIn(bufferString, position)) >= 0)
+		XinxProject::ProjectPtr project = parser->_project.toStrongRef();
+		if (project)
 		{
-			QString href = importRegExp.cap(2);
-			// FIXME : Must use _ctxt
-			ResolverContextInformation ctxt;
-			ctxt.setProject(project);
-			ctxt.setCurrentPath(QFileInfo(filename).absolutePath());
-			QString resolvedRef = project->resolver()->resolveFileName(href, ctxt);
+			QRegExp importRegExp("(<xsl:import[^>]+href\\s*=\\s*\")(.*)(\".*>)");
+			importRegExp.setMinimal(true);
+			int position = 0;
+			while ((position = importRegExp.indexIn(bufferString, position)) >= 0)
+			{
+				QString href = importRegExp.cap(2);
+				ResolverContextInformation ctxt = parser->_resolverCtxt;
+				if (ctxt.originalFileName() != strFilename)
+				{
+					ctxt.setCurrentPath(QFileInfo(strFilename).absolutePath());
+				}
+				QString resolvedRef = prefix + project->resolver()->resolveFileName(href, ctxt);
 
-			bufferString.replace(importRegExp.pos(2), href.length(), resolvedRef);
+				bufferString.replace(importRegExp.pos(2), href.length(), resolvedRef);
 
-			position += importRegExp.matchedLength() + resolvedRef.length() - href.length();
+				position += importRegExp.matchedLength() + resolvedRef.length() - href.length();
+			}
 		}
 	}
 
@@ -100,21 +135,6 @@ static int xsltParserInputCloseCallback(void * context)
 	delete b;
 	return 0;
 }
-
-/* PrivateXsltParser */
-
-class PrivateXsltParser
-{
-public:
-	XinxProject::ProjectPtrWeak _project;
-	ResolverContextInformation _resolverCtxt;
-
-	xsltStylesheetPtr m_stylesheet;
-	xmlDocPtr m_xmlDoc, m_res;
-	QList<XsltParser::ErrorMessage> m_errors;
-
-	friend void xsltParserErrorFunc(void * parser, xmlErrorPtr error);
-};
 
 /* Error parsing */
 
@@ -159,10 +179,8 @@ void xsltParserGenericErrorFunc(void * ctx, const char * msg, ...)
 
 /* XsltParser */
 
-XsltParser::XsltParser()
+XsltParser::XsltParser() : d(new PrivateXsltParser)
 {
-	d = new PrivateXsltParser;
-
 	d->m_stylesheet  = NULL;
 	d->m_xmlDoc      = NULL;
 	d->m_res         = NULL;
@@ -184,8 +202,6 @@ XsltParser::~XsltParser()
 	xsltFreeStylesheet(d->m_stylesheet);
 	xmlFreeDoc(d->m_res);
 	xmlFreeDoc(d->m_xmlDoc);
-
-	delete d;
 }
 
 void XsltParser::setProject(XinxProject::ProjectPtr project)
@@ -207,13 +223,21 @@ const QList<XsltParser::ErrorMessage> & XsltParser::errors() const
 
 bool XsltParser::loadStylesheet(const QString & filename)
 {
-	d->_resolverCtxt = d->_project.toStrongRef()->resolver()->createContextInformation(filename);
+	if (! d->_project)
+	{
+		d->_project = XinxProject::Manager::self()->projectOfFile(filename);
+	}
+	// Now we have maybe a project.
+	if (&d->_project)
+	{
+		d->_resolverCtxt = d->_project.toStrongRef()->resolver()->createContextInformation(filename);
+	}
 
 	d->m_errors.clear();
-	xmlSetStructuredErrorFunc(d, xsltParserErrorFunc);
-	xmlSetGenericErrorFunc(d, xsltParserGenericErrorFunc);
+	xmlSetStructuredErrorFunc(d.data(), xsltParserErrorFunc);
+	xmlSetGenericErrorFunc(d.data(), xsltParserGenericErrorFunc);
 	//xsltSetGenericDebugFunc(d, xsltParserGenericErrorFunc);
-	d->m_stylesheet = xsltParseStylesheetFile((const xmlChar *) qPrintable(filename));
+	d->m_stylesheet = xsltParseStylesheetFile((const xmlChar *) qPrintable(QString("xinx:%1@").arg(reinterpret_cast<unsigned long long>(d.data())) + filename));
 	//xsltSetGenericDebugFunc(0, 0);
 	xmlSetGenericErrorFunc(0, 0);
 	xmlSetStructuredErrorFunc(0, 0);
@@ -224,8 +248,8 @@ bool XsltParser::loadStylesheet(const QString & filename)
 bool XsltParser::loadXmlFile(const QByteArray & data)
 {
 	d->m_errors.clear();
-	xmlSetStructuredErrorFunc(d, xsltParserErrorFunc);
-	xmlSetGenericErrorFunc(d, xsltParserGenericErrorFunc);
+	xmlSetStructuredErrorFunc(d.data(), xsltParserErrorFunc);
+	xmlSetGenericErrorFunc(d.data(), xsltParserGenericErrorFunc);
 	//xsltSetGenericDebugFunc(d, xsltParserGenericErrorFunc);
 	d->m_xmlDoc = xmlParseMemory(data, data.size());
 	//xsltSetGenericDebugFunc(0, 0);
@@ -238,8 +262,8 @@ bool XsltParser::loadXmlFile(const QByteArray & data)
 bool XsltParser::loadXmlFile(const QString & filename)
 {
 	d->m_errors.clear();
-	xmlSetStructuredErrorFunc(d, xsltParserErrorFunc);
-	xmlSetGenericErrorFunc(d, xsltParserGenericErrorFunc);
+	xmlSetStructuredErrorFunc(d.data(), xsltParserErrorFunc);
+	xmlSetGenericErrorFunc(d.data(), xsltParserGenericErrorFunc);
 	//xsltSetGenericDebugFunc(d, xsltParserGenericErrorFunc);
 	d->m_xmlDoc = xmlReadFile(qPrintable(filename), NULL, XML_PARSE_NOBLANKS);
 	//xsltSetGenericDebugFunc(0, 0);
@@ -257,8 +281,8 @@ QString XsltParser::getOutput() const
 	xmlChar* buffer;
 	int bufferSize;
 
-	xmlSetStructuredErrorFunc(d, xsltParserErrorFunc);
-	xmlSetGenericErrorFunc(d, xsltParserGenericErrorFunc);
+	xmlSetStructuredErrorFunc(d.data(), xsltParserErrorFunc);
+	xmlSetGenericErrorFunc(d.data(), xsltParserGenericErrorFunc);
 	//xsltSetGenericDebugFunc(d, xsltParserGenericErrorFunc);
 	xsltSaveResultToString(&buffer, &bufferSize, d->m_res, d->m_stylesheet);
 	//xsltSetGenericDebugFunc(0, 0);
@@ -283,11 +307,11 @@ bool XsltParser::process()
 	if (d->m_res)
 		xmlFreeDoc(d->m_res);
 
-	xmlSetStructuredErrorFunc(d, xsltParserErrorFunc);
-	xmlSetGenericErrorFunc(d, xsltParserGenericErrorFunc);
+	xmlSetStructuredErrorFunc(d.data(), xsltParserErrorFunc);
+	xmlSetGenericErrorFunc(d.data(), xsltParserGenericErrorFunc);
 	//xsltSetGenericDebugFunc(d, xsltParserGenericErrorFunc);
 	xsltTransformContextPtr ctxt = xsltNewTransformContext(d->m_stylesheet, d->m_xmlDoc);
-	xsltSetTransformErrorFunc(ctxt, d, xsltParserGenericErrorFunc);
+	xsltSetTransformErrorFunc(ctxt, d.data(), xsltParserGenericErrorFunc);
 
 	if (ctxt == NULL)
 	{
@@ -300,7 +324,7 @@ bool XsltParser::process()
 
 	d->m_res = xsltApplyStylesheetUser(d->m_stylesheet, d->m_xmlDoc, 0, 0, 0, ctxt);
 	//xsltSetGenericDebugFunc(0, 0);
-	xsltSetTransformErrorFunc(ctxt, d, 0);
+	xsltSetTransformErrorFunc(ctxt, d.data(), 0);
 	xmlSetGenericErrorFunc(0, 0);
 	xmlSetStructuredErrorFunc(0, 0);
 
