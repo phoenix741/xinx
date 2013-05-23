@@ -58,7 +58,8 @@ void XMLPrettyPrinter::process()
 
 QString XMLPrettyPrinter::getResult()
 {
-	return QString(m_resultBuffer.data());
+	QTextCodec * codec = m_result.codec();
+	return codec->toUnicode (m_resultBuffer.data());
 }
 
 void XMLPrettyPrinter::writeLevel(int level)
