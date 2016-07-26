@@ -2,6 +2,34 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="bg_BG">
 <context>
+    <name>AddModifyLabelDialog</name>
+    <message>
+        <location filename="../docks/dictionary/addmodifylabeldialog.ui" line="17"/>
+        <source>Adding/Modify dictionary label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../docks/dictionary/addmodifylabeldialog.ui" line="23"/>
+        <source>&amp;Code :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../docks/dictionary/addmodifylabeldialog.ui" line="36"/>
+        <source>&amp;Langue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../docks/dictionary/addmodifylabeldialog.ui" line="53"/>
+        <source>&amp;Description :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../docks/dictionary/addmodifylabeldialog.ui" line="76"/>
+        <source>C&amp;ontext :</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>AliasItem</name>
     <message>
         <location filename="../configuration/itemmodelfactory.cpp" line="43"/>
@@ -122,26 +150,30 @@
 <context>
     <name>DictionaryDockWidget</name>
     <message>
-        <location filename="../ui/dictionarydockwidget.ui" line="14"/>
+        <location filename="../docks/dictionary/dictionarydockwidget.ui" line="14"/>
         <source>Dictionary</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dictionarydockwidget.ui" line="32"/>
-        <location filename="../ui/dictionarydockwidget.ui" line="46"/>
-        <source>...</source>
+        <location filename="../docks/dictionary/dictionarydockwidget.ui" line="28"/>
+        <source>Add a new label</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>DictionaryDockWidgetImpl</name>
     <message>
-        <location filename="../docks/dictionary/dictionarydockwidgetimpl.cpp" line="30"/>
+        <location filename="../docks/dictionary/dictionarydockwidgetimpl.cpp" line="69"/>
         <source>Dictionary</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../docks/dictionary/dictionarydockwidgetimpl.cpp" line="105"/>
+        <source>No label(s) loaded.</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message numerus="yes">
-        <location filename="../docks/dictionary/dictionarydockwidgetimpl.cpp" line="43"/>
+        <location filename="../docks/dictionary/dictionarydockwidgetimpl.cpp" line="109"/>
         <source>%n label(s) loaded.</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -152,7 +184,17 @@
 <context>
     <name>DictionaryModel</name>
     <message>
-        <location filename="../docks/dictionary/dictionarymodel.cpp" line="67"/>
+        <location filename="../docks/dictionary/dictionarymodel.cpp" line="104"/>
+        <source>Can&apos;t open the dictionary for write : %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../docks/dictionary/dictionarymodel.cpp" line="199"/>
+        <source>Can&apos;t parse the dictionary for write : %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../docks/dictionary/dictionarymodel.cpp" line="233"/>
         <source>Please type a prefix to list labels.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -160,7 +202,7 @@
 <context>
     <name>Gce150FileResolver</name>
     <message>
-        <location filename="../pluginresolver/gce150fileresolver.cpp" line="50"/>
+        <location filename="../pluginresolver/gce150fileresolver.cpp" line="51"/>
         <source>GCE150 File Resolver</source>
         <translation type="unfinished"></translation>
     </message>
@@ -189,17 +231,17 @@
 <context>
     <name>GcePropertiesParser</name>
     <message>
-        <location filename="../configuration/gcepropertiesparser.cpp" line="67"/>
+        <location filename="../configuration/gcepropertiesparser.cpp" line="68"/>
         <source>Can&apos;t open the gce properties file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configuration/gcepropertiesparser.cpp" line="75"/>
+        <location filename="../configuration/gcepropertiesparser.cpp" line="76"/>
         <source>Can&apos;t read the root element of the gce properties file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configuration/gcepropertiesparser.cpp" line="84"/>
+        <location filename="../configuration/gcepropertiesparser.cpp" line="85"/>
         <source>Unable to create new XPath context</source>
         <translation type="unfinished"></translation>
     </message>
@@ -207,18 +249,18 @@
 <context>
     <name>Generix::Dictionary::Parser</name>
     <message>
-        <location filename="../docks/dictionary/dictionary_parser.cpp" line="77"/>
+        <location filename="../docks/dictionary/dictionary_parser.cpp" line="78"/>
         <source>The file is not an dictionary file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../docks/dictionary/dictionary_parser.cpp" line="103"/>
-        <location filename="../docks/dictionary/dictionary_parser.cpp" line="129"/>
+        <location filename="../docks/dictionary/dictionary_parser.cpp" line="104"/>
+        <location filename="../docks/dictionary/dictionary_parser.cpp" line="130"/>
         <source>Labels node expected. %1 found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../docks/dictionary/dictionary_parser.cpp" line="157"/>
+        <location filename="../docks/dictionary/dictionary_parser.cpp" line="158"/>
         <source>Label node expected. %1 found</source>
         <translation type="unfinished"></translation>
     </message>
@@ -285,12 +327,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../plugindefinition/generix.cpp" line="110"/>
+        <location filename="../plugindefinition/generix.cpp" line="108"/>
         <source>Plugin for Generix</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../plugindefinition/generix.cpp" line="112"/>
+        <location filename="../plugindefinition/generix.cpp" line="110"/>
         <source>This plugin add some fonctionnality usefull for Generix Group&apos;s XINX users</source>
         <translation type="unfinished"></translation>
     </message>
@@ -298,12 +340,12 @@
 <context>
     <name>GenerixProjectDockImpl</name>
     <message>
-        <location filename="../docks/project/generixprojectdock.cpp" line="139"/>
+        <location filename="../docks/project/generixprojectdock.cpp" line="148"/>
         <source>Generix Business View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../docks/project/generixprojectdock.cpp" line="162"/>
+        <location filename="../docks/project/generixprojectdock.cpp" line="171"/>
         <source>&amp;Business view for file : 
 %1</source>
         <translation type="unfinished"></translation>
@@ -354,7 +396,7 @@
 <context>
     <name>ItemModelFactory</name>
     <message>
-        <location filename="../configuration/itemmodelfactory.cpp" line="86"/>
+        <location filename="../configuration/itemmodelfactory.cpp" line="87"/>
         <source>Aliases</source>
         <translation type="unfinished"></translation>
     </message>
@@ -376,42 +418,37 @@
     <name>NewGenerixDerivation1Page</name>
     <message>
         <location filename="../projectproperty/wizard/newgenerixderivation1page.ui" line="14"/>
-        <source>WizardPage</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation1page.ui" line="17"/>
         <source>Do you want derivate or edit a standard project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation1page.ui" line="20"/>
+        <location filename="../projectproperty/wizard/newgenerixderivation1page.ui" line="17"/>
         <source>Choose to derivate from a standard project, offer you to copy file in another tree automatically.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation1page.ui" line="26"/>
+        <location filename="../projectproperty/wizard/newgenerixderivation1page.ui" line="23"/>
         <source>Please tell me, if you want to modify all part of the web module, or prevent the modification of orignal files and derive file in special directory.
 In &lt;b&gt;GCE 150&lt;/b&gt; or later, the choice has few impact</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation1page.ui" line="40"/>
+        <location filename="../projectproperty/wizard/newgenerixderivation1page.ui" line="37"/>
         <source>&amp;No derivation (editor)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation1page.ui" line="47"/>
+        <location filename="../projectproperty/wizard/newgenerixderivation1page.ui" line="44"/>
         <source>Derivation in a &amp;project directory (integration)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation1page.ui" line="77"/>
+        <location filename="../projectproperty/wizard/newgenerixderivation1page.ui" line="74"/>
         <source>&amp;Name of the project directory : </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation1page.ui" line="90"/>
+        <location filename="../projectproperty/wizard/newgenerixderivation1page.ui" line="87"/>
         <source>Add the project directory name as prefix</source>
         <translation type="unfinished"></translation>
     </message>
@@ -420,37 +457,22 @@ In &lt;b&gt;GCE 150&lt;/b&gt; or later, the choice has few impact</source>
     <name>NewGenerixDerivation2Page</name>
     <message>
         <location filename="../projectproperty/wizard/newgenerixderivation2page.ui" line="14"/>
-        <source>WizardPage</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation2page.ui" line="17"/>
         <source>Define path that should be read only</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation2page.ui" line="20"/>
+        <location filename="../projectproperty/wizard/newgenerixderivation2page.ui" line="17"/>
         <source>Define the path you want to make read only in your web module. Generally, you should have one path not readonly and all other read only.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation2page.ui" line="26"/>
+        <location filename="../projectproperty/wizard/newgenerixderivation2page.ui" line="23"/>
         <source>In this list you have all directory detected by &lt;b&gt;XINX&lt;/b&gt;. If the list isn&apos;t complete, you can add or modify the list, later, in the project property.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation2page.ui" line="36"/>
+        <location filename="../projectproperty/wizard/newgenerixderivation2page.ui" line="33"/>
         <source>In the list, please check directory that you want make read-only (While modify a file in this directory, this will open a dialog to derive the fie. You always can force to save the file in the original directory.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation2page.ui" line="63"/>
-        <source>langue/fra/nav</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation2page.ui" line="71"/>
-        <source>langue/fra/nav/project</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -458,41 +480,36 @@ In &lt;b&gt;GCE 150&lt;/b&gt; or later, the choice has few impact</source>
     <name>NewGenerixDerivation3Page</name>
     <message>
         <location filename="../projectproperty/wizard/newgenerixderivation3page.ui" line="14"/>
-        <source>WizardPage</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation3page.ui" line="17"/>
         <source>Define option for derivation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation3page.ui" line="20"/>
+        <location filename="../projectproperty/wizard/newgenerixderivation3page.ui" line="17"/>
         <source>In this page you can define a prefix to use in your derivation path and the possibility to copy the original file in the destination path too.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation3page.ui" line="26"/>
+        <location filename="../projectproperty/wizard/newgenerixderivation3page.ui" line="23"/>
         <source>&amp;Create automatically missing directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation3page.ui" line="33"/>
+        <location filename="../projectproperty/wizard/newgenerixderivation3page.ui" line="30"/>
         <source>&lt;span style=&quot;color: red&quot;&gt;&lt;b&gt;!!! WARNING !!!&lt;/b&gt; : You should check this box, if you don&apos;t want have problem.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation3page.ui" line="40"/>
+        <location filename="../projectproperty/wizard/newgenerixderivation3page.ui" line="37"/>
         <source>&amp;Prefix derivated files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation3page.ui" line="74"/>
+        <location filename="../projectproperty/wizard/newgenerixderivation3page.ui" line="71"/>
         <source>&lt;span style=&quot;color: red&quot;&gt;&lt;b&gt;!!! WARNING !!!&lt;/b&gt; : You should define a prefix, in derivation project mode on this version of GCE.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixderivation3page.ui" line="84"/>
+        <location filename="../projectproperty/wizard/newgenerixderivation3page.ui" line="81"/>
         <source>C&amp;opy source file in the derivation path</source>
         <translation type="unfinished"></translation>
     </message>
@@ -501,43 +518,38 @@ In &lt;b&gt;GCE 150&lt;/b&gt; or later, the choice has few impact</source>
     <name>NewGenerixInformationPage</name>
     <message>
         <location filename="../projectproperty/wizard/newgenerixinformationpage.ui" line="17"/>
-        <source>WizardPage</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../projectproperty/wizard/newgenerixinformationpage.ui" line="20"/>
         <source>Define informations used by the Generix module of XINX</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixinformationpage.ui" line="23"/>
+        <location filename="../projectproperty/wizard/newgenerixinformationpage.ui" line="20"/>
         <source>In this page, you choose, the location of the Webmodule. This path should be the same of the project path, unless you know what you do.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixinformationpage.ui" line="29"/>
+        <location filename="../projectproperty/wizard/newgenerixinformationpage.ui" line="26"/>
         <source>This page show you the finding version of your GCE Installation. If the version number doesn&apos;t corresponding with your GCE Installation, please verify the configuration of your project. This will have an impact on the directory structure choosed by XINX and on how XINX will access to dictionnary and BV.
 
 On &quot;Location of the data stream&quot; you can fill by the location of the &quot;j2ee/home/log&quot; directory of your Application Server. This will be added as a link in your project to permit you an easy access to open a data stream.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixinformationpage.ui" line="62"/>
+        <location filename="../projectproperty/wizard/newgenerixinformationpage.ui" line="59"/>
         <source>Version :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixinformationpage.ui" line="72"/>
+        <location filename="../projectproperty/wizard/newgenerixinformationpage.ui" line="69"/>
         <source>Location of the &amp;data stream :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixinformationpage.ui" line="89"/>
+        <location filename="../projectproperty/wizard/newgenerixinformationpage.ui" line="86"/>
         <source>Location of the &amp;running page :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../projectproperty/wizard/newgenerixinformationpage.ui" line="124"/>
+        <location filename="../projectproperty/wizard/newgenerixinformationpage.ui" line="121"/>
         <source>&lt;p style=&quot;color: red&quot;&gt;&lt;b&gt;!!! WARNING !!!&lt;/b&gt; : The directory structure doesn&apos;t match with the version of the GCE module.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>

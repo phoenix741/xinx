@@ -25,7 +25,7 @@
 
 // xinx header
 #include "core/filewatcher.h"
-#include "core/p_filewatcher.h"
+#include "core/filewatcher_p.h"
 
 /*! \cond private */
 

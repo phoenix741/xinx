@@ -65,6 +65,10 @@ class QtLocalPeer;
 #  define QT_QTSINGLEAPPLICATION_EXPORT
 #endif
 
+#pragma once
+#ifndef __QTSINGLEAPPLICATION
+#define __QTSINGLEAPPLICATION
+
 class QT_QTSINGLEAPPLICATION_EXPORT QtSingleApplication : public QApplication
 {
     Q_OBJECT
@@ -103,3 +107,5 @@ private:
     QtLocalPeer *peer;
     QWidget *actWin;
 };
+
+#endif // __QTSINGLEAPPLICATION

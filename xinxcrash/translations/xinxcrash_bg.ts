@@ -184,74 +184,74 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tracticketcreationwizard.cpp" line="171"/>
+        <location filename="../tracticketcreationwizard.cpp" line="173"/>
         <source>Detailled message :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tracticketcreationwizard.cpp" line="172"/>
+        <location filename="../tracticketcreationwizard.cpp" line="174"/>
         <source>Stack :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tracticketcreationwizard.cpp" line="189"/>
+        <location filename="../tracticketcreationwizard.cpp" line="191"/>
         <source>Version : %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tracticketcreationwizard.cpp" line="199"/>
+        <location filename="../tracticketcreationwizard.cpp" line="201"/>
         <source>The ticket as completely created with the id %1. You can add more information on &lt;a href=&quot;http://%2/ticket/%1&quot;&gt;http://%2/ticket/%1&lt;/a&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tracticketcreationwizard.cpp" line="307"/>
+        <location filename="../tracticketcreationwizard.cpp" line="311"/>
         <source>Connection error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tracticketcreationwizard.cpp" line="307"/>
+        <location filename="../tracticketcreationwizard.cpp" line="311"/>
         <source>Can&apos;t connect to the ticket system : &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tracticketcreationwizard.cpp" line="338"/>
-        <location filename="../tracticketcreationwizard.cpp" line="350"/>
+        <location filename="../tracticketcreationwizard.cpp" line="342"/>
+        <location filename="../tracticketcreationwizard.cpp" line="354"/>
         <source>Creation error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tracticketcreationwizard.cpp" line="338"/>
+        <location filename="../tracticketcreationwizard.cpp" line="342"/>
         <source>Can&apos;t create the ticket : &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tracticketcreationwizard.cpp" line="350"/>
+        <location filename="../tracticketcreationwizard.cpp" line="354"/>
         <source>Can&apos;t attach the file to the ticket : &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tracticketcreationwizard.cpp" line="389"/>
-        <location filename="../tracticketcreationwizard.cpp" line="394"/>
+        <location filename="../tracticketcreationwizard.cpp" line="406"/>
+        <location filename="../tracticketcreationwizard.cpp" line="411"/>
         <source>Create ticket</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tracticketcreationwizard.cpp" line="389"/>
+        <location filename="../tracticketcreationwizard.cpp" line="406"/>
         <source>You must write a title</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tracticketcreationwizard.cpp" line="394"/>
+        <location filename="../tracticketcreationwizard.cpp" line="411"/>
         <source>You must write a description</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tracticketcreationwizard.cpp" line="414"/>
+        <location filename="../tracticketcreationwizard.cpp" line="431"/>
         <source>Register</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tracticketcreationwizard.cpp" line="414"/>
+        <location filename="../tracticketcreationwizard.cpp" line="431"/>
         <source>Password must be equals</source>
         <translation type="unfinished"></translation>
     </message>

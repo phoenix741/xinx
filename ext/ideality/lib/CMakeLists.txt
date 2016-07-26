@@ -1,3 +1,6 @@
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
 find_package(Qt4 REQUIRED)
 
 include(UseXinx)
@@ -29,10 +32,7 @@ set(sources
 	dstackedmainwindow.cpp
 	dworkspacemainwindow.cpp)
 
-xinx_automoc(moc_headers ${headers})
-qt4_automoc(${sources})
-
-add_library(ideality SHARED ${moc_headers} ${sources})
+add_library(ideality SHARED ${sources})
 target_link_libraries(ideality ${QT_LIBRARIES})
 set_target_properties(ideality PROPERTIES VERSION 0.1.0.0)
 if(UNIX)

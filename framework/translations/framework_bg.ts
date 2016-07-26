@@ -21,7 +21,7 @@
     <message>
         <location filename="../application/about.ui" line="74"/>
         <source>&lt;p&gt;&lt;b&gt;XINX&lt;/b&gt; Is Not only XML&lt;/p&gt;
-&lt;p&gt;(c) 2006-2007, Ulrich Van Den Hekke&lt;/p&gt;</source>
+&lt;p&gt;(c) 2006-2016, Ulrich Van Den Hekke&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -39,49 +39,45 @@
         <source>Licence</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../application/about.ui" line="215"/>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>AboutDialogImpl</name>
     <message>
-        <location filename="../application/aboutdialogimpl.cpp" line="34"/>
-        <source>&lt;b&gt;XINX %1 (use Qt %2)&lt;/b&gt;</source>
+        <location filename="../application/aboutdialogimpl.cpp" line="55"/>
+        <source>&lt;b&gt;XINX %1 (Changeset %2 using Qt %3)&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/aboutdialogimpl.cpp" line="59"/>
+        <source>&lt;b&gt;XINX %1 (using Qt %2)&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>AbstractEditor</name>
     <message>
-        <location filename="../editors/abstracteditor.cpp" line="454"/>
+        <location filename="../editors/abstracteditor.cpp" line="474"/>
         <source>Can&apos;t open file for reading %1 : %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/abstracteditor.cpp" line="512"/>
+        <location filename="../editors/abstracteditor.cpp" line="532"/>
         <source>Can&apos;t open file for writing %1 : %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/abstracteditor.cpp" line="732"/>
-        <location filename="../editors/abstracteditor.cpp" line="739"/>
+        <location filename="../editors/abstracteditor.cpp" line="765"/>
+        <location filename="../editors/abstracteditor.cpp" line="772"/>
         <source>Reload page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/abstracteditor.cpp" line="732"/>
+        <location filename="../editors/abstracteditor.cpp" line="765"/>
         <source>The file %1 was modified. Reload the page ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/abstracteditor.cpp" line="739"/>
+        <location filename="../editors/abstracteditor.cpp" line="772"/>
         <source>The file %1 was removed.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -89,7 +85,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ActionItem</name>
     <message>
-        <location filename="../codecompletion/model.cpp" line="347"/>
+        <location filename="../codecompletion/actionitem.cpp" line="51"/>
         <source>Action</source>
         <translation type="unfinished"></translation>
     </message>
@@ -377,17 +373,17 @@ Only checked files are commited.</source>
 <context>
     <name>ConclusionWizardPage</name>
     <message>
-        <location filename="../application/xinxprojectwizard/projectwizard.cpp" line="177"/>
+        <location filename="../application/xinxprojectwizard/conclusionwizardpage.cpp" line="31"/>
         <source>Conversion finished</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/xinxprojectwizard/projectwizard.cpp" line="178"/>
+        <location filename="../application/xinxprojectwizard/conclusionwizardpage.cpp" line="32"/>
         <source>The conversion is terminated, you can now reopen the project.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/xinxprojectwizard/projectwizard.cpp" line="181"/>
+        <location filename="../application/xinxprojectwizard/conclusionwizardpage.cpp" line="35"/>
         <source>The project is now converted. XINX can now open the project file normally.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -395,7 +391,7 @@ Only checked files are commited.</source>
 <context>
     <name>ContentView3::DockWidget</name>
     <message>
-        <location filename="../contentview3/dockwidget.cpp" line="32"/>
+        <location filename="../contentview3/dockwidget.cpp" line="52"/>
         <source>File Content</source>
         <translation type="unfinished"></translation>
     </message>
@@ -403,13 +399,23 @@ Only checked files are commited.</source>
 <context>
     <name>ContentView3::Parser</name>
     <message>
-        <location filename="../contentview3/parser.cpp" line="141"/>
+        <location filename="../contentview3/parser.cpp" line="90"/>
         <source>Parse the file %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../contentview3/parser.cpp" line="298"/>
+        <location filename="../contentview3/parser.cpp" line="256"/>
+        <source>The file %1 will be locked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../contentview3/parser.cpp" line="259"/>
         <source>Can&apos;t open &quot;%1&quot; : %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../contentview3/parser.cpp" line="271"/>
+        <source>The file %1 is unlocked</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -427,9 +433,9 @@ Only checked files are commited.</source>
     </message>
 </context>
 <context>
-    <name>CustomDialogImpl</name>
+    <name>CustomDialogImplPrivate</name>
     <message>
-        <location filename="../application/customdialog/customdialogimpl.cpp" line="119"/>
+        <location filename="../application/customdialog/customdialogimpl.cpp" line="68"/>
         <source>%1 on page &quot;%2&quot;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -448,131 +454,154 @@ Only checked files are commited.</source>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="26"/>
+        <source>&lt;p&gt;When this option is selected, document can be re-indented by using the command in the menu.&lt;/p&gt;
+&lt;p&gt;The document wil not be indented automatically.&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="30"/>
         <source>Manually</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="33"/>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="44"/>
-        <source>&lt;p&gt;If the box is checked, when saving the file, &lt;b&gt;XINX &lt;/b&gt;apply the pretty print function on the text. This format the code on saving file. &lt;/p&gt;
+        <location filename="../application/customdialog/ui/customeditor.ui" line="37"/>
+        <source>&lt;p&gt;If the box is checked, when saving the file, &lt;b&gt;XINX&lt;/b&gt; apply the pretty print function on the text. So the code is formating on saving file.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Saving file can be slower.&lt;/i&gt;&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="37"/>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="78"/>
+        <source>Number of ms to wait before launching the parser and refresh the content view. This also the time after what the error are show. This timeout is reseted when the user hit your keyboard.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="107"/>
+        <source>&lt;p&gt;Choose the default text encoding, when the text encoding can&apos;t be found.&lt;/p&gt;
+
+&lt;p&gt;&lt;i&gt;Some editor, can redefined the text encoding (ie: XML and derivated editor). Encoding defined in the combobox is used by editor for JavaScript and other&lt;/i&gt;&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="116"/>
+        <source>When this checkbox is checked, lines in editor are automatically wrap to fit on the screen. This remove the horizontal scrollbar.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="148"/>
+        <source>on the &amp;tab</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="158"/>
+        <source>on right &amp;corner</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="171"/>
+        <source>on the right corner &amp;and on the tab</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="210"/>
+        <source>&lt;p&gt;Create a backup file before saving the file. The backup file is stored in the same directory that the original file (and have extention &lt;code&gt;.bak&lt;/code&gt;). &lt;/p&gt;
+&lt;p&gt;The backup is created by copy the modified file before he his saved.&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="41"/>
         <source>On &amp;saving document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="48"/>
+        <source>&lt;p&gt;If the box is checked, when closing the file, &lt;b&gt;XINX&lt;/b&gt; apply the pretty print function on the text, after a confirmation from the user. &lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Closing a file can be slower.&lt;/i&gt;&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="52"/>
         <source>On &amp;closing document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="58"/>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="62"/>
         <source>&amp;Editor options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="64"/>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="68"/>
         <source>&amp;Text content refresh :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="74"/>
-        <source>Number of ms to wait before reloading of the editor content. This timeout is reseted when you hit your keyboard.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="77"/>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="81"/>
         <source> ms</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="93"/>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="97"/>
         <source>Default text &amp;encoding :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="103"/>
-        <source>&lt;p&gt;Choose the default text encoding, when the text encoding can&apos;t be found.
-
-&lt;i&gt;Some editor, can redefined the text encoding (ie: XML and derivated editor). This encoding is used by editor as JavaScript and other&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="119"/>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="126"/>
         <source>Wrap Line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="132"/>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="139"/>
         <source>Close Tab Button</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="138"/>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="145"/>
         <source>&lt;p&gt;&lt;img src=&quot;:/images/tabclose.png&quot;/&gt;Show a button on the right corner of &lt;b&gt;XINX&lt;/b&gt;.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="141"/>
-        <source>Close button on the &amp;tab widget</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="148"/>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="155"/>
         <source>&lt;p&gt;&lt;img src=&quot;:/images/fileclose.png&quot;/&gt;Show a close button on each tab.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="151"/>
-        <source>Close button on right &amp;corner</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="161"/>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="168"/>
         <source>&lt;p&gt;&lt;img src=&quot;:/images/tabclose.png&quot; /&gt;&lt;img src=&quot;:/images/fileclose.png&quot; /&gt;Show a button on the right corner of &lt;b&gt;XINX&lt;/b&gt; and another on each tab. This option is the concatenation of the two other options&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="164"/>
-        <source>Close button on the tab widget &amp;and the corner</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="187"/>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="194"/>
         <source>Saving &amp;Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="193"/>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="200"/>
         <source>&lt;p&gt;Alert user when the file is modified by an extern application. The user has the choice to open the new file (&lt;u&gt;and loose his change&lt;/u&gt;) or keep current file.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="196"/>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="203"/>
         <source>&amp;Popup when file modifed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="203"/>
-        <source>&lt;p&gt;Create a backup file before saving the file. The backup file is stored in the same directory that the original file. &lt;/p&gt;
-&lt;p&gt;The backup is created by copy the modified file before he his saved.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="207"/>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="214"/>
         <source>&amp;Create backup file when saving (.bak)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="217"/>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="224"/>
         <source>Editin&amp;g options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customeditor.ui" line="223"/>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="230"/>
+        <source>&lt;p&gt;When this box is checked, the error and warning dock is automatically show when an error occure, and automatically hide when error is corrected.&lt;/p&gt;
+
+&lt;p&gt;This can be desactivated because, writing code can be disturbed by the dock that automatically open and close. If desactivated the state of the dock don&apos;t change, but when there is an error, you can see the number of error side of the name of the dock, and a red line in the editor that show you the line where there is an error.&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customeditor.ui" line="235"/>
         <source>Automatically open/close error dock</source>
         <translation type="unfinished"></translation>
     </message>
@@ -636,112 +665,22 @@ Only checked files are commited.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="89"/>
-        <source>Custom...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="94"/>
-        <source>Red</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="99"/>
-        <source>Green</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="104"/>
-        <source>Blue</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="109"/>
-        <source>Cyan</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="114"/>
-        <source>Magenta</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="119"/>
-        <source>Yellow</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="124"/>
-        <source>Dark Red</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="129"/>
-        <source>Dark Green</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="134"/>
-        <source>Dark Blue</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="139"/>
-        <source>Dark Cyan</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="144"/>
-        <source>Dark Magenta</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="149"/>
-        <source>Dark Yellow</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="154"/>
-        <source>White</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="159"/>
-        <source>Light Gray</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="164"/>
-        <source>Gray</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="169"/>
-        <source>Dark Gray</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="174"/>
-        <source>Black</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="182"/>
+        <location filename="../application/customdialog/ui/customfont.ui" line="92"/>
         <source>Show tabulation and space in the editor with specialcharacter (in greyed colour).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="185"/>
+        <location filename="../application/customdialog/ui/customfont.ui" line="95"/>
         <source>Show &amp;tabulation and space in the editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="192"/>
+        <location filename="../application/customdialog/ui/customfont.ui" line="102"/>
         <source>Size of a &amp;tabulation :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customfont.ui" line="202"/>
+        <location filename="../application/customdialog/ui/customfont.ui" line="112"/>
         <source>Size of tabulation in number of character. This is the number of character that tabulation replaces.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -770,8 +709,24 @@ Only checked files are commited.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customgeneral.ui" line="64"/>
+        <location filename="../application/customdialog/ui/customgeneral.ui" line="51"/>
+        <source>This field contains the location where must be stored the trace log file. This file contains all error, and warning that &lt;b&gt;XINX&lt;/b&gt; emit.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customgeneral.ui" line="67"/>
         <source>Force current &amp;style :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customgeneral.ui" line="90"/>
+        <source>&lt;p&gt;In this combobox, you can select the current style to use. If you don&apos;t select the style, &lt;b&gt;XINX&lt;/b&gt; will use the style of the desktop, else &lt;b&gt;XINX&lt;/b&gt; will use the style you choose.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Modification take effect at restart.&lt;/i&gt;&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customgeneral.ui" line="98"/>
+        <source>Show shortcut near the dock title</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -796,6 +751,12 @@ Only checked files are commited.</source>
     <message>
         <location filename="../application/customdialog/ui/custommodules.ui" line="39"/>
         <source>Scripts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/custommodules.ui" line="45"/>
+        <source>&lt;p&gt;This is the list of script that can be used by &lt;b&gt;XINX&lt;/b&gt; to extend the application (like plugins).&lt;/p&gt;
+&lt;p&gt;Script is simplier to write that Plugins but isn&apos;t powerfull that Plugins writter in &lt;code&gt;C++&lt;/code&gt;&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -836,74 +797,83 @@ Only checked files are commited.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="42"/>
-        <source>&lt;p&gt;This the path where the save dialog must be opened when you create a new project.&lt;/p&gt;
-&lt;p&gt;&lt;i&gt;As the author set the project path to the Application Server path, this path is now the project path. You can safely use another path, but in &lt;i&gt;New Project Wizard&lt;/i&gt;, the Application Server path would be wrong.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="50"/>
+        <location filename="../application/customdialog/ui/customproject.ui" line="49"/>
         <source>Refresh Directory &amp;Timeout :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="60"/>
-        <source>Timeout before the directory view is reloaded with your filter.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="63"/>
+        <location filename="../application/customdialog/ui/customproject.ui" line="65"/>
         <source> ms</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="79"/>
-        <source>Open the last opened project (&lt;i&gt;if any, it&apos;s the opened project when &lt;b&gt;XINX&lt;/b&gt; is closed&lt;/i&gt;), when &lt;b&gt;XINX&lt;/b&gt; is started.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="82"/>
+        <location filename="../application/customdialog/ui/customproject.ui" line="84"/>
         <source>&amp;Open the last session at start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="89"/>
-        <source>In this mode &lt;b&gt;XINX&lt;/b&gt; open only one project at a time. If you open a new project, XINX automatically close the previous project. This can be used, if you don&apos;t work on multiple project or want &lt;b&gt;XINX&lt;/b&gt; work as previous version.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="92"/>
+        <location filename="../application/customdialog/ui/customproject.ui" line="94"/>
         <source>&amp;Single project mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="108"/>
+        <location filename="../application/customdialog/ui/customproject.ui" line="110"/>
         <source>General &amp;Revision Control System Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="114"/>
-        <source>&lt;p&gt;When an action with the revision control system is made, a log window is open and show information about the progress.&lt;/p&gt;
-&lt;p&gt;If checked, the log windows is automaticallyclosed when action (like update, commit ...) finished.&lt;/p&gt;</source>
+        <location filename="../application/customdialog/ui/customproject.ui" line="42"/>
+        <source>&lt;p&gt;This the path where the save dialog must be opened when you create a new project.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="118"/>
+        <location filename="../application/customdialog/ui/customproject.ui" line="59"/>
+        <source>Timeout before the directory view is reloaded with your filter. If time is set to 0, the view directory is only refresh when you hit &lt;i&gt;Enter&lt;/i&gt; key.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customproject.ui" line="62"/>
+        <source>Manual</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customproject.ui" line="81"/>
+        <source>Open the last session (&lt;i&gt;if any, it&apos;s the opened session when &lt;b&gt;XINX&lt;/b&gt; is closed&lt;/i&gt;), when &lt;b&gt;XINX&lt;/b&gt; is started.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customproject.ui" line="91"/>
+        <source>In this mode &lt;b&gt;XINX&lt;/b&gt; open only one project at a time. If you open a new project, &lt;b&gt;XINX&lt;/b&gt; automatically close the previous project. This can be used, if you don&apos;t work on multiple project or want &lt;b&gt;XINX&lt;/b&gt; work as previous version.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customproject.ui" line="116"/>
+        <source>&lt;p&gt;When an action in the &lt;i&gt;revision control system&lt;/i&gt; is made, a log window is open and show information about the progress.&lt;/p&gt;
+&lt;p&gt;If checked, the log windows is automatically closed when action (like update, commit ...) finished.&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customproject.ui" line="120"/>
         <source>Open/&amp;Close the Version management Log automatically.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="125"/>
+        <location filename="../application/customdialog/ui/customproject.ui" line="127"/>
         <source>&lt;p&gt;When checked, a &lt;i&gt;ChangeLog&lt;/i&gt; file is created/appended at each commit with date, hour, and the commit messages.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="128"/>
+        <location filename="../application/customdialog/ui/customproject.ui" line="130"/>
         <source>&amp;Update &quot;ChangeLog&quot; automatically.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customproject.ui" line="135"/>
+        <location filename="../application/customdialog/ui/customproject.ui" line="137"/>
+        <source>When checked, and new file is created, &lt;b&gt;XINX&lt;/b&gt; will add this files automatically to the &lt;i&gt;revision control system&lt;/i&gt;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customproject.ui" line="140"/>
         <source>&amp;Auto add file to versionning system</source>
         <translation type="unfinished"></translation>
     </message>
@@ -929,72 +899,77 @@ Only checked files are commited.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customsnipet.ui" line="37"/>
-        <source>List of snipet that could be used as a completion (with the snipet key) or called manually in the menu. You can also import snipet in &lt;b&gt;XINX&lt;/b&gt; file or export snipet to a &lt;i&gt;XML&lt;/i&gt; file.</source>
+        <location filename="../application/customdialog/ui/customsnipet.ui" line="32"/>
+        <source>This filter can be used to search a snipet in the list above.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customsnipet.ui" line="50"/>
+        <location filename="../application/customdialog/ui/customsnipet.ui" line="41"/>
+        <source>List of snipet that could be used as a completion (with the snipet key) or called manually in the menu. You can also import snipet in a &lt;i&gt;XML&lt;/i&gt; file or export snipet to a &lt;i&gt;XML&lt;/i&gt; file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/customdialog/ui/customsnipet.ui" line="54"/>
         <source>List of snipet (or template) that &lt;b&gt;XINX&lt;/b&gt; can use. A snipet is a piece of code quickly accessible by a key word, or by a menu.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customsnipet.ui" line="86"/>
+        <location filename="../application/customdialog/ui/customsnipet.ui" line="90"/>
         <source>Open a dialog to create a new snipet.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customsnipet.ui" line="89"/>
+        <location filename="../application/customdialog/ui/customsnipet.ui" line="93"/>
         <source>&amp;Add</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customsnipet.ui" line="100"/>
+        <location filename="../application/customdialog/ui/customsnipet.ui" line="104"/>
         <source>Delete selected snipet in the list below.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customsnipet.ui" line="103"/>
+        <location filename="../application/customdialog/ui/customsnipet.ui" line="107"/>
         <source>&amp;Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customsnipet.ui" line="114"/>
+        <location filename="../application/customdialog/ui/customsnipet.ui" line="118"/>
         <source>Modify the selected snipet.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customsnipet.ui" line="117"/>
+        <location filename="../application/customdialog/ui/customsnipet.ui" line="121"/>
         <source>&amp;Modify</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customsnipet.ui" line="128"/>
+        <location filename="../application/customdialog/ui/customsnipet.ui" line="132"/>
         <source>Duplicate the selected snipet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customsnipet.ui" line="131"/>
+        <location filename="../application/customdialog/ui/customsnipet.ui" line="135"/>
         <source>D&amp;uplicate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customsnipet.ui" line="155"/>
-        <source>Import a list of snipet from an XML file.</source>
+        <location filename="../application/customdialog/ui/customsnipet.ui" line="159"/>
+        <source>Import a list of snipet from an XML file and add it to the list.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customsnipet.ui" line="158"/>
+        <location filename="../application/customdialog/ui/customsnipet.ui" line="162"/>
         <source>&amp;Import ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customsnipet.ui" line="169"/>
+        <location filename="../application/customdialog/ui/customsnipet.ui" line="173"/>
         <source>Export selected snipet to an XML file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/customdialog/ui/customsnipet.ui" line="172"/>
+        <location filename="../application/customdialog/ui/customsnipet.ui" line="176"/>
         <source>&amp;Export ...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1031,7 +1006,9 @@ Only checked files are commited.</source>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customsyntax.ui" line="20"/>
-        <source>&lt;p&gt;List of highlighter. Highlighter is used to color a text in an editor. &lt;/p&gt;
+        <source>&lt;p&gt;List of Syntax highlighter. Syntax Highlighter is used to color, or change the style (bold, italic, ...) a text in an editor. &lt;/p&gt;
+&lt;p&gt;In this list you can select a Syntax Highlighter to customize it.&lt;/p&gt;
+
 &lt;p&gt;&lt;i&gt;To add new highlighter, you must add the corresponding plugin.&lt;/i&gt;&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1054,127 +1031,138 @@ Only checked files are commited.</source>
 <context>
     <name>EditorManager</name>
     <message>
-        <location filename="../editors/editormanager.cpp" line="584"/>
+        <location filename="../editors/editormanager.cpp" line="582"/>
         <source>Open text file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="701"/>
+        <location filename="../editors/editormanager.cpp" line="700"/>
         <source>Save text file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="757"/>
+        <location filename="../editors/editormanager.cpp" line="756"/>
         <source>Application</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="757"/>
+        <location filename="../editors/editormanager.cpp" line="756"/>
         <source>The document %1 has been modified.
 Do you really want refresh this?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
+    <name>EditorTabDockWidget</name>
+    <message>
+        <location filename="../editors/editortabdockwidget.cpp" line="44"/>
+        <source>Open Documents</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ErrorDockWidgetImpl</name>
     <message>
-        <location filename="../core/errordockimpl.cpp" line="37"/>
+        <location filename="../core/errordockimpl.cpp" line="39"/>
         <source>Warnings/Errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/errordockimpl.cpp" line="43"/>
+        <location filename="../core/errordockimpl.cpp" line="44"/>
         <source>Clear the errors</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../core/errordockimpl.cpp" line="103"/>
-        <source>%1: %2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../core/errordockimpl.cpp" line="105"/>
-        <source>%1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ExceptionManager</name>
     <message>
-        <location filename="../core/exceptions.cpp" line="66"/>
+        <location filename="../core/exceptionmanager.cpp" line="60"/>
         <source>GUI</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/exceptions.cpp" line="70"/>
+        <location filename="../core/exceptionmanager.cpp" line="64"/>
         <source>Interactive attention</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/exceptions.cpp" line="71"/>
+        <location filename="../core/exceptionmanager.cpp" line="65"/>
         <source>Illegal instruction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/exceptions.cpp" line="72"/>
+        <location filename="../core/exceptionmanager.cpp" line="66"/>
         <source>Floating point error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/exceptions.cpp" line="73"/>
-        <source>Segmentation violation</source>
+        <location filename="../core/exceptionmanager.cpp" line="67"/>
+        <source>Segmentation violation (NullPointerException)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/exceptions.cpp" line="74"/>
+        <location filename="../core/exceptionmanager.cpp" line="68"/>
         <source>Termination request</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/exceptions.cpp" line="75"/>
+        <location filename="../core/exceptionmanager.cpp" line="69"/>
         <source>Abnormal termination (abort)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/exceptions.cpp" line="78"/>
+        <location filename="../core/exceptionmanager.cpp" line="72"/>
         <source>Signal %1 emited in thread %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/exceptions.cpp" line="101"/>
+        <location filename="../core/exceptionmanager.cpp" line="95"/>
         <source>DEBUG</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/exceptions.cpp" line="104"/>
+        <location filename="../core/exceptionmanager.cpp" line="98"/>
         <source>WARNING</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/exceptions.cpp" line="107"/>
+        <location filename="../core/exceptionmanager.cpp" line="101"/>
         <source>FATAL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/exceptions.cpp" line="201"/>
+        <location filename="../core/exceptionmanager.cpp" line="195"/>
         <source>XINX Crash</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/exceptions.cpp" line="201"/>
+        <location filename="../core/exceptionmanager.cpp" line="195"/>
         <source>XINX Crash with the following messsage : %1. XINX can&apos;t open the assistant to help you to create a ticket, you must create ticket on XINX site manually. Thanks&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FileTypePool</name>
+    <message>
+        <location filename="../editors/filetypepool.cpp" line="113"/>
+        <source>All managed files (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../editors/filetypepool.cpp" line="118"/>
+        <source>All %1 (%2)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>FileTypeSelector</name>
     <message>
-        <location filename="../editors/filetypeselector.cpp" line="32"/>
+        <location filename="../editors/filetypeselector.cpp" line="33"/>
         <source>&lt;b&gt;XINX&lt;/b&gt; can&apos;t determine the editor to use to open the file. Wich type of file do you want open ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/filetypeselector.cpp" line="36"/>
+        <location filename="../editors/filetypeselector.cpp" line="37"/>
         <source>Show &amp;all file type</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1182,22 +1170,22 @@ Do you really want refresh this?</source>
 <context>
     <name>FileWizardPage</name>
     <message>
-        <location filename="../application/xinxprojectwizard/projectwizard.cpp" line="79"/>
+        <location filename="../application/xinxprojectwizard/filewizardpage.cpp" line="37"/>
         <source>Project file selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/xinxprojectwizard/projectwizard.cpp" line="80"/>
+        <location filename="../application/xinxprojectwizard/filewizardpage.cpp" line="38"/>
         <source>This wizard will help you to migrate your project file to the current version of XINX. Please fill all fields.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/xinxprojectwizard/projectwizard.cpp" line="85"/>
+        <location filename="../application/xinxprojectwizard/filewizardpage.cpp" line="43"/>
         <source>&amp;Project file : </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/xinxprojectwizard/projectwizard.cpp" line="108"/>
+        <location filename="../application/xinxprojectwizard/filewizardpage.cpp" line="66"/>
         <source>Project Wizard</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1221,289 +1209,358 @@ Do you really want refresh this?</source>
     </message>
 </context>
 <context>
-    <name>MainformImpl</name>
+    <name>LogDialog</name>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="100"/>
-        <source>No position</source>
+        <location filename="../versioncontrol/logdialog.ui" line="14"/>
+        <source>Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="138"/>
-        <source>Sess&amp;ion</source>
+        <location filename="../versioncontrol/logdialog.ui" line="20"/>
+        <source>&amp;Filter :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="139"/>
-        <location filename="../application/mainformimpl.cpp" line="156"/>
-        <source>&amp;Project</source>
+        <location filename="../versioncontrol/logdialog.ui" line="33"/>
+        <source>&amp;Log :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="140"/>
-        <location filename="../application/mainformimpl.cpp" line="157"/>
-        <source>&amp;File</source>
+        <location filename="../versioncontrol/logdialog.ui" line="50"/>
+        <source>Revision</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="141"/>
-        <location filename="../application/mainformimpl.cpp" line="158"/>
-        <source>&amp;Edit</source>
+        <location filename="../versioncontrol/logdialog.ui" line="55"/>
+        <source>Author</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="142"/>
-        <location filename="../application/mainformimpl.cpp" line="159"/>
-        <source>&amp;Search</source>
+        <location filename="../versioncontrol/logdialog.ui" line="60"/>
+        <source>Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="143"/>
-        <source>&amp;Bookmark</source>
+        <location filename="../versioncontrol/logdialog.ui" line="65"/>
+        <source>Message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="144"/>
-        <source>&amp;Windows</source>
+        <location filename="../versioncontrol/logdialog.ui" line="73"/>
+        <source>&amp;Message :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="145"/>
-        <source>&amp;Tools</source>
+        <location filename="../versioncontrol/logdialog.ui" line="86"/>
+        <source>&amp;Changed path :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="146"/>
-        <source>&amp;Help</source>
+        <location filename="../versioncontrol/logdialog.ui" line="103"/>
+        <source>Action</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="147"/>
-        <source>&amp;Script</source>
+        <location filename="../versioncontrol/logdialog.ui" line="108"/>
+        <source>Path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/mainformimpl.cpp" line="148"/>
-        <source>&amp;Snipet</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="268"/>
-        <source>E&amp;xit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="269"/>
-        <source>Quit XINX</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="276"/>
-        <source>&amp;Search ...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="277"/>
-        <source>Search a text in the current editor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="282"/>
-        <location filename="../application/mainformimpl.cpp" line="283"/>
-        <location filename="../application/mainformimpl.cpp" line="284"/>
-        <source>Search previous</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="290"/>
-        <location filename="../application/mainformimpl.cpp" line="291"/>
-        <location filename="../application/mainformimpl.cpp" line="292"/>
-        <source>Search next</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="293"/>
-        <source>Search the next element in the current editor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="299"/>
-        <source>&amp;Replace ...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="300"/>
-        <source>Replace a text in the current editor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="312"/>
-        <source>Customize ...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="316"/>
-        <source>&amp;Refresh Scripts</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="322"/>
-        <source>&amp;Create a ticket ...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="323"/>
-        <source>Create a new ticket (bug or evolution) on the site.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="327"/>
-        <source>About &amp;Qt</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="328"/>
-        <source>Show the Qt library&apos;s About box</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="332"/>
-        <source>&amp;About</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="333"/>
-        <source>Show the application&apos;s About box</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="342"/>
-        <source>Always show run snipet dialog</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="485"/>
-        <location filename="../application/mainformimpl.cpp" line="486"/>
-        <location filename="../application/mainformimpl.cpp" line="582"/>
-        <source>Unknown</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="492"/>
-        <source>Ready</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="518"/>
-        <source>Snipet is not supported in this kind of editor.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="581"/>
-        <source>No codec</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="640"/>
-        <source>Printed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="658"/>
-        <source>Replace text</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="658"/>
-        <source>Replace this occurence</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="710"/>
-        <location filename="../application/mainformimpl.cpp" line="714"/>
-        <source>Search End</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="710"/>
-        <source>Search have been aborted</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="714"/>
-        <source>All string are finded</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="777"/>
-        <location filename="../application/mainformimpl.cpp" line="784"/>
-        <source>Search/Replace</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="778"/>
-        <source>%1 occurences of &apos;%2&apos; replaced.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="785"/>
-        <source>%1 occurences of &apos;%2&apos; %3. Return to the beginning of the document ?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="785"/>
-        <source>replaced</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="785"/>
-        <source>finded</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="896"/>
-        <source>File loaded</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="903"/>
-        <source>File saved</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/mainformimpl.cpp" line="910"/>
-        <source>File closed</source>
+        <location filename="../versioncontrol/logdialog.ui" line="113"/>
+        <source>Informations</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>Manager</name>
+    <name>MainformImpl</name>
     <message>
-        <location filename="../versioncontrol/versioncontrolmanager.cpp" line="44"/>
-        <source>Update project</source>
+        <location filename="../application/mainformimpl.cpp" line="102"/>
+        <source>No position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../versioncontrol/versioncontrolmanager.cpp" line="45"/>
-        <source>Update all files of the project directory (from repository).</source>
+        <location filename="../application/mainformimpl.cpp" line="142"/>
+        <source>Sess&amp;ion</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../versioncontrol/versioncontrolmanager.cpp" line="51"/>
-        <source>Commit project</source>
+        <location filename="../application/mainformimpl.cpp" line="143"/>
+        <location filename="../application/mainformimpl.cpp" line="160"/>
+        <source>&amp;Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="144"/>
+        <location filename="../application/mainformimpl.cpp" line="161"/>
+        <source>&amp;File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="145"/>
+        <location filename="../application/mainformimpl.cpp" line="162"/>
+        <source>&amp;Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="146"/>
+        <location filename="../application/mainformimpl.cpp" line="163"/>
+        <source>&amp;Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="147"/>
+        <source>&amp;Bookmark</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="148"/>
+        <source>&amp;Windows</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="149"/>
+        <source>&amp;Tools</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="150"/>
+        <source>&amp;Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="151"/>
+        <source>&amp;Script</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="152"/>
+        <source>&amp;Snipet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="273"/>
+        <source>E&amp;xit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="274"/>
+        <source>Quit XINX</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="281"/>
+        <source>&amp;Search ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="282"/>
+        <source>Search a text in the current editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="288"/>
+        <source>Search &amp;previous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="289"/>
+        <location filename="../application/mainformimpl.cpp" line="290"/>
+        <source>Search previous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="296"/>
+        <source>Search &amp;next</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="297"/>
+        <location filename="../application/mainformimpl.cpp" line="298"/>
+        <source>Search next</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="299"/>
+        <source>Search the next element in the current editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="305"/>
+        <source>Search &amp;files ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="306"/>
+        <location filename="../application/mainformimpl.cpp" line="307"/>
+        <source>Search files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="308"/>
+        <source>Search a text or a regular expression into selected files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="313"/>
+        <source>&amp;Replace ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="314"/>
+        <source>Replace a text in the current editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="326"/>
+        <source>Customize ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="330"/>
+        <source>&amp;Refresh Scripts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="336"/>
+        <source>&amp;Create a ticket ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="337"/>
+        <source>Create a new ticket (bug or evolution) on the site.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="341"/>
+        <source>About &amp;Qt</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="342"/>
+        <source>Show the Qt library&apos;s About box</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="346"/>
+        <source>&amp;About</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="347"/>
+        <source>Show the application&apos;s About box</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="356"/>
+        <source>Always show run snipet dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="518"/>
+        <location filename="../application/mainformimpl.cpp" line="519"/>
+        <location filename="../application/mainformimpl.cpp" line="615"/>
+        <source>Unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="525"/>
+        <source>Ready</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="551"/>
+        <source>Snipet is not supported in this kind of editor.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="614"/>
+        <source>No codec</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="673"/>
+        <source>Printed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="688"/>
+        <source>Replace text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="688"/>
+        <source>Replace this occurence</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="745"/>
+        <location filename="../application/mainformimpl.cpp" line="749"/>
+        <source>Search End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="745"/>
+        <source>Search have been aborted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="749"/>
+        <source>All string are found</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../versioncontrol/versioncontrolmanager.cpp" line="52"/>
-        <source>&lt;p&gt;Commit all files of the project directory (to repository). An optional message can be added.&lt;/p&gt;
-&lt;p&gt;&lt;i&gt;Only &lt;b&gt;XINX&lt;/b&gt; managed files are commited to the repository.&lt;/i&gt;&lt;/p&gt;</source>
+        <location filename="../application/mainformimpl.cpp" line="770"/>
+        <source>%Ln occurence(s) of &apos;%1&apos; found.</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../application/mainformimpl.cpp" line="771"/>
+        <location filename="../application/mainformimpl.cpp" line="841"/>
+        <source>%Ln occurence(s) of &apos;%1&apos; replaced.</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../application/mainformimpl.cpp" line="847"/>
+        <source>%Ln occurence(s) of &apos;%1&apos; found. Return to the beginning of the document ?</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../application/mainformimpl.cpp" line="848"/>
+        <source>%Ln occurence(s) of &apos;%1&apos; replaced. Return to the beginning of the document ?</source>
         <translation type="unfinished">
             <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../versioncontrol/versioncontrolmanager.cpp" line="59"/>
-        <source>Cancel RCS operation</source>
+        <location filename="../application/mainformimpl.cpp" line="773"/>
+        <location filename="../application/mainformimpl.cpp" line="840"/>
+        <location filename="../application/mainformimpl.cpp" line="850"/>
+        <source>Search/Replace</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="1024"/>
+        <source>File loaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="1031"/>
+        <source>File saved</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/mainformimpl.cpp" line="1038"/>
+        <source>File closed</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1655,143 +1712,132 @@ Do you really want refresh this?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="129"/>
-        <source>(en) English</source>
+        <location filename="../application/newversion.ui" line="142"/>
+        <source>&amp;Open the last session at start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="138"/>
-        <source>(fr_FR) French</source>
+        <location filename="../application/newversion.ui" line="162"/>
+        <source>&lt;p&gt;This the path where the save dialog must be opened when you create a new project.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="150"/>
+        <location filename="../application/newversion.ui" line="189"/>
+        <source>Editor Settings Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/newversion.ui" line="192"/>
+        <source>In this page we adjust settings used by the editor. In this page we can adjust effect, used to facilitate the edition (has show the current line, space, tabulation).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/newversion.ui" line="306"/>
+        <source>We have now customize XINX. You can adjuste XINX settings by opening the good &quot;Customize dialog&quot;. In the tools menu.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/newversion.ui" line="132"/>
         <source>Auto refresh directory dock</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="157"/>
+        <location filename="../application/newversion.ui" line="139"/>
         <source>Open the last opened project (&lt;i&gt;if any, it&apos;s the opened project when &lt;b&gt;XINX&lt;/b&gt; is closed&lt;/i&gt;), when &lt;b&gt;XINX&lt;/b&gt; is started.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="160"/>
-        <source>&amp;Open the last project at start</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/newversion.ui" line="167"/>
+        <location filename="../application/newversion.ui" line="149"/>
         <source>Default open &amp;project directory :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="180"/>
-        <source>&lt;p&gt;This the path where the save dialog must be opened when you create a new project.&lt;/p&gt;
-&lt;p&gt;&lt;i&gt;As the author set the project path to the Application Server path, this path is now the project path. You can safely use another path, but in &lt;i&gt;New Project Wizard&lt;/i&gt;, the Application Server path would be wrong.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/newversion.ui" line="188"/>
+        <location filename="../application/newversion.ui" line="169"/>
         <source>&lt;p&gt;Choose the default text encoding, when the text encoding can&apos;t be found.
 
 &lt;i&gt;Some editor, can redefined the text encoding (ie: XML and derivated editor). This encoding is used by editor as JavaScript and other&lt;/i&gt;&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="197"/>
+        <location filename="../application/newversion.ui" line="178"/>
         <source>Default text &amp;encoding :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="208"/>
-        <source>Edtior Settings Page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/newversion.ui" line="211"/>
-        <source>In this page we adjust settins used by the editor. In this page we can adjust effect, used to facilitate the edition (has show the current line, space, tabulation).</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/newversion.ui" line="217"/>
+        <location filename="../application/newversion.ui" line="198"/>
         <source>&lt;p&gt;Alert user when the file is modified by an extern application. The user has the choice to open the new file (&lt;u&gt;and loose his change&lt;/u&gt;) or keep current file.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="220"/>
+        <location filename="../application/newversion.ui" line="201"/>
         <source>&amp;Popup when file modifed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="227"/>
+        <location filename="../application/newversion.ui" line="208"/>
         <source>&lt;p&gt;Create a backup file before saving the file. The backup file is stored in the same directory that the original file. &lt;/p&gt;
 &lt;p&gt;The backup is created by copy the modified file before he his saved.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="231"/>
+        <location filename="../application/newversion.ui" line="212"/>
         <source>&amp;Create backup file when saving (.bak)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="238"/>
+        <location filename="../application/newversion.ui" line="219"/>
         <source>&amp;Graphics effect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="258"/>
+        <location filename="../application/newversion.ui" line="239"/>
         <source>Show tabulation and space in the editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="266"/>
+        <location filename="../application/newversion.ui" line="247"/>
         <source>Show current line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="274"/>
+        <location filename="../application/newversion.ui" line="255"/>
         <source>Auto highlight same word</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="282"/>
+        <location filename="../application/newversion.ui" line="263"/>
         <source>Pretty Print on saving</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="297"/>
+        <location filename="../application/newversion.ui" line="278"/>
         <source>Tools Settings Page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="300"/>
+        <location filename="../application/newversion.ui" line="281"/>
         <source>In this page you can define path to tools that can be use by XINX.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="306"/>
+        <location filename="../application/newversion.ui" line="287"/>
         <source>&lt;p&gt;List of tools used by &lt;b&gt;XINX&lt;/b&gt; and all plugins. Tools are external application called by this application.&lt;/p&gt;
 &lt;p&gt;If the tool can&apos;t be find, the text color will be &lt;span style=&quot;color:#ff0000;&quot;&gt;red&lt;/span&gt;.&lt;/p&gt;
 &lt;p&gt;To edit a tool, double click (or presse F2) on the path of the tool.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="319"/>
+        <location filename="../application/newversion.ui" line="300"/>
         <source>Conclusion</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="325"/>
-        <source>We have now customize XINX. You can adjsute XINX settings by opening the good &quot;Customize dialog&quot;. In the tools menu.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/newversion.ui" line="335"/>
+        <location filename="../application/newversion.ui" line="316"/>
         <source>Have fun with XINX.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversion.ui" line="342"/>
+        <location filename="../application/newversion.ui" line="323"/>
         <source>&amp;Open the customize dialog page to made more settings.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1799,12 +1845,12 @@ Do you really want refresh this?</source>
 <context>
     <name>NewVersionWizardImpl</name>
     <message>
-        <location filename="../application/newversionwizardimpl.cpp" line="110"/>
+        <location filename="../application/newversionwizardimpl.cpp" line="111"/>
         <source>Application page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/newversionwizardimpl.cpp" line="110"/>
+        <location filename="../application/newversionwizardimpl.cpp" line="111"/>
         <source>The default open location for project must be a valid path.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1812,7 +1858,7 @@ Do you really want refresh this?</source>
 <context>
     <name>ParserFactory</name>
     <message>
-        <location filename="../contentview3/parserfactory.cpp" line="66"/>
+        <location filename="../contentview3/parserfactory.cpp" line="67"/>
         <source>Ambigous parser for file %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1820,180 +1866,175 @@ Do you really want refresh this?</source>
 <context>
     <name>PrivateEditorManager</name>
     <message>
-        <location filename="../editors/editormanager.cpp" line="188"/>
+        <location filename="../editors/editormanager.cpp" line="184"/>
         <source>&amp;Open ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="190"/>
+        <location filename="../editors/editormanager.cpp" line="186"/>
         <source>Open a file on the disk</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="191"/>
+        <location filename="../editors/editormanager.cpp" line="187"/>
         <source>Open an existing file on the disk</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="197"/>
+        <location filename="../editors/editormanager.cpp" line="193"/>
         <source>&amp;Recent file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="219"/>
-        <source>&amp;%1 %2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../editors/editormanager.cpp" line="235"/>
+        <location filename="../editors/editormanager.cpp" line="231"/>
         <source>&amp;New</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="236"/>
+        <location filename="../editors/editormanager.cpp" line="232"/>
         <source>New document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="237"/>
+        <location filename="../editors/editormanager.cpp" line="233"/>
         <source>Create a new document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="243"/>
+        <location filename="../editors/editormanager.cpp" line="239"/>
         <source>&amp;Refresh</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="246"/>
+        <location filename="../editors/editormanager.cpp" line="242"/>
         <source>&amp;Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="247"/>
+        <location filename="../editors/editormanager.cpp" line="243"/>
         <source>Save the document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="248"/>
+        <location filename="../editors/editormanager.cpp" line="244"/>
         <source>Save the document to disk</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="252"/>
+        <location filename="../editors/editormanager.cpp" line="248"/>
         <source>Save &amp;As...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="253"/>
+        <location filename="../editors/editormanager.cpp" line="249"/>
         <source>Save the document As</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="254"/>
+        <location filename="../editors/editormanager.cpp" line="250"/>
         <source>Save the document with a new name to the disk</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="257"/>
+        <location filename="../editors/editormanager.cpp" line="253"/>
         <source>Save A&amp;ll...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="258"/>
+        <location filename="../editors/editormanager.cpp" line="254"/>
         <source>Save all documents</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="259"/>
+        <location filename="../editors/editormanager.cpp" line="255"/>
         <source>Save all documents to disk</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="262"/>
+        <location filename="../editors/editormanager.cpp" line="258"/>
         <source>&amp;Print ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="263"/>
+        <location filename="../editors/editormanager.cpp" line="259"/>
         <source>Print the document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="264"/>
+        <location filename="../editors/editormanager.cpp" line="260"/>
         <source>Print the current document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="268"/>
+        <location filename="../editors/editormanager.cpp" line="264"/>
         <source>&amp;Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="269"/>
+        <location filename="../editors/editormanager.cpp" line="265"/>
         <source>Close document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="270"/>
+        <location filename="../editors/editormanager.cpp" line="266"/>
         <source>Close the current document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="274"/>
+        <location filename="../editors/editormanager.cpp" line="270"/>
         <source>&amp;Close All</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="275"/>
-        <location filename="../editors/editormanager.cpp" line="276"/>
+        <location filename="../editors/editormanager.cpp" line="271"/>
+        <location filename="../editors/editormanager.cpp" line="272"/>
         <source>Close All document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="279"/>
+        <location filename="../editors/editormanager.cpp" line="275"/>
         <source>C&amp;lose All except current</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="280"/>
-        <location filename="../editors/editormanager.cpp" line="281"/>
+        <location filename="../editors/editormanager.cpp" line="276"/>
+        <location filename="../editors/editormanager.cpp" line="277"/>
         <source>Close all document except the current</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="284"/>
+        <location filename="../editors/editormanager.cpp" line="280"/>
         <source>&amp;Copy filename to Clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="287"/>
+        <location filename="../editors/editormanager.cpp" line="283"/>
         <source>C&amp;opy path to clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="290"/>
-        <location filename="../editors/editormanager.cpp" line="291"/>
+        <location filename="../editors/editormanager.cpp" line="286"/>
+        <location filename="../editors/editormanager.cpp" line="287"/>
         <source>Next tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="295"/>
+        <location filename="../editors/editormanager.cpp" line="291"/>
         <source>Previous Tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="354"/>
+        <location filename="../editors/editormanager.cpp" line="350"/>
         <source>The project isn&apos;t correctly defined. It&apos;s a possible bug</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="358"/>
+        <location filename="../editors/editormanager.cpp" line="354"/>
         <source>The file isn&apos;t a part of a project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/editormanager.cpp" line="362"/>
+        <location filename="../editors/editormanager.cpp" line="358"/>
         <source>The project name is &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2001,117 +2042,117 @@ Do you really want refresh this?</source>
 <context>
     <name>PrivateProjectDirectoryWidgetImpl</name>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="44"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="47"/>
         <source>C&amp;reate directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="46"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="49"/>
         <source>&amp;Create file ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="48"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="51"/>
         <source>&amp;Open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="50"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="53"/>
         <source>Remo&amp;ve</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="52"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="55"/>
         <source>Rename</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="55"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="58"/>
         <source>&amp;Copy filename to Clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="57"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="60"/>
         <source>Co&amp;py path to clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="60"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="63"/>
         <source>Set the project as &amp;default</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="62"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="65"/>
         <source>Pro&amp;ject Property</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="64"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="67"/>
         <source>C&amp;lose project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="67"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="70"/>
         <source>Compare with the version management</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="69"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="72"/>
         <source>Co&amp;mpare files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="72"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="75"/>
         <source>Update project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="74"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="77"/>
         <source>Commit project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="76"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="79"/>
         <source>Add file(s) to project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="78"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="81"/>
         <source>Delete file(s) from project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="80"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="83"/>
         <source>Revert file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="82"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="85"/>
         <source>Blame file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="84"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="87"/>
         <source>Show log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="256"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="268"/>
         <source>Create a new directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="256"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="268"/>
         <source>Enter the name of the new directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="308"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="320"/>
         <source>Delete file(s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="308"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="320"/>
         <source>Can you confirm that you want remove %Ln file(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -2119,25 +2160,71 @@ Do you really want refresh this?</source>
         </translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="328"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="343"/>
         <source>Rename a file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="328"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="343"/>
         <source>Enter the name of the new file name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="654"/>
+        <source>Filter apply in %1 ms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="684"/>
+        <source>Expand/Collapse tree in %1 ms</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PrivateXinxProject</name>
+    <message>
+        <location filename="../project/xinxprojectproject.cpp" line="265"/>
+        <source>Cannot read file %1:
+%2.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../project/xinxprojectproject.cpp" line="272"/>
+        <source>Parse error at line %1, column %2:
+%3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../project/xinxprojectproject.cpp" line="278"/>
+        <source>The file isn&apos;t a XINX Project. The root name must be &quot;XinxProject&quot;, not &quot;%1&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../project/xinxprojectproject.cpp" line="282"/>
+        <source>The file is a too recent XINX Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../project/xinxprojectproject.cpp" line="284"/>
+        <source>The project can&apos;t be opened. Please use the XINX Project Wizard.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../project/xinxprojectproject.cpp" line="328"/>
+        <source>Cannot write file %1:
+%2.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ProgressWizardPage</name>
     <message>
-        <location filename="../application/xinxprojectwizard/projectwizard.cpp" line="147"/>
+        <location filename="../application/xinxprojectwizard/progresswizardpage.cpp" line="34"/>
         <source>Progress of the conversion</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/xinxprojectwizard/projectwizard.cpp" line="148"/>
+        <location filename="../application/xinxprojectwizard/progresswizardpage.cpp" line="35"/>
         <source>Please wait ...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2293,17 +2380,17 @@ Do you really want refresh this?</source>
 <context>
     <name>ProjectDirectoryWidgetImpl</name>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="698"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="728"/>
         <source>Project Directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="701"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="731"/>
         <source>Toggled Flat View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectdirectorywidgetimpl.cpp" line="702"/>
+        <location filename="../project/projectdirectorywidgetimpl.cpp" line="732"/>
         <source>If checked the list is showed as flat instead of tree. Each list of file is preceded of a directory header.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2357,18 +2444,13 @@ A project can define web services too.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectproperty.ui" line="46"/>
-        <source>1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../project/projectproperty.ui" line="64"/>
         <source>Project &amp;Name :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../project/projectproperty.ui" line="74"/>
-        <source>This is the project name showed in the title bar of &lt;b&gt;XINX&lt;/b&gt;.This just an informative information useless.</source>
+        <source>This is the project name showed in all the application instead of the projet path. Choose a name that can be used to easily find your projet.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2405,37 +2487,37 @@ A project can define web services too.</source>
 <context>
     <name>ProjectPropertyImpl</name>
     <message>
-        <location filename="../project/projectpropertyimpl.cpp" line="46"/>
+        <location filename="../project/projectpropertyimpl.cpp" line="47"/>
         <source>General</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectpropertyimpl.cpp" line="51"/>
+        <location filename="../project/projectpropertyimpl.cpp" line="52"/>
         <source>Project Definition</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectpropertyimpl.cpp" line="54"/>
+        <location filename="../project/projectpropertyimpl.cpp" line="55"/>
         <source>&lt;No Revision Control System&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectpropertyimpl.cpp" line="67"/>
+        <location filename="../project/projectpropertyimpl.cpp" line="68"/>
         <source>Preloaded files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectpropertyimpl.cpp" line="72"/>
+        <location filename="../project/projectpropertyimpl.cpp" line="73"/>
         <source>Directories path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectpropertyimpl.cpp" line="161"/>
+        <location filename="../project/projectpropertyimpl.cpp" line="162"/>
         <source>Can&apos;t load &quot;%1&quot; page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectpropertyimpl.cpp" line="174"/>
+        <location filename="../project/projectpropertyimpl.cpp" line="175"/>
         <source>Can&apos;t save &quot;%1&quot; page</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2443,7 +2525,7 @@ A project can define web services too.</source>
 <context>
     <name>ProjectWizard</name>
     <message>
-        <location filename="../application/xinxprojectwizard/projectwizard.cpp" line="54"/>
+        <location filename="../application/xinxprojectwizard/projectwizard.cpp" line="58"/>
         <source>Project wizard</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2543,7 +2625,7 @@ A project can define web services too.</source>
         <location filename="../search/replace.ui" line="223"/>
         <location filename="../search/replace.ui" line="236"/>
         <location filename="../search/replace.ui" line="249"/>
-        <source>m_extedButtonGroup</source>
+        <source>m_extendButtonGroup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2610,14 +2692,22 @@ A project can define web services too.</source>
 <context>
     <name>ReplaceDialogImpl</name>
     <message>
-        <location filename="../search/replacedialogimpl.cpp" line="35"/>
-        <location filename="../search/replacedialogimpl.cpp" line="47"/>
+        <location filename="../search/replacedialogimpl.cpp" line="42"/>
+        <location filename="../search/replacedialogimpl.cpp" line="192"/>
         <source>Find</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../search/replacedialogimpl.cpp" line="45"/>
+        <location filename="../search/replacedialogimpl.cpp" line="190"/>
         <source>Replace</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ReplaceFileThread</name>
+    <message>
+        <location filename="../search/replacefilethread.cpp" line="44"/>
+        <source>Replace %1 by %2</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2660,12 +2750,12 @@ A project can define web services too.</source>
 <context>
     <name>ScriptManager</name>
     <message>
-        <location filename="../scripts/scriptmanager.cpp" line="190"/>
+        <location filename="../scripts/scriptmanager.cpp" line="191"/>
         <source>Cannot read file : %1: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scripts/scriptmanager.cpp" line="203"/>
+        <location filename="../scripts/scriptmanager.cpp" line="204"/>
         <source>An error occurred while executing the script %1 : %2 at line %3</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2690,26 +2780,21 @@ A project can define web services too.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../search/searchdock.ui" line="46"/>
-        <source>Directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../search/searchdock.ui" line="51"/>
-        <source>Filename</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../search/searchdock.ui" line="56"/>
-        <source>Text</source>
+        <location filename="../search/searchdock.ui" line="37"/>
+        <source>&amp;Replace</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>SearchDockWidgetImpl</name>
     <message>
-        <location filename="../search/searchdockimpl.cpp" line="85"/>
+        <location filename="../search/searchdockimpl.cpp" line="123"/>
         <source>Search Result</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../search/searchdockimpl.cpp" line="310"/>
+        <source>The content of the line have been changed.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2720,21 +2805,11 @@ A project can define web services too.</source>
         <source>Search %1 in %2</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../search/searchfilethread.cpp" line="60"/>
-        <source>Not supported</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../search/searchfilethread.cpp" line="60"/>
-        <source>Replacement on multiple file is not yet supported</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
-    <name>SnipetDockWidget</name>
+    <name>SnipetDockWidgetPrivate</name>
     <message>
-        <location filename="../snipets/snipetdockwidget.cpp" line="53"/>
+        <location filename="../snipets/snipetdockwidget.cpp" line="52"/>
         <source>Snipets</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2755,7 +2830,7 @@ A project can define web services too.</source>
 <context>
     <name>SnipetItemModelFactory</name>
     <message>
-        <location filename="../codecompletion/snipets/snipetitemmodelfactory.cpp" line="49"/>
+        <location filename="../codecompletion/snipets/snipetitemmodelfactory.cpp" line="50"/>
         <source>Snipet</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2763,20 +2838,20 @@ A project can define web services too.</source>
 <context>
     <name>SnipetList</name>
     <message>
-        <location filename="../snipets/snipetlist.cpp" line="134"/>
+        <location filename="../snipets/snipetlist.cpp" line="129"/>
         <source>Cannot write file %1:
 %2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../snipets/snipetlist.cpp" line="143"/>
+        <location filename="../snipets/snipetlist.cpp" line="138"/>
         <source>Cannot read file %1:
 %2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../snipets/snipetlist.cpp" line="147"/>
-        <location filename="../snipets/snipetlist.cpp" line="151"/>
+        <location filename="../snipets/snipetlist.cpp" line="142"/>
+        <location filename="../snipets/snipetlist.cpp" line="146"/>
         <source>Parse error exception.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2784,56 +2859,56 @@ A project can define web services too.</source>
 <context>
     <name>SnipetManager</name>
     <message>
-        <location filename="../snipets/snipetmanager.cpp" line="183"/>
-        <location filename="../snipets/snipetmanager.cpp" line="196"/>
+        <location filename="../snipets/snipetmanager.cpp" line="184"/>
+        <location filename="../snipets/snipetmanager.cpp" line="197"/>
         <source>Remove a category</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../snipets/snipetmanager.cpp" line="183"/>
+        <location filename="../snipets/snipetmanager.cpp" line="184"/>
         <source>This category contains snipet or other category, so you can&apos;t remove this category.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../snipets/snipetmanager.cpp" line="196"/>
+        <location filename="../snipets/snipetmanager.cpp" line="197"/>
         <source>Are you sure to delete the category &quot;%1&quot; ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../snipets/snipetmanager.cpp" line="389"/>
+        <location filename="../snipets/snipetmanager.cpp" line="390"/>
         <source>Imported Snipets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../snipets/snipetmanager.cpp" line="460"/>
-        <location filename="../snipets/snipetmanager.cpp" line="485"/>
+        <location filename="../snipets/snipetmanager.cpp" line="461"/>
+        <location filename="../snipets/snipetmanager.cpp" line="486"/>
         <source>Can&apos;t search id for key &apos;%1&apos; : %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../snipets/snipetmanager.cpp" line="566"/>
+        <location filename="../snipets/snipetmanager.cpp" line="567"/>
         <source>Error when calling script for record %1 : %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../snipets/snipetmanager.cpp" line="573"/>
-        <location filename="../snipets/snipetmanager.cpp" line="586"/>
+        <location filename="../snipets/snipetmanager.cpp" line="574"/>
+        <location filename="../snipets/snipetmanager.cpp" line="587"/>
         <source>The script %1 %2 return neither true or false.
 %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../snipets/snipetmanager.cpp" line="646"/>
+        <location filename="../snipets/snipetmanager.cpp" line="647"/>
         <source>Can&apos;t load snipet database : %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../snipets/snipetmanager.cpp" line="782"/>
+        <location filename="../snipets/snipetmanager.cpp" line="783"/>
         <source>Categories</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../snipets/snipetmanager.cpp" line="782"/>
+        <location filename="../snipets/snipetmanager.cpp" line="783"/>
         <source>List of all categories</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2841,7 +2916,7 @@ A project can define web services too.</source>
 <context>
     <name>SnipetMenu</name>
     <message>
-        <location filename="../snipets/snipetmenu.cpp" line="100"/>
+        <location filename="../snipets/snipetmenu.cpp" line="55"/>
         <source>&amp;Create Snipet ...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2978,19 +3053,19 @@ A project can define web services too.</source>
 <context>
     <name>SnipetPropertyDlgImpl</name>
     <message>
-        <location filename="../snipets/snipetpropertydlgimpl.cpp" line="114"/>
-        <location filename="../snipets/snipetpropertydlgimpl.cpp" line="156"/>
+        <location filename="../snipets/snipetpropertydlgimpl.cpp" line="115"/>
+        <location filename="../snipets/snipetpropertydlgimpl.cpp" line="157"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../snipets/snipetpropertydlgimpl.cpp" line="115"/>
-        <location filename="../snipets/snipetpropertydlgimpl.cpp" line="157"/>
+        <location filename="../snipets/snipetpropertydlgimpl.cpp" line="116"/>
+        <location filename="../snipets/snipetpropertydlgimpl.cpp" line="158"/>
         <source>Default Value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../snipets/snipetpropertydlgimpl.cpp" line="270"/>
+        <location filename="../snipets/snipetpropertydlgimpl.cpp" line="271"/>
         <source>Parameter %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3018,24 +3093,24 @@ A project can define web services too.</source>
     <name>TemplateDialog</name>
     <message>
         <location filename="../project/templatedialog.ui" line="14"/>
-        <source>Form</source>
+        <source>Template</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>TextFileEditor</name>
     <message>
-        <location filename="../editors/textfileeditor.cpp" line="612"/>
+        <location filename="../editors/textfileeditor.cpp" line="615"/>
         <source>Can&apos;t indent this type of document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/textfileeditor.cpp" line="684"/>
+        <location filename="../editors/textfileeditor.cpp" line="687"/>
         <source>Search Word</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../editors/textfileeditor.cpp" line="684"/>
+        <location filename="../editors/textfileeditor.cpp" line="687"/>
         <source>Word %1 not found</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3071,7 +3146,7 @@ A project can define web services too.</source>
 <context>
     <name>TreeProxyItemModel</name>
     <message>
-        <location filename="../utils/treeproxyitemmodel.cpp" line="503"/>
+        <location filename="../utils/treeproxyitemmodel.cpp" line="531"/>
         <source>&lt;deleted&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3115,6 +3190,35 @@ The version %2 is available on %3.</source>
     </message>
 </context>
 <context>
+    <name>VersionControl::Manager</name>
+    <message>
+        <location filename="../versioncontrol/versioncontrolmanager.cpp" line="44"/>
+        <source>Update project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../versioncontrol/versioncontrolmanager.cpp" line="45"/>
+        <source>Update all files of the project directory (from repository).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../versioncontrol/versioncontrolmanager.cpp" line="51"/>
+        <source>Commit project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../versioncontrol/versioncontrolmanager.cpp" line="52"/>
+        <source>&lt;p&gt;Commit all files of the project directory (to repository). An optional message can be added.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Only &lt;b&gt;XINX&lt;/b&gt; managed files are commited to the repository.&lt;/i&gt;&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../versioncontrol/versioncontrolmanager.cpp" line="59"/>
+        <source>Cancel RCS operation</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>VersionControl::RCSProxy</name>
     <message>
         <location filename="../versioncontrol/rcsproxy.cpp" line="117"/>
@@ -3122,22 +3226,22 @@ The version %2 is available on %3.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../versioncontrol/rcsproxy.cpp" line="171"/>
+        <location filename="../versioncontrol/rcsproxy.cpp" line="173"/>
         <source>Add a file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../versioncontrol/rcsproxy.cpp" line="171"/>
+        <location filename="../versioncontrol/rcsproxy.cpp" line="173"/>
         <source>Do you want to add the file &apos;%1&apos; to the repository ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../versioncontrol/rcsproxy.cpp" line="267"/>
+        <location filename="../versioncontrol/rcsproxy.cpp" line="269"/>
         <source>&lt;Commit with no text&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../versioncontrol/rcsproxy.cpp" line="278"/>
+        <location filename="../versioncontrol/rcsproxy.cpp" line="280"/>
         <source>Operation cancelled</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3145,17 +3249,17 @@ The version %2 is available on %3.</source>
 <context>
     <name>VersionWizardPage</name>
     <message>
-        <location filename="../application/xinxprojectwizard/projectwizard.cpp" line="118"/>
+        <location filename="../application/xinxprojectwizard/versionwizardpage.cpp" line="33"/>
         <source>Version informations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/xinxprojectwizard/projectwizard.cpp" line="119"/>
+        <location filename="../application/xinxprojectwizard/versionwizardpage.cpp" line="34"/>
         <source>This page show you some informations about the selected project file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/xinxprojectwizard/projectwizard.cpp" line="134"/>
+        <location filename="../application/xinxprojectwizard/versionwizardpage.cpp" line="49"/>
         <source>You want convert a %1 (version %2).
 This wizard will convert the project to the last version of XINX. Wizard must convert %3 opened file.</source>
         <translation type="unfinished"></translation>
@@ -3248,7 +3352,7 @@ This wizard will convert the project to the last version of XINX. Wizard must co
 <context>
     <name>XINXConfig</name>
     <message>
-        <location filename="../core/xinxconfig.cpp" line="134"/>
+        <location filename="../core/xinxconfig.cpp" line="132"/>
         <source>Select the %1 tool</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3256,7 +3360,7 @@ This wizard will convert the project to the last version of XINX. Wizard must co
 <context>
     <name>XinxCodeEdit</name>
     <message>
-        <location filename="../editors/xinxcodeedit.cpp" line="923"/>
+        <location filename="../editors/xinxcodeedit.cpp" line="927"/>
         <source>Can&apos;t comment this type of document</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3264,35 +3368,55 @@ This wizard will convert the project to the last version of XINX. Wizard must co
 <context>
     <name>XinxJob</name>
     <message>
-        <location filename="../jobs/xinxjob.cpp" line="67"/>
+        <location filename="../jobs/xinxjob.cpp" line="41"/>
+        <source>A Job is created : %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../jobs/xinxjob.cpp" line="48"/>
+        <source>A job is destroyed : %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../jobs/xinxjob.cpp" line="86"/>
         <source>Waiting ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../jobs/xinxjob.cpp" line="69"/>
+        <location filename="../jobs/xinxjob.cpp" line="88"/>
         <source>Running ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../jobs/xinxjob.cpp" line="71"/>
+        <location filename="../jobs/xinxjob.cpp" line="90"/>
         <source>Cleaning ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../jobs/xinxjob.cpp" line="73"/>
+        <location filename="../jobs/xinxjob.cpp" line="92"/>
+        <source>Delaying ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../jobs/xinxjob.cpp" line="94"/>
         <source>Unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../jobs/xinxjob.cpp" line="143"/>
+        <location filename="../jobs/xinxjob.cpp" line="182"/>
         <source>Unknown exception</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../jobs/xinxjob.cpp" line="185"/>
+        <source>The job &quot;%1&quot; take %2 ms.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>XinxJobProgressDock</name>
     <message>
-        <location filename="../jobs/xinxjobprogressdock.cpp" line="45"/>
+        <location filename="../jobs/xinxjobprogressdock.cpp" line="57"/>
         <source>Progress</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3306,22 +3430,9 @@ This wizard will convert the project to the last version of XINX. Wizard must co
     </message>
 </context>
 <context>
-    <name>XinxPluginsLoader</name>
-    <message>
-        <location filename="../plugins/xinxpluginsloader.cpp" line="471"/>
-        <source>All managed files (%1)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../plugins/xinxpluginsloader.cpp" line="476"/>
-        <source>All %1 (%2)</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>XinxProject::DirectoryFetcher</name>
     <message>
-        <location filename="../project/projectlistmodel.cpp" line="93"/>
+        <location filename="../project/projectlistmodel.cpp" line="105"/>
         <source>Fetch files of %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3329,62 +3440,62 @@ This wizard will convert the project to the last version of XINX. Wizard must co
 <context>
     <name>XinxProject::Manager</name>
     <message>
-        <location filename="../project/xinxprojectmanager.cpp" line="191"/>
+        <location filename="../project/xinxprojectmanager.cpp" line="192"/>
         <source>&amp;New project ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/xinxprojectmanager.cpp" line="192"/>
+        <location filename="../project/xinxprojectmanager.cpp" line="193"/>
         <source>Create a new project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/xinxprojectmanager.cpp" line="196"/>
+        <location filename="../project/xinxprojectmanager.cpp" line="197"/>
         <source>&amp;Recent Project ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/xinxprojectmanager.cpp" line="197"/>
+        <location filename="../project/xinxprojectmanager.cpp" line="198"/>
         <source>Open a project file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/xinxprojectmanager.cpp" line="202"/>
+        <location filename="../project/xinxprojectmanager.cpp" line="203"/>
         <source>Close project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/xinxprojectmanager.cpp" line="203"/>
+        <location filename="../project/xinxprojectmanager.cpp" line="204"/>
         <source>Close the project file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/xinxprojectmanager.cpp" line="207"/>
+        <location filename="../project/xinxprojectmanager.cpp" line="208"/>
         <source>Project &amp;property</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/xinxprojectmanager.cpp" line="208"/>
+        <location filename="../project/xinxprojectmanager.cpp" line="209"/>
         <source>Show/Modify the property of the project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/xinxprojectmanager.cpp" line="347"/>
+        <location filename="../project/xinxprojectmanager.cpp" line="348"/>
         <source>Open the project ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/xinxprojectmanager.cpp" line="356"/>
+        <location filename="../project/xinxprojectmanager.cpp" line="357"/>
         <source>Close previous project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/xinxprojectmanager.cpp" line="374"/>
+        <location filename="../project/xinxprojectmanager.cpp" line="375"/>
         <source>Can&apos;t start a project at the step &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/xinxprojectmanager.cpp" line="391"/>
+        <location filename="../project/xinxprojectmanager.cpp" line="392"/>
         <source>Initialisation of the parser job</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3392,37 +3503,32 @@ This wizard will convert the project to the last version of XINX. Wizard must co
 <context>
     <name>XinxProject::PrivateManager</name>
     <message>
-        <location filename="../project/xinxprojectmanager.cpp" line="83"/>
-        <source>&amp;%1 %2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../project/xinxprojectmanager.cpp" line="97"/>
+        <location filename="../project/xinxprojectmanager.cpp" line="98"/>
         <source>Open a project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/xinxprojectmanager.cpp" line="123"/>
+        <location filename="../project/xinxprojectmanager.cpp" line="124"/>
         <source>Open project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/xinxprojectmanager.cpp" line="123"/>
+        <location filename="../project/xinxprojectmanager.cpp" line="124"/>
         <source>Can&apos;t open project : %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/xinxprojectmanager.cpp" line="139"/>
+        <location filename="../project/xinxprojectmanager.cpp" line="140"/>
         <source>&amp;Choose file ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/xinxprojectmanager.cpp" line="140"/>
+        <location filename="../project/xinxprojectmanager.cpp" line="141"/>
         <source>Choose a project file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/xinxprojectmanager.cpp" line="141"/>
+        <location filename="../project/xinxprojectmanager.cpp" line="142"/>
         <source>Choose a project file on the disk</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3430,87 +3536,58 @@ This wizard will convert the project to the last version of XINX. Wizard must co
 <context>
     <name>XinxProject::PrivateProjectListModel</name>
     <message>
-        <location filename="../project/projectlistmodel.cpp" line="693"/>
+        <location filename="../project/projectlistmodel.cpp" line="653"/>
+        <location filename="../project/projectlistmodel.cpp" line="725"/>
+        <location filename="../project/projectlistmodel.cpp" line="752"/>
         <source>Node for directory %1 not found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectlistmodel.cpp" line="817"/>
+        <location filename="../project/projectlistmodel.cpp" line="857"/>
+        <source>Not in Revision</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../project/projectlistmodel.cpp" line="859"/>
         <source>Unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectlistmodel.cpp" line="819"/>
+        <location filename="../project/projectlistmodel.cpp" line="861"/>
         <source>Locally modified</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectlistmodel.cpp" line="821"/>
+        <location filename="../project/projectlistmodel.cpp" line="863"/>
         <source>Locally added</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectlistmodel.cpp" line="823"/>
+        <location filename="../project/projectlistmodel.cpp" line="865"/>
         <source>Locally removed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectlistmodel.cpp" line="825"/>
+        <location filename="../project/projectlistmodel.cpp" line="867"/>
         <source>Has conflict</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectlistmodel.cpp" line="827"/>
-        <location filename="../project/projectlistmodel.cpp" line="828"/>
+        <location filename="../project/projectlistmodel.cpp" line="869"/>
+        <location filename="../project/projectlistmodel.cpp" line="870"/>
         <source>No modified</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectlistmodel.cpp" line="827"/>
+        <location filename="../project/projectlistmodel.cpp" line="869"/>
         <source>Need checkout</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>XinxProject::PrivateXinxProject</name>
-    <message>
-        <location filename="../project/xinxprojectproject.cpp" line="188"/>
-        <source>Cannot read file %1:
-%2.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../project/xinxprojectproject.cpp" line="195"/>
-        <source>Parse error at line %1, column %2:
-%3</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../project/xinxprojectproject.cpp" line="201"/>
-        <source>The file isn&apos;t a XINX Project. The root name must be &quot;XinxProject&quot;, not &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../project/xinxprojectproject.cpp" line="205"/>
-        <source>The file is a too recent XINX Project</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../project/xinxprojectproject.cpp" line="207"/>
-        <source>The project can&apos;t be opened. Please use the XINX Project Wizard.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../project/xinxprojectproject.cpp" line="278"/>
-        <source>Cannot write file %1:
-%2.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>XinxProject::Project</name>
     <message>
-        <location filename="../project/xinxprojectproject.cpp" line="314"/>
+        <location filename="../project/xinxprojectproject.cpp" line="364"/>
         <source>The project must be created in a existing directory</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3518,7 +3595,7 @@ This wizard will convert the project to the last version of XINX. Wizard must co
 <context>
     <name>XinxProject::ProjectListModel</name>
     <message>
-        <location filename="../project/projectlistmodel.cpp" line="1115"/>
+        <location filename="../project/projectlistmodel.cpp" line="1160"/>
         <source>
 Date in Version Control : %1
 Status : %2
@@ -3526,7 +3603,7 @@ Version : %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../project/projectlistmodel.cpp" line="1116"/>
+        <location filename="../project/projectlistmodel.cpp" line="1161"/>
         <source>Filename : %1
 Date of file : %2%3</source>
         <translation type="unfinished"></translation>
@@ -3535,40 +3612,40 @@ Date of file : %2%3</source>
 <context>
     <name>XinxSession::PrivateSessionManager</name>
     <message>
-        <location filename="../session/sessionmanager.cpp" line="69"/>
-        <location filename="../session/sessionmanager.cpp" line="74"/>
+        <location filename="../session/sessionmanager.cpp" line="70"/>
+        <location filename="../session/sessionmanager.cpp" line="75"/>
         <source>Create a new session</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../session/sessionmanager.cpp" line="69"/>
+        <location filename="../session/sessionmanager.cpp" line="70"/>
         <source>Name of the new session</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../session/sessionmanager.cpp" line="74"/>
-        <location filename="../session/sessionmanager.cpp" line="90"/>
+        <location filename="../session/sessionmanager.cpp" line="75"/>
+        <location filename="../session/sessionmanager.cpp" line="91"/>
         <source>The name %1 is already used by another session</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../session/sessionmanager.cpp" line="85"/>
-        <location filename="../session/sessionmanager.cpp" line="90"/>
+        <location filename="../session/sessionmanager.cpp" line="86"/>
+        <location filename="../session/sessionmanager.cpp" line="91"/>
         <source>Rename session</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../session/sessionmanager.cpp" line="85"/>
+        <location filename="../session/sessionmanager.cpp" line="86"/>
         <source>New name of the session</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../session/sessionmanager.cpp" line="101"/>
+        <location filename="../session/sessionmanager.cpp" line="102"/>
         <source>Delete a session</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../session/sessionmanager.cpp" line="101"/>
+        <location filename="../session/sessionmanager.cpp" line="102"/>
         <source>Are you sure to delete the session %1 ?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3576,32 +3653,32 @@ Date of file : %2%3</source>
 <context>
     <name>XinxSession::SessionManager</name>
     <message>
-        <location filename="../session/sessionmanager.cpp" line="148"/>
+        <location filename="../session/sessionmanager.cpp" line="149"/>
         <source>&amp;New session ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../session/sessionmanager.cpp" line="149"/>
+        <location filename="../session/sessionmanager.cpp" line="150"/>
         <source>Create a new session (list of project)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../session/sessionmanager.cpp" line="153"/>
+        <location filename="../session/sessionmanager.cpp" line="154"/>
         <source>&amp;Remove session ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../session/sessionmanager.cpp" line="154"/>
+        <location filename="../session/sessionmanager.cpp" line="155"/>
         <source>Remove the current session</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../session/sessionmanager.cpp" line="158"/>
+        <location filename="../session/sessionmanager.cpp" line="159"/>
         <source>Rename session ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../session/sessionmanager.cpp" line="159"/>
+        <location filename="../session/sessionmanager.cpp" line="160"/>
         <source>Change the name of the current session</source>
         <translation type="unfinished"></translation>
     </message>

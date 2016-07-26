@@ -8,3 +8,4 @@ usr/i18n/*.qm /usr/share/xinx/i18n/
 usr/scripts/*.js /usr/share/xinx/scripts/
 usr/scripts/*.xq /usr/share/xinx/scripts/
 usr/datas/*.xml /usr/share/xinx/datas/
+usr/templates/*.xml /usr/share/xinx/templates/

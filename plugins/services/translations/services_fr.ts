@@ -76,12 +76,12 @@
         <translation>Ouvrir un projet WebSerivces</translation>
     </message>
     <message>
-        <location filename="../servicesplugin.cpp" line="85"/>
+        <location filename="../servicesplugin.cpp" line="82"/>
         <source>XINX WebServices</source>
         <translation>Service Internet XINX</translation>
     </message>
     <message>
-        <location filename="../servicesplugin.cpp" line="87"/>
+        <location filename="../servicesplugin.cpp" line="84"/>
         <source>Enable the WebServices Capabilities to XINX.</source>
         <translation>Active la capacité de gérer les Services Internet dans XINX.</translation>
     </message>
@@ -94,7 +94,7 @@
         <translation type="obsolete">Appeler un Service</translation>
     </message>
     <message>
-        <location filename="../servicesplugin.cpp" line="115"/>
+        <location filename="../servicesplugin.cpp" line="114"/>
         <source>&amp;Execute</source>
         <translation>&amp;Exécuter</translation>
     </message>
@@ -129,27 +129,27 @@
 <context>
     <name>WebServicesEditor</name>
     <message>
-        <location filename="../webserviceseditor.cpp" line="112"/>
+        <location filename="../webserviceseditor.cpp" line="113"/>
         <source>WebServices : </source>
         <translation>Service Internet :</translation>
     </message>
     <message>
-        <location filename="../webserviceseditor.cpp" line="113"/>
+        <location filename="../webserviceseditor.cpp" line="114"/>
         <source>Action : </source>
         <translation>Action :</translation>
     </message>
     <message>
-        <location filename="../webserviceseditor.cpp" line="114"/>
+        <location filename="../webserviceseditor.cpp" line="115"/>
         <source>Parameter : </source>
         <translation>Paramêtre :</translation>
     </message>
     <message>
-        <location filename="../webserviceseditor.cpp" line="221"/>
+        <location filename="../webserviceseditor.cpp" line="222"/>
         <source>Can&apos;t read content of file</source>
         <translation>Ne peut lire le contenu du fichier</translation>
     </message>
     <message>
-        <location filename="../webserviceseditor.cpp" line="224"/>
+        <location filename="../webserviceseditor.cpp" line="225"/>
         <source>Not a WebServices file</source>
         <translation>Ce n&apos;est pas un fichier de Service Internet</translation>
     </message>
@@ -158,29 +158,29 @@
         <translation type="obsolete">sansnom.fws</translation>
     </message>
     <message>
-        <location filename="../webserviceseditor.cpp" line="133"/>
+        <location filename="../webserviceseditor.cpp" line="134"/>
         <source>Result values: </source>
         <translation>Valeurs de résultat :</translation>
     </message>
     <message>
-        <location filename="../webserviceseditor.cpp" line="518"/>
-        <location filename="../webserviceseditor.cpp" line="530"/>
+        <location filename="../webserviceseditor.cpp" line="519"/>
+        <location filename="../webserviceseditor.cpp" line="531"/>
         <source>WebServices Error</source>
         <translation>Erreur Service Internet</translation>
     </message>
     <message>
-        <location filename="../webserviceseditor.cpp" line="518"/>
-        <location filename="../webserviceseditor.cpp" line="530"/>
+        <location filename="../webserviceseditor.cpp" line="519"/>
+        <location filename="../webserviceseditor.cpp" line="531"/>
         <source>Web services has error %1</source>
         <translation>Le Service Internet échoue avec l&apos;erreur %1</translation>
     </message>
     <message>
-        <location filename="../webserviceseditor.cpp" line="511"/>
+        <location filename="../webserviceseditor.cpp" line="512"/>
         <source>Server has respond in %1 ms</source>
         <translation>Le serveur a répondu en %1 ms</translation>
     </message>
     <message>
-        <location filename="../webserviceseditor.cpp" line="528"/>
+        <location filename="../webserviceseditor.cpp" line="529"/>
         <source>Invalid return value</source>
         <translation>Valeur de retour invalide</translation>
     </message>

@@ -120,37 +120,37 @@
 <context>
     <name>RCS_CVS</name>
     <message>
-        <location filename="../rcs_cvs.cpp" line="223"/>
+        <location filename="../rcs_cvs.cpp" line="224"/>
         <source>Update terminated</source>
         <translation>Mise à jour terminée</translation>
     </message>
     <message>
-        <location filename="../rcs_cvs.cpp" line="252"/>
+        <location filename="../rcs_cvs.cpp" line="253"/>
         <source>Update to revision %1 terminated</source>
         <translation type="unfinished">Mise à jour à la révision %1 terminée</translation>
     </message>
     <message>
-        <location filename="../rcs_cvs.cpp" line="269"/>
+        <location filename="../rcs_cvs.cpp" line="270"/>
         <source>Files commited :</source>
         <translation>Fichiers validés :</translation>
     </message>
     <message>
-        <location filename="../rcs_cvs.cpp" line="283"/>
+        <location filename="../rcs_cvs.cpp" line="284"/>
         <source>Commit terminated</source>
         <translation>Validation terminée</translation>
     </message>
     <message>
-        <location filename="../rcs_cvs.cpp" line="302"/>
+        <location filename="../rcs_cvs.cpp" line="303"/>
         <source>Add terminated</source>
         <translation>Ajout terminé</translation>
     </message>
     <message>
-        <location filename="../rcs_cvs.cpp" line="321"/>
+        <location filename="../rcs_cvs.cpp" line="322"/>
         <source>Remove terminated</source>
         <translation type="unfinished">Suppression terminée</translation>
     </message>
     <message>
-        <location filename="../rcs_cvs.cpp" line="339"/>
+        <location filename="../rcs_cvs.cpp" line="340"/>
         <source>I&apos;M A PROCESS KILLER</source>
         <translation>Je suis un tueur d&apos;application</translation>
     </message>

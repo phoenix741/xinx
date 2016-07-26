@@ -75,17 +75,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../servicesplugin.cpp" line="85"/>
+        <location filename="../servicesplugin.cpp" line="82"/>
         <source>XINX WebServices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../servicesplugin.cpp" line="87"/>
+        <location filename="../servicesplugin.cpp" line="84"/>
         <source>Enable the WebServices Capabilities to XINX.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../servicesplugin.cpp" line="115"/>
+        <location filename="../servicesplugin.cpp" line="114"/>
         <source>&amp;Execute</source>
         <translation type="unfinished"></translation>
     </message>
@@ -120,54 +120,54 @@
 <context>
     <name>WebServicesEditor</name>
     <message>
-        <location filename="../webserviceseditor.cpp" line="112"/>
+        <location filename="../webserviceseditor.cpp" line="113"/>
         <source>WebServices : </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../webserviceseditor.cpp" line="113"/>
+        <location filename="../webserviceseditor.cpp" line="114"/>
         <source>Action : </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../webserviceseditor.cpp" line="114"/>
+        <location filename="../webserviceseditor.cpp" line="115"/>
         <source>Parameter : </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../webserviceseditor.cpp" line="133"/>
+        <location filename="../webserviceseditor.cpp" line="134"/>
         <source>Result values: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../webserviceseditor.cpp" line="221"/>
+        <location filename="../webserviceseditor.cpp" line="222"/>
         <source>Can&apos;t read content of file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../webserviceseditor.cpp" line="224"/>
+        <location filename="../webserviceseditor.cpp" line="225"/>
         <source>Not a WebServices file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../webserviceseditor.cpp" line="511"/>
+        <location filename="../webserviceseditor.cpp" line="512"/>
         <source>Server has respond in %1 ms</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../webserviceseditor.cpp" line="518"/>
-        <location filename="../webserviceseditor.cpp" line="530"/>
+        <location filename="../webserviceseditor.cpp" line="519"/>
+        <location filename="../webserviceseditor.cpp" line="531"/>
         <source>WebServices Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../webserviceseditor.cpp" line="518"/>
-        <location filename="../webserviceseditor.cpp" line="530"/>
+        <location filename="../webserviceseditor.cpp" line="519"/>
+        <location filename="../webserviceseditor.cpp" line="531"/>
         <source>Web services has error %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../webserviceseditor.cpp" line="528"/>
+        <location filename="../webserviceseditor.cpp" line="529"/>
         <source>Invalid return value</source>
         <translation type="unfinished"></translation>
     </message>
@@ -180,7 +180,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../webservicesfiletype.h" line="64"/>
+        <location filename="../webservicesfiletype.h" line="66"/>
         <source>noname</source>
         <translation type="unfinished"></translation>
     </message>

@@ -1,3 +1,6 @@
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
 find_package(Qt4 REQUIRED)
 
 set(USE_COMPONENTS True)

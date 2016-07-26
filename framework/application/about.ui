@@ -61,7 +61,7 @@
           <string/>
          </property>
          <property name="pixmap">
-          <pixmap resource="../../xinx/application.qrc">:/images/splash.png</pixmap>
+          <pixmap resource="../application.qrc">:/images/splash.png</pixmap>
          </property>
          <property name="scaledContents">
           <bool>true</bool>
@@ -71,8 +71,7 @@
        <item>
         <widget class="QLabel" name="m_aboutLabel">
          <property name="text">
-          <string>&lt;p&gt;&lt;b&gt;XINX&lt;/b&gt; Is Not only XML&lt;/p&gt;
-&lt;p&gt;(c) 2006-2011, Ulrich Van Den Hekke&lt;/p&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;XINX&lt;/span&gt; Is Not only XML&lt;/p&gt;&lt;p&gt;(c) 2006-2016, Ulrich Van Den Hekke&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -250,6 +249,7 @@
  </widget>
  <resources>
   <include location="../../components/xinxpluginselector.qrc"/>
+  <include location="../application.qrc"/>
   <include location="../../xinx/application.qrc"/>
  </resources>
  <connections>

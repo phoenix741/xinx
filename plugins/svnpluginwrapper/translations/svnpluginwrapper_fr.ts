@@ -4,22 +4,22 @@
 <context>
     <name>RCS_SVN</name>
     <message>
-        <location filename="../rcs_svn.cpp" line="247"/>
-        <location filename="../rcs_svn.cpp" line="351"/>
+        <location filename="../rcs_svn.cpp" line="248"/>
+        <location filename="../rcs_svn.cpp" line="352"/>
         <source>Process terminated</source>
         <translation>Traitement terminé</translation>
     </message>
     <message>
-        <location filename="../rcs_svn.cpp" line="274"/>
-        <location filename="../rcs_svn.cpp" line="296"/>
-        <location filename="../rcs_svn.cpp" line="315"/>
-        <location filename="../rcs_svn.cpp" line="334"/>
-        <location filename="../rcs_svn.cpp" line="374"/>
+        <location filename="../rcs_svn.cpp" line="275"/>
+        <location filename="../rcs_svn.cpp" line="297"/>
+        <location filename="../rcs_svn.cpp" line="316"/>
+        <location filename="../rcs_svn.cpp" line="335"/>
+        <location filename="../rcs_svn.cpp" line="375"/>
         <source>Can&apos;t start svn program.</source>
         <translation type="unfinished">Ne peut démarrer le programme svn.</translation>
     </message>
     <message>
-        <location filename="../rcs_svn.cpp" line="388"/>
+        <location filename="../rcs_svn.cpp" line="389"/>
         <source>Can&apos;t stop the process on windows.</source>
         <translation type="unfinished">Ne peut arrêter le processus sous Windows.</translation>
     </message>

@@ -1,1 +1,1 @@
-usr/plugins/libservices.so /usr/lib/xinx/plugins/
+usr/plugins/libservices.so* /usr/lib/xinx/plugins/

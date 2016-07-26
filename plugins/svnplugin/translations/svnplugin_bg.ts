@@ -14,11 +14,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/authentification_form.ui" line="30"/>
-        <source>http://</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../ui/authentification_form.ui" line="37"/>
         <source>&amp;User Name :</source>
         <translation type="unfinished"></translation>
@@ -156,7 +151,7 @@ Do you want to trust this certificate?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../rcs_svn.cpp" line="733"/>
+        <location filename="../rcs_svn.cpp" line="783"/>
         <source>Update %1 to revision %2.</source>
         <translation type="unfinished"></translation>
     </message>

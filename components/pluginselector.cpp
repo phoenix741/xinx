@@ -18,7 +18,7 @@
 */
 
 // Xinx header
-#include "p_pluginselector.h"
+#include "pluginselector_p.h"
 #include "pluginelement.h"
 
 // Qt header

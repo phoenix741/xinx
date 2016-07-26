@@ -1,3 +1,6 @@
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
 find_package(Qt4 REQUIRED)
 
 set(QT_USE_QTXML TRUE)
@@ -84,9 +87,8 @@ set(forms
 	widgets/formatconfig.ui)
 
 qt4_wrap_ui(generated_forms ${forms})
-xinx_automoc(moc_headers ${headers})
 
-add_library(qcodeedit SHARED ${moc_headers} ${sources} ${generated_forms})
+add_library(qcodeedit SHARED ${sources} ${generated_forms})
 target_link_libraries(qcodeedit ${QT_LIBRARIES})
 set_target_properties(qcodeedit PROPERTIES VERSION 2.2.0.0)
 if(UNIX)

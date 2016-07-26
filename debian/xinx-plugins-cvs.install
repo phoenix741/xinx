@@ -1,1 +1,1 @@
-usr/plugins/libcvsplugin.so /usr/lib/xinx/plugins/
+usr/plugins/libcvsplugin.so* /usr/lib/xinx/plugins/

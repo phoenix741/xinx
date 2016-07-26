@@ -2,6 +2,34 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="en_US">
 <context>
+    <name>AddModifyLabelDialog</name>
+    <message>
+        <location filename="../docks/dictionary/addmodifylabeldialog.ui" line="17"/>
+        <source>Adding/Modify dictionary label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../docks/dictionary/addmodifylabeldialog.ui" line="23"/>
+        <source>&amp;Code :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../docks/dictionary/addmodifylabeldialog.ui" line="36"/>
+        <source>&amp;Langue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../docks/dictionary/addmodifylabeldialog.ui" line="53"/>
+        <source>&amp;Description :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../docks/dictionary/addmodifylabeldialog.ui" line="76"/>
+        <source>C&amp;ontext :</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>AliasItem</name>
     <message>
         <location filename="../configuration/itemmodelfactory.cpp" line="43"/>
@@ -122,26 +150,30 @@
 <context>
     <name>DictionaryDockWidget</name>
     <message>
-        <location filename="../ui/dictionarydockwidget.ui" line="14"/>
+        <location filename="../docks/dictionary/dictionarydockwidget.ui" line="14"/>
         <source>Dictionary</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dictionarydockwidget.ui" line="32"/>
-        <location filename="../ui/dictionarydockwidget.ui" line="46"/>
-        <source>...</source>
+        <location filename="../docks/dictionary/dictionarydockwidget.ui" line="28"/>
+        <source>Add a new label</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>DictionaryDockWidgetImpl</name>
     <message>
-        <location filename="../docks/dictionary/dictionarydockwidgetimpl.cpp" line="30"/>
+        <location filename="../docks/dictionary/dictionarydockwidgetimpl.cpp" line="69"/>
         <source>Dictionary</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../docks/dictionary/dictionarydockwidgetimpl.cpp" line="105"/>
+        <source>No label(s) loaded.</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message numerus="yes">
-        <location filename="../docks/dictionary/dictionarydockwidgetimpl.cpp" line="45"/>
+        <location filename="../docks/dictionary/dictionarydockwidgetimpl.cpp" line="109"/>
         <source>%n label(s) loaded.</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -152,7 +184,17 @@
 <context>
     <name>DictionaryModel</name>
     <message>
-        <location filename="../docks/dictionary/dictionarymodel.cpp" line="67"/>
+        <location filename="../docks/dictionary/dictionarymodel.cpp" line="104"/>
+        <source>Can&apos;t open the dictionary for write : %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../docks/dictionary/dictionarymodel.cpp" line="199"/>
+        <source>Can&apos;t parse the dictionary for write : %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../docks/dictionary/dictionarymodel.cpp" line="233"/>
         <source>Please type a prefix to list labels.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -160,7 +202,7 @@
 <context>
     <name>Gce150FileResolver</name>
     <message>
-        <location filename="../pluginresolver/gce150fileresolver.cpp" line="50"/>
+        <location filename="../pluginresolver/gce150fileresolver.cpp" line="51"/>
         <source>GCE150 File Resolver</source>
         <translation type="unfinished"></translation>
     </message>
@@ -189,17 +231,17 @@
 <context>
     <name>GcePropertiesParser</name>
     <message>
-        <location filename="../configuration/gcepropertiesparser.cpp" line="67"/>
+        <location filename="../configuration/gcepropertiesparser.cpp" line="68"/>
         <source>Can&apos;t open the gce properties file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configuration/gcepropertiesparser.cpp" line="75"/>
+        <location filename="../configuration/gcepropertiesparser.cpp" line="76"/>
         <source>Can&apos;t read the root element of the gce properties file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configuration/gcepropertiesparser.cpp" line="84"/>
+        <location filename="../configuration/gcepropertiesparser.cpp" line="85"/>
         <source>Unable to create new XPath context</source>
         <translation type="unfinished"></translation>
     </message>
@@ -207,18 +249,18 @@
 <context>
     <name>Generix::Dictionary::Parser</name>
     <message>
-        <location filename="../docks/dictionary/dictionary_parser.cpp" line="77"/>
+        <location filename="../docks/dictionary/dictionary_parser.cpp" line="78"/>
         <source>The file is not an dictionary file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../docks/dictionary/dictionary_parser.cpp" line="103"/>
-        <location filename="../docks/dictionary/dictionary_parser.cpp" line="129"/>
+        <location filename="../docks/dictionary/dictionary_parser.cpp" line="104"/>
+        <location filename="../docks/dictionary/dictionary_parser.cpp" line="130"/>
         <source>Labels node expected. %1 found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../docks/dictionary/dictionary_parser.cpp" line="157"/>
+        <location filename="../docks/dictionary/dictionary_parser.cpp" line="158"/>
         <source>Label node expected. %1 found</source>
         <translation type="unfinished"></translation>
     </message>
@@ -285,12 +327,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../plugindefinition/generix.cpp" line="112"/>
+        <location filename="../plugindefinition/generix.cpp" line="108"/>
         <source>Plugin for Generix</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../plugindefinition/generix.cpp" line="114"/>
+        <location filename="../plugindefinition/generix.cpp" line="110"/>
         <source>This plugin add some fonctionnality usefull for Generix Group&apos;s XINX users</source>
         <translation type="unfinished"></translation>
     </message>
@@ -298,12 +340,12 @@
 <context>
     <name>GenerixProjectDockImpl</name>
     <message>
-        <location filename="../docks/project/generixprojectdock.cpp" line="139"/>
+        <location filename="../docks/project/generixprojectdock.cpp" line="148"/>
         <source>Generix Business View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../docks/project/generixprojectdock.cpp" line="162"/>
+        <location filename="../docks/project/generixprojectdock.cpp" line="171"/>
         <source>&amp;Business view for file : 
 %1</source>
         <translation type="unfinished"></translation>
@@ -354,7 +396,7 @@
 <context>
     <name>ItemModelFactory</name>
     <message>
-        <location filename="../configuration/itemmodelfactory.cpp" line="86"/>
+        <location filename="../configuration/itemmodelfactory.cpp" line="87"/>
         <source>Aliases</source>
         <translation type="unfinished"></translation>
     </message>

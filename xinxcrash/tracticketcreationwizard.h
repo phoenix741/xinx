@@ -36,7 +36,7 @@ class TracTicketCreationWizard : public QWizard
 	Q_OBJECT
 public:
 	enum TracPageEnum {
-		CRASH_PAGE			= 1,
+		CRASH_PAGE		= 1,
 		CONNECTION_PAGE		= 2,
 		CREATE_LOGIN_PAGE	= 3,
 		CREATE_TICKET_PAGE	= 4,
@@ -46,9 +46,9 @@ public:
 	};
 
 	explicit TracTicketCreationWizard(QWidget *parent = 0);
-	~TracTicketCreationWizard();
+	virtual ~TracTicketCreationWizard();
 
-    virtual int nextId() const;
+	virtual int nextId() const;
 
 	const QString & errorMessage() const;
 	const QString & version() const;
@@ -56,7 +56,7 @@ public:
 	const QString & login() const;
 	const QString & password() const;
 
-    virtual void setVisible(bool visible);
+	virtual void setVisible(bool visible);
 public slots:
 	void setVersion(const QString & version);
 	void setErrorMessage(const QString & message);
@@ -64,9 +64,9 @@ public slots:
 	void setLogin(const QString & login);
 	void setPassword(const QString & password);
 protected:
-    virtual void initializePage(int id);
-    virtual void done(int result);
-    virtual bool validateCurrentPage();
+	virtual void initializePage(int id);
+	virtual void done(int result);
+	virtual bool validateCurrentPage();
 private slots:
 	void connected();
 	void connectionError(const QString & text);
@@ -93,9 +93,9 @@ private:
 	QString _message;
 	QStringList _stack_trace;
 	bool _connected, _connecting, _next_page;
-    QString _version, _string_version, _login, _password;
+	QString _version, _string_version, _login, _password;
 	QSettings _settings;
-    TracXmlRpcProxy* _xmlrpc;
+	TracXmlRpcProxy* _xmlrpc;
 };
 
 #endif // TRACTICKETCREATIONWIZARD_H
