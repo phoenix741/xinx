@@ -2,6 +2,8 @@
 #define AppVersion GetFileVersion(SourcePath + "install\bin\xinx.exe")
 #define QTDIR GetEnv("QTDIR")
 #define LIBXML2 GetEnv("LIBXML2")
+#define LIBXSLT GetEnv("LIBXSLT")
+#define ICONV GetEnv("ICONV")
 #define LIBSVN  GetEnv("SUBVERSION")
 #define QtVersion GetFileVersion( GetEnv("QTDIR") + "\bin\QtCore4.dll" );
 
@@ -58,15 +60,16 @@ Source: install\bin\libframework.dll; DestDir: {app}\bin; Components: applicatio
 Source: install\bin\libqcodeedit.dll; DestDir: {app}\bin; Components: application; Flags: replacesameversion
 Source: install\bin\libideality.dll; DestDir: {app}\bin; Components: application; Flags: replacesameversion
 
-Source: {#QTDIR}\..\mingw\bin\mingwm10.dll; DestDir: {app}\bin; Components: application
-Source: {#QTDIR}\..\mingw\bin\libgcc_s_dw2-1.dll; DestDir: {app}\bin; Components: application
+Source: {#QTDIR}\..\..\mingw\bin\mingwm10.dll; DestDir: {app}\bin; Components: application
+Source: {#QTDIR}\..\..\mingw\bin\libgcc_s_dw2-1.dll; DestDir: {app}\bin; Components: application
+Source: {#QTDIR}\..\..\mingw\bin\libstdc++-6.dll; DestDir: {app}\bin; Components: application
 
-Source: {#LIBXML2}\lib\libxml2.dll; DestDir: {app}\bin; Components: application
-Source: {#LIBXML2}\lib\libxslt.dll; DestDir: {app}\bin; Components: application
-Source: {#LIBXML2}\bin\iconv.dll; DestDir: {app}\bin; Components: application
-Source: {#LIBXML2}\bin\iconv.exe; DestDir: {app}\bin; Components: application
-Source: {#LIBXML2}\lib\libexslt.dll; DestDir: {app}\bin; Components: application
-Source: {#LIBXML2}\bin\xsltproc.exe; DestDir: {app}\bin; Components: application
+Source: {#LIBXML2}\bin\libxml2.dll; DestDir: {app}\bin; Components: application
+Source: {#LIBXSLT}\bin\libxslt.dll; DestDir: {app}\bin; Components: application
+Source: {#ICONV}\bin\iconv.dll; DestDir: {app}\bin; Components: application
+Source: {#ICONV}\bin\iconv.exe; DestDir: {app}\bin; Components: application
+Source: {#LIBXSLT}\bin\libexslt.dll; DestDir: {app}\bin; Components: application
+Source: {#LIBXSLT}\bin\xsltproc.exe; DestDir: {app}\bin; Components: application
 
 Source: {#QTDIR}\bin\phonon4.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile; Tasks: ; Languages: 
 Source: {#QTDIR}\bin\QtCore4.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile; Tasks: ; Languages: 
@@ -94,12 +97,6 @@ DestDir: {app}\plugins; Source: install\plugins\libcvsplugin.dll; Components: cv
 DestDir: {app}\plugins; Source: install\plugins\libsvnplugin.dll; Components: svnplugin; Flags: replacesameversion
 DestDir: {app}\plugins; Source: install\plugins\libsvnpluginwrapper.dll; Components: svnpluginwrapper; Flags: replacesameversion
 DestDir: {app}\plugins; Source: install\plugins\libgenerix.dll; Components: generixplugin; Flags: replacesameversion
-
-DestDir: {app}\plugins\styles; Source: {#QTDIR}\plugins\styles\explorerstyle.dll; Components: styles; MinVersion: 0,6.0.6000; Tasks: ; Languages: 
-DestDir: {app}\plugins\styles; Source: {#QTDIR}\plugins\styles\floatstyle0.dll; Components: styles; Tasks: ; Languages: 
-DestDir: {app}\plugins\styles; Source: {#QTDIR}\plugins\styles\qtdotnet2.dll; Components: styles; MinVersion: 0,6.0.6000; Tasks: ; Languages: 
-
-DestDir: {app}\plugins\sqldrivers; Source: {#QTDIR}\plugins\sqldrivers\qsqlite4.dll; Components: application
 
 [Icons]
 Name: {group}\{#AppName}; Filename: {app}\bin\xinx.exe; Components: application; Tasks: 

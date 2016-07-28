@@ -1,3 +1,9 @@
+xinx (0.10.4.60726) unstable; urgency=low
+
+  * de7a88303ba9: fixes bug on auto-indent to convert caracter correctly.
+
+ -- Ulrich Van Den Hekke <ulrich.vdh@shadoware.org>  Thu, 28 Jul 2016 19:53:44 +0200
+
 xinx (0.10.3.20104) unstable; urgency=low
 
   * remove the generix plugin from the repository (doesn't compile)
