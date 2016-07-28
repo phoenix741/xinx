@@ -62,7 +62,7 @@ AboutDialogImpl::AboutDialogImpl(QWidget * parent, Qt::WFlags f) : QDialog(paren
 	m_labelVersion->setText(versionString);
 
 	m_aboutLabel->setText("<b>XINX</b> Is Not only XML<br/>"
-						  "(c) 2006-2011, Ulrich Van Den Hekke<br/>"
+						  "(c) 2006-2016, Ulrich Van Den Hekke<br/>"
 						  "<a href=\"http://xinx.shadoware.org/\">http://xinx.shadoware.org/</a><br/>"
 						  "<br/>"
 						  "<i>This software is cover by the GPL Public Licence v3. <br/>"
