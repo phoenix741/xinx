@@ -26,7 +26,7 @@
     <message>
         <location filename="../ui/customscheme.ui" line="60"/>
         <source>&amp;Strikeout</source>
-        <translation type="unfinished">&amp;Barrer</translation>
+        <translation>&amp;Barrer</translation>
     </message>
     <message>
         <location filename="../ui/customscheme.ui" line="67"/>
@@ -36,12 +36,12 @@
     <message>
         <location filename="../ui/customscheme.ui" line="74"/>
         <source>&amp;Underline</source>
-        <translation type="unfinished">S&amp;ouligner</translation>
+        <translation>S&amp;ouligner</translation>
     </message>
     <message>
         <location filename="../ui/customscheme.ui" line="84"/>
         <source>&amp;WaveUnderline</source>
-        <translation type="unfinished">Souligner en &amp;vague</translation>
+        <translation>Souligner en &amp;vague</translation>
     </message>
     <message>
         <location filename="../ui/customscheme.ui" line="100"/>

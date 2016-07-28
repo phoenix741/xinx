@@ -118,12 +118,12 @@ Do you want to trust this certificate?</source>
     <message>
         <location filename="../rcs_svn.cpp" line="302"/>
         <source>Select a certificate file</source>
-        <translation type="unfinished">Sélectionner un certificat</translation>
+        <translation>Sélectionner un certificat</translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="302"/>
         <source>Please select a certificate file.</source>
-        <translation type="unfinished">Veuillez sélectionner un certificat.</translation>
+        <translation>Veuillez sélectionner un certificat.</translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="302"/>
@@ -143,7 +143,7 @@ Do you want to trust this certificate?</source>
     <message>
         <location filename="../rcs_svn.cpp" line="581"/>
         <source>Files updated.</source>
-        <translation type="unfinished">Fichiers mis à jour.</translation>
+        <translation>Fichiers mis à jour.</translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="606"/>
@@ -153,7 +153,7 @@ Do you want to trust this certificate?</source>
     <message>
         <location filename="../rcs_svn.cpp" line="783"/>
         <source>Update %1 to revision %2.</source>
-        <translation type="unfinished">Mise à jour de %1 à la révision %2.</translation>
+        <translation>Mise à jour de %1 à la révision %2.</translation>
     </message>
 </context>
 <context>
@@ -194,7 +194,7 @@ Do you want to trust this certificate?</source>
     <message>
         <location filename="../rcs_svn.cpp" line="126"/>
         <source>Restore</source>
-        <translation type="unfinished">Restaure</translation>
+        <translation>Restaure</translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="132"/>
@@ -284,27 +284,27 @@ Do you want to trust this certificate?</source>
     <message>
         <location filename="../rcs_svn.cpp" line="222"/>
         <source>Locked</source>
-        <translation type="unfinished">Verrouille</translation>
+        <translation>Verrouille</translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="225"/>
         <source>Unlocked</source>
-        <translation type="unfinished">Déverrouille</translation>
+        <translation>Déverrouille</translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="228"/>
         <source>Failed lock</source>
-        <translation type="unfinished">Echec de verrouillage</translation>
+        <translation>Echec de verrouillage</translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="232"/>
         <source>Failed unlock</source>
-        <translation type="unfinished">Echec de déverrouillage</translation>
+        <translation>Echec de déverrouillage</translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="236"/>
         <source>Exists</source>
-        <translation type="unfinished">Existe</translation>
+        <translation>Existe</translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="239"/>
@@ -339,22 +339,22 @@ Do you want to trust this certificate?</source>
     <message>
         <location filename="../rcs_svn.cpp" line="257"/>
         <source>Property added</source>
-        <translation type="unfinished">Propriété ajoutée</translation>
+        <translation>Propriété ajoutée</translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="260"/>
         <source>Property modified</source>
-        <translation type="unfinished">Propriété modifiée</translation>
+        <translation>Propriété modifiée</translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="263"/>
         <source>Property deleted</source>
-        <translation type="unfinished">Propriété supprimée</translation>
+        <translation>Propriété supprimée</translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="266"/>
         <source>Property deleted nonexistent</source>
-        <translation type="unfinished">Propriété supprimée non existante</translation>
+        <translation>Propriété supprimée non existante</translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="269"/>

@@ -20,23 +20,27 @@
     </message>
     <message>
         <location filename="../application/about.ui" line="74"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;XINX&lt;/span&gt; Is Not only XML&lt;/p&gt;&lt;p&gt;(c) 2006-2016, Ulrich Van Den Hekke&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;XINX&lt;/span&gt; Is Not only XML&lt;/p&gt;&lt;p&gt;(c) 2006-2016, Ulrich Van Den Hekke&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
         <source>&lt;p&gt;&lt;b&gt;XINX&lt;/b&gt; Is Not only XML&lt;/p&gt;
 &lt;p&gt;(c) 2006-2016, Ulrich Van Den Hekke&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;b&gt;XINX&lt;/b&gt; Is Not only XML&lt;/p&gt;
+        <translation type="obsolete">&lt;p&gt;&lt;b&gt;XINX&lt;/b&gt; Is Not only XML&lt;/p&gt;
 &lt;p&gt;(c) 2006-2016, Ulrich Van Den Hekke&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../application/about.ui" line="89"/>
+        <location filename="../application/about.ui" line="88"/>
         <source>A&amp;uthor(s)</source>
         <translation>A&amp;uteur(s)</translation>
     </message>
     <message>
-        <location filename="../application/about.ui" line="146"/>
+        <location filename="../application/about.ui" line="145"/>
         <source>&amp;Thanks to</source>
         <translation>&amp;Merci à</translation>
     </message>
     <message>
-        <location filename="../application/about.ui" line="203"/>
+        <location filename="../application/about.ui" line="202"/>
         <source>Licence</source>
         <translation>Licence d&apos;utilisation</translation>
     </message>
@@ -50,12 +54,12 @@
     <message>
         <location filename="../application/aboutdialogimpl.cpp" line="55"/>
         <source>&lt;b&gt;XINX %1 (Changeset %2 using Qt %3)&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../application/aboutdialogimpl.cpp" line="59"/>
         <source>&lt;b&gt;XINX %1 (using Qt %2)&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -590,12 +594,13 @@ Seuls les fichiers cochés seront validés.</translation>
         <location filename="../application/customdialog/ui/customeditor.ui" line="48"/>
         <source>&lt;p&gt;If the box is checked, when closing the file, &lt;b&gt;XINX&lt;/b&gt; apply the pretty print function on the text, after a confirmation from the user. &lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Closing a file can be slower.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Si cette case est cochée, lors de la fermeture du fichier, &lt;b&gt;XINX&lt;/b&gt; applique l&apos;indentation automatique sur le texte, après la confirmation de l&apos;utilisateur.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;La fermeture du fichier peut être plus lente&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="78"/>
         <source>Number of ms to wait before launching the parser and refresh the content view. This also the time after what the error are show. This timeout is reseted when the user hit your keyboard.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre de &lt;i&gt;ms&lt;/i&gt; à attendre avant de lancer le parser et rafraichir la vue de contenue. Cest aussi le temps après lequelle les erreurs sont affichées. The temps est ré-initialiser quand l&apos;utilisateur écris du texte sur le clavier.</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="107"/>
@@ -1441,12 +1446,12 @@ Voulez-vous réellement actualiser ce fichier ?</translation>
     <message>
         <location filename="../editors/filetypepool.cpp" line="113"/>
         <source>All managed files (%1)</source>
-        <translation type="unfinished">Tous les fichiers gérés (%1)</translation>
+        <translation>Tous les fichiers gérés (%1)</translation>
     </message>
     <message>
         <location filename="../editors/filetypepool.cpp" line="118"/>
         <source>All %1 (%2)</source>
-        <translation type="unfinished">Tous les %1 (%2)</translation>
+        <translation>Tous les %1 (%2)</translation>
     </message>
 </context>
 <context>
@@ -1655,7 +1660,7 @@ Voulez-vous réellement actualiser ce fichier ?</translation>
     <message>
         <location filename="../application/mainformimpl.cpp" line="288"/>
         <source>Search &amp;previous</source>
-        <translation type="unfinished"></translation>
+        <translation>Recherche &amp;précédente</translation>
     </message>
     <message>
         <location filename="../application/mainformimpl.cpp" line="289"/>
@@ -1666,7 +1671,7 @@ Voulez-vous réellement actualiser ce fichier ?</translation>
     <message>
         <location filename="../application/mainformimpl.cpp" line="296"/>
         <source>Search &amp;next</source>
-        <translation type="unfinished"></translation>
+        <translation>Recherche &amp;suivante</translation>
     </message>
     <message>
         <location filename="../application/mainformimpl.cpp" line="297"/>
@@ -1682,13 +1687,13 @@ Voulez-vous réellement actualiser ce fichier ?</translation>
     <message>
         <location filename="../application/mainformimpl.cpp" line="305"/>
         <source>Search &amp;files ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Recherche dans les &amp;fichiers ...</translation>
     </message>
     <message>
         <location filename="../application/mainformimpl.cpp" line="306"/>
         <location filename="../application/mainformimpl.cpp" line="307"/>
         <source>Search files</source>
-        <translation type="unfinished"></translation>
+        <translation>Recherche dans les fichiers</translation>
     </message>
     <message>
         <location filename="../application/mainformimpl.cpp" line="308"/>
@@ -1806,8 +1811,8 @@ Voulez-vous réellement actualiser ce fichier ?</translation>
     <message numerus="yes">
         <location filename="../application/mainformimpl.cpp" line="770"/>
         <source>%Ln occurence(s) of &apos;%1&apos; found.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%Ln occurence(s) de &apos;%1&apos; trouvées.</numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
@@ -3181,7 +3186,7 @@ Un projet peut également être connecté à des services Internet.</translation
     <message>
         <location filename="../search/replacefilethread.cpp" line="44"/>
         <source>Replace %1 by %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Remplacer %1 par %2</translation>
     </message>
 </context>
 <context>
@@ -3255,7 +3260,7 @@ Un projet peut également être connecté à des services Internet.</translation
     <message>
         <location filename="../search/searchdock.ui" line="37"/>
         <source>&amp;Replace</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Remplacer</translation>
     </message>
     <message>
         <source>Directory</source>
@@ -3280,7 +3285,7 @@ Un projet peut également être connecté à des services Internet.</translation
     <message>
         <location filename="../search/searchdockimpl.cpp" line="310"/>
         <source>The content of the line have been changed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le contenu de la ligne a été modifié.</translation>
     </message>
 </context>
 <context>
@@ -3703,17 +3708,17 @@ La version %2 est disponible à l&apos;adresse %3.</translation>
     <message>
         <location filename="../versioncontrol/versioncontrolmanager.cpp" line="44"/>
         <source>Update project</source>
-        <translation type="unfinished">Mise à jour du projet</translation>
+        <translation>Mise à jour du projet</translation>
     </message>
     <message>
         <location filename="../versioncontrol/versioncontrolmanager.cpp" line="45"/>
         <source>Update all files of the project directory (from repository).</source>
-        <translation type="unfinished">Met à jour tous les fichiers du dossier projet (à partir du référenciel).</translation>
+        <translation>Met à jour tous les fichiers du dossier projet (à partir du référenciel).</translation>
     </message>
     <message>
         <location filename="../versioncontrol/versioncontrolmanager.cpp" line="51"/>
         <source>Commit project</source>
-        <translation type="unfinished">Valide le projet</translation>
+        <translation>Valide le projet</translation>
     </message>
     <message>
         <location filename="../versioncontrol/versioncontrolmanager.cpp" line="52"/>
@@ -3724,7 +3729,7 @@ La version %2 est disponible à l&apos;adresse %3.</translation>
     <message>
         <location filename="../versioncontrol/versioncontrolmanager.cpp" line="59"/>
         <source>Cancel RCS operation</source>
-        <translation type="unfinished">Annule l&apos;opération</translation>
+        <translation>Annule l&apos;opération</translation>
     </message>
 </context>
 <context>
@@ -3929,7 +3934,7 @@ Cet assistant va convertir le projet à la dernière version de de XINX. L&apos;
     <message>
         <location filename="../jobs/xinxjob.cpp" line="92"/>
         <source>Delaying ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Reporté ...</translation>
     </message>
     <message>
         <location filename="../jobs/xinxjob.cpp" line="94"/>

@@ -16,12 +16,12 @@
         <location filename="../rcs_svn.cpp" line="335"/>
         <location filename="../rcs_svn.cpp" line="375"/>
         <source>Can&apos;t start svn program.</source>
-        <translation type="unfinished">Ne peut démarrer le programme svn.</translation>
+        <translation>Ne peut démarrer le programme svn.</translation>
     </message>
     <message>
         <location filename="../rcs_svn.cpp" line="389"/>
         <source>Can&apos;t stop the process on windows.</source>
-        <translation type="unfinished">Ne peut arrêter le processus sous Windows.</translation>
+        <translation>Ne peut arrêter le processus sous Windows.</translation>
     </message>
 </context>
 <context>

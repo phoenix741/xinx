@@ -26,12 +26,12 @@
     <message>
         <location filename="../ui/servicesbatch.ui" line="20"/>
         <source>This list contains all web services files. This can be used to launch WebServices in parallele way.</source>
-        <translation type="unfinished">Cette liste contient tous les fichiers de type Service Internet. Cet écran peut être utilisé pour lancer les Services Internet en parallèle.</translation>
+        <translation>Cette liste contient tous les fichiers de type Service Internet. Cet écran peut être utilisé pour lancer les Services Internet en parallèle.</translation>
     </message>
     <message>
         <location filename="../ui/servicesbatch.ui" line="40"/>
         <source>Execution time</source>
-        <translation type="unfinished">Temps d&apos;exécution</translation>
+        <translation>Temps d&apos;exécution</translation>
     </message>
     <message>
         <location filename="../ui/servicesbatch.ui" line="45"/>
@@ -188,12 +188,12 @@
 <context>
     <name>WebServicesFileType</name>
     <message>
-        <location filename="../webservicesfiletype.h" line="40"/>
+        <location filename="../webservicesfiletype.cpp" line="39"/>
         <source>Web Services Stream</source>
         <translation>Flux Service Internet</translation>
     </message>
     <message>
-        <location filename="../webservicesfiletype.h" line="66"/>
+        <location filename="../webservicesfiletype.cpp" line="59"/>
         <source>noname</source>
         <translation>sansnom</translation>
     </message>

@@ -6,7 +6,7 @@
     <message>
         <location filename="../empty.cpp" line="50"/>
         <source>XINX Demo Empty Plugin</source>
-        <translation type="unfinished">Plugin de démonstration vide de XINX</translation>
+        <translation>Plugin de démonstration vide de XINX</translation>
     </message>
     <message>
         <location filename="../empty.cpp" line="52"/>

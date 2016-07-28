@@ -20,22 +20,21 @@
     </message>
     <message>
         <location filename="../application/about.ui" line="74"/>
-        <source>&lt;p&gt;&lt;b&gt;XINX&lt;/b&gt; Is Not only XML&lt;/p&gt;
-&lt;p&gt;(c) 2006-2016, Ulrich Van Den Hekke&lt;/p&gt;</source>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;XINX&lt;/span&gt; Is Not only XML&lt;/p&gt;&lt;p&gt;(c) 2006-2016, Ulrich Van Den Hekke&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/about.ui" line="89"/>
+        <location filename="../application/about.ui" line="88"/>
         <source>A&amp;uthor(s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/about.ui" line="146"/>
+        <location filename="../application/about.ui" line="145"/>
         <source>&amp;Thanks to</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/about.ui" line="203"/>
+        <location filename="../application/about.ui" line="202"/>
         <source>Licence</source>
         <translation type="unfinished"></translation>
     </message>

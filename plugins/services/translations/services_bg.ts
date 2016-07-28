@@ -175,12 +175,12 @@
 <context>
     <name>WebServicesFileType</name>
     <message>
-        <location filename="../webservicesfiletype.h" line="40"/>
+        <location filename="../webservicesfiletype.cpp" line="39"/>
         <source>Web Services Stream</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../webservicesfiletype.h" line="66"/>
+        <location filename="../webservicesfiletype.cpp" line="59"/>
         <source>noname</source>
         <translation type="unfinished"></translation>
     </message>

@@ -16,7 +16,7 @@
     <message>
         <location filename="../cvsplugin.cpp" line="104"/>
         <source>CVS - Concurent Version System</source>
-        <translation type="unfinished">CVS - Concurrent Version Systéme</translation>
+        <translation>CVS - Concurrent Version Systéme</translation>
     </message>
 </context>
 <context>
@@ -79,7 +79,7 @@
     <message>
         <location filename="../ui/customize.ui" line="85"/>
         <source>-z5 Medium Level</source>
-        <translation type="unfinished">-z5 Intermédiaire</translation>
+        <translation>-z5 Intermédiaire</translation>
     </message>
     <message>
         <location filename="../ui/customize.ui" line="90"/>
@@ -104,12 +104,12 @@
     <message>
         <location filename="../ui/customize.ui" line="113"/>
         <source>Prune empty directories. (-P)</source>
-        <translation type="unfinished">Supprimer les dossiers vides (-P)</translation>
+        <translation>Supprimer les dossiers vides (-P)</translation>
     </message>
     <message>
         <location filename="../ui/customize.ui" line="120"/>
         <source>Create missing directories. (-d)</source>
-        <translation type="unfinished">Création des dossiers manquants (-d)</translation>
+        <translation>Création des dossiers manquants (-d)</translation>
     </message>
     <message>
         <location filename="../customizeplugin.cpp" line="40"/>
@@ -127,7 +127,7 @@
     <message>
         <location filename="../rcs_cvs.cpp" line="253"/>
         <source>Update to revision %1 terminated</source>
-        <translation type="unfinished">Mise à jour à la révision %1 terminée</translation>
+        <translation>Mise à jour à la révision %1 terminée</translation>
     </message>
     <message>
         <location filename="../rcs_cvs.cpp" line="270"/>
@@ -147,7 +147,7 @@
     <message>
         <location filename="../rcs_cvs.cpp" line="322"/>
         <source>Remove terminated</source>
-        <translation type="unfinished">Suppression terminée</translation>
+        <translation>Suppression terminée</translation>
     </message>
     <message>
         <location filename="../rcs_cvs.cpp" line="340"/>

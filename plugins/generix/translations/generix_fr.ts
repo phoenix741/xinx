@@ -6,27 +6,27 @@
     <message>
         <location filename="../docks/dictionary/addmodifylabeldialog.ui" line="17"/>
         <source>Adding/Modify dictionary label</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter/Modifier les label du dictionnaire</translation>
     </message>
     <message>
         <location filename="../docks/dictionary/addmodifylabeldialog.ui" line="23"/>
         <source>&amp;Code :</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Code :</translation>
     </message>
     <message>
         <location filename="../docks/dictionary/addmodifylabeldialog.ui" line="36"/>
         <source>&amp;Langue</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Langue</translation>
     </message>
     <message>
         <location filename="../docks/dictionary/addmodifylabeldialog.ui" line="53"/>
         <source>&amp;Description :</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Description :</translation>
     </message>
     <message>
         <location filename="../docks/dictionary/addmodifylabeldialog.ui" line="76"/>
         <source>C&amp;ontext :</source>
-        <translation type="unfinished"></translation>
+        <translation>C&amp;ontext :</translation>
     </message>
 </context>
 <context>
@@ -172,7 +172,7 @@
     <message>
         <location filename="../docks/dictionary/dictionarydockwidget.ui" line="28"/>
         <source>Add a new label</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter un nouveau label</translation>
     </message>
     <message>
         <source>...</source>
@@ -189,7 +189,7 @@
     <message>
         <location filename="../docks/dictionary/dictionarydockwidgetimpl.cpp" line="105"/>
         <source>No label(s) loaded.</source>
-        <translation type="unfinished"></translation>
+        <translation>Aucun label(s) chargé.</translation>
     </message>
     <message numerus="yes">
         <location filename="../docks/dictionary/dictionarydockwidgetimpl.cpp" line="109"/>
@@ -219,7 +219,7 @@
     <message>
         <location filename="../docks/dictionary/dictionarymodel.cpp" line="233"/>
         <source>Please type a prefix to list labels.</source>
-        <translation type="unfinished">Veuillez entrer un préfixe pour lister les libellés.</translation>
+        <translation>Veuillez entrer un préfixe pour lister les libellés.</translation>
     </message>
 </context>
 <context>
@@ -357,7 +357,7 @@
     <message>
         <location filename="../projectproperty/std/generixderivationoptionspage.cpp" line="105"/>
         <source>A prefix must be filled if you want add a prefix to each derivated files</source>
-        <translation type="unfinished">Un préfixe doit être renseigné, si vous voulez ajouter un préfixe pour chaque fichier dérivé</translation>
+        <translation>Un préfixe doit être renseigné, si vous voulez ajouter un préfixe pour chaque fichier dérivé</translation>
     </message>
 </context>
 <context>
@@ -504,7 +504,7 @@ courant :</translation>
         <location filename="../projectproperty/wizard/newgenerixderivation1page.ui" line="23"/>
         <source>Please tell me, if you want to modify all part of the web module, or prevent the modification of orignal files and derive file in special directory.
 In &lt;b&gt;GCE 150&lt;/b&gt; or later, the choice has few impact</source>
-        <translation type="unfinished">Voulez-vous modifier l&apos;ensemble du module Internet, ou prévenir de la modification des fichiers originaux en les dérivant dans un dossier spécial.&lt;br/&gt;
+        <translation>Voulez-vous modifier l&apos;ensemble du module Internet, ou prévenir de la modification des fichiers originaux en les dérivant dans un dossier spécial.&lt;br/&gt;
 En &lt;b&gt;GCE 150&lt;/b&gt; ou plus, le choix a peu d&apos;impact</translation>
     </message>
     <message>
@@ -548,7 +548,7 @@ En &lt;b&gt;GCE 150&lt;/b&gt; ou plus, le choix a peu d&apos;impact</translation
     <message>
         <location filename="../projectproperty/wizard/newgenerixderivation2page.ui" line="33"/>
         <source>In the list, please check directory that you want make read-only (While modify a file in this directory, this will open a dialog to derive the fie. You always can force to save the file in the original directory.</source>
-        <translation type="unfinished">Veuillez cocher les dossiers que vous souhaitez en lecture uniquement (lors de la modification d&apos;un fichier de ce dossier, une boite de dialogue de dérivation sera ouverte). Vous pouvez toujours forcer la sauvegarde du fichier dans le dossier d&apos;origine.</translation>
+        <translation>Veuillez cocher les dossiers que vous souhaitez en lecture uniquement (lors de la modification d&apos;un fichier de ce dossier, une boite de dialogue de dérivation sera ouverte). Vous pouvez toujours forcer la sauvegarde du fichier dans le dossier d&apos;origine.</translation>
     </message>
 </context>
 <context>
@@ -614,7 +614,7 @@ En &lt;b&gt;GCE 150&lt;/b&gt; ou plus, le choix a peu d&apos;impact</translation
         <source>This page show you the finding version of your GCE Installation. If the version number doesn&apos;t corresponding with your GCE Installation, please verify the configuration of your project. This will have an impact on the directory structure choosed by XINX and on how XINX will access to dictionnary and BV.
 
 On &quot;Location of the data stream&quot; you can fill by the location of the &quot;j2ee/home/log&quot; directory of your Application Server. This will be added as a link in your project to permit you an easy access to open a data stream.</source>
-        <translation type="unfinished">Cette page vous affiche la version trouvée de votre version de GCE. Si ce numéro de version ne correspond pas à votre installation de GCE, veuillez vérifier le fichier de configuration de votre projet. Cela peut avoir un impact sur la structure des dossiers choisis par XINX, ainsi que son accès au dictionnaire et à la liste des BusinessView.
+        <translation>Cette page vous affiche la version trouvée de votre version de GCE. Si ce numéro de version ne correspond pas à votre installation de GCE, veuillez vérifier le fichier de configuration de votre projet. Cela peut avoir un impact sur la structure des dossiers choisis par XINX, ainsi que son accès au dictionnaire et à la liste des BusinessView.
 
 Sur l&apos;emplacement des flux de données, vous pouvez remplir par l&apos;emplacement du dossier &quot;j2ee/home/log&quot; de votre serveur d&apos;application. Cela sera ajouté automatiquement comme lien à l&apos;intérieur de votre projet et vous permettra d&apos;accéder facilement aux flux de données.</translation>
     </message>
@@ -644,12 +644,12 @@ Sur l&apos;emplacement des flux de données, vous pouvez remplir par l&apos;empl
     <message>
         <location filename="../projectproperty/wizard/newgenerixinformationpageimpl.cpp" line="117"/>
         <source>&lt;p style=&quot;color: red&quot;&gt;&lt;b&gt;!!! WARNING !!!&lt;/b&gt; : The expected folder structure doesn&apos;t match with the selected version of the web module. Please check in the project property the configuration of dervication&apos;s path.&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;p style=&quot;color: red&quot;&gt;&lt;b&gt;!!! WARNING !!!&lt;/b&gt; : La structure des dossiers attendue ne correspond pas avec la version du module sélectionné. Veuillez vérifier dans les propriétés du projet la configuration des chemins de dérivations.&lt;/p&gt;</translation>
+        <translation>&lt;p style=&quot;color: red&quot;&gt;&lt;b&gt;!!! WARNING !!!&lt;/b&gt; : La structure des dossiers attendue ne correspond pas avec la version du module sélectionné. Veuillez vérifier dans les propriétés du projet la configuration des chemins de dérivations.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../projectproperty/wizard/newgenerixinformationpageimpl.cpp" line="125"/>
         <source>&lt;p style=&quot;color: red&quot;&gt;&lt;b&gt;!!! WARNING !!!&lt;/b&gt; : XINX can&apos;t parse any configuration file. Please check your location. If your project is not supported by XINX, you can create a standard project instead of a Generix project.&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;p style=&quot;color: red&quot;&gt;&lt;b&gt;!!! WARNING !!!&lt;/b&gt; : XINX ne peut parser aucun fichier de configuration. Veuillez vérifier l&apos;emplacement. Si votre projet n&apos;est pas supporté par XINX vous pouvez créer un projet standard au lieu d&apos;en faire un projet Generix.&lt;/p&gt;</translation>
+        <translation>&lt;p style=&quot;color: red&quot;&gt;&lt;b&gt;!!! WARNING !!!&lt;/b&gt; : XINX ne peut parser aucun fichier de configuration. Veuillez vérifier l&apos;emplacement. Si votre projet n&apos;est pas supporté par XINX vous pouvez créer un projet standard au lieu d&apos;en faire un projet Generix.&lt;/p&gt;</translation>
     </message>
 </context>
 </TS>
