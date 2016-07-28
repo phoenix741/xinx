@@ -418,7 +418,7 @@ void XinxPluginsLoader::loadPlugins()
 			if (plugin)
 				addPlugin(plugin);
 			else
-				qDebug() << loader.errorString();
+				qCritical() << loader.errorString();
 		}
 	}
 

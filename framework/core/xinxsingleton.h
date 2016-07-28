@@ -44,15 +44,15 @@ public:
 	{
 		if (_self == NULL)
 		{
-			std::cout << "Lock singleton of type " << typeid(T).name() << std::endl;
+			qDebug() << "Lock singleton of type " << typeid(T).name();
 			QMutexLocker locker(&_self_mutex);
 			if (_self == NULL)
 			{
-				std::cout << "Pre-create singleton of type " << typeid(T).name() << std::endl;
+				qDebug() << "Pre-create singleton of type " << typeid(T).name();
 				_self = new T;
-				std::cout << "Post-create singleton of type " << typeid(T).name() << std::endl;
+				qDebug() << "Post-create singleton of type " << typeid(T).name();
 				_self->initialisation();
-				std::cout << "Post-init singleton of type " << typeid(T).name() << std::endl;
+				qDebug() << "Post-init singleton of type " << typeid(T).name();
 			}
 		}
 
@@ -95,15 +95,15 @@ public:
 	{
 		if (_self == NULL)
 		{
-			std::cout << "Lock singleton of type " << typeid(T).name() << std::endl;
+			qDebug() << "Lock singleton of type " << typeid(T).name();
 			QMutexLocker locker(&_self_mutex);
 			if (_self == NULL)
 			{
-				std::cout << "Pre-create singleton of type " << typeid(T).name() << std::endl;
+				qDebug() << "Pre-create singleton of type " << typeid(T).name();
 				_self = new T;
-				std::cout << "Post-create singleton of type " << typeid(T).name() << std::endl;
+				qDebug() << "Post-create singleton of type " << typeid(T).name();
 				_self->initialisation();
-				std::cout << "Post-init singleton of type " << typeid(T).name() << std::endl;
+				qDebug() << "Post-init singleton of type " << typeid(T).name();
 			}
 		}
 
