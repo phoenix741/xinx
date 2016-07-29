@@ -912,7 +912,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../config/xmlpresconfigform.ui" line="63"/>
         <source>If checked, when the text is filtered, the list shows sub-elements of the node whose filter matches the node name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si coché, quand le texte est filtré, la liste affiche les sous-éléments du noeud dont le nom correspondent au filtre.</translation>
     </message>
     <message>
         <location filename="../config/xmlpresconfigform.ui" line="66"/>

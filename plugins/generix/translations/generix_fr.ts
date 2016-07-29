@@ -209,12 +209,12 @@
     <message>
         <location filename="../docks/dictionary/dictionarymodel.cpp" line="104"/>
         <source>Can&apos;t open the dictionary for write : %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne peux ouvrir le dictionnaire pour l&apos;écriture : %1</translation>
     </message>
     <message>
         <location filename="../docks/dictionary/dictionarymodel.cpp" line="199"/>
         <source>Can&apos;t parse the dictionary for write : %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne peux lire le dictionnaire pour écriture : %1</translation>
     </message>
     <message>
         <location filename="../docks/dictionary/dictionarymodel.cpp" line="233"/>

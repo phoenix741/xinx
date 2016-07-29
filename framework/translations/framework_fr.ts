@@ -614,7 +614,7 @@ Seuls les fichiers cochés seront validés.</translation>
     <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="116"/>
         <source>When this checkbox is checked, lines in editor are automatically wrap to fit on the screen. This remove the horizontal scrollbar.</source>
-        <translation type="unfinished"></translation>
+        <translation>Quand cette case est cochée, les lignes de l&apos;éditeur sont automatiquement replié pour ne pas dépasser les bords de l&apos;écran. Cette option supprime la scrollbar horizontale.</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="126"/>
@@ -650,7 +650,8 @@ Seuls les fichiers cochés seront validés.</translation>
         <location filename="../application/customdialog/ui/customeditor.ui" line="210"/>
         <source>&lt;p&gt;Create a backup file before saving the file. The backup file is stored in the same directory that the original file (and have extention &lt;code&gt;.bak&lt;/code&gt;). &lt;/p&gt;
 &lt;p&gt;The backup is created by copy the modified file before he his saved.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Créer un fichier de sauvegarde avant de remplacer le contenu du fichier. Le fichier de sauvegarde est placé dans le même dossier que le fichier original (et est suffixé par l&apos;extention &lt;code&gt;.bak&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;La sauvegarde est créée en copiant le fichier modifié avant de le sauvegardé.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Close button on the &amp;tab widget</source>
@@ -710,7 +711,9 @@ Seuls les fichiers cochés seront validés.</translation>
         <source>&lt;p&gt;When this box is checked, the error and warning dock is automatically show when an error occure, and automatically hide when error is corrected.&lt;/p&gt;
 
 &lt;p&gt;This can be desactivated because, writing code can be disturbed by the dock that automatically open and close. If desactivated the state of the dock don&apos;t change, but when there is an error, you can see the number of error side of the name of the dock, and a red line in the editor that show you the line where there is an error.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Quand cette case est cochée, le dock des erreurs et les avertissements est automatiquement affiché lorsqu&apos;une erreur arrive, et automatiquement caché quand les erreurs sont corrigés&lt;/p&gt;
+
+&lt;p&gt;Cette option peut être désactivé car l&apos;écriture du code peut être perturbé par l&apos;ouverture et la fermeture automatique du  dock. Si désactivé , l&apos;état du dock ne change plus, mais quand il y a une erreur, vous pouvez voir le nombre d&apos;erreur associé au nom du dock, et une ligne rouge est affiché dans l&apos;éditeur pour montrer la ligne concerné par l&apos;erreur.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customeditor.ui" line="235"/>
@@ -897,7 +900,7 @@ Seuls les fichiers cochés seront validés.</translation>
     <message>
         <location filename="../application/customdialog/ui/customgeneral.ui" line="51"/>
         <source>This field contains the location where must be stored the trace log file. This file contains all error, and warning that &lt;b&gt;XINX&lt;/b&gt; emit.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ce champ contient l&apos;emplacement où doivent être enregistrer le journal. The fichier contient toutes les erreurs et les avertissements que &lt;b&gt;XINX&lt;/b&gt; émés.</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customgeneral.ui" line="67"/>
@@ -908,7 +911,8 @@ Seuls les fichiers cochés seront validés.</translation>
         <location filename="../application/customdialog/ui/customgeneral.ui" line="90"/>
         <source>&lt;p&gt;In this combobox, you can select the current style to use. If you don&apos;t select the style, &lt;b&gt;XINX&lt;/b&gt; will use the style of the desktop, else &lt;b&gt;XINX&lt;/b&gt; will use the style you choose.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Modification take effect at restart.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Dans cette liste déroulante, vous pouvez selectionner le style à utiliser. Si vous ne selectionner pas de style, &lt;b&gt;XINX&lt;/b&gt; utilisera le style du bureau, sinon &lt;b&gt;XINX&lt;/b&gt; utilisera le style que vous avez choisi.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;La modification prendra éffet lors du redémarrage.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customgeneral.ui" line="98"/>
@@ -944,7 +948,8 @@ Seuls les fichiers cochés seront validés.</translation>
         <location filename="../application/customdialog/ui/custommodules.ui" line="45"/>
         <source>&lt;p&gt;This is the list of script that can be used by &lt;b&gt;XINX&lt;/b&gt; to extend the application (like plugins).&lt;/p&gt;
 &lt;p&gt;Script is simplier to write that Plugins but isn&apos;t powerfull that Plugins writter in &lt;code&gt;C++&lt;/code&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Cest la liste des scriptes qui peuvent être utilisés par &lt;b&gt;XINX&lt;/b&gt; pour étendre l&apos;application (comme des plugins).&lt;/p&gt;
+&lt;p&gt;Le script est plus simple à écrire que les plugins mais moins puissant qu&apos;un plugins écris en &lt;code&gt;C++&lt;/code&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -1044,7 +1049,7 @@ Seuls les fichiers cochés seront validés.</translation>
     <message>
         <location filename="../application/customdialog/ui/customproject.ui" line="59"/>
         <source>Timeout before the directory view is reloaded with your filter. If time is set to 0, the view directory is only refresh when you hit &lt;i&gt;Enter&lt;/i&gt; key.</source>
-        <translation type="unfinished"></translation>
+        <translation>Temps avant que la vue dossier soit rechargés avec un filtre. Si le temps est positionné à 0, la vue est uniquement rafraichis quand vous utilisez la touche &lt;i&gt;Enter&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customproject.ui" line="62"/>
@@ -1086,7 +1091,7 @@ Seuls les fichiers cochés seront validés.</translation>
     <message>
         <location filename="../application/customdialog/ui/customproject.ui" line="137"/>
         <source>When checked, and new file is created, &lt;b&gt;XINX&lt;/b&gt; will add this files automatically to the &lt;i&gt;revision control system&lt;/i&gt;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Quand cochés, et que de nouveaux fichiers sont créés, &lt;b&gt;XINX&lt;/b&gt; ajoutera les fichiers automatiquement au &lt;i&gt;gestionnaire de version&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customproject.ui" line="140"/>
@@ -1121,7 +1126,7 @@ Seuls les fichiers cochés seront validés.</translation>
     <message>
         <location filename="../application/customdialog/ui/customsnipet.ui" line="32"/>
         <source>This filter can be used to search a snipet in the list above.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le filtre peut être utilisé pour rechercher un snippet dans la liste ci-dessous.</translation>
     </message>
     <message>
         <location filename="../application/customdialog/ui/customsnipet.ui" line="41"/>
@@ -1698,7 +1703,7 @@ Voulez-vous réellement actualiser ce fichier ?</translation>
     <message>
         <location filename="../application/mainformimpl.cpp" line="308"/>
         <source>Search a text or a regular expression into selected files</source>
-        <translation type="unfinished"></translation>
+        <translation>Recherche un texte ou une expression rationnelle dans le fichier selectionné</translation>
     </message>
     <message>
         <location filename="../application/mainformimpl.cpp" line="313"/>
@@ -3724,7 +3729,8 @@ La version %2 est disponible à l&apos;adresse %3.</translation>
         <location filename="../versioncontrol/versioncontrolmanager.cpp" line="52"/>
         <source>&lt;p&gt;Commit all files of the project directory (to repository). An optional message can be added.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Only &lt;b&gt;XINX&lt;/b&gt; managed files are commited to the repository.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Valide tout les fichiers du dossier projet (du référenciel). Un message optionel peut être ajouté.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Seul &lt;b&gt;XINX&lt;/b&gt; peut gérer les fichiers validés dans le référenciel.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../versioncontrol/versioncontrolmanager.cpp" line="59"/>
