@@ -63,6 +63,7 @@ Source: install\bin\libideality.dll; DestDir: {app}\bin; Components: application
 Source: {#QTDIR}\..\..\mingw\bin\mingwm10.dll; DestDir: {app}\bin; Components: application
 Source: {#QTDIR}\..\..\mingw\bin\libgcc_s_dw2-1.dll; DestDir: {app}\bin; Components: application
 Source: {#QTDIR}\..\..\mingw\bin\libstdc++-6.dll; DestDir: {app}\bin; Components: application
+Source: {#QTDIR}\..\..\mingw\bin\zlib1.dll; DestDir: {app}\bin; Components: application
 
 Source: {#LIBXML2}\bin\libxml2.dll; DestDir: {app}\bin; Components: application
 Source: {#LIBXSLT}\bin\libxslt.dll; DestDir: {app}\bin; Components: application
@@ -80,6 +81,7 @@ Source: {#QTDIR}\bin\QtWebKit4.dll; DestDir: {app}\bin; Components: application;
 Source: {#QTDIR}\bin\QtXml4.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile
 Source: {#QTDIR}\bin\QtXmlPatterns4.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile
 Source: {#QTDIR}\bin\QtSql4.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile
+Source: {#QTDIR}\bin\libwinpthread-1.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile
 
 Source: {#LIBSVN}\bin\*.*; DestDir: {app}\bin; Components: svnplugin
 
@@ -98,6 +100,7 @@ DestDir: {app}\plugins; Source: install\plugins\libsvnplugin.dll; Components: sv
 DestDir: {app}\plugins; Source: install\plugins\libsvnpluginwrapper.dll; Components: svnpluginwrapper; Flags: replacesameversion
 DestDir: {app}\plugins; Source: install\plugins\libgenerix.dll; Components: generixplugin; Flags: replacesameversion
 
+DestDir: {app}\plugins\sqldrivers; Source: {#QTDIR}\plugins\sqldrivers\qsqlite4.dll; Components: application
 [Icons]
 Name: {group}\{#AppName}; Filename: {app}\bin\xinx.exe; Components: application; Tasks: 
 Name: {group}\style\{#AppName} (Plastique); Filename: {app}\bin\xinx.exe; Components: application; Tasks: ; Parameters: -style Plastique; IconIndex: 0
