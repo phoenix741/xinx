@@ -9,7 +9,7 @@ Homepage: http://xinx.shadoware.org/
 Package: xinx
 Section: devel
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, libqt4-sql-sqlite (>= 4.5)
 Recommends: xinx-plugins-services, xinx-plugins-cvs, xinx-plugins-svn
 Suggests: xinx-doc, xinx-plugins-gce
 Conflicts: xinx (<= 0.8.2)

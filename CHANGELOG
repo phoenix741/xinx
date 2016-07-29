@@ -1,3 +1,10 @@
+xinx (0.10.5) unstable; urgency=medium
+
+  * 2f8aa564a5fc: fix file that should be in the setup
+  * f15073e712a4: fix some translation
+
+ -- Ulrich Van Den Hekke <ulrich.vdh@shadoware.org>  Fri, 29 Jul 2016 12:37:18 +0200
+
 xinx (0.10.4.60726) unstable; urgency=low
 
   * de7a88303ba9: fixes bug on auto-indent to convert caracter correctly.
