@@ -44,15 +44,11 @@ public:
 	{
 		if (_self == NULL)
 		{
-			qDebug() << "Lock singleton of type " << typeid(T).name();
 			QMutexLocker locker(&_self_mutex);
 			if (_self == NULL)
 			{
-				qDebug() << "Pre-create singleton of type " << typeid(T).name();
 				_self = new T;
-				qDebug() << "Post-create singleton of type " << typeid(T).name();
 				_self->initialisation();
-				qDebug() << "Post-init singleton of type " << typeid(T).name();
 			}
 		}
 
@@ -95,15 +91,11 @@ public:
 	{
 		if (_self == NULL)
 		{
-			qDebug() << "Lock singleton of type " << typeid(T).name();
 			QMutexLocker locker(&_self_mutex);
 			if (_self == NULL)
 			{
-				qDebug() << "Pre-create singleton of type " << typeid(T).name();
 				_self = new T;
-				qDebug() << "Post-create singleton of type " << typeid(T).name();
 				_self->initialisation();
-				qDebug() << "Post-init singleton of type " << typeid(T).name();
 			}
 		}
 
