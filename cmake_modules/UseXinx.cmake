@@ -84,7 +84,7 @@ macro(initialisation_xinx cible)
 	file(GLOB_RECURSE forms *.ui)
 	file(GLOB_RECURSE resources *.qrc)
 	file(GLOB_RECURSE other_translations RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.ts)
-
+	
 	option (UPDATE_TRANSLATIONS "Update source translation translations/*.ts")
 	if (UPDATE_TRANSLATIONS)
 		set(translations)
@@ -150,7 +150,7 @@ macro(add_xinx_plugins cible is_shared librairies version)
 		if(CMAKE_SIZEOF_VOID_P MATCHES 8)
 			add_definitions(-fPIC)
 		endif()
-		add_library(${cible} STATIC ${sources} ${winresources} ${winresources}${generated_forms} ${generated_resources})
+		add_library(${cible} STATIC ${sources} ${winresources} ${winresources}${generated_forms} ${generated_resources} ${translations_qm} ${other_translations_qm})
 	endif()
 
 	target_link_libraries(${cible} ${librairies} ${LIBRARIES} ${QT_LIBRARIES})
