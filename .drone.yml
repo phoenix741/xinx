@@ -1,0 +1,11 @@
+pipeline:
+    build:
+        image: debian:8
+        commands:
+            - apt-get update
+            - apt-get install -y --no-install-recommends build-essential cmake doxygen libxml2-dev libxslt-dev qt4-qmake libqt4-dev libqtwebkit-dev pkg-config libsvn-dev libsvncpp-dev libapr1-dev
+            - mkdir build
+            - cd build
+            - cmake ../
+            - make
+            - make install
