@@ -200,7 +200,7 @@ QDocumentLine& QDocumentLine::operator = (const QDocumentLine& l)
 */
 QDocument* QDocumentLine::document() const
 {
-	return m_handle ? m_handle->document() : 0;
+    return m_handle ? m_handle->document() : 0;
 }
 
 /*!
@@ -260,7 +260,7 @@ bool QDocumentLine::isNull() const
 */
 bool QDocumentLine::isValid() const
 {
-	return m_handle ? m_handle->document() : false;
+    return m_handle ? m_handle->document() != NULL : false;
 }
 
 /*!
